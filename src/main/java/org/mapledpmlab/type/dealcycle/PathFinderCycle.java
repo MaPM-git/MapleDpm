@@ -67,9 +67,9 @@ public class PathFinderCycle extends DealCycle {
             add(new EdgeOfResonance());
             add(new Evolve());
             add(new ForsakenRelicExplosion());
+            add(new ForsakenRelicMagicArrow());
             add(new ForsakenRelicWave());
             add(new GuidedArrow());
-            add(new ForsakenRelicMagicArrow());
             add(new ObsidianBarrier());
             add(new Raven());
             add(new RavenTempest());
@@ -144,7 +144,7 @@ public class PathFinderCycle extends DealCycle {
 
         // 저주 화살
         for (int i = 10260; i < 720 * 1000; i += 20000) {
-            for (int j = i; j < curseArrow.getInterval() * curseArrow.getLimitAttackCount(); j += curseArrow.getInterval()) {
+            for (int j = i; j < i + curseArrow.getInterval() * curseArrow.getLimitAttackCount(); j += curseArrow.getInterval()) {
                 getSkillEventList().add(new SkillEvent(curseArrow, new Timestamp(j), new Timestamp(j)));
                 getEventTimeList().add(new Timestamp(j));
             }
@@ -266,23 +266,11 @@ public class PathFinderCycle extends DealCycle {
                 addSkillEvent(cardinalBlast);
                 ran = (long) (Math.random() * 99 + 1);
                 if (ran <= additionalDischarge.getProp()) {
-                    for (
-                            int j = (int) getStart().getTime();
-                            j < getStart().getTime() + additionalDischarge.getInterval() * additionalDischarge.getLimitAttackCount();
-                            j += additionalDischarge.getInterval()) {
-                        getSkillEventList().add(new SkillEvent(additionalDischarge, new Timestamp(j), new Timestamp(j)));
-                        getEventTimeList().add(new Timestamp(j));
-                    }
+                    addSkillEvent(additionalDischarge);
                 }
                 addSkillEvent(cardinalDischarge);
                 if (ran <= additionalBlastFirst.getProp()) {
-                    for (
-                            int j = (int) getStart().getTime();
-                            j < getStart().getTime() + additionalBlastFirst.getInterval() * additionalBlastFirst.getLimitAttackCount();
-                            j += additionalBlastFirst.getInterval()) {
-                        getSkillEventList().add(new SkillEvent(additionalBlastFirst, new Timestamp(j), new Timestamp(j)));
-                        getEventTimeList().add(new Timestamp(j));
-                    }
+                    addSkillEvent(additionalBlastFirst);
                 }
                 edgeOfResonance.setActivateTime(new Timestamp(edgeOfResonance.getActivateTime().getTime() - 2000));
                 ancientWrath.setActivateTime(new Timestamp(ancientWrath.getActivateTime().getTime() - 2000));
@@ -363,9 +351,9 @@ public class PathFinderCycle extends DealCycle {
                     if (se.getSkill() instanceof AdditionalBlastAfterSecond) {
                         se.setSkill(new AdditionalBlastREAfterSecond());
                     } else if (se.getSkill() instanceof AdditionalBlastFirst) {
-                        se.setSkill(new AdditionalBlastFirst());
+                        se.setSkill(new AdditionalBlastREFirst());
                     } else if (se.getSkill() instanceof AdditionalDischarge) {
-                        se.setSkill(new AdditionalDischarge());
+                        se.setSkill(new AdditionalDischargeRE());
                     }
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
