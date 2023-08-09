@@ -31,6 +31,7 @@ public class DPMMain {
         dealCycleList.add(new HeroDealCycle(new Hero()));
         dealCycleList.add(new MarksmanCycle(new Marksman()));
         dealCycleList.add(new PaladinDealCycle(new Paladin()));
+        dealCycleList.add(new PathFinderCycle(new Pathfinder()));
         ArchMageFPDealCycle archMageFPDealCycle = new ArchMageFPDealCycle(new ArchMageFP());
         ArchMageILDealCycle archMageILDealCycle = new ArchMageILDealCycle(new ArchMageIL());
         BishopDealCycle bishopDealCycle = new BishopDealCycle(new Bishop());
@@ -39,12 +40,13 @@ public class DPMMain {
         HeroDealCycle heroDealCycle = new HeroDealCycle(new Hero());
         MarksmanCycle marksmanCycle = new MarksmanCycle(new Marksman());
         PaladinDealCycle paladinDealCycle = new PaladinDealCycle(new Paladin());
+        PathFinderCycle pathFinderCycle = new PathFinderCycle(new Pathfinder());
         Long totalDamage=0L;
         //for (int i=0;i<10000;i++)
-        totalDamage += marksmanCycle.getTotalDamage();
+        totalDamage += pathFinderCycle.getTotalDamage();
         Double share = 0.0;
         Double testShare = 0.0;
-        for (AttackSkill as : marksmanCycle.getAttackSkillList()) {
+        for (AttackSkill as : pathFinderCycle.getAttackSkillList()) {
             if (as.getCumulativeDamage() == 0) {
                 continue;
             }

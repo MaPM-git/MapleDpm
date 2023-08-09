@@ -59,9 +59,9 @@ public class Marksman extends Job {
         // 4차
         this.addFinalDamage(1.08);      // 어드밴스드 인핸스 애로우
         this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(31L);  // 애로우 일루전
-        this.addCriticalP(11.0);        // 샤프 아이즈
-        this.addCriticalDamage(8.0);
+        this.addIgnoreDefenseList(31L); // 애로우 일루전
+        this.addCriticalP(20.0);        // 샤프 아이즈
+        this.addCriticalDamage(15.0);
         this.addIgnoreDefenseList(5L);
         this.addAtt(31L);               // 크로스보우 엑스퍼트
         this.addCriticalDamage(15.0);

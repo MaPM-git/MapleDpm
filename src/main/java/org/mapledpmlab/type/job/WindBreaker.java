@@ -69,8 +69,8 @@ public class WindBreaker extends Job {
         this.addCriticalP(10.0);
 
         // 4차
-        this.addCriticalP(11.0);        // 샤프 아이즈
-        this.addCriticalDamage(8.0);
+        this.addCriticalP(20.0);        // 샤프 아이즈
+        this.addCriticalDamage(15.0);
         this.addAttP(11L);              // 윈드 블레싱
         this.addMainStatP(16L);
         this.addAtt(31L);               // 보우 엑스퍼트

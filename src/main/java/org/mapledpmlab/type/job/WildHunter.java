@@ -62,8 +62,8 @@ public class WildHunter extends Job {
         this.addAtt(10L);
 
         // 4차
-        this.addCriticalP(11.0);        // 샤프 아이즈
-        this.addCriticalDamage(8.0);
+        this.addCriticalP(20.0);        // 샤프 아이즈
+        this.addCriticalDamage(15.0);
         this.addFinalDamage(1.2);       // 익스텐드 매거진
         this.addMainStat(62L);
         this.addAtt(31L);               // 크로스보우 엑스퍼트

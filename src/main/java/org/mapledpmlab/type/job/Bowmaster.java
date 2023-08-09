@@ -60,8 +60,8 @@ public class Bowmaster extends Job {
 
         // 4차
         this.addFinalDamage(1.06);      // 어드밴스드 퀴버
-        this.addCriticalP(11.0);        // 샤프 아이즈
-        this.addCriticalDamage(8.0);
+        this.addCriticalP(20.0);        // 샤프 아이즈
+        this.addCriticalDamage(15.0);
         this.addIgnoreDefenseList(5L);
         this.addAtt(62L);               // 보우 엑스퍼트
         this.addCriticalDamage(16.0);
