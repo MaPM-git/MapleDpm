@@ -152,8 +152,6 @@ public class DarkKnightDealCycle extends DealCycle {
         dealCycle2.add(auraWeaponBuff);
         dealCycle2.add(epicAdventure);
         dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
         dealCycle2.add(darkThirst);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);      // 여기까지 3.63초 - 리레링 25.39초 전에 다크니스 오라 사용

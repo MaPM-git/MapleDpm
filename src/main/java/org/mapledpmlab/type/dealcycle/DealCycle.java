@@ -8,6 +8,7 @@ import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.Infinity;
+import org.mapledpmlab.type.skill.buffskill.common.RestraintRing;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -26,6 +27,8 @@ public class DealCycle {
     private List<AttackSkill> attackSkillList;
     private List<SkillEvent> skillEventList = new ArrayList<>();
     private List<Timestamp> eventTimeList = new ArrayList<>();
+    private List<Timestamp> restraintRingStartTime = new ArrayList<>();
+    private List<Timestamp> restraintRingEndTime = new ArrayList<>();
     int i=0;
 
     public DealCycle(Job job, AttackSkill finalAttack) {
@@ -94,6 +97,10 @@ public class DealCycle {
         }
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
+        }
+        if (skill instanceof RestraintRing) {
+            restraintRingStartTime.add(start);
+            restraintRingEndTime.add(endTime);
         }
         eventTimeList.add(start);
         eventTimeList.add(new Timestamp(start.getTime() + skill.getDelay()));

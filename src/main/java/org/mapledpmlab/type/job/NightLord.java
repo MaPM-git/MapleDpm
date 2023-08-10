@@ -71,4 +71,10 @@ public class NightLord extends Job {
         // 5차
         this.addAtt(30L);               // 레디 투 다이
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addIgnoreDefenseList(31 + 10L); // 퍼지 에어리어
+    }
 }
