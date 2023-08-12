@@ -27,8 +27,9 @@ public class DealCycle {
     private List<AttackSkill> attackSkillList;
     private List<SkillEvent> skillEventList = new ArrayList<>();
     private List<Timestamp> eventTimeList = new ArrayList<>();
-    private List<Timestamp> restraintRingStartTime = new ArrayList<>();
-    private List<Timestamp> restraintRingEndTime = new ArrayList<>();
+    Timestamp restraintRingStartTime = null;
+    Timestamp restraintRingEndTime = null;
+    Timestamp fortyEndTime = null;
     int i=0;
 
     public DealCycle(Job job, AttackSkill finalAttack) {
@@ -46,6 +47,16 @@ public class DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (
+                    skill instanceof RestraintRing
+                    && restraintRingStartTime == null
+                    && restraintRingEndTime == null
+                    && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 if (skill instanceof Infinity) {
                     for (long i = 0; i < 60000; i += 4000) {
@@ -97,10 +108,6 @@ public class DealCycle {
         }
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
-        }
-        if (skill instanceof RestraintRing) {
-            restraintRingStartTime.add(start);
-            restraintRingEndTime.add(endTime);
         }
         eventTimeList.add(start);
         eventTimeList.add(new Timestamp(start.getTime() + skill.getDelay()));
@@ -158,9 +165,20 @@ public class DealCycle {
     }
 
     public void print() {
-        for (SkillEvent se : skillEventList) {
-            System.out.println(se.toString());
+        Long totalDamage = getTotalDamage(eventTimeList);
+        Long DPM = getTotalDamage(eventTimeList) / 12;
+        Long restraintRingDeal = getRestraintRingDeal();
+        Long fortyDeal = getFortyDeal();
+        for (AttackSkill as : attackSkillList) {
+            if (as.getCumulativeDamage() == 0) {
+                continue;
+            }
+            as.print();
         }
+        System.out.println("총데미지 : " + totalDamage);
+        System.out.println("DPM : " + DPM);
+        System.out.println("리스트레인트링 : " + restraintRingDeal);
+        System.out.println("40초 : " + fortyDeal);
     }
 
     public List<SkillEvent> getOverlappingSkillEvents(Timestamp start, Timestamp end) {
@@ -174,7 +192,7 @@ public class DealCycle {
         return overlappingSkillEvents;
     }
 
-    public Long getTotalDamage() {
+    public Long getTotalDamage(List<Timestamp> eventTimeList) {
         Long totalDamage = 0L;
         Timestamp start = null;
         Timestamp end = null;
@@ -218,6 +236,9 @@ public class DealCycle {
                 }
             }
         }
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
+        }
         return totalDamage;
     }
 
@@ -255,6 +276,42 @@ public class DealCycle {
             }
         }
         return attackDamage;
+    }
+
+    public Long getRestraintRingDeal() {
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(0.0);
+            as.setUseCount(0L);
+            as.setCumulativeDamage(0L);
+        }
+        List<Timestamp> tmp = new ArrayList<>();
+        for (Timestamp ts : eventTimeList) {
+            if (
+                    (ts.equals(restraintRingStartTime) || ts.after(restraintRingStartTime))
+                    && (ts.equals(restraintRingEndTime) || ts.before(restraintRingEndTime))
+            ) {
+                tmp.add(ts);
+            }
+        }
+        return getTotalDamage(tmp);
+    }
+
+    public Long getFortyDeal() {
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(0.0);
+            as.setUseCount(0L);
+            as.setCumulativeDamage(0L);
+        }
+        List<Timestamp> tmp = new ArrayList<>();
+        for (Timestamp ts : eventTimeList) {
+            if (
+                    (ts.equals(restraintRingStartTime) || ts.after(restraintRingStartTime))
+                    && (ts.equals(fortyEndTime) || ts.before(fortyEndTime))
+            ) {
+                tmp.add(ts);
+            }
+        }
+        return getTotalDamage(tmp);
     }
 
     public void sortEventTimeList() {

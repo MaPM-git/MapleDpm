@@ -271,17 +271,17 @@ public class BowmasterDealCycle extends DealCycle {
         sortEventTimeList();
     }
 
-    public Long getTotalDamage() {
+    public Long getTotalDamage(List<Timestamp> eventTimeList) {
         Long totalDamage = 0L;
         Timestamp start = null;
         Timestamp end = null;
         List<SkillEvent> overlappingSkillEvents;
         BuffSkill buffSkill;
-        for (int i = 0; i < getEventTimeList().size() -1; i++) {
+        for (int i = 0; i < eventTimeList.size() -1; i++) {
             List<SkillEvent> useAttackSkillList = new ArrayList<>();
             buffSkill = new BuffSkill();
-            start = getEventTimeList().get(i);
-            end = getEventTimeList().get(i + 1);
+            start = eventTimeList.get(i);
+            end = eventTimeList.get(i + 1);
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             overlappingSkillEvents = deduplication(overlappingSkillEvents, SkillEvent::getSkill);
             boolean isEvolve = false;

@@ -6,7 +6,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.mapledpmlab.type.dealcycle.*;
 import org.mapledpmlab.type.job.*;
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,33 +48,7 @@ public class DPMMain {
         ShadowerDealCycle shadowerDealCycle = new ShadowerDealCycle(new Shadower());
         Long totalDamage=0L;
         //for (int i=0;i<10000;i++)
-        totalDamage += dualBladeDealCycle.getTotalDamage();
-        Double share = 0.0;
-        Double testShare = 0.0;
-        for (AttackSkill as : dualBladeDealCycle.getAttackSkillList()) {
-            if (as.getCumulativeDamage() == 0) {
-                continue;
-            }
-            System.out.println(as);
-            System.out.println(as.getUseCount());
-            System.out.println(as.getCumulativeDamage());
-            share = as.getCumulativeDamage().doubleValue() / totalDamage * 100;
-            System.out.println(share + "%");
-            testShare += share;
-        }
-        System.out.println(testShare);
-        System.out.println(totalDamage);
-        /*
-        for (int i =1;i<4950;i++){
-            for (int j=1;j<4950;j++){
-                if ((i*8 + j*12) == 4948){
-                    System.out.println("-----------");
-                    System.out.println(i);
-                    System.out.println(j);
-                }
-            }
-        }
-        */
+        dualBladeDealCycle.print();
     }
 
     public void exportExcel() {

@@ -24,6 +24,42 @@ public class AttackSkill extends Skill {
     private Long limitAttackCount = 0L;
     private Long prop = 0L;
     private Long useCount = 0L;
+    private Double share = 0.0;
+
+    @Override
+    public String toString() {
+        String str = "";
+        if (damage != 0) {
+            str = str + "퍼뎀 : " + damage;
+        }
+        if (getDelay() != 0) {
+            str = str + "\n딜레이 : " + getDelay();
+        }
+        return "AttackSkill{" +
+                "addDamage=" + addDamage +
+                ", attackCount=" + attackCount +
+                ", criticalP=" + criticalP +
+                ", cumulativeDamage=" + cumulativeDamage +
+                ", damage=" + damage +
+                ", dotDuration=" + dotDuration +
+                ", finalDamage=" + finalDamage +
+                ", ignoreDefenseList=" + ignoreDefenseList +
+                ", interval=" + interval +
+                ", isApplyFinalAttack=" + isApplyFinalAttack +
+                ", isFinalAttack=" + isFinalAttack +
+                ", limitAttackCount=" + limitAttackCount +
+                ", prop=" + prop +
+                ", useCount=" + useCount +
+                ", share=" + share +
+                '}';
+    }
+
+    public void print() {
+        System.out.println(getName());
+        System.out.println("사용횟수 : " + useCount);
+        System.out.println("누적데미지 : " + cumulativeDamage);
+        System.out.println("점유율 : " + share + "\n");
+    }
 
     public Double getIgnoreDefense() {
         Double ignoreDefense = 1.0;
