@@ -1,4 +1,4 @@
-package org.mapledpmlab.type.skill.attackskill.nightlord;
+package org.mapledpmlab.type.skill.attackskill.common;
 
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 

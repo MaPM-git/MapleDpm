@@ -7,10 +7,7 @@ import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.nightlord.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
-import org.mapledpmlab.type.skill.buffskill.nightlord.PurgeArea;
-import org.mapledpmlab.type.skill.buffskill.nightlord.SpreadThrow;
-import org.mapledpmlab.type.skill.buffskill.nightlord.ThrowBlasting;
-import org.mapledpmlab.type.skill.buffskill.nightlord.UltimateDarkSight;
+import org.mapledpmlab.type.skill.buffskill.nightlord.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

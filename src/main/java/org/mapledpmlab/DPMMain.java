@@ -30,9 +30,10 @@ public class DPMMain {
         dealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
         dealCycleList.add(new HeroDealCycle(new Hero()));
         dealCycleList.add(new MarksmanCycle(new Marksman()));
-        //dealCycleList.add(new NightLordDealCycle(new NightLord()));
+        dealCycleList.add(new NightLordDealCycle(new NightLord()));
         dealCycleList.add(new PaladinDealCycle(new Paladin()));
         dealCycleList.add(new PathFinderCycle(new Pathfinder()));
+        //dealCycleList.add(new ShadowerDealCycle(new Shadower()));
         ArchMageFPDealCycle archMageFPDealCycle = new ArchMageFPDealCycle(new ArchMageFP());
         ArchMageILDealCycle archMageILDealCycle = new ArchMageILDealCycle(new ArchMageIL());
         BishopDealCycle bishopDealCycle = new BishopDealCycle(new Bishop());
@@ -43,12 +44,13 @@ public class DPMMain {
         NightLordDealCycle nightLordDealCycle = new NightLordDealCycle(new NightLord());
         PaladinDealCycle paladinDealCycle = new PaladinDealCycle(new Paladin());
         PathFinderCycle pathFinderCycle = new PathFinderCycle(new Pathfinder());
+        ShadowerDealCycle shadowerDealCycle = new ShadowerDealCycle(new Shadower());
         Long totalDamage=0L;
         //for (int i=0;i<10000;i++)
-        totalDamage += nightLordDealCycle.getTotalDamage();
+        totalDamage += shadowerDealCycle.getTotalDamage();
         Double share = 0.0;
         Double testShare = 0.0;
-        for (AttackSkill as : nightLordDealCycle.getAttackSkillList()) {
+        for (AttackSkill as : shadowerDealCycle.getAttackSkillList()) {
             if (as.getCumulativeDamage() == 0) {
                 continue;
             }
