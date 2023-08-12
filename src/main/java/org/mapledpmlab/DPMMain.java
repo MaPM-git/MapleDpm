@@ -26,31 +26,33 @@ public class DPMMain {
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
         dealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
         dealCycleList.add(new BishopDealCycle(new Bishop()));
-        dealCycleList.add(new BowmasterCycle(new Bowmaster()));
+        dealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
         dealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
+        //dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
         dealCycleList.add(new HeroDealCycle(new Hero()));
-        dealCycleList.add(new MarksmanCycle(new Marksman()));
+        dealCycleList.add(new MarksmanDealCycle(new Marksman()));
         dealCycleList.add(new NightLordDealCycle(new NightLord()));
         dealCycleList.add(new PaladinDealCycle(new Paladin()));
-        dealCycleList.add(new PathFinderCycle(new Pathfinder()));
-        //dealCycleList.add(new ShadowerDealCycle(new Shadower()));
+        dealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
+        dealCycleList.add(new ShadowerDealCycle(new Shadower()));
         ArchMageFPDealCycle archMageFPDealCycle = new ArchMageFPDealCycle(new ArchMageFP());
         ArchMageILDealCycle archMageILDealCycle = new ArchMageILDealCycle(new ArchMageIL());
         BishopDealCycle bishopDealCycle = new BishopDealCycle(new Bishop());
-        BowmasterCycle bowmasterCycle = new BowmasterCycle(new Bowmaster());
+        BowmasterDealCycle bowmasterDealCycle = new BowmasterDealCycle(new Bowmaster());
         DarkKnightDealCycle darkKnightDealCycle = new DarkKnightDealCycle(new DarkKnight());
+        DualBladeDealCycle dualBladeDealCycle = new DualBladeDealCycle(new DualBlade());
         HeroDealCycle heroDealCycle = new HeroDealCycle(new Hero());
-        MarksmanCycle marksmanCycle = new MarksmanCycle(new Marksman());
+        MarksmanDealCycle marksmanDealCycle = new MarksmanDealCycle(new Marksman());
         NightLordDealCycle nightLordDealCycle = new NightLordDealCycle(new NightLord());
         PaladinDealCycle paladinDealCycle = new PaladinDealCycle(new Paladin());
-        PathFinderCycle pathFinderCycle = new PathFinderCycle(new Pathfinder());
+        PathFinderDealCycle pathFinderDealCycle = new PathFinderDealCycle(new Pathfinder());
         ShadowerDealCycle shadowerDealCycle = new ShadowerDealCycle(new Shadower());
         Long totalDamage=0L;
         //for (int i=0;i<10000;i++)
-        totalDamage += shadowerDealCycle.getTotalDamage();
+        totalDamage += dualBladeDealCycle.getTotalDamage();
         Double share = 0.0;
         Double testShare = 0.0;
-        for (AttackSkill as : shadowerDealCycle.getAttackSkillList()) {
+        for (AttackSkill as : dualBladeDealCycle.getAttackSkillList()) {
             if (as.getCumulativeDamage() == 0) {
                 continue;
             }

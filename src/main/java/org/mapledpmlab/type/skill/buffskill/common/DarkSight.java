@@ -1,4 +1,4 @@
-package org.mapledpmlab.type.skill.buffskill.shadower;
+package org.mapledpmlab.type.skill.buffskill.common;
 
 import lombok.Getter;
 import lombok.Setter;
