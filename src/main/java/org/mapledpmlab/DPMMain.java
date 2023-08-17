@@ -27,28 +27,16 @@ public class DPMMain {
         dealCycleList.add(new BishopDealCycle(new Bishop()));
         dealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
         dealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
-        //dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
+        dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
         dealCycleList.add(new HeroDealCycle(new Hero()));
         dealCycleList.add(new MarksmanDealCycle(new Marksman()));
         dealCycleList.add(new NightLordDealCycle(new NightLord()));
         dealCycleList.add(new PaladinDealCycle(new Paladin()));
         dealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
         dealCycleList.add(new ShadowerDealCycle(new Shadower()));
-        ArchMageFPDealCycle archMageFPDealCycle = new ArchMageFPDealCycle(new ArchMageFP());
-        ArchMageILDealCycle archMageILDealCycle = new ArchMageILDealCycle(new ArchMageIL());
-        BishopDealCycle bishopDealCycle = new BishopDealCycle(new Bishop());
-        BowmasterDealCycle bowmasterDealCycle = new BowmasterDealCycle(new Bowmaster());
-        DarkKnightDealCycle darkKnightDealCycle = new DarkKnightDealCycle(new DarkKnight());
-        DualBladeDealCycle dualBladeDealCycle = new DualBladeDealCycle(new DualBlade());
-        HeroDealCycle heroDealCycle = new HeroDealCycle(new Hero());
-        MarksmanDealCycle marksmanDealCycle = new MarksmanDealCycle(new Marksman());
-        NightLordDealCycle nightLordDealCycle = new NightLordDealCycle(new NightLord());
-        PaladinDealCycle paladinDealCycle = new PaladinDealCycle(new Paladin());
-        PathFinderDealCycle pathFinderDealCycle = new PathFinderDealCycle(new Pathfinder());
-        ShadowerDealCycle shadowerDealCycle = new ShadowerDealCycle(new Shadower());
-        Long totalDamage=0L;
-        //for (int i=0;i<10000;i++)
-        dualBladeDealCycle.print();
+        dealCycleList.add(new ViperDealCycle(new Viper()));
+        ViperDealCycle viperDealCycle = new ViperDealCycle(new Viper());
+        viperDealCycle.print();
     }
 
     public void exportExcel() {

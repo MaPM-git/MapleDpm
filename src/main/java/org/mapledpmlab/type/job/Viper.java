@@ -64,11 +64,26 @@ public class Viper extends Job {
         // 4차
         this.addAttP(15L);              // 바이퍼지션
         this.addFinalDamage(1.13);
-        this.addIgnoreDefenseList(44L);  // 가드 크러쉬
+        this.addIgnoreDefenseList(44L); // 가드 크러쉬
         this.addFinalDamage(1.1);
         this.addAtt(32L);
 
         // 5차
         this.addAtt(40L);               // 로디드 다이스
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addCriticalDamage(15.0);   // 그로기 마스터리
+        this.addFinalDamage(1.2);       // 씨 서펜트 인레이지
+        this.addDamage(27L);            // 오펜스 폼
+        this.addCriticalDamage(15.0);   // 서펜트 스피릿
+        this.addIgnoreDefenseList(25L); // 파이렛 플래그
+        this.addMainStat(
+                (long) Math.floor(
+                        (this.getLevel() + 2) * 5 * 0.25
+                )
+        );
     }
 }

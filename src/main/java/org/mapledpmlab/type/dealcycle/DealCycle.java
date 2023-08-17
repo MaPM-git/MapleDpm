@@ -30,6 +30,10 @@ public class DealCycle {
     Timestamp restraintRingStartTime = null;
     Timestamp restraintRingEndTime = null;
     Timestamp fortyEndTime = null;
+    Long totalDamage;
+    Long DPM;
+    Long restraintRingDeal;
+    Long fortyDeal;
     int i=0;
 
     public DealCycle(Job job, AttackSkill finalAttack) {
@@ -95,6 +99,19 @@ public class DealCycle {
                 skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));
             }
         }
+        applyCooldown(skill);
+        eventTimeList.add(start);
+        eventTimeList.add(new Timestamp(start.getTime() + skill.getDelay()));
+        if (endTime != null) {
+            eventTimeList.add(endTime);
+        }
+        start.setTime(start.getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
+    }
+
+    public void applyCooldown(Skill skill) {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
                 Long ran = (long) (Math.random() * 99 + 1);
@@ -106,15 +123,6 @@ public class DealCycle {
                 skill.setActivateTime(new Timestamp((int) (start.getTime() + applyCooldownReduction(skill) * 1000)));
             }
         }
-        if (skill.getRelatedSkill() != null) {
-            addSkillEvent(skill.getRelatedSkill());
-        }
-        eventTimeList.add(start);
-        eventTimeList.add(new Timestamp(start.getTime() + skill.getDelay()));
-        if (endTime != null) {
-            eventTimeList.add(endTime);
-        }
-        start.setTime(start.getTime() + skill.getDelay());
     }
 
     public void addDealCycle(List<Skill> skillList) {
@@ -165,16 +173,19 @@ public class DealCycle {
     }
 
     public void print() {
-        Long totalDamage = getTotalDamage(eventTimeList);
-        Long DPM = getTotalDamage(eventTimeList) / 12;
-        Long restraintRingDeal = getRestraintRingDeal();
-        Long fortyDeal = getFortyDeal();
+        totalDamage = getTotalDamage(eventTimeList);
+        Long verifyDamage = 0L;
         for (AttackSkill as : attackSkillList) {
             if (as.getCumulativeDamage() == 0) {
                 continue;
             }
             as.print();
+            verifyDamage += as.getCumulativeDamage();
         }
+        DPM = getTotalDamage(eventTimeList) / 12;
+        restraintRingDeal = getRestraintRingDeal();
+        fortyDeal = getFortyDeal();
+        System.out.println("검증용 : " + verifyDamage);
         System.out.println("총데미지 : " + totalDamage);
         System.out.println("DPM : " + DPM);
         System.out.println("리스트레인트링 : " + restraintRingDeal);
@@ -184,8 +195,10 @@ public class DealCycle {
     public List<SkillEvent> getOverlappingSkillEvents(Timestamp start, Timestamp end) {
         List<SkillEvent> overlappingSkillEvents = new ArrayList<>();
         for (SkillEvent skillEvent : skillEventList) {
-            if ((skillEvent.getStart().before(end) && skillEvent.getEnd().after(start))
-                    || (skillEvent.getStart().equals(start) && skillEvent.getStart().equals(skillEvent.getEnd()))) {
+            if (
+                    (skillEvent.getStart().before(end) && skillEvent.getEnd().after(start))
+                    || (skillEvent.getStart().equals(start) && skillEvent.getStart().equals(skillEvent.getEnd()))
+            ) {
                 overlappingSkillEvents.add(skillEvent);
             }
         }
