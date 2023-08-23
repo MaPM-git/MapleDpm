@@ -368,6 +368,9 @@ public class BowmasterDealCycle extends DealCycle {
             isCriticalReinforce = false;
             isAfterImageShotActive = false;
         }
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
+        }
         return totalDamage;
     }
 

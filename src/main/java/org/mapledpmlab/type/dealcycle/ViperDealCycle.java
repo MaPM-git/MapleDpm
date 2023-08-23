@@ -78,7 +78,7 @@ public class ViperDealCycle extends DealCycle {
         LuckyDice luckyDice = new LuckyDice();
         LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        Overdrive overdrive = new Overdrive();
+        Overdrive overdrive = new Overdrive(255L);
         PirateFlag pirateFlag = new PirateFlag();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();

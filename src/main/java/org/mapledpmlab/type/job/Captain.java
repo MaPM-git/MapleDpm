@@ -69,4 +69,13 @@ public class Captain extends Job {
         // 5차
         this.addAtt(40L);               // 로디드 다이스
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addFinalDamage(1.27);      // 컨티뉴얼 에이밍
+        this.addDamage(16L);            // 오펜스 폼
+        this.addAtt(48L);               // 크루 커맨더십
+        this.addCriticalDamage(5.0);
+    }
 }

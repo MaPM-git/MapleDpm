@@ -348,6 +348,9 @@ public class MarksmanDealCycle extends DealCycle {
             isCriticalReinforce = false;
             isSplitArrow = false;
         }
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
+        }
         return totalDamage;
     }
 

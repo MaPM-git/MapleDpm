@@ -331,6 +331,9 @@ public class NightLordDealCycle extends DealCycle {
             }
             isSpreadThrow = false;
         }
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
+        }
         return totalDamage;
     }
 }

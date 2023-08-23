@@ -374,6 +374,9 @@ public class PathFinderDealCycle extends DealCycle {
             isRelicLiberation = false;
             isRelicEvolution = false;
         }
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
+        }
         return totalDamage;
     }
 
