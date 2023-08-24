@@ -420,4 +420,72 @@ public class BishopDealCycle extends DealCycle {
         }
         return attackDamage;
     }
+
+    @Override
+    public void addSkillEvent(Skill skill) {
+        Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
+        if (skill instanceof BuffSkill) {
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime == null
+                            && restraintRingEndTime == null
+                            && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                if (skill instanceof Infinity) {
+                    for (long i = 0; i < 60000; i += 4000) {
+                        getSkillEventList().add(new SkillEvent(new Infinity(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 4000)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 4000));
+                    }
+                    getSkillEventList().add(new SkillEvent(new Infinity(60000L), new Timestamp(getStart().getTime() + 60000), new Timestamp(getStart().getTime() + 121360)));
+                    endTime = new Timestamp(getStart().getTime() + 121360);
+                } else {
+                    endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                }
+            } else {
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        } else {
+            if (((AttackSkill) skill).getInterval() != 0) {
+                Timestamp tmp = getStart();
+                if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                } else {
+                    Long attackCount = 0L;
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        attackCount += 1;
+                    }
+                }
+                this.setStart(tmp);
+            } else {
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        }
+        applyCooldown(skill);
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
+    }
 }

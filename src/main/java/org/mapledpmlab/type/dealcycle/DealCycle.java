@@ -62,17 +62,8 @@ public class DealCycle {
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
-                if (skill instanceof Infinity) {
-                    for (long i = 0; i < 60000; i += 4000) {
-                        skillEventList.add(new SkillEvent(new Infinity(i), new Timestamp(start.getTime() + i), new Timestamp(start.getTime() + i + 4000)));
-                        eventTimeList.add(new Timestamp(start.getTime() + i + 4000));
-                    }
-                    skillEventList.add(new SkillEvent(new Infinity(60000L), new Timestamp(start.getTime() + 60000), new Timestamp(start.getTime() + 121360)));
-                    endTime = new Timestamp(start.getTime() + 121360);
-                } else {
-                    endTime = new Timestamp((long) (start.getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + job.getPlusBuffDuration() * 0.01)));
-                    skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));
-                }
+                endTime = new Timestamp((long) (start.getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + job.getPlusBuffDuration() * 0.01)));
+                skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));
             } else {
                 endTime = new Timestamp(start.getTime() + ((BuffSkill) skill).getDuration() * 1000);
                 skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));
