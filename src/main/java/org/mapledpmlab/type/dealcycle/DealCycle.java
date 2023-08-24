@@ -7,7 +7,6 @@ import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
-import org.mapledpmlab.type.skill.buffskill.common.Infinity;
 import org.mapledpmlab.type.skill.buffskill.common.RestraintRing;
 
 import java.sql.Timestamp;
@@ -162,10 +161,10 @@ public class DealCycle {
         return cooldown;
     }
 
-    public void print() {
+    public void applyDoping() {
         this.job.Doping();
         totalDamage = getTotalDamage(eventTimeList);
-        Long verifyDamage = 0L;
+        /*Long verifyDamage = 0L;
         for (AttackSkill as : attackSkillList) {
             if (as.getCumulativeDamage() == 0) {
                 continue;
@@ -180,7 +179,7 @@ public class DealCycle {
         System.out.println("총데미지 : " + totalDamage);
         System.out.println("DPM : " + DPM);
         System.out.println("리스트레인트링 : " + restraintRingDeal);
-        System.out.println("40초 : " + fortyDeal);
+        System.out.println("40초 : " + fortyDeal);*/
     }
 
     public List<SkillEvent> getOverlappingSkillEvents(Timestamp start, Timestamp end) {

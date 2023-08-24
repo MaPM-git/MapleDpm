@@ -25,33 +25,43 @@ public class AttackSkill extends Skill {
     private Long prop = 0L;
     private Long useCount = 0L;
     private Double share = 0.0;
+    private Long colNum = 0L;
 
-    @Override
-    public String toString() {
+    public String getInfo() {
         String str = "";
-        if (damage != 0) {
-            str = str + "퍼뎀 : " + damage;
+        if (getDamage() != 0) {
+            str = str + "퍼뎀 : " + getDamage();
+            colNum ++;
         }
         if (getDelay() != 0) {
             str = str + "\n딜레이 : " + getDelay();
+            colNum ++;
         }
-        return "AttackSkill{" +
-                "addDamage=" + addDamage +
-                ", attackCount=" + attackCount +
-                ", criticalP=" + criticalP +
-                ", cumulativeDamage=" + cumulativeDamage +
-                ", damage=" + damage +
-                ", dotDuration=" + dotDuration +
-                ", finalDamage=" + finalDamage +
-                ", ignoreDefenseList=" + ignoreDefenseList +
-                ", interval=" + interval +
-                ", isApplyFinalAttack=" + isApplyFinalAttack +
-                ", isFinalAttack=" + isFinalAttack +
-                ", limitAttackCount=" + limitAttackCount +
-                ", prop=" + prop +
-                ", useCount=" + useCount +
-                ", share=" + share +
-                '}';
+        if (getAttackCount() != 0) {
+            str = str + "\n공격횟수 : " + getAttackCount();
+            colNum ++;
+        }
+        if (getInterval() != 0) {
+            str = str + "\n공격주기 : " + getInterval();
+            colNum ++;
+        }
+        if (getAddDamage() != 0) {
+            str = str + "\n추가데미지 : " + getAddDamage();
+            colNum ++;
+        }
+        if (getFinalDamage() != 1.0) {
+            str = str + "\n추가최종데미지 : " + getFinalDamage();
+            colNum ++;
+        }
+        if (getIgnoreDefense() != 0) {
+            str = str + "\n추가방어율무시 : " + getIgnoreDefense();
+            colNum ++;
+        }
+        if (isApplyFinalAttack) {
+            str = str + "\n파이널어택적용";
+            colNum ++;
+        }
+        return str;
     }
 
     public void print() {
@@ -79,5 +89,12 @@ public class AttackSkill extends Skill {
 
     public void addCriticalP(Double criticalP) {
         this.criticalP += criticalP;
+    }
+
+    public Object[] getOpject() {
+        Object[] result = new Object[]{
+                this.getName(), this.getUseCount(), this.getCumulativeDamage().toString() + ".", this.getShare(), this.getInfo()
+        };
+        return result;
     }
 }
