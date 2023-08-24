@@ -119,7 +119,7 @@ public class PathFinderDealCycle extends DealCycle {
         ThiefCunning thiefCunning = new ThiefCunning();
         TripleImpact tripleImpact = new TripleImpact();
         UltimateBlast ultimateBlast = new UltimateBlast();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(340L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(318L);
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
             getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
