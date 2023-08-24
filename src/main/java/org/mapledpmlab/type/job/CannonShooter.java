@@ -73,4 +73,10 @@ public class CannonShooter extends Job {
         // 5차
         this.addAtt(40L);               // 로디드 다이스
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addDamage(40L);            // 몽키 퓨리어스
+    }
 }

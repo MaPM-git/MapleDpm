@@ -26,6 +26,7 @@ public class DPMMain {
         dealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
         dealCycleList.add(new BishopDealCycle(new Bishop()));
         dealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
+        dealCycleList.add(new CannonShooterDealCycle(new CannonShooter()));
         dealCycleList.add(new CaptainDealCycle(new Captain()));
         dealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
         dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
@@ -36,8 +37,8 @@ public class DPMMain {
         dealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
         dealCycleList.add(new ShadowerDealCycle(new Shadower()));
         dealCycleList.add(new ViperDealCycle(new Viper()));
-        BowmasterDealCycle bowmasterDealCycle = new BowmasterDealCycle(new Bowmaster());
-        bowmasterDealCycle.print();
+        CannonShooterDealCycle cannonShooterDealCycle = new CannonShooterDealCycle(new CannonShooter());
+        cannonShooterDealCycle.print();
     }
 
     public void exportExcel() {
