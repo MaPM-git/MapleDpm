@@ -255,6 +255,9 @@ public class CannonShooterDealCycle extends DealCycle {
                 addSkillEvent(icbm);
             } else {
                 addSkillEvent(cannonBuster);
+                if (cooldownCheck(miniCanonBall)) {
+                    addSkillEvent(miniCanonBall);
+                }
             }
         }
         sortEventTimeList();
