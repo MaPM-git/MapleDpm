@@ -140,7 +140,7 @@ public class Job extends Common {
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
                 this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
                 this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
-                this.getFinalDamage(), this.getAtt()
+                this.getFinalDamage()
         };
         return result;
     }

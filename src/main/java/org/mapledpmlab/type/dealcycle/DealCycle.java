@@ -41,7 +41,6 @@ public class DealCycle {
         this.job = job;
         this.job.addTotal(this.job.getJobType());
         this.job.addObject(new Hyper(job.getLevel(), job.getCriticalP()));
-        this.job.Doping();
     }
 
     public void addSkillEvent(Skill skill) {
@@ -164,6 +163,7 @@ public class DealCycle {
     }
 
     public void print() {
+        this.job.Doping();
         totalDamage = getTotalDamage(eventTimeList);
         Long verifyDamage = 0L;
         for (AttackSkill as : attackSkillList) {

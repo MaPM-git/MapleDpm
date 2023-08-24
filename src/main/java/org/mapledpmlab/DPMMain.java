@@ -37,8 +37,7 @@ public class DPMMain {
         dealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
         dealCycleList.add(new ShadowerDealCycle(new Shadower()));
         dealCycleList.add(new ViperDealCycle(new Viper()));
-        CannonShooterDealCycle cannonShooterDealCycle = new CannonShooterDealCycle(new CannonShooter());
-        cannonShooterDealCycle.print();
+        this.exportExcel();
     }
 
     public void exportExcel() {
@@ -50,10 +49,10 @@ public class DPMMain {
 
         Map<String, Object[]> data = new TreeMap<>();
         data.put("1", new Object[]{
-                "직업", "무기상수", "숙련도", "레벨", "메용O 주스탯", "메용X 주스탯", "AP",
-                "부스탯1", "부스탯2", "뒷스공", "데미지", "보스 데미지", "방어율 무시", "크리티컬 데미지",
-                "크리티컬 확률", "장비아이템 공격력%", "무기 총공격력", "%미적용 주스탯", "버프지속시간",
-                "재사용", "쿨타임 감소"
+                "직업", "무기상수", "숙련도", "레벨", "메용O주스탯", "메용X주스탯", "AP",
+                "부스탯1", "부스탯2", "뒷스공", "데미지", "보스데미지", "방어율무시", "크리티컬데미지",
+                "크리티컬확률", "장비공격력%", "무기총공격력", "%미적용주스탯", "버프지속시간",
+                "재사용", "쿨타임감소", "최종데미지"
         });
         for (int i = 0; i < dealCycleList.size(); i++) {
             data.put(String.valueOf(i + 2), dealCycleList.get(i).getJob().getOpject());
