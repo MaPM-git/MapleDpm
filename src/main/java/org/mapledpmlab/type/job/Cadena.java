@@ -83,4 +83,27 @@ public class Cadena extends Job {
                         * this.getFinalDamage()
         );
     }
+
+    @Override
+    public Object[] getOpject() {
+        Long attMagic;
+        Long attMagicP;
+        if (this.getAtt() > this.getMagic()) {
+            attMagic = this.getAtt();
+            attMagicP = this.getAttP();
+        } else {
+            attMagic = this.getMagic();
+            attMagicP = this.getMagicP();
+        }
+        Object[] result = new Object[]{
+                this.getDescription(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
+                this.getFinalSubstat(), this.getFinalSubStat2(), this.getStatDamage(), this.getDamage(),
+                this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
+                this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
+                this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
+                this.getFinalDamage()
+        };
+        return result;
+    }
 }
