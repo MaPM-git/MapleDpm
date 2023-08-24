@@ -148,7 +148,6 @@ public class PaladinDealCycle extends DealCycle {
         dealCycle2.add(grandCross1);
 
         dealCycle3.add(nobleDemand);
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(holyUnity);
         dealCycle3.add(blessedHammerBuff);
         dealCycle3.add(soulContract);
@@ -165,6 +164,12 @@ public class PaladinDealCycle extends DealCycle {
                 auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
             }
+            if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                            && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
             if (divineBrandCount >= 5) {
                 getSkillEventList().add(
                         new SkillEvent(divineJudgement,
@@ -177,6 +182,7 @@ public class PaladinDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
                 sacredBastionEndTime.setTime(getStart().getTime() + sacredBastionDot.getDotDuration());
                 divineBrandCount += 10;

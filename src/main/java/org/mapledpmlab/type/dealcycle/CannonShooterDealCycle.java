@@ -161,7 +161,6 @@ public class CannonShooterDealCycle extends DealCycle {
         dealCycle2.add(rollingCannonRainbow);
         dealCycle2.add(icbm);
 
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(specialMonkeyEscort);
         dealCycle3.add(pirateFlag);
         dealCycle3.add(poolmakerBuff);
@@ -219,9 +218,16 @@ public class CannonShooterDealCycle extends DealCycle {
                 addSkillEvent(barrelRoulette);
             }
             if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                            && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
             } else if (
                     cooldownCheck(dealCycle2)

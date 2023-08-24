@@ -162,7 +162,6 @@ public class CaptainDealCycle extends DealCycle {
         dealCycle2.add(deadEye);
         dealCycle2.add(bulletParty);
 
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(pirateFlag);
         dealCycle3.add(overdrive);
         dealCycle3.add(untiringNectar);
@@ -222,10 +221,17 @@ public class CaptainDealCycle extends DealCycle {
                 addSkillEvent(siegeBomberDelay);
             }
             if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                            && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && clipCount == 49
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
             } else if (
                     cooldownCheck(dealCycle2)

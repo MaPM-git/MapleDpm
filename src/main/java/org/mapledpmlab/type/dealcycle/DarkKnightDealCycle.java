@@ -159,7 +159,6 @@ public class DarkKnightDealCycle extends DealCycle {
         dealCycle2.add(piercingCyclone);    // 여기까지 9.12초 - 극딜 30.88초 전에 다크니스 오라 사용
         dealCycle2.add(darknessAuraFinish);
 
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(darkThirst);
         dealCycle3.add(soulContract);
 
@@ -186,9 +185,16 @@ public class DarkKnightDealCycle extends DealCycle {
                 addSkillEvent(darknessAuraDot);
             }
             if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                            && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
                 restraintRingActivateTime = restraintRing.getActivateTime();
                 beholderShockActivateTime = beholderShock.getActivateTime();

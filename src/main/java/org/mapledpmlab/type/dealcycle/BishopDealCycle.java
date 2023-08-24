@@ -187,7 +187,6 @@ public class BishopDealCycle extends DealCycle {
         dealCycle2.add(heavensDoor);
         dealCycle2.add(divinePunishment);
 
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(soulContract);
         dealCycle3.add(weaponJumpRing);
         dealCycle3.add(peacemaker);
@@ -258,9 +257,16 @@ public class BishopDealCycle extends DealCycle {
                 addSkillEvent(angelicTouch);
             }
             if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                    && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
             } else if (
                     cooldownCheck(dealCycle2)

@@ -187,7 +187,6 @@ public class ViperDealCycle extends DealCycle {
         dealCycle2.add(furiosCharge);
 
         // 4스택
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(pirateFlag);
         dealCycle3.add(overdrive);
         dealCycle3.add(soulContract);
@@ -251,10 +250,17 @@ public class ViperDealCycle extends DealCycle {
                 addSkillEvent(serpentScrew);
             }
             if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                            && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && serpentStoneCount == 3
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 stimulateEndTime = new Timestamp(getStart().getTime() + 90000);
                 addDealCycle(dealCycle1);
                 serpentStoneCount = 3L;

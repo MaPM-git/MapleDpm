@@ -306,7 +306,6 @@ public class ArchMageFPDealCycle extends DealCycle {
         dealCycle2.add(mistEruption);
         dealCycle2.add(poisonNovaExplosion);
 
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(flameHaze);
         dealCycle3.add(flameSweep);
         dealCycle3.add(teleportMastery);
@@ -392,10 +391,17 @@ public class ArchMageFPDealCycle extends DealCycle {
                 addSkillEvent(poisonZoneDelay);
             }
             if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                    && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 infernalVenomEndTime = new Timestamp(getStart().getTime() + 2940 + infernalVenomBuff.getDuration() * 1000);
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
                 dotPunisherFirst.setActivateTime(dotPunisherOriginFirst.getActivateTime());
                 furyOfIfritDelay.setActivateTime(furyOfIfritOriginDelay.getActivateTime());

@@ -155,7 +155,6 @@ public class NightLordDealCycle extends DealCycle {
         dealCycle2.add(restraintRing);
         dealCycle2.add(fumaShuriken);
 
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(soulContract);
         dealCycle3.add(readyToDie);
         dealCycle3.add(fumaShuriken);
@@ -175,9 +174,16 @@ public class NightLordDealCycle extends DealCycle {
                 addSkillEvent(darkFlareDelay);
             }
             if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                            && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 throwBlastingList = new ArrayList<>();
                 dealCycle = new ArrayList<>();
                 while (throwBlastingCount != 0) {

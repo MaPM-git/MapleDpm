@@ -145,7 +145,6 @@ public class ShadowerDealCycle extends DealCycle {
         dealCycle2.add(sonicBlow);
         dealCycle2.add(eviscerate);
 
-        dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(veilOfShadow);
         dealCycle3.add(readyToDie);
         dealCycle3.add(soulContract);
@@ -165,9 +164,16 @@ public class ShadowerDealCycle extends DealCycle {
                 addSkillEvent(darkFlareDelay);
             }
             if (
+                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
+                            && getStart().before(new Timestamp(90 * 1000))
+            ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
                 mesoExplosion.setCoinCount(20L);
                 addSkillEvent(mesoExplosion);
