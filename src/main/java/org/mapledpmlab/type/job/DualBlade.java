@@ -91,7 +91,7 @@ public class DualBlade extends Job {
             attMagicP = this.getMagicP();
         }
         Object[] result = new Object[]{
-                this.getDescription(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
                 this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
                 this.getFinalSubstat(), this.getFinalSubStat2(), this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),

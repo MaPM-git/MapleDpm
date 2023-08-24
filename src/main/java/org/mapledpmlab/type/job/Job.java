@@ -134,7 +134,7 @@ public class Job extends Common {
             attMagicP = this.getMagicP();
         }
         Object[] result = new Object[]{
-                this.getDescription(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
                 this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
                 this.getFinalSubstat(), "X", this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
