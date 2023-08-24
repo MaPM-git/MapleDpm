@@ -11,7 +11,7 @@ public class Hero extends Job {
     public Hero() {
         // 기본
         super();
-        this.setDescription("히어로");
+        this.setName("히어로");
         this.setConstant(1.44);         // 무기상수
         this.setMastery(1.9 / 2);       // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);

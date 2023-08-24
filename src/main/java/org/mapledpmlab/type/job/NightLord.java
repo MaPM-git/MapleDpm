@@ -12,7 +12,7 @@ public class NightLord extends Job {
     public NightLord() {
         // 기본
         super();
-        this.setDescription("나이트로드");
+        this.setName("나이트로드");
         this.setConstant(1.75);         // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

@@ -11,7 +11,7 @@ public class BattleMage extends Job {
     public BattleMage() {
         // 기본
         super();
-        this.setDescription("배틀메이지");
+        this.setName("배틀메이지");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

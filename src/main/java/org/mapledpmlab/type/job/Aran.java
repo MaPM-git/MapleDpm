@@ -11,7 +11,7 @@ public class Aran extends Job {
     public Aran() {
         // 기본
         super();
-        this.setDescription("아란");
+        this.setName("아란");
         this.setConstant(1.49);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

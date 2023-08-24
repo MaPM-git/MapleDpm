@@ -5,7 +5,7 @@ public class ZeroBeta extends Zero {
     public ZeroBeta() {
         // 기본
         super();
-        this.setDescription("제로 - 베타");
+        this.setName("제로 - 베타");
         this.setConstant(1.49);         // 무기상수(베타)
         this.setMastery(1.90 / 2);      // 숙련도
 

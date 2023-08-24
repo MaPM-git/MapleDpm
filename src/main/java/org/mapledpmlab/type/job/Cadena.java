@@ -12,7 +12,7 @@ public class Cadena extends Job {
     public Cadena() {
         // 기본
         super();
-        this.setDescription("카데나");
+        this.setName("카데나");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

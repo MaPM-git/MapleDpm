@@ -12,7 +12,7 @@ public class Captain extends Job {
     public Captain() {
         // 기본
         super();
-        this.setDescription("캡틴");
+        this.setName("캡틴");
         this.setConstant(1.5);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

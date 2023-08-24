@@ -11,7 +11,7 @@ public class ArchMageFP extends Job {
     public ArchMageFP() {
         // 기본
         super();
-        this.setDescription("아크메이지 불, 독");
+        this.setName("아크메이지 불, 독");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

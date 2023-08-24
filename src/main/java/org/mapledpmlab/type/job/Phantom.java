@@ -13,7 +13,7 @@ public class Phantom extends Job {
     public Phantom() {
         // 기본
         super();
-        this.setDescription("팬텀");
+        this.setName("팬텀");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

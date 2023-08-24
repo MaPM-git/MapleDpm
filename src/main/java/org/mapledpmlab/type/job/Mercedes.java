@@ -11,7 +11,7 @@ public class Mercedes extends Job {
     public Mercedes() {
         // 기본
         super();
-        this.setDescription("메르세데스");
+        this.setName("메르세데스");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION1);

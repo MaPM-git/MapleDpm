@@ -12,7 +12,7 @@ public class Xenon extends Job {
     public Xenon() {
         // 기본
         super();
-        this.setDescription("제논");
+        this.setName("제논");
         this.setConstant(1.5);          // 무기상수
         this.setMainStat(               // 기본 스탯(275 기준)
                 this.getLevel() * 5 + 18 - 326 - 326

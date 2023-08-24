@@ -5,7 +5,7 @@ public class ZeroAlpha extends Zero {
     public ZeroAlpha() {
         // 기본
         super();
-        this.setDescription("제로 - 알파");
+        this.setName("제로 - 알파");
         this.setConstant(1.34);         // 무기상수(알파)
         this.setMastery(1.90 / 2);      // 숙련도
 

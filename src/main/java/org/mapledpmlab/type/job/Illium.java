@@ -12,7 +12,7 @@ public class Illium extends Job {
     public Illium() {
         // 기본
         super();
-        this.setDescription("일리움");
+        this.setName("일리움");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.90 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

@@ -12,7 +12,7 @@ public class Kain extends Job {
     public Kain() {
         // 기본
         super();
-        this.setDescription("카인");
+        this.setName("카인");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

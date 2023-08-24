@@ -11,7 +11,7 @@ public class Eunwol extends Job {
     public Eunwol() {
         // 기본
         super();
-        this.setDescription("은월");
+        this.setName("은월");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);

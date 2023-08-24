@@ -12,7 +12,7 @@ public class Adele extends Job {
     public Adele() {
         // 기본
         super();
-        this.setDescription("아델");
+        this.setName("아델");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

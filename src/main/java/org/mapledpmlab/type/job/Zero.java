@@ -12,7 +12,7 @@ public class Zero extends Job {
     public Zero() {
         // 기본
         super();
-        this.setDescription("제로");
+        this.setName("제로");
         this.setMastery(1.90 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
         this.addMainStat(               // 메이플 용사

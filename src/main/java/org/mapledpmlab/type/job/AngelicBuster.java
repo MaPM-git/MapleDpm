@@ -12,7 +12,7 @@ public class AngelicBuster extends Job {
     public AngelicBuster() {
         // 기본
         super();
-        this.setDescription("엔젤릭버스터");
+        this.setName("엔젤릭버스터");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);

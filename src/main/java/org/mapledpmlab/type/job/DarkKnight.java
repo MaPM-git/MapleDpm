@@ -11,7 +11,7 @@ public class DarkKnight extends Job {
     public DarkKnight() {
         // 기본
         super();
-        this.setDescription("다크나이트");
+        this.setName("다크나이트");
         this.setConstant(1.49);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

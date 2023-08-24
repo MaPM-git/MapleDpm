@@ -11,7 +11,7 @@ public class Blaster extends Job {
     public Blaster() {
         // 기본
         super();
-        this.setDescription("블래스터");
+        this.setName("블래스터");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

@@ -12,7 +12,7 @@ public class Kinesis extends Job {
     public Kinesis() {
         // 기본
         super();
-        this.setDescription("키네시스");
+        this.setName("키네시스");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.92 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

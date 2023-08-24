@@ -12,7 +12,7 @@ public class Mihile extends Job {
     public Mihile() {
         // 기본
         super();
-        this.setDescription("미하일");
+        this.setName("미하일");
         this.setConstant(1.24);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);

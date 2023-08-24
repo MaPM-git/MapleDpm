@@ -12,7 +12,7 @@ public class FlameWizard extends Job {
     public FlameWizard() {
         // 기본
         super();
-        this.setDescription("플레임위자드");
+        this.setName("플레임위자드");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

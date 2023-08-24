@@ -12,7 +12,7 @@ public class SoulMaster extends Job {
     public SoulMaster() {
         // 기본
         super();
-        this.setDescription("소울마스터");
+        this.setName("소울마스터");
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

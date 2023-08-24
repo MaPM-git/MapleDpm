@@ -12,7 +12,7 @@ public class Ark extends Job {
     public Ark() {
         // 기본
         super();
-        this.setDescription("아크");
+        this.setName("아크");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);

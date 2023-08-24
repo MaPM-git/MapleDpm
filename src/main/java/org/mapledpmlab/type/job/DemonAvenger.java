@@ -14,7 +14,7 @@ public class DemonAvenger extends Job {
     public DemonAvenger() {
         // 기본
         super();
-        this.setDescription("데몬어벤져");
+        this.setName("데몬어벤져");
         this.setConstant(1.3);          // 무기상수
         this.setMainStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
         // this.addHp(this.getAp());       // 기본 스탯(275 기준)

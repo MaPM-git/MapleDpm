@@ -11,7 +11,7 @@ public class Paladin extends Job {
     public Paladin() {
         // 기본
         super();
-        this.setDescription("팔라딘");
+        this.setName("팔라딘");
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

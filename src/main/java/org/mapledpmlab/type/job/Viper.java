@@ -12,7 +12,7 @@ public class Viper extends Job {
     public Viper() {
         // 기본
         super();
-        this.setDescription("바이퍼");
+        this.setName("바이퍼");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

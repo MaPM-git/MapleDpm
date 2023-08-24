@@ -12,7 +12,7 @@ public class HoYoung extends Job {
     public HoYoung() {
         // 기본
         super();
-        this.setDescription("호영");
+        this.setName("호영");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

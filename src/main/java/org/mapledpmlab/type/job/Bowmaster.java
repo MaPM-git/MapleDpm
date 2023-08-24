@@ -12,7 +12,7 @@ public class Bowmaster extends Job {
     public Bowmaster() {
         // 기본
         super();
-        this.setDescription("보우마스터");
+        this.setName("보우마스터");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

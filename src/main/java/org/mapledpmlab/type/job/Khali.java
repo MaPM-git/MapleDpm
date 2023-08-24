@@ -12,7 +12,7 @@ public class Khali extends Job {
     public Khali() {
         // 기본
         super();
-        this.setDescription("칼리");
+        this.setName("칼리");
         this.setConstant(1.30);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

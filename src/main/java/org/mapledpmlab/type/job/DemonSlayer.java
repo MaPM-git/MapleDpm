@@ -12,7 +12,7 @@ public class DemonSlayer extends Job {
     public DemonSlayer() {
         // 기본
         super();
-        this.setDescription("데몬슬레이어");
+        this.setName("데몬슬레이어");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

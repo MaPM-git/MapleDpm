@@ -12,7 +12,7 @@ public class Mechanic extends Job {
     public Mechanic() {
         // 기본
         super();
-        this.setDescription("메카닉");
+        this.setName("메카닉");
         this.setConstant(1.5);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

@@ -12,7 +12,7 @@ public class DualBlade extends Job {
     public DualBlade() {
         // 기본
         super();
-        this.setDescription("듀얼블레이드");
+        this.setName("듀얼블레이드");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

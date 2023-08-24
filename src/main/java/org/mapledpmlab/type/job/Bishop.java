@@ -12,7 +12,7 @@ public class Bishop extends Job {
     public Bishop() {
         // 기본
         super();
-        this.setDescription("비숍");
+        this.setName("비숍");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.95 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

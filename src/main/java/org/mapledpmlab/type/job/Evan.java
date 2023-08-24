@@ -12,7 +12,7 @@ public class Evan extends Job {
     public Evan() {
         // 기본
         super();
-        this.setDescription("에반");
+        this.setName("에반");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

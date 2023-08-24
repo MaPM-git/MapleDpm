@@ -12,7 +12,7 @@ public class ArchMageIL extends Job {
     public ArchMageIL() {
         // 기본
         super();
-        this.setDescription("아크메이지 썬, 콜");
+        this.setName("아크메이지 썬, 콜");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

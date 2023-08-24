@@ -12,7 +12,7 @@ public class NightWalker extends Job {
     public NightWalker() {
         // 기본
         super();
-        this.setDescription("나이트워커");
+        this.setName("나이트워커");
         this.setConstant(1.75);         // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

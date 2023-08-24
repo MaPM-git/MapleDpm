@@ -12,7 +12,7 @@ public class Luminous extends Job {
     public Luminous() {
         // 기본
         super();
-        this.setDescription("루미너스");
+        this.setName("루미너스");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

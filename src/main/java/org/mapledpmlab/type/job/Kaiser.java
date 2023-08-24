@@ -11,7 +11,7 @@ public class Kaiser extends Job {
     public Kaiser() {
         // 기본
         super();
-        this.setDescription("카이저");
+        this.setName("카이저");
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
