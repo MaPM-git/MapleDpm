@@ -124,7 +124,6 @@ public class PaladinDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(180.0);
 
-        dealCycle1.add(auraWeaponBuff);
         dealCycle1.add(nobleDemand);
         dealCycle1.add(epicAdventure);
         dealCycle1.add(mapleWorldGoddessBlessing);
@@ -139,7 +138,6 @@ public class PaladinDealCycle extends DealCycle {
         dealCycle1.add(sacredBastionImpact1);
         dealCycle1.add(sacredBastionImpact2);
 
-        dealCycle2.add(auraWeaponBuff);
         dealCycle2.add(nobleDemand);
         dealCycle2.add(epicAdventure);
         dealCycle2.add(mapleWorldGoddessBlessing);
@@ -149,7 +147,6 @@ public class PaladinDealCycle extends DealCycle {
         dealCycle2.add(restraintRing);
         dealCycle2.add(grandCross1);
 
-        dealCycle3.add(auraWeaponBuff);
         dealCycle3.add(nobleDemand);
         dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(holyUnity);
@@ -161,6 +158,13 @@ public class PaladinDealCycle extends DealCycle {
         shortDealCycle.add(sanctuary);
 
         while (getStart().before(getEnd())) {
+            if (
+                    getStart().after(auraWeaponBuff.getEndTime())
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
+            ) {
+                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
+                addSkillEvent(auraWeaponBuff);
+            }
             if (divineBrandCount >= 5) {
                 getSkillEventList().add(
                         new SkillEvent(divineJudgement,

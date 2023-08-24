@@ -131,7 +131,6 @@ public class HeroDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(120.0);
 
-        dealCycle1.add(auraWeaponBuff);
         dealCycle1.add(swordOfBurningSoulBuff);
         dealCycle1.add(incisingAttack);
         dealCycle1.add(epicAdventure);
@@ -151,7 +150,6 @@ public class HeroDealCycle extends DealCycle {
             q -=  ragingBlow.getDelay();
         }
 
-        dealCycle2.add(auraWeaponBuff);
         dealCycle2.add(swordOfBurningSoulBuff);
         dealCycle2.add(incisingAttack);
         dealCycle2.add(epicAdventure);
@@ -169,7 +167,6 @@ public class HeroDealCycle extends DealCycle {
             q -=  ragingBlow.getDelay();
         }
 
-        dealCycle3.add(auraWeaponBuff);
         dealCycle3.add(swordOfBurningSoulBuff);
         dealCycle3.add(incisingAttack);
         dealCycle3.add(epicAdventure);
@@ -188,7 +185,6 @@ public class HeroDealCycle extends DealCycle {
             q -=  ragingBlow.getDelay();
         }
 
-        dealCycle4.add(auraWeaponBuff);
         dealCycle4.add(swordOfBurningSoulBuff);
         dealCycle4.add(incisingAttack);
         dealCycle4.add(epicAdventure);
@@ -205,7 +201,6 @@ public class HeroDealCycle extends DealCycle {
             q -=  ragingBlow.getDelay();
         }
 
-        dealCycle5.add(auraWeaponBuff);
         dealCycle5.add(swordOfBurningSoulBuff);
         dealCycle5.add(incisingAttack);
         dealCycle5.add(epicAdventure);
@@ -228,6 +223,13 @@ public class HeroDealCycle extends DealCycle {
 
         int i = 0;
         while (getStart().before(getEnd())) {
+            if (
+                    getStart().after(auraWeaponBuff.getEndTime())
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
+            ) {
+                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
+                addSkillEvent(auraWeaponBuff);
+            }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))

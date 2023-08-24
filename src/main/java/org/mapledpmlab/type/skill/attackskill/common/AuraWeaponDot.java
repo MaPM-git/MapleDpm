@@ -7,6 +7,7 @@ public class AuraWeaponDot extends AttackSkill {
         this.setName("오라 웨폰(파동)");
         this.setAttackCount(6L);
         this.setDamage(1100.0);
+        this.setDotDuration(140000L);
         this.setInterval(5000L);
     }
 }

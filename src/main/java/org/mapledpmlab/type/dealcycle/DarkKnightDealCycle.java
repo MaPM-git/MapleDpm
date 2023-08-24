@@ -134,7 +134,6 @@ public class DarkKnightDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(180.0);
 
-        dealCycle1.add(auraWeaponBuff);
         dealCycle1.add(epicAdventure);
         dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(crestOfTheSolar);
@@ -149,7 +148,6 @@ public class DarkKnightDealCycle extends DealCycle {
         dealCycle1.add(piercingCyclone);    // 여기까지 13.77초 - 극딜 26.23초 전에 다크니스 오라 사용
         dealCycle1.add(darknessAuraFinish);
 
-        dealCycle2.add(auraWeaponBuff);
         dealCycle2.add(epicAdventure);
         dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(darkThirst);
@@ -161,7 +159,6 @@ public class DarkKnightDealCycle extends DealCycle {
         dealCycle2.add(piercingCyclone);    // 여기까지 9.12초 - 극딜 30.88초 전에 다크니스 오라 사용
         dealCycle2.add(darknessAuraFinish);
 
-        dealCycle3.add(auraWeaponBuff);
         dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(darkThirst);
         dealCycle3.add(soulContract);
@@ -174,6 +171,13 @@ public class DarkKnightDealCycle extends DealCycle {
         Timestamp darkSpearActivateTime = new Timestamp(0);
 
         while (getStart().before(getEnd())) {
+            if (
+                    getStart().after(auraWeaponBuff.getEndTime())
+                    && getStart().before(new Timestamp(10 * 60 * 1000))
+            ) {
+                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
+                addSkillEvent(auraWeaponBuff);
+            }
             if (
                     getStart().after(darknessAuraUseTime)
                     && getStart().after(darknessAuraDot.getActivateTime())
