@@ -49,9 +49,7 @@ public class ViperDealCycle extends DealCycle {
             add(new LiberateNeptunusEnrage4());
             add(new LiberateNeptunusEnrage5());
             add(new LiberateNeptunusFuryOfTheSea());
-            add(new SeaSerpentBurst());
             add(new SeaSerpentEnrage());
-            add(new SerpentAssault());
             add(new SerpentAssaultEnrage());
             add(new SerpentScrew());
             add(new SpiderInMirror());

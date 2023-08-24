@@ -46,7 +46,6 @@ public class NightLordDealCycle extends DealCycle {
             add(new DarkFlare());
             add(new DarkLordsSecretScroll());
             add(new FatalVenom());
-            add(new FourSeasons());
             add(new FumaShuriken());
             add(new LifeOrDeathJavelin());
             add(new LifeOrDeathSlash());
@@ -57,7 +56,6 @@ public class NightLordDealCycle extends DealCycle {
             add(new QuadrupleThrowSpread());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
-            add(new SuddenRaid());
             add(new ThrowBlastingActive());
             add(new ThrowBlastingPassive());
         }

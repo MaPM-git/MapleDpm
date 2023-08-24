@@ -47,9 +47,7 @@ public class PaladinDealCycle extends DealCycle {
             add(new BlessedHammerDot());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
-            add(new DivineCharge());
             add(new DivineJudgement());
-            add(new DivineStigma());
             add(new FinalAttackPaladin());
             add(new GrandCross1());
             add(new GrandCross2());
@@ -59,10 +57,8 @@ public class PaladinDealCycle extends DealCycle {
             add(new SacredBastionImpact1());
             add(new SacredBastionImpact2());
             add(new Sanctuary());
-            add(new Smite());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
-            add(new DivineStigmaExplosion());
         }
     };
 

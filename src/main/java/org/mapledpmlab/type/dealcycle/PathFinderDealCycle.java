@@ -60,7 +60,6 @@ public class PathFinderDealCycle extends DealCycle {
             add(new AncientWrath());
             add(new CardinalBlast());
             add(new CardinalDischarge());
-            add(new CardinalTransition());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new CurseArrow());
@@ -76,7 +75,6 @@ public class PathFinderDealCycle extends DealCycle {
             add(new RelicUnbound());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
-            add(new TripleImpact());
             add(new UltimateBlast());
         }
     };

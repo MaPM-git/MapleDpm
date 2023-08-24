@@ -105,9 +105,7 @@ public class ArchMageFPDealCycle extends DealCycle {
             add(new FlameSweepDot());
             add(new FlameSweepExplosion());
             add(new FuryOfIfrit());
-            add(new FuryOfIfritDelay());
             add(new FuryOfIfritOrigin());
-            add(new FuryOfIfritOriginDelay());
             add(new IfritDot());
             add(new IfritSummon());
             add(new Ignite());
@@ -115,7 +113,6 @@ public class ArchMageFPDealCycle extends DealCycle {
             add(new InfernalVenomExplosion2());
             add(new MegidoFlame());
             add(new MegidoFlameDot());
-            add(new Meteor());
             add(new MistEruption());
             add(new PoisonMist());
             add(new PoisonChain());
@@ -124,7 +121,6 @@ public class ArchMageFPDealCycle extends DealCycle {
             add(new PoisonNovaDot());
             add(new PoisonNovaExplosion());
             add(new PoisonNovaExplosionAfterThird());
-            add(new PoisonZoneDelay());
             add(new PoisonZoneDot());
             add(new PoisonZoneExplosion());
             add(new TeleportMastery());

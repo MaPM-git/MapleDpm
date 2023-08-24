@@ -133,10 +133,6 @@ public class DPMMain {
             }
         }
 
-        for (int i = 0; i < 5; i++) {
-            xssfSheet.autoSizeColumn(i);
-        }
-
         try {
             FileOutputStream out = new FileOutputStream(new File(filePath, fileNm));
             xssfWorkbook.write(out);
