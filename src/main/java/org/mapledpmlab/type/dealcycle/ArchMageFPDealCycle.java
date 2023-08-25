@@ -90,6 +90,8 @@ public class ArchMageFPDealCycle extends DealCycle {
 
     private List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
+            add(new CrestOfTheSolar());
+            add(new CrestOfTheSolarDot());
             add(new DotPunisherAfterSecond());
             add(new DotPunisherDot());
             add(new DotPunisherFirst());
@@ -123,6 +125,8 @@ public class ArchMageFPDealCycle extends DealCycle {
             add(new PoisonNovaExplosionAfterThird());
             add(new PoisonZoneDot());
             add(new PoisonZoneExplosion());
+            add(new SpiderInMirror());
+            add(new SpiderInMirrorDot());
             add(new TeleportMastery());
             add(new TeleportMasteryDot());
         }

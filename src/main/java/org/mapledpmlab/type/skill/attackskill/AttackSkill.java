@@ -71,6 +71,13 @@ public class AttackSkill extends Skill {
         System.out.println("점유율 : " + share + "\n");
     }
 
+    public Object[] getOpject() {
+        Object[] result = new Object[]{
+                this.getName(), this.getUseCount(), this.getCumulativeDamage() + "", this.getShare(), this.getInfo()
+        };
+        return result;
+    }
+
     public Double getIgnoreDefense() {
         Double ignoreDefense = 1.0;
         for (Long i : this.ignoreDefenseList) {
@@ -89,12 +96,5 @@ public class AttackSkill extends Skill {
 
     public void addCriticalP(Double criticalP) {
         this.criticalP += criticalP;
-    }
-
-    public Object[] getOpject() {
-        Object[] result = new Object[]{
-                this.getName(), this.getUseCount(), this.getCumulativeDamage().toString() + ".", this.getShare(), this.getInfo()
-        };
-        return result;
     }
 }

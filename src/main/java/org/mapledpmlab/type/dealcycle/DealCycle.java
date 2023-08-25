@@ -163,7 +163,7 @@ public class DealCycle {
 
     public void applyDoping() {
         this.job.Doping();
-        totalDamage = getTotalDamage(eventTimeList);
+        totalDamage = calcTotalDamage(eventTimeList);
         /*Long verifyDamage = 0L;
         for (AttackSkill as : attackSkillList) {
             if (as.getCumulativeDamage() == 0) {
@@ -171,15 +171,25 @@ public class DealCycle {
             }
             as.print();
             verifyDamage += as.getCumulativeDamage();
-        }
-        DPM = getTotalDamage(eventTimeList) / 12;
-        restraintRingDeal = getRestraintRingDeal();
-        fortyDeal = getFortyDeal();
-        System.out.println("검증용 : " + verifyDamage);
+        }*/
+        /*System.out.println("검증용 : " + verifyDamage);
         System.out.println("총데미지 : " + totalDamage);
         System.out.println("DPM : " + DPM);
         System.out.println("리스트레인트링 : " + restraintRingDeal);
         System.out.println("40초 : " + fortyDeal);*/
+    }
+
+    public Object[] getOpject() {
+        DPM = getTotalDamage() / 12;
+        restraintRingDeal = calcRestraintRingDeal();
+        fortyDeal = calcFortyDeal();
+        Object[] result = new Object[]{
+                this.getJob().getName(), this.getDPM() + "",
+                "=" + getDPM() + "/B11*100", this.getRestraintRingDeal() + "",
+                "=" + getRestraintRingDeal() + "/D11*100", this.getFortyDeal() + "",
+                "=" + getFortyDeal() + "/F11*100"
+        };
+        return result;
     }
 
     public List<SkillEvent> getOverlappingSkillEvents(Timestamp start, Timestamp end) {
@@ -195,7 +205,7 @@ public class DealCycle {
         return overlappingSkillEvents;
     }
 
-    public Long getTotalDamage(List<Timestamp> eventTimeList) {
+    public Long calcTotalDamage(List<Timestamp> eventTimeList) {
         Long totalDamage = 0L;
         Timestamp start = null;
         Timestamp end = null;
@@ -281,7 +291,7 @@ public class DealCycle {
         return attackDamage;
     }
 
-    public Long getRestraintRingDeal() {
+    public Long calcRestraintRingDeal() {
         for (AttackSkill as : attackSkillList) {
             as.setShare(0.0);
             as.setUseCount(0L);
@@ -296,10 +306,10 @@ public class DealCycle {
                 tmp.add(ts);
             }
         }
-        return getTotalDamage(tmp);
+        return calcTotalDamage(tmp);
     }
 
-    public Long getFortyDeal() {
+    public Long calcFortyDeal() {
         for (AttackSkill as : attackSkillList) {
             as.setShare(0.0);
             as.setUseCount(0L);
@@ -314,7 +324,7 @@ public class DealCycle {
                 tmp.add(ts);
             }
         }
-        return getTotalDamage(tmp);
+        return calcTotalDamage(tmp);
     }
 
     public void sortEventTimeList() {

@@ -271,7 +271,7 @@ public class BowmasterDealCycle extends DealCycle {
         sortEventTimeList();
     }
 
-    public Long getTotalDamage(List<Timestamp> eventTimeList) {
+    public Long calcTotalDamage(List<Timestamp> eventTimeList) {
         Long totalDamage = 0L;
         Timestamp start = null;
         Timestamp end = null;

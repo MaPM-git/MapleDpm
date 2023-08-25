@@ -133,6 +133,43 @@ public class DPMMain {
             }
         }
 
+        xssfSheet = xssfWorkbook.createSheet("DPM");
+        xssfSheet.setDefaultColumnWidth(20);
+
+        data = new TreeMap<>();
+        data.put("1", new Object[]{
+                "직업이름", "DPM", "DPM 배율", "리레딜", "리레딜 배율", "40초 딜", "40초딜 배율"
+        });
+        for (int i = 0; i < dealCycleList.size(); i++) {
+            data.put(String.valueOf(i + 2), dealCycleList.get(i).getOpject());
+        }
+
+        keyset = data.keySet();
+        rownum = 0;
+
+        for (String key : keyset) {
+            Row row = xssfSheet.createRow(rownum++);
+            Object[] objArr = data.get(key);
+            int cellnum = 0;
+            for (Object o : objArr) {
+                Cell cell = row.createCell(cellnum++);
+                cell.setCellStyle(cellStyle);
+                if (o instanceof String) {
+                    if (((String) o).charAt(0) == '=') {
+                        String formula = (String) o;
+                        formula = formula.substring(1);
+                        cell.setCellFormula(formula);
+                    } else {
+                        cell.setCellValue((String) o);
+                    }
+                } else if (o instanceof Long) {
+                    cell.setCellValue((Long) o);
+                } else if (o instanceof Double) {
+                    cell.setCellValue((Double) o);
+                }
+            }
+        }
+
         try {
             FileOutputStream out = new FileOutputStream(new File(filePath, fileNm));
             xssfWorkbook.write(out);
