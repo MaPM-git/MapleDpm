@@ -53,6 +53,10 @@ public class BuffSkill extends Skill {
         str = str + "딜레이 : " + getDelay();
         colNum ++;
         if (getCooldown() != 0) {
+            str = str + "\n지속시간 : " + getDuration();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
             str = str + "\n쿨타임 : " + getCooldown();
             colNum ++;
         }
@@ -118,6 +122,10 @@ public class BuffSkill extends Skill {
         }
         if (isApplyReuse()) {
             str = str + "\n재사용적용";
+            colNum ++;
+        }
+        if (isApplyPlusBuffDuration()) {
+            str = str + "\n버프지속시간증가적용";
             colNum ++;
         }
         return str;
