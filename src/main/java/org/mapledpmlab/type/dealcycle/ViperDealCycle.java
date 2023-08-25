@@ -92,6 +92,8 @@ public class ViperDealCycle extends DealCycle {
         super(job, new FinalAttackViper());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         EnergyOrb energyOrb = new EnergyOrb();

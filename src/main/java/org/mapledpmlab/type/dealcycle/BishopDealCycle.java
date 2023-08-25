@@ -127,6 +127,8 @@ public class BishopDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         AngelicOfJudgement angelicOfJudgement = new AngelicOfJudgement();
         AngelOfLibra angelOfLibra = new AngelOfLibra();

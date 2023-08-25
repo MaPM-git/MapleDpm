@@ -142,6 +142,8 @@ public class ArchMageILDealCycle extends DealCycle {
         super(job, new FinalAttackArchMageIL());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         ChainLightning chainLightning = new ChainLightning();
         ChainLightningElectric chainLightningElectric = new ChainLightningElectric();

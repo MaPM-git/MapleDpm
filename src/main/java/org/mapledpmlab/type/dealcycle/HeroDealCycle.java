@@ -99,6 +99,8 @@ public class HeroDealCycle extends DealCycle {
         super(job, new AdvancedFinalAttackHero());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         Long q = 0L;
 

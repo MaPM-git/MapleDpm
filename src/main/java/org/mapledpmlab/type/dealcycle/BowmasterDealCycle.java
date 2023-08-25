@@ -106,6 +106,8 @@ public class BowmasterDealCycle extends DealCycle {
         super(job, new AdvancedFinalAttackBowmaster());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         AfterimageShotActive afterimageShotActive = new AfterimageShotActive();
         AfterimageShotPassive afterimageShotPassive = new AfterimageShotPassive();

@@ -97,6 +97,8 @@ public class CannonShooterDealCycle extends DealCycle {
         super(job, new FinalAttackCannonShooter());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         BarrelRoulette barrelRoulette = new BarrelRoulette();
         BigFuseGiganticCannonball bigFuseGiganticCannonball = new BigFuseGiganticCannonball();

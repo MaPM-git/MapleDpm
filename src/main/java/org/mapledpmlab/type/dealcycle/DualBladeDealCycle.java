@@ -88,6 +88,8 @@ public class DualBladeDealCycle extends DealCycle {
         super(job, new HiddenBlade());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         Long q = 0L;
 

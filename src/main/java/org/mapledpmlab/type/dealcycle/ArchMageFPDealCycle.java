@@ -161,6 +161,8 @@ public class ArchMageFPDealCycle extends DealCycle {
         super(job, new FinalAttackArchMageFP());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         CrestOfTheSolarDot crestOfTheSolarDot = new CrestOfTheSolarDot();

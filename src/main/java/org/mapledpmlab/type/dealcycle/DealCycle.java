@@ -24,6 +24,8 @@ public class DealCycle {
     private Timestamp start = new Timestamp(0);
     private Timestamp end = new Timestamp(12 * 60 * 1000);
     private List<AttackSkill> attackSkillList;
+    private List<AttackSkill> delaySkillList;
+    private List<BuffSkill> buffSkillList;
     private List<SkillEvent> skillEventList = new ArrayList<>();
     private List<Timestamp> eventTimeList = new ArrayList<>();
     Timestamp restraintRingStartTime = null;

@@ -89,6 +89,8 @@ public class CaptainDealCycle extends DealCycle {
         super(job, new FinalAttackCaptain());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         AssembleCrewDelay assembleCrewDelay = new AssembleCrewDelay();
         BattleShipBomber battleShipBomber = new BattleShipBomber();

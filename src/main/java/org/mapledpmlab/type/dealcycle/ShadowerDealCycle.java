@@ -91,6 +91,8 @@ public class ShadowerDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         Long q = 0L;
 

@@ -91,6 +91,8 @@ public class NightLordDealCycle extends DealCycle {
         super(job, new MarkOfNightLord());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         BleedingToxinDot bleedingToxinDot = new BleedingToxinDot();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();

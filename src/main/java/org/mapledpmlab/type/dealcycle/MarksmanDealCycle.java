@@ -95,6 +95,8 @@ public class MarksmanDealCycle extends DealCycle {
         super(job, new FinalAttackMarksman());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         BullsEye bullsEye = new BullsEye();
         ChargedArrow chargedArrow = new ChargedArrow();

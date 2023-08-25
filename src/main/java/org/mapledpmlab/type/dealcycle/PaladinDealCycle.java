@@ -89,6 +89,8 @@ public class PaladinDealCycle extends DealCycle {
         super(job, new FinalAttackPaladin());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         Long q = 0L;
         Double divineBrandCount = 0.0; // 신성 낙인 개수

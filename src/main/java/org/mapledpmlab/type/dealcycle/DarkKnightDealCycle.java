@@ -94,6 +94,8 @@ public class DarkKnightDealCycle extends DealCycle {
         super(job, new FinalAttackDarkKnight());
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
         AuraWeaponDot auraWeaponDot = new AuraWeaponDot();

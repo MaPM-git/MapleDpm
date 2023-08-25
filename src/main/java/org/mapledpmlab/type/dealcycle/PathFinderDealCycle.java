@@ -111,6 +111,8 @@ public class PathFinderDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
+        this.setDelaySkillList(delaySkillList);
+        this.setBuffSkillList(buffSkillList);
 
         AncientWrath ancientWrath = new AncientWrath();
         CardinalBlast cardinalBlast = new CardinalBlast();
