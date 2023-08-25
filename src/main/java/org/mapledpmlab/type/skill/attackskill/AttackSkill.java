@@ -37,6 +37,10 @@ public class AttackSkill extends Skill {
             str = str + "\n딜레이 : " + getDelay();
             colNum ++;
         }
+        if (getCooldown() != 0) {
+            str = str + "\n쿨타임 : " + getCooldown();
+            colNum ++;
+        }
         if (getAttackCount() != 0) {
             str = str + "\n공격횟수 : " + getAttackCount();
             colNum ++;
@@ -57,7 +61,15 @@ public class AttackSkill extends Skill {
             str = str + "\n추가방어율무시 : " + getIgnoreDefense();
             colNum ++;
         }
-        if (isApplyFinalAttack) {
+        if (getCriticalP() != 0) {
+            str = str + "\n추가크리티컬확률 : " + getCriticalP();
+            colNum ++;
+        }
+        if (isApplyReuse()) {
+            str = str + "\n재사용적용";
+            colNum ++;
+        }
+        if (isApplyFinalAttack()) {
             str = str + "\n파이널어택적용";
             colNum ++;
         }
