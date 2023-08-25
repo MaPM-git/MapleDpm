@@ -125,7 +125,7 @@ public class BishopDealCycle extends DealCycle {
         TriumphFeather triumphFeather = new TriumphFeather();
         TriumphFeatherDelay triumphFeatherDelay = new TriumphFeatherDelay();
         UnstableMemorize unstableMemorize = new UnstableMemorize();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(406L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 파운틴 포 엔젤
         for (int i = 0; i < 720 * 1000; i += fountainForAngel.getInterval()) {

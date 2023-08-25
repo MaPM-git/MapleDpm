@@ -90,7 +90,7 @@ public class CaptainDealCycle extends DealCycle {
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         ThiefCunning thiefCunning = new ThiefCunning();
         UntiringNectar untiringNectar = new UntiringNectar();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(249L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
             getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i)));

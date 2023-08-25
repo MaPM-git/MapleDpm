@@ -87,7 +87,7 @@ public class DualBladeDealCycle extends DealCycle {
         SuddenRaid suddenRaid = new SuddenRaid();
         ThiefCunning thiefCunning = new ThiefCunning();
         UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(318L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
             getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i)));

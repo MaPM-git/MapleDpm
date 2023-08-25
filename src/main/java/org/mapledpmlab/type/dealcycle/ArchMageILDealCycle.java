@@ -157,7 +157,7 @@ public class ArchMageILDealCycle extends DealCycle {
         ThunderSpear thunderSpear = new ThunderSpear();
         ThunderSpearDelay thunderSpearDelay = new ThunderSpearDelay();
         UnstableMemorize unstableMemorize = new UnstableMemorize();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(406L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 인피니티 달구기
         getSkillEventList().add(new SkillEvent(new Infinity(70000L), getStart(), new Timestamp(61360)));

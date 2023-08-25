@@ -92,7 +92,7 @@ public class ShadowerDealCycle extends DealCycle {
         SuddenRaid suddenRaid = new SuddenRaid();
         ThiefCunning thiefCunning = new ThiefCunning();
         UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(318L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         VeilOfShadow veilOfShadow = new VeilOfShadow();
 
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {

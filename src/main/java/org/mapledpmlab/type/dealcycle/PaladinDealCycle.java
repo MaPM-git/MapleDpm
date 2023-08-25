@@ -101,7 +101,7 @@ public class PaladinDealCycle extends DealCycle {
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         ThiefCunning thiefCunning = new ThiefCunning();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(340L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         for (int i = 0; i < 720 * 1000; i += auraWeaponDot.getInterval()) {
             getSkillEventList().add(new SkillEvent(auraWeaponDot, new Timestamp(i), new Timestamp(i)));

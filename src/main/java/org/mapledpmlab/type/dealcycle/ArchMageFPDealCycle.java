@@ -132,6 +132,30 @@ public class ArchMageFPDealCycle extends DealCycle {
         }
     };
 
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new FuryOfIfritDelay());
+            add(new FuryOfIfritOriginDelay());
+            add(new MegidoFlameDelay());
+            add(new PoisonZoneDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new Ifrit());
+            add(new InfernalVenomBuff());
+            add(new Infinity(0L));
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new UnstableMemorize());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+        }
+    };
+
     public ArchMageFPDealCycle(Job job) {
         super(job, new FinalAttackArchMageFP());
 
@@ -192,7 +216,7 @@ public class ArchMageFPDealCycle extends DealCycle {
         TeleportMasteryDot teleportMasteryDot = new TeleportMasteryDot();
         ThiefCunning thiefCunning = new ThiefCunning();
         UnstableMemorize unstableMemorize = new UnstableMemorize();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(406L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 파이어 오라
         for (int i = 0; i < 720 * 1000; i += fireAura.getInterval()) {

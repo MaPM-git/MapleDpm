@@ -107,7 +107,7 @@ public class HeroDealCycle extends DealCycle {
         ThiefCunning thiefCunning = new ThiefCunning();
         ValhallaBuff valhallaBuff = new ValhallaBuff();
         ValhallaDot valhallaDot = new ValhallaDot();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(340L);
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         for (int i = 0; i < 720 * 1000; i += incisingDot.getInterval()) {
             getSkillEventList().add(new SkillEvent(incisingDot, new Timestamp(i), new Timestamp(i)));
