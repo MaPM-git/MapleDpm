@@ -28,6 +28,7 @@ public class BuffSkill extends Skill {
     private Double buffPlusFinalDamage;
     private Long buffSubStat;
     private boolean isApplyPlusBuffDuration = false;
+    private Long colNum = 0L;
 
     public BuffSkill() {
         this.buffAttMagic = 0L;
@@ -46,6 +47,80 @@ public class BuffSkill extends Skill {
         this.buffProperty = 0L;
         this.buffPlusFinalDamage = 0.0;
         this.buffSubStat = 0L;
+    }
+    public String getInfo() {
+        String str = "";
+        str = str + "딜레이 : " + getDelay();
+        colNum ++;
+        if (getCooldown() != 0) {
+            str = str + "\n쿨타임 : " + getCooldown();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n공격력/마력증가 : " + getBuffAttMagic();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n공격력/마력%증가 : " + getBuffAttMagicPer();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n올스탯증가 : " + getBuffAllStatP();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n크리티컬데미지증가 : " + getBuffCriticalDamage();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n크리티컬확률증가 : " + getBuffCriticalP();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n데미지증가 : " + getBuffDamage();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n최종데미지증가 : " + getBuffFinalDamage();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n방어율무시증가 : " + getBuffIgnoreDefense();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n주스탯증가 : " + getBuffMainStat();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n주스탯%증가 : " + getBuffMainStatP();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n제3스탯증가 : " + getBuffOtherStat1();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n제4스탯증가 : " + getBuffOtherStat2();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n속성무시증가 : " + getBuffProperty();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n최종데미지합산증가 : " + getBuffPlusFinalDamage();
+            colNum ++;
+        }
+        if (getCooldown() != 0) {
+            str = str + "\n부스탯증가 : " + getBuffSubStat();
+            colNum ++;
+        }
+        if (isApplyReuse()) {
+            str = str + "\n재사용적용";
+            colNum ++;
+        }
+        return str;
     }
 
     public Double getIgnoreDefense() {
