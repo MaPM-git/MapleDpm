@@ -225,7 +225,7 @@ public class HeroDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(auraWeaponBuff.getEndTime())
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
+                    && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
@@ -270,31 +270,21 @@ public class HeroDealCycle extends DealCycle {
                     cooldownCheck(ringSwitching)
                     && swordOfBurningSoulActivateTime.after(ringSwitchingActivateTime)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(9 * 60 * 1000)))
-            {
+                    && getStart().before(new Timestamp(9 * 60 * 1000))
+            ) {
                 addSkillEvent(ringSwitching);
                 ringSwitchingActivateTime.setTime(ringSwitching.getActivateTime().getTime());
             } else if (
                     cooldownCheck(shortDealCycle)
-                            && swordOfBurningSoulActivateTime.after(new Timestamp((long)
-                            (
-                                    swordIllusionActivateTime.getTime()
-                                    + applyCooldownReduction(swordIllusionBuff)
-                                    - incisingAttack.getDelay()
-                            ))))
-            {
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() + 30000))
+            ) {
                 addDealCycle(shortDealCycle);
                 swordIllusionActivateTime.setTime(shortDealCycle.get(1).getActivateTime().getTime());
                 rageUprisingActivateTime.setTime(shortDealCycle.get(3).getActivateTime().getTime());
             } else if (
-                    cooldownCheck(rageUprising) &&
-                    swordIllusionActivateTime.after(new Timestamp((long)
-                            (rageUprisingActivateTime.getTime()
-                                    + applyCooldownReduction(rageUprising)
-                                    - comboDeathFault.getDelay()
-                                    - swordIllusionSlash.getDelay()
-                            ))))
-            {
+                    cooldownCheck(rageUprising)
+                    && !cooldownCheck(swordIllusionBuff)
+            ) {
                 addSkillEvent(shortDealCycle.get(3));
                 rageUprisingActivateTime.setTime(shortDealCycle.get(3).getActivateTime().getTime());
             } else {
