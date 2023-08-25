@@ -5,6 +5,7 @@ import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.darkknight.*;
 import org.mapledpmlab.type.skill.attackskill.common.*;
+import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.darkknight.DarkThirst;
 import org.mapledpmlab.type.skill.buffskill.darkknight.DarknessAura;
 import org.mapledpmlab.type.skill.buffskill.common.*;
@@ -64,6 +65,28 @@ public class DarkKnightDealCycle extends DealCycle {
             add(new PiercingCycloneFinish());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
+        }
+    };
+
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new DarkSpearDelay());
+            add(new DeadSpaceDelay());
+            add(new PiercingCycloneDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new AuraWeaponBuff());
+            add(new DarknessAura());
+            add(new DarkThirst());
+            add(new EpicAdventure());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
         }
     };
 

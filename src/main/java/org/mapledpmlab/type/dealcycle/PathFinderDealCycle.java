@@ -79,15 +79,39 @@ public class PathFinderDealCycle extends DealCycle {
         }
     };
 
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new ForsakenRelicExplosionDelay());
+            add(new ForsakenRelicWaveDelay());
+            add(new ObsidianBarrierDelay());
+            add(new RavenDelay());
+            add(new RavenTempestDelay());
+            add(new RelicUnboundDelay());
+            add(new UltimateBlastDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new CriticalReinforce(0.0));
+            add(new EpicAdventure());
+            add(new EvolveBuff());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new RelicEvolution());
+            add(new RelicLiberation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+        }
+    };
+
     public PathFinderDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
 
-        //AdditionalBlastFirst additionalBlastFirst = new AdditionalBlastFirst();
-        //AdditionalBlastREFirst additionalBlastREFirst = new AdditionalBlastREFirst();
-        //AdditionalDischarge additionalDischarge = new AdditionalDischarge();
-        //AdditionalDischargeRE additionalDischargeRE = new AdditionalDischargeRE();
         AncientWrath ancientWrath = new AncientWrath();
         CardinalBlast cardinalBlast = new CardinalBlast();
         CardinalDischarge cardinalDischarge = new CardinalDischarge();

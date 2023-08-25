@@ -6,8 +6,10 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.bowmaster.*;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
+import org.mapledpmlab.type.skill.buffskill.bowmaster.ArrowRainBuff;
 import org.mapledpmlab.type.skill.buffskill.bowmaster.MortalBlow;
 import org.mapledpmlab.type.skill.buffskill.bowmaster.Preparation;
+import org.mapledpmlab.type.skill.buffskill.bowmaster.QuiverFullBurstBuff;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 
 import java.sql.Timestamp;
@@ -71,6 +73,32 @@ public class BowmasterDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new WarInTheShade());
             add(new WarInTheShadePerfusion());
+        }
+    };
+
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new AfterimageShotDelay());
+            add(new ArrawPlatterDelay());
+            add(new PhoenixDelay());
+            add(new WarInTheShadeDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new ArrowRainBuff());
+            add(new CriticalReinforce(0.0));
+            add(new EpicAdventure());
+            add(new EvolveBuff());
+            add(new MortalBlow());
+            add(new Preparation());
+            add(new PriorPreparation());
+            add(new QuiverFullBurstBuff());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 

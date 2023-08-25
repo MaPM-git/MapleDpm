@@ -65,6 +65,32 @@ public class MarksmanDealCycle extends DealCycle {
         }
     };
 
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new FinalAimDelay());
+            add(new RepeatingCrossbowCartridgeDelay());
+            add(new TrueSnipeDelay());
+            add(new UltimateSnipeDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new BullsEye());
+            add(new CriticalReinforce(0.0));
+            add(new EpicAdventure());
+            add(new EvolveBuff());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new RepeatingCrossbowCartridgeBuff());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new SplitArrowBuff());
+            add(new ThiefCunning());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+        }
+    };
+
     public MarksmanDealCycle(Job job) {
         super(job, new FinalAttackMarksman());
 

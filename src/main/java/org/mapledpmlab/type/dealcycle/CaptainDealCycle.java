@@ -55,6 +55,36 @@ public class CaptainDealCycle extends DealCycle {
         }
     };
 
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new AssembleCrewDelay());
+            add(new BattleShipBomberDelay());
+            add(new BulletPartyDelay());
+            add(new DeathTriggerDelay());
+            add(new DreadnoughtDelay());
+            add(new NautilusAssaultDelay());
+            add(new SiegeBomberDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new EpicAdventure());
+            add(new LuckyDice());
+            add(new LuckyDiceOneMoreChance());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new Overdrive(249L));
+            add(new OverdriveDebuff(249L));
+            add(new PirateFlag());
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new UntiringNectar());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+        }
+    };
+
     public CaptainDealCycle(Job job) {
         super(job, new FinalAttackCaptain());
 

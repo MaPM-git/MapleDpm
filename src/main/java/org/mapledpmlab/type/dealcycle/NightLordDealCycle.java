@@ -61,6 +61,32 @@ public class NightLordDealCycle extends DealCycle {
         }
     };
 
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new DarkFlareDelay());
+            add(new DarkLordsSecretScrollDelay());
+            add(new FumaShurikenDelay());
+            add(new LifeOrDeathDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new DarkSight());
+            add(new EpicAdventure());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new PurgeArea());
+            add(new ReadyToDie());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new SpreadThrow());
+            add(new ThiefCunning());
+            add(new ThrowBlasting());
+            add(new UltimateDarkSight());
+        }
+    };
+
     public NightLordDealCycle(Job job) {
         super(job, new MarkOfNightLord());
 

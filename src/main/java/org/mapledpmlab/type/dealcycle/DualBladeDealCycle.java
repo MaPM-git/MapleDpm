@@ -6,6 +6,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.dualblade.*;
 import org.mapledpmlab.type.skill.attackskill.shadower.*;
+import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.dualblade.FinalCutBuff;
 import org.mapledpmlab.type.skill.buffskill.dualblade.FlashbangBuff;
@@ -54,6 +55,32 @@ public class DualBladeDealCycle extends DealCycle {
             add(new PhantomBlow());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
+        }
+    };
+
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new AsuraDelay());
+            add(new BladeStormDelay());
+            add(new KarmaBladeDelay());
+            add(new KarmaFuryDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new DarkSight());
+            add(new EpicAdventure());
+            add(new FinalCutBuff());
+            add(new FlashbangBuff());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new ReadyToDie());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new UltimateDarkSight());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 

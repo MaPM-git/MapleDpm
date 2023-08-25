@@ -5,6 +5,7 @@ import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.paladin.*;
+import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.paladin.BlessedHammerBuff;
 import org.mapledpmlab.type.skill.buffskill.paladin.HolyUnity;
@@ -59,6 +60,28 @@ public class PaladinDealCycle extends DealCycle {
             add(new Sanctuary());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
+        }
+    };
+
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new GrandCrossDelay());
+            add(new SacredBastionDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new AuraWeaponBuff());
+            add(new BlessedHammerBuff());
+            add(new EpicAdventure());
+            add(new HolyUnity());
+            add(new NobleDemand());
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 

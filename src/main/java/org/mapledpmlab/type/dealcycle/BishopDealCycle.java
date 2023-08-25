@@ -90,6 +90,39 @@ public class BishopDealCycle extends DealCycle {
         }
     };
 
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new DivinePunishmentDelay());
+            add(new FountainForAngelDelay());
+            add(new HolyAdventDelay());
+            add(new PeacemakerDelay());
+            add(new TriumphFeatherDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new AngelOfLibra());
+            add(new AngelOfLibraCharity(0L));
+            add(new AngelOfLibraRevengeBuff());
+            add(new Bahamut());
+            add(new BahamutBuff());
+            add(new EpicAdventure());
+            add(new HolyAdventBuff());
+            add(new HolyBlood());
+            add(new Infinity(0L));
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PeacemakerBuff());
+            add(new Pray(0L));
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new UnstableMemorize());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+        }
+    };
+
     public BishopDealCycle(Job job) {
         super(job, null);
 

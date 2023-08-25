@@ -5,8 +5,10 @@ import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.shadower.*;
+import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.shadower.SmokeBomb;
+import org.mapledpmlab.type.skill.buffskill.shadower.VeilOfShadowBuff;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -55,6 +57,33 @@ public class ShadowerDealCycle extends DealCycle {
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new VeilOfShadow());
+        }
+    };
+
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new DarkFlareDelay());
+            add(new EviscerateDelay());
+            add(new SavageAssaultDelay());
+            add(new SlashShadowFormationDelay());
+            add(new SonicBlowDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new DarkSight());
+            add(new EpicAdventure());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new ReadyToDie());
+            add(new RestraintRing());
+            add(new SmokeBomb());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new UltimateDarkSight());
+            add(new VeilOfShadowBuff());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 

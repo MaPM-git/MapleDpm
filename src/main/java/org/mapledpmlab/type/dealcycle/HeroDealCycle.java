@@ -5,11 +5,9 @@ import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.hero.*;
+import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
-import org.mapledpmlab.type.skill.buffskill.hero.ComboInstinctsBuff;
-import org.mapledpmlab.type.skill.buffskill.hero.SwordIllusionBuff;
-import org.mapledpmlab.type.skill.buffskill.hero.SwordOfBurningSoulBuff;
-import org.mapledpmlab.type.skill.buffskill.hero.ValhallaBuff;
+import org.mapledpmlab.type.skill.buffskill.hero.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -69,6 +67,31 @@ public class HeroDealCycle extends DealCycle {
             add(new SwordIllusionSlash());
             add(new SwordOfBurningSoulDot());
             add(new ValhallaDot());
+        }
+    };
+
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new SpiritCaliberDelay());
+            add(new SwordIllusionDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new AuraWeaponBuff());
+            add(new ComboInstinctsBuff());
+            add(new EpicAdventure());
+            add(new IncisingBuff());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new SwordIllusionBuff());
+            add(new SwordOfBurningSoulBuff());
+            add(new ThiefCunning());
+            add(new ValhallaBuff());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 

@@ -143,6 +143,7 @@ public class ArchMageFPDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
+            add(new EpicAdventure());
             add(new Ifrit());
             add(new InfernalVenomBuff());
             add(new Infinity(0L));

@@ -64,6 +64,35 @@ public class CannonShooterDealCycle extends DealCycle {
         }
     };
 
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new BigFuseGiganticCannonballDelay());
+            add(new MagneticAnchorDelay());
+            add(new RollingCannonRainbowDelay());
+            add(new SuperCannonExplosionDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new BarrelRoulette());
+            add(new EpicAdventure());
+            add(new LuckyDice());
+            add(new LuckyDiceOneMoreChance());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new Overdrive(348L));
+            add(new OverdriveDebuff(348L));
+            add(new PirateFlag());
+            add(new PoolmakerBuff());
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new SpecialMonkeyEscort());
+            add(new ThiefCunning());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+        }
+    };
+
     public CannonShooterDealCycle(Job job) {
         super(job, new FinalAttackCannonShooter());
 

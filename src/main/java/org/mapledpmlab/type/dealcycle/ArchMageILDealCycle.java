@@ -110,6 +110,34 @@ public class ArchMageILDealCycle extends DealCycle {
         }
     };
 
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new FrozenLightningDelay());
+            add(new FrozenOrbDelay());
+            add(new JupiterThunderDelay());
+            add(new LightningSpearDelay());
+            add(new SpiritOfSnowDelay());
+            add(new ThunderBreakDelay());
+            add(new ThunderSpearDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new Elquines());
+            add(new EpicAdventure());
+            add(new FreezingBreathBuff());
+            add(new Infinity(0L));
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new ThiefCunning());
+            add(new UnstableMemorize());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+        }
+    };
+
     public ArchMageILDealCycle(Job job) {
         super(job, new FinalAttackArchMageIL());
 

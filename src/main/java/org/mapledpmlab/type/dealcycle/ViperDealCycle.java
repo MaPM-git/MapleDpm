@@ -5,6 +5,7 @@ import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.viper.*;
+import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.viper.LightningForm;
 import org.mapledpmlab.type.skill.buffskill.viper.Stimulate;
@@ -56,6 +57,34 @@ public class ViperDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new SuperFistEnrage());
             add(new SuperFistEnrageShockWave());
+        }
+    };
+
+    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+        {
+            add(new EnergyOrbDelay());
+            add(new HowlingFistDelay());
+            add(new LiberateNeptunusDelay());
+            add(new SerpentScrewDelay());
+        }
+    };
+
+    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+        {
+            add(new EpicAdventure());
+            add(new LightningForm());
+            add(new LuckyDice());
+            add(new LuckyDiceOneMoreChance());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new Overdrive(255L));
+            add(new OverdriveDebuff(255L));
+            add(new PirateFlag());
+            add(new PriorPreparation());
+            add(new RestraintRing());
+            add(new SoulContract());
+            add(new Stimulate());
+            add(new ThiefCunning());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 
