@@ -45,7 +45,6 @@ public class Bishop extends Job {
         this.addMagicP(21L);
 
         // 2차
-        this.addFinalDamage(1.01);      // 브레싱 앙상블
         this.addMainStat(20L);          // 매직 액셀레이션
         this.addMagic(10L);             // 스펠 마스터리
         this.addMainStat(40L);          // 하이 위즈덤
@@ -80,6 +79,7 @@ public class Bishop extends Job {
     @Override
     public void Doping() {
         super.Doping();
+        addFinalDamage(1.01);      // 브레싱 앙상블
         addFinalDamage(1.1);            // 엔젤레이 5중첩
         addDamage(40L);                 // 아케인 에임
         addFinalDamage(1.08);           // 오버로드 마나

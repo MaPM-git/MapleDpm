@@ -48,6 +48,7 @@ public class Marksman extends Job {
         // 2차
         this.addMainStat(20L);          // 크로스보우 액셀레이션
         this.addAtt(30L);               // 소울 애로우 : 석궁
+        this.addFinalDamage(1.2);       // 크로스보우 마스터리
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
 
