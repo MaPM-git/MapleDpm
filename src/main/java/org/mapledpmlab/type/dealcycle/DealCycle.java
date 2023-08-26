@@ -189,9 +189,9 @@ public class DealCycle {
         fortyDeal = calcFortyDeal();
         Object[] result = new Object[]{
                 this.getJob().getName(), this.getDPM() + "",
-                "=" + getDPM() + "/B11*100", this.getRestraintRingDeal() + "",
-                "=" + getRestraintRingDeal() + "/D11*100", this.getFortyDeal() + "",
-                "=" + getFortyDeal() + "/F11*100"
+                "=TEXT(" + getDPM() + "/SUM(IF(A2:A16=\"비숍\", VALUE(B2:B16),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
+                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A16=\"비숍\", VALUE(D2:D16),0)),\"0.0%\")", this.getFortyDeal() + "",
+                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A16=\"비숍\", VALUE(F2:F16),0)),\"0.0%\")"
         };
         return result;
     }

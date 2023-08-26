@@ -109,7 +109,7 @@ public class Job extends Common {
         this.addBossDamage(20L);        // 반빨별 or 고보킬
         this.addCriticalDamage(5.0);    // 고급 무기 제련(장비 명장)
         this.addAtt(30L);               // 익스트림 레드
-        this.addMagic(30L);             // 익스트림 그린
+        this.addMagic(30L);             // 익스트림 블루
         this.addAtt(30L);               // 길드의 더 큰 축복
         this.addMagic(30L);
         this.addAtt(30L);               // 마슈르의 선물 기상효과
