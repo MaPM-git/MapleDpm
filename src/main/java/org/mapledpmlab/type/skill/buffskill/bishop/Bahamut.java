@@ -8,6 +8,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 @Setter
 public class Bahamut extends BuffSkill {
     public Bahamut() {
+        this.setName("바하뮤트");
         this.setDuration(265L);
         this.setDelay(600L);
         this.setCooldown(260.0);

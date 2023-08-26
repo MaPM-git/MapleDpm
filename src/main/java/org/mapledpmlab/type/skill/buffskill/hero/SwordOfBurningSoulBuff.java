@@ -9,6 +9,7 @@ import org.mapledpmlab.type.skill.attackskill.hero.SwordOfBurningSoulDot;
 @Setter
 public class SwordOfBurningSoulBuff extends BuffSkill {
     public SwordOfBurningSoulBuff() {
+        this.setName("소드 오브 버닝 소울");
         this.setRelatedSkill(new SwordOfBurningSoulDot());
         this.setCooldown(120.0);
         this.setDelay(1620L);           // 설치 포함

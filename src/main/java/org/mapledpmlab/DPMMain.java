@@ -104,11 +104,39 @@ public class DPMMain {
             dealCycle.applyDoping();
 
             data = new TreeMap<>();
-            data.put("1", new Object[]{
+            data.put("01", new Object[]{
                     "공격스킬이름", "사용횟수", "딜량", "점유율", "기타정보"
             });
-            for (int i = 0; i < dealCycle.getAttackSkillList().size(); i++) {
-                data.put(String.valueOf(i + 2), dealCycle.getAttackSkillList().get(i).getOpject());
+            int colNum = 2;
+            for (int i = colNum; i < dealCycle.getAttackSkillList().size() + colNum; i++) {
+                String tmp = String.valueOf(i);
+                if (tmp.length() == 1) {
+                    tmp = "0" + tmp;
+                }
+                data.put(tmp, dealCycle.getAttackSkillList().get(i - colNum).getOpject());
+            }
+
+            colNum = colNum + dealCycle.getAttackSkillList().size();
+            data.put(String.valueOf(colNum), new Object[]{});
+            colNum = colNum + 1;
+
+            data.put(String.valueOf(colNum), new Object[]{
+                    "공격스킬이름", "", "", "", "기타정보"
+            });
+
+            colNum = colNum + 1;
+            for (int i = colNum; i < dealCycle.getDelaySkillList().size() + colNum; i++) {
+                data.put(String.valueOf(i), dealCycle.getDelaySkillList().get(i - colNum).getOpject());
+            }
+            colNum = colNum + dealCycle.getDelaySkillList().size();
+            data.put(String.valueOf(colNum), new Object[]{});
+            colNum = colNum + 1;
+            data.put(String.valueOf(colNum), new Object[]{
+                    "버프스킬이름", "", "", "", "기타정보"
+            });
+            colNum = colNum + 1;
+            for (int i = colNum; i < dealCycle.getBuffSkillList().size() + colNum; i++) {
+                data.put(String.valueOf(i), dealCycle.getBuffSkillList().get(i - colNum).getOpject());
             }
 
             keyset = data.keySet();

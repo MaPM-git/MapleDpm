@@ -37,6 +37,8 @@ public class DealCycle {
     Long fortyDeal;
     int i=0;
 
+    public DealCycle() {}
+
     public DealCycle(Job job, AttackSkill finalAttack) {
         this.finalAttack = finalAttack;
         this.job = job;

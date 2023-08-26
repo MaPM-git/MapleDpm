@@ -1,8 +1,10 @@
 package org.mapledpmlab.type.dealcycle;
 
+import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.bowmaster.AdvancedFinalAttackBowmaster;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.marksman.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -80,19 +82,23 @@ public class MarksmanDealCycle extends DealCycle {
             add(new CriticalReinforce(0.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
-            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new MapleWorldGoddessBlessing(275L));
             add(new PriorPreparation());
             add(new RepeatingCrossbowCartridgeBuff());
             add(new RestraintRing());
             add(new SoulContract());
             add(new SplitArrowBuff());
             add(new ThiefCunning());
-            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+            add(new WeaponJumpRing(326L));
         }
     };
 
     public MarksmanDealCycle(Job job) {
-        super(job, new FinalAttackMarksman());
+        super();
+        this.setFinalAttack(new AdvancedFinalAttackBowmaster());
+        this.setJob(job);
+        this.getJob().addTotal(this.getJob().getJobType());
+        this.getJob().addObject(new HyperArcher(this.getJob().getLevel()));
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);

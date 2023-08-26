@@ -50,7 +50,7 @@ public class BuffSkill extends Skill {
     }
     public String getInfo() {
         String str = "";
-        str = str + "딜레이 : " + getDelay();
+        str = str + "딜레이 : " + getDelay() + "ms";
         colNum ++;
         if (getCooldown() != 0) {
             str = str + "\n지속시간 : " + getDuration();
@@ -60,63 +60,63 @@ public class BuffSkill extends Skill {
             str = str + "\n쿨타임 : " + getCooldown();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffAttMagic() != 0) {
             str = str + "\n공격력/마력증가 : " + getBuffAttMagic();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffAttMagicPer() != 0) {
             str = str + "\n공격력/마력%증가 : " + getBuffAttMagicPer();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffAllStatP() != 0) {
             str = str + "\n올스탯증가 : " + getBuffAllStatP();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffCriticalDamage() != 0) {
             str = str + "\n크리티컬데미지증가 : " + getBuffCriticalDamage();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffCriticalP() != 0) {
             str = str + "\n크리티컬확률증가 : " + getBuffCriticalP();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffDamage() != 0) {
             str = str + "\n데미지증가 : " + getBuffDamage();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffFinalDamage() != 0) {
             str = str + "\n최종데미지증가 : " + getBuffFinalDamage();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffIgnoreDefense() != 0) {
             str = str + "\n방어율무시증가 : " + getBuffIgnoreDefense();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffMainStat() != 0) {
             str = str + "\n주스탯증가 : " + getBuffMainStat();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffMainStatP() != 0) {
             str = str + "\n주스탯%증가 : " + getBuffMainStatP();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffOtherStat1() != 0) {
             str = str + "\n제3스탯증가 : " + getBuffOtherStat1();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffOtherStat2() != 0) {
             str = str + "\n제4스탯증가 : " + getBuffOtherStat2();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffProperty() != 0) {
             str = str + "\n속성무시증가 : " + getBuffProperty();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffPlusFinalDamage() != 0) {
             str = str + "\n최종데미지합산증가 : " + getBuffPlusFinalDamage();
             colNum ++;
         }
-        if (getCooldown() != 0) {
+        if (getBuffSubStat() != 0) {
             str = str + "\n부스탯증가 : " + getBuffSubStat();
             colNum ++;
         }
@@ -129,6 +129,13 @@ public class BuffSkill extends Skill {
             colNum ++;
         }
         return str;
+    }
+
+    public Object[] getOpject() {
+        Object[] result = new Object[]{
+                this.getName(), "", "", "", this.getInfo()
+        };
+        return result;
     }
 
     public Double getIgnoreDefense() {

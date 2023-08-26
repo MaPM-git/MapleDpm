@@ -8,6 +8,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 @Setter
 public class PriorPreparation extends BuffSkill {
     public PriorPreparation() {
+        this.setName("프라이어 프리퍼레이션");
         this.setCooldown(40.0);
         this.setDuration(20L);
         this.setBuffDamage(17L);

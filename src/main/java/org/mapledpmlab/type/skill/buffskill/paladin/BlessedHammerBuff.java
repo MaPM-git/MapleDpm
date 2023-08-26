@@ -9,6 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 @Setter
 public class BlessedHammerBuff extends BuffSkill {
     public BlessedHammerBuff() {
+        this.setName("블레스드 해머");
         this.setCooldown(60.0);
         this.setDelay(360L);
         this.setDuration(30L);

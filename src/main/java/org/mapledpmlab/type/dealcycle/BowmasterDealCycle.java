@@ -1,5 +1,7 @@
 package org.mapledpmlab.type.dealcycle;
 
+import org.mapledpmlab.type.hyper.Hyper;
+import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -91,6 +93,7 @@ public class BowmasterDealCycle extends DealCycle {
             add(new CriticalReinforce(0.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
+            add(new MapleWorldGoddessBlessing(275L));
             add(new MortalBlow());
             add(new Preparation());
             add(new PriorPreparation());
@@ -98,12 +101,16 @@ public class BowmasterDealCycle extends DealCycle {
             add(new RestraintRing());
             add(new SoulContract());
             add(new ThiefCunning());
-            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+            add(new WeaponJumpRing(318L));
         }
     };
 
     public BowmasterDealCycle(Job job) {
-        super(job, new AdvancedFinalAttackBowmaster());
+        super();
+        this.setFinalAttack(new AdvancedFinalAttackBowmaster());
+        this.setJob(job);
+        this.getJob().addTotal(this.getJob().getJobType());
+        this.getJob().addObject(new HyperArcher(this.getJob().getLevel()));
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);
