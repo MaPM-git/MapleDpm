@@ -2,7 +2,7 @@ package org.mapledpmlab.type.ability;
 
 import org.mapledpmlab.type.etc.Common;
 
-public class ReuseBossCritical extends Common {
+public class ReuseBossCritical extends Ability {
 
     public ReuseBossCritical() {
         this.setDescription("" +

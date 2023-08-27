@@ -2,7 +2,7 @@ package org.mapledpmlab.type.ability;
 
 import org.mapledpmlab.type.etc.Common;
 
-public class BossAbnormalAttack extends Common {
+public class BossAbnormalAttack extends Ability {
 
     public BossAbnormalAttack() {
         this.setDescription("" +

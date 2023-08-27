@@ -2,7 +2,7 @@ package org.mapledpmlab.type.ability;
 
 import org.mapledpmlab.type.etc.Common;
 
-public class PassiveBossCritical extends Common {
+public class PassiveBossCritical extends Ability {
 
     public PassiveBossCritical() {
         this.setDescription("" +
