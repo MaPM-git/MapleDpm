@@ -1,10 +1,9 @@
 package org.mapledpmlab.type.union;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class LukUnion extends Common {
+public class LukUnion extends Union {
 
     public LukUnion() {
+        super();
         this.setDescription(
                 getDescription() +
                         "\n12.%미적용 주스탯 : 520" +

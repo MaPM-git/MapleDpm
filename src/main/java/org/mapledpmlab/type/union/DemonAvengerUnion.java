@@ -1,10 +1,9 @@
 package org.mapledpmlab.type.union;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class DemonAvengerUnion extends Common {
+public class DemonAvengerUnion extends Union {
 
     public DemonAvengerUnion() {
+        super();
         this.setDescription("" +
                 "\n유니온 공격대 점령효과" +
                 "\n1.크리티컬 데미지 20%" +

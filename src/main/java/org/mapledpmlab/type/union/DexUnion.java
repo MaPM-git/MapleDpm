@@ -1,10 +1,9 @@
 package org.mapledpmlab.type.union;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class DexUnion extends Common {
+public class DexUnion extends Union {
 
     public DexUnion() {
+        super();
         this.setDescription(
                 getDescription() +
                 "\n12.%미적용 주스탯 : 440" +
