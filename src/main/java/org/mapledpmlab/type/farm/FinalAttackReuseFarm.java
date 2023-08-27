@@ -2,7 +2,7 @@ package org.mapledpmlab.type.farm;
 
 import org.mapledpmlab.type.etc.Common;
 
-public class FinalAttackReuseFarm extends Common {
+public class FinalAttackReuseFarm extends Farm {
 
     public FinalAttackReuseFarm() {
         this.setDescription("" +

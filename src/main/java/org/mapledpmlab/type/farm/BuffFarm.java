@@ -2,7 +2,7 @@ package org.mapledpmlab.type.farm;
 
 import org.mapledpmlab.type.etc.Common;
 
-public class BuffFarm extends Common {
+public class BuffFarm extends Farm {
 
     public BuffFarm() {
         this.setDescription("" +

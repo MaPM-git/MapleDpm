@@ -2,6 +2,7 @@ package org.mapledpmlab.type.job;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mapledpmlab.type.ability.Ability;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.link.*;
@@ -15,6 +16,7 @@ public class Job extends Common {
     private String name;
     private JobType jobType;
     private Long weaponAttMagic;
+    private Ability ability;
 
     public Job() {
         this.setLevel(275L);            // 캐릭터 레벨

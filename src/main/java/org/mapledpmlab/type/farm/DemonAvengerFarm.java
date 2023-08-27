@@ -2,7 +2,7 @@ package org.mapledpmlab.type.farm;
 
 import org.mapledpmlab.type.etc.Common;
 
-public class DemonAvengerFarm extends Common {
+public class DemonAvengerFarm extends Farm {
 
     public DemonAvengerFarm() {
         this.setDescription("" +
