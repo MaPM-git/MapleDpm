@@ -1,8 +1,6 @@
 package org.mapledpmlab.type.link;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class Noblesse extends Common {
+public class Noblesse extends Link {
 
     public Noblesse() {
         this.addDamage(2L);
