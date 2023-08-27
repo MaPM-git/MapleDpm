@@ -1,7 +1,5 @@
 package org.mapledpmlab.type.ability;
 
-import org.mapledpmlab.type.etc.Common;
-
 public class PassiveBossReuse extends Ability {
 
     public PassiveBossReuse() {

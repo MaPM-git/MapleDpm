@@ -1,7 +1,5 @@
 package org.mapledpmlab.type.farm;
 
-import org.mapledpmlab.type.etc.Common;
-
 public class ReuseFarm extends Farm {
 
     public ReuseFarm() {

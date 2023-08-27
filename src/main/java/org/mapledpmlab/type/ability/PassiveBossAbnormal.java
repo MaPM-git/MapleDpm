@@ -1,7 +1,5 @@
 package org.mapledpmlab.type.ability;
 
-import org.mapledpmlab.type.etc.Common;
-
 public class PassiveBossAbnormal extends Ability {
 
     public PassiveBossAbnormal() {

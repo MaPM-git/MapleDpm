@@ -1,10 +1,10 @@
 package org.mapledpmlab.type.hyper;
 
-public class HyperArcher extends Hyper {
+public class HyperCommon extends Hyper {
     private Long[] reqPoint = {0L, 1L, 3L, 7L, 15L, 25L, 40L, 60L,
             85L, 115L, 150L, 200L, 265L, 345L, 440L, 550L};
 
-    public HyperArcher(Long level) {
+    public HyperCommon(Long level, Double criticalP) {
         Long point = 0L;
         if (level < 280) {
             point = 1186 + 16 * (level % 10);
@@ -14,8 +14,18 @@ public class HyperArcher extends Hyper {
             point = 1518 + 18 * (level % 10);
         }
 
-        this.addCriticalP(15.0);
-        point -= 150;
+        if (criticalP <= 70) {
+        } else if (criticalP < 100) {
+            Long reqCriticalP = (long) (100 - criticalP);
+            if (reqCriticalP <= 5) {
+                point -= reqPoint[Math.toIntExact(reqCriticalP)];
+                this.addCriticalP(Double.valueOf(reqCriticalP));
+            } else {
+                Long reqLevel = 5L;
+                point -= reqPoint[(int) (reqLevel + Math.ceil((reqCriticalP - 5) / 2.0))];
+                this.addCriticalP(5.0 + Math.ceil((reqCriticalP - 5) / 2.0) * 2);
+            }
+        }
 
         this.addBossDamage(51L);
         point -= 440L;

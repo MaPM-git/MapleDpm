@@ -1,6 +1,5 @@
 package org.mapledpmlab.type.dealcycle;
 
-import org.mapledpmlab.type.hyper.Hyper;
 import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
