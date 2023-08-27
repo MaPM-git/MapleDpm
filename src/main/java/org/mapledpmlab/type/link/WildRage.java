@@ -1,8 +1,6 @@
 package org.mapledpmlab.type.link;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class WildRage extends Common {
+public class WildRage extends Link {
 
     public WildRage() {
         this.addDamage(10L);

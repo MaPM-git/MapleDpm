@@ -1,8 +1,6 @@
 package org.mapledpmlab.type.link;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class EmpiricalKnowledge extends Common {
+public class EmpiricalKnowledge extends Link {
 
     public EmpiricalKnowledge() {
         this.addStatXDamage(9L);

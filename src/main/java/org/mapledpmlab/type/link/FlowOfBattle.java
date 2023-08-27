@@ -1,8 +1,6 @@
 package org.mapledpmlab.type.link;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class FlowOfBattle extends Common {
+public class FlowOfBattle extends Link {
 
     public FlowOfBattle() {
         this.addStatXDamage(12L);

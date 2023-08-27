@@ -1,8 +1,6 @@
 package org.mapledpmlab.type.link;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class CygnusBlessing extends Common {
+public class CygnusBlessing extends Link {
 
     public CygnusBlessing() {
         this.addAtt(25L);

@@ -1,8 +1,6 @@
 package org.mapledpmlab.type.link;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class Solus extends Common {
+public class Solus extends Link {
 
     public Solus() {
         this.addStatXDamage(11L);

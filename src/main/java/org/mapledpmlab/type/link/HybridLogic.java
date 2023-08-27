@@ -1,8 +1,6 @@
 package org.mapledpmlab.type.link;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class HybridLogic extends Common {
+public class HybridLogic extends Link {
 
     public HybridLogic() {
         this.addAllStatP(10L);
