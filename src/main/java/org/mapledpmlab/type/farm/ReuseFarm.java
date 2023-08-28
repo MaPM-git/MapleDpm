@@ -4,7 +4,7 @@ public class ReuseFarm extends Farm {
 
     public ReuseFarm() {
         this.setDescription("" +
-                "\n농장" +
+                "농장" +
                 "\n1.주스탯 스페셜 SS : 주스탯 15" +
                 "\n2.주스탯 스페셜 A+ : 주스탯 10" +
                 "\n3.주스탯 SS : 주스탯 14" +

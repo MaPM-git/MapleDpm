@@ -4,7 +4,7 @@ public class DemonAvengerFarm extends Farm {
 
     public DemonAvengerFarm() {
         this.setDescription("" +
-                "\n농장" +
+                "농장" +
                 "\n1.주니어씰 : HP 100" +
                 "\n2.도도 : HP 250" +
                 "\n3.돼지 SS : HP 350" +

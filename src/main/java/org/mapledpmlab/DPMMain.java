@@ -98,18 +98,29 @@ public class DPMMain {
 
         for (DealCycle dealCycle : dealCycleList) {
             xssfSheet = xssfWorkbook.createSheet(dealCycle.getJob().getName());
-            xssfSheet.setDefaultColumnWidth(20);
-            xssfSheet.setColumnWidth(0, 10000);
-            xssfSheet.setColumnWidth(1, 4000);
-            xssfSheet.setColumnWidth(3, 5000);
-            xssfSheet.setColumnWidth(4, 10000);
+            xssfSheet.setDefaultColumnWidth(50);
             dealCycle.applyDoping();
 
             data = new TreeMap<>();
             data.put("01", new Object[]{
+                    "유니온", "링크", "하이퍼스탯", "몬스터라이프", "어빌리티"
+            });
+            data.put("02", new Object[]{
+                    dealCycle.getJob().getUnion().getDescription(),
+                    dealCycle.getJob().getLinkListStr(),
+                    dealCycle.getJob().getHyper().getDescription(),
+                    dealCycle.getJob().getFarm().getDescription(),
+                    dealCycle.getJob().getAbility().getDescription()
+            });
+
+            int colNum = 3;
+            data.put(String.valueOf(colNum), new Object[]{});
+            colNum = colNum + 1;
+
+            data.put("04", new Object[]{
                     "공격스킬이름", "사용횟수", "딜량", "점유율", "기타정보"
             });
-            int colNum = 2;
+            colNum = 5;
             for (int i = colNum; i < dealCycle.getAttackSkillList().size() + colNum; i++) {
                 String tmp = String.valueOf(i);
                 if (tmp.length() == 1) {
