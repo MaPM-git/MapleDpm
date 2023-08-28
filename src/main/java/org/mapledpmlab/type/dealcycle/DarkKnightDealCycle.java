@@ -127,11 +127,6 @@ public class DarkKnightDealCycle extends DealCycle {
         SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         ThiefCunning thiefCunning = new ThiefCunning();
 
-        for (int i = 0; i < 720 * 1000; i += auraWeaponDot.getInterval()) {
-            getSkillEventList().add(new SkillEvent(auraWeaponDot, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         for (int i = 0; i < 720 * 1000; i += beholderRevenge.getInterval()) {
             getSkillEventList().add(new SkillEvent(beholderRevenge, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
