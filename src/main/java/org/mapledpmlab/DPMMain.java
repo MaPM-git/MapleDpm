@@ -114,7 +114,7 @@ public class DPMMain {
             });
 
             int colNum = 3;
-            data.put(String.valueOf(colNum), new Object[]{});
+            data.put("03", new Object[]{});
             colNum = colNum + 1;
 
             data.put("04", new Object[]{
