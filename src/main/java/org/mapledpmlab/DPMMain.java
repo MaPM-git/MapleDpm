@@ -64,6 +64,7 @@ public class DPMMain {
         cellStyle.setBorderLeft(BorderStyle.THIN);
         cellStyle.setBorderRight(BorderStyle.THIN);
         cellStyle.setBorderTop(BorderStyle.THIN);
+        cellStyle.setWrapText(true);
 
         Map<String, Object[]> data = new TreeMap<>();
         data.put("1", new Object[]{
@@ -161,7 +162,6 @@ public class DPMMain {
                 int cellnum = 0;
                 for (Object o : objArr) {
                     Cell cell = row.createCell(cellnum++);
-                    cellStyle.setWrapText(true);
                     cell.setCellStyle(cellStyle);
                     if (o instanceof String) {
                         cell.setCellValue((String) o);
@@ -211,8 +211,9 @@ public class DPMMain {
             }
         }
 
-        xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 6));
         Row row = xssfSheet.createRow(rownum);
+        row.setHeightInPoints(100.0f);
+        xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 6));
         Cell cell = row.createCell(0);
         cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 정옵 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성, 주흔작 / 펫장비 프펫공, 프악마 / " +
                 "\n예티X핑크빈 칭호 / 모자 쿨감뚝일 경우 2초 + 18%, 에디 1초 + 6% / 유니온 8500 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / " +
@@ -220,7 +221,18 @@ public class DPMMain {
                 "\n영메, 반빨별, 장비 명장, 익스트림 레드 및 블루, 길축, 우뿌, 유힘, 슈퍼파워, 붕뿌, 향산된 10단계 물약 / 어빌 레유유 최대옵션 / " +
                 "\n리레 4렙, 웨퍼 4렙 사용(스위칭) / 리레딜은 6차 포함하여 측정 / 최종뎀 고려 X / 히어로, 팔라딘 - 두손검 착용 / 마법사 및 섀도어 20성 방패 착용 / " +
                 "\n듀얼블레이드 22성 아케인 블레이드 착용, 데몬 직업군 루포실 착용 / 하이퍼 스킬은 사냥기를 제외하고 선택 / 몬스터 방어율 300% / 렙뻥, 포뻥 미적용");
-        cellStyle.setWrapText(true);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(1);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(2);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(3);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(4);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(5);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(6);
         cell.setCellStyle(cellStyle);
 
         try {
