@@ -2,7 +2,6 @@ package org.mapledpmlab.type.dealcycle;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mapledpmlab.type.hyper.Hyper;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -43,7 +42,6 @@ public class DealCycle {
         this.finalAttack = finalAttack;
         this.job = job;
         this.job.addTotal(this.job.getJobType());
-        this.job.addObject(new Hyper(job.getLevel(), job.getCriticalP()));
     }
 
     public void addSkillEvent(Skill skill) {
