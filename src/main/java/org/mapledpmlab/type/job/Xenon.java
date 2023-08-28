@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.NormalFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.union.LukUnion;
+
+import java.util.stream.Collectors;
 
 public class Xenon extends Job {
 
@@ -25,14 +29,6 @@ public class Xenon extends Job {
         this.setMastery(1.86 / 2);      // 숙련도
         this.addMainStat(30L);          // 향상된 10단계 물약
         this.setJobType(JobType.XENON);
-        this.addObject(new BossCriticalAbnormal());
-        this.addObject(new NormalFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new Noblesse());
-        this.addObject(new LukUnion());
-        this.addPerXMainStat(10L);
-        this.addPerXSubStat(10L);
-        this.addPerXOtherStat(10L);
 
         this.addPerXMainStat(-18400L);
         this.addPerXMainStat(6336L);
@@ -100,6 +96,22 @@ public class Xenon extends Job {
         // 5차
         this.addAtt(40L);               // 로디드 다이스
         this.addAtt(30L);               // 레디 투 다이
+
+        this.setAbility(new BossCriticalAbnormal());
+        this.setFarm(new NormalFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new Noblesse());
+        this.setUnion(new LukUnion());
+        this.addPerXMainStat(10L);
+        this.addPerXSubStat(10L);
+        this.addPerXOtherStat(10L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     public Long getFinalSubStat2() {

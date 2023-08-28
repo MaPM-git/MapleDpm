@@ -1,10 +1,14 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.NormalFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.IntUnion;
+
+import java.util.stream.Collectors;
 
 public class BattleMage extends Job {
 
@@ -69,7 +73,18 @@ public class BattleMage extends Job {
         this.addDamage(11L);
         this.addIgnoreDefenseList(31L);
 
-        // 5차
+        this.setAbility(new BossCriticalAbnormal());
+        this.setFarm(new NormalFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.setUnion(new IntUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     public Long getStatDamage() {

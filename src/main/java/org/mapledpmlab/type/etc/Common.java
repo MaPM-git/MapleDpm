@@ -209,6 +209,12 @@ public class Common {
         }
     }
 
+    public void addObject(List<Common> commonList) {
+        for (Common common : commonList) {
+            this.addObject(common);
+        }
+    }
+
     public void addObject(Common c) {
         this.addAtt(c.getAtt());
         this.addAttP(c.getAttP());

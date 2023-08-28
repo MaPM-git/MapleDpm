@@ -1,12 +1,16 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossCritical;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.DemonAvengerFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.IronWill;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.DemonAvengerUnion;
+
+import java.util.stream.Collectors;
 
 public class DemonAvenger extends Job {
     private Long starforce = 0L;
@@ -21,13 +25,6 @@ public class DemonAvenger extends Job {
         this.setMastery(1.91 / 2);      // 숙련도
         this.addMainStatP(10L);         // 4카루타 세트
         this.setJobType(JobType.DEMON_AVENGER);
-        this.addObject(new ReuseBossCritical());
-        this.addObject(new DemonAvengerFarm());
-        this.addAllStatP(-10L);         // 제논 링크
-        this.addObject(new IronWill());
-        this.addObject(new PhantomInstinct());
-        this.addObject(new Noblesse());
-        this.addObject(new DemonAvengerUnion());
 
         this.addPerXMainStat(-18400L);
         this.addPerXMainStat(277200L);
@@ -93,6 +90,20 @@ public class DemonAvenger extends Job {
         this.addFinalDamage(1.2);       // 데몬 프렌지
         this.addMainStatP(40L);         // 쓸만한 하이퍼 바디
         this.addHp(475L);               // 쓸만한 어드밴스드 블레스
+
+        this.setAbility(new ReuseBossCritical());
+        this.setFarm(new DemonAvengerFarm());
+        this.getLinkList().add(new IronWill());
+        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new Noblesse());
+        this.setUnion(new DemonAvengerUnion());
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     public void Doping() {

@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.PassiveBossAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.NormalFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
+
+import java.util.stream.Collectors;
 
 public class Kinesis extends Job {
 
@@ -16,12 +20,6 @@ public class Kinesis extends Job {
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.92 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new PassiveBossAbnormal());
-        this.addObject(new NormalFarm());
-        this.addObject(new PhantomInstinct());
-        this.addObject(new Noblesse());
-        this.addObject(new IntUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -73,6 +71,20 @@ public class Kinesis extends Job {
         this.addPlusBuffDuration(21L);  // 정신집중-유지
         this.addIgnoreDefenseList(26L);  // 전달
         this.addCriticalDamage(11.0);   // 숙달
+
+        this.setAbility(new PassiveBossAbnormal());
+        this.setFarm(new NormalFarm());
+        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new Noblesse());
+        this.setUnion(new IntUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     public Long getStatDamage() {

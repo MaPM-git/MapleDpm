@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.FinalAttackFarm;
+import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.AdventurerCuriosity;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.DexUnion;
+
+import java.util.stream.Collectors;
 
 public class Bowmaster extends Job {
 
@@ -16,12 +20,6 @@ public class Bowmaster extends Job {
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new BossCriticalAbnormal());
-        this.addObject(new FinalAttackFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new AdventurerCuriosity());
-        this.addObject(new DexUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -68,6 +66,20 @@ public class Bowmaster extends Job {
         this.addMainStat(82L);          // 일루전 스탭
         this.addAtt(21L);               // 어드밴스드 파이널 어택
         this.addIgnoreDefenseList(40L); // 아머 피어싱
+
+        this.setAbility(new BossCriticalAbnormal());
+        this.setFarm(new FinalAttackFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new AdventurerCuriosity());
+        this.setUnion(new DexUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperArcher(this.getLevel()));
+        this.addObject(this.getHyper());
     }
 
     @Override

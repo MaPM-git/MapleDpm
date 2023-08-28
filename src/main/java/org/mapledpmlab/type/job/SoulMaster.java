@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.NormalFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.union.StrUnion;
+
+import java.util.stream.Collectors;
 
 public class SoulMaster extends Job {
 
@@ -16,11 +20,6 @@ public class SoulMaster extends Job {
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new BossCriticalAbnormal());
-        this.addObject(new NormalFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new Noblesse());
-        this.addObject(new StrUnion());
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -76,5 +75,18 @@ public class SoulMaster extends Job {
 
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
+
+        this.setAbility(new BossCriticalAbnormal());
+        this.setFarm(new NormalFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new Noblesse());
+        this.setUnion(new StrUnion());
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 }

@@ -1,10 +1,14 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.FinalAttackFarm;
+import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.DexUnion;
+
+import java.util.stream.Collectors;
 
 public class Mercedes extends Job {
 
@@ -15,10 +19,6 @@ public class Mercedes extends Job {
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION1);
-        this.addObject(new BossCriticalAbnormal());
-        this.addObject(new FinalAttackFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new DexUnion());
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -65,5 +65,17 @@ public class Mercedes extends Job {
         // 하이퍼
         this.addAtt(80L);               // 엘비쉬 블레싱
         this.addFinalDamage(1.1);
+
+        this.setAbility(new BossCriticalAbnormal());
+        this.setFarm(new FinalAttackFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.setUnion(new DexUnion());
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperArcher(this.getLevel()));
+        this.addObject(this.getHyper());
     }
 }

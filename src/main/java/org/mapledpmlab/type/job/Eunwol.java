@@ -1,10 +1,14 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.NormalFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
+
+import java.util.stream.Collectors;
 
 public class Eunwol extends Job {
 
@@ -15,10 +19,6 @@ public class Eunwol extends Job {
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
-        this.addObject(new BossCriticalAbnormal());
-        this.addObject(new NormalFarm());
-        this.addObject(new PhantomInstinct());
-        this.addObject(new StrUnion());
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -57,5 +57,17 @@ public class Eunwol extends Job {
 
         // 5차
         this.addAtt(40L);               // 로디드 다이스
+
+        this.setAbility(new BossCriticalAbnormal());
+        this.setFarm(new NormalFarm());
+        this.getLinkList().add(new PhantomInstinct());
+        this.setUnion(new StrUnion());
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 }

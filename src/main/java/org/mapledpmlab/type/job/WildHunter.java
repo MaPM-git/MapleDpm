@@ -1,10 +1,14 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.FinalAttackReuseFarm;
+import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.DexUnion;
+
+import java.util.stream.Collectors;
 
 public class WildHunter extends Job {
 
@@ -15,10 +19,6 @@ public class WildHunter extends Job {
         this.setConstant(1.35);         // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new ReuseBossAbnormal());
-        this.addObject(new FinalAttackReuseFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new DexUnion());
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -73,5 +73,17 @@ public class WildHunter extends Job {
 
         // 5차
         this.addAtt(65L);               // 재규어 스톰
+
+        this.setAbility(new ReuseBossAbnormal());
+        this.setFarm(new FinalAttackReuseFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.addObject(new DexUnion());
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperArcher(this.getLevel()));
+        this.addObject(this.getHyper());
     }
 }

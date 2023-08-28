@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.PassiveBossReuse;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.ReuseFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.NatureFriend;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
+
+import java.util.stream.Collectors;
 
 public class Lara extends Job {
 
@@ -16,12 +20,6 @@ public class Lara extends Job {
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new PassiveBossReuse());
-        this.addObject(new ReuseFarm());
-        this.addObject(new PhantomInstinct());
-        this.addObject(new NatureFriend());
-        this.addObject(new IntUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -62,6 +60,20 @@ public class Lara extends Job {
 
         // 5차
         this.addMainStat(30L);          // 언스태이블 메모라이즈
+
+        this.setAbility(new PassiveBossReuse());
+        this.setFarm(new ReuseFarm());
+        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new NatureFriend());
+        this.setUnion(new IntUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     public Long getStatDamage() {

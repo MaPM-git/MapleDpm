@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.PassiveBossCritical;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.NormalFarm;
+import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.DexUnion;
+
+import java.util.stream.Collectors;
 
 public class Kain extends Job {
 
@@ -16,12 +20,6 @@ public class Kain extends Job {
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new PassiveBossCritical());
-        this.addObject(new NormalFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new PhantomInstinct());
-        this.addObject(new DexUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -67,5 +65,19 @@ public class Kain extends Job {
         this.addCriticalDamage(20.0);
         this.addDamage(14L);            // 어댑트 투 데스
         this.addBossDamage(10L);
+
+        this.setAbility(new PassiveBossCritical());
+        this.setFarm(new NormalFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new PhantomInstinct());
+        this.setUnion(new DexUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperArcher(this.getLevel()));
+        this.addObject(this.getHyper());
     }
 }

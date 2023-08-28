@@ -5,8 +5,13 @@ import lombok.Setter;
 import org.mapledpmlab.type.ability.Ability;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
+import org.mapledpmlab.type.farm.Farm;
+import org.mapledpmlab.type.hyper.Hyper;
 import org.mapledpmlab.type.link.*;
 import org.mapledpmlab.type.union.Union;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,6 +22,10 @@ public class Job extends Common {
     private JobType jobType;
     private Long weaponAttMagic;
     private Ability ability;
+    private Farm farm;
+    private Hyper hyper;
+    private List<Link> linkList = new ArrayList<>();
+    private Union union;
 
     public Job() {
         this.setLevel(275L);            // 캐릭터 레벨
@@ -85,19 +94,17 @@ public class Job extends Common {
         this.addAtt(30L);               // 블링크
         this.addMagic(30L);
 
-        this.addObject(new FuryUnleashed());
-        this.addObject(new EmpiricalKnowledge());
-        this.addObject(new Solus());
-        this.addObject(new CygnusBlessing());
-        this.addObject(new WildRage());
-        this.addObject(new IntensiveInsult());
-        this.addObject(new Judgment());
-        this.addObject(new LightWash());
+        linkList.add(new FuryUnleashed());
+        linkList.add(new EmpiricalKnowledge());
+        linkList.add(new Solus());
+        linkList.add(new CygnusBlessing());
+        linkList.add(new WildRage());
+        linkList.add(new IntensiveInsult());
+        linkList.add(new Judgment());
+        linkList.add(new LightWash());
         // 소울 컨트랙트
         // 시프 커닝
         // 프라이어 프리퍼레이션
-
-        this.addObject(new Union());
     }
 
     public void Doping() {
@@ -191,5 +198,13 @@ public class Job extends Common {
                 ", jobType=" + jobType +
                 ", weaponAttMagic=" + weaponAttMagic +
                 '}';
+    }
+
+    public String getLinkListStr() {
+        String str = "";
+        for (Link link : getLinkList()) {
+            str += link.getDescription() + "\n";
+        }
+        return str;
     }
 }

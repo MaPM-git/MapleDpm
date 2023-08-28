@@ -1,11 +1,16 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.ReuseFarm;
+import org.mapledpmlab.type.hyper.Hyper;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
+
+import java.util.stream.Collectors;
 
 public class Adele extends Job {
 
@@ -16,12 +21,6 @@ public class Adele extends Job {
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
-        this.addObject(new ReuseBossAbnormal());
-        this.addObject(new ReuseFarm());
-        this.addObject(new PhantomInstinct());
-        this.addObject(new Noblesse());
-        this.addObject(new StrUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -70,5 +69,19 @@ public class Adele extends Job {
 
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
+
+        this.setAbility(new ReuseBossAbnormal());
+        this.setFarm(new ReuseFarm());
+        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new Noblesse());
+        this.setUnion(new StrUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 }

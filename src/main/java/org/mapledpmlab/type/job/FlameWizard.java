@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossBuffCritical;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.BuffFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.union.IntUnion;
+
+import java.util.stream.Collectors;
 
 public class FlameWizard extends Job {
 
@@ -16,12 +20,6 @@ public class FlameWizard extends Job {
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new BossBuffCritical());
-        this.addObject(new BuffFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new Noblesse());
-        this.addObject(new IntUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -65,6 +63,20 @@ public class FlameWizard extends Job {
         this.addMagic(41L);             // 엘리멘트 : 플레임 IV
         this.addMagic(21L);             // 마법의 진리
         this.addFinalDamage(1.53);
+
+        this.setAbility(new BossBuffCritical());
+        this.setFarm(new BuffFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new Noblesse());
+        this.setUnion(new IntUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     public Long getStatDamage() {

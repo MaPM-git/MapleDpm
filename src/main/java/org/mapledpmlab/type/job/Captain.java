@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.FinalAttackFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PirateBlessing;
 import org.mapledpmlab.type.union.DexUnion;
+
+import java.util.stream.Collectors;
 
 public class Captain extends Job {
 
@@ -16,11 +20,6 @@ public class Captain extends Job {
         this.setConstant(1.5);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new ReuseBossAbnormal());
-        this.addObject(new FinalAttackFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new PirateBlessing());
-        this.addObject(new DexUnion());
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -68,6 +67,19 @@ public class Captain extends Job {
 
         // 5차
         this.addAtt(40L);               // 로디드 다이스
+
+        this.setAbility(new ReuseBossAbnormal());
+        this.setFarm(new FinalAttackFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new PirateBlessing());
+        this.setUnion(new DexUnion());
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     @Override

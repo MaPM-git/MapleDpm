@@ -1,10 +1,14 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossAbnormalReuse;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.ReuseFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.StrUnion;
+
+import java.util.stream.Collectors;
 
 public class DarkKnight extends Job {
 
@@ -15,10 +19,6 @@ public class DarkKnight extends Job {
         this.setConstant(1.49);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
-        this.addObject(new BossAbnormalReuse());
-        this.addObject(new ReuseFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new StrUnion());
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -66,5 +66,17 @@ public class DarkKnight extends Job {
 
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
+
+        this.setAbility(new BossAbnormalReuse());
+        this.setFarm(new ReuseFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.setUnion(new StrUnion());
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 }

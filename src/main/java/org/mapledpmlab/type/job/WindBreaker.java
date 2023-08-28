@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.NormalFarm;
+import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.DexUnion;
+
+import java.util.stream.Collectors;
 
 public class WindBreaker extends Job {
 
@@ -16,12 +20,6 @@ public class WindBreaker extends Job {
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
-        this.addObject(new BossCriticalAbnormal());
-        this.addObject(new NormalFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new PhantomInstinct());
-        this.addObject(new DexUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -81,5 +79,19 @@ public class WindBreaker extends Job {
         this.addDamage(25L);
         this.addIgnoreDefenseList(15L);
         this.addCriticalP(15.0);
+
+        this.setAbility(new BossCriticalAbnormal());
+        this.setFarm(new NormalFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new PhantomInstinct());
+        this.setUnion(new DexUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperArcher(this.getLevel()));
+        this.addObject(this.getHyper());
     }
 }

@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.NormalFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PirateBlessing;
 import org.mapledpmlab.type.union.StrUnion;
+
+import java.util.stream.Collectors;
 
 public class Viper extends Job {
 
@@ -16,12 +20,6 @@ public class Viper extends Job {
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new BossAbnormalAttack());
-        this.addObject(new NormalFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new PirateBlessing());
-        this.addObject(new StrUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -70,6 +68,20 @@ public class Viper extends Job {
 
         // 5차
         this.addAtt(40L);               // 로디드 다이스
+
+        this.setAbility(new BossAbnormalAttack());
+        this.setFarm(new NormalFarm());
+        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new PirateBlessing());
+        this.setUnion(new StrUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     @Override

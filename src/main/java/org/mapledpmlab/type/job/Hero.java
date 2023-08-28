@@ -1,10 +1,14 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.farm.FinalAttackFarm;
+import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
+
+import java.util.stream.Collectors;
 
 public class Hero extends Job {
 
@@ -15,11 +19,6 @@ public class Hero extends Job {
         this.setConstant(1.44);         // 무기상수
         this.setMastery(1.9 / 2);       // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
-        this.addObject(new BossCriticalAbnormal());
-        this.addObject(new FinalAttackFarm());
-        this.addObject(new PhantomInstinct());
-        this.addObject(new StrUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -62,6 +61,19 @@ public class Hero extends Job {
 
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
+
+        this.setAbility(new BossCriticalAbnormal());
+        this.setFarm(new FinalAttackFarm());
+        this.getLinkList().add(new PhantomInstinct());
+        this.setUnion(new StrUnion());
+        this.addPerXMainStat(20L);
+
+        this.addObject(this.getAbility());
+        this.addObject(this.getFarm());
+        this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
+        this.addObject(this.getUnion());
+        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.addObject(this.getHyper());
     }
 
     @Override
