@@ -166,19 +166,22 @@ public class DealCycle {
     public void applyDoping() {
         this.job.Doping();
         totalDamage = calcTotalDamage(eventTimeList);
-        /*Long verifyDamage = 0L;
+    }
+
+    public void print() {
+        Long verifyDamage = 0L;
         for (AttackSkill as : attackSkillList) {
             if (as.getCumulativeDamage() == 0) {
                 continue;
             }
             as.print();
             verifyDamage += as.getCumulativeDamage();
-        }*/
-        /*System.out.println("검증용 : " + verifyDamage);
+        }
+        System.out.println("검증용 : " + verifyDamage);
         System.out.println("총데미지 : " + totalDamage);
-        System.out.println("DPM : " + DPM);
-        System.out.println("리스트레인트링 : " + restraintRingDeal);
-        System.out.println("40초 : " + fortyDeal);*/
+        System.out.println("DPM : " + totalDamage/12);
+        System.out.println("리스트레인트링 : " + calcRestraintRingDeal());
+        System.out.println("40초 : " + calcFortyDeal());
     }
 
     public Object[] getOpject() {
