@@ -10,8 +10,7 @@ public class CosmicShower extends AttackSkill {
         this.setCooldown(45.0 + cosmicOrbCount * 3);
         this.setDotDuration(45000L + cosmicOrbCount * 3000);
         this.setInterval(1050L);
-        this.setAddDamage(61L);         // 코스믹 버스트
-        this.setAddDamage(20L);         // 코스믹 샤워/버스트-리인포스
+        this.setAddDamage(20L + 61);    // 코스믹 샤워/버스트-리인포스, 코스믹 버스트
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
