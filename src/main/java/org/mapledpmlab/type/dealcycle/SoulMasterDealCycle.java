@@ -234,14 +234,10 @@ public class SoulMasterDealCycle extends DealCycle {
                 finalChk = 1;
             } else if (
                     cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    && cosmicOrbCount % 5 == 0
             ) {
-                cosmicForgeEndTime = new Timestamp(getStart().getTime() + 60000);
                 addDealCycle(dealCycle3);
-                soulEclipseEndTime = new Timestamp(getStart().getTime() + 40000 + 1410 - 1290 - 16000);
-                elysionEndTime = new Timestamp(getStart().getTime() + 40000 + 1410 + 1140);
-                cosmicShower5.setActivateTime(cosmicShower10.getActivateTime());
-                finalChk = 1;
+                cosmos10.setActivateTime(cosmos5.getActivateTime());
             } else if (
                     getStart().after(soulEclipseEndTime)
                     && finalChk == 0
@@ -283,17 +279,6 @@ public class SoulMasterDealCycle extends DealCycle {
                 cosmicOrbCount ++;
                 addSkillEvent(mainAttack.get(mainAttackChk % 2));
                 flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 8000));
-                if (getStart().before(cosmicForgeEndTime)) {
-                    if (cooldownCheck(cosmicBurst10) && cosmicOrbCount % 10 == 0) {
-                        addSkillEvent(cosmicBurst10);
-                        cosmicBurst5.setActivateTime(cosmicBurst10.getActivateTime());
-                    }
-                } else {
-                    if (cooldownCheck(cosmicBurst5) && cosmicOrbCount % 5 == 0) {
-                        addSkillEvent(cosmicBurst5);
-                        cosmicBurst10.setActivateTime(cosmicBurst5.getActivateTime());
-                    }
-                }
                 mainAttackChk ++;
             }
         }
