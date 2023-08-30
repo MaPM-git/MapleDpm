@@ -27,11 +27,8 @@ public class SoulMasterDealCycle extends DealCycle {
     // 리레, 초시축
     private List<Skill> dealCycle2 = new ArrayList<>();
 
-    // 리레
-    private List<Skill> dealCycle3 = new ArrayList<>();
-
     // 준극딜
-    private List<Skill> dealCycle4 = new ArrayList<>();
+    private List<Skill> dealCycle3 = new ArrayList<>();
 
     // 극딜 마지막, 6차 포함
     private List<Skill> final1 = new ArrayList<>();
@@ -186,16 +183,6 @@ public class SoulMasterDealCycle extends DealCycle {
         dealCycle2.add(crossTheStyx);
         dealCycle2.add(cosmicShower10);
 
-        // 극딜 예열
-        dealCycle3.add(gloryOfGuardians);
-        dealCycle3.add(cosmicForge);
-        dealCycle3.add(trueSight);
-        dealCycle3.add(soulEclipse);
-        dealCycle3.add(cygnusPhalanx);
-        dealCycle3.add(elysion);
-        dealCycle3.add(crossTheStyx);
-        dealCycle3.add(cosmicShower10);
-
         // 예열 후 사용
         final2.add(crossTheStyx);
         final2.add(cosmos10);
@@ -207,10 +194,10 @@ public class SoulMasterDealCycle extends DealCycle {
         final2.add(solunarDivide);
 
         // 준극딜
-        dealCycle4.add(trueSight);
-        dealCycle4.add(cosmos5);
-        dealCycle4.add(soulContract);
-        dealCycle4.add(weaponJumpRing);
+        dealCycle3.add(trueSight);
+        dealCycle3.add(cosmos5);
+        dealCycle3.add(soulContract);
+        dealCycle3.add(weaponJumpRing);
 
         int mainAttackChk = 0;
         int finalChk = 0;
@@ -269,12 +256,6 @@ public class SoulMasterDealCycle extends DealCycle {
                 addDealCycle(final2);
                 cosmos5.setActivateTime(cosmos10.getActivateTime());
                 finalChk = 2;
-            } else if (
-                    cooldownCheck(dealCycle4)
-                    && cosmicOrbCount % 5 == 0
-            ) {
-                addDealCycle(dealCycle4);
-                cosmos10.setActivateTime(cosmos5.getActivateTime());
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
