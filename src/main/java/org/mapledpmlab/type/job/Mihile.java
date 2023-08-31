@@ -85,4 +85,14 @@ public class Mihile extends Job {
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
+    
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addAtt(45L);               // 로얄 가드
+        this.addFinalDamage(1.1);       // 소울 어택
+        this.addDamage(5L);             // 소울 링크
+        this.addFinalDamage(1.15);      // 어드밴스드 소울 어택
+        this.addDamage(10L);            // 데들리 차지
+    }
 }
