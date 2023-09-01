@@ -5,14 +5,9 @@ import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.mihile.*;
-import org.mapledpmlab.type.skill.attackskill.soulmaster.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.mihile.*;
-import org.mapledpmlab.type.skill.buffskill.soulmaster.AstralBlitzBuff;
-import org.mapledpmlab.type.skill.buffskill.soulmaster.CosmicForge;
-import org.mapledpmlab.type.skill.buffskill.soulmaster.Elysion;
-import org.mapledpmlab.type.skill.buffskill.soulmaster.TrueSight;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
