@@ -197,6 +197,9 @@ public class MihileDealCycle extends DealCycle {
                     getStart().after(auraWeaponBuff.getEndTime())
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
+                System.out.println("-----------");
+                System.out.println("aw");
+                System.out.println(getStart());
                 auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
             }
@@ -204,6 +207,9 @@ public class MihileDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
+                System.out.println("-----------");
+                System.out.println("dc1");
+                System.out.println(getStart());
                 addDealCycle(dealCycle1);
                 swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 35000 - 1680);
                 soulMajestyEndTime = new Timestamp(getStart().getTime() + 25000 - 630);
@@ -212,6 +218,9 @@ public class MihileDealCycle extends DealCycle {
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
+                System.out.println("-----------");
+                System.out.println("dc2");
+                System.out.println(getStart());
                 addDealCycle(dealCycle2);
                 swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 35000 - 1680);
                 soulMajestyEndTime = new Timestamp(getStart().getTime() + 25000 - 630);
@@ -219,17 +228,26 @@ public class MihileDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(dealCycle3)
             ) {
+                System.out.println("-----------");
+                System.out.println("dc3");
+                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
                     getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 16000))
                     && finalChk == 0
             ) {
+                System.out.println("-----------");
+                System.out.println("f1");
+                System.out.println(getStart());
                 addDealCycle(final1);
                 finalChk = 2;
             } else if (
                     getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 16000))
                     && finalChk == 1
             ) {
+                System.out.println("-----------");
+                System.out.println("f2");
+                System.out.println(getStart());
                 addDealCycle(final2);
                 finalChk = 2;
             } else if (
@@ -250,17 +268,17 @@ public class MihileDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(deadlyCharge)
                     && (
-                            getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 20000))
-                            || getStart().before(new Timestamp(lightOfCourage.getActivateTime().getTime() - 10000))
+                            getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
                     )
+                    && getStart().after(soulMajestyEndTime)
             ) {
                 addSkillEvent(deadlyCharge);
             } else if (
                     cooldownCheck(claimhSolais)
                     && (
-                            getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 20000))
-                            || getStart().before(new Timestamp(lightOfCourage.getActivateTime().getTime() - 10000))
+                            getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
                     )
+                    && getStart().after(soulMajestyEndTime)
             ) {
                 addSkillEvent(claimhSolais);
             } else if (
