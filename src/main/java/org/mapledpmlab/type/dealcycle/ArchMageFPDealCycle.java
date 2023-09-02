@@ -594,6 +594,14 @@ public class ArchMageFPDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        this.getSkillEventList().remove(skillEvent);
+                    }
+                }
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
