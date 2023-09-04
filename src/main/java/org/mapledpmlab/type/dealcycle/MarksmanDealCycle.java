@@ -4,7 +4,6 @@ import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
-import org.mapledpmlab.type.skill.attackskill.bowmaster.AdvancedFinalAttackBowmaster;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.marksman.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -95,7 +94,7 @@ public class MarksmanDealCycle extends DealCycle {
 
     public MarksmanDealCycle(Job job) {
         super();
-        this.setFinalAttack(new AdvancedFinalAttackBowmaster());
+        this.setFinalAttack(new FinalAttackMarksman());
         this.setJob(job);
         this.getJob().addTotal(this.getJob().getJobType());
         this.getJob().addObject(new HyperArcher(this.getJob().getLevel()));
