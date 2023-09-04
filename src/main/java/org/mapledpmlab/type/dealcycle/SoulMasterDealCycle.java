@@ -304,16 +304,15 @@ public class SoulMasterDealCycle extends DealCycle {
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            } else {
                 if (skill instanceof TranscendentCygnusBlessing) {
                     for (long i = 0; i < 45000; i += 4000) {
                         getSkillEventList().add(new SkillEvent(new TranscendentCygnusBlessing(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 4000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 4000));
                     }
-                } else {
-                    endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
-                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 }
-            } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
