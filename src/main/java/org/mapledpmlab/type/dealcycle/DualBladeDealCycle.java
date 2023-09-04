@@ -190,9 +190,6 @@ public class DualBladeDealCycle extends DealCycle {
                     getStart().after(mapleWorldGoddessBlessing.getEndTime())
                             && getStart().before(new Timestamp(90 * 1000))
             ) {
-                System.out.println("---------");
-                System.out.println("mwgb");
-                System.out.println(getStart());
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addSkillEvent(mapleWorldGoddessBlessing);
             }
@@ -200,34 +197,22 @@ public class DualBladeDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("---------");
-                System.out.println("dc1");
-                System.out.println(getStart());
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("---------");
-                System.out.println("dc2");
-                System.out.println(getStart());
                 addDealCycle(dealCycle2);
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("---------");
-                System.out.println("dc3");
-                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
                     cooldownCheck(shortDealCycle)
                     && !cooldownCheck(soulContract)
             ) {
-                System.out.println("---------");
-                System.out.println("sdc");
-                System.out.println(getStart());
                 addDealCycle(shortDealCycle);
             } else if (
                     cooldownCheck(ringSwitching)
