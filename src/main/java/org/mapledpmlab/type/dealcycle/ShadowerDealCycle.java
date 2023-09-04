@@ -198,6 +198,7 @@ public class ShadowerDealCycle extends DealCycle {
                     getStart().after(mapleWorldGoddessBlessing.getEndTime())
                             && getStart().before(new Timestamp(90 * 1000))
             ) {
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addSkillEvent(mapleWorldGoddessBlessing);
             }
             if (
