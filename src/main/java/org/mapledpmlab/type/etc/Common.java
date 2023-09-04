@@ -98,6 +98,10 @@ public class Common {
         this.finalDamage *= finalDamage;
     }
 
+    public void minusFinalDamage(Double finalDamage) {
+        this.finalDamage /= finalDamage;
+    }
+
     public void addHp(Long hp) {
         this.hp += hp;
     }

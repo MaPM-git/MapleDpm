@@ -95,6 +95,8 @@ public class HeroDealCycle extends DealCycle {
         }
     };
 
+    BuffSkill advancedComboAttack = new BuffSkill();
+
     public HeroDealCycle(Job job) {
         super(job, new AdvancedFinalAttackHero());
 
@@ -241,6 +243,11 @@ public class HeroDealCycle extends DealCycle {
         shortDealCycle.add(comboDeathFault);
         shortDealCycle.add(rageUprising);
 
+        advancedComboAttack.setBuffFinalDamage(2.3);
+        advancedComboAttack.setDuration(720L);
+        advancedComboAttack.setName("어드밴스드 콤보");
+        addSkillEvent(advancedComboAttack);
+
         int i = 0;
         while (getStart().before(getEnd())) {
             if (
@@ -313,5 +320,68 @@ public class HeroDealCycle extends DealCycle {
             i++;
         }
         sortEventTimeList();
+    }
+
+    @Override
+    public Long calcTotalDamage(List<Timestamp> eventTimeList) {
+        Long totalDamage = 0L;
+        Timestamp start = null;
+        Timestamp end = null;
+        List<SkillEvent> overlappingSkillEvents;
+        BuffSkill buffSkill;
+        for (int i = 0; i < eventTimeList.size() -1; i++) {
+            List<SkillEvent> useAttackSkillList = new ArrayList<>();
+            buffSkill = new BuffSkill();
+            start = eventTimeList.get(i);
+            end = eventTimeList.get(i + 1);
+            overlappingSkillEvents = getOverlappingSkillEvents(start, end);
+            overlappingSkillEvents = deduplication(overlappingSkillEvents, SkillEvent::getSkill);
+            boolean isSwordIllusionBuff = false;
+            for (SkillEvent skillEvent : overlappingSkillEvents) {
+                if (skillEvent.getSkill() instanceof SwordIllusionBuff) {
+                    isSwordIllusionBuff = true;
+                    advancedComboAttack.setBuffFinalDamage(2.3 + 0.78);
+                    break;
+                }
+            }
+            for (SkillEvent skillEvent : overlappingSkillEvents) {
+                if (skillEvent.getSkill() instanceof BuffSkill) {
+                    buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
+                    buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
+                    buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
+                    buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
+                    buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
+                    buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
+                    buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
+                    buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
+                    buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
+                    buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
+                    buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
+                    buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
+                    buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
+                    buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
+                    buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                } else {
+                    useAttackSkillList.add(skillEvent);
+                }
+            }
+            for (SkillEvent se : useAttackSkillList) {
+                totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
+                        totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
+                    }
+                }
+            }
+            if (isSwordIllusionBuff) {
+                isSwordIllusionBuff = false;
+                advancedComboAttack.setBuffFinalDamage(2.3);
+            }
+        }
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
+        }
+        return totalDamage;
     }
 }
