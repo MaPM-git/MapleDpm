@@ -291,6 +291,7 @@ public class ArchMageILDealCycle extends DealCycle {
         shortDealCycle.add(lightningSphere);
 
         Timestamp infinityEndTime = new Timestamp(61360);
+        Timestamp infinityFinalTime = new Timestamp(0);
 
         int i = 0;
         while (getStart().before(getEnd())) {
@@ -298,6 +299,7 @@ public class ArchMageILDealCycle extends DealCycle {
                     cooldownCheck(infinity)
                     && getStart().after(infinityEndTime)
             ) {
+                infinityFinalTime = new Timestamp(getStart().getTime() + 60000);
                 infinityEndTime = new Timestamp(getStart().getTime() + 121360);
                 addSkillEvent(infinity);
             }
@@ -305,6 +307,7 @@ public class ArchMageILDealCycle extends DealCycle {
                     cooldownCheck(unstableMemorize)
                     && getStart().after(infinityEndTime)
             ) {
+                infinityFinalTime = new Timestamp(getStart().getTime() + 60000);
                 infinityEndTime = new Timestamp(getStart().getTime() + unstableMemorize.getDelay() + 121360);
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (ran <= 1) {
@@ -346,6 +349,7 @@ public class ArchMageILDealCycle extends DealCycle {
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && getStart().after(infinityFinalTime)
             ) {
                 addDealCycle(dealCycle1);
                 jupiterThunderStartList.add(new Timestamp((long) (jupiterThunder.getActivateTime().getTime() - applyCooldownReduction(jupiterThunder))));
@@ -353,18 +357,21 @@ public class ArchMageILDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && getStart().after(infinityFinalTime)
             ) {
                 addDealCycle(dealCycle2);
                 jupiterThunderStartList.add(new Timestamp((long) (jupiterThunder.getActivateTime().getTime() - applyCooldownReduction(jupiterThunder))));
                 jupiterThunderEndList.add(new Timestamp((long) (jupiterThunder.getActivateTime().getTime() - applyCooldownReduction(jupiterThunder) + 10000)));
             } else if (
                     cooldownCheck(dealCycle3)
+                    && getStart().after(infinityFinalTime)
             ) {
                 addDealCycle(dealCycle3);
                 jupiterThunderStartList.add(new Timestamp((long) (jupiterThunder.getActivateTime().getTime() - applyCooldownReduction(jupiterThunder))));
                 jupiterThunderEndList.add(new Timestamp((long) (jupiterThunder.getActivateTime().getTime() - applyCooldownReduction(jupiterThunder) + 10000)));
             } else if (
                     cooldownCheck(dealCycle4)
+                    && getStart().after(infinityFinalTime)
                     && i > 140
             ) {
                 addDealCycle(dealCycle4);
@@ -372,6 +379,7 @@ public class ArchMageILDealCycle extends DealCycle {
                 jupiterThunderEndList.add(new Timestamp((long) (jupiterThunder.getActivateTime().getTime() - applyCooldownReduction(jupiterThunder) + 10000)));
             } else if (
                     cooldownCheck(dealCycle5)
+                    && getStart().after(infinityFinalTime)
             ) {
                 addDealCycle(dealCycle5);
                 jupiterThunderStartList.add(new Timestamp((long) (jupiterThunder.getActivateTime().getTime() - applyCooldownReduction(jupiterThunder))));
