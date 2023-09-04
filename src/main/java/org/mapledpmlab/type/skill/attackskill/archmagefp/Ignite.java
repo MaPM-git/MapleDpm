@@ -7,7 +7,8 @@ public class Ignite extends AttackSkill {
         this.setName("이그나이트(10중첩)");
         this.setDamage(40.0);
         this.setAttackCount(3L);
-        this.setInterval(150L);         // 10중첩으로 가정
+        this.setDotDuration(6000L);
+        this.setInterval(1500L);
         this.addFinalDamage(3.4);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setApplyFinalAttack(true);

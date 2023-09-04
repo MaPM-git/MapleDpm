@@ -80,7 +80,6 @@ public class ArchMageFP extends Job {
         super.Doping();
         addDamage(50L);                 // 앨리먼트 앰플리케이션
         addFinalDamage(1.2);            // 익스트림 매직
-        addFinalDamage(1.25);           // 퍼번트 드레인
         addDamage(40L);                 // 아케인 에임
         addFinalDamage(1.08);           // 오버로드 마나
     }

@@ -157,6 +157,8 @@ public class ArchMageFPDealCycle extends DealCycle {
         }
     };
 
+    BuffSkill fervantDrain = new BuffSkill();
+
     public ArchMageFPDealCycle(Job job) {
         super(job, new FinalAttackArchMageFP());
 
@@ -248,12 +250,6 @@ public class ArchMageFPDealCycle extends DealCycle {
         // 이프리트 소환수
         for (int i = 0; i < 720 * 1000; i += ifritSummon.getInterval()) {
             getSkillEventList().add(new SkillEvent(ifritSummon, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        // 이그나이트
-        for (int i = 0; i < 720 * 1000; i += ignite.getInterval()) {
-            getSkillEventList().add(new SkillEvent(ignite, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
 
@@ -360,6 +356,11 @@ public class ArchMageFPDealCycle extends DealCycle {
 
         shortDealCycle3.add(flameHaze);
         shortDealCycle3.add(mistEruption);
+
+        fervantDrain.setBuffFinalDamage(1.25);
+        fervantDrain.setDuration(720L);
+        fervantDrain.setName("퍼번트 드레인");
+        addSkillEvent(fervantDrain);
 
         Timestamp infernalVenomEndTime = new Timestamp(0);
         Timestamp infinityEndTime = new Timestamp(61360);
@@ -589,7 +590,9 @@ public class ArchMageFPDealCycle extends DealCycle {
                         remove.add(skillEvent);
                     }
                 }
-                this.getSkillEventList().removeAll(remove);
+                if (!(skill instanceof Ignite)) {
+                    this.getSkillEventList().removeAll(remove);
+                }
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
@@ -608,6 +611,28 @@ public class ArchMageFPDealCycle extends DealCycle {
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (
+                        (
+                                skill instanceof DotPunisherAfterSecond
+                                || skill instanceof DotPunisherDot
+                                || skill instanceof DotPunisherFirst
+                                || skill instanceof DotPunisherOriginAfterSecond
+                                || skill instanceof DotPunisherOriginDot
+                                || skill instanceof DotPunisherOriginFirst
+                                || skill instanceof FinalAttackArchMageFP
+                                || skill instanceof FlameSweep
+                                || skill instanceof FlameSweepDot
+                                || skill instanceof FlameSweepExplosion
+                                || skill instanceof InfernalVenomExplosion1
+                                || skill instanceof InfernalVenomExplosion2
+                                || skill instanceof MegidoFlame
+                                || skill instanceof MegidoFlameDot
+                        )
+                        && ran <= 50
+                ) {
+                    addSkillEvent(new Ignite());
+                }
             }
         }
         applyCooldown(skill);
@@ -620,5 +645,68 @@ public class ArchMageFPDealCycle extends DealCycle {
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
         }
+    }
+
+    @Override
+    public Long calcTotalDamage(List<Timestamp> eventTimeList) {
+        Long totalDamage = 0L;
+        Timestamp start = null;
+        Timestamp end = null;
+        List<SkillEvent> overlappingSkillEvents;
+        BuffSkill buffSkill;
+        for (int i = 0; i < eventTimeList.size() -1; i++) {
+            List<SkillEvent> useAttackSkillList = new ArrayList<>();
+            buffSkill = new BuffSkill();
+            start = eventTimeList.get(i);
+            end = eventTimeList.get(i + 1);
+            overlappingSkillEvents = getOverlappingSkillEvents(start, end);
+            overlappingSkillEvents = deduplication(overlappingSkillEvents, SkillEvent::getSkill);
+            boolean isInfernalVenomBuff = false;
+            for (SkillEvent skillEvent : overlappingSkillEvents) {
+                if (skillEvent.getSkill() instanceof InfernalVenomBuff) {
+                    isInfernalVenomBuff = true;
+                    fervantDrain.setBuffFinalDamage(1.5);
+                    break;
+                }
+            }
+            for (SkillEvent skillEvent : overlappingSkillEvents) {
+                if (skillEvent.getSkill() instanceof BuffSkill) {
+                    buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
+                    buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
+                    buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
+                    buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
+                    buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
+                    buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
+                    buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
+                    buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
+                    buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
+                    buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
+                    buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
+                    buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
+                    buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
+                    buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
+                    buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                } else {
+                    useAttackSkillList.add(skillEvent);
+                }
+            }
+            for (SkillEvent se : useAttackSkillList) {
+                totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
+                        totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
+                    }
+                }
+            }
+            if (isInfernalVenomBuff) {
+                isInfernalVenomBuff = false;
+                fervantDrain.setBuffFinalDamage(1.25);
+            }
+        }
+        for (AttackSkill as : attackSkillList) {
+            as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
+        }
+        return totalDamage;
     }
 }
