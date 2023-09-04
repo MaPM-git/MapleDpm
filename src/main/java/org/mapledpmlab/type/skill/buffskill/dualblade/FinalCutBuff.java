@@ -10,9 +10,10 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class FinalCutBuff extends BuffSkill {
     public FinalCutBuff() {
         this.setName("파이널 컷");
-        this.setCooldown(110.0);
-        this.setDuration(114L);
+        this.setCooldown(88.0);
+        this.setDuration(60L);
         this.addBuffFinalDamage(1.4);
+        this.setApplyPlusBuffDuration(true);
         this.setRelatedSkill(new FinalCut());
     }
 }

@@ -138,6 +138,7 @@ public class DualBladeDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(180.0);
 
+        dealCycle1.add(finalCutBuff);
         dealCycle1.add(epicAdventure);
         dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(crestOfTheSolar);
@@ -150,13 +151,12 @@ public class DualBladeDealCycle extends DealCycle {
         dealCycle1.add(bladeTornado);
         dealCycle1.add(karmaFury);
         dealCycle1.add(phantomBlow);
-        dealCycle1.add(hauntedEdge);
         dealCycle1.add(bladeStormFirst);
         dealCycle1.add(asura);
         dealCycle1.add(phantomBlow);
-        dealCycle1.add(hauntedEdge);
         dealCycle1.add(karmaBladeFinish);
 
+        dealCycle2.add(finalCutBuff);
         dealCycle2.add(epicAdventure);
         dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(ultimateDarkSight);
@@ -166,17 +166,16 @@ public class DualBladeDealCycle extends DealCycle {
         dealCycle2.add(bladeTornado);
         dealCycle2.add(karmaFury);
         dealCycle2.add(phantomBlow);
-        dealCycle2.add(hauntedEdge);
         dealCycle2.add(bladeStormFirst);
         dealCycle2.add(asura);
 
+        dealCycle3.add(finalCutBuff);
         dealCycle3.add(readyToDie);
         dealCycle3.add(soulContract);
         dealCycle3.add(weaponJumpRing);
         dealCycle3.add(bladeTornado);
         dealCycle3.add(karmaFury);
         dealCycle3.add(phantomBlow);
-        dealCycle3.add(hauntedEdge);
         dealCycle3.add(bladeStormFirst);
         dealCycle3.add(asura);
 
@@ -184,9 +183,6 @@ public class DualBladeDealCycle extends DealCycle {
         shortDealCycle.add(karmaFury);
 
         while (getStart().before(getEnd())) {
-            if (cooldownCheck(finalCutBuff)) {
-                addSkillEvent(finalCutBuff);
-            }
             if (cooldownCheck(flashbangBuff)) {
                 addSkillEvent(flashbangBuff);
             }
@@ -194,35 +190,45 @@ public class DualBladeDealCycle extends DealCycle {
                     getStart().after(mapleWorldGoddessBlessing.getEndTime())
                             && getStart().before(new Timestamp(90 * 1000))
             ) {
+                System.out.println("---------");
+                System.out.println("mwgb");
+                System.out.println(getStart());
+                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addSkillEvent(mapleWorldGoddessBlessing);
             }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("---------");
+                System.out.println("dc1");
+                System.out.println(getStart());
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("---------");
+                System.out.println("dc2");
+                System.out.println(getStart());
                 addDealCycle(dealCycle2);
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("---------");
+                System.out.println("dc3");
+                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
                     cooldownCheck(shortDealCycle)
-                    && !cooldownCheck(readyToDie)
+                    && !cooldownCheck(soulContract)
             ) {
+                System.out.println("---------");
+                System.out.println("sdc");
+                System.out.println(getStart());
                 addDealCycle(shortDealCycle);
-            } else if (
-                    cooldownCheck(hauntedEdge)
-                    && !cooldownCheck(readyToDie)
-            ) {
-                addSkillEvent(phantomBlow);
-                addSkillEvent(hauntedEdge);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -230,6 +236,9 @@ public class DualBladeDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else {
                 addSkillEvent(phantomBlow);
+                if (cooldownCheck(hauntedEdge)) {
+                    addSkillEvent(hauntedEdge);
+                }
             }
         }
         sortEventTimeList();
