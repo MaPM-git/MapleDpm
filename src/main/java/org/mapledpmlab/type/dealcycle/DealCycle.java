@@ -70,6 +70,16 @@ public class DealCycle {
             }
         } else {
             if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                this.getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
@@ -85,16 +95,6 @@ public class DealCycle {
                     }
                 }
                 this.setStart(tmp);
-                List<SkillEvent> remove = new ArrayList<>();
-                for (SkillEvent skillEvent : this.getSkillEventList()) {
-                    if (
-                            skillEvent.getStart().after(getStart())
-                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
-                    ) {
-                        remove.add(skillEvent);
-                    }
-                }
-                this.getSkillEventList().removeAll(remove);
             } else {
                 endTime = new Timestamp(start.getTime() + skill.getDelay());
                 skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));

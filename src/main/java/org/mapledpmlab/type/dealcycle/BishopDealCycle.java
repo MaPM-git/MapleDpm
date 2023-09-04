@@ -498,6 +498,16 @@ public class BishopDealCycle extends DealCycle {
             }
         } else {
             if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                this.getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
@@ -513,16 +523,6 @@ public class BishopDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
-                List<SkillEvent> remove = new ArrayList<>();
-                for (SkillEvent skillEvent : this.getSkillEventList()) {
-                    if (
-                            skillEvent.getStart().after(getStart())
-                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
-                    ) {
-                        remove.add(skillEvent);
-                    }
-                }
-                this.getSkillEventList().removeAll(remove);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
