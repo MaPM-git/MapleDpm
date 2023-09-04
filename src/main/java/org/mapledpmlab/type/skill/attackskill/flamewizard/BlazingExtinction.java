@@ -1,0 +1,18 @@
+package org.mapledpmlab.type.skill.attackskill.flamewizard;
+
+import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+
+public class BlazingExtinction extends AttackSkill {
+    public BlazingExtinction() {
+        this.setName("블레이징 익스팅션");
+        this.setDamage(312.0);
+        this.setAttackCount(4L + 1);    // 블레이징 익스팅션-애드 어택
+        this.setCooldown(5.0);
+        this.setDotDuration(10000L);
+        this.setInterval(830L);
+        this.setAddDamage(20L);         // 블레이징 익스팅션-리인포스
+        this.addFinalDamage(2.2);
+        this.addIgnoreDefenseList(20L);
+        this.setRelatedSkill(new BlazingExtinctionDelay());
+    }
+}

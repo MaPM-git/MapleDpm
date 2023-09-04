@@ -60,9 +60,9 @@ public class FlameWizard extends Job {
         this.addMainStat(60L);          // 번뜩이는 깨달음
 
         // 4차
-        this.addMagic(41L);             // 엘리멘트 : 플레임 IV
         this.addMagic(21L);             // 마법의 진리
         this.addFinalDamage(1.53);
+        this.addIgnoreDefenseList(31L); // 스피릿 오브 플레임
 
         this.setAbility(new BossBuffCritical());
         this.setFarm(new BuffFarm());
@@ -77,6 +77,14 @@ public class FlameWizard extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addMagic(41L);             // 엘리멘트 : 플레임 IV
+        this.addProperty(10L);          // 오비탈 플레임 VI
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 
     public Long getStatDamage() {
