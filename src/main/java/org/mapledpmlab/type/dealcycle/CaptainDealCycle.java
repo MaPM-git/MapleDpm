@@ -462,14 +462,16 @@ public class CaptainDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
+                List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
                             skillEvent.getStart().after(getStart())
-                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
                     ) {
-                        this.getSkillEventList().remove(skillEvent);
+                        remove.add(skillEvent);
                     }
                 }
+                this.getSkillEventList().removeAll(remove);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));

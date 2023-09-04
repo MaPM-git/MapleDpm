@@ -85,14 +85,16 @@ public class DealCycle {
                     }
                 }
                 this.setStart(tmp);
-                for (SkillEvent skillEvent : skillEventList) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
                             skillEvent.getStart().after(getStart())
                             && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
                     ) {
-                        skillEventList.remove(skillEvent);
+                        remove.add(skillEvent);
                     }
                 }
+                this.getSkillEventList().removeAll(remove);
             } else {
                 endTime = new Timestamp(start.getTime() + skill.getDelay());
                 skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));
