@@ -14,4 +14,9 @@ public class FlameDischarge extends AttackSkill {
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new FlameDischargeDelay());
     }
+
+    public void setByFlameCount(Long flameCount) {
+        this.setDotDuration(4400L + (flameCount - 2) * 550 * 2);
+        this.setLimitAttackCount(8L * (8 + (flameCount - 2) * 2));
+    }
 }

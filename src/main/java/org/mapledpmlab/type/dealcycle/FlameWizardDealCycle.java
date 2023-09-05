@@ -91,6 +91,7 @@ public class FlameWizardDealCycle extends DealCycle {
     };
 
     int orbitalExplosionCount = 0;
+    int flameCount = 0;
 
     public FlameWizardDealCycle(Job job) {
         super(job, null);
@@ -190,7 +191,10 @@ public class FlameWizardDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && (dealCycleOrder == 1 || dealCycleOrder == 3 || dealCycleOrder == 5)
+                    && flameCount >= 50
             ) {
+                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameCount = 0;
                 addDealCycle(dealCycle1);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
@@ -215,7 +219,10 @@ public class FlameWizardDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && getStart().before(new Timestamp(200 * 1000))
                     && dealCycleOrder == 2
+                    && flameCount >= 50
             ) {
+                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameCount = 0;
                 addDealCycle(dealCycle2);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
@@ -235,7 +242,10 @@ public class FlameWizardDealCycle extends DealCycle {
                     && getStart().after(new Timestamp(4 * 60 * 1000))
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && (dealCycleOrder == 4 || dealCycleOrder == 6)
+                    && flameCount >= 50
             ) {
+                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameCount = 0;
                 addDealCycle(dealCycle3);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
@@ -257,13 +267,19 @@ public class FlameWizardDealCycle extends DealCycle {
             } else if (
                     getStart().after(new Timestamp(finalTime.getTime() - 27000))
                     && finalChk == 0
+                    && flameCount >= 50
             ) {
+                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameCount = 0;
                 addDealCycle(final1);
                 finalChk = 2;
             } else if (
                     getStart().after(new Timestamp(finalTime.getTime() - 27000))
                     && finalChk == 1
+                    && flameCount >= 50
             ) {
+                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameCount = 0;
                 addDealCycle(final2);
                 finalChk = 2;
             } else if (
@@ -282,7 +298,10 @@ public class FlameWizardDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 18000))
                     && getStart().before(new Timestamp(phoenixDrive.getActivateTime().getTime() - 18000))
                     && getStart().after(phoenixDriveEndTime)
+                    && flameCount >= 50
             ) {
+                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameCount = 0;
                 addSkillEvent(flameDischarge);
             } else if (
                     cooldownCheck(blazingOrbitalFlame)
@@ -403,6 +422,25 @@ public class FlameWizardDealCycle extends DealCycle {
                 if (orbitalExplosionCount % 10 == 0) {
                     addSkillEvent(new OrbitalExplosion());
                     orbitalExplosionCount = orbitalExplosionCount - 10;
+                }
+            }
+            if (
+                    skill instanceof Eternity
+                            || skill instanceof EternityCirculation
+                            || skill instanceof OrbitalFlame
+                            || skill instanceof OrbitalFlameReinforce
+                            || skill instanceof PhoenixDriveFirst
+                            || skill instanceof PhoenixDriveAfterSecond
+                            || skill instanceof InfernoRize
+                            || skill instanceof InfinityFlameCircle
+            ) {
+                if (((AttackSkill) skill).getLimitAttackCount() != 0) {
+                    flameCount = flameCount + ((AttackSkill) skill).getLimitAttackCount().intValue();
+                } else {
+                    flameCount++;
+                }
+                if (flameCount > 150) {
+                    flameCount = 150;
                 }
             }
         }
