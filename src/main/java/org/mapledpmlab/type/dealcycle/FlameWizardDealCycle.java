@@ -187,6 +187,9 @@ public class FlameWizardDealCycle extends DealCycle {
         int dealCycleOrder = 1;
 
         while (getStart().before(getEnd())) {
+            if (cooldownCheck(spiritOfFlame)) {
+                addSkillEvent(spiritOfFlame);
+            }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
