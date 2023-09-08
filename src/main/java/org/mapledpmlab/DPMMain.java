@@ -40,6 +40,7 @@ public class DPMMain {
         dealCycleList.add(new ShadowerDealCycle(new Shadower()));
         dealCycleList.add(new SoulMasterDealCycle(new SoulMaster()));
         dealCycleList.add(new ViperDealCycle(new Viper()));
+        dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         this.exportExcel();
     }
 
