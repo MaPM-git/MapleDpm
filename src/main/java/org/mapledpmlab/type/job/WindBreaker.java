@@ -94,4 +94,11 @@ public class WindBreaker extends Job {
         this.setHyper(new HyperArcher(this.getLevel()));
         this.addObject(this.getHyper());
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addAtt(15L);               // 세컨드 윈드
+        this.addIgnoreDefenseList(11L); // 에메랄드 더스트
+    }
 }
