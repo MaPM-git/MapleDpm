@@ -48,6 +48,7 @@ public class WindBreakerDealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new CygnusPhalanx());
+            add(new GuidedArrow());
             add(new HowlingGale1());
             add(new HowlingGale2());
             add(new IdleWhimAfterSecond());
@@ -105,6 +106,7 @@ public class WindBreakerDealCycle extends DealCycle {
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
         GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
+        GuidedArrow guidedArrow = new GuidedArrow();
         HowlingGale1 howlingGale1 = new HowlingGale1();
         IdleWhimDelay idleWhimDelay = new IdleWhimDelay();
         MistralSpring mistralSpring = new MistralSpring();
@@ -129,6 +131,12 @@ public class WindBreakerDealCycle extends DealCycle {
 
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
             getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i)));
+            getEventTimeList().add(new Timestamp(i));
+        }
+
+        // 가이디드 에로우
+        for (int i = 0; i < 720 * 1000; i += guidedArrow.getInterval()) {
+            getSkillEventList().add(new SkillEvent(guidedArrow, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
 
