@@ -35,6 +35,7 @@ public class DPMMain {
         dealCycleList.add(new MarksmanDealCycle(new Marksman()));
         dealCycleList.add(new MihileDealCycle(new Mihile()));
         dealCycleList.add(new NightLordDealCycle(new NightLord()));
+        dealCycleList.add(new NightWalkerDealCycle(new NightWalker()));
         dealCycleList.add(new PaladinDealCycle(new Paladin()));
         dealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
         dealCycleList.add(new ShadowerDealCycle(new Shadower()));

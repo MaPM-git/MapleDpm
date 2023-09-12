@@ -87,4 +87,11 @@ public class NightWalker extends Job {
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addIgnoreDefenseList(35L);     // 다크니스 어뎁팅
+        this.addAtt(60L);                   // 사이펀 바이탈리티-리인포스
+    }
 }

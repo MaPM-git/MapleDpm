@@ -109,4 +109,8 @@ public class AttackSkill extends Skill {
     public void addCriticalP(Double criticalP) {
         this.criticalP += criticalP;
     }
+
+    public void minusFinalDamage(Double finalDamage) {
+        this.finalDamage /= finalDamage;
+    }
 }
