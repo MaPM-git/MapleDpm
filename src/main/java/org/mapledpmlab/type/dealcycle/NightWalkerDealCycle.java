@@ -190,9 +190,6 @@ public class NightWalkerDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
-                System.out.println("-----------");
-                System.out.println("dc1");
-                System.out.println(getStart());
                 addDealCycle(dealCycle1);
                 finalTime = new Timestamp(getStart().getTime() + 19500);
                 finalChk = 0;
@@ -200,9 +197,6 @@ public class NightWalkerDealCycle extends DealCycle {
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
-                System.out.println("-----------");
-                System.out.println("dc2");
-                System.out.println(getStart());
                 addDealCycle(dealCycle2);
                 finalTime = new Timestamp(getStart().getTime() + 21500);
                 finalChk = 1;
@@ -210,17 +204,11 @@ public class NightWalkerDealCycle extends DealCycle {
                     cooldownCheck(dealCycle3)
                     && getStart().after(new Timestamp(finalTime.getTime() + 10000))
             ) {
-                System.out.println("-----------");
-                System.out.println("dc3");
-                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
                     getStart().after(finalTime)
                     && finalChk == 0
             ) {
-                System.out.println("-----------");
-                System.out.println("f1");
-                System.out.println(getStart());
                 silenceEndTime = new Timestamp(getStart().getTime() + 25000);
                 addDealCycle(final1);
                 finalChk = 2;
@@ -228,9 +216,6 @@ public class NightWalkerDealCycle extends DealCycle {
                     getStart().after(finalTime)
                     && finalChk == 1
             ) {
-                System.out.println("-----------");
-                System.out.println("f2");
-                System.out.println(getStart());
                 addDealCycle(final2);
                 finalChk = 2;
             } else if (
@@ -247,23 +232,14 @@ public class NightWalkerDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(shadowServantExtend)
             ) {
-                System.out.println("-----------");
-                System.out.println("sse");
-                System.out.println(getStart());
                 addSkillEvent(shadowServantExtend);
             } else if (
                     cooldownCheck(cygnusPhalanx)
             ) {
-                System.out.println("-----------");
-                System.out.println("cp");
-                System.out.println(getStart());
                 addSkillEvent(cygnusPhalanx);
             } else if (
                     cooldownCheck(shadowBiteBuff)
             ) {
-                System.out.println("-----------");
-                System.out.println("sb");
-                System.out.println(getStart());
                 addSkillEvent(shadowBiteBuff);
             } else if (
                     cooldownCheck(quintupleThrowBlack)
