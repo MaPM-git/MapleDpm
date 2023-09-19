@@ -11,9 +11,6 @@ public class CygnusPhalanx extends AttackSkill {
         this.setDotDuration(30000L);
         this.setInterval(240L);
         this.setLimitAttackCount(70L);
-        this.addFinalDamage(0.9);       // 마스터 오브 더 소드
-        this.addFinalDamage(2.2);       // 코어강화
-        this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new CygnusPhalanxDelay());
     }
 }
