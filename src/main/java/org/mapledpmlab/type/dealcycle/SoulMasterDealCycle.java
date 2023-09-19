@@ -136,6 +136,8 @@ public class SoulMasterDealCycle extends DealCycle {
         TrueSight trueSight = new TrueSight();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
+        cygnusPhalanx.addFinalDamage(0.9);
+
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
             getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
