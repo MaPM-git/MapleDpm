@@ -54,7 +54,7 @@ public class Blaster extends Job {
         // 4차
         this.addCriticalDamage(21.0);   // 건틀렛 엑스퍼트
         this.addBossDamage(21L);
-        this.addIgnoreDefenseList(38L);  // 어드밴스드 차지 마스터리
+        this.addIgnoreDefenseList(38L); // 어드밴스드 차지 마스터리
         this.addAtt(42L);               // 콤비네이션 트레이닝 II
         this.addCriticalP(30.0);
 
@@ -72,5 +72,12 @@ public class Blaster extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addFinalDamage(1.7);       // 콤비네이션 트레이닝
+        this.addFinalDamage(1.1);       // 해머 스매시
     }
 }

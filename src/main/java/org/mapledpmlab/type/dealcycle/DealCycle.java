@@ -181,9 +181,9 @@ public class DealCycle {
     public void print() {
         Long verifyDamage = 0L;
         for (AttackSkill as : attackSkillList) {
-            if (as.getCumulativeDamage() == 0) {
+            /*if (as.getCumulativeDamage() == 0) {
                 continue;
-            }
+            }*/
             as.print();
             verifyDamage += as.getCumulativeDamage();
         }
