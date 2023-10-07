@@ -12,6 +12,6 @@ public class CardinalDischarge extends GaugeAttackSkill implements CardinalForce
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.addCriticalP(5.0);
-        this.setGaugeCharge(20L);       // 화살당 10
+        this.setGaugeCharge(20.0);       // 화살당 10
     }
 }

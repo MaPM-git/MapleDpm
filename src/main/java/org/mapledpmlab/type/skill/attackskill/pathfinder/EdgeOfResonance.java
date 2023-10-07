@@ -13,6 +13,6 @@ public class EdgeOfResonance extends GaugeAttackSkill implements AncientForce {
         this.setAddDamage(51 + 20L);    // 에이션트 포스-보스 킬러
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setGaugeCharge(-100L);
+        this.setGaugeCharge(-100.0);
     }
 }

@@ -13,7 +13,7 @@ public class RavenTempest extends GaugeAttackSkill implements AncientForce {
         this.addFinalDamage(1.1);       // 에인션트 아처리
         this.setAddDamage(51 + 20L);    // 에이션트 포스-보스 킬러
         this.addFinalDamage(1.6);       // 코어강화
-        this.setGaugeCharge(-300L);
+        this.setGaugeCharge(-300.0);
         this.setRelatedSkill(new RavenTempestDelay());
     }
 }

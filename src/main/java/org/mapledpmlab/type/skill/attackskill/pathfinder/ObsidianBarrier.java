@@ -12,7 +12,7 @@ public class ObsidianBarrier extends GaugeAttackSkill {
         this.setInterval(500L);
         this.setAddDamage(20L);         // 에이션트 포스-인챈트 인핸스
         this.addFinalDamage(1.6);       // 코어강화
-        this.setGaugeCharge(-300L);
+        this.setGaugeCharge(-300.0);
         this.setRelatedSkill(new ObsidianBarrierDelay());
     }
 }

@@ -11,6 +11,6 @@ public class CardinalTransition extends GaugeAttackSkill implements CardinalForc
         this.setAddDamage(20L);         // 카디널 포스-리인포스
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setGaugeCharge(20L);
+        this.setGaugeCharge(20.0);
     }
 }

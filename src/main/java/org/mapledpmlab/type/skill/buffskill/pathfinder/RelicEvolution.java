@@ -11,6 +11,6 @@ public class RelicEvolution extends GaugeBuffSkill {
         this.setName("렐릭 에볼루션");
         this.setCooldown(120.0);
         this.setDuration(30L);
-        this.setGaugeCharge(1000L);
+        this.setGaugeCharge(1000.0);
     }
 }
