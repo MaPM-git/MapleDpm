@@ -53,6 +53,7 @@ public class DemonSlayer extends Job {
 
         // 3차
         this.addFinalDamage(1.3);       // 컨센트레이션
+        this.addCriticalP(15.0);        // 이블 토쳐
 
         // 4차
         this.addIgnoreDefenseList(31L);  // 다크 바인드
@@ -74,5 +75,12 @@ public class DemonSlayer extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addFinalDamage(1.15);      // 이블 토쳐
+        this.addIgnoreDefenseList(15L); // 데몬 임팩트 : 데몬 체인
     }
 }
