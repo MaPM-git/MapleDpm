@@ -167,56 +167,38 @@ public class ArchMageFPDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrestOfTheSolarDot crestOfTheSolarDot = new CrestOfTheSolarDot();
-        DotPunisherAfterSecond dotPunisherAfterSecond = new DotPunisherAfterSecond();
-        DotPunisherDot dotPunisherDot = new DotPunisherDot();
         DotPunisherFirst dotPunisherFirst = new DotPunisherFirst();
-        DotPunisherOriginAfterSecond dotPunisherOriginAfterSecond = new DotPunisherOriginAfterSecond();
-        DotPunisherOriginDot dotPunisherOriginDot = new DotPunisherOriginDot();
         DotPunisherOriginFirst dotPunisherOriginFirst = new DotPunisherOriginFirst();
         EpicAdventure epicAdventure = new EpicAdventure();
-        FinalAttackArchMageFP finalAttackArchMageFP = new FinalAttackArchMageFP();
         FireAura fireAura = new FireAura();
         FireAuraDot fireAuraDot = new FireAuraDot();
         FlameHaze flameHaze = new FlameHaze();
         FlameHazeDot flameHazeDot = new FlameHazeDot();
         FlameSweep flameSweep = new FlameSweep();
         FlameSweepDot flameSweepDot = new FlameSweepDot();
-        FlameSweepExplosion flameSweepExplosion = new FlameSweepExplosion();
-        FuryOfIfrit furyOfIfrit = new FuryOfIfrit();
         FuryOfIfritDelay furyOfIfritDelay = new FuryOfIfritDelay();
-        FuryOfIfritOrigin furyOfIfritOrigin = new FuryOfIfritOrigin();
         FuryOfIfritOriginDelay furyOfIfritOriginDelay = new FuryOfIfritOriginDelay();
         Ifrit ifrit = new Ifrit();
         IfritDot ifritDot = new IfritDot();
         IfritSummon ifritSummon = new IfritSummon();
-        Ignite ignite = new Ignite();
         InfernalVenomBuff infernalVenomBuff = new InfernalVenomBuff();
         InfernalVenomExplosion1 infernalVenomExplosion1 = new InfernalVenomExplosion1();
-        InfernalVenomExplosion2 infernalVenomExplosion2 = new InfernalVenomExplosion2();
         Infinity infinity = new Infinity(0L);
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         MegidoFlame megidoFlame = new MegidoFlame();
         MegidoFlameDot megidoFlameDot = new MegidoFlameDot();
-        Meteor meteor = new Meteor();
         MistEruption mistEruption = new MistEruption();
-        PoisonChain poisonChain = new PoisonChain();
         PoisonChainExplosion poisonChainExplosion = new PoisonChainExplosion();
-        PoisonNova poisonNova = new PoisonNova();
         PoisonNovaDot poisonNovaDot = new PoisonNovaDot();
         PoisonNovaExplosion poisonNovaExplosion = new PoisonNovaExplosion();
-        PoisonNovaExplosionAfterThird poisonNovaExplosionAfterThird = new PoisonNovaExplosionAfterThird();
         PoisonMist poisonMist = new PoisonMist();
         PoisonZoneDelay poisonZoneDelay = new PoisonZoneDelay();
-        PoisonZoneDot poisonZoneDot = new PoisonZoneDot();
         PoisonZoneExplosion poisonZoneExplosion = new PoisonZoneExplosion();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
-        RiskTakerRing riskTakerRing = new RiskTakerRing();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         TeleportMastery teleportMastery = new TeleportMastery();
         TeleportMasteryDot teleportMasteryDot = new TeleportMasteryDot();
         ThiefCunning thiefCunning = new ThiefCunning();
@@ -429,6 +411,9 @@ public class ArchMageFPDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("-------------");
+                System.out.println(getStart());
+                System.out.println("dc1");
                 infernalVenomEndTime = new Timestamp(getStart().getTime() + 2940 + infernalVenomBuff.getDuration() * 1000);
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
@@ -438,12 +423,18 @@ public class ArchMageFPDealCycle extends DealCycle {
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("-------------");
+                System.out.println(getStart());
+                System.out.println("dc2");
                 addDealCycle(dealCycle2);
                 dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
                 furyOfIfritOriginDelay.setActivateTime(furyOfIfritDelay.getActivateTime());
             } else if (
                     cooldownCheck(dealCycle3)
             ) {
+                System.out.println("-------------");
+                System.out.println(getStart());
+                System.out.println("dc3");
                 addDealCycle(dealCycle3);
                 dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
                 furyOfIfritOriginDelay.setActivateTime(furyOfIfritDelay.getActivateTime());
@@ -452,6 +443,9 @@ public class ArchMageFPDealCycle extends DealCycle {
                     && getStart().after(new Timestamp(70 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("-------------");
+                System.out.println(getStart());
+                System.out.println("rs");
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(megidoFlame)
@@ -465,35 +459,37 @@ public class ArchMageFPDealCycle extends DealCycle {
                             - soulContract.getDelay()
                     )))
             ) {
+                System.out.println("-------------");
+                System.out.println(getStart());
+                System.out.println("mg");
                 addSkillEvent(megidoFlame);
             } else if (
                     cooldownCheck(poisonNovaDot)
                     && getStart().before(infernalVenomEndTime)
             ) {
+                System.out.println("-------------");
+                System.out.println(getStart());
+                System.out.println("sdc1");
                 addDealCycle(shortDealCycle1);
                 dotPunisherFirst.setActivateTime(dotPunisherOriginFirst.getActivateTime());
                 furyOfIfritDelay.setActivateTime(furyOfIfritOriginDelay.getActivateTime());
             } else if (
                     cooldownCheck(poisonNovaDot)
-                    && soulContract.getActivateTime().after(new Timestamp((long) (
-                            poisonNovaDot.getActivateTime().getTime()
-                                    + applyCooldownReduction(poisonNovaDot) * 1000
-                                    - mapleWorldGoddessBlessing.getDelay()
-                                    - flameHaze.getDelay()
-                                    - flameSweep.getDelay()
-                                    - teleportMastery.getDelay()
-                                    + soulContract.getDelay()
-                                    + megidoFlame.getDelay()
-                                    + furyOfIfritDelay.getDelay()
-                    )))
+                    && !cooldownCheck(furyOfIfritDelay)
             ) {
+                System.out.println("-------------");
+                System.out.println(getStart());
+                System.out.println("sdc2");
                 addDealCycle(shortDealCycle2);
                 dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
                 furyOfIfritOriginDelay.setActivateTime(furyOfIfritDelay.getActivateTime());
             } else if (
                     cooldownCheck(shortDealCycle3)
-                    && !cooldownCheck(soulContract)
+                    && !cooldownCheck(furyOfIfritDelay)
             ) {
+                System.out.println("-------------");
+                System.out.println(getStart());
+                System.out.println("sdc3");
                 addDealCycle(shortDealCycle3);
             } else if (
                     cooldownCheck(teleportMastery)
