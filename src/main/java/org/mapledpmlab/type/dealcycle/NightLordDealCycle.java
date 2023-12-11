@@ -96,13 +96,11 @@ public class NightLordDealCycle extends DealCycle {
 
         BleedingToxinDot bleedingToxinDot = new BleedingToxinDot();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrestOfTheSolarDot crestOfTheSolarDot = new CrestOfTheSolarDot();
         DarkFlare darkFlare = new DarkFlare();
         DarkFlareDelay darkFlareDelay = new DarkFlareDelay();
         DarkLordsSecretScroll darkLordsSecretScroll = new DarkLordsSecretScroll();
         EpicAdventure epicAdventure = new EpicAdventure();
         FatalVenom fatalVenom = new FatalVenom();
-        FourSeasons fourSeasons = new FourSeasons();
         FumaShuriken fumaShuriken = new FumaShuriken();
         LifeOrDeathSlash lifeOrDeathSlash = new LifeOrDeathSlash();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
@@ -110,16 +108,12 @@ public class NightLordDealCycle extends DealCycle {
         PurgeArea purgeArea = new PurgeArea();
         QuadrupleThrow quadrupleThrow = new QuadrupleThrow();
         QuadrupleThrowReinforce quadrupleThrowReinforce = new QuadrupleThrowReinforce();
-        QuadrupleThrowReinforceSpread quadrupleThrowReinforceSpread = new QuadrupleThrowReinforceSpread();
-        QuadrupleThrowSpread quadrupleThrowSpread = new QuadrupleThrowSpread();
         ReadyToDie readyToDie = new ReadyToDie();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         SpreadThrow spreadThrow = new SpreadThrow();
-        SuddenRaid suddenRaid = new SuddenRaid();
         ThiefCunning thiefCunning = new ThiefCunning();
         ThrowBlasting throwBlasting = new ThrowBlasting();
         ThrowBlastingActive throwBlastingActive = new ThrowBlastingActive();
@@ -185,7 +179,6 @@ public class NightLordDealCycle extends DealCycle {
         dealCycle3.add(readyToDie);
         dealCycle3.add(fumaShuriken);
 
-        Timestamp throwBlastingEndTime = new Timestamp(-1);
         List<Skill> throwBlastingList;
         List<Skill> dealCycle;
 
@@ -233,7 +226,6 @@ public class NightLordDealCycle extends DealCycle {
                 dealCycle.addAll(dealCycle1);
                 dealCycle.addAll(throwBlastingList);
                 addDealCycle(dealCycle);
-                throwBlastingEndTime = getStart();
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
@@ -260,7 +252,6 @@ public class NightLordDealCycle extends DealCycle {
                 dealCycle.addAll(dealCycle2);
                 dealCycle.addAll(throwBlastingList);
                 addDealCycle(dealCycle);
-                throwBlastingEndTime = getStart();
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
@@ -269,7 +260,6 @@ public class NightLordDealCycle extends DealCycle {
                 addDealCycle(dealCycle3);
             } else if (
                     cooldownCheck(throwBlastingPassive)
-                    //&& getStart().after(throwBlastingEndTime)
             ) {
                 addSkillEvent(throwBlastingPassive);
             } else if (
