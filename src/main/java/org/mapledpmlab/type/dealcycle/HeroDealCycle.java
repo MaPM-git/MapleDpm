@@ -97,6 +97,8 @@ public class HeroDealCycle extends DealCycle {
 
     BuffSkill advancedComboAttack = new BuffSkill();
 
+    Timestamp comboInstinctEndTime = new Timestamp(-1);
+
     public HeroDealCycle(Job job) {
         super(job, new AdvancedFinalAttackHero());
 
@@ -107,9 +109,7 @@ public class HeroDealCycle extends DealCycle {
         Long q = 0L;
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        AuraWeaponDot auraWeaponDot = new AuraWeaponDot();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrestOfTheSolarDot crestOfTheSolarDot = new CrestOfTheSolarDot();
         ComboDeathFault comboDeathFault = new ComboDeathFault();
         ComboInstinctsAttack comboInstinctsAttack = new ComboInstinctsAttack();
         ComboInstinctsBuff comboInstinctsBuff = new ComboInstinctsBuff();
@@ -124,16 +124,11 @@ public class HeroDealCycle extends DealCycle {
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         SpiritCaliber spiritCaliber = new SpiritCaliber();
         SwordIllusionBuff swordIllusionBuff = new SwordIllusionBuff();
-        SwordIllusionExplosion swordIllusionExplosion = new SwordIllusionExplosion();
-        SwordIllusionSlash swordIllusionSlash = new SwordIllusionSlash();
         SwordOfBurningSoulBuff swordOfBurningSoulBuff = new SwordOfBurningSoulBuff();
-        SwordOfBurningSoulDot swordOfBurningSoulDot = new SwordOfBurningSoulDot();
         ThiefCunning thiefCunning = new ThiefCunning();
         ValhallaBuff valhallaBuff = new ValhallaBuff();
-        ValhallaDot valhallaDot = new ValhallaDot();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         for (int i = 0; i < 720 * 1000; i += incisingDot.getInterval()) {
@@ -165,12 +160,6 @@ public class HeroDealCycle extends DealCycle {
         dealCycle1.add(restraintRing);
         dealCycle1.add(comboInstinctsBuff);
         dealCycle1.add(spiritCaliber);
-        q = 12470L;
-        while (q > 0) {     // 남은 인스팅트 동안 레이징 블로우 사용
-            dealCycle1.add(ragingBlow);
-            dealCycle1.add(comboInstinctsAttack);
-            q -=  ragingBlow.getDelay();
-        }
 
         dealCycle2.add(swordOfBurningSoulBuff);
         dealCycle2.add(incisingAttack);
@@ -182,12 +171,6 @@ public class HeroDealCycle extends DealCycle {
         dealCycle2.add(weaponJumpRing);
         dealCycle2.add(comboInstinctsBuff);
         dealCycle2.add(spiritCaliber);
-        q = 12470L;
-        while (q > 0) {     // 남은 인스팅트 동안 레이징 블로우 사용
-            dealCycle2.add(ragingBlow);
-            dealCycle2.add(comboInstinctsAttack);
-            q -=  ragingBlow.getDelay();
-        }
 
         dealCycle3.add(swordOfBurningSoulBuff);
         dealCycle3.add(incisingAttack);
@@ -200,12 +183,6 @@ public class HeroDealCycle extends DealCycle {
         dealCycle3.add(swordIllusionBuff);
         dealCycle3.add(restraintRing);
         dealCycle3.add(comboInstinctsBuff);
-        q = 19550L;
-        while (q > 0) {     // 남은 인스팅트 동안 레이징 블로우 사용
-            dealCycle3.add(ragingBlow);
-            dealCycle3.add(comboInstinctsAttack);
-            q -=  ragingBlow.getDelay();
-        }
 
         dealCycle4.add(swordOfBurningSoulBuff);
         dealCycle4.add(incisingAttack);
@@ -216,12 +193,6 @@ public class HeroDealCycle extends DealCycle {
         dealCycle4.add(swordIllusionBuff);
         dealCycle4.add(weaponJumpRing);
         dealCycle4.add(comboInstinctsBuff);
-        q = 19550L;
-        while (q > 0) {     // 남은 인스팅트 동안 레이징 블로우 사용
-            dealCycle4.add(ragingBlow);
-            dealCycle4.add(comboInstinctsAttack);
-            q -=  ragingBlow.getDelay();
-        }
 
         dealCycle5.add(swordOfBurningSoulBuff);
         dealCycle5.add(incisingAttack);
@@ -231,12 +202,6 @@ public class HeroDealCycle extends DealCycle {
         dealCycle5.add(swordIllusionBuff);
         dealCycle5.add(weaponJumpRing);
         dealCycle5.add(comboInstinctsBuff);
-        q = 19550L;
-        while (q > 0) {     // 남은 인스팅트 동안 레이징 블로우 사용
-            dealCycle5.add(ragingBlow);
-            dealCycle5.add(comboInstinctsAttack);
-            q -=  ragingBlow.getDelay();
-        }
 
         shortDealCycle.add(incisingAttack);
         shortDealCycle.add(swordIllusionBuff);
@@ -302,8 +267,43 @@ public class HeroDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
                 ringSwitchingActivateTime.setTime(ringSwitching.getActivateTime().getTime());
             } else if (
+                    cooldownCheck(soulContract)
+                            && (
+                            (
+                                    getStart().after(new Timestamp(30 * 1000))
+                                    && getStart().before(new Timestamp(90 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(150 * 1000))
+                                    && getStart().before(new Timestamp(210 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(270 * 1000))
+                                    && getStart().before(new Timestamp(330 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(390 * 1000))
+                                    && getStart().before(new Timestamp(450 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(510 * 1000))
+                                    && getStart().before(new Timestamp(570 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(630 * 1000))
+                                    && getStart().before(new Timestamp(690 * 1000))
+                            )
+                    )
+            ) {
+                addSkillEvent(soulContract);
+            } else if (
                     cooldownCheck(shortDealCycle)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() + 30000))
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 13000))
             ) {
                 addDealCycle(shortDealCycle);
                 swordIllusionActivateTime.setTime(shortDealCycle.get(1).getActivateTime().getTime());
@@ -316,6 +316,9 @@ public class HeroDealCycle extends DealCycle {
                 rageUprisingActivateTime.setTime(shortDealCycle.get(3).getActivateTime().getTime());
             } else {
                 addSkillEvent(ragingBlow);
+                if (getStart().before(comboInstinctEndTime)) {
+                    addSkillEvent(comboInstinctsAttack);
+                }
             }
             i++;
         }
@@ -383,5 +386,77 @@ public class HeroDealCycle extends DealCycle {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
+    }
+
+    @Override
+    public void addSkillEvent(Skill skill) {
+        Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
+        if (skill instanceof BuffSkill) {
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime == null
+                            && restraintRingEndTime == null
+                            && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            } else {
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        } else {
+            if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                this.getSkillEventList().removeAll(remove);
+                Timestamp tmp = getStart();
+                if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                } else {
+                    Long attackCount = 0L;
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        attackCount += 1;
+                    }
+                }
+                this.setStart(tmp);
+            } else {
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        }
+        applyCooldown(skill);
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+            if (skill instanceof ComboInstinctsBuff) {
+                comboInstinctEndTime = endTime;
+            }
+        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
     }
 }
