@@ -134,9 +134,6 @@ public class BishopDealCycle extends DealCycle {
         AngelOfLibra angelOfLibra = new AngelOfLibra();
         AngelicRay angelicRay = new AngelicRay();
         AngelicTouch angelicTouch = new AngelicTouch();
-        AngelOfLibraCharity angelOfLibraCharity = new AngelOfLibraCharity(0L);
-        AngelOfLibraRevenge angelOfLibraRevenge = new AngelOfLibraRevenge();
-        Bahamut bahamut = new Bahamut();
         BahamutSummon bahamutSummon = new BahamutSummon();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DivinePunishment divinePunishment = new DivinePunishment();
@@ -153,7 +150,6 @@ public class BishopDealCycle extends DealCycle {
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
-        RiskTakerRing riskTakerRing = new RiskTakerRing();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         ThiefCunning thiefCunning = new ThiefCunning();
