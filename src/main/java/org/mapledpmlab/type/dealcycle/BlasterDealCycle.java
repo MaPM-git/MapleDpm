@@ -131,7 +131,6 @@ public class BlasterDealCycle extends DealCycle {
         DuckingCharge duckingCharge = new DuckingCharge();
         DuckingJump duckingJump = new DuckingJump();
         FinalDestroyer1 finalDestroyer1 = new FinalDestroyer1();
-        HammerSmashCharge hammerSmashCharge = new HammerSmashCharge();
         HammerSmashJump hammerSmashJump = new HammerSmashJump();
         MagnumPunch magnumPunch = new MagnumPunch();
         MagnumPunch250 magnumPunch250 = new MagnumPunch250();
@@ -294,8 +293,10 @@ public class BlasterDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(vulcanPunch)
-                    && !cooldownCheck(soulContract)
+                    && cooldownCheck(soulContract)
+                    && !cooldownCheck(burningBreakerDelay)
             ) {
+                addSkillEvent(soulContract);
                 addSkillEvent(vulcanPunch);
             } else if (
                     cooldownCheck(resistanceLineInfantry)
