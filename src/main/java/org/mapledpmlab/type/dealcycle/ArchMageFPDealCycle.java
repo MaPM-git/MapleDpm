@@ -411,9 +411,6 @@ public class ArchMageFPDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("-------------");
-                System.out.println(getStart());
-                System.out.println("dc1");
                 infernalVenomEndTime = new Timestamp(getStart().getTime() + 2940 + infernalVenomBuff.getDuration() * 1000);
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
@@ -423,18 +420,12 @@ public class ArchMageFPDealCycle extends DealCycle {
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("-------------");
-                System.out.println(getStart());
-                System.out.println("dc2");
                 addDealCycle(dealCycle2);
                 dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
                 furyOfIfritOriginDelay.setActivateTime(furyOfIfritDelay.getActivateTime());
             } else if (
                     cooldownCheck(dealCycle3)
             ) {
-                System.out.println("-------------");
-                System.out.println(getStart());
-                System.out.println("dc3");
                 addDealCycle(dealCycle3);
                 dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
                 furyOfIfritOriginDelay.setActivateTime(furyOfIfritDelay.getActivateTime());
@@ -443,9 +434,6 @@ public class ArchMageFPDealCycle extends DealCycle {
                     && getStart().after(new Timestamp(70 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("-------------");
-                System.out.println(getStart());
-                System.out.println("rs");
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(megidoFlame)
@@ -459,17 +447,11 @@ public class ArchMageFPDealCycle extends DealCycle {
                             - soulContract.getDelay()
                     )))
             ) {
-                System.out.println("-------------");
-                System.out.println(getStart());
-                System.out.println("mg");
                 addSkillEvent(megidoFlame);
             } else if (
                     cooldownCheck(poisonNovaDot)
                     && getStart().before(infernalVenomEndTime)
             ) {
-                System.out.println("-------------");
-                System.out.println(getStart());
-                System.out.println("sdc1");
                 addDealCycle(shortDealCycle1);
                 dotPunisherFirst.setActivateTime(dotPunisherOriginFirst.getActivateTime());
                 furyOfIfritDelay.setActivateTime(furyOfIfritOriginDelay.getActivateTime());
@@ -477,9 +459,6 @@ public class ArchMageFPDealCycle extends DealCycle {
                     cooldownCheck(poisonNovaDot)
                     && !cooldownCheck(furyOfIfritDelay)
             ) {
-                System.out.println("-------------");
-                System.out.println(getStart());
-                System.out.println("sdc2");
                 addDealCycle(shortDealCycle2);
                 dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
                 furyOfIfritOriginDelay.setActivateTime(furyOfIfritDelay.getActivateTime());
@@ -487,9 +466,6 @@ public class ArchMageFPDealCycle extends DealCycle {
                     cooldownCheck(shortDealCycle3)
                     && !cooldownCheck(furyOfIfritDelay)
             ) {
-                System.out.println("-------------");
-                System.out.println(getStart());
-                System.out.println("sdc3");
                 addDealCycle(shortDealCycle3);
             } else if (
                     cooldownCheck(teleportMastery)
