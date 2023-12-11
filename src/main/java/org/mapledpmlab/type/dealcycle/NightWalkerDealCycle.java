@@ -108,7 +108,6 @@ public class NightWalkerDealCycle extends DealCycle {
         QuintupleThrow quintupleThrow = new QuintupleThrow();
         QuintupleThrowBlack quintupleThrowBlack = new QuintupleThrowBlack();
         RapidThrow rapidThrow = new RapidThrow();
-        RavenousBat ravenousBat = new RavenousBat();
         ReadyToDie readyToDie = new ReadyToDie();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
