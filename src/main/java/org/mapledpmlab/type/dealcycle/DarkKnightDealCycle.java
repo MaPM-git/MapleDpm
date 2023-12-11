@@ -98,33 +98,25 @@ public class DarkKnightDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        AuraWeaponDot auraWeaponDot = new AuraWeaponDot();
         BeholderDominant beholderDominant = new BeholderDominant();
         BeholderImpact beholderImpact = new BeholderImpact();
         BeholderRevenge beholderRevenge = new BeholderRevenge();
         BeholderShock beholderShock = new BeholderShock();
-        BeholderShockDarkWarfare beholderShockDarkWarfare = new BeholderShockDarkWarfare();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrestOfTheSolarDot crestOfTheSolarDot = new CrestOfTheSolarDot();
-        DarknessAura darknessAura = new DarknessAura();
         DarknessAuraDot darknessAuraDot = new DarknessAuraDot();
         DarknessAuraFinish darknessAuraFinish = new DarknessAuraFinish();
         DarkSpear darkSpear = new DarkSpear();
         DarkThirst darkThirst = new DarkThirst();
-        DeadSpaceDarkAura deadSpaceDarkAura = new DeadSpaceDarkAura();
         DeadSpaceSlash deadSpaceSlash = new DeadSpaceSlash();
         EpicAdventure epicAdventure = new EpicAdventure();
-        FinalAttackDarkKnight finalAttackDarkKnight = new FinalAttackDarkKnight();
         GungnirDescent gungnirDescent = new GungnirDescent();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         PiercingCyclone piercingCyclone = new PiercingCyclone();
-        PiercingCycloneFinish piercingCycloneFinish = new PiercingCycloneFinish();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         ThiefCunning thiefCunning = new ThiefCunning();
 
         for (int i = 0; i < 720 * 1000; i += beholderRevenge.getInterval()) {
@@ -185,9 +177,6 @@ public class DarkKnightDealCycle extends DealCycle {
         Timestamp beholderImpactEndTime = new Timestamp(0);
         Timestamp darknessAuraUseTime = new Timestamp(12 * 60 * 1000);
         Timestamp restraintRingActivateTime = new Timestamp(0);
-        Timestamp beholderShockActivateTime = new Timestamp(0);
-        Timestamp beholderImpactActivateTime = new Timestamp(0);
-        Timestamp darkSpearActivateTime = new Timestamp(0);
 
         while (getStart().before(getEnd())) {
             if (
@@ -218,8 +207,6 @@ public class DarkKnightDealCycle extends DealCycle {
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
                 restraintRingActivateTime = restraintRing.getActivateTime();
-                beholderShockActivateTime = beholderShock.getActivateTime();
-                darkSpearActivateTime = darkSpear.getActivateTime();
                 darknessAuraUseTime = new Timestamp(restraintRingActivateTime.getTime() - 16090);
             } else if (
                     cooldownCheck(dealCycle2)
@@ -227,8 +214,6 @@ public class DarkKnightDealCycle extends DealCycle {
             ) {
                 addDealCycle(dealCycle2);
                 restraintRingActivateTime = restraintRing.getActivateTime();
-                beholderShockActivateTime = beholderShock.getActivateTime();
-                darkSpearActivateTime = darkSpear.getActivateTime();
                 darknessAuraUseTime = new Timestamp(restraintRingActivateTime.getTime() - 25390);
             } else if (
                     cooldownCheck(dealCycle3)
@@ -239,47 +224,20 @@ public class DarkKnightDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(beholderShock)
                     && getStart().after(beholderImpactEndTime)
-                    && restraintRingActivateTime.after(new Timestamp((long) (
-                            beholderShockActivateTime.getTime()
-                                    + applyCooldownReduction(beholderShock) * 1000
-                                    - auraWeaponBuff.getDelay()
-                                    - mapleWorldGoddessBlessing.getDelay()
-                                    - darkThirst.getDelay()
-                                    - soulContract.getDelay()
-                                    - restraintRing.getDelay()
-                    )))
+                    && getStart().before(restraintRingActivateTime)
             ) {
                 addSkillEvent(beholderShock);
-                beholderShockActivateTime = beholderShock.getActivateTime();
             } else if (
                     cooldownCheck(beholderImpact)
-                    && beholderShockActivateTime.after(new Timestamp((long) (
-                            beholderImpactActivateTime.getTime()
-                                    + applyCooldownReduction(beholderImpact)
-                                    - auraWeaponBuff.getDelay()
-                                    - mapleWorldGoddessBlessing.getDelay()
-                                    - darkThirst.getDelay()
-                                    - soulContract.getDelay()
-                                    - restraintRing.getDelay()
-                                    - darkSpear.getDelay()
-                    )))
+                    && getStart().before(restraintRingActivateTime)
             ) {
                 beholderImpactEndTime = new Timestamp(getStart().getTime() + beholderImpact.getDotDuration());
                 addSkillEvent(beholderImpact);
             } else if (
                     cooldownCheck(darkSpear)
-                    && restraintRingActivateTime.after(new Timestamp((long) (
-                    darkSpearActivateTime.getTime()
-                            + applyCooldownReduction(beholderShock)
-                            - auraWeaponBuff.getDelay()
-                            - mapleWorldGoddessBlessing.getDelay()
-                            - darkThirst.getDelay()
-                            - soulContract.getDelay()
-                            - restraintRing.getDelay()
-                    )))
+                    && getStart().before(restraintRingActivateTime)
             ) {
                 addSkillEvent(darkSpear);
-                darkSpearActivateTime = darkSpear.getActivateTime();
             } else {
                 addSkillEvent(gungnirDescent);
             }
