@@ -95,8 +95,6 @@ public class DemonSlayerDealCycle extends DealCycle {
         }
     };
 
-    int maxOverDF = 500;    // 6차 사용
-    int maxDF = 150;
     int demonForce = 150;
     Timestamp demonAwakeningEndTime = new Timestamp(-1);
     Timestamp infinityForceEndTime = new Timestamp(-1);
@@ -277,6 +275,41 @@ public class DemonSlayerDealCycle extends DealCycle {
                 addDealCycle(dealCycle4);
                 dealCycleOrder ++;
             } else if (
+                    cooldownCheck(soulContract)
+                    && (
+                            (
+                                    getStart().after(new Timestamp(30 * 1000))
+                                    && getStart().before(new Timestamp(90 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(150 * 1000))
+                                    && getStart().before(new Timestamp(210 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(270 * 1000))
+                                    && getStart().before(new Timestamp(330 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(390 * 1000))
+                                    && getStart().before(new Timestamp(450 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(510 * 1000))
+                                    && getStart().before(new Timestamp(570 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(630 * 1000))
+                                    && getStart().before(new Timestamp(690 * 1000))
+                            )
+                    )
+            ) {
+                addSkillEvent(soulContract);
+            } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(9 * 60 * 1000))
@@ -289,8 +322,6 @@ public class DemonSlayerDealCycle extends DealCycle {
                     && demonForce >= 8
             ) {
                 addSkillEvent(demonImpactChain);
-            } else if (demonForce >= 8){
-                addSkillEvent(demonImpact);
             } else {
                 addSkillEvent(demonSlash1);
             }
