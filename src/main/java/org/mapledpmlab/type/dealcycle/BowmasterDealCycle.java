@@ -116,7 +116,6 @@ public class BowmasterDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         AfterimageShotActive afterimageShotActive = new AfterimageShotActive();
-        AfterimageShotPassive afterimageShotPassive = new AfterimageShotPassive();
         ArrawPlatter arrawPlatter = new ArrawPlatter();
         ArrawPlatterDelay arrawPlatterDelay = new ArrawPlatterDelay();
         ArrawRain arrawRain = new ArrawRain();
@@ -124,23 +123,19 @@ public class BowmasterDealCycle extends DealCycle {
         CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         EpicAdventure epicAdventure = new EpicAdventure();
         Evolve evolve = new Evolve();
-        FlashMirage flashMirage = new FlashMirage();
         GuidedArrow guidedArrow = new GuidedArrow();
         Hurricane hurricane = new Hurricane();
         HurricaneSpree hurricaneSpree = new HurricaneSpree();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MortalBlow mortalBlow = new MortalBlow();
         Preparation preparation = new Preparation();
         PriorPreparation priorPreparation = new PriorPreparation();
         Phoenix phoenix = new Phoenix();
-        PhoenixDelay phoenixDelay = new PhoenixDelay();
         QuiverFullBurst quiverFullBurst = new QuiverFullBurst();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SilhouetteMirage silhouetteMirage = new SilhouetteMirage();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         ThiefCunning thiefCunning = new ThiefCunning();
         WarInTheShade warInTheShade = new WarInTheShade();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
@@ -240,7 +235,7 @@ public class BowmasterDealCycle extends DealCycle {
         dealCycle5.add(afterimageShotActive);
         dealCycle5.add(criticalReinforce);
         dealCycle5.add(soulContract);
-        dealCycle5.add(weaponJumpRing);
+        dealCycle5.add(restraintRing);
 
         Long specialArrow = 0L;
         boolean isSpree = false;
@@ -269,6 +264,7 @@ public class BowmasterDealCycle extends DealCycle {
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && specialArrow == 75
+                    && getStart().before(new Timestamp(5 * 60 * 1000))
             ) {
                 addDealCycle(dealCycle3);
             } else if (
@@ -291,6 +287,11 @@ public class BowmasterDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(9 * 60 * 1000)))
             {
                 addSkillEvent(ringSwitching);
+            } else if (
+                    cooldownCheck(soulContract)
+                    && !cooldownCheck(evolve)
+            ) {
+                addSkillEvent(soulContract);
             } else if (specialArrow == 0) {
                 addSkillEvent(hurricane);
                 specialArrow ++;
