@@ -105,8 +105,6 @@ public class MihileDealCycle extends DealCycle {
         InstallShield installShield = new InstallShield();
         LightForceRei lightForceRei = new LightForceRei();
         LightOfCourage lightOfCourage = new LightOfCourage();
-        PhotonShockwave photonShockwave = new PhotonShockwave();
-        PhotonWave photonWave = new PhotonWave();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RhoAias rhoAias = new RhoAias();
@@ -118,7 +116,6 @@ public class MihileDealCycle extends DealCycle {
         SoulMajesty soulMajesty = new SoulMajesty();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SwordOfSoulLight swordOfSoulLight = new SwordOfSoulLight();
-        SwordOfSoulLightBuff swordOfSoulLightBuff = new SwordOfSoulLightBuff();
         ThiefCunning thiefCunning = new ThiefCunning();
         TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
@@ -244,17 +241,13 @@ public class MihileDealCycle extends DealCycle {
                 addSkillEvent(cygnusPhalanx);
             } else if (
                     cooldownCheck(deadlyCharge)
-                    && (
-                            getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
-                    )
+                    && getStart().before(new Timestamp(lightOfCourage.getActivateTime().getTime() - 15000))
                     && getStart().after(soulMajestyEndTime)
             ) {
                 addSkillEvent(deadlyCharge);
             } else if (
                     cooldownCheck(claimhSolais)
-                    && (
-                            getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
-                    )
+                    && getStart().before(new Timestamp(lightOfCourage.getActivateTime().getTime() - 15000))
                     && getStart().after(soulMajestyEndTime)
             ) {
                 addSkillEvent(claimhSolais);
