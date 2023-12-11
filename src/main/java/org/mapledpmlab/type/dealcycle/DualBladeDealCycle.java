@@ -211,7 +211,7 @@ public class DualBladeDealCycle extends DealCycle {
                 addDealCycle(dealCycle3);
             } else if (
                     cooldownCheck(shortDealCycle)
-                    && !cooldownCheck(soulContract)
+                    && !cooldownCheck(finalCutBuff)
             ) {
                 addDealCycle(shortDealCycle);
             } else if (
