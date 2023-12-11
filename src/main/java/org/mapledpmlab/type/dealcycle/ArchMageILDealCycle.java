@@ -148,39 +148,22 @@ public class ArchMageILDealCycle extends DealCycle {
         ChainLightning chainLightning = new ChainLightning();
         ChainLightningElectric chainLightningElectric = new ChainLightningElectric();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrestOfTheSolarDot crestOfTheSolarDot = new CrestOfTheSolarDot();
-        Elquines elquines = new Elquines();
         ElquinesSummon elquinesSummon = new ElquinesSummon();
         EpicAdventure epicAdventure = new EpicAdventure();
-        FinalAttackArchMageIL finalAttackArchMageIL = new FinalAttackArchMageIL();
-        FreezingBreath freezingBreath = new FreezingBreath();
         FreezingBreathBuff freezingBreathBuff = new FreezingBreathBuff();
         FrozenLightning1 frozenLightning1 = new FrozenLightning1();
-        FrozenLightning2 frozenLightning2 = new FrozenLightning2();
-        FrozenLightningDelay frozenLightningDelay = new FrozenLightningDelay();
-        FrozenLightningDot frozenLightningDot = new FrozenLightningDot();
-        FrozenLightningFragments frozenLightningFragments = new FrozenLightningFragments();
         FrozenOrb frozenOrb = new FrozenOrb();
-        FrozenOrbDelay frozenOrbDelay = new FrozenOrbDelay();
-        IceAge iceAge = new IceAge();
         IceAgeDot iceAgeDot = new IceAgeDot();
         Infinity infinity = new Infinity(0L);
         JupiterThunder jupiterThunder = new JupiterThunder();
-        JupiterThunderDelay jupiterThunderDelay = new JupiterThunderDelay();
-        JupiterThunderElectric jupiterThunderElectric = new JupiterThunderElectric();
-        LightningSpearDelay lightningSpearDelay = new LightningSpearDelay();
         LightningSphere lightningSphere = new LightningSphere();
-        LightningSphereFinish lightningSphereFinish = new LightningSphereFinish();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
-        RiskTakerRing riskTakerRing = new RiskTakerRing();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         SpiritOfSnow spiritOfSnow = new SpiritOfSnow();
-        SpiritOfSnowDelay spiritOfSnowDelay = new SpiritOfSnowDelay();
         ThiefCunning thiefCunning = new ThiefCunning();
         ThunderBreak thunderBreak = new ThunderBreak();
         ThunderBreakDelay thunderBreakDelay = new ThunderBreakDelay();
@@ -279,14 +262,14 @@ public class ArchMageILDealCycle extends DealCycle {
         dealCycle5.add(epicAdventure);
         dealCycle5.add(spiritOfSnow);
         dealCycle5.add(soulContract);
-        dealCycle5.add(freezingBreathBuff);
-        dealCycle5.add(weaponJumpRing);
+        dealCycle5.add(restraintRing);
         dealCycle5.add(jupiterThunder);
         dealCycle5.add(iceAgeDot);
         dealCycle5.add(frozenOrb);
         dealCycle5.add(thunderBreak);
         dealCycle5.add(lightningSphere);
 
+        shortDealCycle.add(soulContract);
         shortDealCycle.add(iceAgeDot);
         shortDealCycle.add(lightningSphere);
 
@@ -365,6 +348,7 @@ public class ArchMageILDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().after(infinityFinalTime)
+                    && getStart().before(new Timestamp(5 * 60 * 1000))
             ) {
                 addDealCycle(dealCycle3);
                 jupiterThunderStartList.add(new Timestamp((long) (jupiterThunder.getActivateTime().getTime() - applyCooldownReduction(jupiterThunder))));
