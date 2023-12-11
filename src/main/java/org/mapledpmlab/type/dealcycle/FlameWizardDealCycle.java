@@ -110,7 +110,6 @@ public class FlameWizardDealCycle extends DealCycle {
         GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
         InfernoRize infernoRize = new InfernoRize();
         InfinityFlameCircle infinityFlameCircle = new InfinityFlameCircle();
-        OrbitalExplosion orbitalExplosion = new OrbitalExplosion();
         OrbitalFlame orbitalFlame = new OrbitalFlame();
         OrbitalFlameDot orbitalFlameDot = new OrbitalFlameDot();
         OrbitalFlameReinforce orbitalFlameReinforce = new OrbitalFlameReinforce();
@@ -186,6 +185,7 @@ public class FlameWizardDealCycle extends DealCycle {
         Timestamp phoenixDriveEndTime = new Timestamp(-1);
         int dealCycleOrder = 1;
 
+        flameCount = 50;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(spiritOfFlame)) {
                 addSkillEvent(spiritOfFlame);
@@ -243,7 +243,6 @@ public class FlameWizardDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().after(new Timestamp(4 * 60 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
                     && (dealCycleOrder == 4 || dealCycleOrder == 6)
                     && flameCount >= 50
             ) {
@@ -285,6 +284,41 @@ public class FlameWizardDealCycle extends DealCycle {
                 flameCount = 0;
                 addDealCycle(final2);
                 finalChk = 2;
+            } else if (
+                    cooldownCheck(soulContract)
+                    && (
+                            (
+                                    getStart().after(new Timestamp(30 * 1000))
+                                    && getStart().before(new Timestamp(90 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(150 * 1000))
+                                    && getStart().before(new Timestamp(210 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(270 * 1000))
+                                    && getStart().before(new Timestamp(330 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(390 * 1000))
+                                    && getStart().before(new Timestamp(450 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(510 * 1000))
+                                    && getStart().before(new Timestamp(570 * 1000))
+                            )
+                            ||
+                            (
+                                    getStart().after(new Timestamp(630 * 1000))
+                                    && getStart().before(new Timestamp(660 * 1000))
+                            )
+                    )
+            ) {
+                addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
