@@ -108,12 +108,9 @@ public class MarksmanDealCycle extends DealCycle {
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         EnhanceSnipe enhanceSnipe = new EnhanceSnipe();
-        EnhanceSnipeAdditional enhanceSnipeAdditional = new EnhanceSnipeAdditional();
         EpicAdventure epicAdventure = new EpicAdventure();
         Evolve evolve = new Evolve();
-        FinalAimArrow finalAimArrow = new FinalAimArrow();
         FinalAimWave finalAimWave = new FinalAimWave();
-        FinalAttackMarksman finalAttackMarksman = new FinalAttackMarksman();
         Freezer freezer = new Freezer();
         GuidedArrow guidedArrow = new GuidedArrow();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
@@ -125,13 +122,10 @@ public class MarksmanDealCycle extends DealCycle {
         Snipe snipe = new Snipe();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
-        SplitArrow splitArrow = new SplitArrow();
         SplitArrowBuff splitArrowBuff = new SplitArrowBuff();
         ThiefCunning thiefCunning = new ThiefCunning();
         TrueSnipe trueSnipe = new TrueSnipe();
         UltimateSnipe ultimateSnipe = new UltimateSnipe();
-        UltimateSnipeAdditional ultimateSnipeAdditional = new UltimateSnipeAdditional();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
             getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i)));
@@ -230,7 +224,7 @@ public class MarksmanDealCycle extends DealCycle {
         dealCycle5.add(evolve);
         dealCycle5.add(criticalReinforce);
         dealCycle5.add(soulContract);
-        dealCycle5.add(weaponJumpRing);
+        dealCycle5.add(restraintRing);
         dealCycle5.add(chargedArrow);
         dealCycle5.add(trueSnipe);
         for (int i = 0; i < 8; i++) {
@@ -257,7 +251,7 @@ public class MarksmanDealCycle extends DealCycle {
                 addDealCycle(dealCycle2);
             } else if (
                     cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && getStart().before(new Timestamp(6 * 60 * 1000))
             ) {
                 addDealCycle(dealCycle3);
             } else if (
@@ -280,8 +274,9 @@ public class MarksmanDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(trueSnipe)
-                    && !cooldownCheck(soulContract)
+                    && !cooldownCheck(evolve)
             ) {
+                addSkillEvent(soulContract);
                 addSkillEvent(trueSnipe);
             } else if (
                     cooldownCheck(chargedArrow)
