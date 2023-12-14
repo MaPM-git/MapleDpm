@@ -96,23 +96,15 @@ public class PaladinDealCycle extends DealCycle {
         Double divineBrandCount = 0.0; // 신성 낙인 개수
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        AuraWeaponDot auraWeaponDot = new AuraWeaponDot();
         Blast blast = new Blast();
         BlessedHammerBuff blessedHammerBuff = new BlessedHammerBuff();
-        BlessedHammerDot blessedHammerDot = new BlessedHammerDot();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrestOfTheSolarDot crestOfTheSolarDot = new CrestOfTheSolarDot();
-        DivineCharge divineCharge = new DivineCharge();
         DivineJudgement divineJudgement = new DivineJudgement();
-        DivineStigma divineStigma = new DivineStigma();
-        DivineStigmaExplosion divineStigmaExplosion = new DivineStigmaExplosion();
         EpicAdventure epicAdventure = new EpicAdventure();
-        FinalAttackPaladin finalAttackPaladin = new FinalAttackPaladin();
         GrandCross1 grandCross1 = new GrandCross1();
         HolyUnity holyUnity = new HolyUnity();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         MightyMjolnir mightyMjolnir = new MightyMjolnir();
-        MightyMjolnirImpact mightyMjolnirImpact = new MightyMjolnirImpact();
         NobleDemand nobleDemand = new NobleDemand();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
@@ -121,10 +113,8 @@ public class PaladinDealCycle extends DealCycle {
         SacredBastionImpact1 sacredBastionImpact1 = new SacredBastionImpact1();
         SacredBastionImpact2 sacredBastionImpact2 = new SacredBastionImpact2();
         Sanctuary sanctuary = new Sanctuary();
-        Smite smite = new Smite();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
