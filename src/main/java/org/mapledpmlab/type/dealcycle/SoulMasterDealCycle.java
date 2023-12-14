@@ -122,11 +122,9 @@ public class SoulMasterDealCycle extends DealCycle {
         CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
         Elysion elysion = new Elysion();
         GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
-        LunarDivide lunarDivide = new LunarDivide();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
-        SolarSlash solarSlash = new SolarSlash();
         SolunarDivide solunarDivide = new SolunarDivide();
         SoulContract soulContract = new SoulContract();
         SoulEclipse soulEclipse = new SoulEclipse();
