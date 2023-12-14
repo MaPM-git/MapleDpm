@@ -112,9 +112,7 @@ public class ViperDealCycle extends DealCycle {
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
-        SeaSerpentBurst seaSerpentBurst = new SeaSerpentBurst();
         SeaSerpentEnrage seaSerpentEnrage = new SeaSerpentEnrage();
-        SerpentAssault serpentAssault = new SerpentAssault();
         SerpentAssaultEnrage serpentAssaultEnrage = new SerpentAssaultEnrage();
         SerpentScrew serpentScrew = new SerpentScrew();
         SoulContract soulContract = new SoulContract();
@@ -142,13 +140,13 @@ public class ViperDealCycle extends DealCycle {
         ringSwitching.setCooldown(180.0);
 
         // 3스택
+        dealCycle1.add(pirateFlag);
         dealCycle1.add(stimulate);
         dealCycle1.add(lightningForm);
         dealCycle1.add(epicAdventure);
         dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
-        dealCycle1.add(pirateFlag);
         dealCycle1.add(overdrive);
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
@@ -184,11 +182,11 @@ public class ViperDealCycle extends DealCycle {
         dealCycle1.add(liberateNeptunusEnrage1);
 
         // 4스택
+        dealCycle2.add(pirateFlag);
         dealCycle2.add(stimulate);
         dealCycle2.add(lightningForm);
         dealCycle2.add(epicAdventure);
         dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(pirateFlag);
         dealCycle2.add(overdrive);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
@@ -317,7 +315,7 @@ public class ViperDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(pirateFlag)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 30000))
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() + 5000))
             ) {
                 addSkillEvent(pirateFlag);
             } else if (getStart().before(superEndTime)) {
