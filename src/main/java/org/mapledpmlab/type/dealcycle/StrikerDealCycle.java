@@ -95,7 +95,6 @@ public class StrikerDealCycle extends DealCycle {
     private LightningGodSpearStrike lightningGodSpearStrike = new LightningGodSpearStrike();
     private SeaWave seaWave = new SeaWave();
     private SharkWave sharkWave = new SharkWave();
-    private Thunderstroke thunderstroke = new Thunderstroke();
 
     private int lightningGodSpearStrikeCount = 0;
     private int linkCount = 0;
@@ -119,7 +118,6 @@ public class StrikerDealCycle extends DealCycle {
         GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
         GodOfTheSea godOfTheSea = new GodOfTheSea();
         LightningUnion lightningUnion = new LightningUnion();
-        LoadedDice loadedDice = new LoadedDice();
         Overdrive overdrive = new Overdrive(255L);
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
