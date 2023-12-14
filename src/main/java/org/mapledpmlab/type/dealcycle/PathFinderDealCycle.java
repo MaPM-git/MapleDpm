@@ -47,9 +47,7 @@ public class PathFinderDealCycle extends DealCycle {
     private boolean isRelicLiberation = false;
     private Long relicGauge = 0L;
     private AdditionalBlastFirst additionalBlastFirst = new AdditionalBlastFirst();
-    private AdditionalBlastREFirst additionalBlastREFirst = new AdditionalBlastREFirst();
     private AdditionalDischarge additionalDischarge = new AdditionalDischarge();
-    private AdditionalDischargeRE additionalDischargeRE = new AdditionalDischargeRE();
 
     private List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -123,16 +121,13 @@ public class PathFinderDealCycle extends DealCycle {
         AncientWrath ancientWrath = new AncientWrath();
         CardinalBlast cardinalBlast = new CardinalBlast();
         CardinalDischarge cardinalDischarge = new CardinalDischarge();
-        CardinalTransition cardinalTransition = new CardinalTransition();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         CurseArrow curseArrow = new CurseArrow();
         EdgeOfResonance edgeOfResonance = new EdgeOfResonance();
         EpicAdventure epicAdventure = new EpicAdventure();
         Evolve evolve = new Evolve();
-        ForsakenRelicWave forsakenRelicWave = new ForsakenRelicWave();
         GuidedArrow guidedArrow = new GuidedArrow();
-        ForsakenRelicMagicArrow forsakenRelicMagicArrow = new ForsakenRelicMagicArrow();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         ObsidianBarrier obsidianBarrier = new ObsidianBarrier();
         PriorPreparation priorPreparation = new PriorPreparation();
@@ -145,9 +140,7 @@ public class PathFinderDealCycle extends DealCycle {
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
         ThiefCunning thiefCunning = new ThiefCunning();
-        TripleImpact tripleImpact = new TripleImpact();
         UltimateBlast ultimateBlast = new UltimateBlast();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
@@ -240,7 +233,7 @@ public class PathFinderDealCycle extends DealCycle {
         dealCycle5.add(evolve);
         dealCycle5.add(criticalReinforce);
         dealCycle5.add(soulContract);
-        dealCycle5.add(weaponJumpRing);
+        dealCycle5.add(restraintRing);
         dealCycle5.add(obsidianBarrier);
         dealCycle5.add(ravenTempest);
         dealCycle5.add(relicUnbound);
@@ -264,7 +257,7 @@ public class PathFinderDealCycle extends DealCycle {
                 relicLiberationEndTime = new Timestamp(getStart().getTime() - 9960 + relicLiberation.getDuration() * 1000);
             } else if (
                     cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && getStart().before(new Timestamp(6 * 60 * 1000))
             ) {
                 addDealCycle(dealCycle3);
             } else if (
@@ -289,6 +282,11 @@ public class PathFinderDealCycle extends DealCycle {
                     && cooldownCheck(ancientWrath)
             ) {
                 addSkillEvent(ancientWrath);
+            } else if (
+                    cooldownCheck(soulContract)
+                    && !cooldownCheck(evolve)
+            ) {
+                addSkillEvent(soulContract);
             } else if (cooldownCheck(edgeOfResonance)) {
                 addSkillEvent(edgeOfResonance);
             } else {
