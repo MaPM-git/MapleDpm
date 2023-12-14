@@ -228,24 +228,28 @@ public class WindBreakerDealCycle extends DealCycle {
             } else if (
                     getStart().after(finalTime)
                     && finalChk == 1
+                    && cooldownCheck(final1)
             ) {
                 addDealCycle(final1);
                 finalChk = 0;
             } else if (
                     getStart().after(finalTime)
                     && finalChk == 2
+                    && cooldownCheck(final2)
             ) {
                 addDealCycle(final2);
                 finalChk = 0;
             } else if (
                     getStart().after(finalTime)
                     && finalChk == 3
+                    && cooldownCheck(final3)
             ) {
                 addDealCycle(final3);
                 finalChk = 0;
             } else if (
                     getStart().after(finalTime)
                     && finalChk == 4
+                    && cooldownCheck(final4)
             ) {
                 addDealCycle(final4);
                 finalChk = 0;
@@ -256,8 +260,12 @@ public class WindBreakerDealCycle extends DealCycle {
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
+                    cooldownCheck(soulContract)
+                    && finalChk == 0
+            ) {
+                addSkillEvent(soulContract);
+            } else if (
                     cooldownCheck(cygnusPhalanx)
-                    && !cooldownCheck(soulContract)
             ) {
                 addSkillEvent(cygnusPhalanx);
             } else if (
