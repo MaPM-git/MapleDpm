@@ -99,7 +99,6 @@ public class ShadowerDealCycle extends DealCycle {
         Assassination assassination = new Assassination();
         AssassinationFinish assassinationFinish = new AssassinationFinish();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrestOfTheSolarDot crestOfTheSolarDot = new CrestOfTheSolarDot();
         DarkFlare darkFlare = new DarkFlare();
         DarkFlareDelay darkFlareDelay = new DarkFlareDelay();
         EpicAdventure epicAdventure = new EpicAdventure();
@@ -119,8 +118,6 @@ public class ShadowerDealCycle extends DealCycle {
         SonicBlow sonicBlow = new SonicBlow();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiderInMirrorDot spiderInMirrorDot = new SpiderInMirrorDot();
-        SuddenRaid suddenRaid = new SuddenRaid();
         ThiefCunning thiefCunning = new ThiefCunning();
         UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
