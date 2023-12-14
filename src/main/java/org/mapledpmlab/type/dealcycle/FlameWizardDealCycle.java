@@ -270,6 +270,7 @@ public class FlameWizardDealCycle extends DealCycle {
                     getStart().after(new Timestamp(finalTime.getTime() - 27000))
                     && finalChk == 0
                     && flameCount >= 50
+                    && cooldownCheck(final1)
             ) {
                 flameDischarge.setByFlameCount((long) (flameCount / 25));
                 flameCount = 0;
@@ -279,6 +280,7 @@ public class FlameWizardDealCycle extends DealCycle {
                     getStart().after(new Timestamp(finalTime.getTime() - 27000))
                     && finalChk == 1
                     && flameCount >= 50
+                    && cooldownCheck(final2)
             ) {
                 flameDischarge.setByFlameCount((long) (flameCount / 25));
                 flameCount = 0;

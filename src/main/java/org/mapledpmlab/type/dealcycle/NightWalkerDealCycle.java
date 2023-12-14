@@ -207,6 +207,7 @@ public class NightWalkerDealCycle extends DealCycle {
             } else if (
                     getStart().after(finalTime)
                     && finalChk == 0
+                    && cooldownCheck(final1)
             ) {
                 silenceEndTime = new Timestamp(getStart().getTime() + 25000);
                 addDealCycle(final1);
@@ -214,6 +215,7 @@ public class NightWalkerDealCycle extends DealCycle {
             } else if (
                     getStart().after(finalTime)
                     && finalChk == 1
+                    && cooldownCheck(final2)
             ) {
                 addDealCycle(final2);
                 finalChk = 2;

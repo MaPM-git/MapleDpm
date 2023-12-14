@@ -237,24 +237,28 @@ public class StrikerDealCycle extends DealCycle {
                 dealCycleOrder++;
             } else if (
                     finalChk == 1
+                    && cooldownCheck(final1)
             ) {
                 addDealCycle(final1);
                 creationOfTheWorldEndTime = new Timestamp(getStart().getTime() + 30000 - 930);
                 finalChk = 0;
             } else if (
                     finalChk == 2
+                    && cooldownCheck(final2)
             ) {
                 addDealCycle(final2);
                 creationOfTheWorldEndTime = new Timestamp(getStart().getTime() + 30000 - 930);
                 finalChk = 0;
             } else if (
                     finalChk == 3
+                    && cooldownCheck(final3)
             ) {
                 addDealCycle(final3);
                 creationOfTheWorldEndTime = new Timestamp(getStart().getTime() + 30000 - 930);
                 finalChk = 0;
             } else if (
                     finalChk == 4
+                    && cooldownCheck(final4)
             ) {
                 addDealCycle(final4);
                 creationOfTheWorldEndTime = new Timestamp(getStart().getTime() + 30000 - 930);

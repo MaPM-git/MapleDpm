@@ -215,12 +215,14 @@ public class MihileDealCycle extends DealCycle {
             } else if (
                     getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 16000))
                     && finalChk == 0
+                    && cooldownCheck(final1)
             ) {
                 addDealCycle(final1);
                 finalChk = 2;
             } else if (
                     getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 16000))
                     && finalChk == 1
+                    && cooldownCheck(final2)
             ) {
                 addDealCycle(final2);
                 finalChk = 2;
