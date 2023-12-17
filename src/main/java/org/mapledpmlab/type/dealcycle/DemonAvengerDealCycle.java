@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.dealcycle;
 
 import org.mapledpmlab.type.hyper.HyperDemonAvenger;
+import org.mapledpmlab.type.job.DemonAvenger;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -91,8 +92,17 @@ public class DemonAvengerDealCycle extends DealCycle {
 
     int maxHP = 500000;
     int hp = 150000;
+    DemonFrenzy demonFrenzy = new DemonFrenzy();
+    DemonFrenzyBuff tmpDemonFrenzyBuff = new DemonFrenzyBuff();
 
+    //
+    int maxExceed = 18;
     int exceed = 18;
+
+    int demonFrenzyAttackCnt = 0;
+    int demonFrenzyHpReduceCnt = 0;
+    Timestamp revenantEndTime = new Timestamp(-1);
+    ThornOfFury thornOfFury = new ThornOfFury();
 
     public DemonAvengerDealCycle(Job job) {
         super();
@@ -110,7 +120,6 @@ public class DemonAvengerDealCycle extends DealCycle {
         BloodFeast bloodFeast = new BloodFeast();
         CallMastemaDA callMastema = new CallMastemaDA();
         CrestOfTheSolarDA crestOfTheSolar = new CrestOfTheSolarDA();
-        DemonFrenzy demonFrenzy = new DemonFrenzy();
         DemonFrenzyBuff demonFrenzyBuff = new DemonFrenzyBuff();
         DemonicFortitudeDA demonicFortitudeDA = new DemonicFortitudeDA();
         DimensionSword dimensionSword = new DimensionSword();
@@ -148,32 +157,50 @@ public class DemonAvengerDealCycle extends DealCycle {
 
         // 1-4-3-2-3-4
         // 메용2, 6차, 리레, 스인미, 크오솔
+        dealCycle1.add(armorBreak);
+        dealCycle1.add(demonicFortitudeDA);
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
         dealCycle1.add(callMastema);
         dealCycle1.add(otherWorldGoddessBlessing);
+        dealCycle1.add(revenant);
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
+        dealCycle1.add(requiem);
+        dealCycle1.add(dimensionSword);
 
         // 메용2, 6차, 웨폰퍼프
+        dealCycle2.add(armorBreak);
+        dealCycle2.add(demonicFortitudeDA);
         dealCycle2.add(callMastema);
         dealCycle2.add(otherWorldGoddessBlessing);
+        dealCycle2.add(revenant);
         dealCycle2.add(soulContract);
         dealCycle2.add(weaponJumpRing);
+        dealCycle2.add(requiem);
+        dealCycle2.add(dimensionSword);
 
         // 메용2, 리레, 스인미, 코오솔
+        dealCycle3.add(armorBreak);
+        dealCycle3.add(demonicFortitudeDA);
         dealCycle3.add(crestOfTheSolar);
         dealCycle3.add(spiderInMirror);
         dealCycle3.add(callMastema);
         dealCycle3.add(otherWorldGoddessBlessing);
+        dealCycle3.add(revenant);
         dealCycle3.add(soulContract);
         dealCycle3.add(restraintRing);
+        dealCycle3.add(dimensionSword);
 
         // 메용2, 웨폰퍼프
+        dealCycle4.add(armorBreak);
+        dealCycle4.add(demonicFortitudeDA);
         dealCycle4.add(callMastema);
         dealCycle4.add(otherWorldGoddessBlessing);
+        dealCycle4.add(revenant);
         dealCycle4.add(soulContract);
         dealCycle4.add(weaponJumpRing);
+        dealCycle4.add(dimensionSword);
 
         // 펫이 자동으로 사용(딜레이 X)
         // 270초마다 쓸샾(5%), 쓸뻥(5%), 쓸컴뱃(5%), 쓸어블(5%) 사용
@@ -182,7 +209,19 @@ public class DemonAvengerDealCycle extends DealCycle {
         Timestamp buffEndTime1 = new Timestamp(270 * 1000);
         Timestamp buffEndTime2 = new Timestamp(180 * 1000);
         Timestamp diabolicRecoveryTime = new Timestamp(5500);
+
+        addSkillEvent(releaseOverload);
+        addSkillEvent(exceedExecution3);
+        addSkillEvent(exceedExecution4);
+        Timestamp releaseOverloadTime = new Timestamp(-1);
+        Timestamp roarOfDemonSwordTime = new Timestamp(-1);
+        int roarOfDemonSwordChk = 0;
+
+        getJob().setFinalDamage(getJob().getFinalDamage() / 1.2);
         while (getStart().before(getEnd())) {
+            if (hp < 150000) {
+                hp = 150000;
+            }
             if (getStart().after(buffEndTime1)) {
                 hp -= maxHP * 0.2;
                 buffEndTime1 = new Timestamp(getStart().getTime() + 270 * 1000);
@@ -208,6 +247,9 @@ public class DemonAvengerDealCycle extends DealCycle {
                     && dealCycleOrder == 1
             ) {
                 addDealCycle(dealCycle1);
+                releaseOverloadTime = new Timestamp(getStart().getTime() + 45000);
+                roarOfDemonSwordTime = new Timestamp(getStart().getTime() + 10000);
+                roarOfDemonSwordChk = 1;
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle2)
@@ -215,6 +257,9 @@ public class DemonAvengerDealCycle extends DealCycle {
                     && dealCycleOrder == 4
             ) {
                 addDealCycle(dealCycle2);
+                releaseOverloadTime = new Timestamp(getStart().getTime() + 45000);
+                roarOfDemonSwordTime = new Timestamp(getStart().getTime() + 10000);
+                roarOfDemonSwordChk = 1;
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle3)
@@ -222,6 +267,7 @@ public class DemonAvengerDealCycle extends DealCycle {
                     && (dealCycleOrder == 3 || dealCycleOrder == 5)
             ) {
                 addDealCycle(dealCycle3);
+                releaseOverloadTime = new Timestamp(getStart().getTime() + 45000);
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle4)
@@ -229,15 +275,77 @@ public class DemonAvengerDealCycle extends DealCycle {
                     && (dealCycleOrder == 2 || dealCycleOrder == 6)
             ) {
                 addDealCycle(dealCycle4);
+                releaseOverloadTime = new Timestamp(getStart().getTime() + 45000);
                 dealCycleOrder ++;
+            } else if (
+                    getStart().after(roarOfDemonSwordTime)
+                    && roarOfDemonSwordChk == 1
+            ) {
+                addSkillEvent(roarOfDemonSword);
+                roarOfDemonSwordChk = 0;
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(9 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
+            } else if (
+                    cooldownCheck(soulContract)
+                            && (
+                            (
+                                    getStart().after(new Timestamp(30 * 1000))
+                                            && getStart().before(new Timestamp(90 * 1000))
+                            )
+                                    ||
+                                    (
+                                            getStart().after(new Timestamp(150 * 1000))
+                                                    && getStart().before(new Timestamp(210 * 1000))
+                                    )
+                                    ||
+                                    (
+                                            getStart().after(new Timestamp(270 * 1000))
+                                                    && getStart().before(new Timestamp(330 * 1000))
+                                    )
+                                    ||
+                                    (
+                                            getStart().after(new Timestamp(390 * 1000))
+                                                    && getStart().before(new Timestamp(450 * 1000))
+                                    )
+                                    ||
+                                    (
+                                            getStart().after(new Timestamp(510 * 1000))
+                                                    && getStart().before(new Timestamp(570 * 1000))
+                                    )
+                                    ||
+                                    (
+                                            getStart().after(new Timestamp(630 * 1000))
+                                                    && getStart().before(new Timestamp(690 * 1000))
+                                    )
+                    )
+            ) {
+                addSkillEvent(armorBreak);
+                addSkillEvent(soulContract);
+                releaseOverloadTime = new Timestamp(getStart().getTime() + 45000);
+            } else if (
+                    cooldownCheck(releaseOverload)
+                    && getStart().after(releaseOverloadTime)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+            ) {
+                addSkillEvent(releaseOverload);
+                exceed = 9;
+            } else if (cooldownCheck(shieldChasing)) {
+                addSkillEvent(shieldChasing);
             } else {
-                addSkillEvent(null);
+                if (exceed == 9) {
+                    addSkillEvent(exceedExecution3);
+                } else if (exceed == 10) {
+                    addSkillEvent(exceedExecution4);
+                } else {
+                    addSkillEvent(exceedExecution5);
+                }
+                if (exceed < 18) {
+                    exceed++;
+                }
             }
         }
         sortEventTimeList();
@@ -245,7 +353,20 @@ public class DemonAvengerDealCycle extends DealCycle {
 
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
-        double gaugeTmp = 0;
+        int j = 0;
+        if (skill instanceof Revenant) {
+            revenantEndTime = new Timestamp(getStart().getTime() + 18000);
+        }
+        while (demonFrenzyAttackCnt < getStart().getTime() / 210) {
+            getSkillEventList().add(new DemonAvengerSkillEvent(demonFrenzy, new Timestamp(getStart().getTime() + j), new Timestamp(getStart().getTime() + j), (long) this.hp));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + j));
+            j++;
+            demonFrenzyAttackCnt++;
+        }
+        while (demonFrenzyHpReduceCnt < getStart().getTime() / 1000) {
+            hp -= 6000;
+            demonFrenzyHpReduceCnt++;
+        }
         if (skill instanceof GaugeAttackSkill) {
             hp += ((GaugeAttackSkill) skill).getGaugeCharge();
             hp += maxHP * ((GaugeAttackSkill) skill).getGaugePer() * 0.01;
@@ -275,10 +396,10 @@ public class DemonAvengerDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
             }
         } else {
             if (((AttackSkill) skill).getInterval() != 0) {
@@ -295,13 +416,13 @@ public class DemonAvengerDealCycle extends DealCycle {
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
-                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), (long) this.hp));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
                 } else {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
-                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), (long) this.hp));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
                     }
@@ -309,8 +430,23 @@ public class DemonAvengerDealCycle extends DealCycle {
                 this.setStart(tmp);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
+                if (
+                        (
+                                skill instanceof ExceedExecution1
+                                || skill instanceof ExceedExecution2
+                                || skill instanceof ExceedExecution3
+                                || skill instanceof ExceedExecution4
+                                || skill instanceof ExceedExecution5
+                        )
+                        && getStart().before(revenantEndTime)
+                        && cooldownCheck(thornOfFury)
+                ) {
+                    getSkillEventList().add(new DemonAvengerSkillEvent(thornOfFury, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
+                    applyCooldown(thornOfFury);
+                }
             }
+            hp += hp * ((AttackSkill) skill).getAttackCount() * 0.01;
         }
         applyCooldown(skill);
         getEventTimeList().add(getStart());
@@ -367,7 +503,7 @@ public class DemonAvengerDealCycle extends DealCycle {
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
-                        totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
+                        totalDamage += getAttackDamage(new DemonAvengerSkillEvent(getFinalAttack(), start, end, ((DemonAvengerSkillEvent) se).getCurrentHp()), buffSkill, start, end);
                     }
                 }
             }
@@ -376,5 +512,45 @@ public class DemonAvengerDealCycle extends DealCycle {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
+    }
+
+    @Override
+    public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
+        Long attackDamage = 0L;
+        AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        tmpDemonFrenzyBuff.setFinalDamageByHp(((DemonAvengerSkillEvent) skillEvent).getCurrentHp());
+        buffSkill.addBuffFinalDamage(tmpDemonFrenzyBuff.getBuffFinalDamage());
+        for (AttackSkill as : attackSkillList) {
+            if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
+                attackDamage = (long) Math.floor(((((DemonAvenger) getJob()).getFinalHp() + buffSkill.getBuffMainStat() / 17.5) * 4
+                        + ((DemonAvenger) getJob()).getStr() + buffSkill.getBuffSubStat()) * 0.01
+                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                        + getJob().getPerXAtt())
+                        * getJob().getConstant()
+                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * buffSkill.getBuffFinalDamage()
+                        * getJob().getStatXFinalDamage()
+                        * attackSkill.getFinalDamage()
+                        * getJob().getMastery()
+                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                );
+                if (skillEvent.getStart().equals(start)) {
+                    as.setUseCount(as.getUseCount() + 1);
+                }
+                Long distance = end.getTime() - start.getTime();
+                if (as.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / as.getDelay() * distance;
+                }
+                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
+                break;
+            }
+        }
+        buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / tmpDemonFrenzyBuff.getBuffFinalDamage());
+        return attackDamage;
     }
 }

@@ -12,5 +12,6 @@ public class ArmorBreak extends GaugeAttackSkill {
         this.setGaugeCharge(-1000.0);
         this.setCooldown(60.0);
         this.setRelatedSkill(new ArmorBreakDebuff());
+        this.setApplyFinalAttack(true);
     }
 }

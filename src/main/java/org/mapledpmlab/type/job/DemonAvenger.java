@@ -21,14 +21,12 @@ public class DemonAvenger extends Job {
         this.setName("데몬어벤져");
         this.setConstant(1.3);          // 무기상수
         this.setMainStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
-        // this.addHp(this.getAp());       // 기본 스탯(275 기준)
         this.setMastery(1.91 / 2);      // 숙련도
         this.addMainStatP(10L);         // 4카루타 세트
         this.setJobType(JobType.DEMON_AVENGER);
 
         this.addPerXMainStat(-18400L);
         this.addPerXMainStat(277200L);
-        this.addPerXSubStat((long) (4200 * 4 + 2100 * 20));
 
         this.starforce += 22 * 16;      // 22성 장비
         this.starforce += 15;           // 블랙하트
@@ -47,7 +45,7 @@ public class DemonAvenger extends Job {
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
         this.addSubStat((long) (145));
-        this.addHp((long) (2800 + 1855));
+        this.addHp((long) (2800 + 1855) / 2);
         this.addAtt((long) (340 + 210 + 72 + 253));
         this.setWeaponAttMagic((long) (340 + 210 + 72 + 253));
         this.addBossDamage((long) (30 + 10));
@@ -60,7 +58,7 @@ public class DemonAvenger extends Job {
         // 보조
         this.addMainStat(10L);
         this.addSubStat(10L);
-        this.addHp(560L);
+        this.addHp(560L / 2);
         this.addBossDamage(70L);
         this.addAttP(9L);
         this.addAttP(21L);
@@ -114,15 +112,17 @@ public class DemonAvenger extends Job {
 
     public Long getFinalHp() {
         return (long) Math.floor(
-                (this.getAp() + this.getHp()) * this.getMainStatP() + this.getPerXMainStat()
+                (this.getAp() / 14 + this.getHp() / 17.5)
+                        * (1 + this.getMainStatP() * 0.01)
+                        + this.getPerXMainStat() / 17.5
         );
     }
 
     public Long getFinalHpHyperBodyX() {
         return (long) Math.floor(
-                (this.getAp() + this.getHp())
-                * (this.getMainStatP() - 40)
-                + this.getPerXMainStat()
+                (this.getAp() / 14 + this.getHp() / 17.5)
+                * (1 + (this.getMainStatP() - 40) * 0.01)
+                + this.getPerXMainStat() / 17.5
         );
     }
 
@@ -139,12 +139,35 @@ public class DemonAvenger extends Job {
 
     public Long getStatDamage() {
         return (long) (Math.floor(
-                this.getAp() / 14 + this.getHp() / 17.5
+                this.getFinalHp()
                 + this.getStr()) * 0.01
                 * Math.floor(this.getAtt() * (1 + this.getAttP() * 0.01))
                 * this.getConstant()
                 * (1 + this.getDamage() * 0.01)
                 * this.getFinalDamage()
         );
+    }
+
+    @Override
+    public Object[] getOpject() {
+        Long attMagic;
+        Long attMagicP;
+        if (this.getAtt() > this.getMagic()) {
+            attMagic = this.getAtt();
+            attMagicP = this.getAttP();
+        } else {
+            attMagic = this.getMagic();
+            attMagicP = this.getMagicP();
+        }
+        Object[] result = new Object[]{
+                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getFinalHp(), this.getFinalHpHyperBodyX(), this.getAp(),
+                this.getStr(), "X", this.getStatDamage(), this.getDamage(),
+                this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
+                this.getCriticalP(), "114", this.getWeaponAttMagic(), this.getPerXMainStat(),
+                this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
+                this.getFinalDamage()
+        };
+        return result;
     }
 }

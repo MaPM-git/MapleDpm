@@ -16,5 +16,6 @@ public class Requiem extends GaugeAttackSkill {
         this.setCooldown(360.0);
         this.setGaugePer(-15L);
         this.setRelatedSkill(new RequiemDelay());
+        this.setApplyFinalAttack(true);
     }
 }

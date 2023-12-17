@@ -37,7 +37,7 @@ public class Item extends Common {
     public void addStarforce() {
         this.addMainStat((long) (2 * 5 + 3 * 10));  // 1~15성 공통
         this.addSubStat((long) (2 * 5 + 3 * 10));
-        this.addHp(255L);
+        this.addHp(255L / 2);
         if (this.jobType == JobType.XENON) {
             this.addOtherStat1((long) (2 * 5 + 3 * 10));  // 1~15성 공통
             this.addOtherStat2((long) (2 * 5 + 3 * 10));
@@ -101,10 +101,12 @@ public class Item extends Common {
 
     private void addOption() {  // 1추 단일, 1추 올스탯
         if (this.getLevel() == 250) {
-            this.addHp((long) (19.6 * this.getLevel()));
+            this.addHp((long) (19.6 * this.getLevel() / 2));
         }
-        this.addHp(21 * this.getLevel());
-        this.addAllStatP(7L);
+        this.addHp(21 * this.getLevel() / 2);
+        if (this.jobType != JobType.DEMON_AVENGER) {
+            this.addAllStatP(7L);
+        }
         if (this.jobType == JobType.XENON) {
             if (this.getLevel() <= 150) {
                 this.addMainStat(28L);

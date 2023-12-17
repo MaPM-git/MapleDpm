@@ -13,5 +13,6 @@ public class ExceedExecution1 extends GaugeAttackSkill {
         this.setAddDamage(20L);     // 익시드-리인포스
         this.addFinalDamage(2.2);   // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.setApplyFinalAttack(true);
     }
 }

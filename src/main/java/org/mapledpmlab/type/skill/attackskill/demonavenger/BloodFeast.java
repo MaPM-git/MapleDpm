@@ -12,5 +12,6 @@ public class BloodFeast extends GaugeAttackSkill {
         this.setGaugePer(22L);
         this.setCooldown(12.0);
         this.addFinalDamage(1.6);   // 코어 강화
+        this.setApplyFinalAttack(true);
     }
 }

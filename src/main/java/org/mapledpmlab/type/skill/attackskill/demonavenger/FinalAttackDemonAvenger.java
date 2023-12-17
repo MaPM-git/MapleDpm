@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.demonavenger;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 
-public class FinalAttackDemonAvenger extends AttackSkill {
+public class FinalAttackDemonAvenger extends GaugeAttackSkill {
     public FinalAttackDemonAvenger() {
         this.setName("파이널 어택");
         this.setAttackCount(2L);

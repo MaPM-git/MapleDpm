@@ -13,5 +13,7 @@ public class RoarOfDemonSword extends GaugeAttackSkill {
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
         this.setAddDamage(50L);
+        this.setRelatedSkill(new RoarOfDemonSwordDelay());
+        this.setApplyFinalAttack(true);
     }
 }
