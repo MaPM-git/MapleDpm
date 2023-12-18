@@ -58,9 +58,6 @@ public class Lara extends Job {
         this.addFinalDamage(1.46);
         this.addIgnoreDefenseList(41L);
 
-        // 5차
-        this.addMainStat(30L);          // 언스태이블 메모라이즈
-
         this.setAbility(new PassiveBossReuse());
         this.setFarm(new ReuseFarm());
         this.getLinkList().add(new PhantomInstinct());
@@ -74,6 +71,12 @@ public class Lara extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        addFinalDamage(1.08);           // 오버로드 마나
     }
 
     public Long getStatDamage() {

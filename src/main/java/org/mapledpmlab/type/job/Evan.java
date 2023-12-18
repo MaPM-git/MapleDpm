@@ -87,6 +87,12 @@ public class Evan extends Job {
         this.addObject(this.getHyper());
     }
 
+    @Override
+    public void Doping() {
+        super.Doping();
+        addFinalDamage(1.08);           // 오버로드 마나
+    }
+
     public void addTotal(JobType jobType) {
         super.addTotal(jobType);
         DragonWeapon dragonWeapon = new DragonWeapon();
