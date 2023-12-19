@@ -8,7 +8,7 @@ public class ComboDeathFault extends AttackSkill {
         this.setAttackCount(14L);
         this.setCooldown(25.0);
         this.setDamage(880.0);
-        this.setDelayByAttackSpeed(1680L);
+        this.setDelay(1680L);
         this.setFinalDamage(1.6);
         this.setApplyFinalAttack(true);
     }

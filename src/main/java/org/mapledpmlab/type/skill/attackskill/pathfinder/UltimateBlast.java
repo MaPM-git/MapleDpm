@@ -8,8 +8,8 @@ public class UltimateBlast extends GaugeAttackSkill implements AncientForce {
         this.setAttackCount(15L);
         this.setDamage(1000.0);
         this.setCooldown(120.0);
-        this.setDotDuration(1350L);
-        this.setInterval(210L);
+        this.setDotDuration(1800L);
+        this.setInterval(300L);
         this.setLimitAttackCount(6L);
         this.addFinalDamage(2.0);
         this.addIgnoreDefenseList(100L);

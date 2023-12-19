@@ -8,7 +8,7 @@ public class PoisonChain extends AttackSkill {
         this.setDamage(500.0);
         this.setCooldown(25.0);
         this.setAttackCount(4L);
-        this.setDelayByAttackSpeed(780L);
+        this.setDelay(780L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setApplyFinalAttack(true);
     }

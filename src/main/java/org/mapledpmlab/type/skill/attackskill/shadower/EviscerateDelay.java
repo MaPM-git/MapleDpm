@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class EviscerateDelay extends AttackSkill {
     public EviscerateDelay() {
         this.setName("절개");
-        this.setDelayByAttackSpeed(930L);
+        this.setDelay(930L);
         this.addFinalDamage(1.7);       // 쉐도우 파트너
     }
 }

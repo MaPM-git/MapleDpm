@@ -8,7 +8,7 @@ public class PoisonNova extends AttackSkill {
         this.setDamage(550.0);
         this.setAttackCount(12L);
         this.setCooldown(25.0);
-        this.setDelayByAttackSpeed(750L);
+        this.setDelay(750L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setApplyFinalAttack(true);
     }

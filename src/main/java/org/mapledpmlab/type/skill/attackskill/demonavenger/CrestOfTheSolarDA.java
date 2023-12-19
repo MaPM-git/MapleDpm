@@ -9,7 +9,7 @@ public class CrestOfTheSolarDA extends GaugeAttackSkill {
         this.setDamage(1650.0);
         this.setAttackCount(12L);
         this.setCooldown(250.0);
-        this.setDelayByAttackSpeed(870L);
+        this.setDelay(870L);
         this.setRelatedSkill(new CrestOfTheSolarDot());
         this.setGaugePer(-15L);
     }

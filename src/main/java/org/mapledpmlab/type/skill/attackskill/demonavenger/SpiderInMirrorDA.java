@@ -9,7 +9,7 @@ public class SpiderInMirrorDA extends GaugeAttackSkill {
         this.setDamage(990.0);
         this.setAttackCount(15L);
         this.setCooldown(250.0);
-        this.setDelayByAttackSpeed(960L);
+        this.setDelay(960L);
         this.setRelatedSkill(new SpiderInMirrorDot());
         this.setGaugePer(-15L);
     }

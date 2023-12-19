@@ -8,7 +8,7 @@ public class MightyMjolnir extends AttackSkill {
         this.setAttackCount(6L);
         this.setCooldown(12.0);
         this.setDamage(440.0);
-        this.setDelayByAttackSpeed(840L);
+        this.setDelay(840L);
         this.setRelatedSkill(new MightyMjolnirImpact());
         this.setFinalDamage(1.6);   // 코어 강화
     }

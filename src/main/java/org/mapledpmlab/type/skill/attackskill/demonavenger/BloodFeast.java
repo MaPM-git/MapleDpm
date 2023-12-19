@@ -7,7 +7,7 @@ public class BloodFeast extends GaugeAttackSkill {
         this.setName("블러드 피스트");
         this.setAttackCount(12L);
         this.setDamage(1595.0);
-        this.setDelayByAttackSpeed(420L);
+        this.setDelay(420L);
         this.addIgnoreDefenseList(100L);
         this.setGaugePer(22L);
         this.setCooldown(12.0);

@@ -5,6 +5,6 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class BigFuseGiganticCannonballDelay extends AttackSkill {
     public BigFuseGiganticCannonballDelay() {
         this.setName("빅 휴즈 기간틱 캐논볼");
-        this.setDelayByAttackSpeed(780L);
+        this.setDelay(780L);
     }
 }

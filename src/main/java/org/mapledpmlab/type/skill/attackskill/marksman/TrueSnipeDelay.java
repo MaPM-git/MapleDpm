@@ -5,6 +5,6 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class TrueSnipeDelay extends AttackSkill {
     public TrueSnipeDelay() {
         this.setName("트루 스나이핑");
-        this.setDelayByAttackSpeed(120L);
+        this.setDelay(120L);
     }
 }

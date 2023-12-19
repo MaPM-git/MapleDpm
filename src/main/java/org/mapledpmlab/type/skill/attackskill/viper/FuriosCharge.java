@@ -11,6 +11,6 @@ public class FuriosCharge extends AttackSkill {
         this.setApplyFinalAttack(true);
         this.setAddDamage(30L);
         this.addFinalDamage(1.6);
-        this.setRelatedSkill(new EnergyOrbDelay());
+        //this.setRelatedSkill(new EnergyOrbDelay());
     }
 }

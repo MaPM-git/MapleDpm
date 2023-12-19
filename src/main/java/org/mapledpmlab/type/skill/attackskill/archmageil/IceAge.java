@@ -8,7 +8,7 @@ public class IceAge extends AttackSkill {
         this.setDamage(1100.0);
         this.setAttackCount(10L);
         this.setCooldown(60.0);
-        this.setDelayByAttackSpeed(870L);
+        this.setDelay(870L);
         this.setApplyFinalAttack(true);
         this.addFinalDamage(1.6);           // 코어강화
     }
