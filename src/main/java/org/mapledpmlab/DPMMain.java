@@ -24,12 +24,14 @@ public class DPMMain {
         dealCycleList = new ArrayList<>();
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
         dealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
+        dealCycleList.add(new BattleMageDealCycle(new BattleMage()));
         dealCycleList.add(new BishopDealCycle(new Bishop()));
         dealCycleList.add(new BlasterDealCycle(new Blaster()));
         dealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
         dealCycleList.add(new CannonShooterDealCycle(new CannonShooter()));
         dealCycleList.add(new CaptainDealCycle(new Captain()));
         dealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
+        dealCycleList.add(new DemonAvengerDealCycle(new DemonAvenger()));
         dealCycleList.add(new DemonSlayerDealCycle(new DemonSlayer()));
         dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
         dealCycleList.add(new FlameWizardDealCycle(new FlameWizard()));
@@ -45,9 +47,9 @@ public class DPMMain {
         dealCycleList.add(new StrikerDealCycle(new Striker()));
         dealCycleList.add(new ViperDealCycle(new Viper()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
-        DemonSlayerDealCycle demonSlayerDealCycle = new DemonSlayerDealCycle(new DemonSlayer());
-        demonSlayerDealCycle.applyDoping();
-        demonSlayerDealCycle.print();
+        //BattleMageDealCycle battleMageDealCycle = new BattleMageDealCycle(new BattleMage());
+        //battleMageDealCycle.applyDoping();
+        //battleMageDealCycle.print();
         this.exportExcel();
     }
 
@@ -115,13 +117,14 @@ public class DPMMain {
 
             data = new TreeMap<>();
             data.put("01", new Object[]{
-                    "유니온", "링크", "하이퍼스탯", "몬스터라이프", "어빌리티"
+                    "유니온", "링크", "하이퍼스탯", "아티팩트", "어빌리티"
             });
             data.put("02", new Object[]{
                     dealCycle.getJob().getUnion().getDescription(),
                     dealCycle.getJob().getLinkListStr(),
                     dealCycle.getJob().getHyper().getDescription(),
-                    dealCycle.getJob().getFarm().getDescription(),
+                    //dealCycle.getJob().getFarm().getDescription(),
+                    dealCycle.getJob().getArtifact().getDescription(),
                     dealCycle.getJob().getAbility().getDescription()
             });
 

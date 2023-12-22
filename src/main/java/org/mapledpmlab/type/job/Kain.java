@@ -1,9 +1,9 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.PassiveBossCritical;
+import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
-import org.mapledpmlab.type.farm.NormalFarm;
 import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PhantomInstinct;
@@ -67,14 +67,14 @@ public class Kain extends Job {
         this.addBossDamage(10L);
 
         this.setAbility(new PassiveBossCritical());
-        this.setFarm(new NormalFarm());
+        this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new DexUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getFarm());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));

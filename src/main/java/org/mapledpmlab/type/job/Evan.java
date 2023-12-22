@@ -1,10 +1,10 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
+import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.equipment.DragonWeapon;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
-import org.mapledpmlab.type.farm.ReuseFarm;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
@@ -75,12 +75,12 @@ public class Evan extends Job {
         this.addMagic(35L);             // 스파이럴 오브 마나
 
         this.setAbility(new ReuseBossAbnormal());
-        this.setFarm(new ReuseFarm());
+        this.setArtifact(new Artifact());
         this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new IntUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getFarm());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

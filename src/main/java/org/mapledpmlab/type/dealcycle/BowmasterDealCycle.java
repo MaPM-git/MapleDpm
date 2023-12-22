@@ -1,6 +1,5 @@
 package org.mapledpmlab.type.dealcycle;
 
-import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -105,11 +104,7 @@ public class BowmasterDealCycle extends DealCycle {
     };
 
     public BowmasterDealCycle(Job job) {
-        super();
-        this.setFinalAttack(new AdvancedFinalAttackBowmaster());
-        this.setJob(job);
-        this.getJob().addTotal(this.getJob().getJobType());
-        this.getJob().addObject(new HyperArcher(this.getJob().getLevel()));
+        super(job, new AdvancedFinalAttackBowmaster());
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);

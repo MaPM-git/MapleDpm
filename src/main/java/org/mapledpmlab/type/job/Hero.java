@@ -1,9 +1,9 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
-import org.mapledpmlab.type.farm.FinalAttackFarm;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
@@ -63,13 +63,13 @@ public class Hero extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         this.setAbility(new BossCriticalAbnormal());
-        this.setFarm(new FinalAttackFarm());
+        this.setArtifact(new Artifact());
         this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new StrUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getFarm());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

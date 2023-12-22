@@ -1,9 +1,9 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BuffBossCritical;
+import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
-import org.mapledpmlab.type.farm.BuffFarm;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
@@ -63,14 +63,14 @@ public class ArchMageIL extends Job {
         this.addMainStat(30L);          // 언스태이블 메모라이즈
 
         this.setAbility(new BuffBossCritical());
-        this.setFarm(new BuffFarm());
+        this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getFarm());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

@@ -1,9 +1,9 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
+import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
-import org.mapledpmlab.type.farm.FinalAttackReuseFarm;
 import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.DexUnion;
@@ -40,6 +40,10 @@ public class WildHunter extends Job {
         this.addAttP(9L);
         this.addAttP(21L);
 
+        // 재규어
+        this.addCriticalP(5.0);
+        this.addPlusBuffDuration(10L);
+
         // 1차
         this.addCriticalDamage(8.0);    // 서먼 재규어
         this.addAtt(20L);               // 오토매틱 슈팅 디바이스
@@ -75,12 +79,12 @@ public class WildHunter extends Job {
         this.addAtt(65L);               // 재규어 스톰
 
         this.setAbility(new ReuseBossAbnormal());
-        this.setFarm(new FinalAttackReuseFarm());
+        this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.addObject(new DexUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getFarm());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));

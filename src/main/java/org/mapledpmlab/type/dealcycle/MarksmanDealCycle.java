@@ -1,6 +1,5 @@
 package org.mapledpmlab.type.dealcycle;
 
-import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -93,11 +92,7 @@ public class MarksmanDealCycle extends DealCycle {
     };
 
     public MarksmanDealCycle(Job job) {
-        super();
-        this.setFinalAttack(new FinalAttackMarksman());
-        this.setJob(job);
-        this.getJob().addTotal(this.getJob().getJobType());
-        this.getJob().addObject(new HyperArcher(this.getJob().getLevel()));
+        super(job, new FinalAttackMarksman());
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);

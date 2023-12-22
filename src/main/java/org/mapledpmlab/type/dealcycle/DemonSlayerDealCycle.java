@@ -1,6 +1,5 @@
 package org.mapledpmlab.type.dealcycle;
 
-import org.mapledpmlab.type.hyper.HyperDemonSlayer;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -104,11 +103,7 @@ public class DemonSlayerDealCycle extends DealCycle {
     NightmareFlame nightmareFlame = new NightmareFlame();
 
     public DemonSlayerDealCycle(Job job) {
-        super();
-        this.setFinalAttack(null);
-        this.setJob(job);
-        this.getJob().addTotal(this.getJob().getJobType());
-        this.getJob().addObject(new HyperDemonSlayer(this.getJob().getLevel(), getJob().getCriticalP()));
+        super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);

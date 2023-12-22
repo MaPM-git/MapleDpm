@@ -1,10 +1,8 @@
 package org.mapledpmlab.type.dealcycle;
 
-import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
-import org.mapledpmlab.type.skill.attackskill.bowmaster.AdvancedFinalAttackBowmaster;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.pathfinder.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -108,11 +106,7 @@ public class PathFinderDealCycle extends DealCycle {
     };
 
     public PathFinderDealCycle(Job job) {
-        super();
-        this.setFinalAttack(new AdvancedFinalAttackBowmaster());
-        this.setJob(job);
-        this.getJob().addTotal(this.getJob().getJobType());
-        this.getJob().addObject(new HyperArcher(this.getJob().getLevel()));
+        super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);

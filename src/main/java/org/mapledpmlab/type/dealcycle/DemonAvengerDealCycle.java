@@ -1,6 +1,5 @@
 package org.mapledpmlab.type.dealcycle;
 
-import org.mapledpmlab.type.hyper.HyperDemonAvenger;
 import org.mapledpmlab.type.job.DemonAvenger;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -105,11 +104,7 @@ public class DemonAvengerDealCycle extends DealCycle {
     ThornOfFury thornOfFury = new ThornOfFury();
 
     public DemonAvengerDealCycle(Job job) {
-        super();
-        this.setFinalAttack(new FinalAttackDemonAvenger());
-        this.setJob(job);
-        this.getJob().addTotal(this.getJob().getJobType());
-        this.getJob().addObject(new HyperDemonAvenger(this.getJob().getLevel(), getJob().getCriticalP()));
+        super(job, new FinalAttackDemonAvenger());
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);

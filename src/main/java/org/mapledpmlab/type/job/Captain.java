@@ -1,9 +1,9 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
+import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
-import org.mapledpmlab.type.farm.FinalAttackFarm;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PirateBlessing;
@@ -69,13 +69,13 @@ public class Captain extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         this.setAbility(new ReuseBossAbnormal());
-        this.setFarm(new FinalAttackFarm());
+        this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PirateBlessing());
         this.setUnion(new DexUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getFarm());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

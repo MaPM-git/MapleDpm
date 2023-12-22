@@ -1,6 +1,5 @@
 package org.mapledpmlab.type.dealcycle;
 
-import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -112,11 +111,7 @@ public class BlasterDealCycle extends DealCycle {
     AfterImageShockPassive afterImageShockPassive = new AfterImageShockPassive();
 
     public BlasterDealCycle(Job job) {
-        super();
-        this.setFinalAttack(new FinalAttackBlaster());
-        this.setJob(job);
-        this.getJob().addTotal(this.getJob().getJobType());
-        this.getJob().addObject(new HyperCommon(this.getJob().getLevel(), getJob().getCriticalP()));
+        super(job, new FinalAttackBlaster());
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);
