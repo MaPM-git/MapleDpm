@@ -81,7 +81,7 @@ public class WildHunter extends Job {
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
-        this.addObject(new DexUnion());
+        this.setUnion(new DexUnion());
 
         this.addObject(this.getAbility());
         this.addObject(this.getArtifact());

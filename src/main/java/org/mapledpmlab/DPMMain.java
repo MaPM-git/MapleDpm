@@ -47,10 +47,10 @@ public class DPMMain {
         dealCycleList.add(new StrikerDealCycle(new Striker()));
         dealCycleList.add(new ViperDealCycle(new Viper()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
-        //BattleMageDealCycle battleMageDealCycle = new BattleMageDealCycle(new BattleMage());
-        //battleMageDealCycle.applyDoping();
-        //battleMageDealCycle.print();
-        this.exportExcel();
+        WildHunterDealCycle wildHunterDealCycle = new WildHunterDealCycle(new WildHunter());
+        wildHunterDealCycle.applyDoping();
+        wildHunterDealCycle.print();
+        //this.exportExcel();
     }
 
     public void exportExcel() {
