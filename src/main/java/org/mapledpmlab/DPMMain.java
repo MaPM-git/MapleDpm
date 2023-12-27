@@ -49,11 +49,11 @@ public class DPMMain {
         dealCycleList.add(new ViperDealCycle(new Viper()));
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
-        //dealCycleList.add(new XenonDealCycle(new Xenon()));
-        XenonDealCycle xenonDealCycle = new XenonDealCycle(new Xenon());
+        dealCycleList.add(new XenonDealCycle(new Xenon()));
+        /*XenonDealCycle xenonDealCycle = new XenonDealCycle(new Xenon());
         xenonDealCycle.applyDoping();
-        xenonDealCycle.print();
-        //this.exportExcel();
+        xenonDealCycle.print();*/
+        this.exportExcel();
     }
 
     public void exportExcel() {

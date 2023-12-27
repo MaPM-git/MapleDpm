@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.dealcycle;
 
 import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.job.Xenon;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
@@ -474,8 +475,12 @@ public class XenonDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                attackDamage = (long) Math.floor(
+                        (
+                                getJob().getFinalMainStat() + buffSkill.getBuffMainStat()
+                                + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()
+                                + ((Xenon) getJob()).getFinalSubStat2() + buffSkill.getBuffOtherStat1()
+                        ) * 4 * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
