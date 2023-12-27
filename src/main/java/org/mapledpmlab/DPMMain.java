@@ -49,9 +49,10 @@ public class DPMMain {
         dealCycleList.add(new ViperDealCycle(new Viper()));
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
-        MechanicDealCycle mechanicDealCycle = new MechanicDealCycle(new Mechanic());
-        mechanicDealCycle.applyDoping();
-        mechanicDealCycle.print();
+        //dealCycleList.add(new XenonDealCycle(new Xenon()));
+        XenonDealCycle xenonDealCycle = new XenonDealCycle(new Xenon());
+        xenonDealCycle.applyDoping();
+        xenonDealCycle.print();
         //this.exportExcel();
     }
 

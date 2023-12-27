@@ -12,6 +12,7 @@ import org.mapledpmlab.type.union.LukUnion;
 import java.util.stream.Collectors;
 
 public class Xenon extends Job {
+    private Long starforce = 0L;
 
     public Xenon() {
         // 기본
@@ -59,6 +60,9 @@ public class Xenon extends Job {
         
         // 0차
         this.addDamage(3L);             // 멀티래터럴 I
+        this.addMainStat(70L);          // 컨버전 스타포스
+        this.addSubStat(70L);
+        this.addOtherStat1(70L);
 
         // 1차
         this.addAtt(30L);               // 인클라인 파워
