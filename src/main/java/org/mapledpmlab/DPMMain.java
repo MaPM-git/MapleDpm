@@ -35,6 +35,7 @@ public class DPMMain {
         dealCycleList.add(new DemonAvengerDealCycle(new DemonAvenger()));
         dealCycleList.add(new DemonSlayerDealCycle(new DemonSlayer()));
         dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
+        dealCycleList.add(new EvanDealCycle(new Evan()));
         dealCycleList.add(new FlameWizardDealCycle(new FlameWizard()));
         dealCycleList.add(new HeroDealCycle(new Hero()));
         dealCycleList.add(new MarksmanDealCycle(new Marksman()));
@@ -51,9 +52,9 @@ public class DPMMain {
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));
-        /*AranDealCycle aranDealCycle = new AranDealCycle(new Aran());
-        aranDealCycle.applyDoping();
-        aranDealCycle.print();*/
+        /*EvanDealCycle evanDealCycle = new EvanDealCycle(new Evan());
+        evanDealCycle.applyDoping();
+        evanDealCycle.print();*/
         this.exportExcel();
     }
 
