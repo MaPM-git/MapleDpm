@@ -7,7 +7,7 @@ public class LeafTornado extends AttackSkill {
         this.setName("리프 토네이도");
         this.setAttackCount(4L);
         this.setDamage(260.0 + 210);
-        this.setDelay(750L);
+        this.setDelayByAttackSpeed(750L);
         this.setAddDamage(30L);         // 레전드리 스피어-링크드 리인포스
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);

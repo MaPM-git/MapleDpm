@@ -8,7 +8,7 @@ public class LegendarySpear extends AttackSkill {
         this.setName("레전드리 스피어");
         this.setAttackCount(4L);
         this.setDamage(640.0);
-        this.setDelay(870L);
+        this.setDelayByAttackSpeed(870L);
         this.setRelatedSkill(new LegendarySpearBuff());
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);

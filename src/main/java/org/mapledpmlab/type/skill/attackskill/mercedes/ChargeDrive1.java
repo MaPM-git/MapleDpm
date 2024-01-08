@@ -7,7 +7,7 @@ public class ChargeDrive1 extends AttackSkill {
         this.setName("차지 드라이브(돌진)");
         this.setAttackCount(1L);
         this.setDamage(250.0 + 100 + 197);
-        this.setDelay(600L);
+        this.setDelayByAttackSpeed(600L);
         this.setRelatedSkill(new ChargeDrive2());
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
