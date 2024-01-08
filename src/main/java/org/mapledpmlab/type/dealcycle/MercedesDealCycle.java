@@ -642,7 +642,14 @@ public class MercedesDealCycle extends DealCycle {
         if (endTime != null) {
             getEventTimeList().add(endTime);
         }
-        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (
+                skill instanceof BuffSkill
+                && getStart().before(sylphidiaEndTime)
+        ) {
+            getStart().setTime(getStart().getTime() + skill.getDelay() / 2);
+        } else {
+            getStart().setTime(getStart().getTime() + skill.getDelay());
+        }
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
         }
