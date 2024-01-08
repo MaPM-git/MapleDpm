@@ -78,4 +78,10 @@ public class Mercedes extends Job {
         this.setHyper(new HyperArcher(this.getLevel()));
         this.addObject(this.getHyper());
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addFinalDamage(1.2);           // 이그니스 로어 10중첩
+    }
 }
