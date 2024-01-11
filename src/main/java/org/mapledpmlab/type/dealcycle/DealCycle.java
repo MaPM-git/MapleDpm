@@ -39,15 +39,15 @@ public class DealCycle {
     public DealCycle() {}
 
     public DealCycle(Job job, AttackSkill finalAttack) {
-        this.finalAttack = finalAttack;
-        this.job = job;
-        this.job.addTotal(this.job.getJobType());
+        setFinalAttack(finalAttack);
+        setJob(job);
+        getJob().addTotal(getJob().getJobType());
     }
 
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
 
-        if (start.before(skill.getActivateTime())) {
+        if (getStart().before(skill.getActivateTime())) {
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -62,11 +62,11 @@ public class DealCycle {
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
-                endTime = new Timestamp((long) (start.getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + job.getPlusBuffDuration() * 0.01)));
-                skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
-                endTime = new Timestamp(start.getTime() + ((BuffSkill) skill).getDuration() * 1000);
-                skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
             if (((AttackSkill) skill).getInterval() != 0) {
@@ -74,39 +74,39 @@ public class DealCycle {
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
                             skillEvent.getStart().after(getStart())
-                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
                     ) {
                         remove.add(skillEvent);
                     }
                 }
-                this.getSkillEventList().removeAll(remove);
+                getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
-                        skillEventList.add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                        eventTimeList.add(new Timestamp(getStart().getTime() + i));
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
                 } else {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
-                        skillEventList.add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                        eventTimeList.add(new Timestamp(getStart().getTime() + i));
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
                     }
                 }
                 this.setStart(tmp);
             } else {
-                endTime = new Timestamp(start.getTime() + skill.getDelay());
-                skillEventList.add(new SkillEvent(skill, new Timestamp(start.getTime()), endTime));
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         }
         applyCooldown(skill);
-        eventTimeList.add(start);
-        eventTimeList.add(new Timestamp(start.getTime() + skill.getDelay()));
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
-            eventTimeList.add(endTime);
+            getEventTimeList().add(endTime);
         }
-        start.setTime(start.getTime() + skill.getDelay());
+        getStart().setTime(getStart().getTime() + skill.getDelay());
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
         }
@@ -116,12 +116,12 @@ public class DealCycle {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
                 Long ran = (long) (Math.random() * 99 + 1);
-                if (ran <= job.getReuse()) {
+                if (ran <= getJob().getReuse()) {
                 } else  {
-                    skill.setActivateTime(new Timestamp((int) (start.getTime() + applyCooldownReduction(skill) * 1000)));
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
                 }
             } else {
-                skill.setActivateTime(new Timestamp((int) (start.getTime() + applyCooldownReduction(skill) * 1000)));
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
             }
         }
     }
@@ -133,7 +133,7 @@ public class DealCycle {
     }
 
     public boolean cooldownCheck(Skill skill) {
-        if (!(start.after(skill.getActivateTime()) || start.equals(skill.getActivateTime()))) {
+        if (!(getStart().after(skill.getActivateTime()) || getStart().equals(skill.getActivateTime()))) {
             return false;
         }
         return true;
@@ -141,7 +141,7 @@ public class DealCycle {
 
     public boolean cooldownCheck(List<Skill> skillList) {
         for (Skill s : skillList) {
-            if (!(start.after(s.getActivateTime()) || start.equals(s.getActivateTime()))) {
+            if (!(getStart().after(s.getActivateTime()) || getStart().equals(s.getActivateTime()))) {
                 return false;
             }
         }
@@ -174,13 +174,13 @@ public class DealCycle {
     }
 
     public void applyDoping() {
-        this.job.Doping();
-        totalDamage = calcTotalDamage(eventTimeList);
+        getJob().Doping();
+        setTotalDamage(calcTotalDamage(getEventTimeList()));
     }
 
     public void print() {
         Long verifyDamage = 0L;
-        for (AttackSkill as : attackSkillList) {
+        for (AttackSkill as : getAttackSkillList()) {
             /*if (as.getCumulativeDamage() == 0) {
                 continue;
             }*/
@@ -188,16 +188,16 @@ public class DealCycle {
             verifyDamage += as.getCumulativeDamage();
         }
         System.out.println("검증용 : " + verifyDamage);
-        System.out.println("총데미지 : " + totalDamage);
-        System.out.println("DPM : " + totalDamage/12);
+        System.out.println("총데미지 : " + getTotalDamage());
+        System.out.println("DPM : " + getTotalDamage()/12);
         System.out.println("리스트레인트링 : " + calcRestraintRingDeal());
         System.out.println("40초 : " + calcFortyDeal());
     }
 
     public Object[] getOpject() {
-        DPM = getTotalDamage() / 12;
-        restraintRingDeal = calcRestraintRingDeal();
-        fortyDeal = calcFortyDeal();
+        setDPM(getTotalDamage() / 12);
+        setRestraintRingDeal(calcRestraintRingDeal());
+        setFortyDeal(calcFortyDeal());
         Object[] result = new Object[]{
                 this.getJob().getName(), this.getDPM() + "",
                 "=TEXT(" + getDPM() + "/SUM(IF(A2:A16=\"비숍\", VALUE(B2:B16),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
@@ -209,7 +209,7 @@ public class DealCycle {
 
     public List<SkillEvent> getOverlappingSkillEvents(Timestamp start, Timestamp end) {
         List<SkillEvent> overlappingSkillEvents = new ArrayList<>();
-        for (SkillEvent skillEvent : skillEventList) {
+        for (SkillEvent skillEvent : getSkillEventList()) {
             if (
                     (skillEvent.getStart().before(end) && skillEvent.getEnd().after(start))
                     || (skillEvent.getStart().equals(start) && skillEvent.getStart().equals(skillEvent.getEnd()))
@@ -258,13 +258,13 @@ public class DealCycle {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
-                    if (ran <= finalAttack.getProp() && start.equals(se.getStart())) {
-                        totalDamage += getAttackDamage(new SkillEvent(finalAttack, start, end), buffSkill, start, end);
+                    if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
+                        totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
                     }
                 }
             }
         }
-        for (AttackSkill as : attackSkillList) {
+        for (AttackSkill as : getAttackSkillList()) {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
@@ -273,24 +273,24 @@ public class DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        for (AttackSkill as : attackSkillList) {
+        for (AttackSkill as : getAttackSkillList()) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((job.getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + job.getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
-                        * (Math.floor((job.getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (job.getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + job.getPerXAtt())
-                        * job.getConstant()
-                        * (1 + (job.getDamage() + job.getBossDamage() + job.getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (job.getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
+                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                        + getJob().getPerXAtt())
+                        * getJob().getConstant()
+                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
                         * buffSkill.getBuffFinalDamage()
-                        * job.getStatXFinalDamage()
+                        * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()
-                        * job.getMastery()
+                        * getJob().getMastery()
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (job.getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (job.getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - job.getIgnoreDefense()) * (1 - job.getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
@@ -307,16 +307,16 @@ public class DealCycle {
     }
 
     public Long calcRestraintRingDeal() {
-        for (AttackSkill as : attackSkillList) {
+        for (AttackSkill as : getAttackSkillList()) {
             as.setShare(0.0);
             as.setUseCount(0L);
             as.setCumulativeDamage(0L);
         }
         List<Timestamp> tmp = new ArrayList<>();
-        for (Timestamp ts : eventTimeList) {
+        for (Timestamp ts : getEventTimeList()) {
             if (
-                    (ts.equals(restraintRingStartTime) || ts.after(restraintRingStartTime))
-                    && (ts.equals(restraintRingEndTime) || ts.before(restraintRingEndTime))
+                    (ts.equals(getRestraintRingStartTime()) || ts.after(getRestraintRingStartTime()))
+                    && (ts.equals(getRestraintRingEndTime()) || ts.before(getRestraintRingEndTime()))
             ) {
                 tmp.add(ts);
             }
@@ -325,16 +325,16 @@ public class DealCycle {
     }
 
     public Long calcFortyDeal() {
-        for (AttackSkill as : attackSkillList) {
+        for (AttackSkill as : getAttackSkillList()) {
             as.setShare(0.0);
             as.setUseCount(0L);
             as.setCumulativeDamage(0L);
         }
         List<Timestamp> tmp = new ArrayList<>();
-        for (Timestamp ts : eventTimeList) {
+        for (Timestamp ts : getEventTimeList()) {
             if (
-                    (ts.equals(restraintRingStartTime) || ts.after(restraintRingStartTime))
-                    && (ts.equals(fortyEndTime) || ts.before(fortyEndTime))
+                    (ts.equals(getRestraintRingStartTime()) || ts.after(getRestraintRingStartTime()))
+                    && (ts.equals(getFortyEndTime()) || ts.before(getFortyEndTime()))
             ) {
                 tmp.add(ts);
             }
