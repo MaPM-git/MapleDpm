@@ -78,4 +78,11 @@ public class Phantom extends Job {
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addAtt(30L);           // 스피릿 블레이드
+        this.addFinalDamage(1.2);   // 크로스 오버 체인
+    }
 }

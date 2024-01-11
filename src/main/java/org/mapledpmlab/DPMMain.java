@@ -47,6 +47,7 @@ public class DPMMain {
         dealCycleList.add(new NightWalkerDealCycle(new NightWalker()));
         dealCycleList.add(new PaladinDealCycle(new Paladin()));
         dealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
+        dealCycleList.add(new PhantomDealCycle(new Phantom()));
         dealCycleList.add(new ShadowerDealCycle(new Shadower()));
         dealCycleList.add(new SoulMasterDealCycle(new SoulMaster()));
         dealCycleList.add(new StrikerDealCycle(new Striker()));
@@ -54,9 +55,9 @@ public class DPMMain {
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));
-        /*MercedesDealCycle mercedesDealCycle = new MercedesDealCycle(new Mercedes());
-        mercedesDealCycle.applyDoping();
-        mercedesDealCycle.print();*/
+        /*PhantomDealCycle phantomDealCycle = new PhantomDealCycle(new Phantom());
+        phantomDealCycle.applyDoping();
+        phantomDealCycle.print();*/
         this.exportExcel();
     }
 
