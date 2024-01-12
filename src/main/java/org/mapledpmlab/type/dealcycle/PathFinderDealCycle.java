@@ -314,59 +314,63 @@ public class PathFinderDealCycle extends DealCycle {
             start = eventTimeList.get(i);
             end = eventTimeList.get(i + 1);
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
-            overlappingSkillEvents = deduplication(overlappingSkillEvents, SkillEvent::getSkill);
+            List<SkillEvent> useBuffSkillList = new ArrayList<>();
+            for (SkillEvent skillEvent : overlappingSkillEvents) {
+                if (skillEvent.getSkill() instanceof BuffSkill) {
+                    useBuffSkillList.add(skillEvent);
+                } else {
+                    useAttackSkillList.add(skillEvent);
+                }
+            }
+            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isEvolve = false;
-            for (int j = 0; j < overlappingSkillEvents.size(); j++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof EvolveBuff) {
+            for (int j = 0; j < useBuffSkillList.size(); j++) {
+                if (useBuffSkillList.get(j).getSkill() instanceof EvolveBuff) {
                     isEvolve = true;
                     break;
                 }
             }
             if (isEvolve) {
-                for (int j = 0; j < overlappingSkillEvents.size(); j++) {
-                    if (overlappingSkillEvents.get(j).getSkill() instanceof Raven) {
-                        overlappingSkillEvents.remove(j);
+                for (int j = 0; j < useAttackSkillList.size(); j++) {
+                    if (useAttackSkillList.get(j).getSkill() instanceof Raven) {
+                        useAttackSkillList.remove(j);
                     }
                 }
             }
-            for (int j = 0; j < overlappingSkillEvents.size(); j++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof CriticalReinforce) {
+            for (int j = 0; j < useBuffSkillList.size(); j++) {
+                if (useBuffSkillList.get(j).getSkill() instanceof CriticalReinforce) {
                     isCriticalReinforce = true;
                     break;
                 }
             }
-            for (int j = 0; j < overlappingSkillEvents.size(); j++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof RelicEvolution) {
+            for (int j = 0; j < useBuffSkillList.size(); j++) {
+                if (useBuffSkillList.get(j).getSkill() instanceof RelicEvolution) {
                     isRelicEvolution = true;
                     break;
                 }
             }
-            for (int j = 0; j < overlappingSkillEvents.size(); j++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof RelicLiberation) {
+            for (int j = 0; j < useBuffSkillList.size(); j++) {
+                if (useBuffSkillList.get(j).getSkill() instanceof RelicLiberation) {
                     isRelicLiberation = true;
                     break;
                 }
             }
-            for (SkillEvent skillEvent : overlappingSkillEvents) {
-                if (skillEvent.getSkill() instanceof BuffSkill) {
-                    buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
-                    buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
-                    buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
-                    buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
-                    buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
-                    buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
-                    buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
-                    buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
-                    buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
-                    buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
-                    buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
-                    buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
-                    buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                    buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
-                    buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                } else {
-                    useAttackSkillList.add(skillEvent);
-                }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
+                buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
+                buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
+                buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
+                buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
+                buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
+                buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
+                buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
+                buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
+                buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
+                buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
+                buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
+                buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
+                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
+                buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (isRelicEvolution) {

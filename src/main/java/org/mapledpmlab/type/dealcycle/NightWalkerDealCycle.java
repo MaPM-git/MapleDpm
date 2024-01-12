@@ -341,48 +341,52 @@ public class NightWalkerDealCycle extends DealCycle {
             start = eventTimeList.get(i);
             end = eventTimeList.get(i + 1);
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
-            overlappingSkillEvents = deduplication(overlappingSkillEvents, SkillEvent::getSkill);
+            List<SkillEvent> useBuffSkillList = new ArrayList<>();
+            for (SkillEvent skillEvent : overlappingSkillEvents) {
+                if (skillEvent.getSkill() instanceof BuffSkill) {
+                    useBuffSkillList.add(skillEvent);
+                } else {
+                    useAttackSkillList.add(skillEvent);
+                }
+            }
+            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isShadowIllusion = false;
             boolean isShadowServantExtend = false;
             boolean isShadowSpear = false;
-            for (SkillEvent skillEvent : overlappingSkillEvents) {
+            for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof ShadowIllusion) {
                     isShadowIllusion = true;
                     break;
                 }
             }
-            for (SkillEvent skillEvent : overlappingSkillEvents) {
+            for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof ShadowServantExtend) {
                     isShadowServantExtend = true;
                     break;
                 }
             }
-            for (SkillEvent skillEvent : overlappingSkillEvents) {
+            for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof ShadowSpearBuff) {
                     isShadowSpear = true;
                     break;
                 }
             }
-            for (SkillEvent skillEvent : overlappingSkillEvents) {
-                if (skillEvent.getSkill() instanceof BuffSkill) {
-                    buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
-                    buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
-                    buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
-                    buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
-                    buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
-                    buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
-                    buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
-                    buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
-                    buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
-                    buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
-                    buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
-                    buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
-                    buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                    buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
-                    buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                } else {
-                    useAttackSkillList.add(skillEvent);
-                }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
+                buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
+                buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
+                buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
+                buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
+                buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
+                buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
+                buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
+                buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
+                buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
+                buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
+                buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
+                buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
+                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
+                buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
             }
             for (SkillEvent se : useAttackSkillList) {
                 AttackSkill attackSkill = (AttackSkill) se.getSkill();

@@ -331,35 +331,45 @@ public class CaptainDealCycle extends DealCycle {
             start = eventTimeList.get(i);
             end = eventTimeList.get(i + 1);
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
-            overlappingSkillEvents = deduplication(overlappingSkillEvents, SkillEvent::getSkill);
+            List<SkillEvent> useBuffSkillList = new ArrayList<>();
+            for (SkillEvent skillEvent : overlappingSkillEvents) {
+                if (skillEvent.getSkill() instanceof BuffSkill) {
+                    useBuffSkillList.add(skillEvent);
+                } else {
+                    useAttackSkillList.add(skillEvent);
+                }
+            }
+            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isUntiringNectar = false;
-            for (int j = 0; i < overlappingSkillEvents.size(); i++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof UntiringNectar) {
+            for (int j = 0; i < useBuffSkillList.size(); i++) {
+                if (useBuffSkillList.get(j).getSkill() instanceof UntiringNectar) {
                     isUntiringNectar = true;
                     break;
                 }
             }
-            for (int j = 0; i < overlappingSkillEvents.size(); i++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof DualPistolCrew) {
-                    overlappingSkillEvents.remove(j);
+            if (isUntiringNectar) {
+                for (int j = 0; j < useAttackSkillList.size(); j++) {
+                    if (useAttackSkillList.get(j).getSkill() instanceof DualPistolCrew) {
+                        useAttackSkillList.remove(j);
+                    }
+                }
+                for (int j = 0; j < useAttackSkillList.size(); j++) {
+                    if (useAttackSkillList.get(j).getSkill() instanceof MarksmanCrew) {
+                        useAttackSkillList.remove(j);
+                    }
+                }
+                for (int j = 0; j < useAttackSkillList.size(); j++) {
+                    if (useAttackSkillList.get(j).getSkill() instanceof BattleShipBomber) {
+                        ((AttackSkill) useAttackSkillList.get(j).getSkill()).setDamage(500.0);
+                    }
+                }
+                for (int j = 0; j < useAttackSkillList.size(); j++) {
+                    if (useAttackSkillList.get(j).getSkill() instanceof SiegeBomber) {
+                        ((AttackSkill) useAttackSkillList.get(j).getSkill()).setDamage(450.0);
+                    }
                 }
             }
-            for (int j = 0; i < overlappingSkillEvents.size(); i++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof MarksmanCrew) {
-                    overlappingSkillEvents.remove(j);
-                }
-            }
-            for (int j = 0; i < overlappingSkillEvents.size(); i++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof BattleShipBomber) {
-                    ((AttackSkill) overlappingSkillEvents.get(j).getSkill()).setDamage(500.0);
-                }
-            }
-            for (int j = 0; i < overlappingSkillEvents.size(); i++) {
-                if (overlappingSkillEvents.get(j).getSkill() instanceof SiegeBomber) {
-                    ((AttackSkill) overlappingSkillEvents.get(j).getSkill()).setDamage(450.0);
-                }
-            }
-            for (SkillEvent skillEvent : overlappingSkillEvents) {
+            for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                     buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
