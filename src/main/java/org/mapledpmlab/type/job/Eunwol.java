@@ -70,4 +70,14 @@ public class Eunwol extends Job {
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addDamage(20L);        // 약화
+        this.addDamage(35L);        // 정령 결속 극대화
+        this.addAtt(20L);
+        this.addBossDamage(20L);
+        this.addIgnoreDefenseList(20L);
+    }
 }
