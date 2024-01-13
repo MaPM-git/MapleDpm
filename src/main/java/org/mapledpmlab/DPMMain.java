@@ -56,9 +56,9 @@ public class DPMMain {
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));*/
-        PaladinDealCycle paladinDealCycle = new PaladinDealCycle(new Paladin());
-        paladinDealCycle.applyDoping();
-        paladinDealCycle.print();
+        HeroDealCycle heroDealCycle = new HeroDealCycle(new Hero());
+        heroDealCycle.applyDoping();
+        heroDealCycle.print();
         //this.exportExcel();
     }
 
@@ -132,7 +132,6 @@ public class DPMMain {
                     dealCycle.getJob().getUnion().getDescription(),
                     dealCycle.getJob().getLinkListStr(),
                     dealCycle.getJob().getHyper().getDescription(),
-                    //dealCycle.getJob().getFarm().getDescription(),
                     dealCycle.getJob().getArtifact().getDescription(),
                     dealCycle.getJob().getAbility().getDescription()
             });
@@ -205,7 +204,7 @@ public class DPMMain {
                 "직업이름", "DPM", "DPM 배율", "리레딜", "리레딜 배율", "40초 딜", "40초딜 배율"
         });
         for (int i = 0; i < dealCycleList.size(); i++) {
-            data.put(String.valueOf(i + 2), dealCycleList.get(i).getOpject());
+            data.put(String.valueOf(i + 2), dealCycleList.get(i).getObject());
         }
 
         keyset = data.keySet();

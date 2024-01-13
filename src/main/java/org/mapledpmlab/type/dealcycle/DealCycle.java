@@ -194,15 +194,15 @@ public class DealCycle {
         System.out.println("40초 : " + calcFortyDeal());
     }
 
-    public Object[] getOpject() {
+    public Object[] getObject() {
         setDPM(getTotalDamage() / 12);
         setRestraintRingDeal(calcRestraintRingDeal());
         setFortyDeal(calcFortyDeal());
         Object[] result = new Object[]{
                 this.getJob().getName(), this.getDPM() + "",
-                "=TEXT(" + getDPM() + "/SUM(IF(A2:A16=\"비숍\", VALUE(B2:B16),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
-                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A16=\"비숍\", VALUE(D2:D16),0)),\"0.0%\")", this.getFortyDeal() + "",
-                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A16=\"비숍\", VALUE(F2:F16),0)),\"0.0%\")"
+                "=TEXT(" + getDPM() + "/SUM(IF(A2:A35=\"비숍\", VALUE(B2:B35),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
+                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A35=\"비숍\", VALUE(D2:D35),0)),\"0.0%\")", this.getFortyDeal() + "",
+                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A35=\"비숍\", VALUE(F2:F35),0)),\"0.0%\")"
         };
         return result;
     }
