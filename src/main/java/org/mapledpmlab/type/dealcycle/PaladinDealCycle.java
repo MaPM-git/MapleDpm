@@ -10,6 +10,7 @@ import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.paladin.BlessedHammerBuff;
 import org.mapledpmlab.type.skill.buffskill.paladin.HolyUnity;
 import org.mapledpmlab.type.skill.buffskill.paladin.NobleDemand;
+import org.mapledpmlab.type.skill.buffskill.paladin.SacredBastionBuff;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -54,9 +55,9 @@ public class PaladinDealCycle extends DealCycle {
             add(new GrandCross2());
             add(new MightyMjolnir());
             add(new MightyMjolnirImpact());
-            add(new SacredBastionDot());
-            add(new SacredBastionImpact1());
-            add(new SacredBastionImpact2());
+            add(new SacredBastion1());
+            add(new SacredBastion2());
+            add(new SacredBastionLight());
             add(new Sanctuary());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
@@ -65,8 +66,14 @@ public class PaladinDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new GrandCrossDelay());
-            add(new SacredBastionDelay());
+            add(new GrandCross1Delay());
+            add(new GrandCross2Delay());
+            add(new GrandCrossAfterDelay());
+            add(new GrandCrossFirstDelay());
+            add(new GrandCrossLoopDelay());
+            add(new MightyMjolnirDelay());
+            add(new SacredBastion1Delay());
+            add(new SacredBastion2Delay());
         }
     };
 
@@ -79,11 +86,18 @@ public class PaladinDealCycle extends DealCycle {
             add(new NobleDemand());
             add(new PriorPreparation());
             add(new RestraintRing());
+            add(new SacredBastionBuff());
             add(new SoulContract());
             add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
+
+    Double divineBrandCount = 0.0;      // 신성 낙인 개수
+
+    SacredBastionLight sacredBastionLight = new SacredBastionLight();
+    MightyMjolnir mightyMjolnir = new MightyMjolnir();
+    MightyMjolnirImpact mightyMjolnirImpact = new MightyMjolnirImpact();
 
     public PaladinDealCycle(Job job) {
         super(job, new FinalAttackPaladin());
@@ -92,26 +106,21 @@ public class PaladinDealCycle extends DealCycle {
         this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
-        Long q = 0L;
-        Double divineBrandCount = 0.0; // 신성 낙인 개수
-
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
         Blast blast = new Blast();
         BlessedHammerBuff blessedHammerBuff = new BlessedHammerBuff();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DivineJudgement divineJudgement = new DivineJudgement();
         EpicAdventure epicAdventure = new EpicAdventure();
-        GrandCross1 grandCross1 = new GrandCross1();
+        GrandCrossFirstDelay grandCrossFirstDelay = new GrandCrossFirstDelay();
         HolyUnity holyUnity = new HolyUnity();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MightyMjolnir mightyMjolnir = new MightyMjolnir();
+        MightyMjolnirDelay mightyMjolnirDelay = new MightyMjolnirDelay();
         NobleDemand nobleDemand = new NobleDemand();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
-        SacredBastionDot sacredBastionDot = new SacredBastionDot();
-        SacredBastionImpact1 sacredBastionImpact1 = new SacredBastionImpact1();
-        SacredBastionImpact2 sacredBastionImpact2 = new SacredBastionImpact2();
+        SacredBastion1 sacredBastion1 = new SacredBastion1();
         Sanctuary sanctuary = new Sanctuary();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
@@ -128,7 +137,7 @@ public class PaladinDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(90.0);
 
         dealCycle1.add(nobleDemand);
         dealCycle1.add(epicAdventure);
@@ -139,10 +148,8 @@ public class PaladinDealCycle extends DealCycle {
         dealCycle1.add(blessedHammerBuff);
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
-        dealCycle1.add(grandCross1);
-        dealCycle1.add(sacredBastionDot);
-        dealCycle1.add(sacredBastionImpact1);
-        dealCycle1.add(sacredBastionImpact2);
+        dealCycle1.add(grandCrossFirstDelay);
+        dealCycle1.add(sacredBastion1);
 
         dealCycle2.add(nobleDemand);
         dealCycle2.add(epicAdventure);
@@ -151,7 +158,7 @@ public class PaladinDealCycle extends DealCycle {
         dealCycle2.add(blessedHammerBuff);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
-        dealCycle2.add(grandCross1);
+        dealCycle2.add(grandCrossFirstDelay);
 
         dealCycle3.add(nobleDemand);
         dealCycle3.add(holyUnity);
@@ -159,70 +166,154 @@ public class PaladinDealCycle extends DealCycle {
         dealCycle3.add(soulContract);
         dealCycle3.add(weaponJumpRing);
 
-        shortDealCycle.add(mightyMjolnir);
+        shortDealCycle.add(mightyMjolnirDelay);
         shortDealCycle.add(sanctuary);
 
         while (getStart().before(getEnd())) {
+            if (divineBrandCount >= 5) {
+                addSkillEvent(divineJudgement);
+                divineBrandCount -= 5;
+            }
             if (
                     getStart().after(auraWeaponBuff.getEndTime())
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
+                    && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
             }
             if (
                     getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                            && getStart().before(new Timestamp(90 * 1000))
+                    && getStart().before(new Timestamp(90 * 1000))
             ) {
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addSkillEvent(mapleWorldGoddessBlessing);
             }
-            if (divineBrandCount >= 5) {
-                getSkillEventList().add(
-                        new SkillEvent(divineJudgement,
-                        new Timestamp((long) (getStart().getTime() + divineBrandCount)),
-                        new Timestamp((long) (getStart().getTime() + divineBrandCount)))
-                );
-                getEventTimeList().add(new Timestamp((long) (getStart().getTime() + divineBrandCount)));
-                divineBrandCount -= 5;
-            } else if (
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
-                sacredBastionEndTime.setTime(getStart().getTime() + sacredBastionDot.getDotDuration());
-                divineBrandCount += 10;
-            } else if (cooldownCheck(dealCycle2) && getStart().before(new Timestamp(11 * 60 * 1000))) {
+            } else if (
+                    cooldownCheck(dealCycle2)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+            ) {
                 addDealCycle(dealCycle2);
-            } else if (cooldownCheck(dealCycle3) && getStart().before(new Timestamp(11 * 60 * 1000))) {
+            } else if (
+                    cooldownCheck(dealCycle3)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+            ) {
                 addDealCycle(dealCycle3);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))) {
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+            ) {
                 addSkillEvent(ringSwitching);
-            } else if (cooldownCheck(shortDealCycle)) {
-                if (getStart().before(sacredBastionEndTime)) {
-                    if ((sacredBastionEndTime.getTime() - getStart().getTime()) < (sanctuary.getDelay() + mightyMjolnir.getDelay())) {
-                        divineBrandCount += ((double) sacredBastionEndTime.getTime() - (double) getStart().getTime()) / 500;
-                    } else {
-                        divineBrandCount += ((double) sanctuary.getDelay() + (double) mightyMjolnir.getDelay()) / 500;
-                    }
-                }
+            } else if (
+                    cooldownCheck(shortDealCycle)
+            ) {
                 addDealCycle(shortDealCycle);
             } else {
-                if (getStart().before(sacredBastionEndTime)) {
-                    if ((sacredBastionEndTime.getTime() - getStart().getTime()) < blast.getDelay()) {
-                        divineBrandCount += ((double) sacredBastionEndTime.getTime() - (double) getStart().getTime()) / 500;
-                    } else {
-                        divineBrandCount += (double) blast.getDelay() / 500;
-                    }
-                }
-                divineBrandCount += 1;
                 addSkillEvent(blast);
             }
         }
         sortEventTimeList();
+    }
+
+    @Override
+    public void addSkillEvent(Skill skill) {
+        Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
+        if (skill instanceof BuffSkill) {
+            if (skill instanceof SacredBastionBuff) {
+                sacredBastionEndTime = new Timestamp(getStart().getTime() + 30000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                    && restraintRingStartTime == null
+                    && restraintRingEndTime == null
+                    && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            } else {
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        } else {
+            if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                getSkillEventList().removeAll(remove);
+                Timestamp tmp = getStart();
+                if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof BlessedHammerDot) {
+                        i = 1801;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                } else {
+                    Long attackCount = 0L;
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        attackCount += 1;
+                    }
+                }
+                this.setStart(tmp);
+            } else {
+                if (skill instanceof Blast) {
+                    divineBrandCount ++;
+                }
+                if (
+                        getStart().before(sacredBastionEndTime)
+                        && cooldownCheck(sacredBastionLight)
+                ) {
+                    getSkillEventList().add(new SkillEvent(sacredBastionLight, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
+                    getEventTimeList().add(new Timestamp(getStart().getTime()));
+                    applyCooldown(sacredBastionLight);
+                    divineBrandCount ++;
+                }
+                if (skill instanceof MightyMjolnirDelay) {
+                    for (int i = 840; i < 840 + 210 * 4; i += 210) {
+                        getSkillEventList().add(new SkillEvent(mightyMjolnir, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        getSkillEventList().add(new SkillEvent(mightyMjolnirImpact, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                }
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        }
+        applyCooldown(skill);
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
     }
 }

@@ -7,12 +7,12 @@ public class GrandCross2 extends AttackSkill {
         this.setName("그랜드 크로스(큰 십자가)");
         this.setAttackCount(12L);  // 큰 십자가 31
         this.setDamage(1150.0);
-        this.setDotDuration(5580L);
+        this.setDotDuration(90L * 31);
         this.setLimitAttackCount(31L);
-        this.setInterval(180L);
+        this.setInterval(90L);
         this.addIgnoreDefenseList(100L);
         this.setFinalDamage(1.6);       // 코어 강화
-        this.setRelatedSkill(new GrandCrossDelay());
+        this.setRelatedSkill(new GrandCross2Delay());
         this.setApplyFinalAttack(true);
     }
 }
