@@ -21,7 +21,7 @@ public class DPMMain {
     }
 
     public void init() {
-        dealCycleList = new ArrayList<>();
+        /*dealCycleList = new ArrayList<>();
         dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
         dealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
@@ -55,11 +55,11 @@ public class DPMMain {
         dealCycleList.add(new ViperDealCycle(new Viper()));
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
-        dealCycleList.add(new XenonDealCycle(new Xenon()));
-        /*EunwolDealCycle eunwolDealCycle = new EunwolDealCycle(new Eunwol());
-        eunwolDealCycle.applyDoping();
-        eunwolDealCycle.print();*/
-        this.exportExcel();
+        dealCycleList.add(new XenonDealCycle(new Xenon()));*/
+        HeroDealCycle heroDealCycle = new HeroDealCycle(new Hero());
+        heroDealCycle.applyDoping();
+        heroDealCycle.print();
+        //this.exportExcel();
     }
 
     public void exportExcel() {

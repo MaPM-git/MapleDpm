@@ -79,7 +79,6 @@ public class Hero extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addDamage(25L);            // 인사이징
         this.minusFinalDamage(2.3);     // 어드밴스드 콤보는 딜사이클 클래스에서 따로 관리
     }
 }

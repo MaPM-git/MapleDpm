@@ -9,9 +9,6 @@ public class SwordIllusionSlash extends AttackSkill {
         this.setAttackCount(4L);
         this.setCooldown(30.0);
         this.setDamage(275.0);
-        this.setDotDuration(660L);
-        this.setLimitAttackCount(12L);
-        this.setInterval(55L);
         this.setFinalDamage(1.6);
         this.setRelatedSkill(new SwordIllusionExplosion());
         this.setApplyFinalAttack(true);

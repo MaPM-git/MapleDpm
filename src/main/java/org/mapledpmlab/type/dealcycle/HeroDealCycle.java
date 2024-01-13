@@ -44,10 +44,6 @@ public class HeroDealCycle extends DealCycle {
     // 일루전 쿨마다 사용 - 인사이징 - 일루전 - 데폴 - 레업라
     private List<Skill> shortDealCycle = new ArrayList<>();
 
-    private Timestamp swordOfBurningSoulActivateTime = new Timestamp(0);
-    private Timestamp swordIllusionActivateTime = new Timestamp(0);
-    private Timestamp rageUprisingActivateTime = new Timestamp(0);
-    private Timestamp ringSwitchingActivateTime = new Timestamp(75 * 1000);
     private List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdvancedFinalAttackHero());
@@ -146,8 +142,10 @@ public class HeroDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(130.0);
 
+        // 1-4-3-2-5-4
+        // 메용2, 6차, 리레, 스인미, 크오솔
         dealCycle1.add(swordOfBurningSoulBuff);
         dealCycle1.add(incisingAttack);
         dealCycle1.add(epicAdventure);
@@ -161,6 +159,7 @@ public class HeroDealCycle extends DealCycle {
         dealCycle1.add(comboInstinctsBuff);
         dealCycle1.add(spiritCaliber);
 
+        // 메용2, 6차, 웨폰퍼프
         dealCycle2.add(swordOfBurningSoulBuff);
         dealCycle2.add(incisingAttack);
         dealCycle2.add(epicAdventure);
@@ -172,6 +171,7 @@ public class HeroDealCycle extends DealCycle {
         dealCycle2.add(comboInstinctsBuff);
         dealCycle2.add(spiritCaliber);
 
+        // 메용2, 리레, 스인미, 코오솔
         dealCycle3.add(swordOfBurningSoulBuff);
         dealCycle3.add(incisingAttack);
         dealCycle3.add(epicAdventure);
@@ -184,6 +184,7 @@ public class HeroDealCycle extends DealCycle {
         dealCycle3.add(restraintRing);
         dealCycle3.add(comboInstinctsBuff);
 
+        // 메용2, 웨폰퍼프
         dealCycle4.add(swordOfBurningSoulBuff);
         dealCycle4.add(incisingAttack);
         dealCycle4.add(epicAdventure);
@@ -194,13 +195,14 @@ public class HeroDealCycle extends DealCycle {
         dealCycle4.add(weaponJumpRing);
         dealCycle4.add(comboInstinctsBuff);
 
+        // 리레
         dealCycle5.add(swordOfBurningSoulBuff);
         dealCycle5.add(incisingAttack);
         dealCycle5.add(epicAdventure);
         dealCycle5.add(valhallaBuff);
         dealCycle5.add(soulContract);
         dealCycle5.add(swordIllusionBuff);
-        dealCycle5.add(weaponJumpRing);
+        dealCycle5.add(restraintRing);
         dealCycle5.add(comboInstinctsBuff);
 
         shortDealCycle.add(incisingAttack);
@@ -213,7 +215,7 @@ public class HeroDealCycle extends DealCycle {
         advancedComboAttack.setName("어드밴스드 콤보");
         addSkillEvent(advancedComboAttack);
 
-        int i = 0;
+        int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(auraWeaponBuff.getEndTime())
@@ -225,102 +227,66 @@ public class HeroDealCycle extends DealCycle {
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 1
             ) {
                 addDealCycle(dealCycle1);
-                swordOfBurningSoulActivateTime.setTime(dealCycle1.get(1).getActivateTime().getTime());
-                swordIllusionActivateTime.setTime(dealCycle1.get(7).getActivateTime().getTime());
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 4
             ) {
                 addDealCycle(dealCycle2);
-                swordOfBurningSoulActivateTime.setTime(dealCycle2.get(1).getActivateTime().getTime());
-                swordIllusionActivateTime.setTime(dealCycle2.get(7).getActivateTime().getTime());
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 3
             ) {
                 addDealCycle(dealCycle3);
-                swordOfBurningSoulActivateTime.setTime(dealCycle3.get(1).getActivateTime().getTime());
-                swordIllusionActivateTime.setTime(dealCycle3.get(7).getActivateTime().getTime());
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle4)
-                    && i > 140
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
             ) {
                 addDealCycle(dealCycle4);
-                swordOfBurningSoulActivateTime.setTime(dealCycle4.get(1).getActivateTime().getTime());
-                swordIllusionActivateTime.setTime(dealCycle4.get(7).getActivateTime().getTime());
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle5)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 5
             ) {
                 addDealCycle(dealCycle5);
-                swordOfBurningSoulActivateTime.setTime(dealCycle5.get(1).getActivateTime().getTime());
-                swordIllusionActivateTime.setTime(dealCycle5.get(6).getActivateTime().getTime());
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && swordOfBurningSoulActivateTime.after(ringSwitchingActivateTime)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(9 * 60 * 1000))
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-                ringSwitchingActivateTime.setTime(ringSwitching.getActivateTime().getTime());
             } else if (
                     cooldownCheck(soulContract)
-                            && (
-                            (
-                                    getStart().after(new Timestamp(30 * 1000))
-                                    && getStart().before(new Timestamp(90 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(150 * 1000))
-                                    && getStart().before(new Timestamp(210 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(270 * 1000))
-                                    && getStart().before(new Timestamp(330 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(390 * 1000))
-                                    && getStart().before(new Timestamp(450 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(510 * 1000))
-                                    && getStart().before(new Timestamp(570 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(630 * 1000))
-                                    && getStart().before(new Timestamp(690 * 1000))
-                            )
-                    )
+                    && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(shortDealCycle)
+                    && getStart().after(comboInstinctEndTime)
                     && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 13000))
             ) {
                 addDealCycle(shortDealCycle);
-                swordIllusionActivateTime.setTime(shortDealCycle.get(1).getActivateTime().getTime());
-                rageUprisingActivateTime.setTime(shortDealCycle.get(3).getActivateTime().getTime());
             } else if (
                     cooldownCheck(rageUprising)
-                    && !cooldownCheck(swordIllusionBuff)
+                    && getStart().before(new Timestamp(comboDeathFault.getActivateTime().getTime() - 3000))
             ) {
-                addSkillEvent(shortDealCycle.get(3));
-                rageUprisingActivateTime.setTime(shortDealCycle.get(3).getActivateTime().getTime());
+                addSkillEvent(rageUprising);
             } else {
                 addSkillEvent(ragingBlow);
                 if (getStart().before(comboInstinctEndTime)) {
                     addSkillEvent(comboInstinctsAttack);
                 }
             }
-            i++;
         }
         sortEventTimeList();
     }
@@ -446,7 +412,147 @@ public class HeroDealCycle extends DealCycle {
                 this.setStart(tmp);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                if (skill instanceof SwordIllusionSlash) {
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320),
+                                    new Timestamp(getStart().getTime() + 1320)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150),
+                                    new Timestamp(getStart().getTime() + 1320 + 150)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120 + 120),
+                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120 + 120)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120 + 120));
+                } else if (skill instanceof SwordIllusionExplosion) {
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 2790),
+                                    new Timestamp(getStart().getTime() + 2790)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 2790 + 30),
+                                    new Timestamp(getStart().getTime() + 2790 + 30)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790 + 30));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60),
+                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790 + 30 + 60));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60),
+                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60));
+                    getSkillEventList().add(
+                            new SkillEvent(
+                                    skill,
+                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60 + 60),
+                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60 + 60)
+                            )
+                    );
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60 + 60));
+                } else {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                }
             }
         }
         applyCooldown(skill);

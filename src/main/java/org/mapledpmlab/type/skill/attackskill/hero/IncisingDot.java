@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.skill.attackskill.hero;
 
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.buffskill.hero.IncisingBuff;
 
 public class IncisingDot extends AttackSkill {
     public IncisingDot() {
@@ -10,5 +11,6 @@ public class IncisingDot extends AttackSkill {
         this.setFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setInterval(2000L);
+        this.setRelatedSkill(new IncisingBuff());
     }
 }
