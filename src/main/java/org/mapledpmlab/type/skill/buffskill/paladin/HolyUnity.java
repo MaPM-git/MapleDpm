@@ -12,6 +12,6 @@ public class HolyUnity extends BuffSkill {
         this.setCooldown(90.0);
         this.setDelay(600L);
         this.setDuration(45L);
-        this.setBuffFinalDamage(1.75 + 0.25);   // 코어 강화
+        this.setBuffFinalDamage(1.75 + 0.15);   // 코어 강화
     }
 }
