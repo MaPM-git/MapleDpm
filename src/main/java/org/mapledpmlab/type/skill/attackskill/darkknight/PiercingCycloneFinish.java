@@ -7,12 +7,8 @@ public class PiercingCycloneFinish extends AttackSkill {
         this.setName("피어스 사이클론(충격파)");
         this.setDamage(780.0);
         this.setAttackCount(15L);
-        this.setInterval(1L);
-        this.setLimitAttackCount(5L);
-        this.setDotDuration(5L);
         this.addFinalDamage(1.6);   // 코어 강화
         this.addIgnoreDefenseList(50L);
         this.setApplyFinalAttack(true);
-        this.setRelatedSkill(new PiercingCycloneDelay());
     }
 }

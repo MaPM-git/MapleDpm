@@ -7,7 +7,7 @@ public class BeholderShock extends AttackSkill {
         this.setName("비홀더 쇼크");
         this.setDamage(373.0);          // 쓸컴뱃 기준
         this.setAttackCount(6L);
-        this.setCooldown(12.0);
+        this.setCooldown(10.0);
         this.setAddDamage(150L);        // 비홀더-리인포스
         this.addFinalDamage(2.8);
         this.addIgnoreDefenseList(20L);

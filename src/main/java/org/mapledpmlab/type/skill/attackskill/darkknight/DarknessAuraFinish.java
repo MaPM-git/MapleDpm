@@ -7,7 +7,10 @@ public class DarknessAuraFinish extends AttackSkill {
         this.setName("다크니스 오라(어둠의 참격)");
         this.setDamage(1455.0);
         this.setAttackCount(18L);
-        this.setDelay(570L);
+        this.setDotDuration(570L);
+        this.setInterval(95L);
+        this.setLimitAttackCount(6L);
         this.addFinalDamage(1.6);   // 코어 강화
+        this.setRelatedSkill(new DarknessAuraFinishDelay());
     }
 }

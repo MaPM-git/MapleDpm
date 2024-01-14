@@ -13,7 +13,6 @@ public class DarkSpear extends AttackSkill {
         this.setLimitAttackCount(11L);
         this.addFinalDamage(1.6);
         this.addIgnoreDefenseList(50L);
-        this.setApplyFinalAttack(true);
         this.setRelatedSkill(new DarkSpearDelay());
     }
 }

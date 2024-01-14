@@ -7,7 +7,6 @@ public class BeholderDominant extends AttackSkill {
         this.setName("비홀더 도미넌트");
         this.setDamage(210.0);
         this.setAttackCount(1L);
-        this.setCooldown(10.0);
         this.setAddDamage(150L);        // 비홀더-리인포스
         this.addFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);

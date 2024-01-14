@@ -9,7 +9,6 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class DarknessAura extends BuffSkill {
     public DarknessAura() {
         this.setName("다크니스 오라");
-        this.setCooldown(180.0);
         this.setDelay(600L);
         this.setDuration(40L);
     }

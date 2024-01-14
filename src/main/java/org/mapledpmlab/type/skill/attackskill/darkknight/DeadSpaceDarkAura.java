@@ -6,7 +6,7 @@ public class DeadSpaceDarkAura extends AttackSkill {
     public DeadSpaceDarkAura() {
         this.setName("데드 스페이스(어둠의 기운)");
         this.setAttackCount(14L);
-        this.setDamage(4800.0);
+        this.setDamage(6000.0);
         this.setDotDuration(1000L);
         this.setInterval(100L);
         this.setLimitAttackCount(10L);
@@ -14,6 +14,6 @@ public class DeadSpaceDarkAura extends AttackSkill {
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
-        this.setRelatedSkill(new DeadSpaceDelay());
+        this.setRelatedSkill(new DeadSpaceDarkAuraDelay());
     }
 }

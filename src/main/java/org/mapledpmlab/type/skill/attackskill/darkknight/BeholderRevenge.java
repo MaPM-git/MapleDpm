@@ -11,6 +11,5 @@ public class BeholderRevenge extends AttackSkill {
         this.setAddDamage(150L);        // 비홀더-리인포스
         this.addFinalDamage(2.8);
         this.addIgnoreDefenseList(20L);
-        this.setInterval(5000L);
     }
 }
