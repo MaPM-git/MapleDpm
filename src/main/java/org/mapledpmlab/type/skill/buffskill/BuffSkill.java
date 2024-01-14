@@ -112,7 +112,7 @@ public class BuffSkill extends Skill {
             str = str + "\n속성무시증가 : " + getBuffProperty();
             colNum ++;
         }
-        if (getBuffPlusFinalDamage() != 0) {
+        if (getBuffPlusFinalDamage() != 1) {
             str = str + "\n최종데미지합산증가 : " + getBuffPlusFinalDamage();
             colNum ++;
         }
