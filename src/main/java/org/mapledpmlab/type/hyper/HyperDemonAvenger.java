@@ -34,8 +34,6 @@ public class HyperDemonAvenger extends Hyper {
         this.addDamage(42L);
         point -= 440L;
 
-        point -= 26L;   // DF 4
-
         for (int i = 15; i > 0; i--) {
             if (point >= reqPoint[i]) {
                 point -= reqPoint[i];
