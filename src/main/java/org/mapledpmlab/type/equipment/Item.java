@@ -48,8 +48,8 @@ public class Item extends Common {
             this.addAtt((long) (7 + 8 + 9 + 10 + 11));
             this.addMagic((long) (7 + 8 + 9 + 10 + 11));
             if (this.jobType == JobType.XENON) {
-                this.addOtherStat1((long) (7 + 8 + 9 + 10 + 11));
-                this.addOtherStat2((long) (7 + 8 + 9 + 10 + 11));
+                this.addOtherStat1((long) (7 * 5));
+                this.addOtherStat2((long) (7 * 5));
             }
         } else if (this.getLevel() == 140) {
             this.addMainStat((long) (9 * 7));
@@ -57,8 +57,8 @@ public class Item extends Common {
             this.addAtt((long) (8 + 9 + 10 + 11 + 12 + 13 + 15));
             this.addMagic((long) (8 + 9 + 10 + 11 + 12 + 13 + 15));
             if (this.jobType == JobType.XENON) {
-                this.addOtherStat1((long) (8 + 9 + 10 + 11 + 12 + 13 + 15));
-                this.addOtherStat2((long) (8 + 9 + 10 + 11 + 12 + 13 + 15));
+                this.addOtherStat1((long) (9 * 7));
+                this.addOtherStat2((long) (9 * 7));
             }
         } else if (this.getLevel() == 150) {
             this.addMainStat((long) (11 * 7));
@@ -66,8 +66,8 @@ public class Item extends Common {
             this.addAtt((long) (9 + 10 + 11 + 12 + 13 + 14 + 16));
             this.addMagic((long) (9 + 10 + 11 + 12 + 13 + 14 + 16));
             if (this.jobType == JobType.XENON) {
-                this.addOtherStat1((long) (9 + 10 + 11 + 12 + 13 + 14 + 16));
-                this.addOtherStat2((long) (9 + 10 + 11 + 12 + 13 + 14 + 16));
+                this.addOtherStat1((long) (11 * 7));
+                this.addOtherStat2((long) (11 * 7));
             }
         } else if (this.getLevel() == 160) {
             this.addMainStat((long) (13 * 7));
@@ -75,8 +75,8 @@ public class Item extends Common {
             this.addAtt((long) (10 + 11 + 12 + 13 + 14 + 15 + 17));
             this.addMagic((long) (10 + 11 + 12 + 13 + 14 + 15 + 17));
             if (this.jobType == JobType.XENON) {
-                this.addOtherStat1((long) (10 + 11 + 12 + 13 + 14 + 15 + 17));
-                this.addOtherStat2((long) (10 + 11 + 12 + 13 + 14 + 15 + 17));
+                this.addOtherStat1((long) (13 * 7));
+                this.addOtherStat2((long) (13 * 7));
             }
         } else if (this.getLevel() == 200) {
             this.addMainStat((long) (15 * 7));
@@ -84,8 +84,8 @@ public class Item extends Common {
             this.addAtt((long) (12 + 13 + 14 + 15 + 16 + 17 + 19));
             this.addMagic((long) (12 + 13 + 14 + 15 + 16 + 17 + 19));
             if (this.jobType == JobType.XENON) {
-                this.addOtherStat1((long) (12 + 13 + 14 + 15 + 16 + 17 + 19));
-                this.addOtherStat2((long) (12 + 13 + 14 + 15 + 16 + 17 + 19));
+                this.addOtherStat1((long) (15 * 7));
+                this.addOtherStat2((long) (15 * 7));
             }
         } else if (this.getLevel() == 250) {
             this.addMainStat((long) (17 * 7));
@@ -93,8 +93,8 @@ public class Item extends Common {
             this.addAtt((long) (14 + 15 + 16 + 17 + 19 + 19 + 21));
             this.addMagic((long) (14 + 15 + 16 + 17 + 19 + 19 + 21));
             if (this.jobType == JobType.XENON) {
-                this.addOtherStat1((long) (14 + 15 + 16 + 17 + 19 + 19 + 21));
-                this.addOtherStat2((long) (14 + 15 + 16 + 17 + 19 + 19 + 21));
+                this.addOtherStat1((long) (17 * 7));
+                this.addOtherStat2((long) (17 * 7));
             }
         }
     }
