@@ -72,8 +72,6 @@ public class DarkKnightDealCycle extends DealCycle {
         {
             add(new DarknessAuraFinishDelay());
             add(new DarkSpearDelay());
-            add(new DeadSpaceDarkAuraDelay());
-            add(new DeadSpaceSlashDelay());
             add(new PiercingCycloneEndDelay());
             add(new PiercingCycloneFirstDelay());
             add(new PiercingCycloneKeydownDelay());
