@@ -50,6 +50,7 @@ public class PaladinDealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DivineJudgement());
+            add(new FallingJustice());
             add(new FinalAttackPaladin());
             add(new GrandCross1());
             add(new GrandCross2());
@@ -72,8 +73,6 @@ public class PaladinDealCycle extends DealCycle {
             add(new GrandCrossFirstDelay());
             add(new GrandCrossLoopDelay());
             add(new MightyMjolnirDelay());
-            add(new SacredBastion1Delay());
-            add(new SacredBastion2Delay());
         }
     };
 
@@ -95,6 +94,7 @@ public class PaladinDealCycle extends DealCycle {
 
     Double divineBrandCount = 0.0;      // 신성 낙인 개수
 
+    FallingJustice fallingJustice = new FallingJustice();
     SacredBastionLight sacredBastionLight = new SacredBastionLight();
     MightyMjolnir mightyMjolnir = new MightyMjolnir();
     MightyMjolnirImpact mightyMjolnirImpact = new MightyMjolnirImpact();
@@ -250,6 +250,9 @@ public class PaladinDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (((AttackSkill) skill).getInterval() == 0 && cooldownCheck(fallingJustice)) {
+                addSkillEvent(fallingJustice);
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
@@ -266,6 +269,9 @@ public class PaladinDealCycle extends DealCycle {
                     long i = ((AttackSkill) skill).getInterval();
                     if (skill instanceof BlessedHammerDot) {
                         i = 1801;
+                    }
+                    if (skill instanceof FallingJustice) {
+                        i = 270;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
