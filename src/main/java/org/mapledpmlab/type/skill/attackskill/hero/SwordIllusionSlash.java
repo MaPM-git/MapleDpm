@@ -12,5 +12,17 @@ public class SwordIllusionSlash extends AttackSkill {
         this.setFinalDamage(1.6);
         this.setRelatedSkill(new SwordIllusionExplosion());
         this.setApplyFinalAttack(true);
+        this.getMultiAttackInfo().add(1320L);
+        this.getMultiAttackInfo().add(150L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(150L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(150L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
     }
 }

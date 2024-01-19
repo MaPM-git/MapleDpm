@@ -11,8 +11,6 @@ import org.mapledpmlab.type.skill.buffskill.hero.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 public class HeroDealCycle extends DealCycle {
@@ -58,7 +56,8 @@ public class HeroDealCycle extends DealCycle {
             add(new RagingBlow());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
-            add(new SpiritCaliber());
+            add(new SpiritCaliberFinish());
+            add(new SpiritCaliberSlash());
             add(new SwordIllusionExplosion());
             add(new SwordIllusionSlash());
             add(new SwordOfBurningSoulDot());
@@ -68,8 +67,6 @@ public class HeroDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new SpiritCaliberDelay());
-            add(new SwordIllusionDelay());
         }
     };
 
@@ -120,7 +117,7 @@ public class HeroDealCycle extends DealCycle {
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiritCaliber spiritCaliber = new SpiritCaliber();
+        SpiritCaliberSlash spiritCaliberSlash = new SpiritCaliberSlash();
         SwordIllusionBuff swordIllusionBuff = new SwordIllusionBuff();
         SwordOfBurningSoulBuff swordOfBurningSoulBuff = new SwordOfBurningSoulBuff();
         ThiefCunning thiefCunning = new ThiefCunning();
@@ -157,7 +154,7 @@ public class HeroDealCycle extends DealCycle {
         dealCycle1.add(swordIllusionBuff);
         dealCycle1.add(restraintRing);
         dealCycle1.add(comboInstinctsBuff);
-        dealCycle1.add(spiritCaliber);
+        dealCycle1.add(spiritCaliberSlash);
 
         // 메용2, 6차, 웨폰퍼프
         dealCycle2.add(swordOfBurningSoulBuff);
@@ -169,7 +166,7 @@ public class HeroDealCycle extends DealCycle {
         dealCycle2.add(swordIllusionBuff);
         dealCycle2.add(weaponJumpRing);
         dealCycle2.add(comboInstinctsBuff);
-        dealCycle2.add(spiritCaliber);
+        dealCycle2.add(spiritCaliberSlash);
 
         // 메용2, 리레, 스인미, 코오솔
         dealCycle3.add(swordOfBurningSoulBuff);
@@ -348,7 +345,6 @@ public class HeroDealCycle extends DealCycle {
                 }
             }
             if (isSwordIllusionBuff) {
-                isSwordIllusionBuff = false;
                 advancedComboAttack.setBuffFinalDamage(2.3);
             }
         }
@@ -368,9 +364,9 @@ public class HeroDealCycle extends DealCycle {
         if (skill instanceof BuffSkill) {
             if (
                     skill instanceof RestraintRing
-                            && restraintRingStartTime == null
-                            && restraintRingEndTime == null
-                            && fortyEndTime == null
+                    && restraintRingStartTime == null
+                    && restraintRingEndTime == null
+                    && fortyEndTime == null
             ) {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
@@ -389,7 +385,7 @@ public class HeroDealCycle extends DealCycle {
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
                             skillEvent.getStart().after(getStart())
-                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
                     ) {
                         remove.add(skillEvent);
                     }
@@ -414,147 +410,7 @@ public class HeroDealCycle extends DealCycle {
                 this.multiAttackProcess(skill);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
-                if (skill instanceof SwordIllusionSlash) {
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320),
-                                    new Timestamp(getStart().getTime() + 1320)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150),
-                                    new Timestamp(getStart().getTime() + 1320 + 150)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120 + 120),
-                                    new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120 + 120)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1320 + 150 + 120 + 120 + 90 + 150 + 120 + 120 + 90 + 150 + 120 + 120));
-                } else if (skill instanceof SwordIllusionExplosion) {
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 2790),
-                                    new Timestamp(getStart().getTime() + 2790)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 2790 + 30),
-                                    new Timestamp(getStart().getTime() + 2790 + 30)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790 + 30));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60),
-                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790 + 30 + 60));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60),
-                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60));
-                    getSkillEventList().add(
-                            new SkillEvent(
-                                    skill,
-                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60 + 60),
-                                    new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60 + 60)
-                            )
-                    );
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 2790 + 30 + 60 + 60 + 60));
-                } else {
-                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
-                }
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         }
         applyCooldown(skill);
