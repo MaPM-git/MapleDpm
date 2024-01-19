@@ -296,6 +296,8 @@ public class AranDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
             } else {
                 if (
                         skill instanceof FenrirCrash
@@ -492,7 +494,7 @@ public class AranDealCycle extends DealCycle {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getDelay() != 0 && distance != 0) {
+                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
                     attackDamage = attackDamage / as.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);

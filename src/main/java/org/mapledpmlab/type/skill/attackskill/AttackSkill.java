@@ -22,6 +22,7 @@ public class AttackSkill extends Skill {
     private boolean isApplyFinalAttack = false;
     private boolean isFinalAttack = false;
     private Long limitAttackCount = 0L;
+    private List<Long> multiAttackInfo = new ArrayList<>();
     private Long prop = 0L;
     private Long useCount = 0L;
     private Double share = 0.0;
@@ -43,6 +44,13 @@ public class AttackSkill extends Skill {
         }
         if (getAttackCount() != 0) {
             str = str + "\n공격횟수 : " + getAttackCount();
+            colNum ++;
+        }
+        if (getMultiAttackInfo().size() != 0) {
+            str = str + "\n멀티 어택 : ";
+            for (Long info : getMultiAttackInfo()) {
+                str = str + info + "ms ";
+            }
             colNum ++;
         }
         if (getInterval() != 0) {

@@ -280,6 +280,8 @@ public class PaladinDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
             } else {
                 if (skill instanceof Blast) {
                     divineBrandCount ++;

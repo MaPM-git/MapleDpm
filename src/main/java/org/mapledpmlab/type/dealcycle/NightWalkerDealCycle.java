@@ -311,6 +311,8 @@ public class NightWalkerDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));

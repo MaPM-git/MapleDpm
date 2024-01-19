@@ -301,6 +301,8 @@ public class DarkKnightDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
             } else {
                 if (skill instanceof PiercingCycloneEndDelay) {
                     getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150), new Timestamp(getStart().getTime() + 150)));

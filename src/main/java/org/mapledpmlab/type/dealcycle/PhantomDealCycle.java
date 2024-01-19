@@ -296,6 +296,8 @@ public class PhantomDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
             } else {
                 if (skill instanceof JokerAfterDelay) {
                     skill = new JokerAfterDelay();

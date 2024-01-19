@@ -410,6 +410,8 @@ public class HeroDealCycle extends DealCycle {
                     }
                 }
                 this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 if (skill instanceof SwordIllusionSlash) {

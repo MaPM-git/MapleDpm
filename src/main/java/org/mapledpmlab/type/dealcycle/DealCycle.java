@@ -95,6 +95,8 @@ public class DealCycle {
                     }
                 }
                 this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -109,6 +111,15 @@ public class DealCycle {
         getStart().setTime(getStart().getTime() + skill.getDelay());
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
+        }
+    }
+
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
         }
     }
 
@@ -300,7 +311,7 @@ public class DealCycle {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getDelay() != 0 && distance != 0) {
+                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
                     attackDamage = attackDamage / as.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
