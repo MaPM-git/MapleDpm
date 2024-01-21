@@ -4,7 +4,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
 public class Ignite extends AttackSkill {
     public Ignite() {
-        this.setName("이그나이트(10중첩)");
+        this.setName("이그나이트");
         this.setDamage(40.0);
         this.setAttackCount(3L);
         this.setDotDuration(6000L);

@@ -7,8 +7,7 @@ public class PoisonZoneExplosion extends AttackSkill {
         this.setName("포이즌 리젼(폭발)");
         this.setDamage(200.0);
         this.setAttackCount(4L);
-        this.setInterval(2500L);
-        this.setDotDuration(60000L);
+        this.setCooldown(0.9);
         this.addFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setApplyFinalAttack(true);

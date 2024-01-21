@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class PoisonChain extends AttackSkill {
     public PoisonChain() {
         this.setName("포이즌 체인");
-        this.setDamage(500.0);
+        this.setDamage(550.0);
         this.setCooldown(25.0);
         this.setAttackCount(4L);
         this.setDelay(780L);
