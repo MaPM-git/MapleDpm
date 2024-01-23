@@ -47,7 +47,7 @@ public class Mechanic extends Job {
 
         // 2차
         this.addAtt(20L);               // 메카닉 마스터리
-        this.addCriticalP(10.0);
+        this.addCriticalP(15.0);
         this.addCriticalDamage(5.0);
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);

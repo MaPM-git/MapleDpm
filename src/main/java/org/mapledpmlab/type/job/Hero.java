@@ -43,6 +43,7 @@ public class Hero extends Job {
         // 2차
         this.addAtt(30L);               // 스피릿 블레이드
         this.addFinalDamage(1.1);       // 웨폰 마스터리
+        this.addCriticalP(15.0);
         this.addMainStat(20L);          // 웨폰 액셀레이션
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);

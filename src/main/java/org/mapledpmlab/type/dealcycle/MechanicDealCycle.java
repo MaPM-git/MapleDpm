@@ -396,6 +396,7 @@ public class MechanicDealCycle extends DealCycle {
             for (int i = 0; i < metarArmorFullBurstStartTime.size(); i++) {
                 if (start.after(metarArmorFullBurstStartTime.get(i)) && end.before(metarArmorFullBurstEndTime.get(i))) {
                     ((HomingMissile) skillEvent.getSkill()).setAttackCount(((HomingMissile) skillEvent.getSkill()).getAttackCount() + 7);
+                    ((HomingMissile) skillEvent.getSkill()).addFinalDamage(1.67);
                 }
             }
         }
@@ -431,6 +432,7 @@ public class MechanicDealCycle extends DealCycle {
         }
         if (skillEvent.getSkill() instanceof HomingMissile) {
             ((HomingMissile) skillEvent.getSkill()).setAttackCount(tmp);
+            ((HomingMissile) skillEvent.getSkill()).setFinalDamage(2.2);
         }
         return attackDamage;
     }

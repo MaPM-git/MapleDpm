@@ -43,6 +43,7 @@ public class Ark extends Job {
 
         // 1차
         this.addAtt(20L);               // 미스틱 아츠 마스터리
+        this.addCriticalP(5.0);         // 융합 개시
 
         // 2차
         this.addAtt(20L);               // 너클 마스터리

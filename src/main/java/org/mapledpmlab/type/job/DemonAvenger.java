@@ -65,11 +65,12 @@ public class DemonAvenger extends Job {
         this.addFinalDamage(1.1);
 
         // 1차
-        this.addCriticalP(20.0);        // 데모닉 샤프니스
+        this.addCriticalP(15.0);        // 데모닉 샤프니스
 
         // 2차
         this.addHp(400L);               // 데몬 액셀레이션
         this.addAtt(40L);               // 어비셜 레이지
+        this.addCriticalP(20.0);
         this.addHp(600L);               // 이너 스트렝스
 
         // 3차

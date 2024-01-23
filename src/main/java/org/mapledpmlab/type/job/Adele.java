@@ -51,11 +51,12 @@ public class Adele extends Job {
 
         // 2차
         this.addAtt(30L);               // 마스터리
+        this.addCriticalDamage(6.0);
         this.addMainStat(60L);          // 트레인
 
         // 3차
         this.addAtt(30L);               // 어센트
-        this.addFinalDamage(1.15);
+        this.addFinalDamage(1.16);
         this.addCriticalP(20.0);
 
         // 4차

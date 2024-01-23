@@ -51,6 +51,7 @@ public class FlameWizard extends Job {
 
         // 2차
         this.addMagic(20L);             // 북 오브 파이어
+        this.addCriticalP(5.0);
         this.addMagic(10L);             // 주문 연마
 
         // 3차

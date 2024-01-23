@@ -58,7 +58,7 @@ public class Mihile extends Job {
         // 3차
         this.addMainStat(60L);          // 로얄 오쓰
         this.addCriticalP(20.0);
-        this.addFinalDamage(1.23);
+        this.addFinalDamage(1.25);
         this.addCriticalP(10.0);        // 어드밴스드 소울 어택
 
         // 4차
@@ -66,7 +66,7 @@ public class Mihile extends Job {
         this.addCriticalDamage(10.0);
         this.addAtt(31L);               // 어드밴스드 소드 마스터리
         this.addCriticalP(15.0);
-        this.addCriticalDamage(15.0);
+        this.addCriticalDamage(20.0);
         this.addAtt(31L);               // 어드밴스드 파이널 어택
         this.addIgnoreDefenseList(42L);  // 컴뱃 마스터리
 

@@ -53,7 +53,9 @@ public class Eunwol extends Job {
         this.addIgnoreDefenseList(31L);
         this.addFinalDamage(1.17);      // 고급 너클 숙련
         this.addCriticalDamage(22.0);
-        this.addCriticalP(26.0);
+        this.addCriticalP(26.0);        // 약점 간파
+        this.addCriticalDamage(10.0);
+        this.addFinalDamage(1.1);
 
         // 5차
         this.addAtt(40L);               // 로디드 다이스

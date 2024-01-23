@@ -54,7 +54,7 @@ public class Striker extends Job {
         this.addMainStat(20L);          // 너클 액셀레이션
         this.addFinalDamage(1.05);      // 너클 마스터리
         this.addMainStat(60L);          // 단련
-        this.addCriticalP(10.0);
+        this.addCriticalP(15.0);
         this.addCriticalDamage(5.0);
         this.addAtt(20L);               // 뇌백
 

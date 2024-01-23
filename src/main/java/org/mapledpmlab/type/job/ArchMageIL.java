@@ -46,6 +46,7 @@ public class ArchMageIL extends Job {
         this.addMagic(30L);             // 메디테이션
         this.addMainStat(20L);          // 매직 액셀레이션
         this.addMagic(10L);             // 스펠 마스터리
+        this.addCriticalP(5.0);
         this.addMainStat(40L);          // 하이 위즈덤
 
         // 3차
