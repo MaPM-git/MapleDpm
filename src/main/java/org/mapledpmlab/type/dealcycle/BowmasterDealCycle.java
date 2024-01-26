@@ -78,10 +78,6 @@ public class BowmasterDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new AfterimageShotDelay());
-            add(new ArrawPlatterDelay());
-            add(new PhoenixDelay());
-            add(new WarInTheShadeDelay());
         }
     };
 
@@ -103,6 +99,10 @@ public class BowmasterDealCycle extends DealCycle {
         }
     };
 
+    Timestamp warInTheShadeEndTime = new Timestamp(-1);
+
+    WarInTheShadePerfusion warInTheShadePerfusion = new WarInTheShadePerfusion();
+
     public BowmasterDealCycle(Job job) {
         super(job, new AdvancedFinalAttackBowmaster());
 
@@ -112,7 +112,6 @@ public class BowmasterDealCycle extends DealCycle {
 
         AfterimageShotActive afterimageShotActive = new AfterimageShotActive();
         ArrawPlatter arrawPlatter = new ArrawPlatter();
-        ArrawPlatterDelay arrawPlatterDelay = new ArrawPlatterDelay();
         ArrawRain arrawRain = new ArrawRain();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
@@ -232,13 +231,13 @@ public class BowmasterDealCycle extends DealCycle {
         dealCycle5.add(soulContract);
         dealCycle5.add(restraintRing);
 
-        Long specialArrow = 0L;
+        Long specialArrow = 75L;
         boolean isSpree = false;
 
-        int i = 0;
+        int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
-            if (cooldownCheck(arrawPlatterDelay)){
-                addSkillEvent(arrawPlatterDelay);
+            if (cooldownCheck(arrawPlatter)){
+                addSkillEvent(arrawPlatter);
             }
             if (specialArrow == 75) {
                 isSpree = true;
@@ -247,35 +246,44 @@ public class BowmasterDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && specialArrow == 75
+                    && dealCycleOrder == 1
             ) {
                 addDealCycle(dealCycle1);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && specialArrow == 75
+                    && dealCycleOrder == 4
             ) {
                 addDealCycle(dealCycle2);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && specialArrow == 75
                     && getStart().before(new Timestamp(5 * 60 * 1000))
+                    && dealCycleOrder == 3
             ) {
                 addDealCycle(dealCycle3);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle4)
-                    && i > 140
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && specialArrow == 75
+                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
 
             ) {
                 addDealCycle(dealCycle4);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle5)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && specialArrow == 75
+                    && dealCycleOrder == 5
             ) {
                 addDealCycle(dealCycle5);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -298,7 +306,6 @@ public class BowmasterDealCycle extends DealCycle {
                 addSkillEvent(hurricane);
                 specialArrow ++;
             }
-            i++;
         }
         sortEventTimeList();
     }
@@ -449,5 +456,91 @@ public class BowmasterDealCycle extends DealCycle {
             }
         }
         return attackDamage;
+    }
+
+    @Override
+    public void addSkillEvent(Skill skill) {
+        Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
+        if (skill instanceof BuffSkill) {
+            if (
+                    skill instanceof RestraintRing
+                    && restraintRingStartTime == null
+                    && restraintRingEndTime == null
+                    && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            } else {
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        } else {
+            if (
+                    getStart().before(warInTheShadeEndTime)
+                    && cooldownCheck(warInTheShadePerfusion)
+            ) {
+                Long attackCount = 0L;
+                for (long i = warInTheShadePerfusion.getInterval(); i <= warInTheShadePerfusion.getDotDuration() && attackCount < warInTheShadePerfusion.getLimitAttackCount(); i += warInTheShadePerfusion.getInterval()) {
+                    getSkillEventList().add(new SkillEvent(warInTheShadePerfusion, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    attackCount += 1;
+                }
+                applyCooldown(warInTheShadePerfusion);
+            }
+            if (skill instanceof WarInTheShade) {
+                warInTheShadeEndTime = new Timestamp(getStart().getTime() + skill.getDelay() + 30000);
+            }
+            if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                getSkillEventList().removeAll(remove);
+                Timestamp tmp = getStart();
+                if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                } else {
+                    Long attackCount = 0L;
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        attackCount += 1;
+                    }
+                }
+                this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
+            } else {
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        }
+        applyCooldown(skill);
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
     }
 }

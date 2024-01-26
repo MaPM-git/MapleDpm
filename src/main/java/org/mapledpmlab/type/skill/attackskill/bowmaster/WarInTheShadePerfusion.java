@@ -6,14 +6,20 @@ public class WarInTheShadePerfusion extends AttackSkill {
     public WarInTheShadePerfusion() {
         this.setName("어센던트 셰이드(화살 세례)");
         this.setAttackCount(8L);
-        this.setCooldown(360.0);
-        this.setDamage(2700.0);
-        this.setDotDuration(30000L);
-        this.setLimitAttackCount(4L);
-        this.setInterval(3000L);
-        this.setApplyFinalAttack(true);
+        this.setDamage(1543.0);
+        this.setCooldown(3.0);
+        this.setDotDuration(10L);
+        this.setInterval(1L);
+        this.setLimitAttackCount(7L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
+        this.getMultiAttackInfo().add(330L);
+        this.getMultiAttackInfo().add(150L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
     }
 }

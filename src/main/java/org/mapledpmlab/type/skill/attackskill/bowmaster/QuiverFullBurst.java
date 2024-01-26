@@ -11,7 +11,7 @@ public class QuiverFullBurst extends AttackSkill {
         this.setDamage(550.0);
         this.setDotDuration(40000L);
         this.setInterval(334L);
-        this.setLimitAttackCount(18L);
+        this.setLimitAttackCount(108L);
         this.setFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new QuiverFullBurstBuff());
     }

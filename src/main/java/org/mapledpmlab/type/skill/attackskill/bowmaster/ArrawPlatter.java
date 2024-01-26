@@ -7,7 +7,8 @@ public class ArrawPlatter extends AttackSkill {
         this.setName("애로우 플래터");
         this.setAttackCount(1L);
         this.setCooldown(60.0);
-        this.setDamage(85.0);
+        this.setDelayByAttackSpeed(800L);
+        this.setDamage(440.0);
         this.setDotDuration(60000L);
         this.setInterval(180L);
         this.setAddDamage(90L);         // 윈드 오브 프레이
