@@ -99,8 +99,6 @@ public class HeroDealCycle extends DealCycle {
         this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
-        Long q = 0L;
-
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         ComboDeathFault comboDeathFault = new ComboDeathFault();

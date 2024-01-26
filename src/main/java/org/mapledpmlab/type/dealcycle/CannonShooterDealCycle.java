@@ -66,7 +66,6 @@ public class CannonShooterDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new BigFuseGiganticCannonballDelay());
             add(new MagneticAnchorDelay());
             add(new RollingCannonRainbowDelay());
             add(new SuperCannonExplosionDelay());
