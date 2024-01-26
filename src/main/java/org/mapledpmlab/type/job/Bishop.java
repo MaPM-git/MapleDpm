@@ -91,7 +91,7 @@ public class Bishop extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        addFinalDamage(1.01);      // 브레싱 앙상블
+        addFinalDamage(1.01);           // 브레싱 앙상블
         addFinalDamage(1.1);            // 엔젤레이 5중첩
         addDamage(40L);                 // 아케인 에임
         addFinalDamage(1.08);           // 오버로드 마나

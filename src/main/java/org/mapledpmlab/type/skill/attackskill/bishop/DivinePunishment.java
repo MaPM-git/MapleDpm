@@ -7,11 +7,10 @@ public class DivinePunishment extends AttackSkill {
         this.setName("디바인 퍼니시먼트");
         this.setDamage(535.0);
         this.setAttackCount(10L);
-        this.setCooldown(64.0);
+        this.setDelay(1020L * 9 + 120);
         this.setDotDuration(10000L);
-        this.setInterval(240L);
-        this.setLimitAttackCount(8L);
+        this.setInterval(204L);
+        this.setLimitAttackCount(45L);
         this.addFinalDamage(1.6);       // 코어강화
-        this.setRelatedSkill(new DivinePunishmentDelay());
     }
 }

@@ -8,10 +8,10 @@ public class Peacemaker extends AttackSkill {
         this.setDamage(770.0);
         this.setAttackCount(4L);
         this.setCooldown(10.0);
+        this.setDelay(750L);
         this.setDotDuration(10000L);
         this.setInterval(350L);
         this.setLimitAttackCount(12L);
-        this.setRelatedSkill(new PeacemakerDelay());
         this.addFinalDamage(1.6);       // 코어강화
     }
 }
