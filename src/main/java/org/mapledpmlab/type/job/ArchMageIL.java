@@ -81,8 +81,8 @@ public class ArchMageIL extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        addCriticalDamage(15.0);        // 프로스트 이펙트
-        addIgnoreDefenseList(10L);      // 프로즌 브레이크
+        //addCriticalDamage(15.0);        // 프로스트 이펙트
+        //addIgnoreDefenseList(10L);      // 프로즌 브레이크
         addFinalDamage(1.2);            // 익스트림 매직
         addDamage(50L);                 // 앨리먼트 앰플리케이션
         addDamage(40L);                 // 아케인 에임

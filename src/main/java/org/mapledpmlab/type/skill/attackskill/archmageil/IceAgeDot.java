@@ -10,8 +10,8 @@ public class IceAgeDot extends AttackSkill {
         this.setCooldown(60.0);
         this.setDotDuration(15000L);
         this.setInterval(800L);
-        this.setRelatedSkill(new IceAge());
         this.setApplyFinalAttack(true);
+        this.setRelatedSkill(new IceAge());
         this.addFinalDamage(1.6);           // 코어강화
     }
 }

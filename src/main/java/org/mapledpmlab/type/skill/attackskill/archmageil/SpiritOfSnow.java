@@ -7,11 +7,10 @@ public class SpiritOfSnow extends AttackSkill {
         this.setName("스피릿 오브 스노우");
         this.setDamage(1870.0);
         this.setAttackCount(9L);
-        this.setCooldown(120.0);
+        this.setDelay(720L);
         this.setDotDuration(30000L);
         this.setInterval(3000L);
         this.setApplyFinalAttack(true);
         this.addFinalDamage(1.6);       // 코어강화
-        this.setRelatedSkill(new SpiritOfSnowDelay());
     }
 }
