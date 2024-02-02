@@ -3,7 +3,8 @@
 레이븐이 적을 공격할 경우 렐릭 게이지 10 충전
 직전과 다른 카디널 포스 스킬 사용 시 5차 스킬을 제외한 에인션트 포스/인챈트 포스 스킬 재사용 대기시간 1초 감소
 
-
+[렐릭 에볼루션]
+30초 동안 에디셔널 디스차지와 에디셔널 블래스트 발동 시 마법 화살이 1개 추가 생성
 
 [커스 트랜지션]
 특정 스킬로 적 공격 시 최대 5회까지 중첩되고 30초 동안 지속되는 고대의 저주 디버프 발생
@@ -20,28 +21,3 @@
 에디셔널 시리즈(렐릭 에볼루션)
 포세이큰 렐릭 마법화살
 
-
-133466896311825
-261298682921935
-68878874915832
-70483937312965
-
-org.mapledpmlab.type.skill.attackskill.common.SpiderInMirror@4d3167f4
-3
-65812545360
-105838637040
-0.09337240209464615%
-org.mapledpmlab.type.skill.attackskill.common.SpiderInMirrorDot@ed9d034
-90
-471678714306
-803393937861
-0.6692002919922554%
-
-org.mapledpmlab.type.skill.attackskill.common.SpiderInMirror@77ec78b9
-3
-105838637040
-0.07817555309346136%
-org.mapledpmlab.type.skill.attackskill.common.SpiderInMirrorDot@1a3869f4
-90
-803393937861
-0.5934105653730326%

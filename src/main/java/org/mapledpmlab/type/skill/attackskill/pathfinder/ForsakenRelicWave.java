@@ -5,15 +5,36 @@ import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 public class ForsakenRelicWave extends GaugeAttackSkill {
     public ForsakenRelicWave() {
         this.setName("포세이큰 렐릭(파동)");
-        this.setAttackCount(8L);
-        this.setDamage(8400.0);
-        this.setCooldown(360.0);
-        this.setDotDuration(4500L);
-        this.setInterval(900L);
-        this.setLimitAttackCount(5L);
+        this.setAttackCount(9L);
+        this.setDamage(1555.0);
+        this.setDelay(3780L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
-        this.setRelatedSkill(new ForsakenRelicWaveDelay());
+        this.setRelatedSkill(new ForsakenRelicExplosion());
+        this.getMultiAttackInfo().add(1140L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(1950L);
+        this.getMultiAttackInfo().add(60L);
     }
 }

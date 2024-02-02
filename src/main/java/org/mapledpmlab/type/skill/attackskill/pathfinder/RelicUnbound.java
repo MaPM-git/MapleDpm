@@ -8,11 +8,12 @@ public class RelicUnbound extends GaugeAttackSkill {
         this.setAttackCount(3L);
         this.setDamage(1100.0);
         this.setCooldown(120.0);
+        this.setDelay(720L);
         this.setDotDuration(22000L);
         this.setInterval(360L);
+        this.addFinalDamage(1.1);       // 에인션트 아처리
         this.setAddDamage(20L);         // 에이션트 포스-인챈트 인헨스
         this.addFinalDamage(1.6);       // 코어강화
         this.setGaugeCharge(-250.0);
-        this.setRelatedSkill(new RelicUnboundDelay());
     }
 }

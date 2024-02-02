@@ -5,6 +5,8 @@ import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 public class Raven extends GaugeAttackSkill {
     public Raven() {
         this.setName("레이븐");
+        this.setDelay(600L);
+        this.setCooldown(225.0);
         this.setAttackCount(1L);
         this.setDamage(390.0);
         this.setDotDuration(220000L);

@@ -45,7 +45,9 @@ public class PathFinderDealCycle extends DealCycle {
     private boolean isRelicLiberation = false;
     private Long relicGauge = 0L;
     private AdditionalBlastFirst additionalBlastFirst = new AdditionalBlastFirst();
-    private AdditionalDischarge additionalDischarge = new AdditionalDischarge();
+    private AdditionalBlastREFirst additionalBlastREFirst = new AdditionalBlastREFirst();
+    private AdditionalDischargeFirst additionalDischargeFirst = new AdditionalDischargeFirst();
+    private AdditionalDischargeREFirst additionalDischargeREFirst = new AdditionalDischargeREFirst();
 
     private List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -53,8 +55,10 @@ public class PathFinderDealCycle extends DealCycle {
             add(new AdditionalBlastFirst());
             add(new AdditionalBlastREAfterSecond());
             add(new AdditionalBlastREFirst());
-            add(new AdditionalDischarge());
-            add(new AdditionalDischargeRE());
+            add(new AdditionalDischargeAfterSecond());
+            add(new AdditionalDischargeFirst());
+            add(new AdditionalDischargeREAfterSecond());
+            add(new AdditionalDischargeREFirst());
             add(new AncientWrath());
             add(new CardinalBlast());
             add(new CardinalDischarge());
@@ -79,13 +83,6 @@ public class PathFinderDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new ForsakenRelicExplosionDelay());
-            add(new ForsakenRelicWaveDelay());
-            add(new ObsidianBarrierDelay());
-            add(new RavenDelay());
-            add(new RavenTempestDelay());
-            add(new RelicUnboundDelay());
-            add(new UltimateBlastDelay());
         }
     };
 
@@ -104,6 +101,9 @@ public class PathFinderDealCycle extends DealCycle {
             add(new WeaponJumpRing(318L));
         }
     };
+
+    Timestamp relicLiberationEndTime = new Timestamp(-1);
+    Timestamp relicEvolutionEndTime = new Timestamp(-1);
 
     public PathFinderDealCycle(Job job) {
         super(job, null);
@@ -147,12 +147,6 @@ public class PathFinderDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        // 프리져
-        for (int i = 0; i < 720 * 1000; i += raven.getInterval()) {
-            getSkillEventList().add(new SkillEvent(raven, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         // 가이디드 에로우
         for (int i = 0; i < 720 * 1000; i += guidedArrow.getInterval()) {
             getSkillEventList().add(new SkillEvent(guidedArrow, new Timestamp(i), new Timestamp(i)));
@@ -160,14 +154,14 @@ public class PathFinderDealCycle extends DealCycle {
         }
 
         // 저주 화살
-        for (int i = 10260; i < 720 * 1000; i += 20000) {
+        for (int i = 0; i < 720 * 1000; i += 20000) {
             for (int j = i; j < i + curseArrow.getInterval() * curseArrow.getLimitAttackCount(); j += curseArrow.getInterval()) {
                 getSkillEventList().add(new SkillEvent(curseArrow, new Timestamp(j), new Timestamp(j)));
                 getEventTimeList().add(new Timestamp(j));
             }
         }
 
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(130.0);
 
         dealCycle1.add(epicAdventure);
         dealCycle1.add(mapleWorldGoddessBlessing);
@@ -234,41 +228,50 @@ public class PathFinderDealCycle extends DealCycle {
         dealCycle5.add(relicEvolution);
         dealCycle5.add(ultimateBlast);
 
-        int i = 0;
-        Timestamp relicLiberationEndTime = new Timestamp(-1);
+        int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
+            if (cooldownCheck(raven)) {
+                addSkillEvent(raven);
+            }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 1
             ) {
                 addDealCycle(dealCycle1);
-                relicLiberationEndTime = new Timestamp(getStart().getTime() - 9960 + relicLiberation.getDuration() * 1000);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 4
             ) {
                 addDealCycle(dealCycle2);
-                relicLiberationEndTime = new Timestamp(getStart().getTime() - 9960 + relicLiberation.getDuration() * 1000);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(6 * 60 * 1000))
+                    && dealCycleOrder == 3
             ) {
                 addDealCycle(dealCycle3);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle4)
-                    && i > 140
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
             ) {
                 addDealCycle(dealCycle4);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle5)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 5
             ) {
                 addDealCycle(dealCycle5);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(9 * 60 * 1000)))
+                    && getStart().before(new Timestamp(10 * 60 * 1000)))
             {
                 addSkillEvent(ringSwitching);
             } else if (
@@ -280,26 +283,116 @@ public class PathFinderDealCycle extends DealCycle {
                     cooldownCheck(soulContract)
                     && !cooldownCheck(evolve)
             ) {
+                System.out.println("----------");
+                System.out.println("soul");
+                System.out.println(getStart());
                 addSkillEvent(soulContract);
             } else if (cooldownCheck(edgeOfResonance)) {
                 addSkillEvent(edgeOfResonance);
             } else {
                 Long ran = 0L;
-                addSkillEvent(cardinalBlast);
                 ran = (long) (Math.random() * 99 + 1);
-                if (ran <= additionalDischarge.getProp()) {
-                    addSkillEvent(additionalDischarge);
-                }
-                addSkillEvent(cardinalDischarge);
-                if (ran <= additionalBlastFirst.getProp()) {
-                    addSkillEvent(additionalBlastFirst);
+                if (getStart().before(relicEvolutionEndTime)) {
+                    addSkillEvent(cardinalBlast);
+                    if (ran <= additionalDischargeREFirst.getProp()) {
+                        addSkillEvent(additionalDischargeREFirst);
+                    }
+                    addSkillEvent(cardinalDischarge);
+                    if (ran <= additionalBlastREFirst.getProp()) {
+                        addSkillEvent(additionalBlastREFirst);
+                    }
+                } else {
+                    addSkillEvent(cardinalBlast);
+                    if (ran <= additionalDischargeFirst.getProp()) {
+                        addSkillEvent(additionalDischargeFirst);
+                    }
+                    addSkillEvent(cardinalDischarge);
+                    if (ran <= additionalBlastFirst.getProp()) {
+                        addSkillEvent(additionalBlastFirst);
+                    }
                 }
                 edgeOfResonance.setActivateTime(new Timestamp(edgeOfResonance.getActivateTime().getTime() - 2000));
                 ancientWrath.setActivateTime(new Timestamp(ancientWrath.getActivateTime().getTime() - 2000));
             }
-            i++;
         }
         sortEventTimeList();
+    }
+
+    @Override
+    public void addSkillEvent(Skill skill) {
+        Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
+        if (skill instanceof BuffSkill) {
+            if (skill instanceof RelicLiberation) {
+                relicLiberationEndTime = new Timestamp(getStart().getTime() + 30 * 1000);
+            }
+            if (skill instanceof RelicEvolution) {
+                relicEvolutionEndTime = new Timestamp(getStart().getTime() + 30 * 1000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                    && restraintRingStartTime == null
+                    && restraintRingEndTime == null
+                    && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            } else {
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        } else {
+            if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                getSkillEventList().removeAll(remove);
+                Timestamp tmp = getStart();
+                if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                } else {
+                    Long attackCount = 0L;
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        attackCount += 1;
+                    }
+                }
+                this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
+            } else {
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        }
+        applyCooldown(skill);
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
     }
 
     public Long calcTotalDamage(List<Timestamp> eventTimeList) {
@@ -373,21 +466,22 @@ public class PathFinderDealCycle extends DealCycle {
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
             }
             for (SkillEvent se : useAttackSkillList) {
-                if (isRelicEvolution) {
-                    if (se.getSkill() instanceof AdditionalBlastAfterSecond) {
-                        se.setSkill(new AdditionalBlastREAfterSecond());
-                    } else if (se.getSkill() instanceof AdditionalBlastFirst) {
-                        se.setSkill(new AdditionalBlastREFirst());
-                    } else if (se.getSkill() instanceof AdditionalDischarge) {
-                        se.setSkill(new AdditionalDischargeRE());
-                    }
-                }
-                totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (isRelicLiberation) {
                     if (se.getSkill() instanceof CardinalForce) {
                         totalDamage += getAttackDamage(new SkillEvent(new ForsakenRelicMagicArrow(), start, end), buffSkill, start, end);
                     }
+                    if (
+                            se.getSkill() instanceof EdgeOfResonance
+                            || se.getSkill() instanceof UltimateBlast
+                            || se.getSkill() instanceof RavenTempest
+                            || se.getSkill() instanceof AncientWrath
+                            || se.getSkill() instanceof ObsidianBarrier
+                            || se.getSkill() instanceof RelicUnbound
+                    ) {
+                        buffSkill.addBuffFinalDamage(1.15);
+                    }
                 }
+                totalDamage += getAttackDamage(se, buffSkill, start, end);
                 Long ran = 0L;
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     ran = (long) (Math.random() * 99 + 1);
