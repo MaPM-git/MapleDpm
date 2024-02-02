@@ -283,9 +283,6 @@ public class PathFinderDealCycle extends DealCycle {
                     cooldownCheck(soulContract)
                     && !cooldownCheck(evolve)
             ) {
-                System.out.println("----------");
-                System.out.println("soul");
-                System.out.println(getStart());
                 addSkillEvent(soulContract);
             } else if (cooldownCheck(edgeOfResonance)) {
                 addSkillEvent(edgeOfResonance);
