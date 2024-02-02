@@ -67,10 +67,6 @@ public class MarksmanDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new FinalAimDelay());
-            add(new RepeatingCrossbowCartridgeDelay());
-            add(new TrueSnipeDelay());
-            add(new UltimateSnipeDelay());
         }
     };
 
@@ -129,12 +125,6 @@ public class MarksmanDealCycle extends DealCycle {
 
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
             getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        // 프리져
-        for (int i = 0; i < 720 * 1000; i += freezer.getInterval()) {
-            getSkillEventList().add(new SkillEvent(freezer, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
 
@@ -232,35 +222,46 @@ public class MarksmanDealCycle extends DealCycle {
         snipeList.add(snipe);
         snipeList.add(ultimateSnipe);
         int snipeCount = 1;
-        int i = 0;
+        int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
+            if (cooldownCheck(freezer)) {
+                addSkillEvent(freezer);
+            }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 1
             ) {
                 addDealCycle(dealCycle1);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 4
             ) {
                 addDealCycle(dealCycle2);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(6 * 60 * 1000))
+                    && dealCycleOrder == 3
             ) {
                 addDealCycle(dealCycle3);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle4)
-                    && i > 140
                     && getStart().before(new Timestamp(11 * 60 * 1000))
-
+                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
             ) {
                 addDealCycle(dealCycle4);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle5)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && dealCycleOrder == 5
             ) {
                 addDealCycle(dealCycle5);
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -269,6 +270,7 @@ public class MarksmanDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(trueSnipe)
+                    && cooldownCheck(soulContract)
                     && !cooldownCheck(evolve)
             ) {
                 addSkillEvent(soulContract);
@@ -282,10 +284,11 @@ public class MarksmanDealCycle extends DealCycle {
                 addSkillEvent(snipeList.get(snipeCount % 4));
                 snipeCount++;
             }
-            i++;
         }
         sortEventTimeList();
     }
+
+    int finalAimCnt = 0;
 
     public Long calcTotalDamage(List<Timestamp> eventTimeList) {
         Long totalDamage = 0L;
@@ -360,10 +363,20 @@ public class MarksmanDealCycle extends DealCycle {
                         || se.getSkill() instanceof EnhanceSnipe
                         || se.getSkill() instanceof UltimateSnipe
                         || se.getSkill() instanceof FinalAimWave
-                        || se.getSkill() instanceof FinalAimArrow
                         || se.getSkill() instanceof RepeatingCrossbowCartridge)
                 ) {
-                    totalDamage += getAttackDamage(new SkillEvent(new SplitArrow(), start, end), buffSkill, start, end);
+                    if (se.getSkill() instanceof FinalAimWave && i < 13) {
+                        totalDamage += getAttackDamage(new SkillEvent(new SplitArrow(), start, end), buffSkill, start, end);
+                        i ++;
+                    } else if (!(se.getSkill() instanceof FinalAimWave)) {
+                        totalDamage += getAttackDamage(new SkillEvent(new SplitArrow(), start, end), buffSkill, start, end);
+                    } else if (
+                            start.after(new Timestamp(60 * 3 * 1000))
+                            && start.before(new Timestamp(60 * 8 * 1000))
+                            && i == 13
+                    ) {
+                        i = 0;
+                    }
                 }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);

@@ -8,12 +8,12 @@ public class TrueSnipe extends AttackSkill {
         this.setAttackCount(15L);       // 어디셔널 볼트
         this.setCooldown(60.0);
         this.setDamage(1850.0);
+        this.setDelay(120L);
         this.setDotDuration(120L);
         this.setLimitAttackCount(4L);
         this.setInterval(30L);
         this.setAddDamage(100L);
         this.addIgnoreDefenseList(100L);
         this.setFinalDamage(1.6);       // 코어강화
-        this.setRelatedSkill(new TrueSnipeDelay());
     }
 }

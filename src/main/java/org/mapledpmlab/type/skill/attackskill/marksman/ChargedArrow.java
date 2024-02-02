@@ -8,7 +8,7 @@ public class ChargedArrow extends AttackSkill {
         this.setAttackCount(11L);       // 어디셔널 볼트
         this.setCooldown(10.0);
         this.setDamage(1650.0);
-        this.setDelay(480L);
+        //this.setDelay(480L);
         this.addCriticalP(100.0);
         this.addIgnoreDefenseList(50L);
         this.setFinalDamage(1.6);       // 코어강화
