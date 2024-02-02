@@ -134,7 +134,7 @@ public class MarksmanDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(130.0);
 
         dealCycle1.add(splitArrowBuff);
         dealCycle1.add(repeatingCrossbowCartridgeBuff);
@@ -148,8 +148,8 @@ public class MarksmanDealCycle extends DealCycle {
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
         dealCycle1.add(chargedArrow);
-        dealCycle1.add(finalAimWave);
         dealCycle1.add(trueSnipe);
+        dealCycle1.add(finalAimWave);
         for (int i = 0; i < 8; i++) {
             dealCycle1.add(repeatingCrossbowCartridge);
         }
@@ -164,8 +164,8 @@ public class MarksmanDealCycle extends DealCycle {
         dealCycle2.add(soulContract);
         dealCycle2.add(weaponJumpRing);
         dealCycle2.add(chargedArrow);
-        dealCycle2.add(finalAimWave);
         dealCycle2.add(trueSnipe);
+        dealCycle2.add(finalAimWave);
         for (int i = 0; i < 8; i++) {
             dealCycle2.add(repeatingCrossbowCartridge);
         }
@@ -264,8 +264,8 @@ public class MarksmanDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(9 * 60 * 1000)))
+                    && getStart().after(new Timestamp(100 * 1000))
+                    && getStart().before(new Timestamp(10 * 60 * 1000)))
             {
                 addSkillEvent(ringSwitching);
             } else if (
