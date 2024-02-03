@@ -7,11 +7,9 @@ import org.mapledpmlab.type.skill.buffskill.common.DarkSight;
 
 @Getter
 @Setter
-public class VeilOfShadowBuff extends BuffSkill {
-    public VeilOfShadowBuff() {
-        this.setName("베일 오브 섀도우");
-        this.setDelay(900L);
-        this.setDuration(12L);
-        this.setRelatedSkill(new DarkSight());
+public class HeartbreakerDarksight extends BuffSkill {
+    public HeartbreakerDarksight() {
+        this.setName("분쇄(다크사이트)");
+        this.setDuration(6L);
     }
 }

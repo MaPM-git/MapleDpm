@@ -8,12 +8,14 @@ public class Eviscerate extends AttackSkill {
         this.setAttackCount(7L);
         this.setDamage(1480.0);
         this.setCooldown(20.0);
-        this.setDotDuration(930L);
-        this.setInterval(186L);
-        this.setLimitAttackCount(5L);
+        this.setDelay(570L);
         this.addIgnoreDefenseList(100L);
         this.setFinalDamage(1.6);       // 코어강화
-        this.setRelatedSkill(new EviscerateDelay());
         this.addFinalDamage(1.7);       // 쉐도우 파트너
+        this.getMultiAttackInfo().add(150L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
     }
 }

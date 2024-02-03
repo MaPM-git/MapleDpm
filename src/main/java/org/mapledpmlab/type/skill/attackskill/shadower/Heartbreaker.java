@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.skill.attackskill.shadower;
 
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.buffskill.shadower.HeartbreakerDarksight;
 
 public class Heartbreaker extends AttackSkill {
     public Heartbreaker() {
@@ -14,5 +15,6 @@ public class Heartbreaker extends AttackSkill {
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.7);       // 쉐도우 파트너
+        this.setRelatedSkill(new HeartbreakerDarksight());
     }
 }

@@ -14,7 +14,7 @@ public class SmokeBomb extends BuffSkill {
         this.setDuration(30L);
         this.setDelay(810L);
         this.addBuffCriticalDamage(22.0);
-        this.addBuffFinalDamage(1.15);      // 어드밴스드 다크 사이트
+        this.setApplyReuse(true);
         this.setRelatedSkill(new DarkSight());
     }
 }

@@ -7,14 +7,35 @@ public class SavageAssault1 extends AttackSkill {
         this.setName("일도양단1");
         this.setAttackCount(6L);
         this.setCooldown(360.0);
-        this.setDamage(6300.0);
-        this.setDotDuration(2000L);
-        this.setInterval(400L);
-        this.setLimitAttackCount(5L);
+        this.setDelay(840L);
+        this.setDamage(960.0);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
         this.setRelatedSkill(new SavageAssault2());
         this.addFinalDamage(1.7);       // 쉐도우 파트너
+        this.getMultiAttackInfo().add(180L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
     }
 }
