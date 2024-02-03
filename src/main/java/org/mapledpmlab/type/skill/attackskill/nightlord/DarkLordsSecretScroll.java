@@ -8,10 +8,11 @@ public class DarkLordsSecretScroll extends AttackSkill {
         this.setAttackCount(12L);
         this.setCooldown(60.0);
         this.setDamage(935.0);
+        this.setDelay(360L);
         this.setDotDuration(12000L);
         this.setInterval(990L);
         this.setAddDamage(30L);
         this.addFinalDamage(1.6);       // 코어강화
-        this.setRelatedSkill(new DarkLordsSecretScrollDelay());
+        this.setRelatedSkill(new DarkLordsSecretScrollFinish());
     }
 }

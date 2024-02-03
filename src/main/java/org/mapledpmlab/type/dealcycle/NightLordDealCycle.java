@@ -45,11 +45,12 @@ public class NightLordDealCycle extends DealCycle {
             add(new CrestOfTheSolarDot());
             add(new DarkFlare());
             add(new DarkLordsSecretScroll());
+            add(new DarkLordsSecretScrollFinish());
             add(new FatalVenom());
             add(new FumaShuriken());
             add(new LifeOrDeathJavelin());
             add(new LifeOrDeathSlash());
-            add(new MarkOfNightLord());
+            add(new MarkOfAssassin());
             add(new QuadrupleThrow());
             add(new QuadrupleThrowReinforce());
             add(new QuadrupleThrowReinforceSpread());
@@ -63,10 +64,6 @@ public class NightLordDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new DarkFlareDelay());
-            add(new DarkLordsSecretScrollDelay());
-            add(new FumaShurikenDelay());
-            add(new LifeOrDeathDelay());
         }
     };
 
@@ -88,7 +85,7 @@ public class NightLordDealCycle extends DealCycle {
     };
 
     public NightLordDealCycle(Job job) {
-        super(job, new MarkOfNightLord());
+        super(job, new MarkOfAssassin());
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);
@@ -97,7 +94,6 @@ public class NightLordDealCycle extends DealCycle {
         BleedingToxinDot bleedingToxinDot = new BleedingToxinDot();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DarkFlare darkFlare = new DarkFlare();
-        DarkFlareDelay darkFlareDelay = new DarkFlareDelay();
         DarkLordsSecretScroll darkLordsSecretScroll = new DarkLordsSecretScroll();
         EpicAdventure epicAdventure = new EpicAdventure();
         FatalVenom fatalVenom = new FatalVenom();
@@ -133,12 +129,6 @@ public class NightLordDealCycle extends DealCycle {
         // 블리딩 톡신(도트)
         for (int i = 0; i < 720 * 1000; i += bleedingToxinDot.getInterval()) {
             getSkillEventList().add(new SkillEvent(bleedingToxinDot, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        // 다크 플레어
-        for (int i = 0; i < 720 * 1000; i += darkFlare.getInterval()) {
-            getSkillEventList().add(new SkillEvent(darkFlare, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
 
@@ -189,12 +179,12 @@ public class NightLordDealCycle extends DealCycle {
             if (cooldownCheck(purgeArea)) {
                 addSkillEvent(purgeArea);
             }
-            if (cooldownCheck(darkFlareDelay)) {
-                addSkillEvent(darkFlareDelay);
+            if (cooldownCheck(darkFlare)) {
+                addSkillEvent(darkFlare);
             }
             if (
                     getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                            && getStart().before(new Timestamp(90 * 1000))
+                    && getStart().before(new Timestamp(90 * 1000))
             ) {
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -339,6 +329,12 @@ public class NightLordDealCycle extends DealCycle {
                     totalDamage += getAttackDamage(new SkillEvent(new QuadrupleThrowSpread(), start, end), buffSkill, start, end);
                     totalDamage += getAttackDamage(new SkillEvent(new QuadrupleThrowSpread(), start, end), buffSkill, start, end);
                     totalDamage += getAttackDamage(new SkillEvent(new QuadrupleThrowSpread(), start, end), buffSkill, start, end);
+                    for (int j = 0; j < 15; j++) {
+                        ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
+                            totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
+                        }
+                    }
                 }
                 if (
                         start.equals(se.getStart())
@@ -348,12 +344,22 @@ public class NightLordDealCycle extends DealCycle {
                     totalDamage += getAttackDamage(new SkillEvent(new QuadrupleThrowReinforceSpread(), start, end), buffSkill, start, end);
                     totalDamage += getAttackDamage(new SkillEvent(new QuadrupleThrowReinforceSpread(), start, end), buffSkill, start, end);
                     totalDamage += getAttackDamage(new SkillEvent(new QuadrupleThrowReinforceSpread(), start, end), buffSkill, start, end);
+                    for (int j = 0; j < 15; j++) {
+                        ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
+                            totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
+                        }
+                    }
                 }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
+                    if (se.getSkill() instanceof FumaShuriken) {
+                        getFinalAttack().setProp(28L);
+                    }
                     ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
                         totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
                     }
+                    getFinalAttack().setProp(39L);
                 }
             }
             isSpreadThrow = false;
