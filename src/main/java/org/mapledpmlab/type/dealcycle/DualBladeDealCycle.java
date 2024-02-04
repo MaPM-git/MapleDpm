@@ -196,18 +196,12 @@ public class DualBladeDealCycle extends DealCycle {
 
         while (getStart().before(getEnd())) {
             if (cooldownCheck(flashbangBuff)) {
-                System.out.println("-------------");
-                System.out.println("flash");
-                System.out.println(getStart());
                 addSkillEvent(flashbangBuff);
             }
             if (
                     getStart().after(mapleWorldGoddessBlessing.getEndTime())
                     && getStart().before(new Timestamp(90 * 1000))
             ) {
-                System.out.println("-------------");
-                System.out.println("bless");
-                System.out.println(getStart());
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addSkillEvent(mapleWorldGoddessBlessing);
             }
@@ -216,9 +210,6 @@ public class DualBladeDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && getStart().before(new Timestamp(hauntedEdge.getActivateTime().getTime() - 5000))
             ) {
-                System.out.println("-------------");
-                System.out.println("dc1");
-                System.out.println(getStart());
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
             } else if (
@@ -226,36 +217,23 @@ public class DualBladeDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && getStart().before(new Timestamp(hauntedEdge.getActivateTime().getTime() - 3000))
             ) {
-                System.out.println("-------------");
-                System.out.println("dc2");
-                System.out.println(getStart());
                 addDealCycle(dealCycle2);
             } else if (
                     cooldownCheck(dealCycle3)
-                    //&& getStart().before(new Timestamp(11 * 60 * 1000))
                     && getStart().before(new Timestamp(hauntedEdge.getActivateTime().getTime() - 3000))
             ) {
-                System.out.println("-------------");
-                System.out.println("dc3");
-                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
                     cooldownCheck(shortDealCycle)
                     && !cooldownCheck(finalCutBuff)
                     && getStart().before(new Timestamp(hauntedEdge.getActivateTime().getTime() - 1500))
             ) {
-                System.out.println("-------------");
-                System.out.println("sdc");
-                System.out.println(getStart());
                 addDealCycle(shortDealCycle);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("-------------");
-                System.out.println("ring");
-                System.out.println(getStart());
                 addSkillEvent(ringSwitching);
             } else {
                 addSkillEvent(phantomBlow);
