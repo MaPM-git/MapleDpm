@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SuperFistEnrage extends AttackSkill {
     public SuperFistEnrage() {
         this.setName("슈퍼 피스트 인레이지");
-        this.setAttackCount(3L);
+        this.setAttackCount(3L + 1);
         this.setDamage(270.0);
         this.setDelayByAttackSpeed(780L);
         this.setApplyFinalAttack(true);

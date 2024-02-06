@@ -6,7 +6,7 @@ public class FinalAttackViper extends AttackSkill {
     public FinalAttackViper() {
         this.setName("파이널 어택(바이퍼)");
         this.setAttackCount(2L);
-        this.setDamage(167.0);
+        this.setDamage(501.0);
         this.setProp(100L);
         this.setFinalAttack(true);
         this.addFinalDamage(2.2);       // 코어강화

@@ -7,7 +7,7 @@ public class FuriosCharge extends AttackSkill {
         this.setName("퓨리어스 차지");
         this.setAttackCount(10L);
         this.setDamage(1320.0);
-        this.setDelay(500L);
+        this.setDelay(540L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(30L);
         this.addFinalDamage(1.6);

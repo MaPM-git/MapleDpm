@@ -11,5 +11,11 @@ public class PirateFlag extends BuffSkill {
         this.setName("파이렛 플래그");
         this.setCooldown(30.0);
         this.setDelay(990L);
+        this.addBuffIgnoreDefense(25L);
+        this.addBuffMainStat(
+                (long) Math.floor(
+                        (275 + 2) * 5 * 0.25
+                )
+        );
     }
 }
