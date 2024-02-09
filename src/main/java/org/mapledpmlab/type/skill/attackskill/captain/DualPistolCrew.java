@@ -7,9 +7,11 @@ public class DualPistolCrew extends AttackSkill {
         this.setName("쌍권총 크루");
         this.setAttackCount(6L);
         this.setDamage(150.0 + 200);    // 어셈블 크루
+        this.setDotDuration(120000L);
         this.setInterval(3030L);
         this.addFinalDamage(1.16);      // 크루 커맨더십
         this.addFinalDamage(2.2);       // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.setRelatedSkill(new MarksmanCrew());
     }
 }

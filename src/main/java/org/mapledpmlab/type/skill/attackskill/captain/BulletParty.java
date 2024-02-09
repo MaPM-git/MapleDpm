@@ -8,10 +8,12 @@ public class BulletParty extends AttackSkill {
         this.setDamage(660.0);
         this.setAttackCount(7L);
         this.setCooldown(75.0);
-        this.setDotDuration(6000L);
+        this.setDelay(5640L);
+        this.setDotDuration(5640L);
         this.setInterval(120L);
+        this.setLimitAttackCount(47L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setApplyFinalAttack(true);
-        this.setRelatedSkill(new BulletPartyDelay());
+        this.setRelatedSkill(new BulletPartyAfterDelay());
     }
 }

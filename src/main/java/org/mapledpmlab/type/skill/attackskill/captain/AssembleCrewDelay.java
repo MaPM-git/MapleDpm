@@ -7,5 +7,6 @@ public class AssembleCrewDelay extends AttackSkill {
         this.setName("어셈블 크루");
         this.setDelay(900L);
         this.setCooldown(120.0);
+        this.setRelatedSkill(new DualPistolCrew());
     }
 }
