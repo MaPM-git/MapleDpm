@@ -42,9 +42,11 @@ public class CaptainDealCycle extends DealCycle {
             add(new Dreadnought());
             add(new DreadnoughtBombard());
             add(new DualPistolCrew());
+            add(new DualPistolCrewNectar());
             add(new FinalAttackCaptain());
             add(new HeadShot());
             add(new MarksmanCrew());
+            add(new MarksmanCrewNectar());
             add(new NautilusAssaultHull());
             add(new NautilusAssaultVolleyFire());
             add(new RapidFire());
