@@ -15,16 +15,18 @@ public class BarrelRoulette extends BuffSkill {
         this.setDelay(840L);
         ran = (long) (Math.random() * 3 + 1);
         if (ran == 2) {         // 얼음
-            this.addBuffCriticalDamage(5.0);
+            this.setBuffCriticalDamage(5.0);
             this.setDuration(220L);
             this.setCooldown(220.0);
-        } else if (ran == 4) {  // 해골
+        } else if (ran == 1) {  // 해골
             this.setDuration(15L);
             this.setCooldown(15.0);
             this.setRelatedSkill(new BarrelRouletteSkull());
-        } else {
+        } else if (ran == 3) {
             this.setDuration(15L);
             this.setCooldown(15.0);
+        } else {
+            this.setDuration(15L);
         }
         // 1은 번개, 3은 슬로우
     }

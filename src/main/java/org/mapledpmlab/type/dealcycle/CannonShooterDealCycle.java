@@ -10,6 +10,7 @@ import org.mapledpmlab.type.skill.attackskill.common.SpiderInMirror;
 import org.mapledpmlab.type.skill.attackskill.common.SpiderInMirrorDot;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.cannonshooter.BarrelRoulette;
+import org.mapledpmlab.type.skill.buffskill.cannonshooter.MonkeyFuriousBuff;
 import org.mapledpmlab.type.skill.buffskill.cannonshooter.PoolmakerBuff;
 import org.mapledpmlab.type.skill.buffskill.cannonshooter.SpecialMonkeyEscort;
 import org.mapledpmlab.type.skill.buffskill.common.*;
@@ -66,9 +67,7 @@ public class CannonShooterDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new MagneticAnchorDelay());
-            add(new RollingCannonRainbowDelay());
-            add(new SuperCannonExplosionDelay());
+            add(new ICBMAimDelay());
         }
     };
 
@@ -79,6 +78,7 @@ public class CannonShooterDealCycle extends DealCycle {
             add(new LuckyDice());
             add(new LuckyDiceOneMoreChance());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
+            add(new MonkeyFuriousBuff());
             add(new Overdrive(348L));
             add(new OverdriveDebuff(348L));
             add(new PirateFlag());
@@ -104,16 +104,13 @@ public class CannonShooterDealCycle extends DealCycle {
         CannonBuster cannonBuster = new CannonBuster();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         EpicAdventure epicAdventure = new EpicAdventure();
-        ICBM icbm = new ICBM();
+        ICBMAimDelay icbm = new ICBMAimDelay();
         LuckyDice luckyDice = new LuckyDice();
         LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
-        MagneticAnchor magneticAnchor = new MagneticAnchor();
-        MagneticAnchorDelay magneticAnchorDelay = new MagneticAnchorDelay();
         MagneticAnchorFinish magneticAnchorFinish = new MagneticAnchorFinish();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         MiniCanonBall miniCanonBall = new MiniCanonBall();
         MonkeyFurious monkeyFurious = new MonkeyFurious();
-        MonkeyFuriousDot monkeyFuriousDot = new MonkeyFuriousDot();
         Overdrive overdrive = new Overdrive(348L);
         PirateFlag pirateFlag = new PirateFlag();
         PoolmakerBuff poolmakerBuff = new PoolmakerBuff();
@@ -139,27 +136,7 @@ public class CannonShooterDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        for (int i = 0; i < 720 * 1000; i += magneticAnchor.getInterval()) {
-            getSkillEventList().add(new SkillEvent(magneticAnchor, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += magneticAnchorFinish.getInterval()) {
-            getSkillEventList().add(new SkillEvent(magneticAnchorFinish, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += monkeyFuriousDot.getInterval()) {
-            getSkillEventList().add(new SkillEvent(monkeyFuriousDot, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += supportMonkeyTwins.getInterval()) {
-            getSkillEventList().add(new SkillEvent(supportMonkeyTwins, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(100.0);
 
         /*
             메용2 에픽 삼숭이 풀메 오버드라이브 시드링 엔버링크 코코볼3개 롤링캐논 ICBM
@@ -207,6 +184,12 @@ public class CannonShooterDealCycle extends DealCycle {
         addSkillEvent(luckyDice);
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
 
+        barrelRoulette.setRan(2L);
+        barrelRoulette.setBuffCriticalDamage(5.0);
+        barrelRoulette.setDuration(220L);
+        barrelRoulette.setCooldown(220.0);
+        addSkillEvent(barrelRoulette);
+
         while (getStart().before(getEnd())) {
             if (
                     luckyDice.getCooldown() == 0
@@ -234,8 +217,8 @@ public class CannonShooterDealCycle extends DealCycle {
                 }
                 addSkillEvent(luckyDice);
             }
-            if (cooldownCheck(magneticAnchorDelay)) {
-                addSkillEvent(magneticAnchorDelay);
+            if (cooldownCheck(magneticAnchorFinish)) {
+                addSkillEvent(magneticAnchorFinish);
             }
             if (cooldownCheck(monkeyFurious)) {
                 addSkillEvent(monkeyFurious);
@@ -249,7 +232,7 @@ public class CannonShooterDealCycle extends DealCycle {
             }
             if (
                     getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                            && getStart().before(new Timestamp(90 * 1000))
+                    && getStart().before(new Timestamp(90 * 1000))
             ) {
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -272,16 +255,17 @@ public class CannonShooterDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))) {
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+            ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(pirateFlag)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 20000))
+                    && !cooldownCheck(specialMonkeyEscort)
             ) {
                 addSkillEvent(pirateFlag);
             } else if (
                     cooldownCheck(icbm)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 20000))
+                    && !cooldownCheck(specialMonkeyEscort)
             ) {
                 addSkillEvent(icbm);
             } else {
@@ -341,7 +325,7 @@ public class CannonShooterDealCycle extends DealCycle {
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (barrelRoulette != null) {
-                    if (((AttackSkill) se.getSkill()).isApplyFinalAttack() && barrelRoulette.getRan() == 1) {
+                    if (((AttackSkill) se.getSkill()).isApplyFinalAttack() && barrelRoulette.getRan() == 3) {
                         Long ran = (long) (Math.random() * 99 + 1);
                         if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
                             totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
@@ -382,5 +366,76 @@ public class CannonShooterDealCycle extends DealCycle {
             }
         }
         return overlappingSkillEvents;
+    }
+
+    @Override
+    public void addSkillEvent(Skill skill) {
+        Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
+        if (skill instanceof BuffSkill) {
+            if (
+                    skill instanceof RestraintRing
+                    && restraintRingStartTime == null
+                    && restraintRingEndTime == null
+                    && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            } else {
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        } else {
+            if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                getSkillEventList().removeAll(remove);
+                Timestamp tmp = getStart();
+                if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                } else {
+                    Long attackCount = 0L;
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        attackCount += 1;
+                    }
+                }
+                this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
+            } else {
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        }
+        applyCooldown(skill);
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
     }
 }

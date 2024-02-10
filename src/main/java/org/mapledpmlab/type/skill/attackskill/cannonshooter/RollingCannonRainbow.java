@@ -8,10 +8,10 @@ public class RollingCannonRainbow extends AttackSkill {
         this.setDamage(800.0);
         this.setAttackCount(3L);
         this.setCooldown(90.0);
+        this.setDelayByAttackSpeed(480L);
         this.setDotDuration(12000L);
         this.setInterval(240L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setRelatedSkill(new RollingCannonRainbowDelay());
     }
 }

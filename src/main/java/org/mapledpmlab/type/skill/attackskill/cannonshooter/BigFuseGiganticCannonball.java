@@ -10,7 +10,7 @@ public class BigFuseGiganticCannonball extends AttackSkill {
         this.setCooldown(75.0);
         this.setDelay(780L);
         this.setDotDuration(120000L);
-        this.setInterval(210L);
+        this.setInterval(70L);
         this.setLimitAttackCount(75L);
         this.addFinalDamage(0.45);
         this.addFinalDamage(1.6);       // 코어강화

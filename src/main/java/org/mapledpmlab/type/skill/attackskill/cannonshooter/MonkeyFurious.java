@@ -13,5 +13,6 @@ public class MonkeyFurious extends AttackSkill {
         this.addFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setApplyFinalAttack(true);
+        this.setRelatedSkill(new MonkeyFuriousDot());
     }
 }
