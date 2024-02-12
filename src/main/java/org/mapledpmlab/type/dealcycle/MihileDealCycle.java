@@ -61,9 +61,6 @@ public class MihileDealCycle extends DealCycle {
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new CygnusPhalanxDelay());
-            add(new DurandalDelay());
-            add(new InstallShieldDelay());
-            add(new LightForceReiDelay());
         }
     };
 
@@ -86,6 +83,10 @@ public class MihileDealCycle extends DealCycle {
     };
 
     private Timestamp soulMajestyEndTime = new Timestamp(-1);
+    Timestamp swordOfSoulLightEndTime = null;
+
+    PhotonShockwave photonShockwave = new PhotonShockwave();
+    PhotonWave photonWave = new PhotonWave();
 
     public MihileDealCycle(Job job) {
         super(job, new AdvancedFinalAttackMihile());
@@ -130,7 +131,7 @@ public class MihileDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(90.0);
 
         // 극딜 예열
         dealCycle1.add(rhoAias);
@@ -140,10 +141,12 @@ public class MihileDealCycle extends DealCycle {
         dealCycle1.add(transcendentCygnusBlessing);
         dealCycle1.add(royalGuard);
         dealCycle1.add(guardOfLight);
-        dealCycle1.add(cygnusPhalanx);
+        //dealCycle1.add(cygnusPhalanx);
         dealCycle1.add(lightOfCourage);
         dealCycle1.add(swordOfSoulLight);
         dealCycle1.add(soulMajesty);
+        dealCycle1.add(deadlyCharge);
+        dealCycle1.add(claimhSolais);
 
         // 예열 후 사용(6차)
         final1.add(soulContract);
@@ -160,10 +163,12 @@ public class MihileDealCycle extends DealCycle {
         dealCycle2.add(transcendentCygnusBlessing);
         dealCycle2.add(royalGuard);
         dealCycle2.add(guardOfLight);
-        dealCycle2.add(cygnusPhalanx);
+        //dealCycle2.add(cygnusPhalanx);
         dealCycle2.add(lightOfCourage);
         dealCycle2.add(swordOfSoulLight);
         dealCycle2.add(soulMajesty);
+        dealCycle2.add(deadlyCharge);
+        dealCycle2.add(claimhSolais);
 
         // 예열 후 사용
         final2.add(soulContract);
@@ -182,7 +187,6 @@ public class MihileDealCycle extends DealCycle {
         dealCycle3.add(claimhSolais);
 
         int finalChk = 0;
-        Timestamp swordOfSoulLightEndTime = null;
 
         while (getStart().before(getEnd())) {
             if (
@@ -192,35 +196,39 @@ public class MihileDealCycle extends DealCycle {
                 auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
             }
+            if (cooldownCheck(installShield)) {
+                addSkillEvent(installShield);
+            }
+            if (
+                    cooldownCheck(cygnusPhalanx)
+            ) {
+                addSkillEvent(cygnusPhalanx);
+            }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addDealCycle(dealCycle1);
-                swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 35000 - 1680);
-                soulMajestyEndTime = new Timestamp(getStart().getTime() + 25000 - 630);
                 finalChk = 0;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addDealCycle(dealCycle2);
-                swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 35000 - 1680);
-                soulMajestyEndTime = new Timestamp(getStart().getTime() + 25000 - 630);
                 finalChk = 1;
             } else if (
                     cooldownCheck(dealCycle3)
             ) {
                 addDealCycle(dealCycle3);
             } else if (
-                    getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 16000))
+                    getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 10000))
                     && finalChk == 0
                     && cooldownCheck(final1)
             ) {
                 addDealCycle(final1);
                 finalChk = 2;
             } else if (
-                    getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 16000))
+                    getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 10000))
                     && finalChk == 1
                     && cooldownCheck(final2)
             ) {
@@ -232,15 +240,6 @@ public class MihileDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(installShield)
-            ) {
-                addSkillEvent(installShield);
-            } else if (
-                    cooldownCheck(cygnusPhalanx)
-                    && getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 20000))
-            ) {
-                addSkillEvent(cygnusPhalanx);
             } else if (
                     cooldownCheck(deadlyCharge)
                     && getStart().before(new Timestamp(lightOfCourage.getActivateTime().getTime() - 15000))
@@ -255,10 +254,6 @@ public class MihileDealCycle extends DealCycle {
                 addSkillEvent(claimhSolais);
             } else if (
                     cooldownCheck(royalGuard)
-                    && (
-                            getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 4000))
-                            || getStart().before(new Timestamp(lightOfCourage.getActivateTime().getTime() - 4000))
-                    )
             ) {
                 addSkillEvent(royalGuard);
             } else if (
@@ -280,6 +275,12 @@ public class MihileDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof SwordOfSoulLightBuff) {
+                swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 35000);
+            }
+            if (skill instanceof SoulMajesty) {
+                soulMajestyEndTime = new Timestamp(getStart().getTime() + 25000);
+            }
             if (
                     skill instanceof RestraintRing
                     && restraintRingStartTime == null
@@ -335,7 +336,10 @@ public class MihileDealCycle extends DealCycle {
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
-                if (getStart().before(soulMajestyEndTime)) {
+                if (
+                        getStart().before(soulMajestyEndTime)
+                        && cooldownCheck(photonShockwave)
+                ) {
                     if (
                             skill instanceof ShiningCrossAssault
                             || skill instanceof DeadlyCharge
@@ -347,10 +351,14 @@ public class MihileDealCycle extends DealCycle {
                             || skill instanceof Durandal3
                             || skill instanceof InstallShield
                     ) {
-                        addSkillEvent(new PhotonShockwave());
+                        photonShockwave.setCooldown(2.0);
+                        addSkillEvent(photonShockwave);
+                        photonShockwave.setCooldown(10.0);
                         addSkillEvent(new PhotonWave());
                     }
-                } else {
+                } else if (
+                        cooldownCheck(photonShockwave)
+                ) {
                     if (
                             skill instanceof ShiningCrossAssault
                             || skill instanceof DeadlyCharge
@@ -366,13 +374,7 @@ public class MihileDealCycle extends DealCycle {
                 }
             }
         }
-        if (getStart().before(soulMajestyEndTime) && skill instanceof PhotonShockwave) {
-            skill.setCooldown(2.0);
-            applyCooldown(skill);
-            skill.setCooldown(10.0);
-        } else {
-            applyCooldown(skill);
-        }
+        applyCooldown(skill);
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {

@@ -7,14 +7,18 @@ public class Durandal1 extends AttackSkill {
         this.setName("듀란달(참격)");
         this.setAttackCount(7L);
         this.setCooldown(360.0);
-        this.setDamage(4500.0);
-        this.setDotDuration(2000L);
-        this.setLimitAttackCount(2L);
-        this.setInterval(1000L);
+        this.setDamage(1500.0);
+        this.setDelay(360L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
         this.setRelatedSkill(new Durandal2());
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
     }
 }
