@@ -56,9 +56,9 @@ public class DPMMain {
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));*/
-        CannonShooterDealCycle cannonShooterDealCycle = new CannonShooterDealCycle(new CannonShooter());
-        cannonShooterDealCycle.applyDoping();
-        cannonShooterDealCycle.print();
+        SoulMasterDealCycle soulMasterDealCycle = new SoulMasterDealCycle(new SoulMaster());
+        soulMasterDealCycle.applyDoping();
+        soulMasterDealCycle.print();
         //this.exportExcel();
     }
 

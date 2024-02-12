@@ -6,7 +6,7 @@ public class CosmicShower extends AttackSkill {
     public CosmicShower(Long cosmicOrbCount) {
         this.setName("코스믹 샤워");
         this.setAttackCount(3L * 2);
-        this.setDamage(210.0);
+        this.setDamage(740.0);
         this.setCooldown(45.0 + cosmicOrbCount * 3);
         this.setDotDuration(45000L + cosmicOrbCount * 3000);
         this.setInterval(1050L);
@@ -14,6 +14,5 @@ public class CosmicShower extends AttackSkill {
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setRelatedSkill(new CosmicShowerDelay());
     }
 }

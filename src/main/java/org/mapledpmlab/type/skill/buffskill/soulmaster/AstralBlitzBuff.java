@@ -12,6 +12,7 @@ public class AstralBlitzBuff extends BuffSkill {
         this.setName("아스트랄 블리츠(버프)");
         this.addBuffFinalDamage(1.1);
         this.setDuration(20L);
+        this.setCooldown(360.0);
         this.setRelatedSkill(new AstralBlitz1());
     }
 }

@@ -12,5 +12,8 @@ public class CosmicBurstAfterSecond extends AttackSkill {
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
+        for (int i = 0; i < cosmicOrbCount; i++) {
+            this.getMultiAttackInfo().add(480L + i * 60);
+        }
     }
 }
