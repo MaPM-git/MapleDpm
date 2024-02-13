@@ -6,6 +6,7 @@ public class SalamanderMischief extends AttackSkill {
     public SalamanderMischief(Long embers) {
         this.setName("샐리맨더 미스칩");
         this.setDamage(330.0);
+        this.setDelay(750L);
         this.setAttackCount(7L);
         this.setCooldown(90.0);
         this.setDotDuration(60000L);
@@ -17,6 +18,5 @@ public class SalamanderMischief extends AttackSkill {
             this.setFinalDamage(1.45);
         }
         this.addFinalDamage(1.6);       // 코어강화
-        this.setRelatedSkill(new SalamanderMischiefDelay());
     }
 }

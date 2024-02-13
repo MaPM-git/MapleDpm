@@ -37,6 +37,12 @@ public class FlameWizardDealCycle extends DealCycle {
     // 극딜 마지막
     private List<Skill> final2 = new ArrayList<>();
 
+    // 극딜 마지막
+    private List<Skill> final3 = new ArrayList<>();
+
+    // 극딜 마지막
+    private List<Skill> final4 = new ArrayList<>();
+
     private List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new BlazingExtinction());
@@ -64,13 +70,8 @@ public class FlameWizardDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new BlazingExtinctionDelay());
-            add(new BlazingOrbitalFlameDelay());
             add(new CygnusPhalanxDelay());
-            add(new EternityDelay());
             add(new FlameDischarge(0L));
-            add(new InfinityFlameCircleDelay());
-            add(new SalamanderMischiefDelay());
         }
     };
 
@@ -139,7 +140,7 @@ public class FlameWizardDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(120.0);
 
-        // 리스트레인트 극딜 예열 - F1
+        // 리스트레인트 극딜 예열 - F1 1,3,5
         dealCycle1.add(flameDischarge);
         dealCycle1.add(burningRegion);
         dealCycle1.add(gloryOfGuardians);
@@ -148,14 +149,14 @@ public class FlameWizardDealCycle extends DealCycle {
         dealCycle1.add(transcendentCygnusBlessing);
         dealCycle1.add(salamanderMischief);
 
-        // 웨폰퍼프, 초시축 극딜 예열 - F2
+        // 웨폰퍼프, 초시축 극딜 예열 - F2 4
         dealCycle2.add(flameDischarge);
         dealCycle2.add(burningRegion);
         dealCycle2.add(gloryOfGuardians);
         dealCycle2.add(transcendentCygnusBlessing);
         dealCycle2.add(salamanderMischief);
 
-        // 웨폰퍼프 - F2
+        // 웨폰퍼프 - F2 2,6
         dealCycle3.add(flameDischarge);
         dealCycle3.add(burningRegion);
         dealCycle3.add(gloryOfGuardians);
@@ -173,22 +174,44 @@ public class FlameWizardDealCycle extends DealCycle {
         // 예열 후 사용
         final2.add(flameDischarge);
         final2.add(soulContract);
+        final2.add(eternity);
         final2.add(weaponJumpRing);
         final2.add(blazingOrbitalFlame);
         final2.add(infinityFlameCircle);
         final2.add(phoenixDrive);
 
-        int finalChk = 0;
+        // 예열 후 사용
+        final3.add(flameDischarge);
+        final3.add(soulContract);
+        final3.add(restraintRing);
+        final3.add(blazingOrbitalFlame);
+        final3.add(infinityFlameCircle);
+        final3.add(phoenixDrive);
+
+        // 예열 후 사용
+        final4.add(flameDischarge);
+        final4.add(soulContract);
+        final4.add(weaponJumpRing);
+        final4.add(blazingOrbitalFlame);
+        final4.add(infinityFlameCircle);
+        final4.add(phoenixDrive);
+
+        int finalChk = -1;
         int infernoRizeCount = 0;
         int orbitalCount = 0;
         Timestamp finalTime = new Timestamp(-1);
         Timestamp phoenixDriveEndTime = new Timestamp(-1);
         int dealCycleOrder = 1;
 
-        flameCount = 50;
+        flameCount = 150;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(spiritOfFlame)) {
                 addSkillEvent(spiritOfFlame);
+            }
+            if (
+                    cooldownCheck(cygnusPhalanx)
+            ) {
+                addSkillEvent(cygnusPhalanx);
             }
             if (
                     cooldownCheck(dealCycle1)
@@ -196,16 +219,16 @@ public class FlameWizardDealCycle extends DealCycle {
                     && (dealCycleOrder == 1 || dealCycleOrder == 3 || dealCycleOrder == 5)
                     && flameCount >= 50
             ) {
-                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
                 flameCount = 0;
                 addDealCycle(dealCycle1);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
                 if (dealCycleOrder == 1) {
-                    finalChk = 0;
+                    finalChk = 1;
                 }
                 if (dealCycleOrder == 3 || dealCycleOrder == 5) {
-                    finalChk = 1;
+                    finalChk = 3;
                 }
                 this.getSkillEventList().add(
                         new SkillEvent(
@@ -220,16 +243,15 @@ public class FlameWizardDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
-                    && getStart().before(new Timestamp(200 * 1000))
-                    && dealCycleOrder == 2
+                    && dealCycleOrder == 4
                     && flameCount >= 50
             ) {
-                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
                 flameCount = 0;
                 addDealCycle(dealCycle2);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
-                finalChk = 1;
+                finalChk = 2;
                 this.getSkillEventList().add(
                         new SkillEvent(
                                 salamanderMischiefBuff,
@@ -242,20 +264,15 @@ public class FlameWizardDealCycle extends DealCycle {
                 dealCycleOrder++;
             } else if (
                     cooldownCheck(dealCycle3)
-                    && getStart().after(new Timestamp(4 * 60 * 1000))
-                    && (dealCycleOrder == 4 || dealCycleOrder == 6)
+                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
                     && flameCount >= 50
             ) {
-                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
                 flameCount = 0;
                 addDealCycle(dealCycle3);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
-                if (dealCycleOrder == 4) {
-                    finalChk = 0;
-                } else if (dealCycleOrder == 6) {
-                    finalChk = 1;
-                }
+                finalChk = 4;
                 this.getSkillEventList().add(
                         new SkillEvent(
                                 salamanderMischiefBuff,
@@ -268,24 +285,44 @@ public class FlameWizardDealCycle extends DealCycle {
                 dealCycleOrder++;
             } else if (
                     getStart().after(new Timestamp(finalTime.getTime() - 27000))
-                    && finalChk == 0
+                    && finalChk == 1
                     && flameCount >= 50
                     && cooldownCheck(final1)
             ) {
-                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
                 flameCount = 0;
                 addDealCycle(final1);
-                finalChk = 2;
+                finalChk = -1;
             } else if (
                     getStart().after(new Timestamp(finalTime.getTime() - 27000))
-                    && finalChk == 1
+                    && finalChk == 2
                     && flameCount >= 50
                     && cooldownCheck(final2)
             ) {
-                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
                 flameCount = 0;
                 addDealCycle(final2);
-                finalChk = 2;
+                finalChk = -1;
+            } else if (
+                    getStart().after(new Timestamp(finalTime.getTime() - 27000))
+                    && finalChk == 3
+                    && flameCount >= 50
+                    && cooldownCheck(final3)
+            ) {
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
+                flameCount = 0;
+                addDealCycle(final3);
+                finalChk = -1;
+            } else if (
+                    getStart().after(new Timestamp(finalTime.getTime() - 27000))
+                    && finalChk == 4
+                    && flameCount >= 50
+                    && cooldownCheck(final4)
+            ) {
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
+                flameCount = 0;
+                addDealCycle(final4);
+                finalChk = -1;
             } else if (
                     cooldownCheck(soulContract)
                     && (
@@ -300,38 +337,34 @@ public class FlameWizardDealCycle extends DealCycle {
                             )
                             ||
                             (
-                                    getStart().after(new Timestamp(270 * 1000))
-                                    && getStart().before(new Timestamp(330 * 1000))
+                                    getStart().after(new Timestamp(280 * 1000))
+                                    && getStart().before(new Timestamp(340 * 1000))
                             )
                             ||
                             (
-                                    getStart().after(new Timestamp(390 * 1000))
-                                    && getStart().before(new Timestamp(450 * 1000))
+                                    getStart().after(new Timestamp(400 * 1000))
+                                    && getStart().before(new Timestamp(460 * 1000))
                             )
                             ||
                             (
-                                    getStart().after(new Timestamp(510 * 1000))
-                                    && getStart().before(new Timestamp(570 * 1000))
+                                    getStart().after(new Timestamp(540 * 1000))
+                                    && getStart().before(new Timestamp(580 * 1000))
                             )
                             ||
                             (
-                                    getStart().after(new Timestamp(630 * 1000))
-                                    && getStart().before(new Timestamp(660 * 1000))
+                                    getStart().after(new Timestamp(660 * 1000))
+                                    && getStart().before(new Timestamp(720 * 1000))
                             )
                     )
             ) {
+                addSkillEvent(burningRegion);
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(cygnusPhalanx)
-                    && getStart().after(phoenixDriveEndTime)
-            ) {
-                addSkillEvent(cygnusPhalanx);
             } else if (
                     cooldownCheck(flameDischarge)
                     && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 18000))
@@ -339,18 +372,16 @@ public class FlameWizardDealCycle extends DealCycle {
                     && getStart().after(phoenixDriveEndTime)
                     && flameCount >= 50
             ) {
-                flameDischarge.setByFlameCount((long) (flameCount / 25));
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
                 flameCount = 0;
                 addSkillEvent(flameDischarge);
             } else if (
                     cooldownCheck(blazingOrbitalFlame)
+                    && cooldownCheck(blazingExtinction)
                     && getStart().after(phoenixDriveEndTime)
+                    && !cooldownCheck(burningRegion)
             ) {
                 addSkillEvent(blazingOrbitalFlame);
-            } else if (
-                    cooldownCheck(blazingExtinction)
-                    && getStart().after(phoenixDriveEndTime)
-            ) {
                 addSkillEvent(blazingExtinction);
             } else {
                 if (orbitalCount % 5 == 0) {
