@@ -93,6 +93,12 @@ public class FlameWizardDealCycle extends DealCycle {
 
     int orbitalExplosionCount = 0;
     int flameCount = 0;
+    int emberCount = 0;
+    Timestamp finalTime = new Timestamp(-1);
+    Timestamp phoenixDriveEndTime = new Timestamp(-1);
+    FlameDischarge flameDischarge = new FlameDischarge(0L);
+    SalamanderMischief salamanderMischief = new SalamanderMischief(0L);
+    SalamanderMischiefBuff salamanderMischiefBuff = new SalamanderMischiefBuff();
 
     public FlameWizardDealCycle(Job job) {
         super(job, null);
@@ -107,7 +113,6 @@ public class FlameWizardDealCycle extends DealCycle {
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
         Eternity eternity = new Eternity();
-        FlameDischarge flameDischarge = new FlameDischarge(0L);
         GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
         InfernoRize infernoRize = new InfernoRize();
         InfinityFlameCircle infinityFlameCircle = new InfinityFlameCircle();
@@ -119,8 +124,6 @@ public class FlameWizardDealCycle extends DealCycle {
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
-        SalamanderMischief salamanderMischief = new SalamanderMischief(0L);
-        SalamanderMischiefBuff salamanderMischiefBuff = new SalamanderMischiefBuff();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SpiritOfFlame spiritOfFlame = new SpiritOfFlame();
@@ -199,8 +202,6 @@ public class FlameWizardDealCycle extends DealCycle {
         int finalChk = -1;
         int infernoRizeCount = 0;
         int orbitalCount = 0;
-        Timestamp finalTime = new Timestamp(-1);
-        Timestamp phoenixDriveEndTime = new Timestamp(-1);
         int dealCycleOrder = 1;
 
         flameCount = 150;
@@ -219,8 +220,7 @@ public class FlameWizardDealCycle extends DealCycle {
                     && (dealCycleOrder == 1 || dealCycleOrder == 3 || dealCycleOrder == 5)
                     && flameCount >= 50
             ) {
-                flameDischarge = new FlameDischarge((long) flameCount / 25);
-                flameCount = 0;
+                emberCount = 0;
                 addDealCycle(dealCycle1);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
@@ -230,15 +230,6 @@ public class FlameWizardDealCycle extends DealCycle {
                 if (dealCycleOrder == 3 || dealCycleOrder == 5) {
                     finalChk = 3;
                 }
-                this.getSkillEventList().add(
-                        new SkillEvent(
-                                salamanderMischiefBuff,
-                                new Timestamp(getStart().getTime() + 60000 - 570),
-                                new Timestamp(getStart().getTime() + 60000 + 30000 - 570)
-                        )
-                );
-                this.getEventTimeList().add(new Timestamp(getStart().getTime() + 60000 - 570));
-                this.getEventTimeList().add(new Timestamp(getStart().getTime() + 60000 + 30000 - 570));
                 dealCycleOrder++;
             } else if (
                     cooldownCheck(dealCycle2)
@@ -246,42 +237,22 @@ public class FlameWizardDealCycle extends DealCycle {
                     && dealCycleOrder == 4
                     && flameCount >= 50
             ) {
-                flameDischarge = new FlameDischarge((long) flameCount / 25);
-                flameCount = 0;
+                emberCount = 0;
                 addDealCycle(dealCycle2);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
                 finalChk = 2;
-                this.getSkillEventList().add(
-                        new SkillEvent(
-                                salamanderMischiefBuff,
-                                new Timestamp(getStart().getTime() + 60000 - 570),
-                                new Timestamp(getStart().getTime() + 60000 + 30000 - 570)
-                        )
-                );
-                this.getEventTimeList().add(new Timestamp(getStart().getTime() + 60000 - 570));
-                this.getEventTimeList().add(new Timestamp(getStart().getTime() + 60000 + 30000 - 570));
                 dealCycleOrder++;
             } else if (
                     cooldownCheck(dealCycle3)
                     && (dealCycleOrder == 2 || dealCycleOrder == 6)
                     && flameCount >= 50
             ) {
-                flameDischarge = new FlameDischarge((long) flameCount / 25);
-                flameCount = 0;
+                emberCount = 0;
                 addDealCycle(dealCycle3);
                 finalTime = new Timestamp(getStart().getTime() + 43000);
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
                 finalChk = 4;
-                this.getSkillEventList().add(
-                        new SkillEvent(
-                                salamanderMischiefBuff,
-                                new Timestamp(getStart().getTime() + 60000 - 570),
-                                new Timestamp(getStart().getTime() + 60000 + 30000 - 570)
-                        )
-                );
-                this.getEventTimeList().add(new Timestamp(getStart().getTime() + 60000 - 570));
-                this.getEventTimeList().add(new Timestamp(getStart().getTime() + 60000 + 30000 - 570));
                 dealCycleOrder++;
             } else if (
                     getStart().after(new Timestamp(finalTime.getTime() - 27000))
@@ -289,8 +260,6 @@ public class FlameWizardDealCycle extends DealCycle {
                     && flameCount >= 50
                     && cooldownCheck(final1)
             ) {
-                flameDischarge = new FlameDischarge((long) flameCount / 25);
-                flameCount = 0;
                 addDealCycle(final1);
                 finalChk = -1;
             } else if (
@@ -299,8 +268,6 @@ public class FlameWizardDealCycle extends DealCycle {
                     && flameCount >= 50
                     && cooldownCheck(final2)
             ) {
-                flameDischarge = new FlameDischarge((long) flameCount / 25);
-                flameCount = 0;
                 addDealCycle(final2);
                 finalChk = -1;
             } else if (
@@ -309,8 +276,6 @@ public class FlameWizardDealCycle extends DealCycle {
                     && flameCount >= 50
                     && cooldownCheck(final3)
             ) {
-                flameDischarge = new FlameDischarge((long) flameCount / 25);
-                flameCount = 0;
                 addDealCycle(final3);
                 finalChk = -1;
             } else if (
@@ -319,8 +284,6 @@ public class FlameWizardDealCycle extends DealCycle {
                     && flameCount >= 50
                     && cooldownCheck(final4)
             ) {
-                flameDischarge = new FlameDischarge((long) flameCount / 25);
-                flameCount = 0;
                 addDealCycle(final4);
                 finalChk = -1;
             } else if (
@@ -372,8 +335,6 @@ public class FlameWizardDealCycle extends DealCycle {
                     && getStart().after(phoenixDriveEndTime)
                     && flameCount >= 50
             ) {
-                flameDischarge = new FlameDischarge((long) flameCount / 25);
-                flameCount = 0;
                 addSkillEvent(flameDischarge);
             } else if (
                     cooldownCheck(blazingOrbitalFlame)
@@ -445,6 +406,21 @@ public class FlameWizardDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof SalamanderMischief) {
+                this.getSkillEventList().add(
+                        new SkillEvent(
+                                salamanderMischiefBuff,
+                                new Timestamp(getStart().getTime() + 60000 - 750),
+                                new Timestamp(getStart().getTime() + 60000 + 30000 - 750)
+                        )
+                );
+                this.getEventTimeList().add(new Timestamp(getStart().getTime() + 60000 - 750));
+                this.getEventTimeList().add(new Timestamp(getStart().getTime() + 60000 + 30000 - 750));
+            }
+            if (skill instanceof FlameDischarge) {
+                flameDischarge = new FlameDischarge((long) flameCount / 25);
+                flameCount = 0;
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
@@ -465,6 +441,12 @@ public class FlameWizardDealCycle extends DealCycle {
                 } else {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        if (skill instanceof SalamanderMischief) {
+                            skill = new SalamanderMischief((long) emberCount);
+                            if (emberCount < 45) {
+                                emberCount++;
+                            }
+                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
