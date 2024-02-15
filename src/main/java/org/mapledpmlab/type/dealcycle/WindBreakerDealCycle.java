@@ -7,6 +7,7 @@ import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.windbreaker.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
+import org.mapledpmlab.type.skill.buffskill.windbreaker.EmeraldFlower;
 import org.mapledpmlab.type.skill.buffskill.windbreaker.PinpointPierceBuff;
 import org.mapledpmlab.type.skill.buffskill.windbreaker.StormWhimBuff;
 import org.mapledpmlab.type.skill.buffskill.windbreaker.WindWall;
@@ -51,6 +52,7 @@ public class WindBreakerDealCycle extends DealCycle {
             add(new GuidedArrow());
             add(new HowlingGale1());
             add(new HowlingGale2());
+            add(new HowlingGale3());
             add(new IdleWhimAfterSecond());
             add(new IdleWhimDot());
             add(new IdleWhimFirst());
@@ -74,15 +76,13 @@ public class WindBreakerDealCycle extends DealCycle {
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new CygnusPhalanxDelay());
-            add(new HowlingGaleDelay());
-            add(new IdleWhimDelay());
-            add(new MistralSpringDelay());
-            add(new VortexSphereDelay());
         }
     };
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
+            add(new CriticalReinforce(0.0));
+            add(new EmeraldFlower());
             add(new GloryOfGuardians());
             add(new PriorPreparation());
             add(new RestraintRing());
@@ -96,6 +96,10 @@ public class WindBreakerDealCycle extends DealCycle {
         }
     };
 
+    HowlingGale1 howlingGale1 = new HowlingGale1();
+    HowlingGale2 howlingGale2 = new HowlingGale2();
+    HowlingGale3 howlingGale3 = new HowlingGale3();
+
     public WindBreakerDealCycle(Job job) {
         super(job, null);
 
@@ -104,11 +108,12 @@ public class WindBreakerDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
+        EmeraldFlower emeraldFlower = new EmeraldFlower();
         GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
         GuidedArrow guidedArrow = new GuidedArrow();
-        HowlingGale1 howlingGale1 = new HowlingGale1();
-        IdleWhimDelay idleWhimDelay = new IdleWhimDelay();
+        IdleWhimFirst idleWhimFirst = new IdleWhimFirst();
         MistralSpring mistralSpring = new MistralSpring();
         PinpointPierce pinpointPierce = new PinpointPierce();
         PriorPreparation priorPreparation = new PriorPreparation();
@@ -140,115 +145,138 @@ public class WindBreakerDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(130.0);
 
         // 리스트레인트 극딜 예열 - F1
+        dealCycle1.add(emeraldFlower);
         dealCycle1.add(pinpointPierce);
         dealCycle1.add(gloryOfGuardians);
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
-        dealCycle1.add(transcendentCygnusBlessing);
         dealCycle1.add(stormWhimBuff);
+        dealCycle1.add(criticalReinforce);
 
         // 웨폰퍼프, 초시축 극딜 예열 - F2
+        dealCycle2.add(emeraldFlower);
         dealCycle2.add(pinpointPierce);
         dealCycle2.add(gloryOfGuardians);
-        dealCycle2.add(transcendentCygnusBlessing);
         dealCycle2.add(stormWhimBuff);
+        dealCycle2.add(criticalReinforce);
 
         // 웨폰퍼프 - F2
+        dealCycle3.add(emeraldFlower);
         dealCycle3.add(pinpointPierce);
         dealCycle3.add(gloryOfGuardians);
         dealCycle3.add(stormWhimBuff);
+        dealCycle3.add(criticalReinforce);
 
         // 예열 후 사용(리레/6차)
         final1.add(mistralSpring);
         final1.add(soulContract);
         final1.add(restraintRing);
-        final1.add(howlingGale1);
+        final1.add(howlingGale3);
+        final1.add(vortexSphere);
+        final1.add(idleWhimFirst);
 
         // 예열 후 사용(리레)
         final2.add(soulContract);
         final2.add(restraintRing);
-        final2.add(howlingGale1);
+        final2.add(howlingGale3);
+        final2.add(vortexSphere);
+        final2.add(idleWhimFirst);
 
         // 예열 후 사용(웨퍼/6차)
         final3.add(mistralSpring);
         final3.add(soulContract);
         final3.add(weaponJumpRing);
-        final3.add(howlingGale1);
+        final3.add(howlingGale3);
+        final3.add(vortexSphere);
+        final3.add(idleWhimFirst);
 
         // 예열 후 사용(웨퍼)
         final4.add(soulContract);
         final4.add(weaponJumpRing);
-        final4.add(howlingGale1);
+        final4.add(howlingGale3);
+        final4.add(vortexSphere);
+        final4.add(idleWhimFirst);
 
         int finalChk = 0;
-        Timestamp finalTime = new Timestamp(-1);
         int dealCycleOrder = 1;
 
+        getStart().setTime(-25000);
+        transcendentCygnusBlessing.setCooldown(260.0);
+        addSkillEvent(transcendentCygnusBlessing);
+        getStart().setTime(0);
         while (getStart().before(getEnd())) {
+            if (cooldownCheck(cygnusPhalanx)) {
+                addSkillEvent(cygnusPhalanx);
+            }
+            if (
+                    cooldownCheck(stoneWind)
+            ) {
+                addSkillEvent(stoneWind);
+            }
+            if (
+                    cooldownCheck(transcendentCygnusBlessing)
+            ) {
+                addSkillEvent(transcendentCygnusBlessing);
+            }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && (dealCycleOrder == 1 || dealCycleOrder == 3 || dealCycleOrder == 5)
             ) {
                 addDealCycle(dealCycle1);
-                finalTime = new Timestamp(getStart().getTime() + 44000 - 20000);
                 if (dealCycleOrder == 1) {
                     finalChk = 1;
                 }
                 if (dealCycleOrder == 3 || dealCycleOrder == 5) {
                     finalChk = 2;
                 }
+                if (dealCycleOrder == 3) {
+                    transcendentCygnusBlessing.setCooldown(140.0);
+                }
+                if (dealCycleOrder == 5) {
+                    transcendentCygnusBlessing.setCooldown(720.0);
+                }
                 dealCycleOrder++;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
-                    && getStart().before(new Timestamp(200 * 1000))
-                    && dealCycleOrder == 2
+                    && dealCycleOrder == 4
             ) {
+                transcendentCygnusBlessing.setCooldown(120.0);
                 addDealCycle(dealCycle2);
-                finalTime = new Timestamp(getStart().getTime() + 44000 - 20000);
-                finalChk = 4;
+                finalChk = 3;
                 dealCycleOrder++;
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
-                    && (dealCycleOrder == 4 || dealCycleOrder == 6)
+                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
             ) {
                 addDealCycle(dealCycle3);
-                finalTime = new Timestamp(getStart().getTime() + 44000 - 20000);
-                if (dealCycleOrder == 4) {
-                    finalChk = 3;
-                } else if (dealCycleOrder == 6) {
-                    finalChk = 4;
-                }
+                finalChk = 4;
                 dealCycleOrder++;
             } else if (
-                    getStart().after(finalTime)
-                    && finalChk == 1
+                    finalChk == 1
                     && cooldownCheck(final1)
             ) {
                 addDealCycle(final1);
                 finalChk = 0;
             } else if (
-                    getStart().after(finalTime)
-                    && finalChk == 2
+                    finalChk == 2
                     && cooldownCheck(final2)
             ) {
                 addDealCycle(final2);
                 finalChk = 0;
             } else if (
-                    getStart().after(finalTime)
-                    && finalChk == 3
+                    finalChk == 3
                     && cooldownCheck(final3)
             ) {
                 addDealCycle(final3);
                 finalChk = 0;
             } else if (
-                    getStart().after(finalTime)
-                    && finalChk == 4
+                    finalChk == 4
                     && cooldownCheck(final4)
             ) {
                 addDealCycle(final4);
@@ -260,33 +288,43 @@ public class WindBreakerDealCycle extends DealCycle {
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
+                    cooldownCheck(emeraldFlower)
+                    && finalChk == 0
+                    && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 10000))
+            ) {
+                addSkillEvent(emeraldFlower);
+                addSkillEvent(pinpointPierce);
+            } else if (
                     cooldownCheck(soulContract)
                     && finalChk == 0
+                    && !cooldownCheck(gloryOfGuardians)
             ) {
                 addSkillEvent(soulContract);
             } else if (
-                    cooldownCheck(cygnusPhalanx)
+                    cooldownCheck(howlingGale2)
+                    && ((
+                            ((double) getStart().getTime() / 120 / 1000 % 1) < 0.75
+                            && ((double) getStart().getTime() / 120 / 1000 % 1) > 0.25
+                    ) || getStart().after(new Timestamp(660 * 1000)))
             ) {
-                addSkillEvent(cygnusPhalanx);
-            } else if (
-                    cooldownCheck(stoneWind)
-            ) {
-                addSkillEvent(stoneWind);
+                addSkillEvent(howlingGale2);
             } else if (
                     cooldownCheck(howlingGale1)
-                    && !cooldownCheck(soulContract)
+                    && ((double) getStart().getTime() / 120 / 1000 % 1) < 0.3
+                    && ((double) getStart().getTime() / 120 / 1000 % 1) > 0.1
             ) {
                 addSkillEvent(howlingGale1);
             } else if (
                     cooldownCheck(vortexSphere)
-                    && !cooldownCheck(gloryOfGuardians)
+                    && !cooldownCheck(soulContract)
             ) {
                 addSkillEvent(vortexSphere);
             } else if (
-                    cooldownCheck(idleWhimDelay)
+                    cooldownCheck(idleWhimFirst)
                     && !cooldownCheck(gloryOfGuardians)
+                    && !cooldownCheck(howlingGale3)
             ) {
-                addSkillEvent(idleWhimDelay);
+                addSkillEvent(idleWhimFirst);
             } else {
                 addSkillEvent(songOfHeaven);
             }
@@ -298,7 +336,7 @@ public class WindBreakerDealCycle extends DealCycle {
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
 
-        if (getStart().before(skill.getActivateTime())) {
+        if (getStart().before(skill.getActivateTime()) && getStart().after(new Timestamp(0))) {
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -360,6 +398,16 @@ public class WindBreakerDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof HowlingGale1) {
+            applyCooldown(howlingGale2);
+            applyCooldown(howlingGale3);
+        } else if (skill instanceof HowlingGale2) {
+            applyCooldown(howlingGale1);
+            applyCooldown(howlingGale3);
+        } else if (skill instanceof HowlingGale3) {
+        applyCooldown(howlingGale1);
+        applyCooldown(howlingGale2);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {

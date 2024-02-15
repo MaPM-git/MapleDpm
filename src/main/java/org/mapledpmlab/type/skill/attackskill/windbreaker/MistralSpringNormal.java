@@ -5,8 +5,8 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class MistralSpringNormal extends AttackSkill {
     public MistralSpringNormal() {
         this.setName("미스트랄 스프링(정령의 기운)");
-        this.setAttackCount(1L);
-        this.setDamage(6600.0);
+        this.setAttackCount(5L);
+        this.setDamage(1320.0);
         this.setLimitAttackCount(9L * 13);
         this.setDotDuration(20000L);
         this.setInterval(170L);

@@ -7,14 +7,25 @@ public class MistralSpring extends AttackSkill {
         this.setName("미스트랄 스프링");
         this.setAttackCount(10L);
         this.setCooldown(360.0);
-        this.setDamage(2400.0);
-        this.setLimitAttackCount(9L);
-        this.setDotDuration(4560L);
-        this.setInterval(506L);
+        this.setDamage(1670.0);
+        this.setDelay(4560L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
-        this.setRelatedSkill(new MistralSpringDelay());
+        this.setRelatedSkill(new MistralSpringNormal());
+        this.getMultiAttackInfo().add(2400L);
+        this.getMultiAttackInfo().add(1200L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
     }
 }
