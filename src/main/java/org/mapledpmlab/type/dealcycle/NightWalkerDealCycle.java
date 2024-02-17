@@ -4,11 +4,9 @@ import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
-import org.mapledpmlab.type.skill.attackskill.mihile.*;
 import org.mapledpmlab.type.skill.attackskill.nightwalker.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
-import org.mapledpmlab.type.skill.buffskill.mihile.*;
 import org.mapledpmlab.type.skill.buffskill.nightwalker.*;
 
 import java.sql.Timestamp;
@@ -59,13 +57,7 @@ public class NightWalkerDealCycle extends DealCycle {
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new CygnusPhalanxDelay());
-            add(new QuintupleThrowBlackDelay());
-            add(new QuintupleThrowBlackFinalDelay());
-            add(new QuintupleThrowDelay());
-            add(new QuintupleThrowFinalDelay());
-            add(new RapidThrowDelay());
-            add(new RapidThrowEndDelay());
-            add(new SilenceDelay());
+            add(new RapidThrowBeforeDelay());
         }
     };
 
@@ -89,8 +81,14 @@ public class NightWalkerDealCycle extends DealCycle {
     };
 
     private int batCount = 0;
+    int attackCount = 0;
     private RavenousBatReinforce ravenousBatReinforce = new RavenousBatReinforce();
     private ShadowSpear shadowSpear = new ShadowSpear();
+    SilenceShadowStar silenceShadowStar = new SilenceShadowStar();
+    Timestamp silenceEndTime = new Timestamp(-1);
+    Timestamp shadowSpearEndTime = new Timestamp(-1);
+    Timestamp shadowIllusionEndTime = new Timestamp(-1);
+    Timestamp shadowServantExtendEndTime = new Timestamp(-1);
 
     public NightWalkerDealCycle(Job job) {
         super(job, new RavenousBat());
@@ -107,7 +105,7 @@ public class NightWalkerDealCycle extends DealCycle {
         PriorPreparation priorPreparation = new PriorPreparation();
         QuintupleThrow quintupleThrow = new QuintupleThrow();
         QuintupleThrowBlack quintupleThrowBlack = new QuintupleThrowBlack();
-        RapidThrow rapidThrow = new RapidThrow();
+        RapidThrowBeforeDelay rapidThrow = new RapidThrowBeforeDelay();
         ReadyToDie readyToDie = new ReadyToDie();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
@@ -116,7 +114,6 @@ public class NightWalkerDealCycle extends DealCycle {
         ShadowServantExtend shadowServantExtend = new ShadowServantExtend();
         ShadowSpearBuff shadowSpearBuff = new ShadowSpearBuff();
         Silence silence = new Silence();
-        SilenceShadowStar silenceShadowStar = new SilenceShadowStar();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         ThiefCunning thiefCunning = new ThiefCunning();
@@ -139,7 +136,7 @@ public class NightWalkerDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(90.0);
 
         // 극딜 예열
         dealCycle1.add(shadowSpearBuff);
@@ -147,7 +144,6 @@ public class NightWalkerDealCycle extends DealCycle {
         dealCycle1.add(shadowServantExtend);
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
-        dealCycle1.add(transcendentCygnusBlessing);
 
         // 예열 후 사용(6차)
         final1.add(silence);
@@ -163,7 +159,6 @@ public class NightWalkerDealCycle extends DealCycle {
         dealCycle2.add(shadowSpearBuff);
         dealCycle2.add(gloryOfGuardians);
         dealCycle2.add(shadowServantExtend);
-        dealCycle2.add(transcendentCygnusBlessing);
 
         // 예열 후 사용
         final2.add(shadowIllusion);
@@ -181,66 +176,99 @@ public class NightWalkerDealCycle extends DealCycle {
         dealCycle3.add(rapidThrow);
 
         int finalChk = 0;
-        Timestamp finalTime = new Timestamp(-1);
-        Timestamp silenceEndTime = new Timestamp(-1);
 
+        getStart().setTime(-25000);
+        transcendentCygnusBlessing.setCooldown(190.0);
+        addSkillEvent(transcendentCygnusBlessing);
+        getStart().setTime(0);
         while (getStart().before(getEnd())) {
+            if (cooldownCheck(cygnusPhalanx)) {
+                System.out.println("---------------");
+                System.out.println("phalanx");
+                System.out.println(getStart());
+                addSkillEvent(cygnusPhalanx);
+            }
+            if (
+                    cooldownCheck(transcendentCygnusBlessing)
+                    && getStart().before(new Timestamp(10 * 60 * 1000))
+            ) {
+                System.out.println("---------------");
+                System.out.println("bless");
+                System.out.println(getStart());
+                addSkillEvent(transcendentCygnusBlessing);
+            }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
+                    && cooldownCheck(rapidThrow)
+                    && cooldownCheck(shadowBiteBuff)
             ) {
+                System.out.println("---------------");
+                System.out.println("dc1");
+                System.out.println(getStart());
                 addDealCycle(dealCycle1);
-                finalTime = new Timestamp(getStart().getTime() + 19500);
-                finalChk = 0;
+                finalChk = 1;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
+                    && cooldownCheck(rapidThrow)
+                    && cooldownCheck(shadowBiteBuff)
             ) {
+                System.out.println("---------------");
+                System.out.println("dc2");
+                System.out.println(getStart());
                 addDealCycle(dealCycle2);
-                finalTime = new Timestamp(getStart().getTime() + 21500);
-                finalChk = 1;
+                finalChk = 2;
             } else if (
                     cooldownCheck(dealCycle3)
-                    && getStart().after(new Timestamp(finalTime.getTime() + 10000))
+                    && finalChk == 0
             ) {
+                System.out.println("---------------");
+                System.out.println("dc3");
+                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
-                    getStart().after(finalTime)
-                    && finalChk == 0
+                    finalChk == 1
                     && cooldownCheck(final1)
             ) {
-                silenceEndTime = new Timestamp(getStart().getTime() + 25000);
+                System.out.println("---------------");
+                System.out.println("f1");
+                System.out.println(getStart());
                 addDealCycle(final1);
-                finalChk = 2;
+                finalChk = 0;
             } else if (
-                    getStart().after(finalTime)
-                    && finalChk == 1
+                    finalChk == 2
                     && cooldownCheck(final2)
             ) {
+                System.out.println("---------------");
+                System.out.println("f2");
+                System.out.println(getStart());
                 addDealCycle(final2);
-                finalChk = 2;
+                finalChk = 0;
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("---------------");
+                System.out.println("ring");
+                System.out.println(getStart());
                 addSkillEvent(ringSwitching);
             } else if (
-                    getStart().before(silenceEndTime)
-                    && cooldownCheck(silenceShadowStar)
-            ) {
-                addSkillEvent(silenceShadowStar);
-            } else if (
                     cooldownCheck(shadowServantExtend)
+                    && !cooldownCheck(shadowSpearBuff)
             ) {
+                System.out.println("---------------");
+                System.out.println("extend");
+                System.out.println(getStart());
                 addSkillEvent(shadowServantExtend);
             } else if (
-                    cooldownCheck(cygnusPhalanx)
-            ) {
-                addSkillEvent(cygnusPhalanx);
-            } else if (
                     cooldownCheck(shadowBiteBuff)
+                    && finalChk == 0
             ) {
+                System.out.println("---------------");
+                System.out.println("bite");
+                System.out.println(getStart());
                 addSkillEvent(shadowBiteBuff);
             } else if (
                     cooldownCheck(quintupleThrowBlack)
@@ -257,10 +285,22 @@ public class NightWalkerDealCycle extends DealCycle {
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
 
-        if (getStart().before(skill.getActivateTime())) {
+        if (getStart().before(skill.getActivateTime()) && getStart().after(new Timestamp(0))) {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof SilenceBuff) {
+                silenceEndTime = new Timestamp(getStart().getTime() + 30000);
+            }
+            if (skill instanceof ShadowSpearBuff) {
+                shadowSpearEndTime = new Timestamp(getStart().getTime() + 87000);
+            }
+            if (skill instanceof ShadowIllusion) {
+                shadowIllusionEndTime = new Timestamp(getStart().getTime() + 30000);
+            }
+            if (skill instanceof ShadowServantExtend) {
+                shadowServantExtendEndTime = new Timestamp(getStart().getTime() + 55000);
+            }
             if (
                     skill instanceof RestraintRing
                     && restraintRingStartTime == null
@@ -285,12 +325,59 @@ public class NightWalkerDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (getStart().before(shadowIllusionEndTime) && ((AttackSkill) skill).isApplyFinalAttack()) {
+                applyCooldown(skill);
+                if (skill instanceof QuintupleThrow) {
+                    skill = new QuintupleThrow();
+                } else if (skill instanceof QuintupleThrowBlack) {
+                    skill = new QuintupleThrowBlack();
+                } else if (skill instanceof QuintupleThrowBlackFinal) {
+                    skill = new QuintupleThrowBlackFinal();
+                } else if (skill instanceof QuintupleThrowFinal) {
+                    skill = new QuintupleThrowFinal();
+                } else if (skill instanceof RapidThrow) {
+                    skill = new RapidThrow();
+                } else if (skill instanceof RapidThrowEnd) {
+                    skill = new RapidThrowEnd();
+                } else if (skill instanceof Silence) {
+                    skill = new Silence();
+                }
+                ((AttackSkill) skill).setFinalDamage(0.81);
+                ((AttackSkill) skill).setInterval(((AttackSkill) skill).getInterval() * 2 / 5);
+                ((AttackSkill) skill).setLimitAttackCount(((AttackSkill) skill).getLimitAttackCount() * 5 / 2);
+            } else if (getStart().before(shadowServantExtendEndTime) && ((AttackSkill) skill).isApplyFinalAttack()) {
+                applyCooldown(skill);
+                if (skill instanceof QuintupleThrow) {
+                    skill = new QuintupleThrow();
+                } else if (skill instanceof QuintupleThrowBlack) {
+                    skill = new QuintupleThrowBlack();
+                } else if (skill instanceof QuintupleThrowBlackFinal) {
+                    skill = new QuintupleThrowBlackFinal();
+                } else if (skill instanceof QuintupleThrowFinal) {
+                    skill = new QuintupleThrowFinal();
+                } else if (skill instanceof RapidThrow) {
+                    skill = new RapidThrow();
+                } else if (skill instanceof RapidThrowEnd) {
+                    skill = new RapidThrowEnd();
+                } else if (skill instanceof Silence) {
+                    skill = new Silence();
+                }
+                ((AttackSkill) skill).setInterval(((AttackSkill) skill).getInterval() * 2 / 3);
+                ((AttackSkill) skill).setLimitAttackCount(((AttackSkill) skill).getLimitAttackCount() * 3 / 2);
+            }
+            if (
+                    getStart().before(silenceEndTime)
+                    && cooldownCheck(silenceShadowStar)
+                    && !(skill instanceof SilenceShadowStar)
+            ) {
+                addSkillEvent(silenceShadowStar);
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
                             skillEvent.getStart().after(getStart())
-                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
                     ) {
                         remove.add(skillEvent);
                     }
@@ -305,7 +392,17 @@ public class NightWalkerDealCycle extends DealCycle {
                 } else {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        if (skill instanceof RapidThrow) {
+                            if ((new Timestamp(getStart().getTime() + i)).before(shadowSpearEndTime)) {
+                                ((RapidThrow) skill).setDamage(1045.0 + 290);
+                            }
+                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        if (skill instanceof RapidThrow) {
+                            if ((new Timestamp(getStart().getTime() + i)).before(shadowSpearEndTime)) {
+                                ((RapidThrow) skill).setDamage(1045.0);
+                            }
+                        }
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
                     }
@@ -352,21 +449,7 @@ public class NightWalkerDealCycle extends DealCycle {
                 }
             }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
-            boolean isShadowIllusion = false;
-            boolean isShadowServantExtend = false;
             boolean isShadowSpear = false;
-            for (SkillEvent skillEvent : useBuffSkillList) {
-                if (skillEvent.getSkill() instanceof ShadowIllusion) {
-                    isShadowIllusion = true;
-                    break;
-                }
-            }
-            for (SkillEvent skillEvent : useBuffSkillList) {
-                if (skillEvent.getSkill() instanceof ShadowServantExtend) {
-                    isShadowServantExtend = true;
-                    break;
-                }
-            }
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof ShadowSpearBuff) {
                     isShadowSpear = true;
@@ -391,38 +474,13 @@ public class NightWalkerDealCycle extends DealCycle {
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
             }
             for (SkillEvent se : useAttackSkillList) {
-                AttackSkill attackSkill = (AttackSkill) se.getSkill();
-                if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
-                    if (isShadowIllusion && isShadowServantExtend) {
-                        attackSkill.setLimitAttackCount((long) (attackSkill.getLimitAttackCount() * 2.5));
-                        attackSkill.minusFinalDamage(0.85);
-                        attackSkill.addFinalDamage(0.67);
-                    } else if (isShadowIllusion) {
-                        attackSkill.setLimitAttackCount(attackSkill.getLimitAttackCount() * 2);
-                        attackSkill.minusFinalDamage(0.85);
-                        attackSkill.addFinalDamage(0.625);
-                    } else if (isShadowServantExtend) {
-                        attackSkill.setLimitAttackCount((long) (attackSkill.getLimitAttackCount() * 1.5));
-                    }
-                }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
-                    if (isShadowIllusion && isShadowServantExtend) {
-                        attackSkill.setLimitAttackCount((long) (attackSkill.getLimitAttackCount() / 2.5));
-                        attackSkill.addFinalDamage(0.85);
-                        attackSkill.minusFinalDamage(0.67);
-                    } else if (isShadowIllusion) {
-                        attackSkill.setLimitAttackCount(attackSkill.getLimitAttackCount() / 2);
-                        attackSkill.addFinalDamage(0.85);
-                        attackSkill.minusFinalDamage(0.625);
-                    } else if (isShadowServantExtend) {
-                        attackSkill.setLimitAttackCount((long) (attackSkill.getLimitAttackCount() / 1.5));
-                    }
+                    attackCount ++;
                 }
-                if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
+                if (attackCount % 3 == 0) {
                     if (batCount % 5 == 0) {
                         totalDamage += getAttackDamage(new SkillEvent(ravenousBatReinforce, start, end), buffSkill, start, end);
-                        totalDamage += getAttackDamage(new SkillEvent(shadowSpear, start, end), buffSkill, start, end);
                         batCount ++;
                     } else {
                         totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
@@ -430,10 +488,16 @@ public class NightWalkerDealCycle extends DealCycle {
                     }
                     if (isShadowSpear) {
                         totalDamage += getAttackDamage(new SkillEvent(shadowSpear, start, end), buffSkill, start, end);
-                        totalDamage += getAttackDamage(new SkillEvent(shadowSpear, start, end), buffSkill, start, end);
                     }
                 }
-                if (isShadowSpear && se.getSkill() instanceof DarkAttack) {
+                if (
+                        isShadowSpear
+                        && se.getSkill() instanceof DarkAttack
+                        && !(
+                                se.getSkill() instanceof ElementDarkness
+                                || se.getSkill() instanceof RapidThrow
+                        )
+                ) {
                     totalDamage += getAttackDamage(new SkillEvent(shadowSpear, start, end), buffSkill, start, end);
                 }
             }

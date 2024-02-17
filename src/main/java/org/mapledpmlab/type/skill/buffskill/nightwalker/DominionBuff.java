@@ -8,8 +8,8 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 @Setter
 public class DominionBuff extends BuffSkill {
     public DominionBuff() {
-        this.setName("도미니언");
-        this.setDelay(2490L);
+        this.setName("도미니언(래피드 이베이젼 캔슬)");
+        this.setDelay(360L);
         this.setDuration(30L);
         this.addBuffFinalDamage(1.2);
     }

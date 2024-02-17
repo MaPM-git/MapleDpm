@@ -7,6 +7,7 @@ public class QuintupleThrowFinal extends AttackSkill implements DarkAttack {
         this.setName("퀸터플 스로우(막타)");
         this.setAttackCount(1L);
         this.setDamage(1320.0);
+        this.setDelay(150L);
         this.setDotDuration(150L);
         this.setInterval(75L);
         this.setLimitAttackCount(2L);
@@ -15,6 +16,5 @@ public class QuintupleThrowFinal extends AttackSkill implements DarkAttack {
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(0.85);      // 쉐도우 파트너
         this.setApplyFinalAttack(true);
-        this.setRelatedSkill(new QuintupleThrowFinalDelay());
     }
 }
