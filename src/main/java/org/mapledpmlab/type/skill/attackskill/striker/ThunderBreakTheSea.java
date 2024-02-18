@@ -5,16 +5,47 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ThunderBreakTheSea extends AttackSkill {
     public ThunderBreakTheSea() {
         this.setName("뇌명벽해파");
-        this.setAttackCount(4L);
-        this.setDamage(3240.0);
+        this.setAttackCount(5L);
+        this.setDamage(1390.0);
+        this.setDelay(4200L);
         this.setCooldown(360.0);
-        this.setDotDuration(400L * 11);
-        this.setInterval(400L);
-        this.setLimitAttackCount(11L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
-        this.setRelatedSkill(new ThunderBreakTheSeaDelay());
+        this.setRelatedSkill(new ThunderBreakTheSeaFinal());
         this.addFinalDamage(1.71);          // 축뢰
+        this.addFinalDamage(1.18);          // 연쇄
+        this.getMultiAttackInfo().add(300L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(1440L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(540L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
     }
 }

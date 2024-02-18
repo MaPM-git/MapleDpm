@@ -11,5 +11,6 @@ public class LightningGodSpearStrike extends AttackSkill {
         this.setRelatedSkill(new LightningGodSpearStrikeDot());
         this.addFinalDamage(1.6);       // 코어강화
         this.addFinalDamage(1.71);          // 축뢰
+        this.addFinalDamage(1.18);          // 연쇄
     }
 }

@@ -12,5 +12,6 @@ public class LightningGodSpearStrikeDot extends AttackSkill {
         this.setLimitAttackCount(4L);
         this.addFinalDamage(1.6);       // 코어강화
         this.addFinalDamage(1.71);          // 축뢰
+        this.addFinalDamage(1.18);          // 연쇄
     }
 }

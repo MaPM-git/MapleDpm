@@ -10,5 +10,6 @@ public class WaterWave extends AttackSkill {
         this.setDelayByAttackSpeed(210L);
         this.addFinalDamage(4.0);           // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.18);          // 연쇄
     }
 }

@@ -92,7 +92,6 @@ public class Striker extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.18);      // 연쇄
         this.addDamage(15L);            // 뇌전 5스택
         this.addIgnoreDefenseList(45L);
         this.addDamage(15L);            // 태풍 버프
