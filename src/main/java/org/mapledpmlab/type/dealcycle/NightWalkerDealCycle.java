@@ -183,18 +183,12 @@ public class NightWalkerDealCycle extends DealCycle {
         getStart().setTime(0);
         while (getStart().before(getEnd())) {
             if (cooldownCheck(cygnusPhalanx)) {
-                System.out.println("---------------");
-                System.out.println("phalanx");
-                System.out.println(getStart());
                 addSkillEvent(cygnusPhalanx);
             }
             if (
                     cooldownCheck(transcendentCygnusBlessing)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
-                System.out.println("---------------");
-                System.out.println("bless");
-                System.out.println(getStart());
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (
@@ -203,9 +197,6 @@ public class NightWalkerDealCycle extends DealCycle {
                     && cooldownCheck(rapidThrow)
                     && cooldownCheck(shadowBiteBuff)
             ) {
-                System.out.println("---------------");
-                System.out.println("dc1");
-                System.out.println(getStart());
                 addDealCycle(dealCycle1);
                 finalChk = 1;
             } else if (
@@ -214,35 +205,23 @@ public class NightWalkerDealCycle extends DealCycle {
                     && cooldownCheck(rapidThrow)
                     && cooldownCheck(shadowBiteBuff)
             ) {
-                System.out.println("---------------");
-                System.out.println("dc2");
-                System.out.println(getStart());
                 addDealCycle(dealCycle2);
                 finalChk = 2;
             } else if (
                     cooldownCheck(dealCycle3)
                     && finalChk == 0
             ) {
-                System.out.println("---------------");
-                System.out.println("dc3");
-                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
                     finalChk == 1
                     && cooldownCheck(final1)
             ) {
-                System.out.println("---------------");
-                System.out.println("f1");
-                System.out.println(getStart());
                 addDealCycle(final1);
                 finalChk = 0;
             } else if (
                     finalChk == 2
                     && cooldownCheck(final2)
             ) {
-                System.out.println("---------------");
-                System.out.println("f2");
-                System.out.println(getStart());
                 addDealCycle(final2);
                 finalChk = 0;
             } else if (
@@ -250,25 +229,16 @@ public class NightWalkerDealCycle extends DealCycle {
                     && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("---------------");
-                System.out.println("ring");
-                System.out.println(getStart());
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(shadowServantExtend)
                     && !cooldownCheck(shadowSpearBuff)
             ) {
-                System.out.println("---------------");
-                System.out.println("extend");
-                System.out.println(getStart());
                 addSkillEvent(shadowServantExtend);
             } else if (
                     cooldownCheck(shadowBiteBuff)
                     && finalChk == 0
             ) {
-                System.out.println("---------------");
-                System.out.println("bite");
-                System.out.println(getStart());
                 addSkillEvent(shadowBiteBuff);
             } else if (
                     cooldownCheck(quintupleThrowBlack)
