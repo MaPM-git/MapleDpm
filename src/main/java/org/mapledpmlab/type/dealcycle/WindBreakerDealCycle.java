@@ -219,6 +219,9 @@ public class WindBreakerDealCycle extends DealCycle {
             if (
                     cooldownCheck(transcendentCygnusBlessing)
             ) {
+                System.out.println("--------");
+                System.out.println("bless");
+                System.out.println(getStart());
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (
@@ -245,7 +248,7 @@ public class WindBreakerDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && dealCycleOrder == 4
             ) {
-                transcendentCygnusBlessing.setCooldown(120.0);
+                transcendentCygnusBlessing.setCooldown(720.0);
                 addDealCycle(dealCycle2);
                 finalChk = 3;
                 dealCycleOrder++;
@@ -254,6 +257,7 @@ public class WindBreakerDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && (dealCycleOrder == 2 || dealCycleOrder == 6)
             ) {
+                transcendentCygnusBlessing.setCooldown(120.0);
                 addDealCycle(dealCycle3);
                 finalChk = 4;
                 dealCycleOrder++;
