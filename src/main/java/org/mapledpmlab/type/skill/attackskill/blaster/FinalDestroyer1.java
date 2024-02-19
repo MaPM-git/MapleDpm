@@ -7,14 +7,55 @@ public class FinalDestroyer1 extends AttackSkill {
         this.setName("파이널 디스트로이어(열기)");
         this.setAttackCount(10L);
         this.setCooldown(360.0);
-        this.setDamage(5400.0);
-        this.setDotDuration(6000L);
-        this.setLimitAttackCount(12L);
-        this.setInterval(500L);
+        this.setDamage(1500.0);
+        this.setDelay(6390L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
-        this.setRelatedSkill(new FinalDestroyerDelay1());
+        this.setRelatedSkill(new FinalDestroyer2());
         this.setApplyFinalAttack(true);
+        this.getMultiAttackInfo().add(360L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);    // 10
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);
+        this.getMultiAttackInfo().add(90L);     // 23
+        this.getMultiAttackInfo().add(2640L);   // 24
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);     // 43
     }
 }

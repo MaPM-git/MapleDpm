@@ -7,9 +7,11 @@ public class VulcanPunchKeydown extends AttackSkill {
         this.setName("발칸 펀치(키다운)");
         this.setAttackCount(8L);
         this.setDamage(935.0);
-        this.setDotDuration(4000L);
+        this.setDelay(2160L);
+        this.setDotDuration(2160L);
         this.setInterval(90L);
-        this.setRelatedSkill(new VulcanPunchDelay());
+        this.setLimitAttackCount(24L);
+        this.setRelatedSkill(new VulcanPunchAfterDelay());
         this.addFinalDamage(1.6);       // 코어 강화
         this.setApplyFinalAttack(true);
     }

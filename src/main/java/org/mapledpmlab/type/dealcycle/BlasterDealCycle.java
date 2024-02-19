@@ -46,6 +46,7 @@ public class BlasterDealCycle extends DealCycle {
             add(new AfterImageShockPassive());
             add(new BurningBreakerExplosion());
             add(new BurningBreakerRush());
+            add(new BurstPileBunker());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DoubleFang());
@@ -77,11 +78,10 @@ public class BlasterDealCycle extends DealCycle {
             add(new BurningBreakerDelay());
             add(new DuckingCharge());
             add(new DuckingJump());
-            add(new FinalDestroyerDelay1());
-            add(new FinalDestroyerDelay2());
             add(new HammerSmashCharge());
             add(new ResistanceLineInfantryDelay());
-            add(new VulcanPunchDelay());
+            add(new VulcanPunchAfterDelay());
+            add(new VulcanPunchBeforeDelay());
         }
     };
 
@@ -102,6 +102,7 @@ public class BlasterDealCycle extends DealCycle {
 
     int cylinder = 0;
     int afterImageShockActiveCount = 0;
+    int releasePileBunkerCount = 5;
     Timestamp overheatTime = new Timestamp(-1);
     Timestamp maximizeCannonEndTime = new Timestamp(-1);
     Timestamp afterImageShockEndTime = new Timestamp(-1);
@@ -109,6 +110,7 @@ public class BlasterDealCycle extends DealCycle {
 
     AfterImageShockActive afterImageShockActive = new AfterImageShockActive();
     AfterImageShockPassive afterImageShockPassive = new AfterImageShockPassive();
+    BurstPileBunker burstPileBunker = new BurstPileBunker();
 
     public BlasterDealCycle(Job job) {
         super(job, new FinalAttackBlaster());
@@ -344,12 +346,22 @@ public class BlasterDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    skill instanceof ReleasePileBunker
+                            && releasePileBunkerCount == 5
+            ) {
+                skill = new BurstPileBunker();
+                releasePileBunkerCount = 0;
+            }
+            if (skill instanceof ReleasePileBunker) {
+                releasePileBunkerCount ++;
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
                             skillEvent.getStart().after(getStart())
-                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
                     ) {
                         remove.add(skillEvent);
                     }
