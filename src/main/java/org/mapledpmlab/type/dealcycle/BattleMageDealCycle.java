@@ -54,11 +54,6 @@ public class BattleMageDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new BlackMagicAltarDelay());
-            add(new CrimsonPactum1Delay());
-            add(new CrimsonPactum2Delay());
-            add(new GrimReaperDelay());
-            add(new GrimReaperMODDelay());
             add(new ResistanceLineInfantryDelay());
         }
     };
