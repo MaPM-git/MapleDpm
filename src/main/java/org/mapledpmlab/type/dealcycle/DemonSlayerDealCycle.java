@@ -39,6 +39,8 @@ public class DemonSlayerDealCycle extends DealCycle {
             add(new CrestOfTheSolarDot());
             add(new DemonBane1());
             add(new DemonBane2());
+            add(new DemonicSphere());
+            add(new DemonicSphereReinforce());
             add(new DemonImpact());
             add(new DemonImpactChain());
             add(new DemonSlash1());
@@ -67,12 +69,7 @@ public class DemonSlayerDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new DemonBane1Delay());
-            add(new DemonBane2Delay());
             add(new DemonBaneStartDelay());
-            add(new JormungandDelay());
-            add(new NightmareJudgementDelay());
-            add(new NightmareWaveDelay());
         }
     };
 
@@ -100,6 +97,8 @@ public class DemonSlayerDealCycle extends DealCycle {
     Timestamp nightmareTerritoryEndTime = new Timestamp(-1);
 
     Cerburus cerburus = new Cerburus();
+    DemonicSphere demonicSphere = new DemonicSphere();
+    DemonicSphereReinforce demonicSphereReinforce = new DemonicSphereReinforce();
     NightmareFlame nightmareFlame = new NightmareFlame();
 
     public DemonSlayerDealCycle(Job job) {
@@ -155,7 +154,7 @@ public class DemonSlayerDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(130.0);
 
         // 1-4-3-2-3-4
         // 메용2, 6차, 리레, 스인미, 크오솔
@@ -303,11 +302,14 @@ public class DemonSlayerDealCycle extends DealCycle {
                             )
                     )
             ) {
+                if (getStart().before(new Timestamp(90 * 1000))) {
+                    addSkillEvent(otherWorldGoddessBlessing);
+                }
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(9 * 60 * 1000))
+                    && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (getStart().before(demonAwakeningEndTime)) {
@@ -382,6 +384,30 @@ public class DemonSlayerDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    cooldownCheck(demonicSphere)
+                    && (
+                            skill instanceof DemonSlash1
+                            || skill instanceof DemonSlash2
+                            || skill instanceof DemonSlash3
+                            || skill instanceof DemonSlash4
+                    )
+            ) {
+                addSkillEvent(demonicSphere);
+                applyCooldown(demonicSphereReinforce);
+            }
+            if (
+                    cooldownCheck(demonicSphereReinforce)
+                    && (
+                            skill instanceof DemonSlashReinforce1
+                            || skill instanceof DemonSlashReinforce2
+                            || skill instanceof DemonSlashReinforce3
+                            || skill instanceof DemonSlashReinforce4
+                    )
+            ) {
+                addSkillEvent(demonicSphereReinforce);
+                applyCooldown(demonicSphere);
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 if (skill instanceof Jormungand) {
                     getSkillEventList().add(new SkillEvent(new JormungandExtinction(), new Timestamp(getStart().getTime() + 16000), new Timestamp(getStart().getTime() + 16000)));

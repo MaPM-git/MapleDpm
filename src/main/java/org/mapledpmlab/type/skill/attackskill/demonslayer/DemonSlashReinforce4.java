@@ -8,7 +8,7 @@ public class DemonSlashReinforce4 extends GaugeAttackSkill {
         this.setAttackCount(3L);
         this.addFinalDamage(0.9);       // 블루 블러드
         this.setAttackCount(this.getAttackCount() * 2);
-        this.setDamage(800.0 + 80);
+        this.setDamage(800.0 + 80 + 80);
         this.setDelayByAttackSpeed(450L);
         this.setAddDamage(30L + 30 + 50);
         this.addIgnoreDefenseList(50L);

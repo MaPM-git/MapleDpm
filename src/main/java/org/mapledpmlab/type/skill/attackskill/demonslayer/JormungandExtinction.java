@@ -9,5 +9,6 @@ public class JormungandExtinction extends AttackSkill {
         this.setDamage(2280.0);
         this.addIgnoreDefenseList(50L);
         this.addFinalDamage(1.6);           // 코어 강화
+        this.getMultiAttackInfo().add(16000L);
     }
 }
