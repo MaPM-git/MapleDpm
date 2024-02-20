@@ -67,7 +67,7 @@ public class DemonAvengerDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new RequiemDelay());
+            add(new DimensionSwordDelay());
         }
     };
 
@@ -117,7 +117,7 @@ public class DemonAvengerDealCycle extends DealCycle {
         CrestOfTheSolarDA crestOfTheSolar = new CrestOfTheSolarDA();
         DemonFrenzyBuff demonFrenzyBuff = new DemonFrenzyBuff();
         DemonicFortitudeDA demonicFortitudeDA = new DemonicFortitudeDA();
-        DimensionSword dimensionSword = new DimensionSword();
+        DimensionSwordDelay dimensionSword = new DimensionSwordDelay();
         ExceedExecution1 exceedExecution1 = new ExceedExecution1();
         ExceedExecution2 exceedExecution2 = new ExceedExecution2();
         ExceedExecution3 exceedExecution3 = new ExceedExecution3();
@@ -318,6 +318,9 @@ public class DemonAvengerDealCycle extends DealCycle {
                                     )
                     )
             ) {
+                if (getStart().before(new Timestamp(90 * 1000))) {
+                    addSkillEvent(otherWorldGoddessBlessing);
+                }
                 addSkillEvent(armorBreak);
                 addSkillEvent(soulContract);
                 releaseOverloadTime = new Timestamp(getStart().getTime() + 45000);
@@ -553,5 +556,15 @@ public class DemonAvengerDealCycle extends DealCycle {
         }
         buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / tmpDemonFrenzyBuff.getBuffFinalDamage());
         return attackDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum), (long) this.hp));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
     }
 }
