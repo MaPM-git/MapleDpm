@@ -144,7 +144,7 @@ public class XenonDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }*/
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(95.0);
 
         dealCycle1.add(loadedDice);
         dealCycle1.add(oopartsCode);
