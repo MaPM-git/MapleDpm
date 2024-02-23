@@ -58,14 +58,9 @@ public class MechanicDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new DistortionFieldDelay());
-            add(new GroundZeroEarthquakeDelay());
-            add(new GroundZeroExplosionDelay());
             add(new MagneticFieldSummon());
             add(new MechaCarrierSummon());
-            add(new MetalArmorFullBurstFirstDelay());
-            add(new MetalArmorFullBurstLastDelay());
-            add(new MicroMissileContainerDelay());
+            add(new MetalArmorFullBurstBeforeDelay());
             add(new MultipleOptionMFLSummon());
             add(new ResistanceLineInfantryDelay());
             add(new RobotFactoryRM1Summon());
@@ -112,8 +107,8 @@ public class MechanicDealCycle extends DealCycle {
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         MassiveFireIRONBHit massiveFireIRONBHit = new MassiveFireIRONBHit();
         MechaCarrierSummon mechaCarrierSummon = new MechaCarrierSummon();
-        MetalArmorFullBurstFirstDelay metalArmorFullBurstFirstDelay = new MetalArmorFullBurstFirstDelay();
-        MicroMissileContainerDelay microMissileContainerDelay = new MicroMissileContainerDelay();
+        MetalArmorFullBurstBeforeDelay metalArmorFullBurstBeforeDelay = new MetalArmorFullBurstBeforeDelay();
+        MicroMissileContainer microMissileContainer = new MicroMissileContainer();
         MultipleOptionMFLSummon multipleOptionMFLSummon = new MultipleOptionMFLSummon();
         Overdrive overdrive = new Overdrive(249L);
         PriorPreparation priorPreparation = new PriorPreparation();
@@ -162,10 +157,10 @@ public class MechanicDealCycle extends DealCycle {
         dealCycle1.add(resistanceLineInfantry);
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
-        dealCycle1.add(microMissileContainerDelay);
+        dealCycle1.add(microMissileContainer);
         dealCycle1.add(bomberTime);
         dealCycle1.add(groundZeroEarthquake);
-        dealCycle1.add(metalArmorFullBurstFirstDelay);
+        dealCycle1.add(metalArmorFullBurstBeforeDelay);
 
         dealCycle2.addAll(summonCycle);
         dealCycle2.add(multipleOptionMFLSummon);
@@ -176,9 +171,9 @@ public class MechanicDealCycle extends DealCycle {
         dealCycle2.add(resistanceLineInfantry);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
-        dealCycle2.add(microMissileContainerDelay);
+        dealCycle2.add(microMissileContainer);
         dealCycle2.add(bomberTime);
-        dealCycle2.add(metalArmorFullBurstFirstDelay);
+        dealCycle2.add(metalArmorFullBurstBeforeDelay);
 
         dealCycle3.addAll(summonCycle);
         dealCycle3.add(overdrive);
@@ -231,10 +226,10 @@ public class MechanicDealCycle extends DealCycle {
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
-                    cooldownCheck(microMissileContainerDelay)
+                    cooldownCheck(microMissileContainer)
                     && !cooldownCheck(supportWaverHEXDie)
             ) {
-                addSkillEvent(microMissileContainerDelay);
+                addSkillEvent(microMissileContainer);
             } else if (
                     cooldownCheck(distortionField)
             ) {
@@ -276,7 +271,7 @@ public class MechanicDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
-            if (skill instanceof MetalArmorFullBurstFirstDelay) {
+            if (skill instanceof MetalArmorFullBurstBeforeDelay) {
                 metarArmorFullBurstStartTime.add(new Timestamp(getStart().getTime()));
                 metarArmorFullBurstEndTime.add(new Timestamp(getStart().getTime() + 13120));
             }
