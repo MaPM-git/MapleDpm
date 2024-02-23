@@ -65,15 +65,14 @@
 21110022	에어로 스윙
 21110023	에어로 스윙
 
+[헌터즈 타겟팅]
+pre	720
+loop	180
+end	420
+attackDelay		90ms
+20회 공격
 
-[극딜]
-https://m.inven.co.kr/board/maple/2294/332412?my=opi
-https://arca.live/b/maplestory/78518322
-
-17420
-1620
-
-20000
-1650
-
-630
+1. 파동공격(풀공속 540ms)
+2. 선딜(720ms)
+3. 90ms 간격으로 20회 공격(1800ms)
+4. 후딜(420ms)

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Beyonder3 extends AttackSkill {
     public Beyonder3() {
         this.setName("비욘더(3타)");
-        this.setDamage(555.0 + 35 + 100);
+        this.setDamage(555.0 + 35 + 100 + 135);
         this.setAttackCount(5L + 1);            // 비욘더-보너스 어택
         this.setDelay(420L);
         this.addIgnoreDefenseList(30L);

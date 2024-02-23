@@ -37,7 +37,8 @@ public class AranDealCycle extends DealCycle {
             add(new Beyonder3());
             add(new BeyonderMaha());
             add(new BlizzardTempest());
-            add(new BoostEndHuntersTargeting());
+            add(new BoostEndHuntersTargetingKeydown());
+            add(new BoostEndHuntersTargetingWave());
             add(new BrandishMaha());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
@@ -64,9 +65,7 @@ public class AranDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new AdrenalineSurgeFinishDelay());
-            add(new BoostEndHuntersTargetingDelay());
-            add(new BoostEndHuntersTargetingFirstDelay());
+            add(new BoostEndHuntersTargetingBeforeDelay());
         }
     };
 
@@ -115,7 +114,7 @@ public class AranDealCycle extends DealCycle {
         AdrenalineSurgeFinish adrenalineSurgeFinish = new AdrenalineSurgeFinish();
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
         BlizzardTempest blizzardTempest = new BlizzardTempest();
-        BoostEndHuntersTargetingFirstDelay boostEndHuntersTargetingFirstDelay = new BoostEndHuntersTargetingFirstDelay();
+        BoostEndHuntersTargetingWave boostEndHuntersTargeting = new BoostEndHuntersTargetingWave();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         FinalBlow finalBlow = new FinalBlow();
         FinalBlowAdrenaline finalBlowAdrenaline = new FinalBlowAdrenaline();
@@ -143,45 +142,44 @@ public class AranDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(95.0);
 
         dealCycle1.add(heroesOath);
         dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
-        dealCycle1.add(soulContract);
+        dealCycle1.add(installMaha);
         dealCycle1.add(adrenalineSurge);        // 20초
-        dealCycle1.add(installMaha);            // 960
-        dealCycle1.add(restraintRing);          // 30
-        dealCycle1.add(blizzardTempest);        // 990
-        dealCycle1.add(boostEndHuntersTargetingFirstDelay); // 600
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 7; i++) {           // 1620
             dealCycle1.add(howlingSwing1);
         }
+        dealCycle1.add(blizzardTempest);        // 990
+        dealCycle1.add(soulContract);
+        dealCycle1.add(restraintRing);          // 30
+        dealCycle1.add(boostEndHuntersTargeting); // 600
         dealCycle1.add(adrenalineSurgeFinish);
-        dealCycle1.add(brandishMaha);
         dealCycle1.add(adrenalineBoost);
-        dealCycle1.add(boostEndHuntersTargetingFirstDelay);
+        dealCycle1.add(boostEndHuntersTargeting);
 
         dealCycle2.add(heroesOath);
         dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(adrenalineBoost);
         dealCycle2.add(installMaha);
-        dealCycle2.add(restraintRing);
+        dealCycle2.add(adrenalineBoost);
+        for (int i = 0; i < 9; i++) {           // 1530
+            dealCycle2.add(finalBlowAdrenaline);
+        }
         dealCycle2.add(blizzardTempest);
-        dealCycle2.add(boostEndHuntersTargetingFirstDelay);
+        dealCycle2.add(soulContract);
+        dealCycle2.add(restraintRing);
+        dealCycle2.add(boostEndHuntersTargeting);
+        dealCycle2.add(adrenalineGenerator);
+        dealCycle2.add(boostEndHuntersTargeting);
 
         dealCycle3.add(installMaha);
         dealCycle3.add(adrenalineBoost);
-        for (int i = 0; i < 12; i++) {
-            dealCycle3.add(finalBlowAdrenaline);
-        }
         dealCycle3.add(soulContract);
         dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(boostEndHuntersTargetingFirstDelay);
-        dealCycle3.add(adrenalineGenerator);
-        dealCycle3.add(boostEndHuntersTargetingFirstDelay);
+        dealCycle3.add(boostEndHuntersTargeting);
 
         while (getStart().before(getEnd())) {
             if (

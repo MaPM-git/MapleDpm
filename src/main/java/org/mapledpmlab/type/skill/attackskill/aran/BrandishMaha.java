@@ -7,6 +7,7 @@ public class BrandishMaha extends AttackSkill {
         this.setName("브랜디쉬 마하");
         this.setDamage(1320.0 + 5 + 21 + 100);
         this.setAttackCount(15L);
+        this.setDelay(960L);
         this.setDotDuration(960L);
         this.setInterval(480L);
         this.setLimitAttackCount(2L);
