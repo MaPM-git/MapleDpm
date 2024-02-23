@@ -8,6 +8,8 @@ public class HologramGraffitiFusion extends AttackSkill {
         this.setName("홀로그램 그래피티 : 융합");
         this.setAttackCount(5L);
         this.setDamage(550.0);
+        this.setDelay(930L);
+        this.setCooldown(90.0);
         this.setDotDuration(30000L + 10000);    // 홀로그램 그래피티-퍼시스트
         this.setInterval(40L);
         this.setAddDamage(10L);                 // 홀로그램 그래피티-리인포스

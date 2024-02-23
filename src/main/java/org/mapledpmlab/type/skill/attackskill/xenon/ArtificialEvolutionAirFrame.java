@@ -5,10 +5,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ArtificialEvolutionAirFrame extends AttackSkill {
     public ArtificialEvolutionAirFrame() {
         this.setName("아티피셜 에볼루션(에어프레임)");
-        this.setAttackCount(18L * 2);
-        this.setDamage(1800.0);
-        this.setDotDuration(30000L);
-        this.setInterval(1800L);
+        this.setAttackCount(5L * 2);
+        this.setDamage(1080.0);
+        this.setCooldown(1.8);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);

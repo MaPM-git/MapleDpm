@@ -51,18 +51,15 @@ public class XenonDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new ArtificialEvolutionDelay());
-            add(new MegaSmasherDelay());
-            add(new FuzzyRobMasqueradeExecutionDelay());
-            add(new HologramGraffitiForceFieldDelay());
-            add(new HologramGraffitiFusionDelay());
             add(new ResistanceLineInfantryDelay());
+            add(new MegaSmasherBeforeDelay());
         }
     };
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AmaranceGenerator());
+            add(new Evolution());
             add(new ExtraSupply());
             add(new HologramGraffitiBuff());
             add(new LoadedDice());
@@ -87,9 +84,11 @@ public class XenonDealCycle extends DealCycle {
     List<Timestamp> hologramGraffitiFusionStartTimeList = new ArrayList<>();
     List<Timestamp> hologramGraffitiFusionEndTimeList = new ArrayList<>();
 
+    Timestamp evolutionEndTime = new Timestamp(-1);
     Timestamp overloadModeEndTime = new Timestamp(-1);
     Timestamp pinpointRocketCooltime = new Timestamp(-1);
 
+    ArtificialEvolutionAirFrame artificialEvolutionAirFrame = new ArtificialEvolutionAirFrame();
     InclinePower inclinePower = new InclinePower();
     PinpointRocket pinpointRocket = new PinpointRocket();
     SupplySurplus supplySurplus = new SupplySurplus();
@@ -109,11 +108,11 @@ public class XenonDealCycle extends DealCycle {
         ExtraSupply extraSupply = new ExtraSupply();
         FuzzyRobMasqueradeExecution fuzzyRobMasqueradeExecution = new FuzzyRobMasqueradeExecution();
         FuzzyRobMasqueradeSnipe fuzzyRobMasqueradeSnipe = new FuzzyRobMasqueradeSnipe();
-        HologramGraffitiForceFieldDelay hologramGraffitiForceFieldDelay = new HologramGraffitiForceFieldDelay();
-        HologramGraffitiFusionDelay hologramGraffitiFusionDelay = new HologramGraffitiFusionDelay();
+        HologramGraffitiForceField hologramGraffitiForceField = new HologramGraffitiForceField();
+        HologramGraffitiFusion hologramGraffitiFusion = new HologramGraffitiFusion();
         LoadedDice loadedDice = new LoadedDice();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MegaSmasher megaSmasher = new MegaSmasher();
+        MegaSmasherBeforeDelay megaSmasher = new MegaSmasherBeforeDelay();
         MegaSmasherReinforce megaSmasherReinforce = new MegaSmasherReinforce();
         MeltdownExplosion meltdownExplosion = new MeltdownExplosion();
         OopartsCode oopartsCode = new OopartsCode();
@@ -151,11 +150,11 @@ public class XenonDealCycle extends DealCycle {
         dealCycle1.add(oopartsCode);
         dealCycle1.add(amaranceGenerator);
         dealCycle1.add(overloadMode);
-        dealCycle1.add(hologramGraffitiForceFieldDelay);
+        dealCycle1.add(hologramGraffitiForceField);
         dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
-        dealCycle1.add(hologramGraffitiFusionDelay);
+        dealCycle1.add(hologramGraffitiFusion);
         dealCycle1.add(overdrive);
         dealCycle1.add(meltdownExplosion);
         dealCycle1.add(soulContract);
@@ -170,9 +169,9 @@ public class XenonDealCycle extends DealCycle {
         dealCycle2.add(oopartsCode);
         dealCycle2.add(amaranceGenerator);
         dealCycle2.add(overloadMode);
-        dealCycle2.add(hologramGraffitiForceFieldDelay);
+        dealCycle2.add(hologramGraffitiForceField);
         dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(hologramGraffitiFusionDelay);
+        dealCycle2.add(hologramGraffitiFusion);
         dealCycle2.add(overdrive);
         dealCycle2.add(meltdownExplosion);
         dealCycle2.add(soulContract);
@@ -184,7 +183,7 @@ public class XenonDealCycle extends DealCycle {
 
         dealCycle3.add(oopartsCode);
         dealCycle3.add(amaranceGenerator);
-        dealCycle3.add(hologramGraffitiFusionDelay);
+        dealCycle3.add(hologramGraffitiFusion);
         dealCycle3.add(overdrive);
         dealCycle3.add(meltdownExplosion);
         dealCycle3.add(soulContract);
@@ -226,10 +225,10 @@ public class XenonDealCycle extends DealCycle {
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
-                    cooldownCheck(hologramGraffitiForceFieldDelay)
+                    cooldownCheck(hologramGraffitiForceField)
                     && !cooldownCheck(loadedDice)
             ) {
-                addSkillEvent(hologramGraffitiForceFieldDelay);
+                addSkillEvent(hologramGraffitiForceField);
             } else if (
                     cooldownCheck(photonRay)
                     && getStart().before(new Timestamp(loadedDice.getActivateTime().getTime() - 30000))
@@ -249,6 +248,16 @@ public class XenonDealCycle extends DealCycle {
             }
         }
         sortEventTimeList();
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new XenonSkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum), (long) this.energyCnt));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
     }
 
     @Override
@@ -290,6 +299,9 @@ public class XenonDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof Evolution) {
+                evolutionEndTime = new Timestamp(getStart().getTime() + 30000);
+            }
             if (skill instanceof OverloadMode) {
                 overloadModeEndTime = new Timestamp(getStart().getTime() + 70000);
             }
@@ -319,6 +331,13 @@ public class XenonDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    getStart().before(evolutionEndTime)
+                    && !(skill instanceof ArtificialEvolutionAirFrame)
+                    && cooldownCheck(artificialEvolutionAirFrame)
+            ) {
+                addSkillEvent(artificialEvolutionAirFrame);
+            }
             if (skill instanceof HologramGraffitiFusion) {
                 hologramGraffitiFusionStartTimeList.add(new Timestamp(getStart().getTime()));
                 hologramGraffitiFusionEndTimeList.add(new Timestamp(getStart().getTime() + 40000));
