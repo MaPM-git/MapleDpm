@@ -9,6 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.wildhunter.JaguarStorm;
 import org.mapledpmlab.type.skill.buffskill.wildhunter.SilentRampage;
+import org.mapledpmlab.type.skill.buffskill.wildhunter.SoulResonationBuff;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -70,14 +71,8 @@ public class WildHunterDealCycle extends DealCycle {
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new AssistantHuntingUnitDelay());
-            add(new DrillContainerDelay());
-            add(new JaguarMaximumDelay());
-            add(new JaguarMaximumEndDelay());
-            add(new NaturesBeliefRoarDelay());
-            add(new NaturesBeliefWaveDelay());
             add(new ResistanceLineInfantryDelay());
-            add(new WildVulcanTypeXDelay());
-            add(new WildVulcanTypeXFirstDelay());
+            add(new WildVulcanTypeXBeforeDelay());
         }
     };
 
@@ -90,6 +85,7 @@ public class WildHunterDealCycle extends DealCycle {
             add(new RestraintRing());
             add(new SilentRampage());
             add(new SoulContract());
+            add(new SoulResonationBuff());
             add(new ThiefCunning());
             add(new WeaponJumpRing(326L));
             add(new WillOfLiberty());
@@ -102,11 +98,13 @@ public class WildHunterDealCycle extends DealCycle {
 
     Timestamp jaguarSkillDelay = new Timestamp(-1);
     Timestamp jaguarStormEndTime = new Timestamp(-1);
+    Timestamp soulResonationEndTime = new Timestamp(-1);
 
     AnotherBite1 anotherBite1 = new AnotherBite1();
     AnotherBite2 anotherBite2 = new AnotherBite2();
     AnotherBite3 anotherBite3 = new AnotherBite3();
     AssistantHuntingUnit assistantHuntingUnit = new AssistantHuntingUnit();
+    SoulResonation soulResonation = new SoulResonation();
 
     Long biteCnt = 0L;
 
@@ -123,7 +121,7 @@ public class WildHunterDealCycle extends DealCycle {
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         Crossroad crossroad = new Crossroad();
         CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
-        DrillContainerDelay drillContainerDelay = new DrillContainerDelay();
+        DrillContainer drillContainer = new DrillContainer();
         GetOffJaguar getOffJaguar = new GetOffJaguar();
         Grenade grenade = new Grenade();
         GuidedArrow guidedArrow = new GuidedArrow();
@@ -148,7 +146,7 @@ public class WildHunterDealCycle extends DealCycle {
         WildGrenade wildGrenade = new WildGrenade();
         WildVulcan wildVulcan = new WildVulcan();
         WildVulcanReinforce wildVulcanReinforce = new WildVulcanReinforce();
-        WildVulcanTypeXFirstDelay wildVulcanTypeXFirstDelay = new WildVulcanTypeXFirstDelay();
+        WildVulcanTypeXBeforeDelay wildVulcanTypeXBeforeDelay = new WildVulcanTypeXBeforeDelay();
         WillOfLiberty willOfLiberty = new WillOfLiberty();
 
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
@@ -167,7 +165,7 @@ public class WildHunterDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(130.0);
 
         dealCycle1.add(willOfLiberty);
         dealCycle1.add(mapleWorldGoddessBlessing);
@@ -176,7 +174,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle1.add(spiderInMirror);
         dealCycle1.add(silentRampage);
         dealCycle1.add(criticalReinforce);
-        dealCycle1.add(drillContainerDelay);
+        dealCycle1.add(drillContainer);
         dealCycle1.add(resistanceLineInfantry);
         dealCycle1.add(jaguarSoul);
         dealCycle1.add(soulContract);
@@ -186,14 +184,14 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle1.add(naturesBeliefWave);
         dealCycle1.add(jaguarMaximum);
         dealCycle1.add(wildGrenade);
-        dealCycle1.add(wildVulcanTypeXFirstDelay);
+        dealCycle1.add(wildVulcanTypeXBeforeDelay);
 
         dealCycle2.add(willOfLiberty);
         dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(assistantHuntingUnitDelay);
         dealCycle2.add(silentRampage);
         dealCycle2.add(criticalReinforce);
-        dealCycle2.add(drillContainerDelay);
+        dealCycle2.add(drillContainer);
         dealCycle2.add(resistanceLineInfantry);
         dealCycle2.add(jaguarSoul);
         dealCycle2.add(soulContract);
@@ -203,7 +201,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle2.add(naturesBeliefWave);
         dealCycle2.add(jaguarMaximum);
         dealCycle2.add(wildGrenade);
-        dealCycle2.add(wildVulcanTypeXFirstDelay);
+        dealCycle2.add(wildVulcanTypeXBeforeDelay);
 
         dealCycle3.add(willOfLiberty);
         dealCycle3.add(mapleWorldGoddessBlessing);
@@ -212,7 +210,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle3.add(spiderInMirror);
         dealCycle3.add(silentRampage);
         dealCycle3.add(criticalReinforce);
-        dealCycle3.add(drillContainerDelay);
+        dealCycle3.add(drillContainer);
         dealCycle3.add(resistanceLineInfantry);
         dealCycle3.add(jaguarSoul);
         dealCycle3.add(soulContract);
@@ -221,14 +219,13 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle3.add(rampageAsOne);
         dealCycle3.add(jaguarMaximum);
         dealCycle3.add(wildGrenade);
-        dealCycle3.add(wildVulcanTypeXFirstDelay);
+        dealCycle3.add(wildVulcanTypeXBeforeDelay);
 
         dealCycle4.add(willOfLiberty);
-        dealCycle4.add(mapleWorldGoddessBlessing);
         dealCycle4.add(assistantHuntingUnitDelay);
         dealCycle4.add(silentRampage);
         dealCycle4.add(criticalReinforce);
-        dealCycle4.add(drillContainerDelay);
+        dealCycle4.add(drillContainer);
         dealCycle4.add(resistanceLineInfantry);
         dealCycle4.add(jaguarSoul);
         dealCycle4.add(soulContract);
@@ -237,13 +234,14 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle4.add(rampageAsOne);
         dealCycle4.add(jaguarMaximum);
         dealCycle4.add(wildGrenade);
-        dealCycle4.add(wildVulcanTypeXFirstDelay);
+        dealCycle4.add(wildVulcanTypeXBeforeDelay);
 
         dealCycle5.add(willOfLiberty);
+        dealCycle5.add(mapleWorldGoddessBlessing);
         dealCycle5.add(assistantHuntingUnitDelay);
         dealCycle5.add(silentRampage);
         dealCycle5.add(criticalReinforce);
-        dealCycle5.add(drillContainerDelay);
+        dealCycle5.add(drillContainer);
         dealCycle5.add(resistanceLineInfantry);
         dealCycle5.add(jaguarSoul);
         dealCycle5.add(soulContract);
@@ -252,7 +250,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle5.add(rampageAsOne);
         dealCycle5.add(jaguarMaximum);
         dealCycle5.add(wildGrenade);
-        dealCycle5.add(wildVulcanTypeXFirstDelay);
+        dealCycle5.add(wildVulcanTypeXBeforeDelay);
 
         Timestamp wildVulcanReinforceEndTime = new Timestamp(-1);
         Long wildCnt = 49L;
@@ -313,7 +311,7 @@ public class WildHunterDealCycle extends DealCycle {
                 ran = (long) (Math.random() * 99 + 1);
                 if (biteCnt == 0) {
                     biteCnt ++;
-                } else if (ran <= 80 && biteCnt < 3) {
+                } else if (ran <= 90 && biteCnt < 3) {
                     biteCnt ++;
                 }
                 addSkillEvent(crossroad);
@@ -346,7 +344,7 @@ public class WildHunterDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(9 * 60 * 1000)))
+                    && getStart().before(new Timestamp(10 * 60 * 1000)))
             {
                 addSkillEvent(ringSwitching);
             } else if (
@@ -385,13 +383,16 @@ public class WildHunterDealCycle extends DealCycle {
             ) {
                 addSkillEvent(assistantHuntingUnitDelay);
                 addSkillEvent(soulContract);
-            } else if (cooldownCheck(wildGrenade)) {
-                addSkillEvent(wildGrenade);
             } else if (
-                    cooldownCheck(drillContainerDelay)
+                    cooldownCheck(wildGrenade)
                     && !cooldownCheck(willOfLiberty)
             ) {
-                addSkillEvent(drillContainerDelay);
+                addSkillEvent(wildGrenade);
+            } else if (
+                    cooldownCheck(drillContainer)
+                    && !cooldownCheck(willOfLiberty)
+            ) {
+                addSkillEvent(drillContainer);
                 addSkillEvent(resistanceLineInfantry);
             } else {
                 if (getStart().before(wildVulcanReinforceEndTime)) {
@@ -420,6 +421,21 @@ public class WildHunterDealCycle extends DealCycle {
     }
 
     @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (skill instanceof SoulResonation) {
+                if (biteCnt < 3) {
+                    biteCnt ++;
+                }
+            }
+        }
+    }
+
+    @Override
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
 
@@ -427,6 +443,9 @@ public class WildHunterDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof SoulResonationBuff) {
+                soulResonationEndTime = new Timestamp(getStart().getTime() + 30000);
+            }
             if (skill instanceof JaguarStorm) {
                 jaguarStormEndTime = new Timestamp(getStart().getTime() + 40000);
             }
@@ -448,6 +467,13 @@ public class WildHunterDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    getStart().before(soulResonationEndTime)
+                    && cooldownCheck(soulResonation)
+                    && !(skill instanceof SoulResonation)
+            ) {
+                addSkillEvent(soulResonation);
+            }
             if (skill instanceof JaguarSoul && biteCnt < 3) {
                 biteCnt ++;
             }
@@ -474,7 +500,7 @@ public class WildHunterDealCycle extends DealCycle {
                 } else {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
-                        if (skill instanceof NaturesBeliefRoar || skill instanceof NaturesBeliefWave || skill instanceof SoulResonation) {
+                        if (skill instanceof NaturesBeliefRoar || skill instanceof NaturesBeliefWave) {
                             if (biteCnt < 3) {
                                 biteCnt ++;
                             }

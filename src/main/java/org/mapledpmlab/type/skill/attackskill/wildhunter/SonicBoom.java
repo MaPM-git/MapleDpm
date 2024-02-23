@@ -3,7 +3,7 @@ package org.mapledpmlab.type.skill.attackskill.wildhunter;
 public class SonicBoom extends JaguarSkill {
     public SonicBoom() {
         this.setName("소닉붐");
-        this.setDamage(320.0 + 50 + 150);
+        this.setDamage(728.0 + 50 + 150);
         this.setAttackCount(6L);
         this.setCooldown(6.0);
         this.setAddDamage(20L);             // 서먼 재규어-리인포스
