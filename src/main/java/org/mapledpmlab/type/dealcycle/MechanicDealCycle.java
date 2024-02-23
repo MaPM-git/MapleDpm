@@ -139,7 +139,7 @@ public class MechanicDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(95.0);
 
         summonCycle.add(supportWaverHEXDie);
         summonCycle.add(robotLauncherRM7Die);
