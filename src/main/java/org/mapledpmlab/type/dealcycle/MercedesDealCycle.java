@@ -191,12 +191,18 @@ public class MercedesDealCycle extends DealCycle {
         //dealCycle3.add(weaponJumpRing);
 
         List<Skill> linkCycle = new ArrayList<>();
-        linkCycle.add(chargeDrive1);
-        linkCycle.add(highkickDemolition);
         linkCycle.add(wrathOfEnlil);
         linkCycle.add(advancedStrikeDualShot);
         linkCycle.add(unicornSpike);
         linkCycle.add(advancedStrikeDualShot);
+        linkCycle.add(legendarySpear);
+        linkCycle.add(leafTornado);
+        /*linkCycle.add(chargeDrive1);
+        linkCycle.add(highkickDemolition);
+        linkCycle.add(wrathOfEnlil);
+        linkCycle.add(advancedStrikeDualShot);
+        linkCycle.add(unicornSpike);
+        linkCycle.add(advancedStrikeDualShot);*/
 
         addSkillEvent(elementalKnightsDark);
         addSkillEvent(elementalKnightsFlame);
