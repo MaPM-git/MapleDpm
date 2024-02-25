@@ -7,10 +7,9 @@ public class MarkOfPhantomFinal extends AttackSkill {
         this.setName("마크 오브 팬텀(마지막)");
         this.setAttackCount(15L);
         this.setDamage(1055.0);
-        this.setDotDuration(60L);
-        this.setInterval(30L);
-        this.setLimitAttackCount(2L);
         this.addFinalDamage(1.6);           // 코어 강화
         this.setApplyFinalAttack(true);
+        this.getMultiAttackInfo().add(1110L - 900 + 330);
+        this.getMultiAttackInfo().add(30L);
     }
 }

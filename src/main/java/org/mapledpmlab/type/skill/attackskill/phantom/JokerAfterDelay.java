@@ -6,8 +6,8 @@ import org.mapledpmlab.type.skill.buffskill.phantom.JokerSword;
 
 public class JokerAfterDelay extends AttackSkill {
     public JokerAfterDelay() {
-        this.setName("조커");
-        this.setDelayByAttackSpeed(6300L);
+        this.setName("조커(후딜)");
+        this.setDelayByAttackSpeed(1620L);
         Long ran = (long) (Math.random() * 99 + 1);
         if (ran <= 40) {
             this.setRelatedSkill(new JokerSword());

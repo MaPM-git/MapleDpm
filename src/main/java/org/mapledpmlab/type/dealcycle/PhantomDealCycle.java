@@ -54,14 +54,11 @@ public class PhantomDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new BlackJackFirstDelay());
-            add(new DefyingFateDelay());
+            add(new BlackJackBeforeDelay());
             add(new JokerAfterDelay());
-            add(new JokerFirstDelay());
-            add(new MarkOfPhantomFirstDelay());
-            add(new RiftBreakDelay());
-            add(new TempestOfCardAfterDelay());
-            add(new TempestOfCardFirstDelay());
+            add(new JokerBeforeDelay());
+            add(new MarkOfPhantom());
+            add(new TempestOfCardBeforeDelay());
         }
     };
 
@@ -97,24 +94,24 @@ public class PhantomDealCycle extends DealCycle {
         this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
-        BlackJackFirstDelay blackJackFirstDelay = new BlackJackFirstDelay();
+        BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
         BullsEye bullsEye = new BullsEye();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DefyingFateDelay defyingFateDelay = new DefyingFateDelay();
+        DefyingFate defyingFate = new DefyingFate();
         FinalCutBuff finalCutBuff = new FinalCutBuff();
         HeroesOath heroesOath = new HeroesOath();
-        JokerFirstDelay jokerFirstDelay = new JokerFirstDelay();
+        JokerBeforeDelay jokerBeforeDelay = new JokerBeforeDelay();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MarkOfPhantomFirstDelay markOfPhantomFirstDelay = new MarkOfPhantomFirstDelay();
+        MarkOfPhantom markOfPhantom = new MarkOfPhantom();
         PriorPreparation priorPreparation = new PriorPreparation();
         ReadyToDie readyToDie = new ReadyToDie();
         RestraintRing restraintRing = new RestraintRing();
-        RiftBreakDelay riftBreakDelay = new RiftBreakDelay();
+        RiftBreak riftBreak = new RiftBreak();
         RingSwitching ringSwitching = new RingSwitching();
         RoseCarteFinale roseCarteFinale = new RoseCarteFinale();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        TempestOfCardFirstDelay tempestOfCardFirstDelay = new TempestOfCardFirstDelay();
+        TempestOfCardBeforeDelay tempestOfCardBeforeDelay = new TempestOfCardBeforeDelay();
         ThiefCunning thiefCunning = new ThiefCunning();
         UltimateDrive ultimateDrive = new UltimateDrive();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
@@ -139,13 +136,13 @@ public class PhantomDealCycle extends DealCycle {
         dealCycle1.add(bullsEye);
         dealCycle1.add(soulContract);
         dealCycle1.add(readyToDie);
-        dealCycle1.add(blackJackFirstDelay);
-        dealCycle1.add(markOfPhantomFirstDelay);
+        dealCycle1.add(blackJackBeforeDelay);
+        dealCycle1.add(markOfPhantom);
         dealCycle1.add(restraintRing);
-        dealCycle1.add(defyingFateDelay);
-        dealCycle1.add(riftBreakDelay);
-        dealCycle1.add(jokerFirstDelay);
-        dealCycle1.add(blackJackFirstDelay);
+        dealCycle1.add(defyingFate);
+        dealCycle1.add(riftBreak);
+        dealCycle1.add(jokerBeforeDelay);
+        dealCycle1.add(blackJackBeforeDelay);
         dealCycle1.add(roseCarteFinale);
 
         dealCycle2.add(heroesOath);
@@ -153,21 +150,21 @@ public class PhantomDealCycle extends DealCycle {
         dealCycle2.add(bullsEye);
         dealCycle2.add(soulContract);
         dealCycle2.add(readyToDie);
-        dealCycle2.add(blackJackFirstDelay);
-        dealCycle2.add(markOfPhantomFirstDelay);
+        dealCycle2.add(blackJackBeforeDelay);
+        dealCycle2.add(markOfPhantom);
         dealCycle2.add(restraintRing);
-        dealCycle2.add(riftBreakDelay);
-        dealCycle2.add(jokerFirstDelay);
-        dealCycle2.add(blackJackFirstDelay);
+        dealCycle2.add(riftBreak);
+        dealCycle2.add(jokerBeforeDelay);
+        dealCycle2.add(blackJackBeforeDelay);
         dealCycle2.add(roseCarteFinale);
 
         dealCycle3.add(finalCutBuff);
         dealCycle3.add(soulContract);
         dealCycle3.add(readyToDie);
-        dealCycle3.add(blackJackFirstDelay);
-        dealCycle3.add(markOfPhantomFirstDelay);
+        dealCycle3.add(blackJackBeforeDelay);
+        dealCycle3.add(markOfPhantom);
         dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(riftBreakDelay);
+        dealCycle3.add(riftBreak);
         dealCycle3.add(roseCarteFinale);
 
         while (getStart().before(getEnd())) {
@@ -199,24 +196,24 @@ public class PhantomDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))) {
                 addSkillEvent(ringSwitching);
             } else if (
-                    cooldownCheck(markOfPhantomFirstDelay)
+                    cooldownCheck(markOfPhantom)
                     && !cooldownCheck(readyToDie)
             ) {
-                addSkillEvent(markOfPhantomFirstDelay);
+                addSkillEvent(markOfPhantom);
             } else if (
-                    cooldownCheck(riftBreakDelay)
+                    cooldownCheck(riftBreak)
                     && !cooldownCheck(readyToDie)
             ) {
-                addSkillEvent(riftBreakDelay);
+                addSkillEvent(riftBreak);
             } else if (
-                    cooldownCheck(blackJackFirstDelay)
+                    cooldownCheck(blackJackBeforeDelay)
                     && !cooldownCheck(readyToDie)
             ) {
-                addSkillEvent(blackJackFirstDelay);
+                addSkillEvent(blackJackBeforeDelay);
             } else if (
-                    cooldownCheck(tempestOfCardFirstDelay)
+                    cooldownCheck(tempestOfCardBeforeDelay)
             ) {
-                addSkillEvent(tempestOfCardFirstDelay);
+                addSkillEvent(tempestOfCardBeforeDelay);
             } else {
                 addSkillEvent(ultimateDrive);
             }
@@ -278,14 +275,6 @@ public class PhantomDealCycle extends DealCycle {
                             getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         }
                         i = 440;
-                    } else if (skill instanceof MarkOfPhantom) {
-                        i = 525;
-                        AttackSkill as = new MarkOfPhantomFinal();
-                        for (; i < 525 + as.getDotDuration(); i += as.getInterval()) {
-                            getSkillEventList().add(new SkillEvent(as, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                            getEventTimeList().add(new Timestamp(getStart().getTime() + i));
-                        }
-                        i = 0;
                     } else {
                         i = ((AttackSkill) skill).getInterval();
                     }
@@ -304,22 +293,6 @@ public class PhantomDealCycle extends DealCycle {
                     if (skill.getRelatedSkill() instanceof JokerHourglass) {
 
                     }
-                }
-                if (skill instanceof RiftBreakDelay) {
-                    getSkillEventList().add(new SkillEvent(riftBreak, new Timestamp(getStart().getTime() + 0), new Timestamp(getStart().getTime() + 0)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 0));
-                    getSkillEventList().add(new SkillEvent(riftBreak, new Timestamp(getStart().getTime() + 270), new Timestamp(getStart().getTime() + 270)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 270));
-                    getSkillEventList().add(new SkillEvent(riftBreak, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 540));
-                    getSkillEventList().add(new SkillEvent(riftBreak, new Timestamp(getStart().getTime() + 1770), new Timestamp(getStart().getTime() + 1770)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1770));
-                    getSkillEventList().add(new SkillEvent(riftBreak, new Timestamp(getStart().getTime() + 1800), new Timestamp(getStart().getTime() + 1800)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1800));
-                    getSkillEventList().add(new SkillEvent(riftBreak, new Timestamp(getStart().getTime() + 1830), new Timestamp(getStart().getTime() + 1830)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1830));
-                    getSkillEventList().add(new SkillEvent(riftBreak, new Timestamp(getStart().getTime() + 1860), new Timestamp(getStart().getTime() + 1860)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1860));
                 }
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));

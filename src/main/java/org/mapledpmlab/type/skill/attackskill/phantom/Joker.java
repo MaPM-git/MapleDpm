@@ -7,6 +7,7 @@ public class Joker extends AttackSkill {
         this.setName("조커");
         this.setAttackCount(3L);
         this.setDamage(770.0);
+        this.setDelay(6300L);
         this.setDotDuration(6300L);
         this.setInterval(45L);
         this.setLimitAttackCount(140L);
