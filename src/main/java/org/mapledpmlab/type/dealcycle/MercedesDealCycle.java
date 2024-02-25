@@ -41,7 +41,9 @@ public class MercedesDealCycle extends DealCycle {
             add(new HighkickDemolition());
             add(new IrkallaBreath());
             add(new LeafTornado());
+            add(new LeafTornadoSpiritEnchant());
             add(new LegendarySpear());
+            add(new LegendarySpearSpiritEnchant());
             add(new LightningEdge());
             add(new RingOfIshtar());
             add(new RollingMoonsault());
@@ -51,19 +53,20 @@ public class MercedesDealCycle extends DealCycle {
             add(new StigmaOfIshtar());
             add(new StigmaOfIshtarComplete());
             add(new SylphidiaRush());
-            add(new UnfadingGlory());
+            add(new UnfadingGloryImpact());
             add(new UnfadingGlorySpiritKingAttack());
             add(new UnfadingGlorySpiritKingAttackReinforce());
+            add(new UnfadingGloryWave());
             add(new UnicornSpike());
             add(new WrathOfEnlil());
+            add(new WrathOfEnlilSpiritEnchant());
         }
     };
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new IrkallaBreathAfterDelay());
-            add(new IrkallaBreathFirstDelay());
-            add(new UnfadingGloryDelay());
+            add(new IrkallaBreathBeforeDelay());
         }
     };
 
@@ -88,10 +91,13 @@ public class MercedesDealCycle extends DealCycle {
     };
 
     FormOfEurel formOfEurel = new FormOfEurel();
+    LeafTornadoSpiritEnchant leafTornadoSpiritEnchant = new LeafTornadoSpiritEnchant();
+    LegendarySpearSpiritEnchant legendarySpearSpiritEnchant = new LegendarySpearSpiritEnchant();
     StigmaOfIshtar stigmaOfIshtar = new StigmaOfIshtar();
     StigmaOfIshtarComplete stigmaOfIshtarComplete = new StigmaOfIshtarComplete();
     UnfadingGlorySpiritKingAttack unfadingGlorySpiritKingAttack = new UnfadingGlorySpiritKingAttack();
     UnfadingGlorySpiritKingAttackReinforce unfadingGlorySpiritKingAttackReinforce = new UnfadingGlorySpiritKingAttackReinforce();
+    WrathOfEnlilSpiritEnchant wrathOfEnlilSpiritEnchant = new WrathOfEnlilSpiritEnchant();
 
     Timestamp elementalGhostEndTime = new Timestamp(-1);
     Timestamp sylphidiaEndTime = new Timestamp(-1);
@@ -121,7 +127,7 @@ public class MercedesDealCycle extends DealCycle {
         GustDive gustDive = new GustDive();
         HeroesOath heroesOath = new HeroesOath();
         HighkickDemolition highkickDemolition = new HighkickDemolition();
-        IrkallaBreathFirstDelay irkallaBreathFirstDelay = new IrkallaBreathFirstDelay();
+        IrkallaBreathBeforeDelay irkallaBreathBeforeDelay = new IrkallaBreathBeforeDelay();
         LeafTornado leafTornado = new LeafTornado();
         LegendarySpear legendarySpear = new LegendarySpear();
         LightningEdge lightningEdge = new LightningEdge();
@@ -138,7 +144,7 @@ public class MercedesDealCycle extends DealCycle {
         SylphidiaEnd sylphidiaEnd = new SylphidiaEnd();
         SylphidiaRush sylphidiaRush = new SylphidiaRush();
         ThiefCunning thiefCunning = new ThiefCunning();
-        UnfadingGlory unfadingGlory = new UnfadingGlory();
+        UnfadingGloryWave unfadingGloryWave = new UnfadingGloryWave();
         UnicornSpike unicornSpike = new UnicornSpike();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WrathOfEnlil wrathOfEnlil = new WrathOfEnlil();
@@ -163,11 +169,11 @@ public class MercedesDealCycle extends DealCycle {
         dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(royalKnights);
         dealCycle1.add(criticalReinforce);
-        dealCycle1.add(unfadingGlory);
+        dealCycle1.add(unfadingGloryWave);
         dealCycle1.add(elementalGhost);
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
-        dealCycle1.add(irkallaBreathFirstDelay);
+        dealCycle1.add(irkallaBreathBeforeDelay);
         //dealCycle1.add(sylphidiaEnd);
 
         dealCycle2.add(legendarySpear);
@@ -179,7 +185,7 @@ public class MercedesDealCycle extends DealCycle {
         dealCycle2.add(elementalGhost);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
-        dealCycle2.add(irkallaBreathFirstDelay);
+        dealCycle2.add(irkallaBreathBeforeDelay);
         //dealCycle2.add(sylphidiaEnd);
 
         //dealCycle3.add(weaponJumpRing);
@@ -274,6 +280,24 @@ public class MercedesDealCycle extends DealCycle {
             }
         } else {
             if (
+                    skill instanceof LeafTornado
+                    && cooldownCheck(leafTornadoSpiritEnchant)
+            ) {
+                skill = leafTornadoSpiritEnchant;
+            }
+            if (
+                    skill instanceof LegendarySpear
+                    && cooldownCheck(legendarySpearSpiritEnchant)
+            ) {
+                skill = legendarySpearSpiritEnchant;
+            }
+            if (
+                    skill instanceof WrathOfEnlil
+                    && cooldownCheck(wrathOfEnlilSpiritEnchant)
+            ) {
+                skill = wrathOfEnlilSpiritEnchant;
+            }
+            if (
                     getStart().before(elementalGhostEndTime)
                     && (
                             skill instanceof ChargeDrive1
@@ -316,16 +340,16 @@ public class MercedesDealCycle extends DealCycle {
             if (
                     cooldownCheck(unfadingGlorySpiritKingAttack)
                     && getStart().before(unfadingGloryEndTime)
+                    && !(skill instanceof UnfadingGlorySpiritKingAttack)
+                    && !(skill instanceof UnfadingGlorySpiritKingAttackReinforce)
             ) {
                 if (isUnfadingGlory) {
-                    getSkillEventList().add(new SkillEvent(unfadingGlorySpiritKingAttackReinforce, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
-                    getEventTimeList().add(new Timestamp(getStart().getTime()));
+                    addSkillEvent(unfadingGlorySpiritKingAttackReinforce);
+                    unfadingGlorySpiritKingAttack.setActivateTime(new Timestamp(unfadingGlorySpiritKingAttackReinforce.getActivateTime().getTime()));
                 } else {
-                    getSkillEventList().add(new SkillEvent(unfadingGlorySpiritKingAttack, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
-                    getEventTimeList().add(new Timestamp(getStart().getTime()));
+                    addSkillEvent(unfadingGlorySpiritKingAttack);
+                    unfadingGlorySpiritKingAttackReinforce.setActivateTime(new Timestamp(unfadingGlorySpiritKingAttack.getActivateTime().getTime()));
                 }
-                applyCooldown(unfadingGlorySpiritKingAttack);
-                applyCooldown(unfadingGlorySpiritKingAttackReinforce);
             }
             if (stigmaCnt >= 12) {
                 accumulateCnt ++;

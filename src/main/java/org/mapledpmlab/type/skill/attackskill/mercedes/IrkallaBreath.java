@@ -7,8 +7,10 @@ public class IrkallaBreath extends AttackSkill {
         this.setName("이르칼라의 숨결");
         this.setDamage(880.0);
         this.setAttackCount(12L);
-        this.setDotDuration(5300L);
+        this.setDelay(5280L);
+        this.setDotDuration(5280L);
         this.setInterval(120L);
+        this.setLimitAttackCount(44L);
         this.setRelatedSkill(new IrkallaBreathAfterDelay());
         this.addFinalDamage(1.6);           // 코어 강화
         this.setApplyFinalAttack(true);
