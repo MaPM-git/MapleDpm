@@ -39,6 +39,7 @@ public class LuminousDealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DoorOfTruth());
+            add(new EndlessDarkness());
             add(new HarmonicParadoxKeydown());
             add(new HarmonicParadoxPower());
             add(new LiberationOrbActive());
@@ -55,11 +56,7 @@ public class LuminousDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new BaptismOfLightAndDarknessDelay());
-            add(new DoorOfTruthDelay());
-            add(new HarmonicParadoxKeydownDelay());
-            add(new HarmonicParadoxPowerDelay());
-            add(new PunishingResonatorDelay());
+            add(new HarmonicParadoxBeforeDelay());
         }
     };
 
@@ -89,6 +86,7 @@ public class LuminousDealCycle extends DealCycle {
     Timestamp liberationOrbEndTime = new Timestamp(-1);
 
     BaptismOfLightAndDarkness baptismOfLightAndDarkness = new BaptismOfLightAndDarkness();
+    EndlessDarkness endlessDarkness = new EndlessDarkness();
     PunishingResonatorEquilibrium punishingResonatorEquilibrium = new PunishingResonatorEquilibrium();
     LiberationOrbActive liberationOrbActive = new LiberationOrbActive();
     LiberationOrbPassive liberationOrbPassive = new LiberationOrbPassive();
@@ -105,7 +103,7 @@ public class LuminousDealCycle extends DealCycle {
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DoorOfTruth doorOfTruth = new DoorOfTruth();
         Equilibrium equilibrium = new Equilibrium();
-        HarmonicParadoxKeydown harmonicParadoxKeydown = new HarmonicParadoxKeydown();
+        HarmonicParadoxBeforeDelay harmonicParadox = new HarmonicParadoxBeforeDelay();
         HeroesOath heroesOath = new HeroesOath();
         LiberationOrb liberationOrb = new LiberationOrb();
         LightReflection lightReflection = new LightReflection();
@@ -148,7 +146,7 @@ public class LuminousDealCycle extends DealCycle {
         dealCycle1.add(baptismOfLightAndDarkness);
         dealCycle1.add(absoluteKill);
         dealCycle1.add(doorOfTruth);
-        dealCycle1.add(harmonicParadoxKeydown);
+        dealCycle1.add(harmonicParadox);
         dealCycle1.add(baptismOfLightAndDarkness);
 
         dealCycle2.add(heroesOath);
@@ -184,8 +182,8 @@ public class LuminousDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && (
-                            sunFireCnt >= 25
-                            || eclipseCnt >= 22
+                            sunFireCnt >= 23
+                            || eclipseCnt >= 19
                     )
             ) {
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
@@ -200,8 +198,8 @@ public class LuminousDealCycle extends DealCycle {
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && (
-                            sunFireCnt >= 25
-                            || eclipseCnt >= 22
+                            sunFireCnt >= 23
+                            || eclipseCnt >= 19
                     )
             ) {
                 if (larkness == Larkness.ECLIPSE) {
@@ -237,8 +235,8 @@ public class LuminousDealCycle extends DealCycle {
             } else if (
                     getStart().after(equilibriumEndTime)
                     && (
-                            sunFireCnt >= 25
-                            || eclipseCnt >= 22
+                            sunFireCnt >= 23
+                            || eclipseCnt >= 19
                     )
                     && !cooldownCheck(heroesOath)
             ) {
@@ -323,6 +321,15 @@ public class LuminousDealCycle extends DealCycle {
             }
         } else {
             if (
+                    cooldownCheck(endlessDarkness)
+                    && (
+                            skill instanceof Apocalypse
+                            || skill instanceof AbsoluteKill
+                    )
+            ) {
+                addSkillEvent(endlessDarkness);
+            }
+            if (
                     skill instanceof PunishingResonator
                     && getStart().before(equilibriumEndTime)
             ) {
@@ -351,17 +358,19 @@ public class LuminousDealCycle extends DealCycle {
                 } else {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
-                        if (skill instanceof HarmonicParadoxKeydown) {
-                            if (i == 3 || i == 7 || i == 11 || i == 15) {
-                                getSkillEventList().add(new SkillEvent(liberationOrbActive, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                                liberationOrbCnt ++;
+                        if (
+                                skill instanceof HarmonicParadoxKeydown
+                        ) {
+                            Timestamp temp = new Timestamp(getStart().getTime());
+                            setStart(new Timestamp(getStart().getTime() + i));
+                            if (cooldownCheck(endlessDarkness)) {
+                                addSkillEvent(endlessDarkness);
                             }
-                        } else if (skill instanceof HarmonicParadoxPower) {
-                            if (i == 4 || i == 9) {
-                                getSkillEventList().add(new SkillEvent(liberationOrbActive, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                                applyCooldown(liberationOrbActive);
-                                liberationOrbCnt ++;
+                            if (cooldownCheck(liberationOrbActive)) {
+                                addSkillEvent(liberationOrbActive);
+                                liberationOrbCnt++;
                             }
+                            setStart(new Timestamp(temp.getTime()));
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
@@ -414,6 +423,42 @@ public class LuminousDealCycle extends DealCycle {
         getStart().setTime(getStart().getTime() + skill.getDelay());
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
+        }
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        /*if (skill instanceof HarmonicParadoxPower) {
+                            if (i == 4 || i == 9) {
+                                getSkillEventList().add(new SkillEvent(liberationOrbActive, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                                applyCooldown(liberationOrbActive);
+                                liberationOrbCnt ++;
+                            }
+                        }
+                        */
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            if (
+                    skill instanceof BaptismOfLightAndDarkness
+                    || skill instanceof HarmonicParadoxPower
+            ) {
+                Timestamp tmp = new Timestamp(getStart().getTime());
+                setStart(new Timestamp(getStart().getTime() + sum));
+                if (cooldownCheck(endlessDarkness)) {
+                    addSkillEvent(endlessDarkness);
+                }
+                if (
+                        getStart().before(liberationOrbEndTime)
+                        && cooldownCheck(liberationOrbActive)
+                ) {
+                    addSkillEvent(liberationOrbActive);
+                    liberationOrbCnt++;
+                }
+                setStart(new Timestamp(tmp.getTime()));
+            }
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
         }
     }
 

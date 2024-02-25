@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class AbsoluteKill extends AttackSkill {
     public AbsoluteKill() {
         this.setName("앱솔루트 킬");
-        this.setDamage(695.0);
+        this.setDamage(695.0 + 130);
         this.setDelayByAttackSpeed(780L);
         this.setAttackCount(7L * 2);
         this.addIgnoreDefenseList(45L);
