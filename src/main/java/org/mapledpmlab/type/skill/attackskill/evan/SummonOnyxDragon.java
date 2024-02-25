@@ -7,9 +7,9 @@ public class SummonOnyxDragon extends AttackSkill {
         this.setName("서먼 오닉스 드래곤");
         this.setDamage(550.0);
         this.setAttackCount(2L);
+        this.setDelayByAttackSpeed(900L);
         this.setDotDuration(40000L);
         this.setInterval(3030L);
-        this.setRelatedSkill(new SummonOnyxDragonDelay());
         this.setCooldown(80.0);
         this.addFinalDamage(2.2);                   // 코어 강화
         this.addIgnoreDefenseList(20L);

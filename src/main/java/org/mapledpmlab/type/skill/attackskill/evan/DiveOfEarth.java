@@ -8,7 +8,7 @@ public class DiveOfEarth extends AttackSkill {
         this.setDamage(375.0 + 625);
         this.setAttackCount(10L);
         this.setDotDuration(4000L);
-        this.setInterval(480L);
+        this.setInterval(450L);
         this.setLimitAttackCount(4L);
         this.setAddDamage(20L);         // 드래곤 다이브-어스 인핸스
         this.addFinalDamage(2.2);                   // 코어 강화

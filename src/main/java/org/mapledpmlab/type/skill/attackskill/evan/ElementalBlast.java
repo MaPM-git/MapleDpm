@@ -1,17 +1,20 @@
 package org.mapledpmlab.type.skill.attackskill.evan;
 
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.buffskill.evan.ElementalBlastBuff;
 
 public class ElementalBlast extends AttackSkill {
     public ElementalBlast() {
         this.setName("엘리멘탈 블래스트");
         this.setDamage(1705.0);
         this.setAttackCount(8L);
-        this.setDotDuration(780L);
-        this.setInterval(195L);
-        this.setLimitAttackCount(4L);
+        this.setDelay(780L);
         this.setCooldown(40.0);             // 코어 강화
         this.addFinalDamage(1.6);
-        this.setRelatedSkill(new ElementalBlastDelay());
+        this.setRelatedSkill(new ElementalBlastBuff());
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(660L);
+        this.getMultiAttackInfo().add(1230L);
+        this.getMultiAttackInfo().add(2070L);
     }
 }

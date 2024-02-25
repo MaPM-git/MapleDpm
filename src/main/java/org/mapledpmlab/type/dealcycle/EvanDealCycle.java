@@ -10,6 +10,7 @@ import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.evan.ComeBack;
 import org.mapledpmlab.type.skill.buffskill.evan.ElementalBlastBuff;
 import org.mapledpmlab.type.skill.buffskill.evan.SwiftComeBack;
+import org.mapledpmlab.type.skill.buffskill.evan.ZodiacBurstBuff;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -64,10 +65,6 @@ public class EvanDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new ElementalBlastDelay());
-            add(new SpiralOfManaDelay());
-            add(new SummonOnyxDragonDelay());
-            add(new ZodiacBurstDelay());
             add(new ZodiacRayDelay());
         }
     };
@@ -84,10 +81,13 @@ public class EvanDealCycle extends DealCycle {
             add(new SwiftComeBack());
             add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+            add(new ZodiacBurstBuff());
         }
     };
 
     Long debrisCnt = 0L;
+    Timestamp zodiacBurstEndTime = new Timestamp(-1);
+    ZodiacBurstMeteor zodiacBurstMeteor = new ZodiacBurstMeteor();
 
     public EvanDealCycle(Job job) {
         super(job, new AdvancedDragonSpark());
@@ -144,7 +144,7 @@ public class EvanDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(95.0);
 
         dealCycle1.add(heroesOath);
         dealCycle1.add(mapleWorldGoddessBlessing);
@@ -407,6 +407,9 @@ public class EvanDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof ZodiacBurstBuff) {
+                zodiacBurstEndTime = new Timestamp(getStart().getTime() + 45000);
+            }
             if (
                     skill instanceof RestraintRing
                     && restraintRingStartTime == null
@@ -425,6 +428,13 @@ public class EvanDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    getStart().before(zodiacBurstEndTime)
+                    && !(skill instanceof ZodiacBurstMeteor)
+                    && cooldownCheck(zodiacBurstMeteor)
+            ) {
+                addSkillEvent(zodiacBurstMeteor);
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 if (
                         skill instanceof BreathOfEarth
@@ -468,20 +478,16 @@ public class EvanDealCycle extends DealCycle {
                     long i = 0;
                     if (skill instanceof BreathOfEarth) {
                         i += 300;
-                    } else if (skill instanceof DragonDive) {
+                    }/* else if (skill instanceof DragonDive) {
                         i += 60;
+                    }*/ else if (skill instanceof DiveOfEarth) {
+                        i += 960;
                     } else if (skill instanceof ImperialBreath) {
-                        i += 840;
+                        i += 820;
                     } else if (skill instanceof SwiftOfThunder) {
                         i += 480;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
-                        if (
-                                skill instanceof DiveOfEarth
-                                && (attackCount >= 1 && attackCount <=3)
-                        ) {
-                            i += 420;
-                        }
                         if (skill instanceof SwiftOfThunder) {
                             Skill sot = new SwiftOfThunder();
                             ((SwiftOfThunder) sot).addFinalDamage(Math.pow(0.4, attackCount));
