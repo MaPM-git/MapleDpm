@@ -7,10 +7,10 @@ public class SmashingMultipunchEnd extends AttackSkill {
         this.setName("파쇄 연권(막타)");
         this.setDamage(1375.0);
         this.setAttackCount(15L);
-        this.setDotDuration(1080L);
-        this.setInterval(360L);
-        this.setLimitAttackCount(3L);
-        this.setRelatedSkill(new SmashingMultipunchEndDelay());
+        this.setDelay(1080L);
         this.addFinalDamage(1.6);       // 코어 강화
+        this.getMultiAttackInfo().add(270L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
     }
 }

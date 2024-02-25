@@ -76,12 +76,7 @@ public class EunwolDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new AdventOfTheFoxDelay());
-            add(new SmashingMultipunchEndDelay());
             add(new SmashingMultipunchFirstDelay());
-            add(new SmashingMultipunchKedownDelay());
-            add(new SpiritFrenzyDelay());
-            add(new SpiritGateDelay());
         }
     };
 
@@ -158,7 +153,7 @@ public class EunwolDealCycle extends DealCycle {
         SpiritClaw spiritClaw = new SpiritClaw();
         SpiritConcentration spiritConcentration = new SpiritConcentration();
         SpiritFrenzySpiritBondMax spiritFrenzySpiritBondMax = new SpiritFrenzySpiritBondMax();
-        SpiritGateDelay spiritGateDelay = new SpiritGateDelay();
+        SpiritGate spiritGate = new SpiritGate();
         ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
@@ -187,7 +182,7 @@ public class EunwolDealCycle extends DealCycle {
         // 1-4-3-2-5-4
         // 메용2, 6차, 리레, 스인미, 크오솔
         dealCycle1.add(bladeImpSpin);
-        dealCycle1.add(spiritGateDelay);
+        dealCycle1.add(spiritGate);
         dealCycle1.add(heroesOath);
         dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(crestOfTheSolar);
@@ -203,7 +198,7 @@ public class EunwolDealCycle extends DealCycle {
 
         // 메용2, 6차, 웨폰퍼프
         dealCycle2.add(bladeImpSpin);
-        dealCycle2.add(spiritGateDelay);
+        dealCycle2.add(spiritGate);
         dealCycle2.add(heroesOath);
         dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(soulContract);
@@ -217,7 +212,7 @@ public class EunwolDealCycle extends DealCycle {
 
         // 메용2, 리레, 스인미, 코오솔
         dealCycle3.add(bladeImpSpin);
-        dealCycle3.add(spiritGateDelay);
+        dealCycle3.add(spiritGate);
         dealCycle3.add(heroesOath);
         dealCycle3.add(mapleWorldGoddessBlessing);
         dealCycle3.add(crestOfTheSolar);
@@ -232,9 +227,8 @@ public class EunwolDealCycle extends DealCycle {
 
         // 메용2, 웨폰퍼프
         dealCycle4.add(bladeImpSpin);
-        dealCycle4.add(spiritGateDelay);
+        dealCycle4.add(spiritGate);
         dealCycle4.add(heroesOath);
-        dealCycle4.add(mapleWorldGoddessBlessing);
         dealCycle4.add(soulContract);
         dealCycle4.add(spiritConcentration);
         dealCycle4.add(overdrive);
@@ -245,8 +239,9 @@ public class EunwolDealCycle extends DealCycle {
 
         // 리레
         dealCycle5.add(bladeImpSpin);
-        dealCycle5.add(spiritGateDelay);
+        dealCycle5.add(spiritGate);
         dealCycle5.add(heroesOath);
+        dealCycle5.add(mapleWorldGoddessBlessing);
         dealCycle5.add(crestOfTheSolar);
         dealCycle5.add(spiderInMirror);
         dealCycle5.add(soulContract);
@@ -258,7 +253,7 @@ public class EunwolDealCycle extends DealCycle {
         dealCycle5.add(spiritFrenzySpiritConcentration);
 
         shortDealCycle.add(bladeImpSpin);
-        shortDealCycle.add(spiritGateDelay);
+        shortDealCycle.add(spiritGate);
         shortDealCycle.add(overdrive);
         shortDealCycle.add(smashingMultipunchFirstDelay);
 

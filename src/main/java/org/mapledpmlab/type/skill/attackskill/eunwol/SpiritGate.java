@@ -7,6 +7,8 @@ public class SpiritGate extends AttackSkill {
         this.setName("귀문진");
         this.setDamage(495.0);
         this.setAttackCount(6L);
+        this.setDelay(990L);
+        this.setCooldown(60.0);
         this.setDotDuration(32040L);
         this.setInterval((1230L + 1440) / 2);   // 1335
         this.setLimitAttackCount(24L);

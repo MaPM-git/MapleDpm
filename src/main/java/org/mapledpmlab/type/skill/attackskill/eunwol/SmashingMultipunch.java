@@ -7,10 +7,11 @@ public class SmashingMultipunch extends AttackSkill {
         this.setName("파쇄 연권");
         this.setDamage(550.0);
         this.setAttackCount(5L);
-        this.setDotDuration(910L);
+        this.setDelay(960L);
+        this.setDotDuration(960L);
         this.setInterval(120L);
         this.setLimitAttackCount(8L);
-        this.setRelatedSkill(new SmashingMultipunchKedownDelay());
+        this.setRelatedSkill(new SmashingMultipunchEnd());
         this.addFinalDamage(1.6);       // 코어 강화
     }
 }
