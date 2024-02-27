@@ -229,6 +229,7 @@ public class EunwolDealCycle extends DealCycle {
         dealCycle4.add(bladeImpSpin);
         dealCycle4.add(spiritGate);
         dealCycle4.add(heroesOath);
+        dealCycle4.add(mapleWorldGoddessBlessing);
         dealCycle4.add(soulContract);
         dealCycle4.add(spiritConcentration);
         dealCycle4.add(overdrive);
@@ -241,7 +242,6 @@ public class EunwolDealCycle extends DealCycle {
         dealCycle5.add(bladeImpSpin);
         dealCycle5.add(spiritGate);
         dealCycle5.add(heroesOath);
-        dealCycle5.add(mapleWorldGoddessBlessing);
         dealCycle5.add(crestOfTheSolar);
         dealCycle5.add(spiderInMirror);
         dealCycle5.add(soulContract);

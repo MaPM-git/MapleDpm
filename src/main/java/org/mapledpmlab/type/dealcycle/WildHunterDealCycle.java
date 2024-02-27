@@ -222,6 +222,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle3.add(wildVulcanTypeXBeforeDelay);
 
         dealCycle4.add(willOfLiberty);
+        dealCycle4.add(mapleWorldGoddessBlessing);
         dealCycle4.add(assistantHuntingUnitDelay);
         dealCycle4.add(silentRampage);
         dealCycle4.add(criticalReinforce);
@@ -237,7 +238,6 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle4.add(wildVulcanTypeXBeforeDelay);
 
         dealCycle5.add(willOfLiberty);
-        dealCycle5.add(mapleWorldGoddessBlessing);
         dealCycle5.add(assistantHuntingUnitDelay);
         dealCycle5.add(silentRampage);
         dealCycle5.add(criticalReinforce);
