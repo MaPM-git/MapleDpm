@@ -88,4 +88,10 @@ public class Kaiser extends Job {
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
+    
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addFinalDamage(1.15);      // 리게인 스트렝스
+    }
 }
