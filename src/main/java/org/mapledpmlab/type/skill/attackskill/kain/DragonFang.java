@@ -1,0 +1,18 @@
+package org.mapledpmlab.type.skill.attackskill.kain;
+
+import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+
+public class DragonFang extends AttackSkill {
+    public DragonFang() {
+        this.setName("드래곤 팡");
+        this.setDamage(100.0 + 60 + 95);
+        this.setAttackCount(4L);
+        this.setDotDuration(9450L);
+        this.setInterval(1350L);
+        this.setLimitAttackCount(7L);
+        this.setCooldown(13.95);
+        this.addFinalDamage(2.2);   // 코어강화
+        this.addIgnoreDefenseList(20L);
+        this.setApplyCooldownReduction(false);
+    }
+}
