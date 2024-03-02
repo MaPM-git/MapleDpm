@@ -12,6 +12,7 @@ public class Skill {
     private Double cooldown = 0.0;
     private Long delay = 0L;
     private String description = "";
+    private boolean isApplyCooldownReduction = true;
     private boolean isApplyReuse = false;
     private String name = "";
     private Skill relatedSkill = null;

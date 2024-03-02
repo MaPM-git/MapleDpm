@@ -537,6 +537,9 @@ public class EunwolDealCycle extends DealCycle {
             } else {
                 skill.setActivateTime(activateTime);
             }
+            if (!skill.isApplyCooldownReduction()) {
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + skill.getCooldown() * 1000)));
+            }
         }
     }
 

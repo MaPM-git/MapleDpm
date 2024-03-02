@@ -128,6 +128,10 @@ public class BuffSkill extends Skill {
             str = str + "\n버프지속시간증가적용";
             colNum ++;
         }
+        if (!isApplyCooldownReduction()) {
+            str = str + "\n쿨타임감소옵션미적용";
+            colNum ++;
+        }
         return str;
     }
 

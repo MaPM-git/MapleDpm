@@ -134,6 +134,9 @@ public class DealCycle {
             } else {
                 skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
             }
+            if (!skill.isApplyCooldownReduction()) {
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + skill.getCooldown() * 1000)));
+            }
         }
     }
 

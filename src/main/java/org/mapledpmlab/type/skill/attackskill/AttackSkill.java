@@ -81,6 +81,10 @@ public class AttackSkill extends Skill {
             str = str + "\n파이널어택적용";
             colNum ++;
         }
+        if (!isApplyCooldownReduction()) {
+            str = str + "\n쿨타임감소옵션미적용";
+            colNum ++;
+        }
         return str;
     }
 
