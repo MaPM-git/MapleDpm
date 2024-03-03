@@ -57,6 +57,7 @@ public class DarkKnightDealCycle extends DealCycle {
             add(new DarknessAuraDot());
             add(new DarknessAuraFinish());
             add(new DarkSpear());
+            add(new DarkSynthesis());
             add(new DeadSpaceDarkAura());
             add(new DeadSpaceSlash());
             add(new FinalAttackDarkKnight());
@@ -70,8 +71,6 @@ public class DarkKnightDealCycle extends DealCycle {
 
     private List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
-            add(new DarknessAuraFinishDelay());
-            add(new DarkSpearDelay());
             add(new PiercingCycloneEndDelay());
             add(new PiercingCycloneFirstDelay());
             add(new PiercingCycloneKeydownDelay());
