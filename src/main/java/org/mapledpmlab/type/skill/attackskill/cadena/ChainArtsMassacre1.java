@@ -1,0 +1,71 @@
+package org.mapledpmlab.type.skill.attackskill.cadena;
+
+import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+
+public class ChainArtsMassacre1 extends AttackSkill {
+    public ChainArtsMassacre1() {
+        this.setName("체인아츠:매서커(1차)");
+        this.setAttackCount(8L);
+        this.setDelay(2400L);
+        this.setCooldown(360.0);
+        this.setDamage(700.0);
+        this.setAddDamage(50L);
+        this.addIgnoreDefenseList(20L);
+        this.addIgnoreDefenseList(30L);
+        this.setRelatedSkill(new ChainArtsMassacre2());
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(180L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(180L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(180L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(180L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+    }
+}

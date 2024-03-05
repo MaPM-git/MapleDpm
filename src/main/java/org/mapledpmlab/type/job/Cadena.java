@@ -53,6 +53,7 @@ public class Cadena extends Job {
 
         // 3차
         this.addIgnoreDefenseList(20L);  // 베이직 디텍션
+        this.addCriticalP(12.0);        // 위크포인트 컨버징 어택 6중첩
 
         // 4차
         this.addAtt(31L);               // 웨폰 엑스퍼트
@@ -78,6 +79,12 @@ public class Cadena extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+    
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addCriticalDamage(66.0);   // 위크포인트 컨버징 어택 6중첩
     }
 
     public Long getFinalSubStat2() {
