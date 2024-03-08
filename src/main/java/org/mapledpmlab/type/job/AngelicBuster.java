@@ -45,20 +45,29 @@ public class AngelicBuster extends Job {
         // 2차
         this.addAtt(20L);               // 소울슈터 마스터리
         this.addMainStat(40L);          // 이너 파이어
+        this.addFinalDamage(1.05);
+        this.addDamage(10L);            // 어피니티 II
+        this.addCriticalP(25.0);
 
         // 3차
-        this.addMainStat(20L);          // 아이언 로터스
+        this.addMainStat(20L);          // 샤이닝 로터스
+        this.addFinalDamage(1.14);
         this.addAtt(40L);               // 콜 오브 에인션트
+        this.addIgnoreDefenseList(16L);
+        this.addCriticalDamage(6.0);
         this.addMainStat(40L);          // 어피니티 III
-        this.addDamage(20L);
+        this.addDamage(10L);
+        this.addFinalDamage(1.1);
+        this.addCriticalP(10.0);        // 어텐션
+        this.addCriticalDamage(15.0);
 
         // 4차
-        this.addFinalDamage(1.26);      // 트리니티
-        this.addIgnoreDefenseList(16L);
-        this.addCriticalDamage(46.0);   // 소울 게이즈
+        this.addCriticalDamage(31.0);   // 소울 게이즈
         this.addAtt(31L);               // 소울슈터 엑스퍼트
-        this.addCriticalP(31.0);
-        this.addCriticalDamage(16.0);
+        this.addFinalDamage(1.23);
+
+        // 하이퍼
+        this.addIgnoreDefenseList(15L); // 피니투라 페투치아-리듀스 아머
 
         // 5차
         this.addMainStat(40L);          // 트리니티 퓨전
@@ -77,5 +86,11 @@ public class AngelicBuster extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addDamage(25L);            // 어피니티 IV
     }
 }
