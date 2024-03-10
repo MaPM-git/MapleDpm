@@ -84,4 +84,14 @@ public class Adele extends Job {
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addFinalDamage(1.1);       // 레조넌스
+        this.addIgnoreDefenseList(10L);
+        this.addIgnoreDefenseList(10L); // 게더링
+        this.addDamage(20L);            // 그레이브
+        this.addIgnoreDefenseList(10L);
+    }
 }
