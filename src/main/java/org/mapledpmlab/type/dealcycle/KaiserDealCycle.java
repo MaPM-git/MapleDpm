@@ -369,11 +369,14 @@ public class KaiserDealCycle extends DealCycle {
                 finalFigurationEndTime = new Timestamp(finalFigurationEndTime.getTime() + 10000);
                 for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
                     if (
-                            getSkillEventList().get(i).getSkill() instanceof FinalFiguration
-                            || getSkillEventList().get(i).getSkill() instanceof FinalTrance
+                            (
+                                    getSkillEventList().get(i).getSkill() instanceof FinalFiguration
+                                    || getSkillEventList().get(i).getSkill() instanceof FinalTrance
+                            )
+                            && getSkillEventList().get(i).getEnd().after(getStart())
                     ) {
                         getSkillEventList().get(i).getEnd().setTime(getSkillEventList().get(i).getEnd().getTime() + 10000);
-                        getEventTimeList().add(new Timestamp(getSkillEventList().get(i).getEnd().getTime() + 10000));
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
                     }
                 }
             }
