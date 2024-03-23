@@ -85,7 +85,11 @@ public class Illium extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        addFinalDamage(1.08);           // 오버로드 마나
+        this.addFinalDamage(1.08);          // 오버로드 마나
+        this.addIgnoreDefenseList(20L);     // 커스 마크
+        this.addAtt(46L);                   // 블레스 마크
+        this.addMainStat(90L);              // 소드 오브 크리스탈 강화
+        this.addSubStat(90L);
     }
 
     public Long getStatDamage() {
