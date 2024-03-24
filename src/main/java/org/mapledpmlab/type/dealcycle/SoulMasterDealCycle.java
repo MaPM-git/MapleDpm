@@ -141,14 +141,13 @@ public class SoulMasterDealCycle extends DealCycle {
         ((AttackSkill) crestOfTheSolar.getRelatedSkill()).addFinalDamage(0.9);
         cygnusPhalanx.addFinalDamage(0.9);
 
-
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i)));
+            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
             getEventTimeList().add(new Timestamp(i));
         }
 
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i)));
+            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
             getEventTimeList().add(new Timestamp(i));
         }
 
