@@ -181,38 +181,22 @@ public class KhaliDealCycle extends DealCycle {
         soulContract.setApplyReuse(true);
 
         while (getStart().before(getEnd())) {
-            /*if (cooldownCheck(voidBurstCombo) && getStart().before(new Timestamp(240*1000))) {
-                System.out.println("------------------------");
-                System.out.println(getStart());
-                for (Skill skill : dealCycle2) {
-                    System.out.println(skill.getName() + " : " + cooldownCheck(skill));
-                }
-            }*/
             if (
                     getStart().after(magicCircuitFullDriveEndTime)
                     && getStart().before(new Timestamp(120 * 1000))
                     && getStart().after(new Timestamp(50 * 1000))
             ) {
-                System.out.println("-----------");
-                System.out.println("magic");
-                System.out.println(getStart());
                 addSkillEvent(magicCircuitFullDriveBuff);
             }
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
-                System.out.println("-----------");
-                System.out.println("dc1");
-                System.out.println(getStart());
                 addDealCycle(dealCycle1);
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
-                System.out.println("-----------");
-                System.out.println("dc2");
-                System.out.println(getStart());
                 addDealCycle(dealCycle2);
             }/* else if (
                     cooldownCheck(dealCycle3)
@@ -228,9 +212,6 @@ public class KhaliDealCycle extends DealCycle {
                     cooldownCheck(deathBlossom)
                     && !cooldownCheck(wrathOfGod)
             ) {
-                System.out.println("-----------");
-                System.out.println("blossom");
-                System.out.println(getStart());
                 addSkillEvent(deathBlossom);
                 addSkillEvent(readyToDie);
             } else if (
@@ -238,9 +219,6 @@ public class KhaliDealCycle extends DealCycle {
                     && getStart().after(soulContractEndTime)
                     && getStart().before(new Timestamp(wrathOfGod.getActivateTime().getTime() + 10000))
             ) {
-                System.out.println("-----------");
-                System.out.println("soul");
-                System.out.println(getStart());
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(artsCrescentum)
@@ -260,12 +238,10 @@ public class KhaliDealCycle extends DealCycle {
                 addSkillEvent(hexChakramSplit);
             } else if (
                     cooldownCheck(hexChakramFuryBeforeDelay)
-                    //&& !cooldownCheck(resonateUltimatum)
             ) {
                 addSkillEvent(hexChakramFuryBeforeDelay);
             } else if (
                     cooldownCheck(hexChakramSweep)
-                    //&& !cooldownCheck(resonateUltimatum)
             ) {
                 addSkillEvent(hexChakramSweep);
             } else if (
