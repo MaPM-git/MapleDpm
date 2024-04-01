@@ -49,6 +49,7 @@ public class Ark extends Job {
         this.addAtt(20L);               // 너클 마스터리
         this.addFinalDamage(1.05);
         this.addMainStat(60L);          // 피지컬 트레이닝
+        this.addCriticalP(20.0);        // 스칼렛 버프
 
         // 3차
         this.addFinalDamage(1.1);       // 융합 진행
@@ -79,5 +80,13 @@ public class Ark extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        this.addAtt(30L);               // 스칼렛 버프
+        this.addDamage(20L);            // 어비스 버프
+        this.addBossDamage(35L);
+        this.addIgnoreDefenseList(20L);
     }
 }

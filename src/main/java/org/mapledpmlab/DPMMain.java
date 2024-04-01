@@ -27,6 +27,7 @@ public class DPMMain {
         dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
         dealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
+        dealCycleList.add(new ArkDealCycle(new Ark()));
         dealCycleList.add(new BattleMageDealCycle(new BattleMage()));
         dealCycleList.add(new BishopDealCycle(new Bishop()));
         dealCycleList.add(new BlasterDealCycle(new Blaster()));
@@ -62,9 +63,9 @@ public class DPMMain {
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));*/
-        KhaliDealCycle khaliDealCycle = new KhaliDealCycle(new Khali());
-        khaliDealCycle.applyDoping();
-        khaliDealCycle.print();
+        ArkDealCycle arkDealCycle = new ArkDealCycle(new Ark());
+        arkDealCycle.applyDoping();
+        arkDealCycle.print();
         //this.exportExcel();
     }
 
