@@ -84,6 +84,7 @@ public class Ark extends Job {
 
     @Override
     public void Doping() {
+        super.Doping();
         this.addAtt(30L);               // 스칼렛 버프
         this.addDamage(20L);            // 어비스 버프
         this.addBossDamage(35L);
