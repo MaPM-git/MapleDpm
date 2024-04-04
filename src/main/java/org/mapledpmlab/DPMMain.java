@@ -46,6 +46,7 @@ public class DPMMain {
         dealCycleList.add(new KainDealCycle(new Kain()));
         dealCycleList.add(new KaiserDealCycle(new Kaiser()));
         dealCycleList.add(new KhaliDealCycle(new Khali()));
+        dealCycleList.add(new LaraDealCycle(new Lara()));
         dealCycleList.add(new LuminousDealCycle(new Luminous()));
         dealCycleList.add(new MarksmanDealCycle(new Marksman()));
         dealCycleList.add(new MechanicDealCycle(new Mechanic()));
@@ -63,9 +64,9 @@ public class DPMMain {
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));*/
-        ArkDealCycle arkDealCycle = new ArkDealCycle(new Ark());
-        arkDealCycle.applyDoping();
-        arkDealCycle.print();
+        LaraDealCycle laraDealCycle = new LaraDealCycle(new Lara());
+        laraDealCycle.applyDoping();
+        laraDealCycle.print();
         //this.exportExcel();
     }
 
