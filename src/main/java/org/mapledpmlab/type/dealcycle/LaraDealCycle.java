@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.lara.ArmfulTree;
 import org.mapledpmlab.type.skill.buffskill.lara.DragonVeinEcho;
-import org.mapledpmlab.type.skill.buffskill.lara.GrandisGoddessBlessingLara;
+import org.mapledpmlab.type.skill.buffskill.common.GrandisGoddessBlessingAnima;
 import org.mapledpmlab.type.skill.buffskill.lara.ManifestationSunlightFilledGround;
 
 import java.sql.Timestamp;
@@ -72,7 +72,7 @@ public class LaraDealCycle extends DealCycle {
         {
             add(new ArmfulTree());
             add(new DragonVeinEcho());
-            add(new GrandisGoddessBlessingLara());
+            add(new GrandisGoddessBlessingAnima());
             add(new PriorPreparation());
             add(new ManifestationSunlightFilledGround());
             add(new RestraintRing());
@@ -112,7 +112,7 @@ public class LaraDealCycle extends DealCycle {
         EruptionSunriseWell eruptionSunriseWell = new EruptionSunriseWell();
         EruptionWhirlwind eruptionWhirlwind = new EruptionWhirlwind();
         EssenceSprinkle essenceSprinkle = new EssenceSprinkle();
-        GrandisGoddessBlessingLara grandisGoddessBlessingLara = new GrandisGoddessBlessingLara();
+        GrandisGoddessBlessingAnima grandisGoddessBlessingAnima = new GrandisGoddessBlessingAnima();
         ManifestationSunlightFilledGround manifestationSunlightFilledGround = new ManifestationSunlightFilledGround();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
@@ -141,7 +141,7 @@ public class LaraDealCycle extends DealCycle {
 
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
-        dealCycle1.add(grandisGoddessBlessingLara);
+        dealCycle1.add(grandisGoddessBlessingAnima);
         dealCycle1.add(armfulTree);
         dealCycle1.add(eruptionWhirlwind);
         dealCycle1.add(eruptionRipplingRiver);
@@ -154,7 +154,7 @@ public class LaraDealCycle extends DealCycle {
         dealCycle1.add(sunRiverMountainWindWave1);
         dealCycle1.add(bloomingFlowerWorld);
 
-        dealCycle2.add(grandisGoddessBlessingLara);
+        dealCycle2.add(grandisGoddessBlessingAnima);
         dealCycle2.add(armfulTree);
         dealCycle2.add(eruptionWhirlwind);
         dealCycle2.add(eruptionRipplingRiver);
@@ -364,7 +364,7 @@ public class LaraDealCycle extends DealCycle {
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isGrandisBless = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
-                if (skillEvent.getSkill() instanceof GrandisGoddessBlessingLara) {
+                if (skillEvent.getSkill() instanceof GrandisGoddessBlessingAnima) {
                     isGrandisBless = true;
                 }
             }

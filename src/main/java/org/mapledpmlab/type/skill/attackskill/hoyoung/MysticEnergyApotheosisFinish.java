@@ -1,0 +1,76 @@
+package org.mapledpmlab.type.skill.attackskill.hoyoung;
+
+import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+
+public class MysticEnergyApotheosisFinish extends AttackSkill {
+    public MysticEnergyApotheosisFinish() {
+        this.setName("선기 : 파천황(천지개벽)");
+        this.setAttackCount(14L);
+        this.setDamage(1077.0);
+        this.setDelay(2880L);
+        this.setAddDamage(50L);
+        this.addIgnoreDefenseList(20L);
+        this.addIgnoreDefenseList(30L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(600L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+        this.getMultiAttackInfo().add(30L);
+    }
+}
