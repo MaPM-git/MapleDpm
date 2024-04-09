@@ -64,10 +64,12 @@ public class DPMMain {
         dealCycleList.add(new ViperDealCycle(new Viper()));
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
-        dealCycleList.add(new XenonDealCycle(new Xenon()));*/
-        HoYoungDealCycle hoYoungDealCycle = new HoYoungDealCycle(new HoYoung());
-        hoYoungDealCycle.applyDoping();
-        hoYoungDealCycle.print();
+        dealCycleList.add(new XenonDealCycle(new Xenon()));
+        dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
+                */
+        ZeroDealCycle zeroDealCycle = new ZeroDealCycle(new ZeroAlpha());
+        zeroDealCycle.applyDoping();
+        zeroDealCycle.print();
         //this.exportExcel();
     }
 

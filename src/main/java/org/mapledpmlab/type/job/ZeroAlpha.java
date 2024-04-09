@@ -31,4 +31,10 @@ public class ZeroAlpha extends Zero {
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
     }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addDamage(5L);             // 래피드 타임 5중첩
+    }
 }
