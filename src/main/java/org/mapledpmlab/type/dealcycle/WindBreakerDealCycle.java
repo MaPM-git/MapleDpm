@@ -219,9 +219,6 @@ public class WindBreakerDealCycle extends DealCycle {
             if (
                     cooldownCheck(transcendentCygnusBlessing)
             ) {
-                System.out.println("--------");
-                System.out.println("bless");
-                System.out.println(getStart());
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (

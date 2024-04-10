@@ -259,9 +259,6 @@ public class ArkDealCycle extends DealCycle {
         addSkillEvent(contactCaravan);
         while (getStart().before(getEnd())) {
             if (cooldownCheck(loadedDice)) {
-                System.out.println("--------------");
-                System.out.println("dice");
-                System.out.println(getStart());
                 addSkillEvent(loadedDice);
             }
             if (
@@ -270,9 +267,6 @@ public class ArkDealCycle extends DealCycle {
                     && dealCycleOrder == 1
                     && !isSpecter
             ) {
-                System.out.println("--------------");
-                System.out.println("dc1");
-                System.out.println(getStart());
                 addDealCycle(dealCycle1);
                 dealCycleOrder ++;
             } else if (
@@ -281,9 +275,6 @@ public class ArkDealCycle extends DealCycle {
                     && dealCycleOrder == 4
                     && !isSpecter
             ) {
-                System.out.println("--------------");
-                System.out.println("dc2");
-                System.out.println(getStart());
                 addDealCycle(dealCycle2);
                 dealCycleOrder ++;
             } else if (
@@ -292,9 +283,6 @@ public class ArkDealCycle extends DealCycle {
                     && (dealCycleOrder == 3 || dealCycleOrder == 5)
                     && !isSpecter
             ) {
-                System.out.println("--------------");
-                System.out.println("dc3");
-                System.out.println(getStart());
                 addDealCycle(dealCycle3);
                 dealCycleOrder ++;
             } else if (
@@ -303,9 +291,6 @@ public class ArkDealCycle extends DealCycle {
                     && (dealCycleOrder == 2 || dealCycleOrder == 6)
                     && !isSpecter
             ) {
-                System.out.println("--------------");
-                System.out.println("dc4");
-                System.out.println(getStart());
                 addDealCycle(dealCycle4);
                 dealCycleOrder ++;
             } else if (
@@ -313,9 +298,6 @@ public class ArkDealCycle extends DealCycle {
                     && !cooldownCheck(wrathOfGod)
                     && !isSpecter
             ) {
-                System.out.println("--------------");
-                System.out.println("dc5");
-                System.out.println(getStart());
                 addDealCycle(dealCycle5);
             } else if (
                     cooldownCheck(ringSwitching)
@@ -323,9 +305,6 @@ public class ArkDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && !isSpecter
             ) {
-                System.out.println("--------------");
-                System.out.println("ring");
-                System.out.println(getStart());
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(returningHatred)
