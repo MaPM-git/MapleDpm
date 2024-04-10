@@ -747,4 +747,32 @@ public class ArkDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
         }
     }
+
+    @Override
+    public List<SkillEvent> getOverlappingSkillEvents(Timestamp start, Timestamp end) {
+        List<SkillEvent> overlappingSkillEvents = new ArrayList<>();
+        for (SkillEvent skillEvent : getSkillEventList()) {
+            if (
+                    (skillEvent.getStart().before(end) && skillEvent.getEnd().after(start))
+                    || (skillEvent.getStart().equals(start) && skillEvent.getStart().equals(skillEvent.getEnd()))
+            ) {
+                overlappingSkillEvents.add(skillEvent);
+            }
+        }
+        boolean isOverdrive = false;
+        for (SkillEvent skillEvent : overlappingSkillEvents) {
+            if (skillEvent.getSkill() instanceof Overdrive) {
+                isOverdrive = true;
+                break;
+            }
+        }
+        if (isOverdrive) {
+            for (int i = 0; i < overlappingSkillEvents.size(); i++) {
+                if (overlappingSkillEvents.get(i).getSkill() instanceof OverdriveDebuff) {
+                    overlappingSkillEvents.remove(i);
+                }
+            }
+        }
+        return overlappingSkillEvents;
+    }
 }
