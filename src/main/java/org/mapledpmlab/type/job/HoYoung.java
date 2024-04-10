@@ -59,14 +59,14 @@ public class HoYoung extends Job {
         this.addIgnoreDefenseList(10L);
 
         // 4차
-        this.addAtt(41L);               // 고급 부채 숙련
-        this.addFinalDamage(1.29);
+        this.addAtt(42L);               // 고급 부채 숙련
+        this.addFinalDamage(1.3);
         this.addDamage(11L);            // 득도
-        this.addAtt(11L);               // 점정
-        this.addFinalDamage(1.11);
-        this.addCriticalP(11.0);
-        this.addCriticalDamage(11.0);
-        this.addIgnoreDefenseList(11L);
+        this.addAtt(12L);               // 점정
+        this.addFinalDamage(1.12);
+        this.addCriticalP(12.0);
+        this.addCriticalDamage(12.0);
+        this.addIgnoreDefenseList(12L);
 
         // 5차
         this.addAtt(30L);               // 레디 투 다이

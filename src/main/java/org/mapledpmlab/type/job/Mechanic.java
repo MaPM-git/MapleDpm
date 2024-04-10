@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.ability.PassiveBossAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.equipment.MechanicWeapon;
@@ -65,7 +66,7 @@ public class Mechanic extends Job {
         // 5차
         this.addAtt(40L);               // 로디드 다이스
 
-        this.setAbility(new PassiveBossAbnormal());
+        this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.setUnion(new DexUnion());

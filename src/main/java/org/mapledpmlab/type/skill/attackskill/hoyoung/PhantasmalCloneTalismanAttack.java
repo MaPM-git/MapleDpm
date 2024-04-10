@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class PhantasmalCloneTalismanAttack extends AttackSkill {
     public PhantasmalCloneTalismanAttack() {
         this.setName("환영 분신부");
-        this.setDamage(60.0 + 60 + 112);
+        this.setDamage(60.0 + 60 + 114);
         this.setAttackCount(4L);
         this.setCooldown(1.5);
         this.setApplyCooldownReduction(false);

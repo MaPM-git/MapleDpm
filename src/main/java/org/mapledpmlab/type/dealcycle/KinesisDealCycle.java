@@ -471,7 +471,7 @@ public class KinesisDealCycle extends DealCycle {
                         || attackSkill instanceof UltimatePsychicShoot
                         || attackSkill instanceof UltimateTrain
                 ) {
-                    buffSkill.addBuffCriticalDamage(21.0);
+                    buffSkill.addBuffCriticalDamage(22.0);
                 }
                 attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
                         + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01

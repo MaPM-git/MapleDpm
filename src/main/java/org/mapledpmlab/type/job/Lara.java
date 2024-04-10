@@ -51,12 +51,13 @@ public class Lara extends Job {
         this.addCriticalP(20.0);
 
         // 4차
-        this.addFinalDamage(1.3);       // 고급 지팡이 숙련
-        this.addMagic(51L);
-        this.addCriticalP(21.0);        // 혜안
-        this.addCriticalDamage(21.0);
-        this.addFinalDamage(1.46);
-        this.addIgnoreDefenseList(41L);
+        this.addFinalDamage(1.31);      // 고급 지팡이 숙련
+        this.addMagic(52L);
+        this.addCriticalP(22.0);        // 혜안
+        this.addCriticalDamage(22.0);
+        this.addFinalDamage(1.47);
+        this.addIgnoreDefenseList(42L);
+        this.addMagic(54L);             // 유유
 
         this.setAbility(new PassiveBossReuse());
         this.setArtifact(new Artifact());

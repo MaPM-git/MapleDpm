@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class EarthquakeChainEarth extends AttackSkill {
     public EarthquakeChainEarth() {
         this.setName("지진쇄 : 지");
-        this.setDamage(650.0 + 250);
+        this.setDamage(650.0 + 255);
         this.setDelayByAttackSpeed(660L);
         this.setAttackCount(6L);
         this.setCooldown(6.0);

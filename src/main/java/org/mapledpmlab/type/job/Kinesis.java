@@ -19,7 +19,7 @@ public class Kinesis extends Job {
         super();
         this.setName("키네시스");
         this.setConstant(1.2);          // 무기상수
-        this.setMastery(1.92 / 2);      // 숙련도
+        this.setMastery(1.94 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
         // 무기
@@ -63,15 +63,15 @@ public class Kinesis extends Job {
         this.addCriticalDamage(20.0);
 
         // 4차
-        this.addBossDamage(31L);        // 싸이킹 차징
+        this.addBossDamage(31L);        // 싸이킥 차징
         this.addFinalDamage(1.4);       // 싸이코 브레이크
-        this.addMagic(52L);             // ESP 배틀 오더
-        this.addDamage(21L);
-        this.addFinalDamage(1.21);
-        this.addFinalDamage(1.15);      // 각성
-        this.addPlusBuffDuration(21L);  // 정신집중-유지
-        this.addIgnoreDefenseList(26L);  // 전달
-        this.addCriticalDamage(11.0);   // 숙달
+        this.addMagic(54L);             // ESP 배틀 오더
+        this.addDamage(22L);
+        this.addFinalDamage(1.22);
+        this.addFinalDamage(1.16);      // 각성
+        this.addPlusBuffDuration(22L);  // 정신집중-유지
+        this.addIgnoreDefenseList(27L);  // 전달
+        this.addCriticalDamage(12.0);   // 숙달
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());
