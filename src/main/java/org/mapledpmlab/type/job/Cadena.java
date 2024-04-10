@@ -85,6 +85,7 @@ public class Cadena extends Job {
     public void Doping() {
         super.Doping();
         this.addCriticalDamage(66.0);   // 위크포인트 컨버징 어택 6중첩
+        this.addFinalDamage(1.88);      // 웨폰 버라이어티 8중첩
     }
 
     public Long getFinalSubStat2() {
