@@ -5,6 +5,7 @@ import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
+import org.mapledpmlab.type.hyper.HyperKinesis;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
@@ -83,7 +84,7 @@ public class Kinesis extends Job {
         this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
-        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.setHyper(new HyperKinesis(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
 
