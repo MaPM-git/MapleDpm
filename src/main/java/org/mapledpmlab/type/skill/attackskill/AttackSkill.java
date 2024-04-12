@@ -47,10 +47,7 @@ public class AttackSkill extends Skill {
             colNum ++;
         }
         if (getMultiAttackInfo().size() != 0) {
-            str = str + "\n멀티 어택 : ";
-            for (Long info : getMultiAttackInfo()) {
-                str = str + info + "ms ";
-            }
+            str = str + "\n멀티 어택 : " + getMultiAttackInfo().size() + "회 공격";
             colNum ++;
         }
         if (getInterval() != 0) {
