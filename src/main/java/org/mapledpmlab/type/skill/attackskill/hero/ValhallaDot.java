@@ -8,7 +8,8 @@ public class ValhallaDot extends AttackSkill {
         this.setAttackCount(6L);
         this.setDamage(370.0);
         this.setDotDuration(30000L);
-        this.addFinalDamage(1.6);   // 코어강화
+        this.addFinalDamage(2.2);   // 코어강화
+        this.addIgnoreDefenseList(20L);
         this.setLimitAttackCount(12L);
         this.setProp(100L);
         this.setInterval(120L);
