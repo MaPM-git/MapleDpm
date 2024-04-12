@@ -199,6 +199,7 @@ public class ArchMageILDealCycle extends DealCycle {
         dealCycle1.add(iceAuraInstall);
         dealCycle1.add(spiritOfSnow);
         dealCycle1.add(soulContract);
+        dealCycle1.add(freezingBreathBuff);
         dealCycle1.add(restraintRing);
         dealCycle1.add(iceAgeDot);
         dealCycle1.add(jupiterThunder);     // 9.9초 동안 전기 최종뎀 12퍼
@@ -206,7 +207,6 @@ public class ArchMageILDealCycle extends DealCycle {
         dealCycle1.add(frozenOrb);
         dealCycle1.add(thunderBreak);
         dealCycle1.add(lightningSphere);
-        dealCycle1.add(freezingBreathBuff);
 
         dealCycle2.add(thunderSpear);
         dealCycle2.add(mapleWorldGoddessBlessing);
