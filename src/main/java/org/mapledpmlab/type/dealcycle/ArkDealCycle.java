@@ -238,7 +238,6 @@ public class ArkDealCycle extends DealCycle {
         dealCycle4.add(chargeSpellAmplification);
         dealCycle4.add(magicCircuitFullDriveBuff);
         dealCycle4.add(infinitySpell);
-        dealCycle4.add(grandisGoddessBlessingLef);
         dealCycle4.add(overdrive);
         dealCycle4.add(blissfulRestraintDot);
         dealCycle4.add(endlesslyStarvingBeast);
@@ -316,8 +315,11 @@ public class ArkDealCycle extends DealCycle {
                 applyCooldown(returningHatred);
                 hatredCnt = 0;
             } else if (isSpecter) {
+                endlessOminousDream = new EndlessOminousDream();
                 endlessOminousDream.setDelay(240L);
+                endlessHunger = new EndlessHunger();
                 endlessHunger.setDelay(660L);
+                uncontrollableChaos = new UncontrollableChaos();
                 uncontrollableChaos.setDelay(720L);
                 addSkillEvent(endlessOminousDream);
                 addSkillEvent(unfadingScar);
@@ -330,15 +332,20 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(endlessOminousDream);
                 addSkillEvent(unfadingScar);
                 addSkillEvent(endlessOminousDream);
+                unstoppableInstinct = new UnstoppableInstinct();
                 unstoppableInstinct.setDelay(720L);
                 addSkillEvent(unstoppableInstinct);
                 if (getStart().after(memoryOfRootEndTime)) {
                     addSkillEvent(specterForm);
                 }
             } else if (!isSpecter) {
+                plainChargeDrive = new PlainChargeDrive();
                 plainChargeDrive.setDelay(180L);
+                scarletChargeDriveFlame = new ScarletChargeDriveFlame();
                 scarletChargeDriveFlame.getRelatedSkill().setDelay(470L);
+                gustChargeDrive = new GustChargeDrive();
                 gustChargeDrive.setDelay(410L);
+                abyssChargeDriveMagic = new AbyssChargeDriveMagic();
                 abyssChargeDriveMagic.getRelatedSkill().setDelay(530L);
                 addSkillEvent(plainChargeDrive);
                 addSkillEvent(endlessNightmare);
@@ -351,6 +358,7 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(plainChargeDrive);
                 addSkillEvent(endlessNightmare);
                 addSkillEvent(plainChargeDrive);
+                scarletChargeDriveFlame = new ScarletChargeDriveFlame();
                 scarletChargeDriveFlame.getRelatedSkill().setDelay(690L);
                 addSkillEvent(scarletChargeDriveFlame);
                 addSkillEvent(specterForm);
