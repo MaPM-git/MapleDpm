@@ -16,6 +16,7 @@ public class UltimateBlast extends GaugeAttackSkill implements AncientForce {
         this.addIgnoreDefenseList(100L);
         this.addFinalDamage(1.1);       // 에인션트 아처리
         this.setAddDamage(51 + 20L);    // 에이션트 포스-보스 킬러
+        this.addIgnoreDefenseList(20L); // 에인션트 포스-이그노어 가드
         this.addFinalDamage(1.6);       // 코어강화
         this.setGaugeCharge(-1000.0);
     }

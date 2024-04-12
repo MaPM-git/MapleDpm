@@ -13,6 +13,7 @@ public class RelicUnbound extends GaugeAttackSkill {
         this.setInterval(360L);
         this.addFinalDamage(1.1);       // 에인션트 아처리
         this.setAddDamage(20L);         // 에이션트 포스-인챈트 인헨스
+        this.addIgnoreDefenseList(20L); // 에인션트 포스-이그노어 가드
         this.addFinalDamage(1.6);       // 코어강화
         this.setGaugeCharge(-250.0);
     }
