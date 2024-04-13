@@ -14,5 +14,6 @@ public class SpecialMonkeyEscort extends BuffSkill {
         this.setDelay(780L);
         this.setCooldown(90.0);
         this.setRelatedSkill(new MonkeyBombBasic());
+        this.setDuration(35L);
     }
 }

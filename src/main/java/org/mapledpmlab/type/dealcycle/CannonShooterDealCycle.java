@@ -76,7 +76,7 @@ public class CannonShooterDealCycle extends DealCycle {
             add(new BarrelRoulette());
             add(new EpicAdventure());
             add(new LuckyDice());
-            add(new LuckyDiceOneMoreChance());
+            //add(new LuckyDiceOneMoreChance());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new MonkeyFuriousBuff());
             add(new Overdrive(348L));

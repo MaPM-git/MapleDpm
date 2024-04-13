@@ -1,16 +1,22 @@
 package org.mapledpmlab;
 
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.mapledpmlab.type.dealcycle.*;
 import org.mapledpmlab.type.job.*;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.io.*;
 import java.util.*;
+import java.util.List;
 
 public class DPMMain {
 
@@ -21,7 +27,7 @@ public class DPMMain {
     }
 
     public void init() {
-        /*dealCycleList = new ArrayList<>();
+        dealCycleList = new ArrayList<>();
         dealCycleList.add(new AdeleDealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         dealCycleList.add(new AranDealCycle(new Aran()));
@@ -32,6 +38,7 @@ public class DPMMain {
         dealCycleList.add(new BishopDealCycle(new Bishop()));
         dealCycleList.add(new BlasterDealCycle(new Blaster()));
         dealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
+        dealCycleList.add(new CadenaDealCycle(new Cadena()));
         dealCycleList.add(new CannonShooterDealCycle(new CannonShooter()));
         dealCycleList.add(new CaptainDealCycle(new Captain()));
         dealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
@@ -67,11 +74,78 @@ public class DPMMain {
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));
         dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
-                */
-        KinesisDealCycle kinesisDealCycle = new KinesisDealCycle(new Kinesis());
-        kinesisDealCycle.applyDoping();
-        kinesisDealCycle.print();
-        //this.exportExcel();
+        dealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
+        this.exportExcel();
+        this.exportSVG();
+    }
+
+    private void exportSVG() {
+        for (DealCycle dealCycle : dealCycleList) {
+            DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+            String svgNamespaceURI = "http://www.w3.org/2000/svg";
+            Document document = domImpl.createDocument(svgNamespaceURI, "svg", null);
+
+            // Create an instance of the SVG Generator
+            SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
+
+            // Drawing code
+            drawActivities(svgGenerator, dealCycle);
+
+            // Save the SVG to a file
+            try {
+                OutputStream outputStream = new FileOutputStream(new File(dealCycle.getJob().getName() + ".svg"));
+                Writer out = new OutputStreamWriter(outputStream, "UTF-8");
+                svgGenerator.stream(out, true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void drawActivities(SVGGraphics2D g, DealCycle dealCycle) {
+        int y = 50;
+        List<Color> colorList = new ArrayList<>();
+        colorList.add(Color.blue);
+        colorList.add(Color.red);
+        colorList.add(Color.black);
+        colorList.add(Color.orange);
+        colorList.add(Color.cyan);
+        colorList.add(Color.darkGray);
+        colorList.add(Color.gray);
+        colorList.add(Color.green);
+        colorList.add(Color.lightGray);
+        colorList.add(Color.magenta);
+        colorList.add(Color.pink);
+        colorList.add(Color.yellow);
+        colorList.add(Color.blue);
+        colorList.add(Color.red);
+        colorList.add(Color.black);
+        colorList.add(Color.orange);
+        colorList.add(Color.cyan);
+        colorList.add(Color.darkGray);
+        colorList.add(Color.gray);
+        colorList.add(Color.green);
+        colorList.add(Color.lightGray);
+        colorList.add(Color.magenta);
+        colorList.add(Color.pink);
+        colorList.add(Color.yellow);
+        for (int i = 0; i < dealCycle.getBuffSkillList().size(); i++) {
+            g.setColor(Color.black);
+            g.setFont(new Font("Arial", Font.PLAIN, 12));
+            g.drawString(dealCycle.getBuffSkillList().get(i).getName(), 10, 50 * i + 50);
+            g.setColor(colorList.get(i));
+            g.setStroke(new BasicStroke(4));
+            for (SkillEvent skillEvent : dealCycle.getSkillEventList()) {
+                if (skillEvent.getSkill().getClass().getName().equals(dealCycle.getBuffSkillList().get(i).getClass().getName())) {
+                    g.drawLine((int) skillEvent.getStart().getTime() / 1000 + 200, 50 * i + 50, (int) skillEvent.getEnd().getTime() / 1000 + 200, 50 * i + 50);
+                }
+            }
+        }
+        g.setColor(Color.black);
+        g.setFont(new Font("Arial", Font.PLAIN, 12));
+        for (int i = 0; i < 13; i++) {
+            g.drawString(String.valueOf(i), 200 + 60 * i, 50 * dealCycle.getBuffSkillList().size() + 50);
+        }
     }
 
     public void exportExcel() {

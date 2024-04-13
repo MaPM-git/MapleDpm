@@ -68,7 +68,7 @@ public class DualBladeDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new DarkSight());
+            //add(new DarkSight());
             add(new EpicAdventure());
             add(new FinalCutBuff());
             add(new FlashbangBuff());

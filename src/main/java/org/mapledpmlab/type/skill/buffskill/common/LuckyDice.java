@@ -74,5 +74,10 @@ public class LuckyDice extends BuffSkill {
                 }
             }
         }
+        if (this.getCooldown() != 180) {
+            this.setDuration(90L);
+        } else {
+            this.setDuration(180L);
+        }
     }
 }

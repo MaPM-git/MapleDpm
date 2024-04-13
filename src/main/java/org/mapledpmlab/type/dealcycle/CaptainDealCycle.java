@@ -72,7 +72,7 @@ public class CaptainDealCycle extends DealCycle {
         {
             add(new EpicAdventure());
             add(new LuckyDice());
-            add(new LuckyDiceOneMoreChance());
+            //add(new LuckyDiceOneMoreChance());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new Overdrive(249L));
             add(new OverdriveDebuff(249L));

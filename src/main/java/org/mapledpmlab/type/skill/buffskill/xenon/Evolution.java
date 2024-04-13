@@ -9,6 +9,6 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class Evolution extends BuffSkill {
     public Evolution() {
         this.setName("아티피셜 에볼루션(진화 상태)");
-        this.setCooldown(30.0);
+        this.setDuration(30L);
     }
 }

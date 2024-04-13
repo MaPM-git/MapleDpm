@@ -88,7 +88,7 @@ public class BowmasterDealCycle extends DealCycle {
             add(new EpicAdventure());
             add(new EvolveBuff());
             add(new MapleWorldGoddessBlessing(275L));
-            add(new MortalBlow());
+            //add(new MortalBlow());
             add(new Preparation());
             add(new PriorPreparation());
             add(new QuiverFullBurstBuff());

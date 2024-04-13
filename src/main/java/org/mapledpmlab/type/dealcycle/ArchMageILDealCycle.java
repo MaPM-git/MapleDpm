@@ -170,9 +170,13 @@ public class ArchMageILDealCycle extends DealCycle {
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 인피니티 달구기
-        getSkillEventList().add(new SkillEvent(new Infinity(70000L), getStart(), new Timestamp(61360)));
+        getStart().setTime(-60000);
+        infinity.setActivateTime(new Timestamp(-70000));
+        addSkillEvent(infinity);
+        getStart().setTime(0);
+        /*getSkillEventList().add(new SkillEvent(new Infinity(70000L), getStart(), new Timestamp(61360)));
         getEventTimeList().add(getStart());
-        getEventTimeList().add(new Timestamp(61360));
+        getEventTimeList().add(new Timestamp(61360));*/
 
         for (int i = 0; i < 720 * 1000; i += iceAura.getInterval()) {
             getSkillEventList().add(new SkillEvent(iceAura, new Timestamp(i), new Timestamp(i)));

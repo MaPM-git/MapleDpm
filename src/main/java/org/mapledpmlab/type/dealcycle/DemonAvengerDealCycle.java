@@ -76,9 +76,9 @@ public class DemonAvengerDealCycle extends DealCycle {
             add(new ArmorBreakDebuff());
             add(new AuraWeaponBuffDA());
             add(new CallMastemaDA());
-            add(new DemonFrenzyBuff());
+            //add(new DemonFrenzyBuff());
             add(new DemonicFortitudeDA());
-            add(new ForbiddenContract());
+            //add(new ForbiddenContract());
             add(new OtherWorldGoddessBlessingDA());
             add(new PriorPreparation());
             add(new RestraintRingDA());

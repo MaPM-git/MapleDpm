@@ -73,7 +73,7 @@ public class KhaliDealCycle extends DealCycle {
             add(new RestraintRing());
             add(new SoulContract());
             add(new ThiefCunning());
-            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+            //add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
             add(new WrathOfGod());
         }
     };

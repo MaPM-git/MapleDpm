@@ -13,6 +13,7 @@ public class CallMastemaDA extends GaugeBuffSkill {
         this.setCooldown(120.0);
         this.setDelay(690L);
         this.setGaugePer(-4L);
+        this.setDuration(48L);
         this.setRelatedSkill(new MastemaClaw());
     }
 }

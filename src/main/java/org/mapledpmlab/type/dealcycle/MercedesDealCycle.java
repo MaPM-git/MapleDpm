@@ -82,11 +82,11 @@ public class MercedesDealCycle extends DealCycle {
             add(new RoyalKnights());
             add(new SoulContract());
             add(new Sylphidia());
-            add(new SylphidiaEnd());
+            //add(new SylphidiaEnd());
             add(new ThiefCunning());
             add(new UnfadingGlorySpiritKing());
             add(new UnicornSpikeBuff());
-            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+            //add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 

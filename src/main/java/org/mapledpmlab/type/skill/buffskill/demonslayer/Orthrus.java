@@ -14,5 +14,6 @@ public class Orthrus extends GaugeBuffSkill {
         this.setDelay(490L);
         this.setRelatedSkill(new Nemea());
         this.setGaugeCharge(-30.0);
+        this.setDuration(55L);
     }
 }

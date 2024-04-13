@@ -75,7 +75,7 @@ public class ViperDealCycle extends DealCycle {
             add(new LiberateNeptunusBuff());
             add(new LightningForm());
             add(new LuckyDice());
-            add(new LuckyDiceOneMoreChance());
+            //add(new LuckyDiceOneMoreChance());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new Overdrive(255L));
             add(new OverdriveDebuff(255L));

@@ -8,6 +8,7 @@ import org.mapledpmlab.type.skill.attackskill.illium.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.illium.*;
+import org.mapledpmlab.type.skill.buffskill.illium.SoulOfCrystal;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class IlliumDealCycle extends DealCycle {
             add(new ReactionDestruction());
             add(new ReactionDomination());
             add(new ReactionSpectrum());
-            add(new SoulOfCrystal());
+            add(new org.mapledpmlab.type.skill.attackskill.illium.SoulOfCrystal());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new UnlimitedCrystal1());
@@ -84,6 +85,7 @@ public class IlliumDealCycle extends DealCycle {
             add(new PriorPreparation());
             add(new RestraintRing());
             add(new SoulContract());
+            add(new SoulOfCrystal());
             add(new SoulOfCrystalBuff());
             add(new ThiefCunning());
             add(new UnlimitedCrystalBuff());
@@ -105,7 +107,7 @@ public class IlliumDealCycle extends DealCycle {
     ReactionDestruction reactionDestruction = new ReactionDestruction();
     ReactionDomination reactionDomination = new ReactionDomination();
     ReactionSpectrum reactionSpectrum = new ReactionSpectrum();
-    SoulOfCrystalBuff soulOfCrystalBuff = new SoulOfCrystalBuff();
+    SoulOfCrystal soulOfCrystal = new SoulOfCrystal();
     UnlimitedCrystalRelease unlimitedCrystalRelease = new UnlimitedCrystalRelease();
     UnlimitedCrystalResonance unlimitedCrystalResonance = new UnlimitedCrystalResonance();
 
@@ -334,7 +336,8 @@ public class IlliumDealCycle extends DealCycle {
                 crystalCharge = 0;
                 crystalSkillGloryWingEndTime = new Timestamp(getStart().getTime() + 20000);
                 if (soulOfCrystalEndTime.after(getStart())) {
-                    soulOfCrystalBuff.setDuration(soulOfCrystalEndTime.getTime() - getStart().getTime());
+                    SoulOfCrystalBuff soulOfCrystalBuff = new SoulOfCrystalBuff();
+                    soulOfCrystalBuff.setDuration((soulOfCrystalEndTime.getTime() - getStart().getTime()) / 1000);
                     addSkillEvent(soulOfCrystalBuff);
                 }
             }
@@ -405,7 +408,7 @@ public class IlliumDealCycle extends DealCycle {
                     resonance++;
                 }
             }
-            if (skill instanceof SoulOfCrystal) {
+            if (skill instanceof org.mapledpmlab.type.skill.attackskill.illium.SoulOfCrystal) {
                 soulOfCrystalEndTime = new Timestamp(getStart().getTime() + 30000);
             }
             if (

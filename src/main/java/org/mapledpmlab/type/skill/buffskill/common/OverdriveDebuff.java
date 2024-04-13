@@ -13,6 +13,7 @@ public class OverdriveDebuff extends BuffSkill {
         this.setName("오버 드라이브(디버프)");
         this.setCooldown(60.0);
         this.setDelay(540L);
+        this.setDuration(60L);
         this.addBuffAttMagic(-(long) (att * 0.15));
     }
 }

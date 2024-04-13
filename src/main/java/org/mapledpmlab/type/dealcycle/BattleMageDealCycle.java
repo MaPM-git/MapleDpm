@@ -60,7 +60,7 @@ public class BattleMageDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new DebuffAura());
+            //add(new DebuffAura());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new MasterOfDeath());
             add(new PriorPreparation());

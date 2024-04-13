@@ -80,7 +80,7 @@ public class EvanDealCycle extends DealCycle {
             add(new SoulContract());
             add(new SwiftComeBack());
             add(new ThiefCunning());
-            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
+            //add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
             add(new ZodiacBurstBuff());
         }
     };

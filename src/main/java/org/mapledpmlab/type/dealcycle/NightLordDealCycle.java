@@ -69,7 +69,7 @@ public class NightLordDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new DarkSight());
+            //add(new DarkSight());
             add(new EpicAdventure());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new PriorPreparation());

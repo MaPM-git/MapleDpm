@@ -47,5 +47,10 @@ public class LuckyDiceMechanic extends BuffSkill {
                 this.addBuffDamage(10L);
             }
         }
+        if (this.getCooldown() != 180) {
+            this.setDuration(90L);
+        } else {
+            this.setDuration(180L);
+        }
     }
 }

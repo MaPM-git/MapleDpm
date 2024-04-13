@@ -60,7 +60,7 @@ public class XenonDealCycle extends DealCycle {
         {
             add(new AmaranceGenerator());
             add(new Evolution());
-            add(new ExtraSupply());
+            //add(new ExtraSupply());
             add(new HologramGraffitiBuff());
             add(new LoadedDice());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));

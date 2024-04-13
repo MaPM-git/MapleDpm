@@ -83,10 +83,4 @@ public class NightLord extends Job {
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
-
-    @Override
-    public void Doping() {
-        super.Doping();
-        this.addIgnoreDefenseList(31 + 10L); // 퍼지 에어리어
-    }
 }

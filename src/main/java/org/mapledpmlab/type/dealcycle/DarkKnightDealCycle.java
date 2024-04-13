@@ -127,12 +127,15 @@ public class DarkKnightDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        for (int i = -27610; i < 12.39 * 1000; i += darknessAuraDot.getInterval()) {
+        /*for (int i = -27610; i < 12.39 * 1000; i += darknessAuraDot.getInterval()) {
             getSkillEventList().add(new SkillEvent(darknessAuraDot, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
-        }
+        }*/
 
-        darknessAuraDot.setActivateTime(new Timestamp(-27610 + 169800));
+        getStart().setTime(-27610);
+        darknessAuraDot.setActivateTime(new Timestamp(-30000));
+        addSkillEvent(darknessAuraDot);
+        //darknessAuraDot.setActivateTime(new Timestamp(-27610 + 169800));
 
         for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
             getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));

@@ -11,5 +11,6 @@ public class PinpointPierceBuff extends BuffSkill {
         this.setName("핀포인트 피어스");
         this.addBuffDamage(15L);
         this.addBuffIgnoreDefense(15L);
+        this.setDuration(60L);
     }
 }

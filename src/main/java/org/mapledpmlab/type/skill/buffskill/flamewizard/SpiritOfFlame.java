@@ -11,5 +11,6 @@ public class SpiritOfFlame extends BuffSkill {
         this.setName("스피릿 오브 플레임");
         this.setDelay(420L);
         this.setCooldown(300.0);
+        this.setDuration(300L);
     }
 }

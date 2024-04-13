@@ -17,5 +17,6 @@ public class PirateFlag extends BuffSkill {
                         (275 + 2) * 5 * 0.25
                 )
         );
+        this.setDuration(30L);
     }
 }
