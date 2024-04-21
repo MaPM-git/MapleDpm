@@ -25,8 +25,8 @@ public class DemonAvenger extends Job {
         this.addMainStatP(10L);         // 4카루타 세트
         this.setJobType(JobType.DEMON_AVENGER);
 
-        this.addPerXMainStat(-18400L);
-        this.addPerXMainStat(277200L);
+        this.addPerXMainStat(-28200L);
+        this.addPerXMainStat(277200L + 315000);
 
         this.starforce += 22 * 16;      // 22성 장비
         this.starforce += 15;           // 블랙하트

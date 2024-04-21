@@ -31,10 +31,10 @@ public class Xenon extends Job {
         this.addMainStat(30L);          // 향상된 10단계 물약
         this.setJobType(JobType.XENON);
 
-        this.addPerXMainStat(-18400L);
-        this.addPerXMainStat(6336L);
-        this.addPerXSubStat(6336L);
-        this.addPerXOtherStat(6336L);
+        this.addPerXMainStat(-28200L);
+        this.addPerXMainStat(7200L + 6366);
+        this.addPerXSubStat(7200L + 6366);
+        this.addPerXOtherStat(7200L + 6366);
         this.addPerXMainStat((long) (144 * 4 + 96 * 20));
 
         // 무기

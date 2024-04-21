@@ -10,6 +10,6 @@ public class Symbol extends Item {
     public Symbol() {
         super();
         this.addPerXMainStat(13200L);
-        this.addPerXMainStat((long) (300 * 4 + 200 * 20));  // 포스 200
+        this.addPerXMainStat((long) (2500 * 6));
     }
 }
