@@ -6,6 +6,7 @@ public class EarthquakeChainEarthReinforce extends AttackSkill {
     public EarthquakeChainEarthReinforce() {
         this.setName("지진쇄 : 지(강화)");
         this.setDamage(1010.0 + 255);
+        this.setDelay(510L + 30);
         this.setDelayByAttackSpeed(660L);
         this.setAttackCount(6L);
         this.setCooldown(6.0);

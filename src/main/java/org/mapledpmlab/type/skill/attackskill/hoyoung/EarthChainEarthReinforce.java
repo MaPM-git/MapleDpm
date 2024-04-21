@@ -6,7 +6,8 @@ public class EarthChainEarthReinforce extends AttackSkill {
     public EarthChainEarthReinforce() {
         this.setName("토파류 : 지(강화)");
         this.setDamage(960.0 + 100 + 230);
-        this.setDelayByAttackSpeed(690L);
+        this.setDelay(540L + 30);
+        // this.setDelayByAttackSpeed(690L);
         this.setAttackCount(4L);
         this.setRelatedSkill(new EarthquakeChainFalseTrueReinforce());
         this.setAddDamage(10L + 15);    // 천지인-리인포스
