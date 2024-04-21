@@ -448,7 +448,8 @@ public class HoYoungDealCycle extends DealCycle {
                         && getStart().before(flameEndTime)
                 ) {
                     addSkillEvent(conflagrationChainHeavenFlame);
-                    flameCnt -= 3;
+                    flameCnt = 0;
+                    flameEndTime = new Timestamp(-1);
                 }
             }
             if (skill instanceof ConflagrationChainHeavenFalseTrueReinforce) {
