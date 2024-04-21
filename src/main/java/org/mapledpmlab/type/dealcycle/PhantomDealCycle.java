@@ -7,10 +7,7 @@ import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.phantom.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
-import org.mapledpmlab.type.skill.buffskill.phantom.BullsEye;
-import org.mapledpmlab.type.skill.buffskill.phantom.FinalCutBuff;
-import org.mapledpmlab.type.skill.buffskill.phantom.JokerHourglass;
-import org.mapledpmlab.type.skill.buffskill.phantom.JokerSword;
+import org.mapledpmlab.type.skill.buffskill.phantom.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -64,7 +61,7 @@ public class PhantomDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new BullsEye());
+            add(new BullsEyePhantom());
             add(new FinalCutBuff());
             add(new HeroesOath());
             add(new JokerHourglass());
@@ -95,7 +92,7 @@ public class PhantomDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
-        BullsEye bullsEye = new BullsEye();
+        BullsEyePhantom bullsEye = new BullsEyePhantom();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DefyingFate defyingFate = new DefyingFate();
         FinalCutBuff finalCutBuff = new FinalCutBuff();
