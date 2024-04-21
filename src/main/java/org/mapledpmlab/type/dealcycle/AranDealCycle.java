@@ -478,7 +478,7 @@ public class AranDealCycle extends DealCycle {
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

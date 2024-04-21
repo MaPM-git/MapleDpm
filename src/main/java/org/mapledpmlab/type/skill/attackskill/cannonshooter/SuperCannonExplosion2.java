@@ -7,7 +7,7 @@ public class SuperCannonExplosion2 extends AttackSkill {
         this.setName("슈퍼 캐논 익스플로젼(대폭발)");
         this.setAttackCount(15L);       // 벅 샷
         this.setDamage(2220.0);
-        this.setDelay(210L);
+        this.setDelay(1560L);
         this.addFinalDamage(0.45);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);

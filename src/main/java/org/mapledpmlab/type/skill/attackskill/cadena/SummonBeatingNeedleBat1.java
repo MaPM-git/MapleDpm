@@ -7,7 +7,8 @@ public class SummonBeatingNeedleBat1 extends AttackSkill {
         this.setName("서먼 비팅 니들배트(1타)");
         this.setDamage(505.0);
         this.setAttackCount(8L);
-        this.setDelayByAttackSpeed(480L);
+        this.setDelay(150L);
+        //this.setDelayByAttackSpeed(480L);
         this.setCooldown(12.0);
         this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화

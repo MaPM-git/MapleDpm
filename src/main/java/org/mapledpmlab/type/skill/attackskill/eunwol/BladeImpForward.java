@@ -6,9 +6,7 @@ public class BladeImpForward extends AttackSkill {
     public BladeImpForward() {
         this.setName("파쇄철조-전");
         this.setDamage(110.0);
-        this.setAttackCount(1L);
-        this.setDotDuration(720L);
-        this.setInterval(720L / 4);
-        this.setLimitAttackCount(4L);
+        this.setAttackCount(4L);
+        this.getMultiAttackInfo().add(720L);
     }
 }

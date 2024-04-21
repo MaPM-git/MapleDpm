@@ -44,6 +44,7 @@ public class BlasterDealCycle extends DealCycle {
         {
             add(new AfterImageShockActive());
             add(new AfterImageShockPassive());
+            add(new AuraWeaponDot());
             add(new BurningBreakerExplosion());
             add(new BurningBreakerRush());
             add(new BurstPileBunker());
@@ -88,6 +89,7 @@ public class BlasterDealCycle extends DealCycle {
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AfterImageShock());
+            add(new AuraWeaponBuff());
             add(new BunkerBuster());
             add(new MapleWorldGoddessBlessing(275L));
             add(new MaximizeCanon());

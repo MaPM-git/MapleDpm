@@ -198,24 +198,12 @@ public class CaptainDealCycle extends DealCycle {
                     && luckyDice.getBuffDamage() == 20
             ) {
                 luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
-                if (
-                        luckyDiceOneMoreChance.getBuffDamage() >= 30
-                        || luckyDiceOneMoreChance.getBuffAttMagic() >= 15
-                ) {
-                    luckyDiceOneMoreChance.setCooldown(180.0);
-                }
                 luckyDice.setCooldown(luckyDiceOneMoreChance.getCooldown());
                 luckyDice.setBuffDamage(luckyDiceOneMoreChance.getBuffDamage());
                 luckyDice.setBuffAttMagic(luckyDiceOneMoreChance.getBuffAttMagic());
                 addSkillEvent(luckyDice);
             } else if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDice();
-                if (
-                        luckyDice.getBuffDamage() >= 30
-                        || luckyDice.getBuffAttMagic() >= 15
-                ) {
-                    luckyDice.setCooldown(180.0);
-                }
                 addSkillEvent(luckyDice);
             }
             if (cooldownCheck(assembleCrewDelay)) {

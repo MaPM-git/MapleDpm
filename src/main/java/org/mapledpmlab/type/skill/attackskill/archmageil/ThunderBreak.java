@@ -12,6 +12,5 @@ public class ThunderBreak extends ThunderAttack {
         this.setLimitAttackCount(8L);
         this.setApplyFinalAttack(true);
         this.addFinalDamage(1.6);           // 코어강화
-        this.addFinalDamage(0.5201424);     // 1~8중첩 평균
     }
 }

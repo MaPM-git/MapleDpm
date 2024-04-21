@@ -14,6 +14,6 @@ public class HeartbreakerFinishCancle extends AttackSkill {
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.7);       // 쉐도우 파트너
-        this.setRelatedSkill(new HeartbreakerDarksight());
+        //this.setRelatedSkill(new HeartbreakerDarksight());
     }
 }

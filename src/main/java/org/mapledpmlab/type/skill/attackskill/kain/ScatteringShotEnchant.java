@@ -13,6 +13,6 @@ public class ScatteringShotEnchant extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(10L + 15);
         this.addFinalDamage(4.0 / 7);
-        this.setApplyCooldownReduction(false);
+        this.setApplyReuse(true);
     }
 }

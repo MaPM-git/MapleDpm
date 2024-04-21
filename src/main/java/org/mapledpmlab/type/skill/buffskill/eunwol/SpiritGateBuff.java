@@ -9,8 +9,8 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class SpiritGateBuff extends BuffSkill {
     public SpiritGateBuff() {
         this.setName("귀문진");
-        this.setDuration(8L);
-        this.addBuffCriticalDamage(2.0);
+        this.setDuration(38L);
+        this.addBuffCriticalDamage(10.0);
     }
 
     /*public void setNesting(Long cnt) {

@@ -8,10 +8,9 @@ public class AfterimageShotActive extends AttackSkill {
         this.setAttackCount(3L);
         this.setCooldown(120.0);
         this.setDamage(880.0);
-        this.setDelay(720L);
         this.setApplyFinalAttack(true);
         this.setDotDuration(30000L);
-        this.setInterval(210L);
+        this.setInterval(180L);
         this.setFinalDamage(1.6);       // 코어강화
     }
 }

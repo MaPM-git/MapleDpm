@@ -81,7 +81,7 @@ public class WindBreakerDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new CriticalReinforce(0.0));
+            add(new CriticalReinforce(100.0));
             add(new EmeraldFlower());
             add(new GloryOfGuardians());
             add(new PriorPreparation());
@@ -100,6 +100,8 @@ public class WindBreakerDealCycle extends DealCycle {
     HowlingGale2 howlingGale2 = new HowlingGale2();
     HowlingGale3 howlingGale3 = new HowlingGale3();
 
+    boolean isCriticalReinforce = false;
+
     public WindBreakerDealCycle(Job job) {
         super(job, null);
 
@@ -108,7 +110,7 @@ public class WindBreakerDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
         CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
         EmeraldFlower emeraldFlower = new EmeraldFlower();
         GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
@@ -176,14 +178,12 @@ public class WindBreakerDealCycle extends DealCycle {
         final1.add(restraintRing);
         final1.add(howlingGale3);
         final1.add(vortexSphere);
-        final1.add(idleWhimFirst);
 
         // 예열 후 사용(리레)
         final2.add(soulContract);
         final2.add(restraintRing);
         final2.add(howlingGale3);
         final2.add(vortexSphere);
-        final2.add(idleWhimFirst);
 
         // 예열 후 사용(웨퍼/6차)
         final3.add(mistralSpring);
@@ -191,14 +191,12 @@ public class WindBreakerDealCycle extends DealCycle {
         final3.add(weaponJumpRing);
         final3.add(howlingGale3);
         final3.add(vortexSphere);
-        final3.add(idleWhimFirst);
 
         // 예열 후 사용(웨퍼)
         final4.add(soulContract);
         final4.add(weaponJumpRing);
         final4.add(howlingGale3);
         final4.add(vortexSphere);
-        final4.add(idleWhimFirst);
 
         int finalChk = 0;
         int dealCycleOrder = 1;
@@ -306,7 +304,7 @@ public class WindBreakerDealCycle extends DealCycle {
                     && ((
                             ((double) getStart().getTime() / 120 / 1000 % 1) < 0.75
                             && ((double) getStart().getTime() / 120 / 1000 % 1) > 0.25
-                    ) || getStart().after(new Timestamp(660 * 1000)))
+                    ))// || getStart().after(new Timestamp(660 * 1000)))
             ) {
                 addSkillEvent(howlingGale2);
             } else if (
@@ -322,8 +320,6 @@ public class WindBreakerDealCycle extends DealCycle {
                 addSkillEvent(vortexSphere);
             } else if (
                     cooldownCheck(idleWhimFirst)
-                    && !cooldownCheck(gloryOfGuardians)
-                    && !cooldownCheck(howlingGale3)
             ) {
                 addSkillEvent(idleWhimFirst);
             } else {
@@ -448,6 +444,12 @@ public class WindBreakerDealCycle extends DealCycle {
                     isStormWhim = true;
                 }
             }
+            for (int j = 0; j < useBuffSkillList.size(); j++) {
+                if (useBuffSkillList.get(j).getSkill() instanceof CriticalReinforce) {
+                    isCriticalReinforce = true;
+                    break;
+                }
+            }
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
@@ -493,5 +495,46 @@ public class WindBreakerDealCycle extends DealCycle {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
+    }
+
+    @Override
+    public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
+        Long attackDamage = 0L;
+        AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (isCriticalReinforce) {
+            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP() + ((AttackSkill) skillEvent.getSkill()).getCriticalP());
+            buffSkill.addBuffCriticalDamage(criticalReinforce.getBuffCriticalDamage());
+        }
+        for (AttackSkill as : getAttackSkillList()) {
+            if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
+                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                        + getJob().getPerXAtt())
+                        * getJob().getConstant()
+                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                        * (getJob().getFinalDamage())
+                        * buffSkill.getBuffFinalDamage()
+                        * getJob().getStatXFinalDamage()
+                        * attackSkill.getFinalDamage()
+                        * getJob().getMastery()
+                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                );
+                if (skillEvent.getStart().equals(start)) {
+                    as.setUseCount(as.getUseCount() + 1);
+                }
+                Long distance = end.getTime() - start.getTime();
+                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / as.getDelay() * distance;
+                }
+                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
+                break;
+            }
+        }
+        return attackDamage;
     }
 }

@@ -7,7 +7,7 @@ public class HowlingGale3 extends AttackSkill {
         this.setName("하울링 게일(3중첩)");
         this.setAttackCount(3L);
         this.setDamage(945.0);
-        this.setApplyFinalAttack(true);
+        //this.setApplyFinalAttack(true);
         this.setDotDuration(10000L);
         this.setInterval(150L);
         this.setLimitAttackCount(66L);

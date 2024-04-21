@@ -13,5 +13,6 @@ public class PoisonNeedle extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new PoisonNeedleLoop());
         this.setAddDamage(20L);
+        this.setApplyReuse(true);
     }
 }

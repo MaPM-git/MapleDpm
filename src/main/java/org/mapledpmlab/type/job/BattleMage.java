@@ -91,7 +91,6 @@ public class BattleMage extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.08);          // 오버로드 마나
         this.addIgnoreDefenseList(20L);     // 디버프 오라
         this.addProperty(10L);
         this.addFinalDamage(1.08);

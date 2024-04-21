@@ -78,7 +78,7 @@ public class WildHunterDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new CriticalReinforce(0.0));
+            add(new CriticalReinforce(100.0));
             add(new JaguarStorm());
             add(new MapleWorldGoddessBlessing(275L));
             add(new PriorPreparation());
@@ -120,7 +120,7 @@ public class WildHunterDealCycle extends DealCycle {
         ClawCut clawCut = new ClawCut();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         Crossroad crossroad = new Crossroad();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
         DrillContainer drillContainer = new DrillContainer();
         GetOffJaguar getOffJaguar = new GetOffJaguar();
         Grenade grenade = new Grenade();
@@ -644,7 +644,7 @@ public class WildHunterDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

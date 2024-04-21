@@ -27,6 +27,7 @@ public class DealCycle {
     private List<BuffSkill> buffSkillList;
     private List<SkillEvent> skillEventList = new ArrayList<>();
     private List<Timestamp> eventTimeList = new ArrayList<>();
+    private List<Long> dpsList = new ArrayList<>();
     Timestamp restraintRingStartTime = null;
     Timestamp restraintRingEndTime = null;
     Timestamp fortyEndTime = null;
@@ -214,9 +215,9 @@ public class DealCycle {
         setFortyDeal(calcFortyDeal());
         Object[] result = new Object[]{
                 this.getJob().getName(), this.getDPM() + "",
-                "=TEXT(" + getDPM() + "/SUM(IF(A2:A47=\"비숍\", VALUE(B2:B47),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
-                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A47=\"비숍\", VALUE(D2:D47),0)),\"0.0%\")", this.getFortyDeal() + "",
-                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A47=\"비숍\", VALUE(F2:F47),0)),\"0.0%\")"
+                "=TEXT(" + getDPM() + "/SUM(IF(A2:A48=\"비숍\", VALUE(B2:B48),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
+                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A48=\"비숍\", VALUE(D2:D48),0)),\"0.0%\")", this.getFortyDeal() + "",
+                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A48=\"비숍\", VALUE(F2:F48),0)),\"0.0%\")"
         };
         return result;
     }
@@ -300,7 +301,7 @@ public class DealCycle {
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()
@@ -358,6 +359,28 @@ public class DealCycle {
             }
         }
         return calcTotalDamage(tmp);
+    }
+
+    public void calcDps() {
+        for (AttackSkill as : getAttackSkillList()) {
+            as.setShare(0.0);
+            as.setUseCount(0L);
+            as.setCumulativeDamage(0L);
+        }
+        for (int i = 0; i < 720; i++) {
+            List<Timestamp> tmp = new ArrayList<>();
+            Long dps = 0L;
+            for (Timestamp ts : getEventTimeList()) {
+                if (
+                        (ts.equals(new Timestamp(i * 1000)) || ts.after(new Timestamp(i * 1000)))
+                        && (ts.equals(new Timestamp((i + 1) * 1000)) || ts.before(new Timestamp((i + 1) * 1000)))
+                ) {
+                    tmp.add(ts);
+                }
+            }
+            dps += calcTotalDamage(tmp);
+            dpsList.add(dps);
+        }
     }
 
     public void sortEventTimeList() {

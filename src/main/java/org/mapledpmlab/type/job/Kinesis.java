@@ -88,12 +88,6 @@ public class Kinesis extends Job {
         this.addObject(this.getHyper());
     }
 
-    @Override
-    public void Doping() {
-        super.Doping();
-        addFinalDamage(1.08);           // 오버로드 마나
-    }
-
     public Long getStatDamage() {
         return (long) Math.floor(
                 (this.getFinalMainStat() * 4 + getFinalSubstat()) * 0.01

@@ -6,7 +6,7 @@ public class KarmaFury extends AttackSkill {
     public KarmaFury() {
         this.setName("카르마 퓨리");
         this.setDamage(880.0);
-        this.setAttackCount(7L);
+        this.setAttackCount(14L);
         this.setCooldown(10.0);
         this.setDelay(990L);
         this.setDotDuration(990L);
@@ -15,6 +15,6 @@ public class KarmaFury extends AttackSkill {
         this.addIgnoreDefenseList(30L);
         this.addFinalDamage(1.6);           // 코어강화
         this.setApplyFinalAttack(true);
-        this.addFinalDamage(1.7);           // 미러 이미징
+        this.addFinalDamage(0.85);           // 미러 이미징
     }
 }

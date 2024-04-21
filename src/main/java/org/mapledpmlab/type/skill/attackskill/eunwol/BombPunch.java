@@ -7,10 +7,10 @@ public class BombPunch extends AttackSkill {
         this.setName("폭류권");
         this.setDamage(304.0);
         this.setAttackCount(3L);
-        this.setDotDuration(360L * 3);
-        this.setInterval(360L);
-        this.setLimitAttackCount(3L);
         this.addFinalDamage(2.2);       // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.getMultiAttackInfo().add(360L);
+        this.getMultiAttackInfo().add(360L);
+        this.getMultiAttackInfo().add(360L);
     }
 }

@@ -6,10 +6,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.bowmaster.*;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
-import org.mapledpmlab.type.skill.buffskill.bowmaster.ArrowRainBuff;
-import org.mapledpmlab.type.skill.buffskill.bowmaster.MortalBlow;
-import org.mapledpmlab.type.skill.buffskill.bowmaster.Preparation;
-import org.mapledpmlab.type.skill.buffskill.bowmaster.QuiverFullBurstBuff;
+import org.mapledpmlab.type.skill.buffskill.bowmaster.*;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 
 import java.sql.Timestamp;
@@ -44,8 +41,6 @@ public class BowmasterDealCycle extends DealCycle {
     private AfterimageShotPassive afterimageShotPassive = new AfterimageShotPassive();
 
     private boolean isCriticalReinforce = false;
-
-    private boolean isAfterImageShotActive = false;
 
     private Long attackCount1 = 0L;
 
@@ -84,7 +79,7 @@ public class BowmasterDealCycle extends DealCycle {
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new ArrowRainBuff());
-            add(new CriticalReinforce(0.0));
+            add(new CriticalReinforce(100.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
             add(new MapleWorldGoddessBlessing(275L));
@@ -114,7 +109,7 @@ public class BowmasterDealCycle extends DealCycle {
         ArrawPlatter arrawPlatter = new ArrawPlatter();
         ArrawRain arrawRain = new ArrawRain();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
         EpicAdventure epicAdventure = new EpicAdventure();
         Evolve evolve = new Evolve();
         GuidedArrow guidedArrow = new GuidedArrow();
@@ -333,6 +328,7 @@ public class BowmasterDealCycle extends DealCycle {
             }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isEvolve = false;
+            boolean isAfterimageShot = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof EvolveBuff) {
                     isEvolve = true;
@@ -353,8 +349,8 @@ public class BowmasterDealCycle extends DealCycle {
                 }
             }
             for (int j = 0; j < useAttackSkillList.size(); j++) {
-                if (useAttackSkillList.get(j).getSkill() instanceof AfterimageShotActive) {
-                    isAfterImageShotActive = true;
+                if (useAttackSkillList.get(j).getSkill() instanceof AfterimageShotBuff) {
+                    isAfterimageShot = true;
                     break;
                 }
             }
@@ -376,24 +372,57 @@ public class BowmasterDealCycle extends DealCycle {
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
             }
             for (SkillEvent se : useAttackSkillList) {
-                if ((se.getSkill() instanceof AfterimageShotPassive) && isAfterImageShotActive) {
-                    continue;
-                }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
-                if (((AttackSkill) se.getSkill()).isApplyFinalAttack() && start.equals(se.getStart())) {
-                    attackCount1++;
-                    if (attackCount1 == 7) {
-                        totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
-                        attackCount1 = 0L;
-                    }
-                    attackCount2++;
+                if (
+                        !isAfterimageShot
+                        && se.getStart().equals(start)
+                        && (
+                                se.getSkill() instanceof AdvancedQuiver
+                                || se.getSkill() instanceof FlashMirage
+                                || se.getSkill() instanceof Hurricane
+                                || se.getSkill() instanceof HurricaneSpree
+                                || se.getSkill() instanceof ArrawRain
+                                || se.getSkill() instanceof QuiverFullBurst
+                                || se.getSkill() instanceof SilhouetteMirage
+                        )
+                ) {
+                    attackCount2 ++;
                     if (attackCount2 == 10) {
-                        totalDamage += getAttackDamage(new SkillEvent(afterimageShotPassive, start, end), buffSkill, start, end);
-                        Long ran = (long) (Math.random() * 99 + 1);
-                        if (ran <= getFinalAttack().getProp()) {
-                            totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
+                        getStart().setTime(start.getTime());
+                        if (cooldownCheck(afterimageShotPassive)) {
+                            totalDamage += getAttackDamage(new SkillEvent(afterimageShotPassive, start, end), buffSkill, start, end);
+                            applyCooldown(afterimageShotPassive);
                         }
                         attackCount2 = 0L;
+                    }
+                }
+                if (
+                        se.getStart().equals(start)
+                        && (
+                                se.getSkill() instanceof Hurricane
+                                || se.getSkill() instanceof HurricaneSpree
+                                || se.getSkill() instanceof SilhouetteMirage
+                                || se.getSkill() instanceof AfterimageShotActive
+                                || se.getSkill() instanceof AfterimageShotPassive
+                                || se.getSkill() instanceof QuiverFullBurst
+                                || se.getSkill() instanceof ArrawRain
+                                || se.getSkill() instanceof WarInTheShade
+                        )
+                ) {
+                    attackCount1++;
+                    if (se.getSkill() instanceof WarInTheShade) {
+                        attackCount1 += 6;
+                    }
+                    if (attackCount1 >= 49) {
+                        getStart().setTime(start.getTime());
+                        if (cooldownCheck(flashMirage)) {
+                            totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
+                            totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
+                            totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
+                            totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
+                            applyCooldown(flashMirage);
+                        }
+                        attackCount1 = 0L;
                     }
                 }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
@@ -410,7 +439,6 @@ public class BowmasterDealCycle extends DealCycle {
                 }
             }
             isCriticalReinforce = false;
-            isAfterImageShotActive = false;
         }
         for (AttackSkill as : attackSkillList) {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
@@ -435,7 +463,7 @@ public class BowmasterDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

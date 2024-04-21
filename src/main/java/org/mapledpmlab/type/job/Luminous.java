@@ -80,7 +80,6 @@ public class Luminous extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.08);              // 오버로드 마나
         this.addBossDamage(40L);                // 다크 크레센도
     }
 

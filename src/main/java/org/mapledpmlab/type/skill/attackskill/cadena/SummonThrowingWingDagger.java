@@ -7,7 +7,8 @@ public class SummonThrowingWingDagger extends AttackSkill {
         this.setName("서먼 스로잉 윙대거");
         this.setDamage(205.0 + 100 + 177);
         this.setAttackCount(1L);
-        this.setDelayByAttackSpeed(780L);
+        this.setDelay(150L);
+        //this.setDelayByAttackSpeed(780L);
         this.setDotDuration(7000L);
         this.setInterval(330L);
         this.setLimitAttackCount(40L);

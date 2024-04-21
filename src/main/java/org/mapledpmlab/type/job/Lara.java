@@ -77,7 +77,6 @@ public class Lara extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.08);      // 오버로드 마나
         this.addFinalDamage(1.05);      // 용맥의 메아리
     }
 

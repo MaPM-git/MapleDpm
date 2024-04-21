@@ -56,7 +56,7 @@ public class Blaster extends Job {
         this.addBossDamage(21L);
         this.addIgnoreDefenseList(38L); // 어드밴스드 차지 마스터리
         this.addAtt(42L);               // 콤비네이션 트레이닝 II
-        this.addCriticalP(30.0);
+        this.addCriticalP(40.0);
 
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸

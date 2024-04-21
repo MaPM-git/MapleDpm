@@ -12,5 +12,6 @@ public class ThiefCunning extends BuffSkill {
         this.setCooldown(20.0);
         this.setDuration(10L);
         this.setBuffDamage(18L);
+        this.setApplyCooldownReduction(false);
     }
 }

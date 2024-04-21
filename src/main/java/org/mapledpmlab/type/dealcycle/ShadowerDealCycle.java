@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.dealcycle;
 
 import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.job.Shadower;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
@@ -428,6 +429,21 @@ public class ShadowerDealCycle extends DealCycle {
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
             }
             for (SkillEvent se : useAttackSkillList) {
+                if (
+                        !isSmokeBomb
+                        && !isVeilOfShadow
+                        && !isHeartbreakerDarkSight
+                        && !isUltimateDarkSight
+                        && (
+                                se.getSkill() instanceof Heartbreaker
+                                || se.getSkill() instanceof HeartbreakerCancle
+                                || se.getSkill() instanceof HeartbreakerCancleStack
+                                || se.getSkill() instanceof HeartbreakerFinish
+                                || se.getSkill() instanceof HeartbreakerFinishCancle
+                        )
+                ) {
+                    buffSkill.addBuffFinalDamage(1.15);
+                }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -478,13 +494,13 @@ public class ShadowerDealCycle extends DealCycle {
             }
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                        + getJob().getFinalSubstat() + ((Shadower) getJob()).getFinalSubStat2() + buffSkill.getBuffSubStat()) * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

@@ -158,6 +158,7 @@ public class BattleMageDealCycle extends DealCycle {
         dealCycle3.add(soulContract);
         dealCycle3.add(weaponJumpRing);
 
+        addSkillEvent(resistanceLineInfantry);
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(mapleWorldGoddessBlessing.getEndTime())
@@ -350,7 +351,11 @@ public class BattleMageDealCycle extends DealCycle {
                                     start.after(this.abyssalLightningStartTimeList.get(j))
                                     && start.before(this.abyssalLightningEndTimeList.get(j))
                             ) {
-                                totalDamage += getAttackDamage(new SkillEvent(this.netherworldLightning, start, end), buffSkill, start, end);
+                                getStart().setTime(start.getTime());
+                                if (cooldownCheck(netherworldLightning)) {
+                                    totalDamage += getAttackDamage(new SkillEvent(this.netherworldLightning, start, end), buffSkill, start, end);
+                                    applyCooldown(netherworldLightning);
+                                }
                             }
                         }
                     }
@@ -367,7 +372,11 @@ public class BattleMageDealCycle extends DealCycle {
                                 start.after(this.abyssalLightningStartTimeList.get(j))
                                 && start.before(this.abyssalLightningEndTimeList.get(j))
                         ) {
-                            totalDamage += getAttackDamage(new SkillEvent(this.netherworldLightning, start, end), buffSkill, start, end);
+                            getStart().setTime(start.getTime());
+                            if (cooldownCheck(netherworldLightning)) {
+                                totalDamage += getAttackDamage(new SkillEvent(this.netherworldLightning, start, end), buffSkill, start, end);
+                                applyCooldown(netherworldLightning);
+                            }
                         }
                     }
                 }
@@ -383,6 +392,26 @@ public class BattleMageDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (
+                attackSkill instanceof AbyssalLightning
+                || attackSkill instanceof BattleKingBar1
+                || attackSkill instanceof BattleKingBar2
+                || attackSkill instanceof BlackMagicAltar
+                || attackSkill instanceof BlackMark
+                || attackSkill instanceof CrimsonPactum1
+                || attackSkill instanceof CrimsonPactum2
+                || attackSkill instanceof DarkLightning
+                || attackSkill instanceof Death
+                || attackSkill instanceof DeathReinforce
+                || attackSkill instanceof FinishBlow
+                || attackSkill instanceof GrimReaper
+                || attackSkill instanceof GrimReaperMOD
+                || attackSkill instanceof NetherworldLightning
+                || attackSkill instanceof ReaperScythe
+                || attackSkill instanceof ResistanceLineInfantry
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
@@ -392,7 +421,7 @@ public class BattleMageDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

@@ -13,7 +13,7 @@ public class Silence extends AttackSkill implements DarkAttack {
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
-        this.setApplyFinalAttack(true);
+        //this.setApplyFinalAttack(true);
         this.addFinalDamage(0.85);      // 쉐도우 파트너
         this.setRelatedSkill(new SilenceBuff());
         this.getMultiAttackInfo().add(3180L);

@@ -6,10 +6,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.ark.*;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
-import org.mapledpmlab.type.skill.buffskill.ark.ChargeSpellAmplification;
-import org.mapledpmlab.type.skill.buffskill.ark.ContactCaravan;
-import org.mapledpmlab.type.skill.buffskill.ark.InfinitySpell;
-import org.mapledpmlab.type.skill.buffskill.ark.SpecterForm;
+import org.mapledpmlab.type.skill.buffskill.ark.*;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 
 import java.sql.Timestamp;
@@ -106,6 +103,7 @@ public class ArkDealCycle extends DealCycle {
     GustSpell gustSpell = new GustSpell();
     MagicCircuitFullDrive magicCircuitFullDrive = new MagicCircuitFullDrive();
     PlainSpell plainSpell = new PlainSpell();
+    ReturningHatred returningHatred = new ReturningHatred();
     ScarletSpell scarletSpell = new ScarletSpell();
 
     boolean isSpecter = false;
@@ -123,6 +121,11 @@ public class ArkDealCycle extends DealCycle {
 
     int hatredCnt = 0;
     int specterAura = 300;
+
+    int gauge = 1000;
+
+    LefGauge lefGauge = new LefGauge();
+    SpecterGauge specterGauge = new SpecterGauge();
 
     public ArkDealCycle(Job job) {
         super(job, null);
@@ -153,7 +156,6 @@ public class ArkDealCycle extends DealCycle {
         PlainChargeDrive plainChargeDrive = new PlainChargeDrive();
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
-        ReturningHatred returningHatred = new ReturningHatred();
         RingSwitching ringSwitching = new RingSwitching();
         ScarletChargeDriveFlame scarletChargeDriveFlame = new ScarletChargeDriveFlame();
         SoulContract soulContract = new SoulContract();
@@ -264,7 +266,6 @@ public class ArkDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && dealCycleOrder == 1
-                    && !isSpecter
             ) {
                 addDealCycle(dealCycle1);
                 dealCycleOrder ++;
@@ -272,7 +273,6 @@ public class ArkDealCycle extends DealCycle {
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && dealCycleOrder == 4
-                    && !isSpecter
             ) {
                 addDealCycle(dealCycle2);
                 dealCycleOrder ++;
@@ -280,22 +280,18 @@ public class ArkDealCycle extends DealCycle {
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && (dealCycleOrder == 3 || dealCycleOrder == 5)
-                    && !isSpecter
             ) {
                 addDealCycle(dealCycle3);
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle4)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
                     && (dealCycleOrder == 2 || dealCycleOrder == 6)
-                    && !isSpecter
             ) {
                 addDealCycle(dealCycle4);
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(dealCycle5)
                     && !cooldownCheck(wrathOfGod)
-                    && !isSpecter
             ) {
                 addDealCycle(dealCycle5);
             } else if (
@@ -309,11 +305,7 @@ public class ArkDealCycle extends DealCycle {
                     cooldownCheck(returningHatred)
                     && hatredCnt > 0
             ) {
-                for (int i = 0; i < hatredCnt; i++) {
-                    getSkillEventList().add(new ArkSkillEvent(returningHatred, new Timestamp(getStart().getTime() + 500), new Timestamp(getStart().getTime() + 500), isSpecter));
-                }
-                applyCooldown(returningHatred);
-                hatredCnt = 0;
+                addSkillEvent(returningHatred);
             } else if (isSpecter) {
                 endlessOminousDream = new EndlessOminousDream();
                 endlessOminousDream.setDelay(240L);
@@ -361,7 +353,12 @@ public class ArkDealCycle extends DealCycle {
                 scarletChargeDriveFlame = new ScarletChargeDriveFlame();
                 scarletChargeDriveFlame.getRelatedSkill().setDelay(690L);
                 addSkillEvent(scarletChargeDriveFlame);
-                addSkillEvent(specterForm);
+                if (
+                        getStart().before(new Timestamp(infinitySpell.getActivateTime().getTime() - 10000))
+                        && gauge > 700
+                ) {
+                    addSkillEvent(specterForm);
+                }
             }/* else {
                 addSkillEvent(null);
             }*/
@@ -385,11 +382,30 @@ public class ArkDealCycle extends DealCycle {
 
     @Override
     public void addSkillEvent(Skill skill) {
-        //System.out.println(getStart() + " : " + skill.getName());
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
             return;
+        }
+        if (
+                isSpecter
+                && cooldownCheck(specterGauge)
+                && getStart().after(memoryOfRootEndTime)
+        ) {
+            gauge -= 23;
+            specterGauge.setActivateTime(new Timestamp(specterGauge.getActivateTime().getTime() + 1000));
+            if (gauge < 0) {
+                gauge = 0;
+            }
+        } else if (
+                !isSpecter
+                && cooldownCheck(lefGauge)
+        ) {
+            gauge += 14;
+            lefGauge.setActivateTime(new Timestamp(lefGauge.getActivateTime().getTime() + 1000));
+            if (gauge > 1000) {
+                gauge = 1000;
+            }
         }
         if (
                 skill instanceof InfinitySpell
@@ -404,8 +420,10 @@ public class ArkDealCycle extends DealCycle {
             if (skill instanceof SpecterForm) {
                 if (isSpecter) {
                     isSpecter = false;
+                    applyCooldown(lefGauge);
                 } else {
                     isSpecter = true;
+                    applyCooldown(specterGauge);
                 }
             }
             if (
@@ -426,6 +444,12 @@ public class ArkDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof ReturningHatred) {
+                for (int i = 0; i < hatredCnt; i++) {
+                    getSkillEventList().add(new ArkSkillEvent(returningHatred, new Timestamp(getStart().getTime() + 500), new Timestamp(getStart().getTime() + 500), isSpecter));
+                }
+                hatredCnt = 0;
+            }
             if (
                     getStart().before(magicCircuitFullDriveEndTime)
                     && cooldownCheck(magicCircuitFullDrive)
@@ -674,11 +698,11 @@ public class ArkDealCycle extends DealCycle {
                         )
                 ) {
                     buffSkill.addBuffDamage(20L);
-                    totalDamage += getAttackDamage(se, buffSkill, start, end);
-                    totalDamage += getAttackDamage(se, buffSkill, start, end);
-                    totalDamage += getAttackDamage(se, buffSkill, start, end);
+                    totalDamage += getAttackDamage(new SkillEvent(plainSpell, start, end), buffSkill, start, end);
+                    totalDamage += getAttackDamage(new SkillEvent(plainSpell, start, end), buffSkill, start, end);
+                    totalDamage += getAttackDamage(new SkillEvent(plainSpell, start, end), buffSkill, start, end);
                     if (!(se.getSkill() instanceof PlainSpell)) {
-                        totalDamage += getAttackDamage(se, buffSkill, start, end);
+                        totalDamage += getAttackDamage(new SkillEvent(plainSpell, start, end), buffSkill, start, end);
                     }
                 }
                 if (

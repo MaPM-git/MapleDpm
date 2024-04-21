@@ -13,6 +13,6 @@ public class FallingDustEnchant extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new FallingDustEnchantMalice());
         this.setAddDamage(10L + 15);
-        this.setApplyCooldownReduction(false);
+        this.setApplyReuse(true);
     }
 }

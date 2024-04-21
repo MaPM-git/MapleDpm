@@ -369,7 +369,7 @@ public class MihileDealCycle extends DealCycle {
                             || skill instanceof Durandal2
                             || skill instanceof Durandal3
                     ) {
-                        addSkillEvent(new PhotonShockwave());
+                        addSkillEvent(photonShockwave);
                     }
                 }
             }

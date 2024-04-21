@@ -7,6 +7,7 @@ import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.khali.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
+import org.mapledpmlab.type.skill.buffskill.khali.HexSandStormBuff;
 import org.mapledpmlab.type.skill.buffskill.khali.Oblivion;
 import org.mapledpmlab.type.skill.buffskill.khali.ResonateUltimatum;
 
@@ -65,6 +66,7 @@ public class KhaliDealCycle extends DealCycle {
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new GrandisGoddessBlessingLef(477L));
+            add(new HexSandStormBuff());
             add(new MagicCircuitFullDriveBuff());
             add(new Oblivion());
             add(new PriorPreparation());
@@ -180,6 +182,7 @@ public class KhaliDealCycle extends DealCycle {
 
         soulContract.setApplyReuse(true);
 
+        addSkillEvent(hexChakramFuryBeforeDelay);
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(magicCircuitFullDriveEndTime)

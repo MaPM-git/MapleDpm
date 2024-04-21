@@ -537,6 +537,36 @@ public class EvanDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (
+                attackSkill instanceof BreakComeBack
+                || attackSkill instanceof BreathComeBack
+                || attackSkill instanceof BreathOfEarth
+                || attackSkill instanceof BreathOfWind
+                || attackSkill instanceof CircleOfEarth
+                || attackSkill instanceof CircleOfMana1
+                || attackSkill instanceof CircleOfMana2
+                || attackSkill instanceof CircleOfThunder
+                || attackSkill instanceof CircleOfWind
+                || attackSkill instanceof DarkFog
+                || attackSkill instanceof DiveOfEarth
+                || attackSkill instanceof DiveOfThunder
+                || attackSkill instanceof DragonBreak
+                || attackSkill instanceof DragonBreath
+                || attackSkill instanceof DragonDive
+                || attackSkill instanceof DragonSwift
+                || attackSkill instanceof ElementalBlast
+                || attackSkill instanceof ImperialBreath
+                || attackSkill instanceof MagicDebris
+                || attackSkill instanceof SpiralOfMana
+                || attackSkill instanceof SummonOnyxDragon
+                || attackSkill instanceof SwiftOfThunder
+                || attackSkill instanceof SwiftOfWind
+                || attackSkill instanceof ZodiacBurst
+                || attackSkill instanceof ZodiacBurstMeteor
+                || attackSkill instanceof ZodiacRay
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
@@ -546,7 +576,7 @@ public class EvanDealCycle extends DealCycle {
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

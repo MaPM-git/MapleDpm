@@ -9,6 +9,5 @@ public class Flashbang extends AttackSkill {
         this.setDamage(250.0);
         this.setDelayByAttackSpeed(570L);
         this.setApplyFinalAttack(true);
-        this.addFinalDamage(1.7);           // 미러 이미징
     }
 }

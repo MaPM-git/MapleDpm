@@ -455,6 +455,27 @@ public class BishopDealCycle extends DealCycle {
             Pray pray = new Pray(mainStat);
             buffSkill.addBuffFinalDamage(pray.getBuffFinalDamage());
         }
+        if (
+                attackSkill instanceof AngelicOfJudgement
+                || attackSkill instanceof AngelicRay
+                || attackSkill instanceof AngelicTouch
+                || attackSkill instanceof AngelOfLibraRevenge
+                || attackSkill instanceof BahamutSummon
+                || attackSkill instanceof DivinePunishment
+                || attackSkill instanceof FountainForAngel
+                || attackSkill instanceof Genesis
+                || attackSkill instanceof HeavensDoor
+                || attackSkill instanceof HolyAdvent1
+                || attackSkill instanceof HolyAdvent2
+                || attackSkill instanceof HolyAdventBalance
+                || attackSkill instanceof HolyAdventCharity
+                || attackSkill instanceof HolyAdventRevenge
+                || attackSkill instanceof Peacemaker
+                || attackSkill instanceof PeacemakerFinish
+                || attackSkill instanceof TriumphFeather
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
@@ -464,7 +485,7 @@ public class BishopDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()
@@ -524,12 +545,6 @@ public class BishopDealCycle extends DealCycle {
             }
         } else {
             if (((AttackSkill) skill).getInterval() != 0) {
-                if (skill instanceof Peacemaker) {
-                    getSkillEventList().add(new SkillEvent(peacemakerFinish, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
-                    getEventTimeList().add(new Timestamp(getStart().getTime()));
-                    getSkillEventList().add(new SkillEvent(peacemakerBuff, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + peacemakerBuff.getDuration() * 1000)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + peacemakerBuff.getDuration() * 1000));
-                }
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (

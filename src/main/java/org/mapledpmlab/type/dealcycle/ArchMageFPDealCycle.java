@@ -446,6 +446,44 @@ public class ArchMageFPDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (
+                attackSkill instanceof DotPunisherAfterSecond
+                || attackSkill instanceof DotPunisherDot
+                || attackSkill instanceof DotPunisherFirst
+                || attackSkill instanceof DotPunisherOriginAfterSecond
+                || attackSkill instanceof DotPunisherOriginDot
+                || attackSkill instanceof DotPunisherOriginFirst
+                || attackSkill instanceof FlameHaze
+                || attackSkill instanceof FlameHazeDot
+                || attackSkill instanceof FlameSweep
+                || attackSkill instanceof FlameSweepDot
+                || attackSkill instanceof FuryOfIfrit
+                || attackSkill instanceof FuryOfIfritOrigin
+                || attackSkill instanceof IfritDot
+                || attackSkill instanceof IfritSummon
+                || attackSkill instanceof InfernalVenomExplosion1
+                || attackSkill instanceof InfernalVenomExplosion2
+                || attackSkill instanceof MegidoFlame
+                || attackSkill instanceof MegidoFlameAfterSecond
+                || attackSkill instanceof MegidoFlameDot
+                || attackSkill instanceof MistEruption
+                || attackSkill instanceof PoisonChain
+                || attackSkill instanceof PoisonChainExplosion0
+                || attackSkill instanceof PoisonChainExplosion1
+                || attackSkill instanceof PoisonChainExplosion2
+                || attackSkill instanceof PoisonChainExplosion3
+                || attackSkill instanceof PoisonChainExplosion4
+                || attackSkill instanceof PoisonChainExplosion5
+                || attackSkill instanceof PoisonMist
+                || attackSkill instanceof PoisonNova
+                || attackSkill instanceof PoisonNovaDot
+                || attackSkill instanceof PoisonNovaExplosion
+                || attackSkill instanceof PoisonNovaExplosionAfterThird
+                || attackSkill instanceof PoisonZone
+                || attackSkill instanceof PoisonZoneExplosion
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
@@ -455,7 +493,7 @@ public class ArchMageFPDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

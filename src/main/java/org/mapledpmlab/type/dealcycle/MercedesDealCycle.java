@@ -72,7 +72,7 @@ public class MercedesDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new CriticalReinforce(0.0));
+            add(new CriticalReinforce(100.0));
             add(new ElementalGhost());
             add(new HeroesOath());
             add(new LegendarySpearBuff());
@@ -82,7 +82,7 @@ public class MercedesDealCycle extends DealCycle {
             add(new RoyalKnights());
             add(new SoulContract());
             add(new Sylphidia());
-            //add(new SylphidiaEnd());
+            add(new SylphidiaEnd());
             add(new ThiefCunning());
             add(new UnfadingGlorySpiritKing());
             add(new UnicornSpikeBuff());
@@ -108,6 +108,7 @@ public class MercedesDealCycle extends DealCycle {
 
     boolean isUnfadingGlory = false;
     boolean isCriticalReinforce = false;
+    boolean isStigmaComplete = false;
 
     public MercedesDealCycle(Job job) {
         super(job, new AdvancedFinalAttackMercedes());
@@ -119,7 +120,7 @@ public class MercedesDealCycle extends DealCycle {
         AdvancedStrikeDualShot advancedStrikeDualShot = new AdvancedStrikeDualShot();
         ChargeDrive1 chargeDrive1 = new ChargeDrive1();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
         ElementalGhost elementalGhost = new ElementalGhost();
         ElementalKnightsDark elementalKnightsDark = new ElementalKnightsDark();
         ElementalKnightsFlame elementalKnightsFlame = new ElementalKnightsFlame();
@@ -161,6 +162,11 @@ public class MercedesDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(180.0);
 
+        mapleWorldGoddessBlessing.setDelay(mapleWorldGoddessBlessing.getDelay() / 2);
+        royalKnights.setDelay(royalKnights.getDelay() / 2);
+        criticalReinforce.setDelay(criticalReinforce.getDelay() / 2);
+        elementalGhost.setDelay(elementalGhost.getDelay() / 2);
+
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
         dealCycle1.add(legendarySpear);
@@ -174,7 +180,7 @@ public class MercedesDealCycle extends DealCycle {
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
         dealCycle1.add(irkallaBreathBeforeDelay);
-        //dealCycle1.add(sylphidiaEnd);
+        dealCycle1.add(sylphidiaEnd);
 
         dealCycle2.add(legendarySpear);
         dealCycle2.add(sylphidia);
@@ -186,7 +192,7 @@ public class MercedesDealCycle extends DealCycle {
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
         dealCycle2.add(irkallaBreathBeforeDelay);
-        //dealCycle2.add(sylphidiaEnd);
+        dealCycle2.add(sylphidiaEnd);
 
         //dealCycle3.add(weaponJumpRing);
 
@@ -207,6 +213,7 @@ public class MercedesDealCycle extends DealCycle {
         addSkillEvent(elementalKnightsDark);
         addSkillEvent(elementalKnightsFlame);
         addSkillEvent(guidedArrow);
+        addSkillEvent(unicornSpike);
 
         while (getStart().before(getEnd())) {
             if (
@@ -244,9 +251,25 @@ public class MercedesDealCycle extends DealCycle {
                 addSkillEvent(legendarySpear);
             } else if (getStart().before(sylphidiaEndTime)) {
                 addSkillEvent(ringOfIshtar);
-            } else {
+            } else if (getStart().before(elementalGhostEndTime)) {
+                // 엔릴 스듀샷 유니콘 레전 리프
+                wrathOfEnlil.setDelayByAttackSpeed(270L);
+                wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
+                advancedStrikeDualShot.setDelayByAttackSpeed(450L);
+                unicornSpike.setDelayByAttackSpeed(600L);
+                legendarySpear.setDelayByAttackSpeed(570L);
+                legendarySpearSpiritEnchant.setDelayByAttackSpeed(570L);
+                leafTornado.setDelayByAttackSpeed(480L);
+                leafTornadoSpiritEnchant.setDelayByAttackSpeed(480L);
                 addDealCycle(linkCycle);
-                //addSkillEvent(ringOfIshtar);
+            } else if (cooldownCheck(wrathOfEnlil)) {
+                wrathOfEnlil.setDelayByAttackSpeed(270L);
+                wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
+                advancedStrikeDualShot.setDelayByAttackSpeed(630L);
+                addSkillEvent(wrathOfEnlil);
+                addSkillEvent(advancedStrikeDualShot);
+            } else {
+                addSkillEvent(ringOfIshtar);
             }
         }
         sortEventTimeList();
@@ -260,6 +283,15 @@ public class MercedesDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof SylphidiaEnd) {
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (getSkillEventList().get(i).getSkill() instanceof Sylphidia) {
+                        getSkillEventList().get(i).setEnd(new Timestamp(getStart().getTime()));
+                        sylphidiaEndTime = new Timestamp(getStart().getTime());
+                        break;
+                    }
+                }
+            }
             if (skill instanceof ElementalGhost) {
                 elementalGhostEndTime = new Timestamp(getStart().getTime() + 90 * 1000);
             } else if (skill instanceof Sylphidia) {
@@ -320,16 +352,20 @@ public class MercedesDealCycle extends DealCycle {
                 formOfEurel.setActivateTime(new Timestamp(formOfEurel.getActivateTime().getTime() - 1000));
             }
             if (
-                    skill instanceof ChargeDrive1
+                    skill instanceof AdvancedStrikeDualShot
+                    || skill instanceof ChargeDrive1
                     || skill instanceof ChargeDrive2
                     || skill instanceof GustDive
                     || skill instanceof HighkickDemolition
                     || skill instanceof LeafTornado
+                    || skill instanceof LeafTornadoSpiritEnchant
                     || skill instanceof LegendarySpear
+                    || skill instanceof LegendarySpearSpiritEnchant
                     || skill instanceof LightningEdge
                     || skill instanceof RollingMoonsault
                     || skill instanceof UnicornSpike
                     || skill instanceof WrathOfEnlil
+                    || skill instanceof WrathOfEnlilSpiritEnchant
             ) {
                 stigmaCnt += 2;
             } else if (skill instanceof RingOfIshtar) {
@@ -352,9 +388,11 @@ public class MercedesDealCycle extends DealCycle {
                 if (isUnfadingGlory) {
                     addSkillEvent(unfadingGlorySpiritKingAttackReinforce);
                     unfadingGlorySpiritKingAttack.setActivateTime(new Timestamp(unfadingGlorySpiritKingAttackReinforce.getActivateTime().getTime()));
+                    isUnfadingGlory = false;
                 } else {
                     addSkillEvent(unfadingGlorySpiritKingAttack);
                     unfadingGlorySpiritKingAttackReinforce.setActivateTime(new Timestamp(unfadingGlorySpiritKingAttack.getActivateTime().getTime()));
+                    isUnfadingGlory = false;
                 }
             }
             if (stigmaCnt >= 12) {
@@ -395,6 +433,7 @@ public class MercedesDealCycle extends DealCycle {
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         if (
                                 getStart().before(elementalGhostEndTime)
+                                && getStart().after(sylphidiaEndTime)
                                 && skill instanceof IrkallaBreath
                         ) {
                             Long ran = (long) (Math.random() * 99 + 1);
@@ -403,14 +442,17 @@ public class MercedesDealCycle extends DealCycle {
                             if (ran <= 45) {
                                 getSkillEventList().add(new SkillEvent(temp, new Timestamp(getStart().getTime() + temp.getInterval()), new Timestamp(getStart().getTime() + temp.getInterval() * 2)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + temp.getInterval() * 2));
+                                stigmaCnt ++;
                                 ran = (long) (Math.random() * 99 + 1);
                                 if (ran <= 35) {
                                     getSkillEventList().add(new SkillEvent(temp, new Timestamp(getStart().getTime() + temp.getInterval() * 2), new Timestamp(getStart().getTime() + temp.getInterval() * 3)));
                                     getEventTimeList().add(new Timestamp(getStart().getTime() + temp.getInterval() * 3));
+                                    stigmaCnt ++;
                                     ran = (long) (Math.random() * 99 + 1);
                                     if (ran <= 25) {
                                         getSkillEventList().add(new SkillEvent(temp, new Timestamp(getStart().getTime() + temp.getInterval() * 3), new Timestamp(getStart().getTime() + temp.getInterval() * 4)));
                                         getEventTimeList().add(new Timestamp(getStart().getTime() + temp.getInterval() * 4));
+                                        stigmaCnt ++;
                                     }
                                 }
                             }
@@ -426,6 +468,33 @@ public class MercedesDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
+                        && skill instanceof AdvancedStrikeDualShot
+                ) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    AdvancedStrikeDualShot tmp = new AdvancedStrikeDualShot();
+                    tmp.addFinalDamage(0.75);
+                    if (ran <= 90) {
+                        getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
+                        ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= 70) {
+                            getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
+                            getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
+                            ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= 50) {
+                                getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
+                                getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
+                            }
+                        }
+                    }
+                }
+                if (
+                        getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof ChargeDrive1
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -434,20 +503,24 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof ChargeDrive2
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -456,20 +529,24 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof GustDive
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -478,20 +555,24 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof HighkickDemolition
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -500,20 +581,24 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof LeafTornado
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -522,20 +607,50 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
+                        && skill instanceof LeafTornadoSpiritEnchant
+                ) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    LeafTornadoSpiritEnchant tmp = new LeafTornadoSpiritEnchant();
+                    tmp.addFinalDamage(0.75);
+                    if (ran <= 90) {
+                        getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
+                        ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= 70) {
+                            getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
+                            getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
+                            ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= 50) {
+                                getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
+                                getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
+                            }
+                        }
+                    }
+                }
+                if (
+                        getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof LegendarySpear
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -544,20 +659,50 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
+                        && skill instanceof LegendarySpearSpiritEnchant
+                ) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    LegendarySpearSpiritEnchant tmp = new LegendarySpearSpiritEnchant();
+                    tmp.addFinalDamage(0.75);
+                    if (ran <= 90) {
+                        getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
+                        ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= 70) {
+                            getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
+                            getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
+                            ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= 50) {
+                                getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
+                                getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
+                            }
+                        }
+                    }
+                }
+                if (
+                        getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof LightningEdge
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -566,20 +711,24 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof RollingMoonsault
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -588,20 +737,24 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof UnicornSpike
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -610,20 +763,24 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof WrathOfEnlil
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -632,20 +789,50 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 70) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 50) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
                             }
                         }
                     }
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
+                        && skill instanceof WrathOfEnlilSpiritEnchant
+                ) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    WrathOfEnlilSpiritEnchant tmp = new WrathOfEnlilSpiritEnchant();
+                    tmp.addFinalDamage(0.75);
+                    if (ran <= 90) {
+                        getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt += 2;
+                        ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= 70) {
+                            getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
+                            getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt += 2;
+                            ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= 50) {
+                                getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
+                                getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt += 2;
+                            }
+                        }
+                    }
+                }
+                if (
+                        getStart().before(elementalGhostEndTime)
+                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof RingOfIshtar
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -654,14 +841,17 @@ public class MercedesDealCycle extends DealCycle {
                     if (ran <= 45) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
+                        stigmaCnt ++;
                         ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 35) {
                             getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 2), new Timestamp(getStart().getTime() + tmp.getDelay() * 3)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 3));
+                            stigmaCnt ++;
                             ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 25) {
                                 getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay() * 3), new Timestamp(getStart().getTime() + tmp.getDelay() * 4)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 4));
+                                stigmaCnt ++;
                             }
                         }
                     }
@@ -766,7 +956,7 @@ public class MercedesDealCycle extends DealCycle {
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

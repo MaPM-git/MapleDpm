@@ -86,7 +86,6 @@ public class ArchMageIL extends Job {
         addFinalDamage(1.2);            // 익스트림 매직
         addDamage(50L);                 // 앨리먼트 앰플리케이션
         addDamage(40L);                 // 아케인 에임
-        addFinalDamage(1.08);           // 오버로드 마나
     }
 
     public Long getStatDamage() {

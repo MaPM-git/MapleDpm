@@ -7,7 +7,8 @@ public class CardinalTransition extends GaugeAttackSkill implements CardinalForc
         this.setName("카디널 트랜지션");
         this.setAttackCount(6L);        // 카디널 포스-보너스 어택
         this.setDamage(547.0);
-        this.setDelayByAttackSpeed(390L);
+        this.setDelay(60L);
+        //this.setDelayByAttackSpeed(390L);
         this.setAddDamage(20L);         // 카디널 포스-리인포스
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

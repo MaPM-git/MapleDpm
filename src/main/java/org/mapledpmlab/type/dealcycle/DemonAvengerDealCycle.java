@@ -331,6 +331,11 @@ public class DemonAvengerDealCycle extends DealCycle {
             ) {
                 addSkillEvent(releaseOverload);
                 exceed = 9;
+            } else if (
+                    cooldownCheck(bloodFeast)
+                    && hp == 150000
+            ) {
+                addSkillEvent(bloodFeast);
             } else if (cooldownCheck(shieldChasing)) {
                 addSkillEvent(shieldChasing);
             } else {
@@ -403,9 +408,12 @@ public class DemonAvengerDealCycle extends DealCycle {
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (skill instanceof ShieldChasingAfterSecond) {
+                        break;
+                    }
                     if (
                             skillEvent.getStart().after(getStart())
-                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                            && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
                     ) {
                         remove.add(skillEvent);
                     }
@@ -533,7 +541,7 @@ public class DemonAvengerDealCycle extends DealCycle {
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

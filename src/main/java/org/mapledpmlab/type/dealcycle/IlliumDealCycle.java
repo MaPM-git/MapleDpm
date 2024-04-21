@@ -431,6 +431,7 @@ public class IlliumDealCycle extends DealCycle {
             if (
                     (
                             skill instanceof CraftJavelin
+                            || skill instanceof CraftEnchantJavelin
                             || skill instanceof CraftLonginus
                     )
                     && cooldownCheck(reactionDestruction)
@@ -654,6 +655,41 @@ public class IlliumDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (
+                attackSkill instanceof CraftEnchantJavelin
+                || attackSkill instanceof CraftEnchantJavelinFragment
+                || attackSkill instanceof CraftJavelin
+                || attackSkill instanceof CraftJavelinFragment
+                || attackSkill instanceof CraftLonginus
+                || attackSkill instanceof CraftOrb
+                || attackSkill instanceof CrystalGate
+                || attackSkill instanceof CrystalIgnition
+                || attackSkill instanceof CrystalSkillDeus
+                || attackSkill instanceof CrystalSkillDeusSatellite1
+                || attackSkill instanceof CrystalSkillDeusSatellite2
+                || attackSkill instanceof CrystalSkillDeusSatellite3
+                || attackSkill instanceof CrystalSkillMortalSwing
+                || attackSkill instanceof GloryWingEnchantJavelin
+                || attackSkill instanceof GloryWingEnchantJavelinMagicMissile
+                || attackSkill instanceof GloryWingJavelin
+                || attackSkill instanceof GloryWingJavelinMagicMissile
+                || attackSkill instanceof GloryWingMortalWingBeat
+                || attackSkill instanceof Gramholder
+                || attackSkill instanceof Lio1
+                || attackSkill instanceof Lio2
+                || attackSkill instanceof Lio3
+                || attackSkill instanceof Machina
+                || attackSkill instanceof ReactionDestruction
+                || attackSkill instanceof ReactionDomination
+                || attackSkill instanceof ReactionSpectrum
+                || attackSkill instanceof UnlimitedCrystal1
+                || attackSkill instanceof UnlimitedCrystal2
+                || attackSkill instanceof UnlimitedCrystal3
+                || attackSkill instanceof UnlimitedCrystalRelease
+                || attackSkill instanceof UnlimitedCrystalResonance
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
@@ -663,7 +699,7 @@ public class IlliumDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

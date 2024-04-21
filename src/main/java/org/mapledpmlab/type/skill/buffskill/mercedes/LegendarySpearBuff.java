@@ -10,6 +10,6 @@ public class LegendarySpearBuff extends BuffSkill {
     public LegendarySpearBuff() {
         this.setName("레전드리 스피어");
         this.setDuration(60L);
-        this.addBuffIgnoreDefense(35L + 20);    // 레전드리 스피어-리듀스 아머
+        this.setBuffIgnoreDefense(35L + 20);    // 레전드리 스피어-리듀스 아머
     }
 }

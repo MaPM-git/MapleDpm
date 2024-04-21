@@ -51,7 +51,7 @@ public class DualBlade extends Job {
         this.addAtt(31L);               // 쏜즈 이펙트
         this.addCriticalP(38.0);        // 샤프니스
         this.addCriticalDamage(14.0);
-        this.addAtt(31L);               // 자벨린 엑스퍼트
+        this.addAtt(31L);               // 이도류 엑스퍼트
         this.addFinalDamage(1.2);
 
         // 하이퍼
@@ -73,6 +73,12 @@ public class DualBlade extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        //this.addFinalDamage(1.4);
     }
 
     public Long getFinalSubStat2() {

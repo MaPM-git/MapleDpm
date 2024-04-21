@@ -363,12 +363,14 @@ public class NightWalkerDealCycle extends DealCycle {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         if (skill instanceof RapidThrow) {
+                            skill = new RapidThrow();
                             if ((new Timestamp(getStart().getTime() + i)).before(shadowSpearEndTime)) {
                                 ((RapidThrow) skill).setDamage(1045.0 + 290);
                             }
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         if (skill instanceof RapidThrow) {
+                            skill = new RapidThrow();
                             if ((new Timestamp(getStart().getTime() + i)).before(shadowSpearEndTime)) {
                                 ((RapidThrow) skill).setDamage(1045.0);
                             }
@@ -448,7 +450,7 @@ public class NightWalkerDealCycle extends DealCycle {
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     attackCount ++;
                 }
-                if (attackCount % 3 == 0) {
+                if (attackCount % 8 == 0) {
                     if (batCount % 5 == 0) {
                         totalDamage += getAttackDamage(new SkillEvent(ravenousBatReinforce, start, end), buffSkill, start, end);
                         batCount ++;
@@ -456,9 +458,9 @@ public class NightWalkerDealCycle extends DealCycle {
                         totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
                         batCount ++;
                     }
-                    if (isShadowSpear) {
+                    /*if (isShadowSpear) {
                         totalDamage += getAttackDamage(new SkillEvent(shadowSpear, start, end), buffSkill, start, end);
-                    }
+                    }*/
                 }
                 if (
                         isShadowSpear

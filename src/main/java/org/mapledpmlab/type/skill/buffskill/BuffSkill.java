@@ -45,14 +45,14 @@ public class BuffSkill extends Skill {
         this.buffOtherStat1 = 0L;
         this.buffOtherStat2 = 0L;
         this.buffProperty = 0L;
-        this.buffPlusFinalDamage = 0.0;
+        this.buffPlusFinalDamage = 1.0;
         this.buffSubStat = 0L;
     }
     public String getInfo() {
         String str = "";
         str = str + "딜레이 : " + getDelay() + "ms";
         colNum ++;
-        if (getCooldown() != 0) {
+        if (getDuration() != 0) {
             str = str + "\n지속시간 : " + getDuration();
             colNum ++;
         }
@@ -84,7 +84,7 @@ public class BuffSkill extends Skill {
             str = str + "\n데미지증가 : " + getBuffDamage();
             colNum ++;
         }
-        if (getBuffFinalDamage() != 0) {
+        if (getBuffFinalDamage() != 1) {
             str = str + "\n최종데미지증가 : " + getBuffFinalDamage();
             colNum ++;
         }

@@ -514,6 +514,24 @@ public class FlameWizardDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (
+                attackSkill instanceof BlazingExtinction
+                || attackSkill instanceof BlazingOrbitalFlame
+                || attackSkill instanceof CygnusPhalanx
+                || attackSkill instanceof Eternity
+                || attackSkill instanceof EternityCirculation
+                || attackSkill instanceof FlameDischarge
+                || attackSkill instanceof InfernoRize
+                || attackSkill instanceof InfinityFlameCircle
+                || attackSkill instanceof OrbitalFlame
+                || attackSkill instanceof OrbitalFlameDot
+                || attackSkill instanceof OrbitalFlameReinforce
+                || attackSkill instanceof PhoenixDriveAfterSecond
+                || attackSkill instanceof PhoenixDriveFirst
+                || attackSkill instanceof SalamanderMischief
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
@@ -523,7 +541,7 @@ public class FlameWizardDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

@@ -85,7 +85,6 @@ public class FlameWizard extends Job {
         super.Doping();
         this.addMagic(41L);             // 엘리멘트 : 플레임 IV
         this.addProperty(10L);          // 오비탈 플레임 VI
-        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 
     public Long getStatDamage() {

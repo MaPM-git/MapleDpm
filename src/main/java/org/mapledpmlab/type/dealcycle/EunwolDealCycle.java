@@ -316,7 +316,12 @@ public class EunwolDealCycle extends DealCycle {
                     getStart().before(adventOfTheFoxEndTime)
             ) {
                 addSkillEvent(foxGodClaw1);
-            } else {
+            }/* else if (
+                    cooldownCheck(spiritFrenzy)
+                    && getStart().before(new Timestamp(trueSpiritClaw.getActivateTime().getTime() - 3180))
+            ) {
+                addSkillEvent(spiritFrenzy);
+            }*/ else {
                 if (cooldownCheck(trueSpiritClaw)) {
                     addSkillEvent(trueSpiritClaw);
                 } else {
@@ -358,7 +363,11 @@ public class EunwolDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                if (skill instanceof SpiritGateBuff) {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 2000), endTime));
+                } else {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                }
             }
         } else {
             if (
@@ -401,22 +410,19 @@ public class EunwolDealCycle extends DealCycle {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
-                        if (skill instanceof SpiritGate) {
+                        /*if (skill instanceof SpiritGate) {
                             getSkillEventList().add(new SkillEvent(new SpiritGateBuff(), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 8000)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + i));
-                        }
+                        }*/
                         if (skill instanceof SmashingMultipunch) {
+                            Timestamp tmpTime = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
                             if (getStart().before(adventOfTheFoxEndTime)) {
-                                for (int j = 0; j < foxSpiritOrb.getLimitAttackCount(); j++) {
-                                    getSkillEventList().add(new SkillEvent(foxSpiritOrb, new Timestamp(getStart().getTime() + 1350 + j * 600), new Timestamp(getStart().getTime() + 1350 + j * 600)));
-                                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + j * 600));
-                                }
+                                addSkillEvent(foxSpiritOrb);
                             } else {
-                                for (int j = 0; j < foxSpirit.getLimitAttackCount(); j++) {
-                                    getSkillEventList().add(new SkillEvent(foxSpirit, new Timestamp(getStart().getTime() + 1350 + j * 600), new Timestamp(getStart().getTime() + 1350 + j * 600)));
-                                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + j * 600));
-                                }
+                                addSkillEvent(foxSpirit);
                             }
+                            getStart().setTime(tmpTime.getTime());
                         } else if (
                                 !(skill instanceof CrestOfTheSolarDot)
                                 && !(skill instanceof DeathMarkDot)
@@ -424,30 +430,25 @@ public class EunwolDealCycle extends DealCycle {
                         ) {
                             Long ran = (long) (Math.random() * 99 + 1);
                             if (ran <= foxSpirit.getProp()) {
+                                Timestamp tmpTime = new Timestamp(getStart().getTime());
+                                getStart().setTime(getStart().getTime() + i);
                                 if (getStart().before(adventOfTheFoxEndTime)) {
-                                    for (int j = 0; j < foxSpiritOrb.getLimitAttackCount(); j++) {
-                                        getSkillEventList().add(new SkillEvent(foxSpiritOrb, new Timestamp(getStart().getTime() + 1350 + j * 600), new Timestamp(getStart().getTime() + 1350 + j * 600)));
-                                        getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + j * 600));
-                                    }
+                                    addSkillEvent(foxSpiritOrb);
                                 } else {
-                                    for (int j = 0; j < foxSpirit.getLimitAttackCount(); j++) {
-                                        getSkillEventList().add(new SkillEvent(foxSpirit, new Timestamp(getStart().getTime() + 1350 + j * 600), new Timestamp(getStart().getTime() + 1350 + j * 600)));
-                                        getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + j * 600));
-                                    }
+                                    addSkillEvent(foxSpirit);
                                 }
+                                getStart().setTime(tmpTime.getTime());
                             }
                         }
                     }
                     if (skill instanceof SmashingMultipunchEnd) {
                         if (getStart().before(adventOfTheFoxEndTime)) {
-                            for (int j = 0; j < foxSpiritOrb.getLimitAttackCount() + 15; j++) {
-                                getSkillEventList().add(new SkillEvent(foxSpiritOrb, new Timestamp(getStart().getTime() + 1350 + j * 600), new Timestamp(getStart().getTime() + 1350 + j * 600)));
-                                getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + j * 600));
+                            for (int j = 0; j < 15; j++) {
+                                addSkillEvent(foxSpiritOrb);
                             }
                         } else {
-                            for (int j = 0; j < foxSpirit.getLimitAttackCount(); j++) {
-                                getSkillEventList().add(new SkillEvent(foxSpirit, new Timestamp(getStart().getTime() + 1350 + j * 600), new Timestamp(getStart().getTime() + 1350 + j * 600)));
-                                getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + j * 600));
+                            for (int j = 0; j < 15; j++) {
+                                addSkillEvent(foxSpirit);
                             }
                         }
                     }
@@ -466,22 +467,25 @@ public class EunwolDealCycle extends DealCycle {
             applyCooldown(trueSpiritClaw);
         }
         applyCooldown(skill);
-        if (skill instanceof SpiritFrenzy) {
-            spiritFrenzy6th.setActivateTime(skill.getActivateTime());
-            spiritFrenzySpiritConcentration.setActivateTime(skill.getActivateTime());
-        } else if (skill instanceof  SpiritFrenzy6th) {
-            spiritFrenzy.setActivateTime(skill.getActivateTime());
-            spiritFrenzySpiritConcentration.setActivateTime(skill.getActivateTime());
-        } else if (skill instanceof SpiritFrenzySpiritConcentration) {
-            spiritFrenzy.setActivateTime(skill.getActivateTime());
-            spiritFrenzy6th.setActivateTime(skill.getActivateTime());
-        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
             getEventTimeList().add(endTime);
         }
         getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill instanceof SpiritFrenzy) {
+            applyCooldown(skill);
+            spiritFrenzy6th.setActivateTime(skill.getActivateTime());
+            spiritFrenzySpiritConcentration.setActivateTime(skill.getActivateTime());
+        } else if (skill instanceof  SpiritFrenzy6th) {
+            applyCooldown(skill);
+            spiritFrenzy.setActivateTime(skill.getActivateTime());
+            spiritFrenzySpiritConcentration.setActivateTime(skill.getActivateTime());
+        } else if (skill instanceof SpiritFrenzySpiritConcentration) {
+            applyCooldown(skill);
+            spiritFrenzy.setActivateTime(skill.getActivateTime());
+            spiritFrenzy6th.setActivateTime(skill.getActivateTime());
+        }
         if (
                 skill instanceof BladeImpSpin
                 || skill instanceof SoulSplitter
@@ -491,15 +495,9 @@ public class EunwolDealCycle extends DealCycle {
             Long ran = (long) (Math.random() * 99 + 1);
             if (ran <= foxSpirit.getProp()) {
                 if (getStart().before(adventOfTheFoxEndTime)) {
-                    for (int i = 0; i < foxSpiritOrb.getLimitAttackCount(); i++) {
-                        getSkillEventList().add(new SkillEvent(foxSpiritOrb, new Timestamp(getStart().getTime() + 1350 + i * 600), new Timestamp(getStart().getTime() + 1350 + i * 600)));
-                        getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + i * 600));
-                    }
+                    addSkillEvent(foxSpiritOrb);
                 } else {
-                    for (int i = 0; i < foxSpirit.getLimitAttackCount(); i++) {
-                        getSkillEventList().add(new SkillEvent(foxSpirit, new Timestamp(getStart().getTime() + 1350 + i * 600), new Timestamp(getStart().getTime() + 1350 + i * 600)));
-                        getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + i * 600));
-                    }
+                    addSkillEvent(foxSpirit);
                 }
             }
         } else if (
@@ -507,14 +505,38 @@ public class EunwolDealCycle extends DealCycle {
         ) {
             Long ran = (long) (Math.random() * 99 + 1);
             if (ran <= foxSpirit.getProp()) {
-                for (int i = 0; i < foxSpiritOrb.getLimitAttackCount() + 6; i++) {
-                    getSkillEventList().add(new SkillEvent(foxSpiritOrb, new Timestamp(getStart().getTime() + 1350 + i * 600), new Timestamp(getStart().getTime() + 1350 + i * 600)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 1350 + i * 600));
+                for (int i = 0; i < 6; i++) {
+                    addSkillEvent(foxSpiritOrb);
                 }
             }
         }
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
+        }
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            Long ran = (long) (Math.random() * 99 + 1);
+            if (
+                    ran <= foxSpirit.getProp()
+                    && !(skill instanceof FoxSpirit)
+                    && !(skill instanceof FoxSpiritOrb)
+            ) {
+                Timestamp tmpTime = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                if (getStart().before(adventOfTheFoxEndTime)) {
+                    addSkillEvent(foxSpiritOrb);
+                } else {
+                    addSkillEvent(foxSpirit);
+                }
+                getStart().setTime(tmpTime.getTime());
+            }
         }
     }
 
@@ -569,5 +591,60 @@ public class EunwolDealCycle extends DealCycle {
             }
         }
         return overlappingSkillEvents;
+    }
+
+    @Override
+    public Long calcTotalDamage(List<Timestamp> eventTimeList) {
+        Long totalDamage = 0L;
+        Timestamp start = null;
+        Timestamp end = null;
+        List<SkillEvent> overlappingSkillEvents;
+        BuffSkill buffSkill;
+        for (int i = 0; i < eventTimeList.size() -1; i++) {
+            List<SkillEvent> useAttackSkillList = new ArrayList<>();
+            buffSkill = new BuffSkill();
+            start = eventTimeList.get(i);
+            end = eventTimeList.get(i + 1);
+            overlappingSkillEvents = getOverlappingSkillEvents(start, end);
+            List<SkillEvent> useBuffSkillList = new ArrayList<>();
+            for (SkillEvent skillEvent : overlappingSkillEvents) {
+                if (skillEvent.getSkill() instanceof BuffSkill) {
+                    useBuffSkillList.add(skillEvent);
+                } else {
+                    useAttackSkillList.add(skillEvent);
+                }
+            }
+            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
+                buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
+                buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
+                buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
+                buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
+                buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
+                buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
+                buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
+                buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
+                buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
+                buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
+                buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
+                buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
+                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
+                buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+            }
+            for (SkillEvent se : useAttackSkillList) {
+                totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
+                        totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
+                    }
+                }
+            }
+        }
+        for (AttackSkill as : getAttackSkillList()) {
+            as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
+        }
+        return totalDamage;
     }
 }

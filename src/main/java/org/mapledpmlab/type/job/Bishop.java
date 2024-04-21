@@ -94,7 +94,6 @@ public class Bishop extends Job {
         addFinalDamage(1.01);           // 브레싱 앙상블
         addFinalDamage(1.1);            // 엔젤레이 5중첩
         addDamage(40L);                 // 아케인 에임
-        addFinalDamage(1.08);           // 오버로드 마나
         addIgnoreDefenseList(44L);      // 엔젤릭 터치 상시 유지
     }
 

@@ -6,7 +6,7 @@ import org.mapledpmlab.type.skill.buffskill.dualblade.KarmaBladeBuff;
 public class KarmaBlade2 extends AttackSkill {
     public KarmaBlade2() {
         this.setName("카르마 블레이드2");
-        this.setAttackCount(7L);
+        this.setAttackCount(14L);
         this.setDamage(900.0);
         this.setDelay(3120L);
         this.setRelatedSkill(new KarmaBladeBuff());
@@ -14,7 +14,7 @@ public class KarmaBlade2 extends AttackSkill {
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
-        this.addFinalDamage(1.7);           // 미러 이미징
+        this.addFinalDamage(0.85);           // 미러 이미징
         this.getMultiAttackInfo().add(1050L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(30L);

@@ -11,7 +11,7 @@ public class SpiritFrenzySpiritBondMax extends AttackSkill {
         this.setInterval(90L);
         this.setLimitAttackCount(28L);
         this.setCooldown(60.0);
-        this.addFinalDamage(2.2);       // 코어 강화
+        this.addFinalDamage(2.8);       // 코어 강화
         this.addIgnoreDefenseList(20L);
     }
 }

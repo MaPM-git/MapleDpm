@@ -12,7 +12,7 @@ public class FinalCutBuff extends BuffSkill {
         this.setName("파이널 컷");
         this.setCooldown(90.0);
         this.setDuration(60L);
-        this.addBuffFinalDamage(1.4);
+        this.addBuffFinalDamage(1.41);
         this.setApplyPlusBuffDuration(true);
         this.setRelatedSkill(new FinalCut());
     }

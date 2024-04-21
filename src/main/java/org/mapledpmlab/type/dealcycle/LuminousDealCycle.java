@@ -466,6 +466,24 @@ public class LuminousDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (
+                attackSkill instanceof AbsoluteKill
+                || attackSkill instanceof Apocalypse
+                || attackSkill instanceof BaptismOfLightAndDarkness
+                || attackSkill instanceof DoorOfTruth
+                || attackSkill instanceof EndlessDarkness
+                || attackSkill instanceof HarmonicParadoxKeydown
+                || attackSkill instanceof HarmonicParadoxPower
+                || attackSkill instanceof LiberationOrbActive
+                || attackSkill instanceof LiberationOrbPassive
+                || attackSkill instanceof LightReflection
+                || attackSkill instanceof PunishingResonator
+                || attackSkill instanceof PunishingResonatorEclipse
+                || attackSkill instanceof PunishingResonatorEquilibrium
+                || attackSkill instanceof PunishingResonatorSunfire
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
@@ -475,7 +493,7 @@ public class LuminousDealCycle extends DealCycle {
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

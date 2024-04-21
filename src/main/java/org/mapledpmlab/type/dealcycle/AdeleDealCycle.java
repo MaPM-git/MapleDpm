@@ -439,7 +439,7 @@ public class AdeleDealCycle extends DealCycle {
         }
         applyCooldown(skill);
         if (cooldownCheck(et)) {
-            addSkillEvent(et);
+            et.setActivateTime(new Timestamp(et.getActivateTime().getTime() + 10000));
         }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));

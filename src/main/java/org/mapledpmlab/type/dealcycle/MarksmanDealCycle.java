@@ -41,6 +41,8 @@ public class MarksmanDealCycle extends DealCycle {
 
     private boolean isSplitArrow = false;
 
+    int splitArrow6th = 0;
+
     private List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new ChargedArrow());
@@ -73,7 +75,7 @@ public class MarksmanDealCycle extends DealCycle {
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new BullsEye());
-            add(new CriticalReinforce(0.0));
+            add(new CriticalReinforce(100.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
             add(new MapleWorldGoddessBlessing(275L));
@@ -97,7 +99,7 @@ public class MarksmanDealCycle extends DealCycle {
         BullsEye bullsEye = new BullsEye();
         ChargedArrow chargedArrow = new ChargedArrow();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
         EnhanceSnipe enhanceSnipe = new EnhanceSnipe();
         EpicAdventure epicAdventure = new EpicAdventure();
         Evolve evolve = new Evolve();
@@ -235,6 +237,7 @@ public class MarksmanDealCycle extends DealCycle {
             ) {
                 addDealCycle(dealCycle1);
                 dealCycleOrder ++;
+                splitArrow6th = 13;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
@@ -242,6 +245,7 @@ public class MarksmanDealCycle extends DealCycle {
             ) {
                 addDealCycle(dealCycle2);
                 dealCycleOrder ++;
+                splitArrow6th = 13;
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(6 * 60 * 1000))
@@ -249,6 +253,7 @@ public class MarksmanDealCycle extends DealCycle {
             ) {
                 addDealCycle(dealCycle3);
                 dealCycleOrder ++;
+                splitArrow6th = 13;
             } else if (
                     cooldownCheck(dealCycle4)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
@@ -256,6 +261,7 @@ public class MarksmanDealCycle extends DealCycle {
             ) {
                 addDealCycle(dealCycle4);
                 dealCycleOrder ++;
+                splitArrow6th = 13;
             } else if (
                     cooldownCheck(dealCycle5)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
@@ -263,6 +269,7 @@ public class MarksmanDealCycle extends DealCycle {
             ) {
                 addDealCycle(dealCycle5);
                 dealCycleOrder ++;
+                splitArrow6th = 13;
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(100 * 1000))
@@ -288,8 +295,6 @@ public class MarksmanDealCycle extends DealCycle {
         }
         sortEventTimeList();
     }
-
-    int finalAimCnt = 0;
 
     public Long calcTotalDamage(List<Timestamp> eventTimeList) {
         Long totalDamage = 0L;
@@ -366,17 +371,11 @@ public class MarksmanDealCycle extends DealCycle {
                         || se.getSkill() instanceof FinalAimWave
                         || se.getSkill() instanceof RepeatingCrossbowCartridge)
                 ) {
-                    if (se.getSkill() instanceof FinalAimWave && i < 13) {
+                    if (se.getSkill() instanceof FinalAimWave && splitArrow6th > 0) {
                         totalDamage += getAttackDamage(new SkillEvent(new SplitArrow(), start, end), buffSkill, start, end);
-                        i ++;
+                        splitArrow6th --;
                     } else if (!(se.getSkill() instanceof FinalAimWave)) {
                         totalDamage += getAttackDamage(new SkillEvent(new SplitArrow(), start, end), buffSkill, start, end);
-                    } else if (
-                            start.after(new Timestamp(60 * 3 * 1000))
-                            && start.before(new Timestamp(60 * 8 * 1000))
-                            && i == 13
-                    ) {
-                        i = 0;
                     }
                 }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
@@ -412,7 +411,7 @@ public class MarksmanDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

@@ -88,7 +88,7 @@ public class PathFinderDealCycle extends DealCycle {
 
     private List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new CriticalReinforce(0.0));
+            add(new CriticalReinforce(100.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
             add(new MapleWorldGoddessBlessing(275L));
@@ -116,7 +116,7 @@ public class PathFinderDealCycle extends DealCycle {
         CardinalBlast cardinalBlast = new CardinalBlast();
         CardinalDischarge cardinalDischarge = new CardinalDischarge();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
         CurseArrow curseArrow = new CurseArrow();
         EdgeOfResonance edgeOfResonance = new EdgeOfResonance();
         EpicAdventure epicAdventure = new EpicAdventure();
@@ -515,7 +515,7 @@ public class PathFinderDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

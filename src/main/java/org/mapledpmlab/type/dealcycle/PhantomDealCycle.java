@@ -145,6 +145,7 @@ public class PhantomDealCycle extends DealCycle {
         dealCycle1.add(blackJackBeforeDelay);
         dealCycle1.add(roseCarteFinale);
 
+        dealCycle2.add(finalCutBuff);
         dealCycle2.add(heroesOath);
         dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(bullsEye);

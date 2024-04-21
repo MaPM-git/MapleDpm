@@ -13,6 +13,6 @@ public class ShaftBreakEnchant extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new ShaftBreakEnchantBomb());
         this.setAddDamage(10L + 15);
-        this.setApplyCooldownReduction(false);
+        this.setApplyReuse(true);
     }
 }

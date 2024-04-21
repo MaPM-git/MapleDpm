@@ -91,7 +91,6 @@ public class Evan extends Job {
     public void Doping() {
         super.Doping();
         this.addDamage(20L);            // 교감
-        this.addFinalDamage(1.08);           // 오버로드 마나
     }
 
     public void addTotal(JobType jobType) {

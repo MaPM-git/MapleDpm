@@ -12,5 +12,6 @@ public class StrikeArrowEnchant extends AttackSkill {
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(10L + 15);
+        this.setApplyReuse(true);
     }
 }

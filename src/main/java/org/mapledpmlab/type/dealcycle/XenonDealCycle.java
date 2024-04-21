@@ -409,6 +409,12 @@ public class XenonDealCycle extends DealCycle {
                 }
             }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            boolean isOverloadMode = false;
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                if (skillEvent.getSkill() instanceof OverloadMode) {
+                    isOverloadMode = true;
+                }
+            }
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
@@ -434,14 +440,14 @@ public class XenonDealCycle extends DealCycle {
                                     (this.getJob().getLevel() + 2) * 5 * 0.01 * currentEnergyCnt
                             )
                     );
-                } else {
+                } else if (isOverloadMode){
                     buffSkill.addBuffMainStat(
                             (long) Math.floor(
                                     (this.getJob().getLevel() + 2) * 5 * 0.2
                             )
                     );
                     buffSkill.addBuffFinalDamage(
-                            1 + currentEnergyCnt * 0.01
+                            1 + (currentEnergyCnt - 20) * 0.01
                     );
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -511,7 +517,7 @@ public class XenonDealCycle extends DealCycle {
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

@@ -409,6 +409,35 @@ public class LaraDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (
+                attackSkill instanceof AbsorptionFierceWind
+                || attackSkill instanceof AbsorptionRiverPuddleDouse
+                || attackSkill instanceof AbsorptionSunlitightGrain
+                || attackSkill instanceof BigStretch
+                || attackSkill instanceof BloomingFlowerWorld
+                || attackSkill instanceof BloomingFlowerWorldFinish
+                || attackSkill instanceof DragonVeinTrace
+                || attackSkill instanceof EruptionRipplingRiver
+                || attackSkill instanceof EruptionRipplingRiverBig
+                || attackSkill instanceof EruptionSunriseWell
+                || attackSkill instanceof EruptionSunriseWellDot
+                || attackSkill instanceof EruptionSunriseWellLava
+                || attackSkill instanceof EruptionSunriseWellVolcanicCoal
+                || attackSkill instanceof EruptionWhirlwind
+                || attackSkill instanceof EssenceSprinkle
+                || attackSkill instanceof MountainSeed
+                || attackSkill instanceof RidgeWinding
+                || attackSkill instanceof SoaringSpirit
+                || attackSkill instanceof SunRiverMountainWindBomb
+                || attackSkill instanceof SunRiverMountainWindWave1
+                || attackSkill instanceof SunRiverMountainWindWave2
+                || attackSkill instanceof SunRiverMountainWindWave3
+                || attackSkill instanceof SunRiverMountainWindWave4
+                || attackSkill instanceof VineSkein
+                || attackSkill instanceof Wakeup
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
@@ -418,7 +447,7 @@ public class LaraDealCycle extends DealCycle {
                         + this.getJob().getPerXAtt())
                         * this.getJob().getConstant()
                         * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (this.getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * this.getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

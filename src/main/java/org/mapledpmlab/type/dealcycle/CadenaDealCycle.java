@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcycle;
 
+import org.mapledpmlab.type.job.Cadena;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -204,7 +205,7 @@ public class CadenaDealCycle extends DealCycle {
         dealCycle3.add(chainArtsMaelstrom);
 
         addSkillEvent(weakPointConvergingAttack);
-        addSkillEvent(weaponVarietyBuff);
+        //addSkillEvent(weaponVarietyBuff);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(dealCycle1)
@@ -569,5 +570,42 @@ public class CadenaDealCycle extends DealCycle {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
+    }
+
+    @Override
+    public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
+        Long attackDamage = 0L;
+        AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        for (AttackSkill as : getAttackSkillList()) {
+            if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
+                        + getJob().getFinalSubstat() + ((Cadena) getJob()).getFinalSubStat2() + buffSkill.getBuffSubStat()) * 0.01
+                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                        + getJob().getPerXAtt())
+                        * getJob().getConstant()
+                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                        * (getJob().getFinalDamage())
+                        * buffSkill.getBuffFinalDamage()
+                        * getJob().getStatXFinalDamage()
+                        * attackSkill.getFinalDamage()
+                        * getJob().getMastery()
+                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                );
+                if (skillEvent.getStart().equals(start)) {
+                    as.setUseCount(as.getUseCount() + 1);
+                }
+                Long distance = end.getTime() - start.getTime();
+                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / as.getDelay() * distance;
+                }
+                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
+                break;
+            }
+        }
+        return attackDamage;
     }
 }

@@ -8,7 +8,6 @@ public class AssassinationCancle extends AttackSkill {
         this.setAttackCount(6L);
         this.setDamage(395.0);
         this.setDelayByAttackSpeed(180L);
-        this.addFinalDamage(1.5);
         this.setAddDamage(20 + 20L);    // 암살-리인포스, 보스 킬러
         this.addIgnoreDefenseList(10L); // 암살-이그노어 가드
         this.addFinalDamage(2.2);       // 코어강화

@@ -13,5 +13,6 @@ public class ChainSickle extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new ChainSickleFinish());
         this.setAddDamage(20L);
+        this.setApplyCooldownReduction(true);
     }
 }

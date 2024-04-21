@@ -31,7 +31,7 @@ public class ViperDealCycle extends DealCycle {
     // 준극딜
     private List<Skill> dealCycle3 = new ArrayList<>();
 
-    private Long serpentStoneCount = 2L;
+    private Long serpentStoneCount = 3L;
     private Timestamp superEndTime = new Timestamp(0);
     private Timestamp stimulateEndTime = new Timestamp(0);
 
@@ -219,24 +219,24 @@ public class ViperDealCycle extends DealCycle {
                     && luckyDice.getBuffDamage() == 20
             ) {
                 luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
-                if (
+                /*if (
                         luckyDiceOneMoreChance.getBuffDamage() >= 30
                         || luckyDiceOneMoreChance.getBuffAttMagic() >= 15
                 ) {
                     luckyDiceOneMoreChance.setCooldown(180.0);
-                }
+                }*/
                 luckyDice.setCooldown(luckyDiceOneMoreChance.getCooldown());
                 luckyDice.setBuffDamage(luckyDiceOneMoreChance.getBuffDamage());
                 luckyDice.setBuffAttMagic(luckyDiceOneMoreChance.getBuffAttMagic());
                 addSkillEvent(luckyDice);
             } else if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDice();
-                if (
+                /*if (
                         luckyDice.getBuffDamage() >= 30
                         || luckyDice.getBuffAttMagic() >= 15
                 ) {
                     luckyDice.setCooldown(180.0);
-                }
+                }*/
                 addSkillEvent(luckyDice);
             }
             if (cooldownCheck(serpentScrew)) {

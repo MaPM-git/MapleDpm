@@ -10,5 +10,6 @@ public class PeacemakerFinish extends AttackSkill {
         this.setAttackCount(12L);
         this.setRelatedSkill(new PeacemakerBuff());
         this.addFinalDamage(1.6);       // 코어강화
+        this.getMultiAttackInfo().add(4200L);
     }
 }

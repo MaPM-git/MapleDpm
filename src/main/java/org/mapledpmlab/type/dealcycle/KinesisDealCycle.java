@@ -90,6 +90,7 @@ public class KinesisDealCycle extends DealCycle {
     int grabCnt = 0;
 
     Timestamp psychicOverEndTime = new Timestamp(-1);
+    Timestamp blessEndTime = new Timestamp(-1);
 
     public KinesisDealCycle(Job job) {
         super(job, new Telekinesis());
@@ -218,6 +219,22 @@ public class KinesisDealCycle extends DealCycle {
         addSkillEvent(ultimateBPM);
         while (getStart().before(getEnd())) {
             if (
+                    getStart().after(blessEndTime)
+                    && (
+                            (
+                                    getStart().before(new Timestamp(60 * 1000))
+                            ) || (
+                                    getStart().after(new Timestamp(380 * 1000))
+                                    && getStart().before(new Timestamp(420 * 1000))
+                            ) || (
+                                    getStart().after(new Timestamp(560 * 1000))
+                                    && getStart().before(new Timestamp(620 * 1000))
+                            )
+                    )
+            ) {
+                addSkillEvent(otherWorldGoddessBlessing);
+            }
+            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
                     && psychicPoint > 6
@@ -311,6 +328,9 @@ public class KinesisDealCycle extends DealCycle {
             ultimateBPMTic.setActivateTime(new Timestamp(ultimateBPMTic.getActivateTime().getTime() + 600));
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof OtherWorldGoddessBlessing) {
+                blessEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
             if (skill instanceof PsychicOver) {
                 psychicOverEndTime = new Timestamp(getStart().getTime() + 26000);
                 psychicOverTic.setActivateTime(new Timestamp(getStart().getTime() + 750));
@@ -459,6 +479,36 @@ public class KinesisDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        if (
+                attackSkill instanceof AnotherRealm
+                || attackSkill instanceof AnotherRealmBomb
+                || attackSkill instanceof EverPsychic
+                || attackSkill instanceof EverPsychicFinish
+                || attackSkill instanceof LawOfGravity
+                || attackSkill instanceof LawOfGravityPull1
+                || attackSkill instanceof LawOfGravityPull2
+                || attackSkill instanceof LawOfGravityPull3
+                || attackSkill instanceof LawOfGravityPull4
+                || attackSkill instanceof LawOfGravityPull5
+                || attackSkill instanceof PsychicDrain
+                || attackSkill instanceof PsychicGrab
+                || attackSkill instanceof PsychicGround
+                || attackSkill instanceof PsychicSmashing
+                || attackSkill instanceof PsychicTornado
+                || attackSkill instanceof PsychicTornadoBomb
+                || attackSkill instanceof PsychicTornadoThrow
+                || attackSkill instanceof PsychoMetry
+                || attackSkill instanceof UltimateBPM
+                || attackSkill instanceof UltimateMaterial
+                || attackSkill instanceof UltimateMovingMatter
+                || attackSkill instanceof UltimateMovingMatterExtinction
+                || attackSkill instanceof UltimatePsychicBullet
+                || attackSkill instanceof UltimatePsychicBulletBlackHole
+                || attackSkill instanceof UltimatePsychicShoot
+                || attackSkill instanceof UltimateTrain
+        ) {
+            buffSkill.addBuffFinalDamage(1.08);
+        }
         for (AttackSkill as : getAttackSkillList()) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 if (
@@ -480,7 +530,7 @@ public class KinesisDealCycle extends DealCycle {
                         + getJob().getPerXAtt())
                         * getJob().getConstant()
                         * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                        * (getJob().getFinalDamage())
                         * buffSkill.getBuffFinalDamage()
                         * getJob().getStatXFinalDamage()
                         * attackSkill.getFinalDamage()

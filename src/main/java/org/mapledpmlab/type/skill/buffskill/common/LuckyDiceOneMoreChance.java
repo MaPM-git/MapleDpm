@@ -12,6 +12,7 @@ public class LuckyDiceOneMoreChance extends BuffSkill {
         this.setDelay(990L);
         this.addBuffDamage(20L);                    // 로디드 다이스 5번
         this.setCooldown(180.0);
+        this.setDuration(180L);
         Long ran = (long) (Math.random() * 3 + 1);
         if (ran == 5) {                             // 5번
             this.addBuffDamage(10L);
@@ -22,7 +23,8 @@ public class LuckyDiceOneMoreChance extends BuffSkill {
                     ran <= 1365
                     && this.getCooldown() != 90
             ) {
-                this.setCooldown(this.getCooldown() / 2);
+                this.setCooldown(90.0);
+                this.setDuration(90L);
             } else if (ran > 2730 && ran <= 4095) { // 3번
                 if (this.getBuffAttMagic() == 15) {
                     this.addBuffAttMagic(10L);
@@ -37,7 +39,8 @@ public class LuckyDiceOneMoreChance extends BuffSkill {
                     ran <= 115
                     && this.getCooldown() != 90
             ) {
-                this.setCooldown(this.getCooldown() / 2);
+                this.setCooldown(90.0);
+                this.setDuration(90L);
             } else if (ran > 230 && ran <= 245) {   // 3번
                 if (this.getBuffAttMagic() == 15) {
                     this.addBuffAttMagic(10L);
@@ -47,6 +50,13 @@ public class LuckyDiceOneMoreChance extends BuffSkill {
             } else if (ran > 460 && ran <= 875) {   // 5번
                 this.addBuffDamage(10L);
             }
+        }
+        if (
+                this.getBuffDamage() != 20
+                        || this.getBuffAttMagic() != 0
+        ) {
+            this.setDuration(180L);
+            this.setCooldown(180.0);
         }
     }
 }

@@ -13,7 +13,7 @@ public class SpiritFrenzy6th extends AttackSkill {
         this.setCooldown(13.0);
         this.setApplyReuse(true);
         this.addFinalDamage(6.5);
-        this.addFinalDamage(2.2);       // 코어 강화
+        this.addFinalDamage(2.8);       // 코어 강화
         this.addIgnoreDefenseList(20L);
     }
 }
