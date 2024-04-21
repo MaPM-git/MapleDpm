@@ -28,7 +28,7 @@ public class Job extends Common {
     private Union union;
 
     public Job() {
-        this.setLevel(275L);            // 캐릭터 레벨
+        this.setLevel(285L);            // 캐릭터 레벨
         this.setMainStat(this.getAp()); // 기본 스탯(275 기준)
         this.setSubStat(4L);
         this.setOtherStat1(4L);
