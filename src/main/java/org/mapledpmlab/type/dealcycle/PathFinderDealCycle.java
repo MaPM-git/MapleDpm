@@ -465,7 +465,10 @@ public class PathFinderDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (isRelicLiberation) {
-                    if (se.getSkill() instanceof CardinalForce) {
+                    if (
+                            se.getSkill() instanceof CardinalForce
+                            && start.equals(se.getStart())
+                    ) {
                         totalDamage += getAttackDamage(new SkillEvent(new ForsakenRelicMagicArrow(), start, end), buffSkill, start, end);
                     }
                     if (
