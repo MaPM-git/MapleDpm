@@ -142,14 +142,14 @@ public class Item extends Common {
         }
     }
 
-    private void addPotential() {   // 이탈X 3줄
+    private void addPotential() {   // 1줄 이탈 3줄
         if (this.jobType == JobType.XENON) {
-            this.addAllStatP(21L);
+            this.addAllStatP(24L);
             if (this.getLevel() == 250) {
                 this.addAllStatP(3L);
             }
         } else {
-            this.addMainStatP(30L);
+            this.addMainStatP(33L);
             if (this.getLevel() == 250) {
                 this.addMainStatP(3L);
             }

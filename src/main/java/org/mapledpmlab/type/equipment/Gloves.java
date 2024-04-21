@@ -16,19 +16,19 @@ public class Gloves extends Item {
         this.addCriticalDamage(11.0);
         this.addAtt((long) (4 * 8));
         if (jobType == JobType.DEMON_AVENGER) {
-            this.addMainStatP(-23L);
+            this.addMainStatP(-35L);
             if (this.getLevel() == 250L) {
-                this.addMainStatP(-2L);
+                this.addMainStatP(-3L);
             }
         } else if (jobType == JobType.XENON) {
-            this.addAllStatP(-15L);
+            this.addAllStatP(-24L);
             if (this.getLevel() == 250) {
-                this.addAllStatP(-2L);
+                this.addAllStatP(-3L);
             }
         } else  {
-            this.addMainStatP(-20L);
+            this.addMainStatP(-32L);
             if (this.getLevel() == 250) {
-                this.addMainStatP(-2L);
+                this.addMainStatP(-3L);
             }
         }
         this.addAtt(1L);

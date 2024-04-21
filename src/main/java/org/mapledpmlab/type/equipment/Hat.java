@@ -43,11 +43,11 @@ public class Hat extends Item {
                 this.addMainStatP(-1L);
             }
         } else if (jobType == JobType.COOLDOWN_REDUCTION_MAX) {
-            this.addCooldownReductionSec(3L);
+            this.addCooldownReductionSec(5L);
             this.addMainStat((long) (12 * 10));
-            this.addMainStatP(-20L);
+            this.addMainStatP(-32L);
             if (this.getLevel() == 250) {
-                this.addMainStatP(-2L);
+                this.addMainStatP(-3L);
             }
         }
         this.addAtt(1L);
