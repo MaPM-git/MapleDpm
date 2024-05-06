@@ -10,7 +10,7 @@ public class ArrawPlatter extends AttackSkill {
         this.setDelayByAttackSpeed(800L);
         this.setDamage(440.0);
         this.setDotDuration(60000L);
-        this.setInterval(180L);
+        this.setInterval(210L);
         this.setAddDamage(90L);         // 윈드 오브 프레이
         this.setFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

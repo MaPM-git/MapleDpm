@@ -4,7 +4,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
 public class BigFuseGiganticCannonball extends AttackSkill {
     public BigFuseGiganticCannonball() {
-        this.setName("빅 휴즈 기간틱 캐논볼");
+        this.setName("빅 휴즈 기간틱 캐논볼(3스택)");
         this.setDamage(1860.0);
         this.setAttackCount(15L);       // 벅샷
         this.setCooldown(75.0);
@@ -14,5 +14,6 @@ public class BigFuseGiganticCannonball extends AttackSkill {
         this.setLimitAttackCount(75L);
         this.addFinalDamage(0.45);
         this.addFinalDamage(1.6);       // 코어강화
+        this.setApplyCooldownReduction(false);
     }
 }

@@ -5,8 +5,10 @@ import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
+import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
+import org.mapledpmlab.type.union.AdeleUnion;
 import org.mapledpmlab.type.union.StrUnion;
 
 import java.util.stream.Collectors;
@@ -44,7 +46,7 @@ public class Adele extends Job {
         // 0차
         this.addCriticalDamage(10.0);   // 페이스
         this.addAttP(10L);
-        this.addAtt((long) (340 * 0.15));
+        this.addAtt(51L);               // 매직 서킷
 
         // 1차
         this.addAtt(30L);               // 루디먼트
@@ -70,11 +72,16 @@ public class Adele extends Job {
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
 
+        // 환산 보정
+        this.addMainStatP(-36L);
+        this.addMainStat(17L);
+        //this.addSubStat(5L);
+
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
-        this.setUnion(new StrUnion());
+        this.setUnion(new AdeleUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());

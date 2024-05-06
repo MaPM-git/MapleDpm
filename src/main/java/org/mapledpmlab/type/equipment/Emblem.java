@@ -16,5 +16,7 @@ public class Emblem extends Item {
         this.addHp(700L / 2);
         this.addAttP(30L);
         this.addAttP(21L);
+        this.addMagicP(30L);
+        this.addMagicP(21L);
     }
 }

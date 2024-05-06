@@ -80,6 +80,11 @@ public class WindBreaker extends Job {
         this.addIgnoreDefenseList(15L);
         this.addCriticalP(15.0);
 
+        // 환산 보정
+        this.addMainStatP(-51L);
+        //this.addMainStat(-1L);
+        this.addSubStat(5L);
+
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());

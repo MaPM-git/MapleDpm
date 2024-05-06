@@ -9,7 +9,7 @@ public class AnotherBite3 extends AttackSkill {
         this.setDamage((70.0 + 15 + 15 + 20 + 40) * 3);
         this.setFinalAttack(true);
         this.setAttackCount(1L);
-        this.setCooldown(1.0);
+        //this.setCooldown(1.0);
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
     }

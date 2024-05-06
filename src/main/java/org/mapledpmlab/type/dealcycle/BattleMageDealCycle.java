@@ -188,6 +188,11 @@ public class BattleMageDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))) {
                 addSkillEvent(ringSwitching);
             } else if (
+                    cooldownCheck(blackMagicAltar)
+                    && !cooldownCheck(soulContract)
+            ) {
+                addSkillEvent(blackMagicAltar);
+            } else if (
                     cooldownCheck(resistanceLineInfantry)
             ) {
                 addSkillEvent(resistanceLineInfantry);
@@ -361,10 +366,17 @@ public class BattleMageDealCycle extends DealCycle {
                     }
                 }
                 if (
-                        se.getSkill() instanceof FinishBlow
-                        || se.getSkill() instanceof BattleKingBar1
-                        || se.getSkill() instanceof BattleKingBar2
-                        || se.getSkill() instanceof ReaperScythe
+                        start.equals(se.getStart())
+                        && (
+                                se.getSkill() instanceof FinishBlow
+                                || se.getSkill() instanceof BattleKingBar1
+                                || se.getSkill() instanceof BattleKingBar2
+                                || se.getSkill() instanceof ReaperScythe
+                                || se.getSkill() instanceof CrestOfTheSolar
+                                || se.getSkill() instanceof CrimsonPactum1
+                                || se.getSkill() instanceof CrimsonPactum2
+                                || se.getSkill() instanceof SpiderInMirror
+                        )
                 ) {
                     totalDamage += getAttackDamage(new SkillEvent(this.blackMark, start, end), buffSkill, start, end);
                     for (int j = 0; j < this.abyssalLightningStartTimeList.size(); j++) {
@@ -414,8 +426,12 @@ public class BattleMageDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + this.getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                        + this.getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
                         * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + this.getJob().getPerXAtt())
@@ -429,18 +445,42 @@ public class BattleMageDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (
+                attackSkill instanceof AbyssalLightning
+                        || attackSkill instanceof BattleKingBar1
+                        || attackSkill instanceof BattleKingBar2
+                        || attackSkill instanceof BlackMagicAltar
+                        || attackSkill instanceof BlackMark
+                        || attackSkill instanceof CrimsonPactum1
+                        || attackSkill instanceof CrimsonPactum2
+                        || attackSkill instanceof DarkLightning
+                        || attackSkill instanceof Death
+                        || attackSkill instanceof DeathReinforce
+                        || attackSkill instanceof FinishBlow
+                        || attackSkill instanceof GrimReaper
+                        || attackSkill instanceof GrimReaperMOD
+                        || attackSkill instanceof NetherworldLightning
+                        || attackSkill instanceof ReaperScythe
+                        || attackSkill instanceof ResistanceLineInfantry
+        ) {
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

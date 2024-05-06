@@ -6,11 +6,11 @@
   /><g
   ><g style="font-family:'Arial';"
     ><text x="10" xml:space="preserve" y="50" style="stroke:none;"
-      >불스아이</text
-      ><line x1="202" x2="242" y1="50" style="fill:none; stroke:blue; stroke-width:4;" y2="50"
-      /><line x1="382" x2="422" y1="50" style="fill:none; stroke:blue; stroke-width:4;" y2="50"
-      /><line x1="561" x2="601" y1="50" style="fill:none; stroke:blue; stroke-width:4;" y2="50"
-      /><line x1="743" x2="783" y1="50" style="fill:none; stroke:blue; stroke-width:4;" y2="50"
+      >불스아이(팬텀)</text
+      ><line x1="202" x2="232" y1="50" style="fill:none; stroke:blue; stroke-width:4;" y2="50"
+      /><line x1="382" x2="412" y1="50" style="fill:none; stroke:blue; stroke-width:4;" y2="50"
+      /><line x1="561" x2="591" y1="50" style="fill:none; stroke:blue; stroke-width:4;" y2="50"
+      /><line x1="743" x2="773" y1="50" style="fill:none; stroke:blue; stroke-width:4;" y2="50"
       /><text x="10" xml:space="preserve" y="100" style="stroke-width:4; stroke:none;"
       >파이널 컷</text
       ><line x1="200" x2="317" y1="100" style="fill:none; stroke:red; stroke-width:4;" y2="100"
@@ -29,12 +29,10 @@
       /><line x1="743" x2="803" y1="150" style="fill:none; stroke-width:4;" y2="150"
       /><text x="10" xml:space="preserve" y="200" style="stroke-width:4; stroke:none;"
       >조커(모래시계)</text
-      ><line x1="576" x2="606" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
+      ><line x1="756" x2="786" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
       /><text x="10" xml:space="preserve" y="250" style="stroke-width:4; stroke:none;"
       >조커(날카로운 검)</text
-      ><line x1="217" x2="247" y1="250" style="fill:none; stroke:aqua; stroke-width:4;" y2="250"
-      /><line x1="394" x2="424" y1="250" style="fill:none; stroke:aqua; stroke-width:4;" y2="250"
-      /><line x1="756" x2="786" y1="250" style="fill:none; stroke:aqua; stroke-width:4;" y2="250"
+      ><line x1="576" x2="606" y1="250" style="fill:none; stroke:aqua; stroke-width:4;" y2="250"
       /><text x="10" xml:space="preserve" y="300" style="stroke-width:4; stroke:none;"
       >메이플 여신의 축복</text
       ><line x1="200" x2="260" y1="300" style="fill:none; stroke:rgb(64,64,64); stroke-width:4;" y2="300"

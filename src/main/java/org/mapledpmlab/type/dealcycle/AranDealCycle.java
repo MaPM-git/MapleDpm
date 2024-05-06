@@ -414,6 +414,7 @@ public class AranDealCycle extends DealCycle {
                         if (
                                 start.after(blizzardTempestStartTimeList.get(j))
                                 && start.before(blizzardTempestEndTimeList.get(j))
+                                && start.equals(se.getStart())
                         ) {
                             totalDamage += getDireWolfsCurseDamage(new SkillEvent(direWolfsCurse, start, end), buffSkill, start, end, j);
                         }
@@ -433,6 +434,7 @@ public class AranDealCycle extends DealCycle {
         if (attackCount > 9) {
             attackCount = 9L;
         }
+        direWolfsCurse = new DireWolfsCurse();
         direWolfsCurse.setAttackCount(attackCount);
         attackDamage += getAttackDamage(new SkillEvent(direWolfsCurse, start, end), buffSkill, start, end);
         return attackDamage;
@@ -451,28 +453,32 @@ public class AranDealCycle extends DealCycle {
                 isAdrenaline = true;
             }
         }
-        if (isAdrenaline) {
-            if (skillEvent.getSkill() instanceof Beyonder1) {
-                ((Beyonder1) skillEvent.getSkill()).setDamage(525.0 + 35 + 100 + 150);
-                ((Beyonder1) skillEvent.getSkill()).setAttackCount(5L + 1 + 2);
-            } else if (skillEvent.getSkill() instanceof Beyonder2) {
-                ((Beyonder2) skillEvent.getSkill()).setDamage(540.0 + 35 + 100 + 150);
-                ((Beyonder2) skillEvent.getSkill()).setAttackCount(5L + 1 + 2);
-            } else if (skillEvent.getSkill() instanceof Beyonder3) {
-                ((Beyonder3) skillEvent.getSkill()).setDamage(555.0 + 35 + 100 + 150);
-                ((Beyonder3) skillEvent.getSkill()).setAttackCount(5L + 1 + 2);
-            } else if (skillEvent.getSkill() instanceof AdvancedFinalAttackAran) {
-                ((AdvancedFinalAttackAran) skillEvent.getSkill()).setDamage(86.0 + 100 + 150);
-                ((AdvancedFinalAttackAran) skillEvent.getSkill()).setAttackCount(3L + 2);
-            } else if (skillEvent.getSkill() instanceof FenrirCrash) {
-                ((FenrirCrash) skillEvent.getSkill()).setDamage(735.0 + 100 + 150);
-                ((FenrirCrash) skillEvent.getSkill()).setAttackCount(7L + 1 + 2);
-            }
-        }
         for (AttackSkill as : attackSkillList) {
+            if (isAdrenaline) {
+                if (skillEvent.getSkill() instanceof Beyonder1) {
+                    ((Beyonder1) skillEvent.getSkill()).setDamage(525.0 + 35 + 100 + 150);
+                    ((Beyonder1) skillEvent.getSkill()).setAttackCount(5L + 1 + 2);
+                } else if (skillEvent.getSkill() instanceof Beyonder2) {
+                    ((Beyonder2) skillEvent.getSkill()).setDamage(540.0 + 35 + 100 + 150);
+                    ((Beyonder2) skillEvent.getSkill()).setAttackCount(5L + 1 + 2);
+                } else if (skillEvent.getSkill() instanceof Beyonder3) {
+                    ((Beyonder3) skillEvent.getSkill()).setDamage(555.0 + 35 + 100 + 150);
+                    ((Beyonder3) skillEvent.getSkill()).setAttackCount(5L + 1 + 2);
+                } else if (skillEvent.getSkill() instanceof FenrirCrash) {
+                    ((FenrirCrash) skillEvent.getSkill()).setDamage(735.0 + 100 + 150);
+                    ((FenrirCrash) skillEvent.getSkill()).setAttackCount(7L + 1 + 2);
+                } else if (skillEvent.getSkill() instanceof SmashSwing) {
+                    ((SmashSwing) skillEvent.getSkill()).setDamage(150.0 + 5 + 21 + 200 + 100 + 100 + 300 + 150);
+                    ((SmashSwing) skillEvent.getSkill()).setAttackCount(2L + 2);
+                }
+            }
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                        + getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
@@ -486,35 +492,39 @@ public class AranDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
-        }
-        if (isAdrenaline) {
-            if (skillEvent.getSkill() instanceof Beyonder1) {
-                ((Beyonder1) skillEvent.getSkill()).setDamage(525.0 + 35 + 100);
-                ((Beyonder1) skillEvent.getSkill()).setAttackCount(5L + 1);
-            } else if (skillEvent.getSkill() instanceof Beyonder2) {
-                ((Beyonder2) skillEvent.getSkill()).setDamage(540.0 + 35 + 100);
-                ((Beyonder2) skillEvent.getSkill()).setAttackCount(5L + 1);
-            } else if (skillEvent.getSkill() instanceof Beyonder3) {
-                ((Beyonder3) skillEvent.getSkill()).setDamage(555.0 + 35 + 100);
-                ((Beyonder3) skillEvent.getSkill()).setAttackCount(5L + 1);
-            } else if (skillEvent.getSkill() instanceof AdvancedFinalAttackAran) {
-                ((AdvancedFinalAttackAran) skillEvent.getSkill()).setDamage(86.0 + 100);
-                ((AdvancedFinalAttackAran) skillEvent.getSkill()).setAttackCount(3L);
-            } else if (skillEvent.getSkill() instanceof FenrirCrash) {
-                ((FenrirCrash) skillEvent.getSkill()).setDamage(735.0 + 100);
-                ((FenrirCrash) skillEvent.getSkill()).setAttackCount(7L + 1);
+            if (isAdrenaline) {
+                if (skillEvent.getSkill() instanceof Beyonder1) {
+                    ((Beyonder1) skillEvent.getSkill()).setDamage(525.0 + 35 + 100);
+                    ((Beyonder1) skillEvent.getSkill()).setAttackCount(5L + 1);
+                } else if (skillEvent.getSkill() instanceof Beyonder2) {
+                    ((Beyonder2) skillEvent.getSkill()).setDamage(540.0 + 35 + 100);
+                    ((Beyonder2) skillEvent.getSkill()).setAttackCount(5L + 1);
+                } else if (skillEvent.getSkill() instanceof Beyonder3) {
+                    ((Beyonder3) skillEvent.getSkill()).setDamage(555.0 + 35 + 100);
+                    ((Beyonder3) skillEvent.getSkill()).setAttackCount(5L + 1);
+                } else if (skillEvent.getSkill() instanceof FenrirCrash) {
+                    ((FenrirCrash) skillEvent.getSkill()).setDamage(735.0 + 100);
+                    ((FenrirCrash) skillEvent.getSkill()).setAttackCount(7L + 1);
+                } else if (skillEvent.getSkill() instanceof SmashSwing) {
+                    ((SmashSwing) skillEvent.getSkill()).setDamage(150.0 + 5 + 21 + 200 + 100 + 100 + 300);
+                    ((SmashSwing) skillEvent.getSkill()).setAttackCount(2L);
+                }
             }
         }
         return attackDamage;

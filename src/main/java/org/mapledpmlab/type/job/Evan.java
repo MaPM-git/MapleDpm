@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalReuse;
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.equipment.DragonWeapon;
@@ -74,7 +75,12 @@ public class Evan extends Job {
         // 5차
         this.addMagic(35L);             // 스파이럴 오브 마나
 
-        this.setAbility(new ReuseBossAbnormal());
+        // 환산 보정
+        this.addMainStatP(63L);
+        this.addMainStat(15L);
+        this.addSubStat(5L);
+
+        this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new IntUnion());

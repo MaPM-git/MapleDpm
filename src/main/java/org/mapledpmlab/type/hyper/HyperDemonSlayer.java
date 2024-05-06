@@ -14,7 +14,7 @@ public class HyperDemonSlayer extends Hyper {
             point = 1518 + 18 * (level % 10);
         }
 
-        if (criticalP <= 70) {
+        /*if (criticalP <= 70) {
         } else if (criticalP < 100) {
             Long reqCriticalP = (long) (100 - criticalP);
             if (reqCriticalP <= 5) {
@@ -25,7 +25,7 @@ public class HyperDemonSlayer extends Hyper {
                 point -= reqPoint[(int) (reqLevel + Math.ceil((reqCriticalP - 5) / 2.0))];
                 this.addCriticalP(5.0 + Math.ceil((reqCriticalP - 5) / 2.0) * 2);
             }
-        }
+        }*/
 
         this.addBossDamage(51L);
         point -= 440L;

@@ -215,9 +215,9 @@ public class DealCycle {
         setFortyDeal(calcFortyDeal());
         Object[] result = new Object[]{
                 this.getJob().getName(), this.getDPM() + "",
-                "=TEXT(" + getDPM() + "/SUM(IF(A2:A48=\"비숍\", VALUE(B2:B48),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
-                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A48=\"비숍\", VALUE(D2:D48),0)),\"0.0%\")", this.getFortyDeal() + "",
-                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A48=\"비숍\", VALUE(F2:F48),0)),\"0.0%\")"
+                "=TEXT(" + getDPM() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(B2:B50),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
+                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(D2:D50),0)),\"0.0%\")", this.getFortyDeal() + "",
+                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(F2:F50),0)),\"0.0%\")"
         };
         return result;
     }
@@ -294,8 +294,12 @@ public class DealCycle {
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         for (AttackSkill as : getAttackSkillList()) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                        + getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
@@ -309,14 +313,18 @@ public class DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
@@ -367,13 +375,13 @@ public class DealCycle {
             as.setUseCount(0L);
             as.setCumulativeDamage(0L);
         }
-        for (int i = 0; i < 720; i++) {
+        for (int i = 0; i < 720; i = i + 5) {
             List<Timestamp> tmp = new ArrayList<>();
             Long dps = 0L;
             for (Timestamp ts : getEventTimeList()) {
                 if (
                         (ts.equals(new Timestamp(i * 1000)) || ts.after(new Timestamp(i * 1000)))
-                        && (ts.equals(new Timestamp((i + 1) * 1000)) || ts.before(new Timestamp((i + 1) * 1000)))
+                        && (ts.equals(new Timestamp((i + 5) * 1000)) || ts.before(new Timestamp((i + 5) * 1000)))
                 ) {
                     tmp.add(ts);
                 }
@@ -401,5 +409,33 @@ public class DealCycle {
    private static <T> Predicate<T> deduplication(Function<? super T, ?> key) {
         final Set<Object> set = ConcurrentHashMap.newKeySet();
         return predicate -> set.add(key.apply(predicate));
+    }
+
+    public void getJobInfo() {
+        System.out.println("-------------------");
+        System.out.println("직업 : " + getJob().getName());
+        System.out.println("기본 주스탯 수치 : " + getJob().getMainStat());
+        System.out.println("주스탯 % 수치 : " + (getJob().getMainStatP() + getJob().getAllStatP()));
+        System.out.println("% 미적용 주스탯 수치 : " + getJob().getPerXMainStat());
+        System.out.println("기본 부스탯 수치 : " + getJob().getSubStat());
+        System.out.println("부스탯 % 수치 : " + getJob().getAllStatP());
+        System.out.println("% 미적용 부스탯 수치 : " + getJob().getPerXSubStat());
+        System.out.println("기본 스공 : " + getJob().getStatDamage());
+        System.out.println("데미지 : " + getJob().getDamage());
+        System.out.println("최종데미지 : " + getJob().getFinalDamage());
+        System.out.println("보스 데미지 : " + getJob().getBossDamage());
+        System.out.println("방어율 무시 : " + getJob().getIgnoreDefense());
+        System.out.println("크리티컬 확률 : " + getJob().getCriticalP());
+        System.out.println("장비 공격력 % : " + getJob().getAttP());
+        System.out.println("장비 마력 % : " + getJob().getMagicP());
+        System.out.println("크리티컬 데미지 : " + getJob().getCriticalDamage());
+        System.out.println("쿨타임 감소 초 : " + getJob().getCooldownReductionSec());
+        System.out.println("쿨타임 감소 % : " + getJob().getCooldownReductionP());
+        System.out.println("버프 지속 시간 : " + getJob().getPlusBuffDuration());
+        System.out.println("재사용 : " + getJob().getReuse());
+        System.out.println("속성 내성 무시 : " + getJob().getProperty());
+        System.out.println("무기 공격력 : " + getJob().getWeaponAttMagic());
+        System.out.println(getJob().getLinkListStr());
+        System.out.println(getJob().getAbility().getDescription());
     }
 }

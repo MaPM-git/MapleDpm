@@ -13,5 +13,6 @@ public class DragonSwift extends AttackSkill {
         this.setCooldown(6.0);          // 드래곤 스위프트-쿨타임 리듀스
         this.addFinalDamage(2.2);                   // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.setApplyReuse(true);
     }
 }

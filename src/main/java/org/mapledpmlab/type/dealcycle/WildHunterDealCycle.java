@@ -183,6 +183,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle1.add(rampageAsOne);
         dealCycle1.add(naturesBeliefWave);
         dealCycle1.add(jaguarMaximum);
+        dealCycle1.add(getOffJaguar);
         dealCycle1.add(wildGrenade);
         dealCycle1.add(wildVulcanTypeXBeforeDelay);
 
@@ -200,6 +201,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle2.add(rampageAsOne);
         dealCycle2.add(naturesBeliefWave);
         dealCycle2.add(jaguarMaximum);
+        dealCycle2.add(getOffJaguar);
         dealCycle2.add(wildGrenade);
         dealCycle2.add(wildVulcanTypeXBeforeDelay);
 
@@ -218,6 +220,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle3.add(jaguarStorm);
         dealCycle3.add(rampageAsOne);
         dealCycle3.add(jaguarMaximum);
+        dealCycle3.add(getOffJaguar);
         dealCycle3.add(wildGrenade);
         dealCycle3.add(wildVulcanTypeXBeforeDelay);
 
@@ -234,10 +237,13 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle4.add(jaguarStorm);
         dealCycle4.add(rampageAsOne);
         dealCycle4.add(jaguarMaximum);
+        dealCycle4.add(getOffJaguar);
         dealCycle4.add(wildGrenade);
         dealCycle4.add(wildVulcanTypeXBeforeDelay);
 
         dealCycle5.add(willOfLiberty);
+        dealCycle5.add(assistantHuntingUnitDelay);
+        dealCycle5.add(mapleWorldGoddessBlessing);
         dealCycle5.add(assistantHuntingUnitDelay);
         dealCycle5.add(silentRampage);
         dealCycle5.add(criticalReinforce);
@@ -249,6 +255,7 @@ public class WildHunterDealCycle extends DealCycle {
         dealCycle5.add(jaguarStorm);
         dealCycle5.add(rampageAsOne);
         dealCycle5.add(jaguarMaximum);
+        dealCycle5.add(getOffJaguar);
         dealCycle5.add(wildGrenade);
         dealCycle5.add(wildVulcanTypeXBeforeDelay);
 
@@ -276,7 +283,7 @@ public class WildHunterDealCycle extends DealCycle {
                     biteCnt ++;
                 }
                 addSkillEvent(rampageAsOne);
-                jaguarSkillDelay = new Timestamp(rampageAsOne.getJaguarDelay());
+                jaguarSkillDelay = new Timestamp(getStart().getTime() + rampageAsOne.getJaguarDelay());
             }
             if (
                     cooldownCheck(sonicBoom)
@@ -289,7 +296,7 @@ public class WildHunterDealCycle extends DealCycle {
                     biteCnt ++;
                 }
                 addSkillEvent(sonicBoom);
-                jaguarSkillDelay = new Timestamp(sonicBoom.getJaguarDelay());
+                jaguarSkillDelay = new Timestamp(getStart().getTime() + sonicBoom.getJaguarDelay());
             }
             if (
                     cooldownCheck(clawCut)
@@ -302,7 +309,7 @@ public class WildHunterDealCycle extends DealCycle {
                     biteCnt ++;
                 }
                 addSkillEvent(clawCut);
-                jaguarSkillDelay = new Timestamp(clawCut.getJaguarDelay());
+                jaguarSkillDelay = new Timestamp(getStart().getTime() + clawCut.getJaguarDelay());
             }
             if (
                     cooldownCheck(crossroad)
@@ -315,7 +322,7 @@ public class WildHunterDealCycle extends DealCycle {
                     biteCnt ++;
                 }
                 addSkillEvent(crossroad);
-                jaguarSkillDelay = new Timestamp(crossroad.getJaguarDelay());
+                jaguarSkillDelay = new Timestamp(getStart().getTime() + crossroad.getJaguarDelay());
             }
             if (
                     cooldownCheck(dealCycle1)
@@ -395,7 +402,7 @@ public class WildHunterDealCycle extends DealCycle {
                 addSkillEvent(drillContainer);
                 addSkillEvent(resistanceLineInfantry);
             } else {
-                if (getStart().before(wildVulcanReinforceEndTime)) {
+                /*if (getStart().before(wildVulcanReinforceEndTime)) {
                     addSkillEvent(wildVulcanReinforce);
                 } else {
                     addSkillEvent(wildVulcan);
@@ -405,16 +412,8 @@ public class WildHunterDealCycle extends DealCycle {
                     wildVulcanReinforceEndTime = new Timestamp(getStart().getTime() + 10000);
                     wildCnt = 0L;
                     addSkillEvent(grenade);
-                }
-                if (cooldownCheck(anotherBite1)) {
-                    if (biteCnt == 1) {
-                        addSkillEvent(anotherBite1);
-                    } else if (biteCnt == 2) {
-                        addSkillEvent(anotherBite2);
-                    } else if (biteCnt == 3) {
-                        addSkillEvent(anotherBite3);
-                    }
-                }
+                }*/
+                addSkillEvent(wildVulcanReinforce);
             }
         }
         sortEventTimeList();
@@ -467,6 +466,9 @@ public class WildHunterDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof JaguarMaximum) {
+                jaguarSkillDelay = new Timestamp(getStart().getTime() + 2790);
+            }
             if (
                     getStart().before(soulResonationEndTime)
                     && cooldownCheck(soulResonation)
@@ -493,7 +495,11 @@ public class WildHunterDealCycle extends DealCycle {
                 this.getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof DrillContainer) {
+                        i = 1020;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -515,8 +521,18 @@ public class WildHunterDealCycle extends DealCycle {
                 this.multiAttackProcess(skill);
             } else {
                 if (skill instanceof AssistantHuntingUnitDelay) {
+                    List<SkillEvent> remove = new ArrayList<>();
+                    for (SkillEvent skillEvent : this.getSkillEventList()) {
+                        if (
+                                skillEvent.getStart().after(getStart())
+                                && skillEvent.getSkill() instanceof AssistantHuntingUnit
+                        ) {
+                            remove.add(skillEvent);
+                        }
+                    }
+                    this.getSkillEventList().removeAll(remove);
                     for (long j = 0; j <= 60000; j += 7000) {
-                        for (long i = 0; i <= 5000; i += 250) {
+                        for (long i = 0; i <= 5000; i += 300) {
                             getSkillEventList().add(new SkillEvent(assistantHuntingUnit, new Timestamp(getStart().getTime() + i + j), new Timestamp(getStart().getTime() + i + j)));
                             getEventTimeList().add(new Timestamp(getStart().getTime() + i + j));
                         }
@@ -526,17 +542,7 @@ public class WildHunterDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         }
-        if (
-                skill instanceof AnotherBite1
-                || skill instanceof AnotherBite2
-                || skill instanceof AnotherBite3
-        ) {
-            applyCooldown(anotherBite1);
-            applyCooldown(anotherBite2);
-            applyCooldown(anotherBite3);
-        } else {
-            applyCooldown(skill);
-        }
+        applyCooldown(skill);
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -608,8 +614,16 @@ public class WildHunterDealCycle extends DealCycle {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
-                    if (isSilentRampage || ran <= this.getFinalAttack().getProp() && start.equals(se.getStart())) {
+                    if (
+                            (isSilentRampage && start.equals(se.getStart()))
+                            || (ran <= this.getFinalAttack().getProp() && start.equals(se.getStart()))
+                    ) {
                         totalDamage += getAttackDamage(new SkillEvent(this.getFinalAttack(), start, end), buffSkill, start, end);
+                    }
+                    getStart().setTime(start.getTime());
+                    if (cooldownCheck(anotherBite3) && start.equals(se.getStart())) {
+                        totalDamage += getAttackDamage(new SkillEvent(anotherBite3, start, end), buffSkill, start, end);
+                        applyCooldown(anotherBite3);
                     }
                 }
             }
@@ -628,17 +642,21 @@ public class WildHunterDealCycle extends DealCycle {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         if (isCriticalReinforce) {
-            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP() + ((AttackSkill) skillEvent.getSkill()).getCriticalP());
+            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
             buffSkill.addBuffCriticalDamage(criticalReinforce.getBuffCriticalDamage());
         }
         for (AttackSkill as : attackSkillList) {
-            if (as instanceof JaguarSkill && isJaguarStorm) {
-                as.setAttackCount(as.getAttackCount() * 3);
-                buffSkill.addBuffFinalDamage(4.6);
-            }
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + this.getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                if (attackSkill instanceof JaguarSkill && isJaguarStorm) {
+                    attackSkill.setAttackCount(attackSkill.getAttackCount() * 3);
+                    buffSkill.addBuffFinalDamage(3.6);
+                }
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                        + this.getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((this.getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (this.getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + this.getJob().getPerXAtt())
@@ -652,22 +670,30 @@ public class WildHunterDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
+                if (attackSkill instanceof JaguarSkill && isJaguarStorm) {
+                    attackSkill.setAttackCount(attackSkill.getAttackCount() / 3);
+                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 3.6);
+                }
                 break;
             }
-            if (as instanceof JaguarSkill && isJaguarStorm) {
-                as.setAttackCount(as.getAttackCount() / 3);
-                buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 4.6);
-            }
+        }
+        if (isCriticalReinforce) {
+            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
+            buffSkill.addBuffCriticalDamage(-criticalReinforce.getBuffCriticalDamage());
         }
         return attackDamage;
     }

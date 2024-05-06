@@ -59,6 +59,11 @@ public class Lara extends Job {
         this.addIgnoreDefenseList(42L);
         this.addMagic(54L);             // 유유
 
+        // 환산 보정
+        this.addMainStatP(78L);
+        this.addMainStat(-10L);
+        this.addSubStat(10L);
+
         this.setAbility(new PassiveBossReuse());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new PhantomInstinct());

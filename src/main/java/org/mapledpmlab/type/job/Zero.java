@@ -4,7 +4,7 @@ import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
-import org.mapledpmlab.type.hyper.HyperCommon;
+import org.mapledpmlab.type.hyper.HyperZero;
 import org.mapledpmlab.type.link.Confidence;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.StrUnion;
@@ -37,8 +37,19 @@ public class Zero extends Job {
         this.addCriticalP(20.0);
         this.addMainStat(50L);
 
+        // 무기 잠재
+        this.addBossDamage(70L * 2);
+        this.addAttP(9L * 2);
+        this.addAttP(21L * 2);
+        this.addAttP(3L);
+
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
+
+        // 환산 보정
+        this.addMainStatP(51L);
+        //this.addMainStat(1L);
+        this.addSubStat(15L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
@@ -50,7 +61,7 @@ public class Zero extends Job {
         this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
-        this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
+        this.setHyper(new HyperZero(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
     }
 }

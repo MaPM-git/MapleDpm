@@ -10,7 +10,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class HolyBlood extends BuffSkill {
     public HolyBlood() {
         this.setName("홀리 블러드");
-        this.setCooldown(180.0);     // 3분주기에 맞춤
+        this.setCooldown(120.0);     // 3분주기에 맞춤
         this.setDuration(10L);
         this.addBuffFinalDamage(1.15);
         this.setDelay(270L);

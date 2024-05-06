@@ -38,9 +38,6 @@ public class Union extends Common {
         this.addAtt(20L);               // 메이플스토리M
         this.addMagic(20L);
 
-        this.addHp(2000L);              // 소울마스터
-        this.addHp(2000L);              // 미하일
-
         this.addCriticalDamage(20.0);   // 공격대 점령
         this.addBossDamage(40L);
         this.addIgnoreDefenseList(30L);

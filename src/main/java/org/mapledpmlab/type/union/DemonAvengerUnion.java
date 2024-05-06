@@ -28,8 +28,12 @@ public class DemonAvengerUnion extends Union {
                 "\n12.다크나이트 200 : HP 5%" +
                 "\n13.제논 200 : 부스탯 40"
         );
+        this.addPerXSubStat(640L);
         this.addPerXSubStat(40L);
         this.addHp(1250L);
         this.addMainStatP(5L);
+        this.addPerXMainStat(2000L);              // 소울마스터
+        this.addPerXMainStat(2000L);              // 미하일
+        this.addMainStat(-25L);
     }
 }

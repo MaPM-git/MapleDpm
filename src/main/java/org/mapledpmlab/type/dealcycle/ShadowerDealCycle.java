@@ -42,7 +42,7 @@ public class ShadowerDealCycle extends DealCycle {
 
     private List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
-            add(new AssassinationCancle());
+            add(new Assassination());
             add(new AssassinationFinishCancle());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
@@ -161,17 +161,13 @@ public class ShadowerDealCycle extends DealCycle {
         dealCycle1.add(readyToDie);
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
-        dealCycle1.add(assassinationCancle);
-        dealCycle1.add(mesoExplosion);
+        dealCycle1.add(assassination);
         dealCycle1.add(slashShadowFormation);
-        dealCycle1.add(assassinationFinishCancle);
-        dealCycle1.add(mesoExplosion);
         dealCycle1.add(savageAssault1);
         dealCycle1.add(sonicBlow);
         dealCycle1.add(eviscerate);
         for (int i = 0; i < 5; i++) {
             dealCycle1.add(heartbreakerCancleStack);
-            dealCycle1.add(mesoExplosion);
             dealCycle1.add(heartbreakerFinishCancle);
             dealCycle1.add(mesoExplosion);
         }
@@ -182,11 +178,8 @@ public class ShadowerDealCycle extends DealCycle {
         dealCycle2.add(readyToDie);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
-        dealCycle2.add(assassinationCancle);
-        dealCycle2.add(mesoExplosion);
+        dealCycle2.add(assassination);
         dealCycle2.add(slashShadowFormation);
-        dealCycle2.add(assassinationFinishCancle);
-        dealCycle2.add(mesoExplosion);
         dealCycle2.add(sonicBlow);
         dealCycle2.add(eviscerate);
 
@@ -194,22 +187,17 @@ public class ShadowerDealCycle extends DealCycle {
         dealCycle3.add(readyToDie);
         dealCycle3.add(soulContract);
         dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(assassinationCancle);
-        dealCycle3.add(mesoExplosion);
+        dealCycle3.add(assassination);
         dealCycle3.add(slashShadowFormation);
-        dealCycle3.add(assassinationFinishCancle);
-        dealCycle3.add(mesoExplosion);
         dealCycle3.add(sonicBlow);
         dealCycle3.add(eviscerate);
         for (int i = 0; i < 2; i++) {
             dealCycle3.add(heartbreakerCancleStack);
-            dealCycle3.add(mesoExplosion);
             dealCycle3.add(heartbreakerFinishCancle);
             dealCycle3.add(mesoExplosion);
         }
 
         dealCycle4.add(heartbreakerCancle);
-        dealCycle4.add(mesoExplosion);
         dealCycle4.add(heartbreakerFinishCancle);
         dealCycle4.add(mesoExplosion);
         dealCycle4.add(sonicBlow);
@@ -266,12 +254,10 @@ public class ShadowerDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 3000))
             ) {
                 addSkillEvent(heartbreakerCancle);
-                addSkillEvent(mesoExplosion);
                 addSkillEvent(heartbreakerFinishCancle);
                 addSkillEvent(mesoExplosion);
             } else {
-                addSkillEvent(assassinationCancle);
-                addSkillEvent(mesoExplosion);
+                addSkillEvent(assassination);
                 addSkillEvent(assassinationFinishCancle);
                 addSkillEvent(mesoExplosion);
             }
@@ -445,6 +431,58 @@ public class ShadowerDealCycle extends DealCycle {
                     buffSkill.addBuffFinalDamage(1.15);
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (
+                        !isSmokeBomb
+                                && !isVeilOfShadow
+                                && !isHeartbreakerDarkSight
+                                && !isUltimateDarkSight
+                                && (
+                                se.getSkill() instanceof Heartbreaker
+                                        || se.getSkill() instanceof HeartbreakerCancle
+                                        || se.getSkill() instanceof HeartbreakerCancleStack
+                                        || se.getSkill() instanceof HeartbreakerFinish
+                                        || se.getSkill() instanceof HeartbreakerFinishCancle
+                        )
+                ) {
+                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.15);
+                }
+                if (
+                        se.getStart().equals(start)
+                        && (
+                                se.getSkill() instanceof Assassination
+                                || se.getSkill() instanceof AssassinationCancle
+                                || se.getSkill() instanceof AssassinationFinish
+                                || se.getSkill() instanceof AssassinationFinishCancle
+                                || se.getSkill() instanceof Eviscerate
+                                || se.getSkill() instanceof Heartbreaker
+                                || se.getSkill() instanceof HeartbreakerCancle
+                                || se.getSkill() instanceof HeartbreakerCancleStack
+                                || se.getSkill() instanceof HeartbreakerFinish
+                                || se.getSkill() instanceof HeartbreakerFinishCancle
+                                || se.getSkill() instanceof SavageAssault1
+                                || se.getSkill() instanceof SavageAssault2
+                                || se.getSkill() instanceof SavageAssault3
+                                || se.getSkill() instanceof SonicBlow
+                                || se.getSkill() instanceof VeilOfShadow
+                        )
+                ) {
+                    for (int j = 0; j < ((AttackSkill) se.getSkill()).getAttackCount() * 2; j++) {
+                        Long ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= 40) {
+                            coinCount++;
+                        }
+                        if (coinCount > 20) {
+                            coinCount = 20L;
+                            break;
+                        }
+                    }
+                }
+                if (se.getSkill() instanceof MesoExplosion) {
+                    for (int j = 0; j < coinCount; j++) {
+                        totalDamage += getAttackDamage(new SkillEvent(se.getSkill(), start, end), buffSkill, start, end);
+                    }
+                    coinCount = 0L;
+                }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
@@ -464,37 +502,13 @@ public class ShadowerDealCycle extends DealCycle {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         for (AttackSkill as : getAttackSkillList()) {
-            if (
-                    as instanceof Assassination
-                    || as instanceof AssassinationCancle
-                    || as instanceof AssassinationFinish
-                    || as instanceof AssassinationFinishCancle
-                    || as instanceof Eviscerate
-                    || as instanceof Heartbreaker
-                    || as instanceof HeartbreakerCancle
-                    || as instanceof HeartbreakerCancleStack
-                    || as instanceof HeartbreakerFinish
-                    || as instanceof HeartbreakerFinishCancle
-                    || as instanceof SavageAssault1
-                    || as instanceof SavageAssault2
-                    || as instanceof SavageAssault3
-                    || as instanceof SonicBlow
-                    || as instanceof VeilOfShadow
-            ) {
-                for (int i = 0; i < as.getAttackCount() * 2; i++) {
-                    Long ran = (long) (Math.random() * 99 + 1);
-                    if (ran <= 40) {
-                        coinCount ++;
-                    }
-                }
-            }
-            if (as instanceof MesoExplosion) {
-                ((MesoExplosion) as).setCoinCount(coinCount);
-                coinCount = 0L;
-            }
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + ((Shadower) getJob()).getFinalSubStat2() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                        + getJob().getFinalSubstat() + ((Shadower) getJob()).getFinalSubStat2()) * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
@@ -508,19 +522,55 @@ public class ShadowerDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
         }
         return attackDamage;
+    }
+
+    @Override
+    public void getJobInfo() {
+        System.out.println("-------------------");
+        System.out.println("직업 : " + getJob().getName());
+        System.out.println("기본 주스탯 수치 : " + getJob().getMainStat());
+        System.out.println("주스탯 % 수치 : " + (getJob().getMainStatP() + getJob().getAllStatP()));
+        System.out.println("% 미적용 주스탯 수치 : " + getJob().getPerXMainStat());
+        System.out.println("기본 부스탯 수치 : " + getJob().getSubStat());
+        System.out.println("부스탯 % 수치 : " + getJob().getAllStatP());
+        System.out.println("% 미적용 부스탯 수치 : " + getJob().getPerXSubStat());
+        System.out.println("기본 부스탯2 수치 : " + getJob().getOtherStat1());
+        System.out.println("부스탯2 % 수치 : " + getJob().getAllStatP());
+        System.out.println("% 미적용 부스탯 수치 : " + getJob().getPerXOtherStat());
+        System.out.println("기본 스공 : " + getJob().getStatDamage());
+        System.out.println("데미지 : " + getJob().getDamage());
+        System.out.println("최종데미지 : " + getJob().getFinalDamage());
+        System.out.println("보스 데미지 : " + getJob().getBossDamage());
+        System.out.println("방어율 무시 : " + getJob().getIgnoreDefense());
+        System.out.println("크리티컬 확률 : " + getJob().getCriticalP());
+        System.out.println("장비 공격력 % : " + getJob().getAttP());
+        System.out.println("장비 마력 % : " + getJob().getMagicP());
+        System.out.println("크리티컬 데미지 : " + getJob().getCriticalDamage());
+        System.out.println("쿨타임 감소 초 : " + getJob().getCooldownReductionSec());
+        System.out.println("쿨타임 감소 % : " + getJob().getCooldownReductionP());
+        System.out.println("버프 지속 시간 : " + getJob().getPlusBuffDuration());
+        System.out.println("재사용 : " + getJob().getReuse());
+        System.out.println("속성 내성 무시 : " + getJob().getProperty());
+        System.out.println("무기 공격력 : " + getJob().getWeaponAttMagic());
+        System.out.println(getJob().getLinkListStr());
+        System.out.println(getJob().getAbility().getDescription());
     }
 }

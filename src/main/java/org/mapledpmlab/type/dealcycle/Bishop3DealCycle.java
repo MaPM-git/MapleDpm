@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BishopDealCycle extends DealCycle {
+public class Bishop3DealCycle extends DealCycle {
 
     /*
         인피니티 지속시간(벞지 196%) - 121.36초
@@ -122,8 +122,10 @@ public class BishopDealCycle extends DealCycle {
     boolean bahamutAttack = false;
     boolean angelOfLibraRevengeAttack = false;
 
-    public BishopDealCycle(Job job) {
+    public Bishop3DealCycle(Job job) {
         super(job, null);
+
+        getJob().setName("비숍(3분)");
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);
@@ -177,8 +179,8 @@ public class BishopDealCycle extends DealCycle {
         ringSwitching.setCooldown(90.0);
 
         dealCycle1.add(triumphFeather);
-        dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(epicAdventure);
+        dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
         dealCycle1.add(pray);
@@ -187,20 +189,20 @@ public class BishopDealCycle extends DealCycle {
         dealCycle1.add(restraintRing);
         dealCycle1.add(holyBlood);
         dealCycle1.add(peacemaker);
-        dealCycle1.add(holyAdvent);
         dealCycle1.add(heavensDoor);
+        dealCycle1.add(holyAdvent);
         dealCycle1.add(divinePunishment);
 
         dealCycle2.add(triumphFeather);
-        dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(epicAdventure);
+        dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(pray);
         dealCycle2.add(angelOfLibra);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
         dealCycle2.add(holyBlood);
-        dealCycle2.add(peacemaker);
         dealCycle2.add(heavensDoor);
+        dealCycle2.add(peacemaker);
         dealCycle2.add(divinePunishment);
 
         dealCycle3.add(soulContract);
@@ -308,7 +310,9 @@ public class BishopDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (cooldownCheck(peacemaker)) {
+            } else if (
+                    cooldownCheck(peacemaker)
+            ) {
                 addSkillEvent(peacemaker);
             } else {
                 addSkillEvent(angelicRay);
@@ -416,6 +420,7 @@ public class BishopDealCycle extends DealCycle {
                 }
             }
             for (int j = 0; j < useAttackSkillList.size(); j++) {
+                Double tmpFinalDamage = buffSkill.getBuffFinalDamage().doubleValue();
                 if (
                         j == tmp
                         && !(useAttackSkillList.get(j).getSkill() instanceof BahamutSummon)
@@ -430,6 +435,7 @@ public class BishopDealCycle extends DealCycle {
                     }
                 }
                 totalDamage += getAttackDamage(useAttackSkillList.get(j), buffSkill, start, end);
+                buffSkill.setBuffFinalDamage(tmpFinalDamage.doubleValue());
             }
             isAngelOfLibraCharity = false;
             isPray = false;
@@ -478,8 +484,12 @@ public class BishopDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + this.getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                        + this.getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
                         * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + this.getJob().getPerXAtt())
@@ -493,18 +503,53 @@ public class BishopDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (isAngelOfLibraCharity) {
+            mainStat = this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat();
+            AngelOfLibraCharity angelOfLibraCharity = new AngelOfLibraCharity(mainStat);
+            buffSkill.addBuffDamage(-angelOfLibraCharity.getBuffDamage());
+        }
+        if (isPray) {
+            mainStat = this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat();
+            Pray pray = new Pray(mainStat);
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / pray.getBuffFinalDamage());
+        }
+        if (
+                attackSkill instanceof AngelicOfJudgement
+                        || attackSkill instanceof AngelicRay
+                        || attackSkill instanceof AngelicTouch
+                        || attackSkill instanceof AngelOfLibraRevenge
+                        || attackSkill instanceof BahamutSummon
+                        || attackSkill instanceof DivinePunishment
+                        || attackSkill instanceof FountainForAngel
+                        || attackSkill instanceof Genesis
+                        || attackSkill instanceof HeavensDoor
+                        || attackSkill instanceof HolyAdvent1
+                        || attackSkill instanceof HolyAdvent2
+                        || attackSkill instanceof HolyAdventBalance
+                        || attackSkill instanceof HolyAdventCharity
+                        || attackSkill instanceof HolyAdventRevenge
+                        || attackSkill instanceof Peacemaker
+                        || attackSkill instanceof PeacemakerFinish
+                        || attackSkill instanceof TriumphFeather
+        ) {
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

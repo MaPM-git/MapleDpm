@@ -10,7 +10,8 @@ public class ChainArtsMaelstrom extends AttackSkill {
         this.setAttackCount(4L);
         this.setDotDuration(8000L);
         this.addFinalDamage(1.6);           // 코어강화
-        this.setCooldown(3.5);
+        this.setCooldown(3.0);
+        this.setApplyReuse(false);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(180L);
         this.getMultiAttackInfo().add(270L);

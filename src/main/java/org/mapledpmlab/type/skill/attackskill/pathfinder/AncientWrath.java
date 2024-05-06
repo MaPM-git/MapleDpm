@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 public class AncientWrath extends GaugeAttackSkill implements AncientForce {
     public AncientWrath() {
         this.setName("고대의 분노");
-        this.setAttackCount(8L);
+        this.setAttackCount(15L);
         this.setDamage(1280.0);
         this.setCooldown(10.0);
         this.setDotDuration(30L);

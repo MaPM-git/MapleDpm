@@ -189,12 +189,6 @@ public class AdeleDealCycle extends DealCycle {
                 auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
             }
-            if (
-                    getStart().after(magicCircuitFullDriveEndTime)
-                    && getStart().before(new Timestamp(60 * 1000))
-            ) {
-                addSkillEvent(magicCircuitFullDriveBuff);
-            }
             if (cooldownCheck(order1)) {
                 addSkillEvent(order1);
             }
@@ -263,11 +257,11 @@ public class AdeleDealCycle extends DealCycle {
                     cooldownCheck(shard)
             ) {
                 addSkillEvent(shard);
-            } else if (
+            } /*else if (
                     cooldownCheck(tread)
             ) {
                 addSkillEvent(tread);
-            } else {
+            }*/ else {
                 addSkillEvent(devide);
             }
         }

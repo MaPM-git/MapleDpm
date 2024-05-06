@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class BullsEyePhantom extends BuffSkill {
     public BullsEyePhantom() {
         this.setName("불스아이(팬텀)");
-        this.setCooldown(120.0);
+        this.setCooldown(180.0);
         this.setDelay(960L);
         this.setDuration(30L);
         this.setBuffCriticalP(20.0);

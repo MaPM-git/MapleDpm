@@ -7,7 +7,7 @@ public class Beyonder3 extends AttackSkill {
         this.setName("비욘더(3타)");
         this.setDamage(555.0 + 35 + 100 + 135);
         this.setAttackCount(5L + 1);            // 비욘더-보너스 어택
-        this.setDelay(420L);
+        this.setDelayByAttackSpeed(420L - 60);
         this.addIgnoreDefenseList(30L);
         this.setAddDamage(20L);                 // 비욘더-리인포스
         this.addIgnoreDefenseList(20L);         // 비욘더-이그노어 가드

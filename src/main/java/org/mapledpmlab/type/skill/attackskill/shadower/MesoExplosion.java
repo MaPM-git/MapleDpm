@@ -2,6 +2,8 @@ package org.mapledpmlab.type.skill.attackskill.shadower;
 
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
+import java.util.ArrayList;
+
 public class MesoExplosion extends AttackSkill {
     public MesoExplosion() {
         this.setName("메소 익스플로젼");
@@ -11,9 +13,5 @@ public class MesoExplosion extends AttackSkill {
         this.addFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.getMultiAttackInfo().add(500L);
-    }
-
-    public void setCoinCount(Long coinCount) {
-        this.setAttackCount(2 * coinCount);
     }
 }

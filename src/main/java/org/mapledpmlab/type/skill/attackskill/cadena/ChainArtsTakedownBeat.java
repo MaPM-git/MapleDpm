@@ -7,7 +7,7 @@ public class ChainArtsTakedownBeat extends AttackSkill {
         this.setName("체인아츠:테이크다운(난타)");
         this.setDamage(1005.0);
         this.setAttackCount(15L);
-        this.addFinalDamage(1.3);           // 연계
+        //this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(20L);             // 체인아츠:테이크다운-리인포스

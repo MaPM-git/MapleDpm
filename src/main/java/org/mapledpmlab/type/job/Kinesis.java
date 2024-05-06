@@ -25,8 +25,8 @@ public class Kinesis extends Job {
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
         this.addSubStat((long) (150 + 145));
-        this.addMagic((long) (400 + 246 + 72 + 202));
-        this.setWeaponAttMagic((long) (400 + 246 + 72 + 202));
+        this.addMagic((long) (992));
+        this.setWeaponAttMagic((long) (992));
         this.addBossDamage((long) (30 + 10));
         this.addIgnoreDefenseList(20L);
         this.addBossDamage(70L);
@@ -65,13 +65,23 @@ public class Kinesis extends Job {
         // 4차
         this.addBossDamage(31L);        // 싸이킥 차징
         this.addFinalDamage(1.4);       // 싸이코 브레이크
-        this.addMagic(54L);             // ESP 배틀 오더
-        this.addDamage(22L);
-        this.addFinalDamage(1.22);
-        this.addFinalDamage(1.16);      // 각성
+        this.addMagic(52L);             // ESP 배틀 오더
+        this.addDamage(21L);
+        this.addFinalDamage(1.21);
+        //this.addMagic(54L);             // ESP 배틀 오더
+        //this.addDamage(22L);
+        //this.addFinalDamage(1.22);
+        this.addFinalDamage(1.15);      // 각성
+        //this.addFinalDamage(1.16);      // 각성
         this.addPlusBuffDuration(22L);  // 정신집중-유지
         this.addIgnoreDefenseList(27L);  // 전달
-        this.addCriticalDamage(12.0);   // 숙달
+        this.addCriticalDamage(11.0);   // 숙달
+        //this.addCriticalDamage(12.0);   // 숙달
+
+        // 환산 보정
+        this.addMainStatP(108L);
+        this.addMainStat(7L);
+        this.addSubStat(15L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());

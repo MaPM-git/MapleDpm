@@ -185,13 +185,6 @@ public class KhaliDealCycle extends DealCycle {
         addSkillEvent(hexChakramFuryBeforeDelay);
         while (getStart().before(getEnd())) {
             if (
-                    getStart().after(magicCircuitFullDriveEndTime)
-                    && getStart().before(new Timestamp(120 * 1000))
-                    && getStart().after(new Timestamp(50 * 1000))
-            ) {
-                addSkillEvent(magicCircuitFullDriveBuff);
-            }
-            if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
@@ -679,6 +672,15 @@ public class KhaliDealCycle extends DealCycle {
                     buffSkill.addBuffFinalDamage(1.3);
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (
+                        isOblivion
+                        && (
+                                se.getSkill() instanceof HexSkill
+                                || se.getSkill() instanceof VoidSkill
+                        )
+                ) {
+                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.3);
+                }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {

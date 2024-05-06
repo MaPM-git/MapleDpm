@@ -316,12 +316,13 @@ public class EunwolDealCycle extends DealCycle {
                     getStart().before(adventOfTheFoxEndTime)
             ) {
                 addSkillEvent(foxGodClaw1);
-            }/* else if (
+            } else if (
                     cooldownCheck(spiritFrenzy)
                     && getStart().before(new Timestamp(trueSpiritClaw.getActivateTime().getTime() - 3180))
+                    && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() - 15000))
             ) {
                 addSkillEvent(spiritFrenzy);
-            }*/ else {
+            } else {
                 if (cooldownCheck(trueSpiritClaw)) {
                     addSkillEvent(trueSpiritClaw);
                 } else {

@@ -193,6 +193,9 @@ public class NightLordDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("-------------");
+                System.out.println("dc1");
+                System.out.println(getStart());
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 throwBlastingList = new ArrayList<>();
                 dealCycle = new ArrayList<>();
@@ -220,6 +223,9 @@ public class NightLordDealCycle extends DealCycle {
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println("-------------");
+                System.out.println("dc2");
+                System.out.println(getStart());
                 throwBlastingList = new ArrayList<>();
                 dealCycle = new ArrayList<>();
                 while (throwBlastingCount != 0) {
@@ -247,6 +253,9 @@ public class NightLordDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && getStart().before(new Timestamp(ultimateDarkSight.getActivateTime().getTime() - 70000))
             ) {
+                System.out.println("-------------");
+                System.out.println("dc3");
+                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
                     cooldownCheck(throwBlastingPassive)

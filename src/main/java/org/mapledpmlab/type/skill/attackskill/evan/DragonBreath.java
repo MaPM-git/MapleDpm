@@ -13,5 +13,6 @@ public class DragonBreath extends AttackSkill {
         this.setCooldown(7.5);          // 드래곤 브레스-쿨타임 리듀스
         this.addFinalDamage(2.2);                   // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.setApplyReuse(true);
     }
 }

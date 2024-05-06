@@ -11,7 +11,7 @@ public class DarkSpear extends AttackSkill {
         this.setDelay(990L);
         this.setDotDuration(990L);
         this.setInterval(90L);
-        this.setLimitAttackCount(11L);
+        this.setLimitAttackCount(10L);
         this.addFinalDamage(1.6);
         this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new DarkSynthesis());

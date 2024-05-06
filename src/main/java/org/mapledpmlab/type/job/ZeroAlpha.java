@@ -16,10 +16,6 @@ public class ZeroAlpha extends Zero {
         this.setWeaponAttMagic((long) (337 + 151 + 72 + 252));
         this.addBossDamage((long) (30 + 10));
         this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
 
         // 알파
         this.addAtt(40L);               // 태도 마스터리

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -20,11 +21,6 @@ public class BattleMage extends Job {
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
-        this.addObject(new BossCriticalAbnormal());
-        this.addObject(new NormalFarm());
-        this.addObject(new HybridLogic());
-        this.addObject(new IntUnion());
-        this.addPerXMainStat(20L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -74,7 +70,12 @@ public class BattleMage extends Job {
         this.addDamage(11L);
         this.addIgnoreDefenseList(31L);
 
-        this.setAbility(new BossCriticalAbnormal());
+        // 환산 보정
+        this.addMainStatP(51L);
+        this.addMainStat(-10L);
+        this.addSubStat(5L);
+
+        this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.setUnion(new IntUnion());

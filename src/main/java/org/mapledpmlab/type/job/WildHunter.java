@@ -1,11 +1,15 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
+import org.mapledpmlab.type.link.CygnusBlessing;
 import org.mapledpmlab.type.link.HybridLogic;
+import org.mapledpmlab.type.link.Link;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.DexUnion;
 
 import java.util.stream.Collectors;
@@ -78,9 +82,21 @@ public class WildHunter extends Job {
         // 5차
         this.addAtt(65L);               // 재규어 스톰
 
-        this.setAbility(new ReuseBossAbnormal());
+        // 환산 보정
+        this.addMainStatP(-3L);
+        //this.addMainStat(-1L);
+        this.addSubStat(-5L);
+
+        this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
+        for (Link link : this.getLinkList()) {
+            if (link instanceof CygnusBlessing) {
+                this.getLinkList().remove(link);
+                break;
+            }
+        }
+        this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new DexUnion());
 
         this.addObject(this.getAbility());

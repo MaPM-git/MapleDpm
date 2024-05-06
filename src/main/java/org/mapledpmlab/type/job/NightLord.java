@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.ability.BossAbnormalBuff;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -70,7 +71,12 @@ public class NightLord extends Job {
         // 5차
         this.addAtt(30L);               // 레디 투 다이
 
-        this.setAbility(new BossAbnormalBuff());
+        // 환산 보정
+        this.addMainStatP(27L);
+        this.addMainStat(8L);
+        this.addSubStat(-5L);
+
+        this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());

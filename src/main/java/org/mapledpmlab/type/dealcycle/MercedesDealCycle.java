@@ -102,6 +102,7 @@ public class MercedesDealCycle extends DealCycle {
     Timestamp elementalGhostEndTime = new Timestamp(-1);
     Timestamp sylphidiaEndTime = new Timestamp(-1);
     Timestamp unfadingGloryEndTime = new Timestamp(-1);
+    Timestamp unicornSpikeEndTime = new Timestamp(-1);
 
     Long stigmaCnt = 0L;
     Long accumulateCnt = 0L;
@@ -112,6 +113,16 @@ public class MercedesDealCycle extends DealCycle {
 
     public MercedesDealCycle(Job job) {
         super(job, new AdvancedFinalAttackMercedes());
+
+        for (BuffSkill buffSkill : buffSkillList) {
+            if (
+                    buffSkill instanceof CriticalReinforce
+                    || buffSkill instanceof MapleWorldGoddessBlessing
+                    || buffSkill instanceof RoyalKnights
+            ) {
+                buffSkill.setDelay(buffSkill.getDelay() / 2);
+            }
+        }
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);
@@ -170,25 +181,25 @@ public class MercedesDealCycle extends DealCycle {
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
         dealCycle1.add(legendarySpear);
+        dealCycle1.add(elementalGhost);
         dealCycle1.add(sylphidia);
         dealCycle1.add(heroesOath);
+        dealCycle1.add(criticalReinforce);
         dealCycle1.add(mapleWorldGoddessBlessing);
         dealCycle1.add(royalKnights);
-        dealCycle1.add(criticalReinforce);
-        dealCycle1.add(unfadingGloryWave);
-        dealCycle1.add(elementalGhost);
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
+        dealCycle1.add(unfadingGloryWave);
         dealCycle1.add(irkallaBreathBeforeDelay);
         dealCycle1.add(sylphidiaEnd);
 
         dealCycle2.add(legendarySpear);
+        dealCycle2.add(elementalGhost);
         dealCycle2.add(sylphidia);
         dealCycle2.add(heroesOath);
+        dealCycle2.add(criticalReinforce);
         dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(royalKnights);
-        dealCycle2.add(criticalReinforce);
-        dealCycle2.add(elementalGhost);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
         dealCycle2.add(irkallaBreathBeforeDelay);
@@ -249,19 +260,21 @@ public class MercedesDealCycle extends DealCycle {
             ) {
                 addSkillEvent(soulContract);
                 addSkillEvent(legendarySpear);
-            } else if (getStart().before(sylphidiaEndTime)) {
+            } /*else if (getStart().before(sylphidiaEndTime)) {
                 addSkillEvent(ringOfIshtar);
-            } else if (getStart().before(elementalGhostEndTime)) {
+            }*/ else if (getStart().before(elementalGhostEndTime)) {
                 // 엔릴 스듀샷 유니콘 레전 리프
                 wrathOfEnlil.setDelayByAttackSpeed(270L);
                 wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
                 advancedStrikeDualShot.setDelayByAttackSpeed(450L);
                 unicornSpike.setDelayByAttackSpeed(600L);
-                legendarySpear.setDelayByAttackSpeed(570L);
-                legendarySpearSpiritEnchant.setDelayByAttackSpeed(570L);
+                legendarySpear.setDelayByAttackSpeed(870L);
+                legendarySpearSpiritEnchant.setDelayByAttackSpeed(870L);
                 leafTornado.setDelayByAttackSpeed(480L);
                 leafTornadoSpiritEnchant.setDelayByAttackSpeed(480L);
                 addDealCycle(linkCycle);
+            } else if (getStart().after(unicornSpikeEndTime)) {
+                addSkillEvent(unicornSpike);
             } else if (cooldownCheck(wrathOfEnlil)) {
                 wrathOfEnlil.setDelayByAttackSpeed(270L);
                 wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
@@ -283,6 +296,9 @@ public class MercedesDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof UnicornSpikeBuff) {
+                unicornSpikeEndTime = new Timestamp(getStart().getTime() + 60000);
+            }
             if (skill instanceof SylphidiaEnd) {
                 for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
                     if (getSkillEventList().get(i).getSkill() instanceof Sylphidia) {
@@ -949,8 +965,12 @@ public class MercedesDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                        + getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
@@ -964,18 +984,26 @@ public class MercedesDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (isCriticalReinforce) {
+            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
+            buffSkill.addBuffCriticalDamage(-criticalReinforce.getBuffCriticalDamage());
         }
         return attackDamage;
     }

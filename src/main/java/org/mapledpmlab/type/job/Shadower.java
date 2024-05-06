@@ -74,6 +74,11 @@ public class Shadower extends Job {
         // 5차
         this.addAtt(30L);               // 레디 투 다이
 
+        // 환산 보정
+        this.addMainStatP(15L);
+        this.addMainStat(-15L);
+        this.addSubStat(5L);
+
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
@@ -92,7 +97,8 @@ public class Shadower extends Job {
     public Long getFinalSubStat2() {
         return (long) Math.floor(
                 this.getOtherStat1()
-                        * (1 + this.getAllStatP() * 0.01));
+                        * (1 + this.getAllStatP() * 0.01))
+                + this.getPerXOtherStat();
     }
 
     public Long getStatDamage() {

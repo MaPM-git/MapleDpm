@@ -8,7 +8,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 @Setter
 public class CrystalGateBuff extends BuffSkill {
     public CrystalGateBuff() {
-        this.setName("소울 오브 크리스탈");
+        this.setName("크리스탈 게이트");
         this.setDelay(175L);
         this.addBuffAttMagic(95L);
     }

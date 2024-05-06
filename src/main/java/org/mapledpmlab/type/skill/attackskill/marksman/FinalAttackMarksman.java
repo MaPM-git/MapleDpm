@@ -9,5 +9,7 @@ public class FinalAttackMarksman extends AttackSkill {
         this.setDamage(150.0);
         this.setProp(40L);
         this.setFinalAttack(true);
+        this.addFinalDamage(3.4);
+        this.addIgnoreDefenseList(20L);
     }
 }

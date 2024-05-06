@@ -523,8 +523,12 @@ public class KinesisDealCycle extends DealCycle {
                 ) {
                     buffSkill.addBuffCriticalDamage(22.0);
                 }
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                        + getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((getJob().getMagic() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
@@ -538,18 +542,64 @@ public class KinesisDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
+                if (
+                        attackSkill instanceof UltimateBPM
+                        || attackSkill instanceof UltimateMaterial
+                        || attackSkill instanceof UltimateMovingMatter
+                        || attackSkill instanceof UltimateMovingMatterExtinction
+                        || attackSkill instanceof UltimatePsychicBullet
+                        || attackSkill instanceof UltimatePsychicBulletBlackHole
+                        || attackSkill instanceof UltimatePsychicShoot
+                        || attackSkill instanceof UltimateTrain
+                ) {
+                    buffSkill.addBuffCriticalDamage(-22.0);
+                }
                 break;
             }
+        }
+        if (
+                attackSkill instanceof AnotherRealm
+                        || attackSkill instanceof AnotherRealmBomb
+                        || attackSkill instanceof EverPsychic
+                        || attackSkill instanceof EverPsychicFinish
+                        || attackSkill instanceof LawOfGravity
+                        || attackSkill instanceof LawOfGravityPull1
+                        || attackSkill instanceof LawOfGravityPull2
+                        || attackSkill instanceof LawOfGravityPull3
+                        || attackSkill instanceof LawOfGravityPull4
+                        || attackSkill instanceof LawOfGravityPull5
+                        || attackSkill instanceof PsychicDrain
+                        || attackSkill instanceof PsychicGrab
+                        || attackSkill instanceof PsychicGround
+                        || attackSkill instanceof PsychicSmashing
+                        || attackSkill instanceof PsychicTornado
+                        || attackSkill instanceof PsychicTornadoBomb
+                        || attackSkill instanceof PsychicTornadoThrow
+                        || attackSkill instanceof PsychoMetry
+                        || attackSkill instanceof UltimateBPM
+                        || attackSkill instanceof UltimateMaterial
+                        || attackSkill instanceof UltimateMovingMatter
+                        || attackSkill instanceof UltimateMovingMatterExtinction
+                        || attackSkill instanceof UltimatePsychicBullet
+                        || attackSkill instanceof UltimatePsychicBulletBlackHole
+                        || attackSkill instanceof UltimatePsychicShoot
+                        || attackSkill instanceof UltimateTrain
+        ) {
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

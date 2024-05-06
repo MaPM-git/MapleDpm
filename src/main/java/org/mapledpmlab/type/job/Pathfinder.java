@@ -1,12 +1,12 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
+import org.mapledpmlab.type.ability.BossCriticalReuse;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
-import org.mapledpmlab.type.link.AdventurerCuriosity;
-import org.mapledpmlab.type.link.HybridLogic;
+import org.mapledpmlab.type.link.*;
 import org.mapledpmlab.type.union.DexUnion;
 
 import java.util.stream.Collectors;
@@ -19,7 +19,7 @@ public class Pathfinder extends Job {
         this.setName("패스파인더");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
-        this.setJobType(JobType.ETC);
+        this.setJobType(JobType.COOLDOWN_REDUCTION2);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -65,10 +65,22 @@ public class Pathfinder extends Job {
         this.addCriticalDamage(11.0);
         this.addMainStat(82L);          // 일루전 스탭
 
-        this.setAbility(new BossCriticalAbnormal());
+        // 환산 보정
+        this.addMainStatP(-42L);
+        this.addMainStat(-14L);
+        //this.addSubStat(5L);
+
+        this.setAbility(new BossCriticalReuse());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new AdventurerCuriosity());
+        for (Link link : this.getLinkList()) {
+            if (link instanceof CygnusBlessing) {
+                this.getLinkList().remove(link);
+                break;
+            }
+        }
+        this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new DexUnion());
         this.addPerXMainStat(20L);
 

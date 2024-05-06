@@ -10,10 +10,10 @@ public class GloryWingMortalWingBeat extends AttackSkill {
         this.setAttackCount(15L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
-        /*this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
-        this.getMultiAttackInfo().add(60L);*/
+        this.getMultiAttackInfo().add(60L);
     }
 }

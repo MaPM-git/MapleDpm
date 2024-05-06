@@ -6,7 +6,7 @@ public class HexChakramSplit extends AttackSkill implements HexSkill {
     public HexChakramSplit() {
         this.setName("헥스 : 차크람 스플릿");
         this.setDamage(500.0);
-        this.setAttackCount(5L * 4);
+        this.setAttackCount(80L);
         this.setCooldown(14.0);
         this.setDelayByAttackSpeed(720L);
         this.addFinalDamage(2.2);   // 코어강화

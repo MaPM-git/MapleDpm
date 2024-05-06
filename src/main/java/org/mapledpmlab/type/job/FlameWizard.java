@@ -1,12 +1,14 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossBuffCritical;
+import org.mapledpmlab.type.ability.PassiveBossAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
 
 import java.util.stream.Collectors;
@@ -18,7 +20,7 @@ public class FlameWizard extends Job {
         super();
         this.setName("플레임위자드");
         this.setConstant(1.2);          // 무기상수
-        this.setMastery(1.96 / 2);      // 숙련도
+        this.setMastery(1.97 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
         // 무기
@@ -61,13 +63,18 @@ public class FlameWizard extends Job {
         this.addMainStat(60L);          // 번뜩이는 깨달음
 
         // 4차
-        this.addMagic(21L);             // 마법의 진리
-        this.addFinalDamage(1.53);
+        this.addMagic(22L);             // 마법의 진리
+        this.addFinalDamage(1.56);
         this.addIgnoreDefenseList(31L); // 스피릿 오브 플레임
 
-        this.setAbility(new BossBuffCritical());
+        // 환산 보정
+        this.addMainStatP(90L);
+        this.addMainStat(9L);
+        this.addSubStat(5L);
+
+        this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new PhantomInstinct());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);

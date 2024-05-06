@@ -1,12 +1,15 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
+import org.mapledpmlab.type.link.Confidence;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
 
 import java.util.stream.Collectors;
@@ -74,10 +77,15 @@ public class Striker extends Job {
         // 5차
         this.addAtt(40L);               // 로디드 다이스
 
-        this.setAbility(new BossCriticalAbnormal());
+        // 환산 보정
+        this.addMainStatP(-6L);
+        //this.addMainStat(1L);
+        this.addSubStat(10L);
+
+        this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new HybridLogic());
-        this.getLinkList().add(new Noblesse());
+        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new Confidence());
         this.setUnion(new StrUnion());
         this.addPerXMainStat(20L);
 

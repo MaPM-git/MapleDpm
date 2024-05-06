@@ -77,6 +77,7 @@ public class PathFinderDealCycle extends DealCycle {
             add(new RelicUnbound());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
+            add(new TripleImpact());
             add(new UltimateBlast());
         }
     };
@@ -135,6 +136,7 @@ public class PathFinderDealCycle extends DealCycle {
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         ThiefCunning thiefCunning = new ThiefCunning();
+        TripleImpact tripleImpact = new TripleImpact();
         UltimateBlast ultimateBlast = new UltimateBlast();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
@@ -232,6 +234,7 @@ public class PathFinderDealCycle extends DealCycle {
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(raven)) {
+                getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(raven);
             }
             if (
@@ -239,42 +242,54 @@ public class PathFinderDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && dealCycleOrder == 1
             ) {
+                getStart().setTime(getStart().getTime() + 150);
                 addDealCycle(dealCycle1);
                 dealCycleOrder ++;
+                applyCooldown(tripleImpact);
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && dealCycleOrder == 4
             ) {
+                getStart().setTime(getStart().getTime() + 150);
                 addDealCycle(dealCycle2);
                 dealCycleOrder ++;
+                applyCooldown(tripleImpact);
             } else if (
                     cooldownCheck(dealCycle3)
                     && getStart().before(new Timestamp(6 * 60 * 1000))
                     && dealCycleOrder == 3
             ) {
+                getStart().setTime(getStart().getTime() + 150);
                 addDealCycle(dealCycle3);
                 dealCycleOrder ++;
+                applyCooldown(tripleImpact);
             } else if (
                     cooldownCheck(dealCycle4)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && (dealCycleOrder == 2 || dealCycleOrder == 6)
             ) {
+                getStart().setTime(getStart().getTime() + 150);
                 addDealCycle(dealCycle4);
                 dealCycleOrder ++;
+                applyCooldown(tripleImpact);
             } else if (
                     cooldownCheck(dealCycle5)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && dealCycleOrder == 5
             ) {
+                getStart().setTime(getStart().getTime() + 150);
                 addDealCycle(dealCycle5);
                 dealCycleOrder ++;
+                applyCooldown(tripleImpact);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(10 * 60 * 1000)))
             {
+                getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(ringSwitching);
+                applyCooldown(tripleImpact);
             } else if (
                     getStart().before(relicLiberationEndTime)
                     && cooldownCheck(ancientWrath)
@@ -284,9 +299,13 @@ public class PathFinderDealCycle extends DealCycle {
                     cooldownCheck(soulContract)
                     && !cooldownCheck(evolve)
             ) {
+                getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(soulContract);
+                applyCooldown(tripleImpact);
             } else if (cooldownCheck(edgeOfResonance)) {
                 addSkillEvent(edgeOfResonance);
+            } else if (cooldownCheck(tripleImpact)) {
+                addSkillEvent(tripleImpact);
             } else {
                 Long ran = 0L;
                 ran = (long) (Math.random() * 99 + 1);
@@ -483,6 +502,18 @@ public class PathFinderDealCycle extends DealCycle {
                     }
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (isRelicLiberation) {
+                    if (
+                            se.getSkill() instanceof EdgeOfResonance
+                                    || se.getSkill() instanceof UltimateBlast
+                                    || se.getSkill() instanceof RavenTempest
+                                    || se.getSkill() instanceof AncientWrath
+                                    || se.getSkill() instanceof ObsidianBarrier
+                                    || se.getSkill() instanceof RelicUnbound
+                    ) {
+                        buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.15);
+                    }
+                }
                 Long ran = 0L;
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     ran = (long) (Math.random() * 99 + 1);
@@ -506,13 +537,17 @@ public class PathFinderDealCycle extends DealCycle {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         if (isCriticalReinforce) {
-            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP() + ((AttackSkill) skillEvent.getSkill()).getCriticalP());
+            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
             buffSkill.addBuffCriticalDamage(criticalReinforce.getBuffCriticalDamage());
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + this.getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                        + this.getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((this.getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (this.getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + this.getJob().getPerXAtt())
@@ -526,18 +561,26 @@ public class PathFinderDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (isCriticalReinforce) {
+            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
+            buffSkill.addBuffCriticalDamage(-criticalReinforce.getBuffCriticalDamage());
         }
         return attackDamage;
     }

@@ -447,17 +447,18 @@ public class NightWalkerDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
-                if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
+                if (((AttackSkill) se.getSkill()).isApplyFinalAttack() && start.equals(se.getStart())) {
                     attackCount ++;
                 }
-                if (attackCount % 8 == 0) {
-                    if (batCount % 5 == 0) {
+                if (attackCount >= 4) {
+                    if (batCount >= 5) {
                         totalDamage += getAttackDamage(new SkillEvent(ravenousBatReinforce, start, end), buffSkill, start, end);
-                        batCount ++;
+                        batCount -= 5;
                     } else {
                         totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
                         batCount ++;
                     }
+                    attackCount -= 4;
                     /*if (isShadowSpear) {
                         totalDamage += getAttackDamage(new SkillEvent(shadowSpear, start, end), buffSkill, start, end);
                     }*/

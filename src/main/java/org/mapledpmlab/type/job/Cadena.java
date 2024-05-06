@@ -66,6 +66,11 @@ public class Cadena extends Job {
         // 5차
         this.addAtt(30L);               // 레디 투 다이
 
+        // 환산 보정
+        this.addMainStatP(-3L);
+        this.addMainStat(1L);
+        this.addSubStat(10L);
+
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
@@ -85,13 +90,14 @@ public class Cadena extends Job {
     public void Doping() {
         super.Doping();
         this.addCriticalDamage(66.0);   // 위크포인트 컨버징 어택 6중첩
-        this.addFinalDamage(1.88);      // 웨폰 버라이어티 8중첩
+        //this.addFinalDamage(1.88);      // 웨폰 버라이어티 8중첩
     }
 
     public Long getFinalSubStat2() {
         return (long) Math.floor(
                 this.getOtherStat1()
-                        * (1 + this.getAllStatP() * 0.01));
+                        * (1 + this.getAllStatP() * 0.01))
+                + this.getPerXOtherStat();
     }
 
     public Long getStatDamage() {

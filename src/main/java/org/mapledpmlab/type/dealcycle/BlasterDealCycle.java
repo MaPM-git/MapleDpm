@@ -43,7 +43,7 @@ public class BlasterDealCycle extends DealCycle {
     private List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AfterImageShockActive());
-            add(new AfterImageShockPassive());
+            //add(new AfterImageShockPassive());
             add(new AuraWeaponDot());
             add(new BurningBreakerExplosion());
             add(new BurningBreakerRush());
@@ -111,7 +111,7 @@ public class BlasterDealCycle extends DealCycle {
     boolean isMaximizeCannon = false;
 
     AfterImageShockActive afterImageShockActive = new AfterImageShockActive();
-    AfterImageShockPassive afterImageShockPassive = new AfterImageShockPassive();
+    //AfterImageShockPassive afterImageShockPassive = new AfterImageShockPassive();
     BurstPileBunker burstPileBunker = new BurstPileBunker();
 
     public BlasterDealCycle(Job job) {
@@ -350,7 +350,7 @@ public class BlasterDealCycle extends DealCycle {
         } else {
             if (
                     skill instanceof ReleasePileBunker
-                            && releasePileBunkerCount == 5
+                    && releasePileBunkerCount == 5
             ) {
                 skill = new BurstPileBunker();
                 releasePileBunkerCount = 0;
@@ -400,12 +400,12 @@ public class BlasterDealCycle extends DealCycle {
                                 afterImageShockActiveCount = 0;
                             }
                         }
-                    } else {
+                    }/* else {
                         if (cooldownCheck(afterImageShockPassive)) {
                             getSkillEventList().add(new SkillEvent(afterImageShockPassive, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
                             applyCooldown(afterImageShockPassive);
                         }
-                    }
+                    }*/
                 }
             }
         }
@@ -510,8 +510,21 @@ public class BlasterDealCycle extends DealCycle {
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (
+                        isMaximizeCannon
+                                && (
+                                se.getSkill() instanceof RevolvingCannonDF
+                                        || se.getSkill() instanceof RevolvingCannonMP
+                                        || se.getSkill() instanceof RevolvingCannonReinforce
+                                        || se.getSkill() instanceof BurningBreakerExplosion
+                                        || se.getSkill() instanceof BurningBreakerRush
+                        )
+                ) {
+                    buffSkill.addBuffDamage(-35L);
+                }
+                if (
                         isBunkerBuster
                         && se.getSkill() instanceof HammerSmashJump
+                        && start.equals(se.getStart())
                 ) {
                     totalDamage += getAttackDamage(new SkillEvent(new RevolvingCannonReinforce(), start, end), buffSkill, start, end);
                 }
@@ -530,5 +543,50 @@ public class BlasterDealCycle extends DealCycle {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
+    }
+
+    @Override
+    public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
+        Long attackDamage = 0L;
+        AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        for (AttackSkill as : getAttackSkillList()) {
+            if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                        + getJob().getFinalSubstat()) * 0.01
+                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                        + getJob().getPerXAtt())
+                        * getJob().getConstant()
+                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                        * (getJob().getFinalDamage())
+                        * buffSkill.getBuffFinalDamage()
+                        * getJob().getStatXFinalDamage()
+                        * attackSkill.getFinalDamage()
+                        * getJob().getMastery()
+                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
+                if (skillEvent.getStart().equals(start)) {
+                    as.setUseCount(as.getUseCount() + 1);
+                }
+                Long distance = end.getTime() - start.getTime();
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
+                }
+                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
+                break;
+            }
+        }
+        return attackDamage;
     }
 }

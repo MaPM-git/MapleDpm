@@ -17,7 +17,7 @@ public class DemonFrenzyBuff extends GaugeBuffSkill {
         if (tmp <= 30) {
             this.setBuffFinalDamage(1.2);
         } else {
-            this.setBuffFinalDamage(1.0 + 0.1 * (tmp - 30));
+            this.setBuffFinalDamage(1.2 - 0.01 * (tmp - 30));
         }
     }
 }

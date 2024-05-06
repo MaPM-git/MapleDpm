@@ -38,7 +38,6 @@ public class PhantomDealCycle extends DealCycle {
             add(new MarkOfPhantom());
             add(new MarkOfPhantomFinal());
             add(new NoireCarte());
-            add(new NoireCarteReverse());
             add(new RiftBreak());
             add(new RoseCarteFinale());
             add(new RoseCarteFinaleDot());
@@ -79,7 +78,6 @@ public class PhantomDealCycle extends DealCycle {
     BlackJackFinal blackJackFinal = new BlackJackFinal();
     Judgement judgement = new Judgement();
     MarkOfPhantomFinal markOfPhantomFinal = new MarkOfPhantomFinal();
-    NoireCarteReverse noireCarteReverse = new NoireCarteReverse();
     RiftBreak riftBreak = new RiftBreak();
 
     Long cardStack = 0L;
@@ -308,8 +306,6 @@ public class PhantomDealCycle extends DealCycle {
         }
     }
 
-    Timestamp noireCarteReverseActivateTime = new Timestamp(-1);
-
     @Override
     public Long calcTotalDamage(List<Timestamp> eventTimeList) {
         Long totalDamage = 0L;
@@ -355,10 +351,6 @@ public class PhantomDealCycle extends DealCycle {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
                         totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
-                        if (start.after(noireCarteReverseActivateTime)) {
-                            totalDamage += getAttackDamage(new SkillEvent(noireCarteReverse, start, end), buffSkill, start, end);
-                            noireCarteReverseActivateTime = new Timestamp(start.getTime() + 4700);
-                        }
                         cardStack ++;
                         if (cardStack >= 40) {
                             totalDamage += getAttackDamage(new SkillEvent(judgement, start, end), buffSkill, start, end);

@@ -228,6 +228,7 @@ public class DemonSlayerDealCycle extends DealCycle {
         dealCycle4.add(demonBaneStartDelay);
 
         int dealCycleOrder = 1;
+        addSkillEvent(demonImpactChain);
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(auraWeaponBuff.getEndTime())
@@ -319,6 +320,8 @@ public class DemonSlayerDealCycle extends DealCycle {
                     && demonForce >= 8
             ) {
                 addSkillEvent(demonImpactChain);
+            } else if (demonForce >= 100) {
+                addSkillEvent(demonImpact);
             } else {
                 addSkillEvent(demonSlash1);
             }
@@ -385,6 +388,39 @@ public class DemonSlayerDealCycle extends DealCycle {
             }
         } else {
             if (
+                    skill instanceof DemonBane1
+                    || skill instanceof DemonBane2
+                    || skill instanceof DemonImpact
+                    || skill instanceof DemonImpactChain
+                    || skill instanceof DemonSlash1
+                    || skill instanceof DemonSlash2
+                    || skill instanceof DemonSlash3
+                    || skill instanceof DemonSlash4
+                    || skill instanceof DemonSlashReinforce1
+                    || skill instanceof DemonSlashReinforce2
+                    || skill instanceof DemonSlashReinforce3
+                    || skill instanceof DemonSlashReinforce4
+                    || skill instanceof NightmareJudgement
+                    || skill instanceof NightmareWave
+                    || skill instanceof Cerburus
+                    || skill instanceof DemonicSphere
+                    || skill instanceof DemonicSphereReinforce
+            ) {
+                if (
+                        getStart().before(demonAwakeningEndTime)
+                        && !(skill instanceof Cerburus)
+                        && cooldownCheck(cerburus)
+                ) {
+                    addSkillEvent(cerburus);
+                }
+                if (
+                        getStart().before(nightmareTerritoryEndTime)
+                        && cooldownCheck(nightmareFlame)
+                ) {
+                    addSkillEvent(nightmareFlame);
+                }
+            }
+            if (
                     cooldownCheck(demonicSphere)
                     && (
                             skill instanceof DemonSlash1
@@ -413,25 +449,6 @@ public class DemonSlayerDealCycle extends DealCycle {
                     getSkillEventList().add(new SkillEvent(new JormungandExtinction(), new Timestamp(getStart().getTime() + 16000), new Timestamp(getStart().getTime() + 16000)));
                     getEventTimeList().add(new Timestamp(getStart().getTime() + 16000));
                 }
-                if (
-                        skill instanceof DemonBane1
-                        || skill instanceof DemonBane2
-                        || skill instanceof DemonImpact
-                        || skill instanceof DemonImpactChain
-                        || skill instanceof DemonSlashReinforce1
-                        || skill instanceof DemonSlashReinforce2
-                        || skill instanceof DemonSlashReinforce3
-                        || skill instanceof DemonSlashReinforce4
-                        || skill instanceof NightmareJudgement
-                        || skill instanceof NightmareWave
-                ) {
-                    if (getStart().before(demonAwakeningEndTime)) {
-                        addSkillEvent(cerburus);
-                    }
-                    if (getStart().before(nightmareTerritoryEndTime)) {
-                        addSkillEvent(nightmareFlame);
-                    }
-                }
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
@@ -453,6 +470,26 @@ public class DemonSlayerDealCycle extends DealCycle {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        if (
+                                skill instanceof DemonBane1
+                                || skill instanceof DemonBane2
+                        ) {
+                            Timestamp temp = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
+                            if (
+                                    getStart().before(nightmareTerritoryEndTime)
+                                    && cooldownCheck(nightmareFlame)
+                            ) {
+                                addSkillEvent(nightmareFlame);
+                            }
+                            if (
+                                    getStart().before(demonAwakeningEndTime)
+                                    && cooldownCheck(cerburus)
+                            ) {
+                                addSkillEvent(cerburus);
+                            }
+                            getStart().setTime(temp.getTime());
+                        }
                         attackCount += 1;
                     }
                 }
@@ -520,6 +557,9 @@ public class DemonSlayerDealCycle extends DealCycle {
                     buffSkill.addBuffDamage(100L);      // 데스 커스 
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (ran <= 1) {
+                    buffSkill.addBuffDamage(-100L);      // 데스 커스
+                }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
@@ -532,5 +572,29 @@ public class DemonSlayerDealCycle extends DealCycle {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (
+                    skill instanceof NightmareJudgement
+                    || skill instanceof NightmareWave
+            ) {
+                Timestamp temp = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                if (
+                        getStart().before(demonAwakeningEndTime)
+                        && cooldownCheck(cerburus)
+                ) {
+                    addSkillEvent(cerburus);
+                }
+                getStart().setTime(temp.getTime());
+            }
+        }
     }
 }

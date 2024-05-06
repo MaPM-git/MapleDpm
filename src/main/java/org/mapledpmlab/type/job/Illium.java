@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.ability.ReuseBossCritical;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -24,8 +25,8 @@ public class Illium extends Job {
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
         this.addSubStat((long) (150 + 145));
-        this.addMagic((long) (400 + 246 + 72 + 202));
-        this.setWeaponAttMagic((long) (400 + 246 + 72 + 202));
+        this.addMagic((long) (992));
+        this.setWeaponAttMagic((long) (992));
         this.addBossDamage((long) (30 + 10));
         this.addIgnoreDefenseList(20L);
         this.addBossDamage(70L);
@@ -45,12 +46,6 @@ public class Illium extends Job {
         this.addCriticalP(20.0);        // 매직 건틀렛 마스터리
         this.addDamage(10L);            // 블레스 마크
 
-        // 2차
-        this.addFinalDamage(1.01);      // 브레싱 앙상블
-        this.addMainStat(20L);          // 매직 액셀레이션
-        this.addMagic(10L);             // 스펠 마스터리
-        this.addMainStat(40L);          // 하이 위즈덤
-
         // 3차
         this.addDamage(10L);            // 레프 마스터리
         this.addMainStat(40L);          // 운명 개척
@@ -67,7 +62,12 @@ public class Illium extends Job {
         // 5차
         this.addMagic(65L);             // 소울 오브 크리스탈
 
-        this.setAbility(new ReuseBossCritical());
+        // 환산 보정
+        this.addMainStatP(+96L);
+        this.addMainStat(32L);
+        this.addSubStat(5L);
+
+        this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new FlowOfBattle());

@@ -143,24 +143,23 @@ public class FlameWizardDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(120.0);
 
+        // 초시축 1,3,4,5 극딜에만 사용
         // 리스트레인트 극딜 예열 - F1 1,3,5
-        dealCycle1.add(flameDischarge);
+        //dealCycle1.add(flameDischarge);
         dealCycle1.add(burningRegion);
         dealCycle1.add(gloryOfGuardians);
         dealCycle1.add(crestOfTheSolar);
         dealCycle1.add(spiderInMirror);
-        dealCycle1.add(transcendentCygnusBlessing);
         dealCycle1.add(salamanderMischief);
 
         // 웨폰퍼프, 초시축 극딜 예열 - F2 4
-        dealCycle2.add(flameDischarge);
+        //dealCycle2.add(flameDischarge);
         dealCycle2.add(burningRegion);
         dealCycle2.add(gloryOfGuardians);
-        dealCycle2.add(transcendentCygnusBlessing);
         dealCycle2.add(salamanderMischief);
 
         // 웨폰퍼프 - F2 2,6
-        dealCycle3.add(flameDischarge);
+        //dealCycle3.add(flameDischarge);
         dealCycle3.add(burningRegion);
         dealCycle3.add(gloryOfGuardians);
         dealCycle3.add(salamanderMischief);
@@ -204,8 +203,26 @@ public class FlameWizardDealCycle extends DealCycle {
         int orbitalCount = 0;
         int dealCycleOrder = 1;
 
+        getStart().setTime(-10000);
+        addSkillEvent(transcendentCygnusBlessing);
+        getStart().setTime(0);
+
+        boolean isUse = false;
+
         flameCount = 150;
         while (getStart().before(getEnd())) {
+            if (
+                    getStart().after(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 10000))
+                    && (
+                            dealCycleOrder == 3
+                            || dealCycleOrder == 4
+                            || dealCycleOrder == 5
+                    )
+                    && !isUse
+            ) {
+                addSkillEvent(transcendentCygnusBlessing);
+                isUse = true;
+            }
             if (cooldownCheck(spiritOfFlame)) {
                 addSkillEvent(spiritOfFlame);
             }
@@ -231,6 +248,7 @@ public class FlameWizardDealCycle extends DealCycle {
                     finalChk = 3;
                 }
                 dealCycleOrder++;
+                isUse = false;
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
@@ -243,6 +261,7 @@ public class FlameWizardDealCycle extends DealCycle {
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
                 finalChk = 2;
                 dealCycleOrder++;
+                isUse = false;
             } else if (
                     cooldownCheck(dealCycle3)
                     && (dealCycleOrder == 2 || dealCycleOrder == 6)
@@ -254,34 +273,35 @@ public class FlameWizardDealCycle extends DealCycle {
                 phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000 - 480);
                 finalChk = 4;
                 dealCycleOrder++;
+                isUse = false;
             } else if (
-                    getStart().after(new Timestamp(finalTime.getTime() - 27000))
-                    && finalChk == 1
-                    && flameCount >= 50
+                    //getStart().after(new Timestamp(finalTime.getTime() - 27000))
+                    finalChk == 1
+                    //&& flameCount >= 50
                     && cooldownCheck(final1)
             ) {
                 addDealCycle(final1);
                 finalChk = -1;
             } else if (
-                    getStart().after(new Timestamp(finalTime.getTime() - 27000))
-                    && finalChk == 2
-                    && flameCount >= 50
+                    //getStart().after(new Timestamp(finalTime.getTime() - 27000))
+                    finalChk == 2
+                    //&& flameCount >= 50
                     && cooldownCheck(final2)
             ) {
                 addDealCycle(final2);
                 finalChk = -1;
             } else if (
-                    getStart().after(new Timestamp(finalTime.getTime() - 27000))
-                    && finalChk == 3
-                    && flameCount >= 50
+                    //getStart().after(new Timestamp(finalTime.getTime() - 27000))
+                    finalChk == 3
+                    //&& flameCount >= 50
                     && cooldownCheck(final3)
             ) {
                 addDealCycle(final3);
                 finalChk = -1;
             } else if (
-                    getStart().after(new Timestamp(finalTime.getTime() - 27000))
-                    && finalChk == 4
-                    && flameCount >= 50
+                    //getStart().after(new Timestamp(finalTime.getTime() - 27000))
+                    finalChk == 4
+                    //&& flameCount >= 50
                     && cooldownCheck(final4)
             ) {
                 addDealCycle(final4);
@@ -534,8 +554,12 @@ public class FlameWizardDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + this.getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                        + this.getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
                         * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + this.getJob().getPerXAtt())
@@ -549,18 +573,40 @@ public class FlameWizardDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
                     attackDamage = attackDamage / as.getDelay() * distance;
                 }
-                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
+                as.setCumulativeDamage(attackSkill.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (
+                attackSkill instanceof BlazingExtinction
+                        || attackSkill instanceof BlazingOrbitalFlame
+                        || attackSkill instanceof CygnusPhalanx
+                        || attackSkill instanceof Eternity
+                        || attackSkill instanceof EternityCirculation
+                        || attackSkill instanceof FlameDischarge
+                        || attackSkill instanceof InfernoRize
+                        || attackSkill instanceof InfinityFlameCircle
+                        || attackSkill instanceof OrbitalFlame
+                        || attackSkill instanceof OrbitalFlameDot
+                        || attackSkill instanceof OrbitalFlameReinforce
+                        || attackSkill instanceof PhoenixDriveAfterSecond
+                        || attackSkill instanceof PhoenixDriveFirst
+                        || attackSkill instanceof SalamanderMischief
+        ) {
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

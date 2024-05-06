@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -63,7 +64,12 @@ public class Hero extends Job {
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
 
-        this.setAbility(new BossCriticalAbnormal());
+        // 환산 보정
+        this.addMainStatP(12L);
+        this.addMainStat(-8L);
+        this.addSubStat(10L);
+
+        this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new StrUnion());

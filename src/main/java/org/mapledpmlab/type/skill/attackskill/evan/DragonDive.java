@@ -10,6 +10,7 @@ public class DragonDive extends AttackSkill {
         //this.setDotDuration(3500L);
         //this.setInterval(390L);
         //this.setLimitAttackCount(9L);
+        this.setApplyReuse(true);
         this.setCooldown(6.0);          // 드래곤 다이브-쿨타임 리듀스
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(480L);

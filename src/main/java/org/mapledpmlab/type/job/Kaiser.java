@@ -75,6 +75,11 @@ public class Kaiser extends Job {
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
 
+        // 환산 보정
+        this.addMainStatP(-24L);
+        this.addMainStat(-32L);
+        this.addSubStat(5L);
+
         this.setAbility(new BossAbnormalBuff());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());

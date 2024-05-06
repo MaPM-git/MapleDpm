@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -71,7 +72,12 @@ public class CannonShooter extends Job {
         // 5차
         this.addAtt(40L);               // 로디드 다이스
 
-        this.setAbility(new BossCriticalAbnormal());
+        // 환산 보정
+        this.addMainStatP(-6L);
+        this.addMainStat(-3L);
+        this.addSubStat(10L);
+
+        this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PirateBlessing());

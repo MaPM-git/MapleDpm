@@ -1,12 +1,16 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalAttack;
+import org.mapledpmlab.type.ability.BossAbnormalBuff;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
+import org.mapledpmlab.type.link.Confidence;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.LukUnion;
 
 import java.util.stream.Collectors;
@@ -60,10 +64,15 @@ public class DualBlade extends Job {
         // 5차
         this.addAtt(30L);               // 레디 투 다이
 
-        this.setAbility(new BossCriticalAbnormal());
+        // 환산 보정
+        this.addMainStatP(-12L);
+        this.addMainStat(-21L);
+        this.addSubStat(5L);
+
+        this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new HybridLogic());
-        this.getLinkList().add(new Noblesse());
+        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new Confidence());
         this.setUnion(new LukUnion());
         this.addPerXMainStat(20L);
 
@@ -84,7 +93,8 @@ public class DualBlade extends Job {
     public Long getFinalSubStat2() {
         return (long) Math.floor(
                 this.getOtherStat1()
-                * (1 + this.getAllStatP() * 0.01));
+                * (1 + this.getAllStatP() * 0.01))
+                + this.getPerXOtherStat();
     }
 
     public Long getStatDamage() {

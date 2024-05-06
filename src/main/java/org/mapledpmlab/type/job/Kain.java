@@ -66,6 +66,11 @@ public class Kain extends Job {
         this.addDamage(14L);            // 어댑트 투 데스
         this.addBossDamage(10L);
 
+        // 환산 보정
+        this.addMainStatP(24L);
+        this.addMainStat(-26L);
+        this.addSubStat(5L);
+
         this.setAbility(new PassiveBossCritical());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());

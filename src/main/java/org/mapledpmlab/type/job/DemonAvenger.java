@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.ability.ReuseBossCritical;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -20,10 +21,11 @@ public class DemonAvenger extends Job {
         super();
         this.setName("데몬어벤져");
         this.setConstant(1.3);          // 무기상수
-        this.setMainStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
+        this.setMainStat((long) (4 + 40 + 5 + 30 + 6 + 6 + 6 + 6));
         this.setMastery(1.91 / 2);      // 숙련도
         this.addMainStatP(10L);         // 4카루타 세트
         this.setJobType(JobType.DEMON_AVENGER);
+        this.addHp(this.getAp());
 
         this.addPerXMainStat(-28200L);
         this.addPerXMainStat(277200L + 315000);
@@ -43,7 +45,7 @@ public class DemonAvenger extends Job {
         }
 
         // 무기
-        this.addMainStat((long) (150 + 32 + 145));
+        this.addMainStat((long) (150 + 145));
         this.addSubStat((long) (145));
         this.addHp((long) (2800 + 1855) / 2);
         this.addAtt((long) (340 + 210 + 72 + 253));
@@ -82,15 +84,24 @@ public class DemonAvenger extends Job {
         this.addDamage(31L);
         this.addIgnoreDefenseList(31L);  // 디펜스 엑스퍼타이즈
         this.addAtt(51L);               // 어드밴스드 데스페라도 마스터리
-        this.addCriticalDamage(1.08);
+        this.addCriticalDamage(8.0);
 
         // 5차
         this.addHp(1500L);              // 바디 오브 스틸
-        this.addFinalDamage(1.2);       // 데몬 프렌지
+        //this.addFinalDamage(1.2);       // 데몬 프렌지
         this.addMainStatP(40L);         // 쓸만한 하이퍼 바디
         this.addHp(475L);               // 쓸만한 어드밴스드 블레스
 
-        this.setAbility(new ReuseBossCritical());
+        // 환산 보정
+        this.addMainStatP(47L);
+        this.addAtt(9L);
+        this.addMainStat(-45L);
+
+        // 환산 보정 85519
+        //this.addMainStatP(48L);
+        //this.addAtt(6L);
+
+        this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new IronWill());
         this.getLinkList().add(new PhantomInstinct());
@@ -111,11 +122,14 @@ public class DemonAvenger extends Job {
         this.addHp(2000L);              // 익스트림 골드
     }
 
+    public Long getTotalHp() {
+        return (long) Math.floor(this.getHp() * (1 + this.getMainStatP() * 0.01)) + this.getPerXMainStat();
+    }
+
     public Long getFinalHp() {
-        return (long) Math.floor(
-                (this.getAp() / 14 + this.getHp() / 17.5)
-                        * (1 + this.getMainStatP() * 0.01)
-                        + this.getPerXMainStat() / 17.5
+        return (long) Math.floor((double) this.getAp() / 3.5)
+                + (long) Math.floor(
+                        (long) Math.floor((this.getTotalHp() - this.getAp()) / 3.5) * 0.8
         );
     }
 
@@ -140,7 +154,7 @@ public class DemonAvenger extends Job {
 
     public Long getStatDamage() {
         return (long) (Math.floor(
-                this.getFinalHp()
+                this.getFinalHp() //* 4
                 + this.getStr()) * 0.01
                 * Math.floor(this.getAtt() * (1 + this.getAttP() * 0.01))
                 * this.getConstant()

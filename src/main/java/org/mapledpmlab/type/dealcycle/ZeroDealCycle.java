@@ -1201,6 +1201,12 @@ public class ZeroDealCycle extends DealCycle {
                     buffSkill.addBuffCriticalDamage(20.0);
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (
+                        isCriticalBind
+                                && se.getSkill() instanceof AlphaSkill
+                ) {
+                    buffSkill.addBuffCriticalDamage(-20.0);
+                }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {

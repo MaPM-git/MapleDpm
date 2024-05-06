@@ -5,8 +5,7 @@ import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
-import org.mapledpmlab.type.link.AdventurerCuriosity;
-import org.mapledpmlab.type.link.HybridLogic;
+import org.mapledpmlab.type.link.*;
 import org.mapledpmlab.type.union.DexUnion;
 
 import java.util.stream.Collectors;
@@ -67,10 +66,21 @@ public class Bowmaster extends Job {
         this.addAtt(21L);               // 어드밴스드 파이널 어택
         this.addIgnoreDefenseList(40L); // 아머 피어싱
 
+        // 환산 보정
+        this.addMainStatP(-39L);
+        this.addSubStat(-10L);
+
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new AdventurerCuriosity());
+        for (Link link : this.getLinkList()) {
+            if (link instanceof CygnusBlessing) {
+                this.getLinkList().remove(link);
+                break;
+            }
+        }
+        this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new DexUnion());
         this.addPerXMainStat(20L);
 

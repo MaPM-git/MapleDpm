@@ -65,6 +65,11 @@ public class Khali extends Job {
         // 5차
         this.addAtt(30L);               // 레디 투 다이
 
+        // 환산 보정
+        this.addMainStatP(-6L);
+        this.addMainStat(15L);
+        //this.addSubStat(5L);
+
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new NatureFriend());

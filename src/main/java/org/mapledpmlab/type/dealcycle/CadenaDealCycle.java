@@ -167,34 +167,38 @@ public class CadenaDealCycle extends DealCycle {
         dealCycle1.add(spiderInMirror);
         dealCycle1.add(grandisGoddessBlessingNova);
         dealCycle1.add(professionalAgent);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(readyToDie);
-        dealCycle1.add(restraintRing);
         dealCycle1.add(adOrdnance);
         dealCycle1.add(chainArtsStroke1);
         dealCycle1.add(chainArtsStroke2);
         dealCycle1.add(chainArtsMaelstrom);
-        dealCycle1.add(chainArtsStroke1Cancle);
+        dealCycle1.add(soulContract);
+        dealCycle1.add(readyToDie);
         dealCycle1.add(chainArtsTakedown);
+        dealCycle1.add(restraintRing);
         dealCycle1.add(chainArtsStroke1Cancle);
         dealCycle1.add(summonThrowingWingDagger);
+        dealCycle1.add(chainArtsStroke1Cancle);
+        dealCycle1.add(summonBeatingNeedleBat1);
         dealCycle1.add(chainArtsMassacre1);
+        dealCycle1.add(chainArtsStroke1Cancle);
 
         dealCycle2.add(chainArtsFuryBuff);
         dealCycle2.add(shadowdealerElixir);
         dealCycle2.add(grandisGoddessBlessingNova);
         dealCycle2.add(professionalAgent);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(readyToDie);
-        dealCycle2.add(restraintRing);
         dealCycle2.add(adOrdnance);
         dealCycle2.add(chainArtsStroke1);
         dealCycle2.add(chainArtsStroke2);
         dealCycle2.add(chainArtsMaelstrom);
-        dealCycle2.add(chainArtsStroke1Cancle);
+        dealCycle2.add(soulContract);
+        dealCycle2.add(readyToDie);
         dealCycle2.add(chainArtsTakedown);
+        dealCycle2.add(restraintRing);
         dealCycle2.add(chainArtsStroke1Cancle);
         dealCycle2.add(summonThrowingWingDagger);
+        dealCycle2.add(chainArtsStroke1Cancle);
+        dealCycle2.add(summonBeatingNeedleBat1);
+        dealCycle2.add(chainArtsStroke1Cancle);
 
         dealCycle3.add(soulContract);
         dealCycle3.add(readyToDie);
@@ -205,7 +209,7 @@ public class CadenaDealCycle extends DealCycle {
         dealCycle3.add(chainArtsMaelstrom);
 
         addSkillEvent(weakPointConvergingAttack);
-        //addSkillEvent(weaponVarietyBuff);
+        addSkillEvent(weaponVarietyBuff);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(dealCycle1)
@@ -264,18 +268,18 @@ public class CadenaDealCycle extends DealCycle {
                 addSkillEvent(adOrdnance);
                 nonCancle = true;
             } else if (
-                    cooldownCheck(summonBeatingNeedleBat1)
-            ) {
-                addSkillEvent(chainArtsStroke1Cancle);
-                addSkillEvent(summonBeatingNeedleBat1);
-                nonCancle = false;
-            } else if (
                     cooldownCheck(summonThrowingWingDagger)
                     && !cooldownCheck(adOrdnance)
             ) {
                 addSkillEvent(chainArtsStroke1Cancle);
                 addSkillEvent(summonThrowingWingDagger);
                 nonCancle = true;
+            } else if (
+                    cooldownCheck(summonBeatingNeedleBat1)
+            ) {
+                addSkillEvent(chainArtsStroke1Cancle);
+                addSkillEvent(summonBeatingNeedleBat1);
+                nonCancle = false;
             } else if (
                     cooldownCheck(chainArtsStroke2Reinforce)
             ) {
@@ -394,9 +398,10 @@ public class CadenaDealCycle extends DealCycle {
                 }
                 if (
                         cooldownCheck(weaponVarietyFinale)
-                        && weaponVarietyCnt % 4 == 0
+                        && weaponVarietyCnt >= 4
                 ) {
                     addSkillEvent(weaponVarietyFinale);
+                    weaponVarietyCnt = 0;
                 }
                 if (getStart().before(professionalAgentEndTime)) {
                     addSkillEvent(professionalAgentBomb);
@@ -436,6 +441,15 @@ public class CadenaDealCycle extends DealCycle {
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        if (skill instanceof SummonThrowingWingDagger) {
+                            Timestamp temp = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
+                            if (cooldownCheck(weaponVariety)) {
+                                addSkillEvent(weaponVariety);
+                                weaponVarietyCnt ++;
+                            }
+                            getStart().setTime(temp.getTime());
+                        }
                     }
                 } else {
                     Long attackCount = 0L;
@@ -578,8 +592,12 @@ public class CadenaDealCycle extends DealCycle {
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         for (AttackSkill as : getAttackSkillList()) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + ((Cadena) getJob()).getFinalSubStat2() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                        + getJob().getFinalSubstat() + ((Cadena) getJob()).getFinalSubStat2()) * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
@@ -593,19 +611,75 @@ public class CadenaDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
         }
         return attackDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        if (skill instanceof ChainArtsMaelstrom) {
+            for (SkillEvent skillEvent : getSkillEventList()) {
+                if (
+                        skillEvent.getStart().after(getStart())
+                        && skillEvent.getSkill() instanceof ChainArtsMaelstrom
+                ) {
+                    getSkillEventList().remove(skillEvent);
+                }
+            }
+        }
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
+    }
+
+    @Override
+    public void getJobInfo() {
+        System.out.println("-------------------");
+        System.out.println("직업 : " + getJob().getName());
+        System.out.println("기본 주스탯 수치 : " + getJob().getMainStat());
+        System.out.println("주스탯 % 수치 : " + (getJob().getMainStatP() + getJob().getAllStatP()));
+        System.out.println("% 미적용 주스탯 수치 : " + getJob().getPerXMainStat());
+        System.out.println("기본 부스탯 수치 : " + getJob().getSubStat());
+        System.out.println("부스탯 % 수치 : " + getJob().getAllStatP());
+        System.out.println("% 미적용 부스탯 수치 : " + getJob().getPerXSubStat());
+        System.out.println("기본 부스탯2 수치 : " + getJob().getOtherStat1());
+        System.out.println("부스탯2 % 수치 : " + getJob().getAllStatP());
+        System.out.println("% 미적용 부스탯 수치 : " + getJob().getPerXOtherStat());
+        System.out.println("기본 스공 : " + getJob().getStatDamage());
+        System.out.println("데미지 : " + getJob().getDamage());
+        System.out.println("최종데미지 : " + getJob().getFinalDamage());
+        System.out.println("보스 데미지 : " + getJob().getBossDamage());
+        System.out.println("방어율 무시 : " + getJob().getIgnoreDefense());
+        System.out.println("크리티컬 확률 : " + getJob().getCriticalP());
+        System.out.println("장비 공격력 % : " + getJob().getAttP());
+        System.out.println("장비 마력 % : " + getJob().getMagicP());
+        System.out.println("크리티컬 데미지 : " + getJob().getCriticalDamage());
+        System.out.println("쿨타임 감소 초 : " + getJob().getCooldownReductionSec());
+        System.out.println("쿨타임 감소 % : " + getJob().getCooldownReductionP());
+        System.out.println("버프 지속 시간 : " + getJob().getPlusBuffDuration());
+        System.out.println("재사용 : " + getJob().getReuse());
+        System.out.println("속성 내성 무시 : " + getJob().getProperty());
+        System.out.println("무기 공격력 : " + getJob().getWeaponAttMagic());
+        System.out.println(getJob().getLinkListStr());
+        System.out.println(getJob().getAbility().getDescription());
     }
 }

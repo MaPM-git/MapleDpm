@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -18,7 +19,7 @@ public class Xenon extends Job {
         // 기본
         super();
         this.setName("제논");
-        this.setConstant(1.5);          // 무기상수
+        this.setConstant(1.3125);          // 무기상수
         this.setMainStat(               // 기본 스탯(275 기준)
                 this.getLevel() * 5 + 18 - 326 - 326
         );
@@ -32,10 +33,10 @@ public class Xenon extends Job {
         this.setJobType(JobType.XENON);
 
         this.addPerXMainStat(-28200L);
-        this.addPerXMainStat(7200L + 6366);
-        this.addPerXSubStat(7200L + 6366);
-        this.addPerXOtherStat(7200L + 6366);
-        this.addPerXMainStat((long) (144 * 4 + 96 * 20));
+        this.addPerXMainStat(7200L + 6336);
+        this.addPerXSubStat(7200L + 6336);
+        this.addPerXOtherStat(7200L + 6336);
+        //this.addPerXMainStat((long) (144 * 4 + 96 * 20));
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -66,6 +67,7 @@ public class Xenon extends Job {
 
         // 1차
         this.addAtt(30L);               // 인클라인 파워
+        //this.addAllStatP(20L);          // 서플라이 20
         this.addDamage(5L);             // 멀티래터럴 II
 
         // 2차
@@ -101,7 +103,14 @@ public class Xenon extends Job {
         this.addAtt(40L);               // 로디드 다이스
         this.addAtt(30L);               // 레디 투 다이
 
-        this.setAbility(new BossCriticalAbnormal());
+        // 환산 보정
+        this.addAllStatP(3L);
+        //this.addMainStatP(5L);
+        this.addMainStat(5L);
+        this.addSubStat(4L);
+        this.addOtherStat1(4L);
+
+        this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
@@ -137,5 +146,28 @@ public class Xenon extends Job {
                         * (1 + this.getDamage() * 0.01)
                         * this.getFinalDamage()
         );
+    }
+
+    @Override
+    public Object[] getOpject() {
+        Long attMagic;
+        Long attMagicP;
+        if (this.getAtt() > this.getMagic()) {
+            attMagic = this.getAtt();
+            attMagicP = this.getAttP();
+        } else {
+            attMagic = this.getMagic();
+            attMagicP = this.getMagicP();
+        }
+        Object[] result = new Object[]{
+                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
+                this.getFinalSubstat(), this.getFinalSubStat2(), this.getStatDamage(), this.getDamage(),
+                this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
+                this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
+                this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
+                this.getFinalDamage()
+        };
+        return result;
     }
 }

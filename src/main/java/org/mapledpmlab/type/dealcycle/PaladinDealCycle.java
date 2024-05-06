@@ -148,8 +148,8 @@ public class PaladinDealCycle extends DealCycle {
         dealCycle1.add(blessedHammerBuff);
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
-        dealCycle1.add(grandCrossFirstDelay);
         dealCycle1.add(sacredBastion1);
+        dealCycle1.add(grandCrossFirstDelay);
 
         dealCycle2.add(nobleDemand);
         dealCycle2.add(epicAdventure);
@@ -167,7 +167,7 @@ public class PaladinDealCycle extends DealCycle {
         dealCycle3.add(weaponJumpRing);
 
         shortDealCycle.add(mightyMjolnirDelay);
-        shortDealCycle.add(sanctuary);
+        //shortDealCycle.add(sanctuary);
 
         while (getStart().before(getEnd())) {
             if (divineBrandCount >= 5) {
@@ -200,10 +200,19 @@ public class PaladinDealCycle extends DealCycle {
             ) {
                 addDealCycle(dealCycle2);
             } else if (
-                    cooldownCheck(dealCycle3)
+                    cooldownCheck(holyUnity)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && !cooldownCheck(epicAdventure)
             ) {
-                addDealCycle(dealCycle3);
+                addSkillEvent(nobleDemand);
+                addSkillEvent(holyUnity);
+            } else if (
+                    cooldownCheck(blessedHammerBuff)
+                    && cooldownCheck(soulContract)
+                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() + 10000))
+            ) {
+                addSkillEvent(blessedHammerBuff);
+                addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))

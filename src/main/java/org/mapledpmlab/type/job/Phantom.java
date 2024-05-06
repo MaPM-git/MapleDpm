@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BossAbnormalReuse;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -65,7 +66,12 @@ public class Phantom extends Job {
         // 5차
         this.addAtt(30L);               // 레디 투 다이
 
-        this.setAbility(new BossCriticalAbnormal());
+        // 환산 보정
+        this.addMainStatP(-48L);
+        this.addMainStat(-23L);
+        //this.addSubStat(5L);
+
+        this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PhantomInstinct());

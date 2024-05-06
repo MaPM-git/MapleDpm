@@ -397,6 +397,7 @@ public class ArchMageILDealCycle extends DealCycle {
     @Override
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
+        boolean isJupiter = false;
         if (
                 skillEvent.getSkill() instanceof ThunderAttack
                 && !(skillEvent.getSkill() instanceof FrozenLightning1)
@@ -409,6 +410,7 @@ public class ArchMageILDealCycle extends DealCycle {
                         && (end.before(jupiterThunderEndList.get(i)) || end.equals(jupiterThunderEndList.get(i)))
                 ) {
                     buffSkill.addBuffFinalDamage(1.12);
+                    isJupiter = true;
                 }
             }
         }
@@ -461,8 +463,12 @@ public class ArchMageILDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + this.getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                        + this.getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
                         * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + this.getJob().getPerXAtt())
@@ -476,18 +482,47 @@ public class ArchMageILDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        buffSkill.addBuffCriticalDamage(-3.0 * frostEffect);
+        buffSkill.addBuffIgnoreDefense(-2L * frostEffect);
+        if (isJupiter) {
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.12);
+        }
+        if (
+                attackSkill instanceof ChainLightning
+                        || attackSkill instanceof ChainLightningElectric
+                        || attackSkill instanceof ElquinesSummon
+                        || attackSkill instanceof FreezingBreath
+                        || attackSkill instanceof FrozenLightning1
+                        || attackSkill instanceof FrozenLightning2
+                        || attackSkill instanceof FrozenLightningEnlightenmentOfMana
+                        || attackSkill instanceof FrozenOrb
+                        || attackSkill instanceof IceAge
+                        || attackSkill instanceof JupiterThunder
+                        || attackSkill instanceof JupiterThunderElectric
+                        || attackSkill instanceof LightningSphere
+                        || attackSkill instanceof LightningSphereFinish
+                        || attackSkill instanceof SpiritOfSnow
+                        || attackSkill instanceof ThunderBreak
+                        || attackSkill instanceof ThunderSpear
+        ) {
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

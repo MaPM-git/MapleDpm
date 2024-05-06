@@ -35,14 +35,16 @@ public class DPMMain {
         dealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
         dealCycleList.add(new ArkDealCycle(new Ark()));
         dealCycleList.add(new BattleMageDealCycle(new BattleMage()));
-        dealCycleList.add(new BishopDealCycle(new Bishop()));
+        dealCycleList.add(new Bishop2DealCycle(new Bishop()));
+        dealCycleList.add(new Bishop3DealCycle(new Bishop()));
         dealCycleList.add(new BlasterDealCycle(new Blaster()));
         dealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
         dealCycleList.add(new CadenaDealCycle(new Cadena()));
         dealCycleList.add(new CannonShooterDealCycle(new CannonShooter()));
         dealCycleList.add(new CaptainDealCycle(new Captain()));
         dealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
-        dealCycleList.add(new DemonAvengerDealCycle(new DemonAvenger()));
+        dealCycleList.add(new DemonAvenger29DealCycle(new DemonAvenger()));
+        dealCycleList.add(new DemonAvenger30DealCycle(new DemonAvenger()));
         dealCycleList.add(new DemonSlayerDealCycle(new DemonSlayer()));
         dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
         dealCycleList.add(new EunwolDealCycle(new Eunwol()));
@@ -93,7 +95,7 @@ public class DPMMain {
 
             // Save the SVG to a file
             try {
-                OutputStream outputStream = new FileOutputStream(new File("../버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
+                OutputStream outputStream = new FileOutputStream(new File("버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
                 Writer out = new OutputStreamWriter(outputStream, "UTF-8");
                 svgGenerator.stream(out, true);
             } catch (IOException e) {
@@ -103,7 +105,7 @@ public class DPMMain {
             // SVG 파일 생성
             try {
                 dealCycle.calcDps();
-                FileWriter writer = new FileWriter("../딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg");
+                FileWriter writer = new FileWriter("딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg");
 
                 // SVG 헤더 작성
                 writer.write("<svg xmlns='http://www.w3.org/2000/svg' width='720' height='2000'>");
@@ -132,11 +134,11 @@ public class DPMMain {
         path.append("M").append(startX).append(",").append(startY).append(" ");
 
         // 데이터를 이용하여 선 그래프 경로 추가
-        int xIncrement = 1; // X 축 증가량
+        int xIncrement = 5; // X 축 증가량
         int yScale = 1; // Y 축 스케일
         for (int i = 0; i < data.size(); i++) {
             int x = startX + xIncrement * i;
-            int y = startY - (int)(data.get(i) / 10000000000L) * yScale;
+            int y = startY - (int)(data.get(i) / 100000000000L) * yScale;
             path.append("L").append(x).append(",").append(y).append(" ");
         }
 
@@ -329,7 +331,7 @@ public class DPMMain {
 
         data = new TreeMap<>();
         data.put("1", new Object[]{
-                "직업이름", "DPM", "DPM 배율", "리레딜", "리레딜 배율", "40초 딜", "40초딜 배율"
+                "직업이름", "DPM", "DPM 배율", "15딜", "15딜 배율", "40초 딜", "40초딜 배율"
         });
         for (int i = 0; i < dealCycleList.size(); i++) {
             data.put(String.valueOf(i + 2), dealCycleList.get(i).getObject());

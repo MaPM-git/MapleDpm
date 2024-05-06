@@ -114,6 +114,7 @@ public class Job extends Common {
         this.addBossDamage(30L);        // 노블레스 길드 스킬
         this.addCriticalDamage(30.0);
         this.addDamage(30L);
+        this.addIgnoreDefenseList(30L);
 
         this.addBossDamage(20L);        // 반빨별 or 고보킬
         this.addCriticalDamage(5.0);    // 고급 무기 제련(장비 명장)
@@ -205,6 +206,9 @@ public class Job extends Common {
         for (Link link : getLinkList()) {
             str += link.getDescription() + "\n";
         }
+        str += "소울 컨트랙트\n";
+        str += "시프 커닝\n";
+        str += "프라이어 프리퍼레이션\n";
         return str;
     }
 }

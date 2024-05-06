@@ -8,6 +8,7 @@ public class WarInTheShadePerfusion extends AttackSkill {
         this.setAttackCount(8L);
         this.setDamage(1543.0);
         this.setCooldown(3.0);
+        this.setApplyCooldownReduction(false);
         this.setDotDuration(10L);
         this.setInterval(1L);
         this.setLimitAttackCount(7L);

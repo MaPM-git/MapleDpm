@@ -62,6 +62,11 @@ public class Luminous extends Job {
         this.addCriticalDamage(18.0);
         this.addCriticalP(15.0);
 
+        // 환산 보정
+        this.addMainStatP(51L);
+        this.addMainStat(9L);
+        //this.addSubStat(5L);
+
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());

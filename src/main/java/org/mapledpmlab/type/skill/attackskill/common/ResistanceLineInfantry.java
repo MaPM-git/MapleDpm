@@ -9,7 +9,7 @@ public class ResistanceLineInfantry extends AttackSkill {
         this.setDamage(455.0);
         this.setCooldown(25.0);
         this.setDotDuration(10000L);
-        this.setInterval(240L);
+        this.setInterval(990L);
         this.setRelatedSkill(new ResistanceLineInfantryDelay());
     }
 }

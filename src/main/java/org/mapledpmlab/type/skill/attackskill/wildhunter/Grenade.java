@@ -9,6 +9,8 @@ public class Grenade extends AttackSkill {
         this.setInterval(1200L);
         this.setDamage(415.0);
         this.setAttackCount(4L);
+        this.setCooldown(1.2);
+        this.setApplyCooldownReduction(false);
         this.setRelatedSkill(new GrenadeBoom());
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

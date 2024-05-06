@@ -11,5 +11,6 @@ public class FastCharge extends BuffSkill {
         this.setName("패스트 차지");
         this.setDelay(30L);
         this.setCooldown(178.0);
+        //this.setApplyReuse(true);
     }
 }

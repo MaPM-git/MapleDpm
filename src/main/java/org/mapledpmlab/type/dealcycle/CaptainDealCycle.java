@@ -86,8 +86,13 @@ public class CaptainDealCycle extends DealCycle {
         }
     };
 
+    DeadEye deadEye = new DeadEye();
+    HeadShot headShot = new HeadShot();
+
     DeathTrigger deathTrigger = new DeathTrigger();
     List<Timestamp> quickDrawTimeList = new ArrayList<>();
+
+    boolean isQuickDraw = false;
 
     public CaptainDealCycle(Job job) {
         super(job, new FinalAttackCaptain());
@@ -100,12 +105,10 @@ public class CaptainDealCycle extends DealCycle {
         BattleShipBomber battleShipBomber = new BattleShipBomber();
         BulletPartyBeforeDelay bulletParty = new BulletPartyBeforeDelay();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DeadEye deadEye = new DeadEye();
         DeathTriggerBeforeDelay deathTrigger = new DeathTriggerBeforeDelay();
         Dreadnought dreadnought = new Dreadnought();
         DualPistolCrew dualPistolCrew = new DualPistolCrew();
         EpicAdventure epicAdventure = new EpicAdventure();
-        HeadShot headShot = new HeadShot();
         LuckyDice luckyDice = new LuckyDice();
         LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
@@ -192,17 +195,7 @@ public class CaptainDealCycle extends DealCycle {
         Timestamp spreeEndTime = new Timestamp(-1);
 
         while (getStart().before(getEnd())) {
-            if (
-                    luckyDice.getCooldown() == 0
-                    && luckyDice.getBuffAttMagic() == 0
-                    && luckyDice.getBuffDamage() == 20
-            ) {
-                luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
-                luckyDice.setCooldown(luckyDiceOneMoreChance.getCooldown());
-                luckyDice.setBuffDamage(luckyDiceOneMoreChance.getBuffDamage());
-                luckyDice.setBuffAttMagic(luckyDiceOneMoreChance.getBuffAttMagic());
-                addSkillEvent(luckyDice);
-            } else if (cooldownCheck(luckyDice)) {
+            if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDice();
                 addSkillEvent(luckyDice);
             }
@@ -345,20 +338,6 @@ public class CaptainDealCycle extends DealCycle {
                 }
             }
             for (SkillEvent se : useAttackSkillList) {
-                boolean quickDraw = false;
-                if (
-                        se.getSkill() instanceof HeadShot
-                        || se.getSkill() instanceof DeadEye
-                ) {
-                    for (int j = 0; j < quickDrawTimeList.size(); j++) {
-                        if (start.equals(quickDrawTimeList.get(j))) {
-                            buffSkill.addBuffFinalDamage(1.26);
-                            quickDrawTimeList.remove(j);
-                            quickDraw = true;
-                            break;
-                        }
-                    }
-                }
                 if (
                         isUntiringNectar
                         && (
@@ -371,9 +350,6 @@ public class CaptainDealCycle extends DealCycle {
                     buffSkill.addBuffFinalDamage(1.5);
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
-                if (quickDraw) {
-                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.26);
-                }
                 if (
                         isUntiringNectar
                         && (
@@ -393,8 +369,9 @@ public class CaptainDealCycle extends DealCycle {
                 }
             }
             isUntiringNectar = false;
-            for (int j = 0; i < overlappingSkillEvents.size(); i++) {
+            /*for (int j = 0; i < overlappingSkillEvents.size(); i++) {
                 if (overlappingSkillEvents.get(j).getSkill() instanceof BattleShipBomber) {
+
                     ((AttackSkill) overlappingSkillEvents.get(j).getSkill()).setDamage(403.0);
                 }
             }
@@ -402,7 +379,7 @@ public class CaptainDealCycle extends DealCycle {
                 if (overlappingSkillEvents.get(j).getSkill() instanceof SiegeBomber) {
                     ((AttackSkill) overlappingSkillEvents.get(j).getSkill()).setDamage(300.0);
                 }
-            }
+            }*/
         }
         for (AttackSkill as : attackSkillList) {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
@@ -452,7 +429,23 @@ public class CaptainDealCycle extends DealCycle {
         } else {
             Long ran = (long) (Math.random() * 99 + 1);
             if (ran <= 9) {
-                quickDrawTimeList.add(new Timestamp(getStart().getTime()));
+                isQuickDraw = true;
+                //quickDrawTimeList.add(new Timestamp(getStart().getTime()));
+            }
+            if (isQuickDraw) {
+               /*     && (
+                        skill instanceof HeadShot
+                                || skill instanceof DeadEye
+                )*/
+                if (skill instanceof HeadShot) {
+                    skill = new HeadShot();
+                    ((AttackSkill) skill).addFinalDamage(1.26);
+                    applyCooldown(headShot);
+                } else if (skill instanceof DeadEye) {
+                    skill = new DeadEye();
+                    ((AttackSkill) skill).addFinalDamage(1.26);
+                    applyCooldown(deadEye);
+                }
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();

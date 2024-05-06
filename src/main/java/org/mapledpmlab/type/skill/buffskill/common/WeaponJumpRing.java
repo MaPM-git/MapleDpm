@@ -12,6 +12,6 @@ public class WeaponJumpRing extends BuffSkill {
         this.setCooldown(180.0);
         this.setDuration(15L);
         this.setDelay(30L);
-        this.setBuffMainStat(weaponAttMagic * 5);
+        this.setBuffMainStat(weaponAttMagic * 4);
     }
 }

@@ -16,10 +16,6 @@ public class ZeroBeta extends Zero {
         this.setWeaponAttMagic((long) (342 + 151 + 72 + 255));
         this.addBossDamage((long) (30 + 10));
         this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
 
         // 베타
         this.addCriticalP(30.0);        // 대검 마스터리

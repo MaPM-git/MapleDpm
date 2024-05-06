@@ -373,6 +373,10 @@ public class LaraDealCycle extends DealCycle {
                     skillEvent.setSkill(new DragonVeinEcho());
                     ((DragonVeinEcho) skillEvent.getSkill()).setBuffFinalDamage(1.11);
                 }
+                if (skillEvent.getSkill() instanceof DragonVeinEcho && !isGrandisBless) {
+                    skillEvent.setSkill(new DragonVeinEcho());
+                    ((DragonVeinEcho) skillEvent.getSkill()).setBuffFinalDamage(1.05);
+                }
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
                 buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
@@ -440,8 +444,12 @@ public class LaraDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + this.getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                        + this.getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
                         * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + this.getJob().getPerXAtt())
@@ -455,18 +463,51 @@ public class LaraDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (
+                attackSkill instanceof AbsorptionFierceWind
+                        || attackSkill instanceof AbsorptionRiverPuddleDouse
+                        || attackSkill instanceof AbsorptionSunlitightGrain
+                        || attackSkill instanceof BigStretch
+                        || attackSkill instanceof BloomingFlowerWorld
+                        || attackSkill instanceof BloomingFlowerWorldFinish
+                        || attackSkill instanceof DragonVeinTrace
+                        || attackSkill instanceof EruptionRipplingRiver
+                        || attackSkill instanceof EruptionRipplingRiverBig
+                        || attackSkill instanceof EruptionSunriseWell
+                        || attackSkill instanceof EruptionSunriseWellDot
+                        || attackSkill instanceof EruptionSunriseWellLava
+                        || attackSkill instanceof EruptionSunriseWellVolcanicCoal
+                        || attackSkill instanceof EruptionWhirlwind
+                        || attackSkill instanceof EssenceSprinkle
+                        || attackSkill instanceof MountainSeed
+                        || attackSkill instanceof RidgeWinding
+                        || attackSkill instanceof SoaringSpirit
+                        || attackSkill instanceof SunRiverMountainWindBomb
+                        || attackSkill instanceof SunRiverMountainWindWave1
+                        || attackSkill instanceof SunRiverMountainWindWave2
+                        || attackSkill instanceof SunRiverMountainWindWave3
+                        || attackSkill instanceof SunRiverMountainWindWave4
+                        || attackSkill instanceof VineSkein
+                        || attackSkill instanceof Wakeup
+        ) {
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

@@ -486,8 +486,12 @@ public class ArchMageFPDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + this.getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                        + this.getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
                         * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + this.getJob().getPerXAtt())
@@ -501,18 +505,60 @@ public class ArchMageFPDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (
+                attackSkill instanceof DotPunisherAfterSecond
+                        || attackSkill instanceof DotPunisherDot
+                        || attackSkill instanceof DotPunisherFirst
+                        || attackSkill instanceof DotPunisherOriginAfterSecond
+                        || attackSkill instanceof DotPunisherOriginDot
+                        || attackSkill instanceof DotPunisherOriginFirst
+                        || attackSkill instanceof FlameHaze
+                        || attackSkill instanceof FlameHazeDot
+                        || attackSkill instanceof FlameSweep
+                        || attackSkill instanceof FlameSweepDot
+                        || attackSkill instanceof FuryOfIfrit
+                        || attackSkill instanceof FuryOfIfritOrigin
+                        || attackSkill instanceof IfritDot
+                        || attackSkill instanceof IfritSummon
+                        || attackSkill instanceof InfernalVenomExplosion1
+                        || attackSkill instanceof InfernalVenomExplosion2
+                        || attackSkill instanceof MegidoFlame
+                        || attackSkill instanceof MegidoFlameAfterSecond
+                        || attackSkill instanceof MegidoFlameDot
+                        || attackSkill instanceof MistEruption
+                        || attackSkill instanceof PoisonChain
+                        || attackSkill instanceof PoisonChainExplosion0
+                        || attackSkill instanceof PoisonChainExplosion1
+                        || attackSkill instanceof PoisonChainExplosion2
+                        || attackSkill instanceof PoisonChainExplosion3
+                        || attackSkill instanceof PoisonChainExplosion4
+                        || attackSkill instanceof PoisonChainExplosion5
+                        || attackSkill instanceof PoisonMist
+                        || attackSkill instanceof PoisonNova
+                        || attackSkill instanceof PoisonNovaDot
+                        || attackSkill instanceof PoisonNovaExplosion
+                        || attackSkill instanceof PoisonNovaExplosionAfterThird
+                        || attackSkill instanceof PoisonZone
+                        || attackSkill instanceof PoisonZoneExplosion
+        ) {
+            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

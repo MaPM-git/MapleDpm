@@ -1,6 +1,6 @@
 package org.mapledpmlab.type.union;
 
-public class DexUnion extends Union {
+public class DexUnion extends UnionArcher {
 
     public DexUnion() {
         super();

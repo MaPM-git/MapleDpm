@@ -8,6 +8,7 @@ import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PirateBlessing;
 import org.mapledpmlab.type.union.DexUnion;
+import org.mapledpmlab.type.union.DexUnion2;
 
 import java.util.stream.Collectors;
 
@@ -68,11 +69,16 @@ public class Captain extends Job {
         // 5차
         this.addAtt(40L);               // 로디드 다이스
 
+        // 환산 보정
+        this.addMainStatP(-3L);
+        this.addMainStat(-7L);
+        //this.addSubStat(5L);
+
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PirateBlessing());
-        this.setUnion(new DexUnion());
+        this.setUnion(new DexUnion2());
 
         this.addObject(this.getAbility());
         this.addObject(this.getArtifact());

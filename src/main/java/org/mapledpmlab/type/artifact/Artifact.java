@@ -17,7 +17,8 @@ public class Artifact extends Farm {
                 "\n8.크리티컬 확률 20%" +
                 "\n9.크리티컬 데미지 4%" +
                 "\n10.파이널 어택류 스킬의 데미지 30%" +
-                "\n11.다수 공격 스킬의 최대 공격 가능 대상 수 1 증가"
+                "\n11.다수 공격 스킬의 최대 공격 가능 대상 수 1 증가" +
+                "\n12.데미지 15%"
         );
         this.addMainStat(150L);
         this.addSubStat(150L);
@@ -32,5 +33,6 @@ public class Artifact extends Farm {
         this.addReuse(7L);
         this.addCriticalP(20.0);
         this.addCriticalDamage(4.0);
+        this.addDamage(15L);
     }
 }

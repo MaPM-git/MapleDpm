@@ -8,7 +8,7 @@ public class HeartbreakerCancleStack extends AttackSkill {
         this.setName("분쇄(충전, 노쿨)");
         this.setAttackCount(6L);
         this.setDamage(480.0);
-        this.setDelayByAttackSpeed(180L);
+        this.setDelay(480L);
         this.setAddDamage(20L);         // 블래스트-리인포스
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

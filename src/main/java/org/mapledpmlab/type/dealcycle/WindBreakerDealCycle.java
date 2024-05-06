@@ -86,6 +86,7 @@ public class WindBreakerDealCycle extends DealCycle {
             add(new GloryOfGuardians());
             add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RiskTakerRing());
             add(new PinpointPierceBuff());
             add(new SoulContract());
             add(new StormWhimBuff());
@@ -104,6 +105,9 @@ public class WindBreakerDealCycle extends DealCycle {
 
     public WindBreakerDealCycle(Job job) {
         super(job, null);
+
+        getJob().addCooldownReductionSec(-1L);
+        getJob().addMainStatP(8L);
 
         this.setAttackSkillList(attackSkillList);
         this.setDelaySkillList(delaySkillList);
@@ -469,7 +473,7 @@ public class WindBreakerDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
-                if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
+                if (((AttackSkill) se.getSkill()).isApplyFinalAttack() && start.equals(se.getStart())) {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (isStormWhim) {
                         if (ran <= stormWhim.getProp() && start.equals(se.getStart())) {
@@ -502,13 +506,17 @@ public class WindBreakerDealCycle extends DealCycle {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         if (isCriticalReinforce) {
-            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP() + ((AttackSkill) skillEvent.getSkill()).getCriticalP());
+            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
             buffSkill.addBuffCriticalDamage(criticalReinforce.getBuffCriticalDamage());
         }
         for (AttackSkill as : getAttackSkillList()) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat() + buffSkill.getBuffMainStat()) * 4
-                        + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()) * 0.01
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                        + getJob().getFinalSubstat()) * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                         + getJob().getPerXAtt())
@@ -522,18 +530,26 @@ public class WindBreakerDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (isCriticalReinforce) {
+            CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
+            buffSkill.addBuffCriticalDamage(-criticalReinforce.getBuffCriticalDamage());
         }
         return attackDamage;
     }

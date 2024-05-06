@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.BuffBossAbnormal;
 import org.mapledpmlab.type.ability.BuffBossCritical;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -15,7 +16,7 @@ public class ArchMageFP extends Job {
     public ArchMageFP() {
         // 기본
         super();
-        this.setName("아크메이지 불, 독");
+        this.setName("아크메이지(불,독)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
@@ -62,9 +63,14 @@ public class ArchMageFP extends Job {
         // 5차
         this.addMainStat(30L);          // 언스태이블 메모라이즈
 
-        this.setAbility(new BuffBossCritical());
+        // 환산 보정
+        this.addMainStatP(90L);
+        this.addMainStat(5L);
+        //this.addSubStat(10L);
+
+        this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new PhantomInstinct());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
 

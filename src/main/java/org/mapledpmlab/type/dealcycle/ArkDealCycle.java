@@ -415,6 +415,12 @@ public class ArkDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof MagicCircuitFullDriveBuff) {
+                if (
+                        getStart().after(new Timestamp(90 * 1000))
+                        && getStart().before(new Timestamp(150 * 1000))
+                ) {
+                    return;
+                }
                 magicCircuitFullDriveEndTime = new Timestamp(getStart().getTime() + 60000);
             }
             if (skill instanceof SpecterForm) {
@@ -717,8 +723,20 @@ public class ArkDealCycle extends DealCycle {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (
                         isInfinitySpell
+                                && (
+                                se.getSkill() instanceof AbyssSpell
+                                        || se.getSkill() instanceof GustSpell
+                                        || se.getSkill() instanceof PlainSpell
+                                        || se.getSkill() instanceof ScarletSpell
+                        )
+                ) {
+                    buffSkill.addBuffDamage(-20L);
+                }
+                if (
+                        isInfinitySpell
                         && se.getSkill() instanceof ApproachingDeath
                 ) {
+                    se.setSkill(new ApproachingDeath());
                     ((ApproachingDeath) se.getSkill()).setDamage(190.0 + 145 + 118);
                 }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {

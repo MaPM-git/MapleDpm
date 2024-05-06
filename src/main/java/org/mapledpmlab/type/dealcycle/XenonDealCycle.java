@@ -452,13 +452,16 @@ public class XenonDealCycle extends DealCycle {
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (
-                        se.getSkill() instanceof MegaSmasher
-                        || se.getSkill() instanceof MegaSmasherReinforce
-                        || se.getSkill() instanceof FuzzyRobMasqueradeSnipe
-                        || se.getSkill() instanceof FuzzyRobMasqueradeExecution
-                        || se.getSkill() instanceof OverloadModePlasmaCurrent
-                        || se.getSkill() instanceof PhotonRay
-                        || se.getSkill() instanceof MeltdownExplosion
+                        start.equals(se.getStart())
+                        && (
+                                se.getSkill() instanceof MegaSmasher
+                                || se.getSkill() instanceof MegaSmasherReinforce
+                                || se.getSkill() instanceof FuzzyRobMasqueradeSnipe
+                                || se.getSkill() instanceof FuzzyRobMasqueradeExecution
+                                || se.getSkill() instanceof OverloadModePlasmaCurrent
+                                || se.getSkill() instanceof PhotonRay
+                                || se.getSkill() instanceof MeltdownExplosion
+                        )
                 ) {
                     Long ran = (long) (Math.random() * 9 + 1);
                     if (ran <= 3) {
@@ -483,6 +486,22 @@ public class XenonDealCycle extends DealCycle {
                         pinpointRocketCooltime = new Timestamp(pinpointRocketCooltime.getTime() + 2000);
                     }
                 }
+                if (currentEnergyCnt <= 20) {
+                    buffSkill.addBuffMainStat(
+                            (long) Math.floor(
+                                    (this.getJob().getLevel() + 2) * 5 * 0.01 * -currentEnergyCnt
+                            )
+                    );
+                } else if (isOverloadMode){
+                    buffSkill.addBuffMainStat(
+                            (long) Math.floor(
+                                    (this.getJob().getLevel() + 2) * 5 * -0.2
+                            )
+                    );
+                    buffSkill.addBuffFinalDamage(
+                            1 + (currentEnergyCnt - 20) * -0.01
+                    );
+                }
             }
         }
         for (AttackSkill as : attackSkillList) {
@@ -506,11 +525,15 @@ public class XenonDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
                 attackDamage = (long) Math.floor(
                         (
-                                getJob().getFinalMainStat() + buffSkill.getBuffMainStat()
-                                + getJob().getFinalSubstat() + buffSkill.getBuffSubStat()
-                                + ((Xenon) getJob()).getFinalSubStat2() + buffSkill.getBuffOtherStat1()
+                                getJob().getFinalMainStat()
+                                + getJob().getFinalSubstat()
+                                + ((Xenon) getJob()).getFinalSubStat2()
                         ) * 4 * 0.01
                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
@@ -525,14 +548,18 @@ public class XenonDealCycle extends DealCycle {
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                         * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
                         * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                 );
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                 }
                 Long distance = end.getTime() - start.getTime();
-                if (as.getMultiAttackInfo().size() == 0 && as.getInterval() == 0 && as.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / as.getDelay() * distance;
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
@@ -570,5 +597,37 @@ public class XenonDealCycle extends DealCycle {
             }
         }
         return overlappingSkillEvents;
+    }
+
+    @Override
+    public void getJobInfo() {
+        System.out.println("-------------------");
+        System.out.println("직업 : " + getJob().getName());
+        System.out.println("기본 주스탯 수치 : " + getJob().getMainStat());
+        System.out.println("주스탯 % 수치 : " + (getJob().getMainStatP() + getJob().getAllStatP()));
+        System.out.println("% 미적용 주스탯 수치 : " + getJob().getPerXMainStat());
+        System.out.println("기본 부스탯 수치 : " + getJob().getSubStat());
+        System.out.println("부스탯 % 수치 : " + getJob().getAllStatP());
+        System.out.println("% 미적용 부스탯 수치 : " + getJob().getPerXSubStat());
+        System.out.println("기본 부스탯2 수치 : " + getJob().getOtherStat1());
+        System.out.println("부스탯2 % 수치 : " + getJob().getAllStatP());
+        System.out.println("% 미적용 부스탯 수치 : " + getJob().getPerXOtherStat());
+        System.out.println("기본 스공 : " + getJob().getStatDamage());
+        System.out.println("데미지 : " + getJob().getDamage());
+        System.out.println("최종데미지 : " + getJob().getFinalDamage());
+        System.out.println("보스 데미지 : " + getJob().getBossDamage());
+        System.out.println("방어율 무시 : " + getJob().getIgnoreDefense());
+        System.out.println("크리티컬 확률 : " + getJob().getCriticalP());
+        System.out.println("장비 공격력 % : " + getJob().getAttP());
+        System.out.println("장비 마력 % : " + getJob().getMagicP());
+        System.out.println("크리티컬 데미지 : " + getJob().getCriticalDamage());
+        System.out.println("쿨타임 감소 초 : " + getJob().getCooldownReductionSec());
+        System.out.println("쿨타임 감소 % : " + getJob().getCooldownReductionP());
+        System.out.println("버프 지속 시간 : " + getJob().getPlusBuffDuration());
+        System.out.println("재사용 : " + getJob().getReuse());
+        System.out.println("속성 내성 무시 : " + getJob().getProperty());
+        System.out.println("무기 공격력 : " + getJob().getWeaponAttMagic());
+        System.out.println(getJob().getLinkListStr());
+        System.out.println(getJob().getAbility().getDescription());
     }
 }

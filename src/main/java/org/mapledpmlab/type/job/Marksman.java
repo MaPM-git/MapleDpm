@@ -5,8 +5,7 @@ import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
-import org.mapledpmlab.type.link.AdventurerCuriosity;
-import org.mapledpmlab.type.link.HybridLogic;
+import org.mapledpmlab.type.link.*;
 import org.mapledpmlab.type.union.DexUnion;
 
 import java.util.stream.Collectors;
@@ -53,15 +52,15 @@ public class Marksman extends Job {
 
         // 3차
         this.addCriticalDamage(20.0);   // 익스트림 아쳐리 : 석궁
-        this.addAttP(25L);              // 마크맨쉽
+        this.addDamage(15L);              // 마크맨쉽
         this.addIgnoreDefenseList(25L);
 
         // 4차
         this.addFinalDamage(1.08);      // 어드밴스드 인핸스 애로우
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(31L); // 애로우 일루전
-        this.addCriticalP(20.0);        // 샤프 아이즈
-        this.addCriticalDamage(15.0);
+        this.addCriticalP(26.0);        // 샤프 아이즈
+        this.addCriticalDamage(8.0);
         this.addIgnoreDefenseList(5L);
         this.addAtt(31L);               // 크로스보우 엑스퍼트
         this.addCriticalDamage(15.0);
@@ -69,10 +68,22 @@ public class Marksman extends Job {
         this.addFinalDamage(1.16);      // 어디셔널 볼트
         this.addFinalDamage(1.11);      // 라스트맨 스탠딩
 
+        // 환산 보정
+        //this.addMainStatP(-6L);
+        this.addMainStat(-29L);
+        this.addSubStat(-5L);
+
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new AdventurerCuriosity());
+        for (Link link : this.getLinkList()) {
+            if (link instanceof CygnusBlessing) {
+                this.getLinkList().remove(link);
+                break;
+            }
+        }
+        this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new DexUnion());
 
         this.addObject(this.getAbility());

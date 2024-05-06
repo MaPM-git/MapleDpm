@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-transcoder</artifactId>
-            <version>1.14</version>
+            <version>1.17</version>
         </dependency>
         <!-- Apache Batik XML -->
         <dependency>

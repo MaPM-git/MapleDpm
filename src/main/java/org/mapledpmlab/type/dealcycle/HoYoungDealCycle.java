@@ -235,6 +235,7 @@ public class HoYoungDealCycle extends DealCycle {
 
         conflagrationChainHeavenReinforce.setCooldown(15.0);
 
+        addSkillEvent(flyingFanHumanReinforce);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(dealCycle1)
@@ -282,15 +283,16 @@ public class HoYoungDealCycle extends DealCycle {
                     addSkillEvent(earthquakeChainEarthReinforce);
                 } else if (cooldownCheck(goldCudgelHumanReinforce)) {
                     addSkillEvent(goldCudgelHumanReinforce);
-                } else if (cooldownCheck(conflagrationChainHeavenReinforce)) {
+                } /*else if (cooldownCheck(conflagrationChainHeavenReinforce)) {
                     addSkillEvent(conflagrationChainHeavenReinforce);
-                } else if (cooldownCheck(flyingFanHumanReinforce)) {
+                }*/ else if (cooldownCheck(flyingFanHumanReinforce)) {
                     addSkillEvent(flyingFanHumanReinforce);
                 }
                 earthquakeChainEarth.setActivateTime(new Timestamp(earthquakeChainEarthReinforce.getActivateTime().getTime()));
                 goldCudgelHuman.setActivateTime(new Timestamp(goldCudgelHumanReinforce.getActivateTime().getTime()));
                 conflagrationChainHeaven.setActivateTime(new Timestamp(conflagrationChainHeavenReinforce.getActivateTime().getTime()));
                 flyingFanHuman.setActivateTime(new Timestamp(flyingFanHumanReinforce.getActivateTime().getTime()));
+                isReinforce = false;
             } else {
                 if (cooldownCheck(goldCudgelHuman)) {
                     addSkillEvent(goldCudgelHuman);
@@ -388,6 +390,22 @@ public class HoYoungDealCycle extends DealCycle {
             }
         } else {
             if (
+                    cooldownCheck(allCreationOfHeavenAndEarth)
+                    && (
+                            skill instanceof ConflagrationChainHeavenReinforce
+                            || skill instanceof ConflagrationChainHeavenFalseTrueReinforce
+                            || skill instanceof EarthChainEarthReinforce
+                            || skill instanceof EarthChainFalseTrueReinforce
+                            || skill instanceof EarthquakeChainEarthReinforce
+                            || skill instanceof EarthquakeChainFalseTrueReinforce
+                            || skill instanceof FlyingFanHumanReinforce
+                            || skill instanceof GoldCudgelHumanReinforce
+                            || skill instanceof GoldCudgelHumanFinishReinforce
+                    )
+            ) {
+                addSkillEvent(allCreationOfHeavenAndEarth);
+            }
+            if (
                     skill instanceof EarthChainEarth
                     || skill instanceof EarthChainFalseTrue
                     || skill instanceof EarthChainEarthReinforce
@@ -470,7 +488,6 @@ public class HoYoungDealCycle extends DealCycle {
                 if (linkCnt == 3) {
                     isReinforce = true;
                     linkCnt = 0;
-                    addSkillEvent(allCreationOfHeavenAndEarth);
                     conflagrationChainHeavenReinforce.setActivateTime(new Timestamp(conflagrationChainHeaven.getActivateTime().getTime()));
                     earthChainEarthReinforce.setActivateTime(new Timestamp(earthChainEarth.getActivateTime().getTime()));
                     earthquakeChainEarthReinforce.setActivateTime(new Timestamp(earthquakeChainEarth.getActivateTime().getTime()));
@@ -721,6 +738,20 @@ public class HoYoungDealCycle extends DealCycle {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
+                        if (skill instanceof MysticEnergyApotheosisFinish) {
+                            Timestamp temp = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
+                            if (
+                                    getStart().before(extremeEndTime)
+                                    && cooldownCheck(mysticEnergyExtremeRampageAttack)
+                            ) {
+                                addSkillEvent(mysticEnergyExtremeRampageAttack);
+                            }
+                            if (cooldownCheck(phantasmalCloneTalismanAttack)) {
+                                addSkillEvent(phantasmalCloneTalismanAttack);
+                            }
+                            getStart().setTime(temp.getTime());
+                        }
                     }
                 }
                 this.setStart(tmp);
@@ -870,6 +901,34 @@ public class HoYoungDealCycle extends DealCycle {
                     buffSkill.addBuffDamage(20L);
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (
+                        isAdventOfGods
+                                && (
+                                se.getSkill() instanceof ConflagrationChainHeaven
+                                        || se.getSkill() instanceof ConflagrationChainHeavenFalseTrue
+                                        || se.getSkill() instanceof ConflagrationChainHeavenFalseTrueReinforce
+                                        || se.getSkill() instanceof ConflagrationChainHeavenFlame
+                                        || se.getSkill() instanceof ConflagrationChainHeavenReinforce
+                                        || se.getSkill() instanceof EarthChainEarth
+                                        || se.getSkill() instanceof EarthChainEarthReinforce
+                                        || se.getSkill() instanceof EarthChainFalseTrue
+                                        || se.getSkill() instanceof EarthChainFalseTrueReinforce
+                                        || se.getSkill() instanceof EarthquakeChainEarth
+                                        || se.getSkill() instanceof EarthquakeChainEarthAloofBlueMoon
+                                        || se.getSkill() instanceof EarthquakeChainEarthReinforce
+                                        || se.getSkill() instanceof EarthquakeChainFalseTrue
+                                        || se.getSkill() instanceof EarthquakeChainFalseTrueReinforce
+                                        || se.getSkill() instanceof FlyingFanHuman
+                                        || se.getSkill() instanceof FlyingFanHumanReinforce
+                                        || se.getSkill() instanceof GoldCudgelHuman
+                                        || se.getSkill() instanceof GoldCudgelHumanEnergyOfGoblin
+                                        || se.getSkill() instanceof GoldCudgelHumanFinish
+                                        || se.getSkill() instanceof GoldCudgelHumanFinishReinforce
+                                        || se.getSkill() instanceof GoldCudgelHumanReinforce
+                        )
+                ) {
+                    buffSkill.addBuffDamage(-20L);
+                }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
@@ -882,5 +941,29 @@ public class HoYoungDealCycle extends DealCycle {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (skill instanceof MysticEnergyApotheosisFinish) {
+                Timestamp tmp = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                if (
+                        getStart().before(extremeEndTime)
+                        && cooldownCheck(mysticEnergyExtremeRampageAttack)
+                ) {
+                    addSkillEvent(mysticEnergyExtremeRampageAttack);
+                }
+                if (cooldownCheck(phantasmalCloneTalismanAttack)) {
+                    addSkillEvent(phantasmalCloneTalismanAttack);
+                }
+                getStart().setTime(tmp.getTime());
+            }
+        }
     }
 }
