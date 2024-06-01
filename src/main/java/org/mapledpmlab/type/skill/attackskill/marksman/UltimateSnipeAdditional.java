@@ -9,6 +9,9 @@ public class UltimateSnipeAdditional extends AttackSkill {
         this.setDamage(380.0 + 60);
         this.addIgnoreDefenseList(40L);
         this.addCriticalP(100.0);
+        this.setDotDuration(180L);
+        this.setLimitAttackCount(2L);
+        this.setInterval(90L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(10 + 20L);    // 스나이핑-리인포스, 보스 킬러

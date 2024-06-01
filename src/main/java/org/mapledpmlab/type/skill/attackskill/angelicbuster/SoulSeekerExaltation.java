@@ -7,7 +7,7 @@ public class SoulSeekerExaltation extends AttackSkill {
         this.setName("소울 시커(소울 익절트)");
         this.setDamage(432.0);
         this.setAttackCount(1L);
-        this.setDotDuration(2130L);
+        this.setDotDuration(3000L);
         this.setInterval(60L);
         this.setLimitAttackCount(28L);
         this.setAddDamage(20L);     // 소울 시커-리인포스

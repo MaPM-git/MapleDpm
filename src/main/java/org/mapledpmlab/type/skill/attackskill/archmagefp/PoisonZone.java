@@ -13,6 +13,5 @@ public class PoisonZone extends AttackSkill {
         this.setDotDuration(60000L);
         this.addFinalDamage(2.8);           // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
     }
 }

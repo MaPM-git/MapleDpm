@@ -3,8 +3,7 @@ package org.mapledpmlab.type.farm;
 public class FinalAttackReuseFarm extends Farm {
 
     public FinalAttackReuseFarm() {
-        this.setDescription("" +
-                "농장" +
+        this.setDescription("농장" +
                 "\n1.주스탯 스페셜 SS : 주스탯 15" +
                 "\n2.주스탯 스페셜 A+ : 주스탯 10" +
                 "\n3.주스탯 SS : 주스탯 14" +

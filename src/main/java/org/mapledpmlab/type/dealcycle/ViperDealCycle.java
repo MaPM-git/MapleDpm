@@ -23,19 +23,19 @@ public class ViperDealCycle extends DealCycle {
      */
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     private Long serpentStoneCount = 3L;
     private Timestamp superEndTime = new Timestamp(0);
     private Timestamp stimulateEndTime = new Timestamp(0);
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
@@ -63,13 +63,13 @@ public class ViperDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new HowlingFistBeforeDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new EpicAdventure());
             add(new LiberateNeptunusBuff());
@@ -95,6 +95,9 @@ public class ViperDealCycle extends DealCycle {
     LiberateNeptunusEnrage1 liberateNeptunusEnrage1 = new LiberateNeptunusEnrage1();
     ScrewPunch screwPunch = new ScrewPunch();
     PirateFlag pirateFlag = new PirateFlag();
+    SeaSerpentEnrage seaSerpentEnrage = new SeaSerpentEnrage();
+    SerpentAssaultEnrage serpentAssaultEnrage = new SerpentAssaultEnrage();
+    SuperFistEnrage superFistEnrage = new SuperFistEnrage();
 
     public ViperDealCycle(Job job) {
         super(job, new FinalAttackViper());
@@ -118,13 +121,10 @@ public class ViperDealCycle extends DealCycle {
         PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
-        SeaSerpentEnrage seaSerpentEnrage = new SeaSerpentEnrage();
-        SerpentAssaultEnrage serpentAssaultEnrage = new SerpentAssaultEnrage();
         SerpentScrew serpentScrew = new SerpentScrew();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         Stimulate stimulate = new Stimulate();
-        SuperFistEnrage superFistEnrage = new SuperFistEnrage();
         ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
@@ -166,7 +166,7 @@ public class ViperDealCycle extends DealCycle {
         dealCycle1.add(furiosCharge);
         dealCycle1.add(furiosCharge);
 
-        dealCycle2.add(pirateFlag);
+        //dealCycle2.add(pirateFlag);
         dealCycle2.add(stimulate);
         dealCycle2.add(lightningForm);
         dealCycle2.add(epicAdventure);
@@ -189,7 +189,7 @@ public class ViperDealCycle extends DealCycle {
         dealCycle2.add(furiosCharge);
         dealCycle2.add(furiosCharge);
 
-        dealCycle3.add(pirateFlag);
+        //dealCycle3.add(pirateFlag);
         dealCycle3.add(overdrive);
         dealCycle3.add(soulContract);
         dealCycle3.add(weaponJumpRing);
@@ -253,50 +253,47 @@ public class ViperDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && serpentStoneCount == 3
-                    && cooldownCheck(screwPunch)
             ) {
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
+                furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 40000));
+                dealCycle1.remove(0);
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && !cooldownCheck(dealCycle1)
-                    && cooldownCheck(screwPunch)
+                    && getStart().before(new Timestamp(liberateNeptunus.getActivateTime().getTime() - 10000))
+                    && serpentStoneCount >= 2
             ) {
                 addDealCycle(dealCycle2);
+                furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 40000));
             } else if (
                     cooldownCheck(dealCycle3)
-                    && cooldownCheck(screwPunch)
+                    && !cooldownCheck(epicAdventure)
             ) {
                 addDealCycle(dealCycle3);
+                furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 48000));
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(100 * 1000))
+                    && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
+                    cooldownCheck(furiosCharge)
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() + 5000))
+            ) {
+                addSkillEvent(furiosCharge);
+                addSkillEvent(furiosCharge);
+                addSkillEvent(furiosCharge);
+                addSkillEvent(furiosCharge);
+                furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 32000));
+            } else if (
                     cooldownCheck(pirateFlag)
-                    && getStart().before(new Timestamp(howlingFist.getActivateTime().getTime() - 3000))
                     && cooldownCheck(screwPunch)
             ) {
                 addSkillEvent(pirateFlag);
             } else {
-                if (getStart().before(superEndTime)) {
-                    addSkillEvent(superFistEnrage);
-                } else {
-                    addSkillEvent(fistEnrage);
-                }
-                if (cooldownCheck(seaSerpentEnrage)) {
-                    if (serpentStoneCount == 5) {
-                        addSkillEvent(serpentAssaultEnrage);
-                        superEndTime = new Timestamp(getStart().getTime() + 10000);
-                        serpentStoneCount = 0L;
-                    } else {
-                        addSkillEvent(seaSerpentEnrage);
-                        serpentStoneCount += 1;
-                    }
-                }
+                addSkillEvent(fistEnrage);
             }
         }
         sortEventTimeList();
@@ -395,6 +392,9 @@ public class ViperDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof Stimulate) {
+                stimulateEndTime = new Timestamp(getStart().getTime() + 90000);
+            }
             if (skill instanceof LiberateNeptunusBuff) {
                 liberateNeptunusEndTime = new Timestamp(getStart().getTime() + 30000);
             }
@@ -416,9 +416,33 @@ public class ViperDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    skill instanceof FistEnrage
+                    && getStart().before(superEndTime)
+            ) {
+                skill = superFistEnrage;
+            }
+            if (
+                    skill instanceof FistEnrage
+                    || skill instanceof SuperFistEnrage
+            ) {
+                if (cooldownCheck(seaSerpentEnrage)) {
+                    if (serpentStoneCount == 5) {
+                        addSkillEvent(serpentAssaultEnrage);
+                        superEndTime = new Timestamp(getStart().getTime() + 10000);
+                        serpentStoneCount = 0L;
+                    } else {
+                        addSkillEvent(seaSerpentEnrage);
+                        serpentStoneCount += 1;
+                    }
+                }
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (skill instanceof EnergyOrb) {
+                        continue;
+                    }
                     if (
                             skillEvent.getStart().after(getStart())
                             && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
@@ -476,11 +500,12 @@ public class ViperDealCycle extends DealCycle {
                         || skill instanceof CrestOfTheSolar
                         || skill instanceof OverdriveDebuff
                 )
+                && getStart().after(new Timestamp(1000))
         ) {
             endTime = new Timestamp(getStart().getTime() + screwPunch.getDelay());
             getSkillEventList().add(new SkillEvent(screwPunch, new Timestamp(getStart().getTime()), endTime));
             getStart().setTime(getStart().getTime() + skill.getDelay());
-            //addSkillEvent(screwPunch);
+            applyCooldown(screwPunch);
         } else {
             getStart().setTime(getStart().getTime() + skill.getDelay());
         }

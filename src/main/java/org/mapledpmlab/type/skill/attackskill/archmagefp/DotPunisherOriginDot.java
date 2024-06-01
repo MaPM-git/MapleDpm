@@ -11,6 +11,5 @@ public class DotPunisherOriginDot extends AttackSkill {
         this.setInterval(1000L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new DotPunisherOriginAfterSecond());
-        this.setApplyFinalAttack(true);
     }
 }

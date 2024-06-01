@@ -19,21 +19,21 @@ public class MihileDealCycle extends DealCycle {
      */
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레, 초시축
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 극딜 마지막, 6차 포함
-    private List<Skill> final1 = new ArrayList<>();
+    private final List<Skill> final1 = new ArrayList<>();
 
     // 극딜 마지막
-    private List<Skill> final2 = new ArrayList<>();
+    private final List<Skill> final2 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdvancedFinalAttackMihile());
             add(new AuraWeaponDot());
@@ -58,13 +58,13 @@ public class MihileDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new CygnusPhalanxDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
             add(new GloryOfGuardians());

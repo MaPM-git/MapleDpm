@@ -18,23 +18,25 @@ import java.util.List;
 public class MechanicDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 설치기
-    private List<Skill> summonCycle = new ArrayList<>();
+    private final List<Skill> summonCycle = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DistortionField());
+            add(new GroundZeroBombardment());
             add(new GroundZeroEarthquake());
+            add(new GroundZeroExplosion());
             add(new HomingMissile());
             add(new MagneticField());
             add(new MagneticFieldDie());
@@ -56,7 +58,7 @@ public class MechanicDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new MagneticFieldSummon());
             add(new MechaCarrierSummon());
@@ -68,7 +70,7 @@ public class MechanicDealCycle extends DealCycle {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new BomberTime());
             add(new LuckyDiceMechanic());
@@ -89,6 +91,9 @@ public class MechanicDealCycle extends DealCycle {
     List<Timestamp> bomberTimeEndTime = new ArrayList<>();
     List<Timestamp> metarArmorFullBurstStartTime = new ArrayList<>();
     List<Timestamp> metarArmorFullBurstEndTime = new ArrayList<>();
+
+    MultipleOptionMFLGatlingGun multipleOptionMFLGatlingGun = new MultipleOptionMFLGatlingGun();
+    MultipleOptionMFLMissile multipleOptionMFLMissile = new MultipleOptionMFLMissile();
 
     public MechanicDealCycle(Job job) {
         super(job, null);
@@ -230,6 +235,7 @@ public class MechanicDealCycle extends DealCycle {
                     && !cooldownCheck(supportWaverHEXDie)
             ) {
                 addSkillEvent(microMissileContainer);
+                addSkillEvent(resistanceLineInfantry);
             } else if (
                     cooldownCheck(distortionField)
             ) {
@@ -271,15 +277,33 @@ public class MechanicDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof MultipleOptionMFLSummon) {
+                int cnt = 0;
+                for (long i = getStart().getTime() + 3150; i < getStart().getTime() + 135000; i += 1530) {
+                    if (cnt % 8 == 0 || cnt % 8 == 1 || cnt % 8 == 2) {
+                        getSkillEventList().add(new SkillEvent(multipleOptionMFLMissile, new Timestamp(i), new Timestamp(i)));
+                        getEventTimeList().add(new Timestamp(i));
+                    } else {
+                        getSkillEventList().add(new SkillEvent(multipleOptionMFLGatlingGun, new Timestamp(i), new Timestamp(i)));
+                        getEventTimeList().add(new Timestamp(i));
+                    }
+                    cnt ++;
+                }
+            }
             if (skill instanceof MetalArmorFullBurstBeforeDelay) {
                 metarArmorFullBurstStartTime.add(new Timestamp(getStart().getTime()));
                 metarArmorFullBurstEndTime.add(new Timestamp(getStart().getTime() + 13120));
             }
             if (skill instanceof MechaCarrier) {
-                for (long i = getStart().getTime(); i <= ((AttackSkill) skill).getDotDuration(); i += 2850) {
-                    for (long j = 9; j <= 16; j++) {
-                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(i + j * 30), new Timestamp(i + j * 30)));
-                        getEventTimeList().add(new Timestamp(i + j * 30));
+                long j = 9;
+                for (long i = getStart().getTime() + 2430; i <= getStart().getTime() + ((AttackSkill) skill).getDotDuration(); i += 3600) {
+                    for (long k = 0; k <= j; k++) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(i + k * 30), new Timestamp(i + k * 30)));
+                        getEventTimeList().add(new Timestamp(i + k * 30));
+                    }
+                    j++;
+                    if (j > 16) {
+                        j = 16;
                     }
                 }
             } else if (((AttackSkill) skill).getInterval() != 0) {
@@ -424,6 +448,7 @@ public class MechanicDealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {

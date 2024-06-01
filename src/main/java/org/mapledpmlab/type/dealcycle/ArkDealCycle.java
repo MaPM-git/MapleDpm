@@ -14,17 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArkDealCycle extends DealCycle {
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<Skill> dealCycle4 = new ArrayList<>();
+    private final List<Skill> dealCycle4 = new ArrayList<>();
 
-    private List<Skill> dealCycle5 = new ArrayList<>();
+    private final List<Skill> dealCycle5 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AbyssChargeDrive());
             add(new AbyssChargeDriveMagic());
@@ -67,7 +67,7 @@ public class ArkDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new CrawlingFearBeforeDelay());
             add(new EndlessAgonyBeforeDelay());
@@ -75,7 +75,7 @@ public class ArkDealCycle extends DealCycle {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new ChargeSpellAmplification());
             add(new ContactCaravan());
@@ -118,6 +118,7 @@ public class ArkDealCycle extends DealCycle {
 
     Timestamp magicCircuitFullDriveEndTime = new Timestamp(-1);
     Timestamp memoryOfRootEndTime = new Timestamp(-1);
+    Timestamp infinitySpellEndTime = new Timestamp(-1);
 
     int hatredCnt = 0;
     int specterAura = 300;
@@ -414,6 +415,9 @@ public class ArkDealCycle extends DealCycle {
             specterAura = 300;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof InfinitySpell) {
+                infinitySpellEndTime = new Timestamp(getStart().getTime() + 50000);
+            }
             if (skill instanceof MagicCircuitFullDriveBuff) {
                 if (
                         getStart().after(new Timestamp(90 * 1000))
@@ -450,12 +454,6 @@ public class ArkDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
-            if (skill instanceof ReturningHatred) {
-                for (int i = 0; i < hatredCnt; i++) {
-                    getSkillEventList().add(new ArkSkillEvent(returningHatred, new Timestamp(getStart().getTime() + 500), new Timestamp(getStart().getTime() + 500), isSpecter));
-                }
-                hatredCnt = 0;
-            }
             if (
                     getStart().before(magicCircuitFullDriveEndTime)
                     && cooldownCheck(magicCircuitFullDrive)
@@ -558,13 +556,6 @@ public class ArkDealCycle extends DealCycle {
                             getSkillEventList().add(new ArkSkillEvent(awakenedAbyss, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), isSpecter));
                             specterAura --;
                         }
-                        if (isSpecter) {
-                            getSkillEventList().add(new ArkSkillEvent(approachingDeath, new Timestamp(getStart().getTime() + i + 500), new Timestamp(getStart().getTime() + i + 500), isSpecter));
-                            Long ran = (long) (Math.random() * 99 + 1);
-                            if (ran <= 20 && hatredCnt < 12) {
-                                hatredCnt ++;
-                            }
-                        }
                         getSkillEventList().add(new ArkSkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), isSpecter));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -572,15 +563,20 @@ public class ArkDealCycle extends DealCycle {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         if (
-                                !(skill instanceof BlissfulRestraintDot)
-                                && !(skill instanceof MemoryOfRoot)
-                                && !(skill instanceof MemoryOfRootFinish)
+                                skill instanceof EndlessAgony
                                 && isSpecter
                         ) {
-                            getSkillEventList().add(new ArkSkillEvent(approachingDeath, new Timestamp(getStart().getTime() + i + 500), new Timestamp(getStart().getTime() + i + 500), isSpecter));
-                            Long ran = (long) (Math.random() * 99 + 1);
-                            if (ran <= 20 && hatredCnt < 12) {
-                                hatredCnt ++;
+                            int cnt = 1;
+                            if (getStart().before(infinitySpellEndTime)) {
+                                cnt = 4;
+                            }
+                            for (int j = 0; j < cnt; j++) {
+                                getSkillEventList().add(new ArkSkillEvent(approachingDeath, new Timestamp(getStart().getTime() + i + 500), new Timestamp(getStart().getTime() + i + 500), isSpecter));
+                                getEventTimeList().add(new Timestamp(getStart().getTime() + i + 500));
+                                Long ran = (long) (Math.random() * 99 + 1);
+                                if (ran <= 20 && hatredCnt < 12) {
+                                    hatredCnt++;
+                                }
                             }
                         }
                         if (isSpecter && specterAura > 0) {
@@ -601,10 +597,17 @@ public class ArkDealCycle extends DealCycle {
                         !(skill instanceof BlissfulRestraint)
                         && isSpecter
                 ) {
-                    getSkillEventList().add(new ArkSkillEvent(approachingDeath, new Timestamp(endTime.getTime() + 500), new Timestamp(endTime.getTime() + 500), isSpecter));
-                    Long ran = (long) (Math.random() * 99 + 1);
-                    if (ran <= 20 && hatredCnt < 12) {
-                        hatredCnt ++;
+                    int cnt = 1;
+                    if (getStart().before(infinitySpellEndTime)) {
+                        cnt = 4;
+                    }
+                    for (int j = 0; j < cnt; j++) {
+                        getSkillEventList().add(new ArkSkillEvent(approachingDeath, new Timestamp(getStart().getTime() + 500), new Timestamp(getStart().getTime() + 500), isSpecter));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + 500));
+                        Long ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= 20 && hatredCnt < 12) {
+                            hatredCnt++;
+                        }
                     }
                 }
                 if (isSpecter && specterAura > 0) {
@@ -716,18 +719,15 @@ public class ArkDealCycle extends DealCycle {
                         && se.getSkill() instanceof ApproachingDeath
                 ) {
                     ((ApproachingDeath) se.getSkill()).setDamage(190.0 + 145 + 118 + 210);
-                    totalDamage += getAttackDamage(se, buffSkill, start, end);
-                    totalDamage += getAttackDamage(se, buffSkill, start, end);
-                    totalDamage += getAttackDamage(se, buffSkill, start, end);
                 }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (
                         isInfinitySpell
-                                && (
+                        && (
                                 se.getSkill() instanceof AbyssSpell
-                                        || se.getSkill() instanceof GustSpell
-                                        || se.getSkill() instanceof PlainSpell
-                                        || se.getSkill() instanceof ScarletSpell
+                                || se.getSkill() instanceof GustSpell
+                                || se.getSkill() instanceof PlainSpell
+                                || se.getSkill() instanceof ScarletSpell
                         )
                 ) {
                     buffSkill.addBuffDamage(-20L);
@@ -756,16 +756,29 @@ public class ArkDealCycle extends DealCycle {
     @Override
     public void multiAttackProcess(Skill skill) {
         Long sum = 0L;
+        if (skill instanceof ReturningHatred) {
+            for (int i = 0; i < hatredCnt - 1; i++) {
+                returningHatred.getMultiAttackInfo().add(0L);
+            }
+        }
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
             sum += info;
             if (
                     !(skill instanceof BlissfulRestraintFinish)
+                    && !(skill instanceof ReturningHatred)
                     && isSpecter
             ) {
-                getSkillEventList().add(new ArkSkillEvent(approachingDeath, new Timestamp(getStart().getTime() + sum + 500), new Timestamp(getStart().getTime() + sum + 500), isSpecter));
-                Long ran = (long) (Math.random() * 99 + 1);
-                if (ran <= 20 && hatredCnt < 12) {
-                    hatredCnt ++;
+                int i = 1;
+                if (getStart().before(infinitySpellEndTime)) {
+                    i = 4;
+                }
+                for (int j = 0; j < i; j++) {
+                    getSkillEventList().add(new ArkSkillEvent(approachingDeath, new Timestamp(getStart().getTime() + sum + 500), new Timestamp(getStart().getTime() + sum + 500), isSpecter));
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + sum + 500));
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    if (ran <= 20 && hatredCnt < 12) {
+                        hatredCnt++;
+                    }
                 }
             }
             if (isSpecter && specterAura > 0) {
@@ -774,6 +787,11 @@ public class ArkDealCycle extends DealCycle {
             }
             getSkillEventList().add(new ArkSkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum), isSpecter));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
+        if (skill instanceof ReturningHatred) {
+            returningHatred.getMultiAttackInfo().clear();
+            returningHatred.getMultiAttackInfo().add(500L);
+            hatredCnt = 0;
         }
     }
 

@@ -16,15 +16,15 @@ import java.util.List;
 public class PhantomDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new BlackJack());
             add(new BlackJackFinal());
@@ -48,7 +48,7 @@ public class PhantomDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new BlackJackBeforeDelay());
             add(new JokerAfterDelay());
@@ -58,7 +58,7 @@ public class PhantomDealCycle extends DealCycle {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new BullsEyePhantom());
             add(new FinalCutBuff());
@@ -264,12 +264,6 @@ public class PhantomDealCycle extends DealCycle {
                     Long attackCount = 0L;
                     long i = 0;
                     if (skill instanceof BlackJack) {
-                        i = 440 + 180 * 6;
-                        AttackSkill as = new BlackJackFinal();
-                        for (; i < 440 + 180 * 6 + as.getDotDuration(); i += as.getInterval()) {
-                            getSkillEventList().add(new SkillEvent(as, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                            getEventTimeList().add(new Timestamp(getStart().getTime() + i));
-                        }
                         i = 440;
                     } else {
                         i = ((AttackSkill) skill).getInterval();

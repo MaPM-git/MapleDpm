@@ -17,15 +17,15 @@ import java.util.List;
 public class CadenaDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new ADOrdnance());
             add(new ADOrdnanceSphere());
@@ -67,12 +67,12 @@ public class CadenaDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new ChainArtsFuryBuff());
             add(new GrandisGoddessBlessingNova());
@@ -384,6 +384,8 @@ public class CadenaDealCycle extends DealCycle {
             }
             if (
                     skill instanceof SummonBeatingNeedleBat1
+                    || skill instanceof SummonBeatingNeedleBat2
+                    || skill instanceof SummonBeatingNeedleBat3
                     || skill instanceof SummonCuttingScimitar
                     || skill instanceof SummonReleasingBomb
                     || skill instanceof SummonScratchingClaw
@@ -391,6 +393,7 @@ public class CadenaDealCycle extends DealCycle {
                     || skill instanceof SummonSlashingKnife
                     || skill instanceof SummonStrikingBrick
                     || skill instanceof SummonThrowingWingDagger
+                    || skill instanceof SummonThrowingWingDaggerBomb
             ) {
                 if (cooldownCheck(weaponVariety)) {
                     addSkillEvent(weaponVariety);
@@ -441,15 +444,23 @@ public class CadenaDealCycle extends DealCycle {
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        Timestamp temp = new Timestamp(getStart().getTime());
+                        getStart().setTime(getStart().getTime() + i);
+                        if (
+                                getStart().before(chainArtsFuryEndTime)
+                                && cooldownCheck(chainArtsFury)
+                                && !(skill instanceof CrestOfTheSolarDot)
+                                && !(skill instanceof SpiderInMirrorDot)
+                        ) {
+                            addSkillEvent(chainArtsFury);
+                        }
                         if (skill instanceof SummonThrowingWingDagger) {
-                            Timestamp temp = new Timestamp(getStart().getTime());
-                            getStart().setTime(getStart().getTime() + i);
                             if (cooldownCheck(weaponVariety)) {
                                 addSkillEvent(weaponVariety);
                                 weaponVarietyCnt ++;
                             }
-                            getStart().setTime(temp.getTime());
                         }
+                        getStart().setTime(temp.getTime());
                     }
                 } else {
                     Long attackCount = 0L;
@@ -545,6 +556,7 @@ public class CadenaDealCycle extends DealCycle {
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof ProfessionalAgent) {
                     isProfessionalAgent = true;
+                    break;
                 }
             }
             if (isProfessionalAgent) {
@@ -619,6 +631,7 @@ public class CadenaDealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
@@ -648,6 +661,21 @@ public class CadenaDealCycle extends DealCycle {
             sum += info;
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            Timestamp temp = new Timestamp(getStart().getTime());
+            getStart().setTime(getStart().getTime() + sum);
+            if (
+                    getStart().before(chainArtsFuryEndTime)
+                    && cooldownCheck(chainArtsFury)
+                    && !(skill instanceof ChainArtsMaelstrom)
+                    && !(skill instanceof ADOrdnanceSphere)
+                    && !(skill instanceof ChainArtsTakedownBeat)
+                    && !(skill instanceof ChainArtsTakedownFinish)
+                    && !(skill instanceof WeaponVarietyFinale)
+                    && !(skill instanceof SummonReleasingBomb)
+            ) {
+                addSkillEvent(chainArtsFury);
+            }
+            getStart().setTime(temp.getTime());
         }
     }
 

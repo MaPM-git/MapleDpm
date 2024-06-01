@@ -9,7 +9,7 @@ public class ClaimhSolais extends AttackSkill {
         this.setAttackCount(12L);
         this.setDamage(2200.0);
         this.setCooldown(12.0);
-        this.setDelay(900L);
+        this.setDelayByAttackSpeed(900L);
         this.addFinalDamage(1.6);       // 코어강화
     }
 }

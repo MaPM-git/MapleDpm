@@ -12,5 +12,11 @@ public class ArtificialEvolutionAirFrame extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(30L);
         this.addFinalDamage(0.85);          // 버추얼 프로텍션
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
     }
 }

@@ -11,6 +11,5 @@ public class ThunderSpear extends ThunderAttack {
         this.setInterval(1080L);
         this.addFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
     }
 }

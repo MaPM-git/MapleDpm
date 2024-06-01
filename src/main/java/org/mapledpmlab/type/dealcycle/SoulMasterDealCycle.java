@@ -22,28 +22,28 @@ public class SoulMasterDealCycle extends DealCycle {
      */
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레, 초시축
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 극딜 마지막, 6차 포함
-    private List<Skill> final1 = new ArrayList<>();
+    private final List<Skill> final1 = new ArrayList<>();
 
     // 극딜 마지막
-    private List<Skill> final2 = new ArrayList<>();
+    private final List<Skill> final2 = new ArrayList<>();
 
-    private List<AttackSkill> mainAttack = new ArrayList<>(){
+    private final List<AttackSkill> mainAttack = new ArrayList<>(){
         {
             add(new LunarDivide());
             add(new SolarSlash());
         }
     };
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AstralBlitz1());
             add(new AstralBlitz2());
@@ -68,13 +68,13 @@ public class SoulMasterDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new CygnusPhalanxDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AstralBlitzBuff());
             add(new AuraWeaponBuff());
@@ -91,10 +91,10 @@ public class SoulMasterDealCycle extends DealCycle {
         }
     };
 
-    private CosmicBurst cosmicBurst5 = new CosmicBurst(5L);
-    private CosmicBurst cosmicBurst10 = new CosmicBurst(10L);
-    private FlareSlash flareSlash = new FlareSlash();
-    private Shatter shatter = new Shatter();
+    private final CosmicBurst cosmicBurst5 = new CosmicBurst(5L);
+    private final CosmicBurst cosmicBurst10 = new CosmicBurst(10L);
+    private final FlareSlash flareSlash = new FlareSlash();
+    private final Shatter shatter = new Shatter();
     private int cosmicOrbCount = 0;
     private Timestamp cosmicForgeEndTime = null;
     private Timestamp soulEclipseEndTime = null;
@@ -199,7 +199,7 @@ public class SoulMasterDealCycle extends DealCycle {
         final2.add(solunarDivide);
 
         // 준극딜
-        dealCycle3.add(trueSight);
+        //dealCycle3.add(trueSight);
         dealCycle3.add(cosmos5);
         dealCycle3.add(soulContract);
         dealCycle3.add(weaponJumpRing);
@@ -236,7 +236,7 @@ public class SoulMasterDealCycle extends DealCycle {
                 finalChk = 1;
             } else if (
                     cooldownCheck(dealCycle3)
-                    && cosmicOrbCount % 5 == 0
+                    && cosmicOrbCount == 5
             ) {
                 addDealCycle(dealCycle3);
                 cosmos10.setActivateTime(cosmos5.getActivateTime());
@@ -262,20 +262,22 @@ public class SoulMasterDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(cosmicShower5)
-                    && cosmicOrbCount % 5 == 0
+                    && cosmicOrbCount == 5
                     && !cooldownCheck(cosmicForge)
             ) {
                 addSkillEvent(cosmicShower5);
+            } else if (cooldownCheck(trueSight)) {
+                addSkillEvent(trueSight);
             } else if (
                     getStart().before(elysionEndTime)
             ) {
                 cosmicOrbCount = 10;
                 addSkillEvent(crossTheStyx);
-                flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 12000));
+                flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 1200));
             } else {
                 cosmicOrbCount ++;
                 addSkillEvent(mainAttack.get(mainAttackChk % 2));
-                flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 8000));
+                flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 800));
                 mainAttackChk ++;
             }
         }
@@ -288,6 +290,13 @@ public class SoulMasterDealCycle extends DealCycle {
 
         if (getStart().before(skill.getActivateTime())) {
             return;
+        }
+        if (
+                skill instanceof CosmicShower
+                || skill instanceof CosmicBurst
+                || skill instanceof Cosmos
+        ) {
+            cosmicOrbCount = 0;
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof CosmicForge) {
@@ -354,6 +363,22 @@ public class SoulMasterDealCycle extends DealCycle {
                 this.setStart(tmp);
             } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
                 this.multiAttackProcess(skill);
+                if (
+                        skill instanceof CrossTheStyx
+                        && cooldownCheck(cosmicBurst5)
+                ) {
+                    if (getStart().before(cosmicForgeEndTime)) {
+                        if (cosmicOrbCount >= 10) {
+                            addSkillEvent(cosmicBurst10);
+                            cosmicBurst5.setActivateTime(cosmicBurst10.getActivateTime());
+                        }
+                    } else {
+                        if (cosmicOrbCount >= 5) {
+                            addSkillEvent(cosmicBurst5);
+                            cosmicBurst10.setActivateTime(cosmicBurst5.getActivateTime());
+                        }
+                    }
+                }
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -364,16 +389,16 @@ public class SoulMasterDealCycle extends DealCycle {
                     addSkillEvent(solunarPower);
                 }
                 if (
-                        (skill instanceof SolarSlash || skill instanceof LunarDivide || skill instanceof CrossTheStyx)
+                        (skill instanceof SolarSlash || skill instanceof LunarDivide)
                         && cooldownCheck(cosmicBurst5)
                 ) {
                     if (getStart().before(cosmicForgeEndTime)) {
-                        if (cosmicOrbCount % 10 == 0) {
+                        if (cosmicOrbCount >= 10) {
                             addSkillEvent(cosmicBurst10);
                             cosmicBurst5.setActivateTime(cosmicBurst10.getActivateTime());
                         }
                     } else {
-                        if (cosmicOrbCount % 5 == 0) {
+                        if (cosmicOrbCount >= 5) {
                             addSkillEvent(cosmicBurst5);
                             cosmicBurst10.setActivateTime(cosmicBurst5.getActivateTime());
                         }

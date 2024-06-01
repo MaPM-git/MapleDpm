@@ -10,7 +10,7 @@ public class FrozenOrb extends AttackSkill {
         this.setCooldown(5.0);
         this.setDelayByAttackSpeed(900L);
         this.setDotDuration(5000L);
-        this.setInterval(210L);
+        this.setInterval(160L);
         this.setLimitAttackCount(20L);
         this.setAddDamage(20L);         // 프로즌 오브-리인포스
         this.addFinalDamage(2.2);       // 코어강화

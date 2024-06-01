@@ -12,6 +12,5 @@ public class PoisonNovaDot extends AttackSkill {
         this.setInterval(1000L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new PoisonNova());
-        this.setApplyFinalAttack(true);
     }
 }

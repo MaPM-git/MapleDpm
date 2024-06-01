@@ -7,7 +7,7 @@ public class DemonFrenzy29 extends GaugeAttackSkill {
         this.setName("데몬 프렌지(29)");
         this.setAttackCount(3L);
         this.setDamage(825.0);
-        this.setInterval(210L);
+        this.setInterval(240L);
         this.addFinalDamage(1.6);   // 코어 강화
     }
 }

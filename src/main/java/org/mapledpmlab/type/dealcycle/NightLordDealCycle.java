@@ -28,17 +28,17 @@ public class NightLordDealCycle extends DealCycle {
      */
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 엔버링크 - 레디 투 다이 - 풍마 수리검
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     private boolean isSpreadThrow = false;
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new BleedingToxinDot());
             add(new CrestOfTheSolar());
@@ -62,12 +62,12 @@ public class NightLordDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             //add(new DarkSight());
             add(new EpicAdventure());
@@ -193,9 +193,6 @@ public class NightLordDealCycle extends DealCycle {
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("-------------");
-                System.out.println("dc1");
-                System.out.println(getStart());
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 throwBlastingList = new ArrayList<>();
                 dealCycle = new ArrayList<>();
@@ -204,7 +201,7 @@ public class NightLordDealCycle extends DealCycle {
                     if (ran > throwBlastingCount) {
                         ran = throwBlastingCount;
                     }
-                    if (quadrupleThrowCount % 3 == 0) {
+                    if (quadrupleThrowCount % 4 == 0) {
                         throwBlastingList.add(quadrupleThrowReinforce);
                     } else {
                         throwBlastingList.add(quadrupleThrow);
@@ -223,9 +220,6 @@ public class NightLordDealCycle extends DealCycle {
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println("-------------");
-                System.out.println("dc2");
-                System.out.println(getStart());
                 throwBlastingList = new ArrayList<>();
                 dealCycle = new ArrayList<>();
                 while (throwBlastingCount != 0) {
@@ -233,7 +227,7 @@ public class NightLordDealCycle extends DealCycle {
                     if (ran > throwBlastingCount) {
                         ran = throwBlastingCount;
                     }
-                    if (quadrupleThrowCount % 3 == 0) {
+                    if (quadrupleThrowCount % 4 == 0) {
                         throwBlastingList.add(quadrupleThrowReinforce);
                     } else {
                         throwBlastingList.add(quadrupleThrow);
@@ -253,9 +247,6 @@ public class NightLordDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && getStart().before(new Timestamp(ultimateDarkSight.getActivateTime().getTime() - 70000))
             ) {
-                System.out.println("-------------");
-                System.out.println("dc3");
-                System.out.println(getStart());
                 addDealCycle(dealCycle3);
             } else if (
                     cooldownCheck(throwBlastingPassive)
@@ -272,7 +263,7 @@ public class NightLordDealCycle extends DealCycle {
             ) {
                 addSkillEvent(fumaShuriken);
             } else {
-                if (quadrupleThrowCount % 3 == 0) {
+                if (quadrupleThrowCount % 4 == 0) {
                     addSkillEvent(quadrupleThrowReinforce);
                 } else {
                     addSkillEvent(quadrupleThrow);

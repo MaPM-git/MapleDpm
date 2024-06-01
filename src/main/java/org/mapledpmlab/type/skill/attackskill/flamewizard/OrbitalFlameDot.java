@@ -8,11 +8,12 @@ public class OrbitalFlameDot extends AttackSkill {
         this.setDamage(620.0 - 90);
         this.setAttackCount(9L + 1);        // 오비탈 플레임-스플릿 어택
         this.setCooldown(15.0);
-        this.setDotDuration(4L);
-        this.setInterval(1L);
-        this.setLimitAttackCount(4L);
         this.addIgnoreDefenseList(20L);     // 오비탈 플레임-이그노어 가드
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(500L);
+        this.getMultiAttackInfo().add(500L);
+        this.getMultiAttackInfo().add(500L);
     }
 }

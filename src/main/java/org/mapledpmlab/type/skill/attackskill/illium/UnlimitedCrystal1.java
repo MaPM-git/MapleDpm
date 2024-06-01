@@ -25,5 +25,6 @@ public class UnlimitedCrystal1 extends AttackSkill {
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
+        this.setApplyFinalAttack(true);
     }
 }

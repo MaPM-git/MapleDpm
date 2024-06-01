@@ -7,9 +7,9 @@ public class IdleWhimAfterSecond extends AttackSkill {
         this.setName("아이들 윔(첫타 이후)");
         this.setAttackCount(3L);
         this.setDamage(1210.0);
-        this.setDotDuration(9L);
-        this.setInterval(1L);
-        this.setLimitAttackCount(9L);
+        for (int i = 0; i < 9; i++) {
+            this.getMultiAttackInfo().add(0L);
+        }
         this.addFinalDamage(0.85);
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new IdleWhimDot());

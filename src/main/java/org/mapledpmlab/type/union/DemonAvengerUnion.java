@@ -4,8 +4,7 @@ public class DemonAvengerUnion extends Union {
 
     public DemonAvengerUnion() {
         super();
-        this.setDescription("" +
-                "유니온 공격대 점령효과" +
+        this.setDescription("유니온 공격대 점령효과" +
                 "\n1.크리티컬 데미지 20%" +
                 "\n2.보스 공격 시 데미지 40%" +
                 "\n3.몬스터 방어율 무시 30%" +

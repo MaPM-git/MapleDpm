@@ -9,10 +9,10 @@ public class HowlingGale2 extends AttackSkill {
         this.setDamage(1715.0);
         this.setDelay(840L);
         this.setCooldown(40.0);
-        //this.setApplyFinalAttack(true);
+        this.setApplyFinalAttack(true);
         this.setDotDuration(10000L);
         this.setInterval(150L);
-        this.setLimitAttackCount(66L);
         this.addFinalDamage(1.6);       // 코어강화
+        this.setApplyCooldownReduction(false);
     }
 }

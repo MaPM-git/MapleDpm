@@ -4,6 +4,7 @@ import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.aran.*;
+import org.mapledpmlab.type.skill.attackskill.battlemage.FinishBlow;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.aran.AdrenalineBoost;
@@ -19,15 +20,15 @@ import java.util.List;
 public class AranDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdrenalineSurgeFinish());
             add(new AdvancedFinalAttackAran());
@@ -63,13 +64,13 @@ public class AranDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new BoostEndHuntersTargetingBeforeDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AdrenalineBoost());
             add(new AdrenalineGenerator());
@@ -113,6 +114,7 @@ public class AranDealCycle extends DealCycle {
         AdrenalineSurge adrenalineSurge = new AdrenalineSurge();
         AdrenalineSurgeFinish adrenalineSurgeFinish = new AdrenalineSurgeFinish();
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+        Beyonder1 beyonder1 = new Beyonder1();
         BlizzardTempest blizzardTempest = new BlizzardTempest();
         BoostEndHuntersTargetingWave boostEndHuntersTargeting = new BoostEndHuntersTargetingWave();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
@@ -150,7 +152,7 @@ public class AranDealCycle extends DealCycle {
         dealCycle1.add(spiderInMirror);
         dealCycle1.add(installMaha);
         dealCycle1.add(adrenalineSurge);        // 20초
-        for (int i = 0; i < 7; i++) {           // 1620
+        for (int i = 0; i < 11; i++) {           // 1110
             dealCycle1.add(howlingSwing1);
         }
         dealCycle1.add(blizzardTempest);        // 990
@@ -165,13 +167,13 @@ public class AranDealCycle extends DealCycle {
         dealCycle2.add(mapleWorldGoddessBlessing);
         dealCycle2.add(installMaha);
         dealCycle2.add(adrenalineBoost);
-        for (int i = 0; i < 9; i++) {           // 1530
-            dealCycle2.add(finalBlowAdrenaline);
+        for (int i = 0; i < 11; i++) {           // 1530 13770   1680
+            dealCycle2.add(beyonder1);
         }
         dealCycle2.add(blizzardTempest);
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
-        dealCycle2.add(boostEndHuntersTargeting);
+        dealCycle2.add(boostEndHuntersTargeting);   // 1260
         dealCycle2.add(adrenalineGenerator);
         dealCycle2.add(boostEndHuntersTargeting);
 
@@ -222,11 +224,7 @@ public class AranDealCycle extends DealCycle {
             ) {
                 addSkillEvent(brandishMaha);
             } else {
-                if (getStart().before(adrenalineEndTime)) {
-                    addSkillEvent(finalBlowAdrenaline);
-                } {
-                    addSkillEvent(finalBlow);
-                }
+                addSkillEvent(beyonder1);
             }
         }
         sortEventTimeList();
@@ -410,14 +408,32 @@ public class AranDealCycle extends DealCycle {
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
                         totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
                     }
-                    for (int j = 0; j < blizzardTempestStartTimeList.size(); j++) {
-                        if (
-                                start.after(blizzardTempestStartTimeList.get(j))
-                                && start.before(blizzardTempestEndTimeList.get(j))
-                                && start.equals(se.getStart())
-                        ) {
-                            totalDamage += getDireWolfsCurseDamage(new SkillEvent(direWolfsCurse, start, end), buffSkill, start, end, j);
-                        }
+                }
+                for (int j = 0; j < blizzardTempestStartTimeList.size(); j++) {
+                    if (
+                            start.after(blizzardTempestStartTimeList.get(j))
+                            && start.before(blizzardTempestEndTimeList.get(j))
+                            && start.equals(se.getStart())
+                            && (
+                                    se.getSkill() instanceof AdrenalineSurgeFinish
+                                    || se.getSkill() instanceof Beyonder1
+                                    || se.getSkill() instanceof Beyonder2
+                                    || se.getSkill() instanceof Beyonder3
+                                    || se.getSkill() instanceof BoostEndHuntersTargetingWave
+                                    || se.getSkill() instanceof BoostEndHuntersTargetingKeydown
+                                    || se.getSkill() instanceof BrandishMaha
+                                    || se.getSkill() instanceof FenrirCrash
+                                    || se.getSkill() instanceof FinishBlow
+                                    || se.getSkill() instanceof FinalBlowAdrenaline
+                                    || se.getSkill() instanceof GatheringCatcher
+                                    || se.getSkill() instanceof HowlingSwing1
+                                    || se.getSkill() instanceof HowlingSwing2
+                                    || se.getSkill() instanceof HowlingSwing3
+                                    || se.getSkill() instanceof HowlingSwing4
+                                    || se.getSkill() instanceof SmashSwing
+                            )
+                    ) {
+                        totalDamage += getDireWolfsCurseDamage(new SkillEvent(direWolfsCurse, start, end), buffSkill, start, end, j);
                     }
                 }
             }
@@ -448,9 +464,10 @@ public class AranDealCycle extends DealCycle {
         for (int i = 0; i < adrenalineStartTimeList.size(); i++) {
             if (
                     start.after(adrenalineStartTimeList.get(i))
-                    && end.before(adrenalineEndTimeList.get(i))
+                            && end.before(adrenalineEndTimeList.get(i))
             ) {
                 isAdrenaline = true;
+                break;
             }
         }
         for (AttackSkill as : attackSkillList) {
@@ -500,6 +517,7 @@ public class AranDealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {

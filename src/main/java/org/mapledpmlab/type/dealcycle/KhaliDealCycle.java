@@ -18,15 +18,15 @@ import java.util.List;
 public class KhaliDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new ArtsAstra());
             add(new ArtsAstraFinish());
@@ -56,14 +56,14 @@ public class KhaliDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new HexChakramFuryBeforeDelay());
             add(new HexSandStormBeforeDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new GrandisGoddessBlessingLef(477L));
             add(new HexSandStormBuff());
@@ -353,7 +353,10 @@ public class KhaliDealCycle extends DealCycle {
             ) {
                 addSkillEvent(deceivingBlade);
             }
-            if (skill instanceof HexSkill) {
+            if (
+                    skill instanceof HexSkill
+                    && chakriCnt > 0
+            ) {
                 for (int i = 0; i < chakriCnt; i++) {
                     if (getStart().before(resonateUltimatumEndTime)) {
                         addSkillEvent(resonateAwakening);
@@ -367,16 +370,24 @@ public class KhaliDealCycle extends DealCycle {
                     skill instanceof VoidRush
                     || skill instanceof VoidBlitz
             ) {
-                Long ran = (long) (Math.random() * 99 + 1);
-                if (ran <= 87) {
-                    chakriCnt++;
-                    if (getStart().before(resonateUltimatumEndTime)) {
-                        if (chakriCnt > 8) {
-                            chakriCnt = 8;
-                        }
-                    } else {
-                        if (chakriCnt > 6) {
-                            chakriCnt = 6;
+                int i = 0;
+                if (skill instanceof VoidRush) {
+                    i = 1;
+                } else if (skill instanceof VoidBlitz) {
+                    i = 4;
+                }
+                for (; i > 0; i--) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    if (ran <= 77) {
+                        chakriCnt++;
+                        if (getStart().before(resonateUltimatumEndTime)) {
+                            if (chakriCnt > 8) {
+                                chakriCnt = 8;
+                            }
+                        } else {
+                            if (chakriCnt > 6) {
+                                chakriCnt = 6;
+                            }
                         }
                     }
                 }
@@ -474,7 +485,7 @@ public class KhaliDealCycle extends DealCycle {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         if (skill instanceof VoidBurstCombo) {
                             Long ran = (long) (Math.random() * 99 + 1);
-                            if (ran <= 87) {
+                            if (ran <= 77) {
                                 chakriCnt++;
                                 if (getStart().before(resonateUltimatumEndTime)) {
                                     if (chakriCnt > 8) {

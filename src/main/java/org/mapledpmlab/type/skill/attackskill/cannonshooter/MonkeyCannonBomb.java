@@ -7,9 +7,15 @@ public class MonkeyCannonBomb extends AttackSkill {
         this.setName("스페셜 몽키 에스코트(폭발의 카키-몽키 캐논)");
         this.setDamage(660.0);
         this.setAttackCount(4L);
-        this.setDotDuration(35000L);
-        this.setInterval(2500L);
+        /*this.setDotDuration(35000L);
+        this.setInterval(2500L);*/
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new MonkeyCannonRapidFire());
+        this.getMultiAttackInfo().add(5400L);
+        this.getMultiAttackInfo().add(5520L);
+        this.getMultiAttackInfo().add(5520L);
+        this.getMultiAttackInfo().add(5520L);
+        this.getMultiAttackInfo().add(5520L);
+        this.getMultiAttackInfo().add(5520L);
     }
 }

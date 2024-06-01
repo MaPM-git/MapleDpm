@@ -6,7 +6,7 @@ public class TriangleFormation extends AttackSkill {
     public TriangleFormation() {
         this.setName("트라이앵글 포메이션");
         this.setAttackCount(3L);
-        this.setDamage(340.0);
+        this.setDamage(410.0);
         this.addFinalDamage(2.2);               // 코어 강화
         this.addIgnoreDefenseList(20L);
     }

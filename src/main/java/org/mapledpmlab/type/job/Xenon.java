@@ -13,7 +13,7 @@ import org.mapledpmlab.type.union.LukUnion;
 import java.util.stream.Collectors;
 
 public class Xenon extends Job {
-    private Long starforce = 0L;
+    private final Long starforce = 0L;
 
     public Xenon() {
         // 기본

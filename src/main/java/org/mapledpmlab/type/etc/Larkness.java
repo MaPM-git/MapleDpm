@@ -8,5 +8,5 @@ import lombok.Getter;
 public enum Larkness {
     SUNFIRE,
     ECLIPSE,
-    EQUILIBRIUM;
+    EQUILIBRIUM
 }

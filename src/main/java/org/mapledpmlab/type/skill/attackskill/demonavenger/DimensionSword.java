@@ -9,7 +9,7 @@ public class DimensionSword extends GaugeAttackSkill {
         this.setDamage(990.0);
         this.setDotDuration(8000L);
         this.setInterval(170L);
-        this.setLimitAttackCount(44L);
+        this.setLimitAttackCount(40L);
         this.addIgnoreDefenseList(100L);
         this.setCooldown(120.0);
         this.addFinalDamage(1.6);   // 코어 강화

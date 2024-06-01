@@ -13,7 +13,7 @@ import org.mapledpmlab.type.union.LukUnion;
 import java.util.stream.Collectors;
 
 public class Phantom extends Job {
-    private Long subStat = 4L;
+    private final Long subStat = 4L;
 
     public Phantom() {
         // 기본

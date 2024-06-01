@@ -9,6 +9,5 @@ public class PoisonMist extends AttackSkill {
         this.setAttackCount(1L);
         this.setInterval(1000L);
         this.setDotDuration(12000L * 2);    // 익스트림 매직
-        this.setApplyFinalAttack(true);
     }
 }

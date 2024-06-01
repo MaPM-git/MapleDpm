@@ -11,6 +11,5 @@ public class IfritDot extends AttackSkill {
         this.setDotDuration(4000L);     // 익스트림 매직
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
     }
 }

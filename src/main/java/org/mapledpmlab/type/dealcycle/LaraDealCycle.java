@@ -19,15 +19,15 @@ import java.util.List;
 public class LaraDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             //add(new AbsorptionFierceWind());
             //add(new AbsorptionRiverPuddleDouse());
@@ -47,6 +47,7 @@ public class LaraDealCycle extends DealCycle {
             add(new EruptionSunriseWellVolcanicCoal());
             add(new EruptionWhirlwind());
             add(new EssenceSprinkle());
+            add(new FreeDragonVein());
             add(new MountainKid());
             add(new MountainSeed());
             add(new RidgeWinding());
@@ -63,12 +64,12 @@ public class LaraDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new ArmfulTree());
             add(new DragonVeinEcho());
@@ -82,10 +83,6 @@ public class LaraDealCycle extends DealCycle {
         }
     };
 
-    AbsorptionFierceWind absorptionFierceWind = new AbsorptionFierceWind();
-    AbsorptionRiverPuddleDouse absorptionRiverPuddleDouse = new AbsorptionRiverPuddleDouse();
-    AbsorptionSunlitightGrain absorptionSunlitightGrain = new AbsorptionSunlitightGrain();
-    EruptionSunriseWellVolcanicCoal eruptionSunriseWellVolcanicCoal = new EruptionSunriseWellVolcanicCoal();
     MountainKid mountainKid = new MountainKid();
     MountainSeed mountainSeed = new MountainSeed();
 
@@ -112,6 +109,7 @@ public class LaraDealCycle extends DealCycle {
         EruptionSunriseWell eruptionSunriseWell = new EruptionSunriseWell();
         EruptionWhirlwind eruptionWhirlwind = new EruptionWhirlwind();
         EssenceSprinkle essenceSprinkle = new EssenceSprinkle();
+        FreeDragonVein freeDragonVein = new FreeDragonVein();
         GrandisGoddessBlessingAnima grandisGoddessBlessingAnima = new GrandisGoddessBlessingAnima();
         ManifestationSunlightFilledGround manifestationSunlightFilledGround = new ManifestationSunlightFilledGround();
         PriorPreparation priorPreparation = new PriorPreparation();
@@ -219,8 +217,34 @@ public class LaraDealCycle extends DealCycle {
                     cooldownCheck(eruptionWhirlwind)
                     && !cooldownCheck(armfulTree)
             ) {
+                if (cooldownCheck(dragonVeinTrace)) {
+                    addSkillEvent(dragonVeinTrace);
+                    getStart().setTime(getStart().getTime() + 910);
+                } else {
+                    getStart().setTime(getStart().getTime() + 1000);
+                }
                 addSkillEvent(eruptionWhirlwind);
+            } else if (
+                    cooldownCheck(eruptionRipplingRiver)
+                    && !cooldownCheck(armfulTree)
+            ) {
+                if (cooldownCheck(dragonVeinTrace)) {
+                    addSkillEvent(dragonVeinTrace);
+                    getStart().setTime(getStart().getTime() + 910);
+                } else {
+                    getStart().setTime(getStart().getTime() + 1000);
+                }
                 addSkillEvent(eruptionRipplingRiver);
+            } else if (
+                    cooldownCheck(eruptionSunriseWell)
+                    && !cooldownCheck(armfulTree)
+            ) {
+                if (cooldownCheck(dragonVeinTrace)) {
+                    addSkillEvent(dragonVeinTrace);
+                    getStart().setTime(getStart().getTime() + 910);
+                } else {
+                    getStart().setTime(getStart().getTime() + 1000);
+                }
                 addSkillEvent(eruptionSunriseWell);
             } else {
                 addSkillEvent(essenceSprinkle);
@@ -298,7 +322,7 @@ public class LaraDealCycle extends DealCycle {
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     long i = ((AttackSkill) skill).getInterval();
                     if (skill instanceof EruptionSunriseWellVolcanicCoal) {
-                        i = 750;
+                        i = 1500 - 360;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -366,6 +390,7 @@ public class LaraDealCycle extends DealCycle {
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof GrandisGoddessBlessingAnima) {
                     isGrandisBless = true;
+                    break;
                 }
             }
             for (SkillEvent skillEvent : useBuffSkillList) {
@@ -471,6 +496,7 @@ public class LaraDealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
@@ -510,5 +536,22 @@ public class LaraDealCycle extends DealCycle {
             buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            if (skill instanceof BigStretch && sum != 1980) {
+                BigStretch bigStretch = new BigStretch();
+                bigStretch.addFinalDamage(0.7);
+                getSkillEventList().add(new SkillEvent(bigStretch, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+                getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            } else {
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+                getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            }
+        }
     }
 }

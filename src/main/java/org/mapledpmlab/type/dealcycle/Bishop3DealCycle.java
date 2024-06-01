@@ -55,17 +55,17 @@ public class Bishop3DealCycle extends DealCycle {
         파포엔, 엔젤릭터치, 페더
      */
 
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     private boolean isPray = false;
 
     private boolean isAngelOfLibraCharity = false;
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AngelicOfJudgement());
             add(new AngelicRay());
@@ -90,13 +90,13 @@ public class Bishop3DealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new DivinePunishmentDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AngelOfLibra());
             add(new AngelOfLibraCharity(0L));
@@ -511,6 +511,7 @@ public class Bishop3DealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
@@ -604,8 +605,11 @@ public class Bishop3DealCycle extends DealCycle {
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     if (skill instanceof TriumphFeather) {
                         for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                            if (skill instanceof TriumphFeather && i % 4000 > 2000) {
+                                continue;
+                            }
                             TriumphFeather triumphFeather = new TriumphFeather();
-                            if (i % 3000 != 500) {
+                            if (i % 4000 != 500) {
                                 triumphFeather.addFinalDamage(0.5);
                             }
                             getSkillEventList().add(new SkillEvent(triumphFeather, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));

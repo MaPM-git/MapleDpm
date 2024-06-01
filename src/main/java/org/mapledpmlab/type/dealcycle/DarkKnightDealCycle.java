@@ -36,15 +36,15 @@ public class DarkKnightDealCycle extends DealCycle {
      */
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 오라웨폰, 메용2, 다크 서스트, 엔버
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponDot());
             add(new BeholderDominant());
@@ -69,7 +69,7 @@ public class DarkKnightDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new PiercingCycloneEndDelay());
             add(new PiercingCycloneFirstDelay());
@@ -77,7 +77,7 @@ public class DarkKnightDealCycle extends DealCycle {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
             add(new DarknessAura());
@@ -180,7 +180,6 @@ public class DarkKnightDealCycle extends DealCycle {
         //dealCycle3.add(soulContract);
 
         Timestamp beholderImpactEndTime = new Timestamp(0);
-
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(auraWeaponBuff.getEndTime())

@@ -7,7 +7,7 @@ public class ShieldChasingAfterSecond extends GaugeAttackSkill {
         this.setName("실드 체이싱(첫타 이후)");
         this.setAttackCount(2L);
         this.setDamage(840.0);
-        this.setDotDuration(29 * 120L);
+        this.setDotDuration(29 * 180L);
         this.setLimitAttackCount(29L);  // 실드 체이싱-엑스트라 타겟
         this.setInterval(180L);
         this.addFinalDamage(0.7);

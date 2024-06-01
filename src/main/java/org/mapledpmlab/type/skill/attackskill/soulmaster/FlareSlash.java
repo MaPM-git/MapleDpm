@@ -11,5 +11,6 @@ public class FlareSlash extends AttackSkill {
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드
         this.addFinalDamage(1.6);       // 코어강화
         this.getMultiAttackInfo().add(810L);
+        this.setApplyCooldownReduction(false);
     }
 }

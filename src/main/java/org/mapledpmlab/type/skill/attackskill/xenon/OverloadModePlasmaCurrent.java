@@ -9,6 +9,7 @@ public class OverloadModePlasmaCurrent extends AttackSkill {
         this.setDamage(390.0);
         this.setDotDuration(70000L);
         this.setInterval(1800L);
+        this.setLimitAttackCount(38L);
         this.addFinalDamage(1.6);           // 코어 강화
         this.addFinalDamage(0.85);          // 버추얼 프로텍션
     }

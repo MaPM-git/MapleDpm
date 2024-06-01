@@ -18,15 +18,15 @@ import java.util.List;
 public class BattleMageDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AbyssalLightning());
             add(new BattleKingBar1());
@@ -52,13 +52,13 @@ public class BattleMageDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new ResistanceLineInfantryDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             //add(new DebuffAura());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
@@ -78,9 +78,10 @@ public class BattleMageDealCycle extends DealCycle {
     DeathReinforce deathReinforce = new DeathReinforce();
     NetherworldLightning netherworldLightning = new NetherworldLightning();
 
-    private List<Timestamp> abyssalLightningStartTimeList = new ArrayList<>();
-    private List<Timestamp> abyssalLightningEndTimeList = new ArrayList<>();
+    private final List<Timestamp> abyssalLightningStartTimeList = new ArrayList<>();
+    private final List<Timestamp> abyssalLightningEndTimeList = new ArrayList<>();
 
+    Timestamp abyssalLightningEndTime = new Timestamp(-1);
     Timestamp unionAuraEndTime = new Timestamp(-1);
 
     int attackCnt = 0;
@@ -206,7 +207,7 @@ public class BattleMageDealCycle extends DealCycle {
                     reaperScytheCnt++;
                     if (reaperScytheCnt >= 3) {
                         soulCnt++;
-                        reaperScytheCnt -= 3;
+                        reaperScytheCnt = 0;
                     }
                 } else {
                     addSkillEvent(finishBlow);
@@ -214,6 +215,43 @@ public class BattleMageDealCycle extends DealCycle {
             }
         }
         sortEventTimeList();
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (
+                    skill instanceof CrimsonPactum1
+                    || skill instanceof CrimsonPactum2
+                    || skill instanceof BattleKingBar2
+            ) {
+                Timestamp tmp = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                addSkillEvent(blackMark);
+                if (
+                        getStart().before(abyssalLightningEndTime)
+                        && cooldownCheck(netherworldLightning)
+                ) {
+                    addSkillEvent(netherworldLightning);
+                }
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= this.getFinalAttack().getProp()) {
+                    addSkillEvent(this.getFinalAttack());
+                    addSkillEvent(blackMark);
+                    if (
+                            getStart().before(abyssalLightningEndTime)
+                            && cooldownCheck(netherworldLightning)
+                    ) {
+                        addSkillEvent(netherworldLightning);
+                    }
+                }
+                getStart().setTime(tmp.getTime());
+            }
+        }
     }
 
     @Override
@@ -245,9 +283,43 @@ public class BattleMageDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    skill instanceof DarkLightning
+                    && getStart().before(abyssalLightningEndTime)
+                    && cooldownCheck(netherworldLightning)
+            ) {
+                addSkillEvent(netherworldLightning);
+            }
+            if (
+                    skill instanceof FinishBlow
+                    || skill instanceof BattleKingBar1
+                    || skill instanceof ReaperScythe
+                    || skill instanceof CrestOfTheSolar
+                    || skill instanceof SpiderInMirror
+            ) {
+                addSkillEvent(blackMark);
+                if (
+                        getStart().before(abyssalLightningEndTime)
+                        && cooldownCheck(netherworldLightning)
+                ) {
+                    addSkillEvent(netherworldLightning);
+                }
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= this.getFinalAttack().getProp()) {
+                    addSkillEvent(this.getFinalAttack());
+                    addSkillEvent(blackMark);
+                    if (
+                            getStart().before(abyssalLightningEndTime)
+                            && cooldownCheck(netherworldLightning)
+                    ) {
+                        addSkillEvent(netherworldLightning);
+                    }
+                }
+            }
             if (skill instanceof AbyssalLightning) {
                 this.abyssalLightningStartTimeList.add(new Timestamp(getStart().getTime()));
                 this.abyssalLightningEndTimeList.add(new Timestamp(getStart().getTime() + 40000));
+                abyssalLightningEndTime = new Timestamp(getStart().getTime() + 40000);
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -282,14 +354,19 @@ public class BattleMageDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
             attackCnt++;
-            if (attackCnt > 12) {
+            if (
+                    attackCnt >= 2
+                    && cooldownCheck(death)
+            ) {
                 if (soulCnt >= 4) {
                     getSkillEventList().add(new SkillEvent(deathReinforce, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
-                    soulCnt -= 4;
+                    soulCnt = 0;
                 } else {
                     getSkillEventList().add(new SkillEvent(death, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
+                    soulCnt ++;
                 }
-                attackCnt -= 12;
+                applyCooldown(death);
+                attackCnt = 0;
                 getEventTimeList().add(new Timestamp(getStart().getTime()));
             }
         }
@@ -346,52 +423,6 @@ public class BattleMageDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
-                if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
-                    Long ran = (long) (Math.random() * 99 + 1);
-                    if (ran <= this.getFinalAttack().getProp() && start.equals(se.getStart())) {
-                        totalDamage += getAttackDamage(new SkillEvent(this.getFinalAttack(), start, end), buffSkill, start, end);
-                        totalDamage += getAttackDamage(new SkillEvent(this.blackMark, start, end), buffSkill, start, end);
-                        for (int j = 0; j < this.abyssalLightningStartTimeList.size(); j++) {
-                            if (
-                                    start.after(this.abyssalLightningStartTimeList.get(j))
-                                    && start.before(this.abyssalLightningEndTimeList.get(j))
-                            ) {
-                                getStart().setTime(start.getTime());
-                                if (cooldownCheck(netherworldLightning)) {
-                                    totalDamage += getAttackDamage(new SkillEvent(this.netherworldLightning, start, end), buffSkill, start, end);
-                                    applyCooldown(netherworldLightning);
-                                }
-                            }
-                        }
-                    }
-                }
-                if (
-                        start.equals(se.getStart())
-                        && (
-                                se.getSkill() instanceof FinishBlow
-                                || se.getSkill() instanceof BattleKingBar1
-                                || se.getSkill() instanceof BattleKingBar2
-                                || se.getSkill() instanceof ReaperScythe
-                                || se.getSkill() instanceof CrestOfTheSolar
-                                || se.getSkill() instanceof CrimsonPactum1
-                                || se.getSkill() instanceof CrimsonPactum2
-                                || se.getSkill() instanceof SpiderInMirror
-                        )
-                ) {
-                    totalDamage += getAttackDamage(new SkillEvent(this.blackMark, start, end), buffSkill, start, end);
-                    for (int j = 0; j < this.abyssalLightningStartTimeList.size(); j++) {
-                        if (
-                                start.after(this.abyssalLightningStartTimeList.get(j))
-                                && start.before(this.abyssalLightningEndTimeList.get(j))
-                        ) {
-                            getStart().setTime(start.getTime());
-                            if (cooldownCheck(netherworldLightning)) {
-                                totalDamage += getAttackDamage(new SkillEvent(this.netherworldLightning, start, end), buffSkill, start, end);
-                                applyCooldown(netherworldLightning);
-                            }
-                        }
-                    }
-                }
             }
         }
         for (AttackSkill as : attackSkillList) {
@@ -453,6 +484,7 @@ public class BattleMageDealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {

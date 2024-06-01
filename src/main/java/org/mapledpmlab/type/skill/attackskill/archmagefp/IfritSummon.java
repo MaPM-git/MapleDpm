@@ -11,7 +11,6 @@ public class IfritSummon extends AttackSkill {
         this.setDotDuration(260000L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
         this.setAddDamage(-40L);        // 아케인 에임 소환수 미적용
     }
 }

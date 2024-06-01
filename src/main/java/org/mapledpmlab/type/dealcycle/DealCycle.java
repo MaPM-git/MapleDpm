@@ -148,10 +148,7 @@ public class DealCycle {
     }
 
     public boolean cooldownCheck(Skill skill) {
-        if (!(getStart().after(skill.getActivateTime()) || getStart().equals(skill.getActivateTime()))) {
-            return false;
-        }
-        return true;
+        return getStart().after(skill.getActivateTime()) || getStart().equals(skill.getActivateTime());
     }
 
     public boolean cooldownCheck(List<Skill> skillList) {
@@ -166,24 +163,32 @@ public class DealCycle {
     public Double applyCooldownReduction(Skill skill) {
         Double cooldown = 0.0;
         Double cooldownReduction = 0.0;
-        cooldown = skill.getCooldown() * (1 - job.getCooldownReductionP() * 0.01);
-        if (skill.getCooldown() <= 5) {
+        if (skill.getCooldown() <= 1) {
             return skill.getCooldown();
         }
+        cooldown = skill.getCooldown() * (1 - job.getCooldownReductionP() * 0.01);
+        if (cooldown <= 1) {
+            cooldown = 1.0;
+            return cooldown;
+        }
+        if (cooldown <= 5) {
+            return cooldown;
+        }
+        cooldownReduction = getJob().getCooldownReductionSec().doubleValue();
         while (cooldownReduction != 0) {
-            if (cooldown - 10 > cooldownReduction) {
+            if (cooldown - 10 > 0) {
                 cooldown -= cooldownReduction;
                 cooldownReduction = 0.0;
-            } else if (cooldown < 10) {
-                cooldown -= cooldownReduction * 0.05;
+            } else if (cooldown <= 10) {
+                cooldown -= cooldownReduction * 0.5;
                 cooldownReduction = 0.0;
-            } else if (cooldown - 10 < cooldownReduction) {
+            } else if (cooldown - 10 <= cooldownReduction) {
                 cooldown = 10.0;
                 cooldownReduction -= (cooldown - 10);
             }
-        }
-        if (cooldown <= 5) {
-            cooldown = 5.0;
+            if (cooldown <= 5) {
+                cooldown = 5.0;
+            }
         }
         return cooldown;
     }
@@ -214,9 +219,9 @@ public class DealCycle {
         setRestraintRingDeal(calcRestraintRingDeal());
         setFortyDeal(calcFortyDeal());
         Object[] result = new Object[]{
-                this.getJob().getName(), this.getDPM() + "",
-                "=TEXT(" + getDPM() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(B2:B50),0)),\"0.0%\")", this.getRestraintRingDeal() + "",
-                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(D2:D50),0)),\"0.0%\")", this.getFortyDeal() + "",
+                this.getJob().getName(), String.valueOf(this.getDPM()),
+                "=TEXT(" + getDPM() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(B2:B50),0)),\"0.0%\")", String.valueOf(this.getRestraintRingDeal()),
+                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(D2:D50),0)),\"0.0%\")", String.valueOf(this.getFortyDeal()),
                 "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(F2:F50),0)),\"0.0%\")"
         };
         return result;
@@ -321,6 +326,7 @@ public class DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
@@ -380,8 +386,8 @@ public class DealCycle {
             Long dps = 0L;
             for (Timestamp ts : getEventTimeList()) {
                 if (
-                        (ts.equals(new Timestamp(i * 1000)) || ts.after(new Timestamp(i * 1000)))
-                        && (ts.equals(new Timestamp((i + 5) * 1000)) || ts.before(new Timestamp((i + 5) * 1000)))
+                        (ts.equals(new Timestamp(i * 1000L)) || ts.after(new Timestamp(i * 1000L)))
+                        && (ts.equals(new Timestamp((i + 5) * 1000L)) || ts.before(new Timestamp((i + 5) * 1000L)))
                 ) {
                     tmp.add(ts);
                 }

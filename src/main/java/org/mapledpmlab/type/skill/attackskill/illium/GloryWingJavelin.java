@@ -12,5 +12,6 @@ public class GloryWingJavelin extends AttackSkill {
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new GloryWingJavelinMagicMissile());
+        this.setApplyFinalAttack(true);
     }
 }

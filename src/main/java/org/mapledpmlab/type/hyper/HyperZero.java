@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.hyper;
 
 public class HyperZero extends Hyper {
-    private Long[] reqPoint = {0L, 1L, 3L, 7L, 15L, 25L, 40L, 60L,
+    private final Long[] reqPoint = {0L, 1L, 3L, 7L, 15L, 25L, 40L, 60L,
             85L, 115L, 150L, 200L, 265L, 345L, 440L, 550L};
 
     public HyperZero(Long level, Double criticalP) {
@@ -38,7 +38,7 @@ public class HyperZero extends Hyper {
         for (int i = 15; i > 0; i--) {
             if (point >= reqPoint[i]) {
                 point -= reqPoint[i];
-                this.addIgnoreDefenseList((long) (3 * i));
+                this.addIgnoreDefenseList((long) (3L * i));
                 break;
             }
         }
@@ -46,8 +46,8 @@ public class HyperZero extends Hyper {
         for (int i = 15; i > 0; i--) {
             if (point >= reqPoint[i]) {
                 point -= reqPoint[i];
-                this.addAtt((long) (3 * i));
-                this.addMagic((long) (3 * i));
+                this.addAtt((long) (3L * i));
+                this.addMagic((long) (3L * i));
                 break;
             }
         }
@@ -55,7 +55,7 @@ public class HyperZero extends Hyper {
         for (int i = 15; i > 0; i--) {
             if (point >= reqPoint[i]) {
                 point -= reqPoint[i];
-                this.addPerXMainStat((long) (30 * i));
+                this.addPerXMainStat((long) (30L * i));
                 break;
             }
         }
@@ -63,13 +63,12 @@ public class HyperZero extends Hyper {
         for (int i = 15; i > 0; i--) {
             if (point >= reqPoint[i]) {
                 point -= reqPoint[i];
-                this.addPerXSubStat((long) (30 * i));
+                this.addPerXSubStat((long) (30L * i));
                 break;
             }
         }
 
-        this.setDescription("" +
-                "\n하이퍼 스탯" +
+        this.setDescription("\n하이퍼 스탯" +
                 "\n1.크리티컬 확률 : " + this.getCriticalP() +"%" +
                 "\n2.보스 공격 시 데미지 : " + this.getBossDamage() + "%" +
                 "\n3.크리티컬 데미지 : " + this.getCriticalDamage() + "%" +

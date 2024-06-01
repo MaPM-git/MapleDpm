@@ -29,20 +29,20 @@ public class PaladinDealCycle extends DealCycle {
      */
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜 - 오라웨폰, 노블 디맨드, 메용2, 홀리 유니티, 엔버, 웨폰퍼프
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
     
     // 쿨마다 사용 - 묠니르, 생츄어리
-    private List<Skill> shortDealCycle = new ArrayList<>();
+    private final List<Skill> shortDealCycle = new ArrayList<>();
 
     private Timestamp sacredBastionEndTime = new Timestamp(0);
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponDot());
             add(new Blast());
@@ -65,7 +65,7 @@ public class PaladinDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new GrandCross1Delay());
             add(new GrandCross2Delay());
@@ -76,7 +76,7 @@ public class PaladinDealCycle extends DealCycle {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
             add(new BlessedHammerBuff());

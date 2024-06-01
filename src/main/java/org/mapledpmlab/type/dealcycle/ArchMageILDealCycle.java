@@ -66,23 +66,23 @@ public class ArchMageILDealCycle extends DealCycle {
         아이스 에이지 - 프로즌 오브 - 썬더 브레이크 - 라이트닝 스피어
      */
 
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<Skill> dealCycle4 = new ArrayList<>();
+    private final List<Skill> dealCycle4 = new ArrayList<>();
 
-    private List<Skill> dealCycle5 = new ArrayList<>();
+    private final List<Skill> dealCycle5 = new ArrayList<>();
 
-    private List<Skill> shortDealCycle = new ArrayList<>();
+    private final List<Skill> shortDealCycle = new ArrayList<>();
 
-    private List<Timestamp> jupiterThunderStartList = new ArrayList<>();
+    private final List<Timestamp> jupiterThunderStartList = new ArrayList<>();
 
-    private List<Timestamp> jupiterThunderEndList = new ArrayList<>();
+    private final List<Timestamp> jupiterThunderEndList = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new ChainLightning());
             add(new ChainLightningElectric());
@@ -111,13 +111,13 @@ public class ArchMageILDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new LightningSphereDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new Elquines());
             add(new EpicAdventure());
@@ -490,6 +490,7 @@ public class ArchMageILDealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
@@ -569,6 +570,9 @@ public class ArchMageILDealCycle extends DealCycle {
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (skill instanceof ChainLightningElectric) {
+                        continue;
+                    }
                     if (
                             skillEvent.getStart().after(getStart())
                             && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
@@ -579,13 +583,21 @@ public class ArchMageILDealCycle extends DealCycle {
                 this.getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof IceAgeDot) {
+                        i = 720;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
                 } else {
                     Long attackCount = 0L;
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof FrozenOrb) {
+                        i = 1680;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;

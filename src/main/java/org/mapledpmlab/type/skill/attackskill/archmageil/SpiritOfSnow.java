@@ -10,7 +10,6 @@ public class SpiritOfSnow extends AttackSkill {
         this.setDelay(720L);
         this.setDotDuration(30000L);
         this.setInterval(3000L);
-        this.setApplyFinalAttack(true);
         this.addFinalDamage(1.6);       // 코어강화
     }
 }

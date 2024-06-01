@@ -11,6 +11,5 @@ public class Ignite extends AttackSkill {
         this.setInterval(1500L);
         this.addFinalDamage(3.4);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
     }
 }

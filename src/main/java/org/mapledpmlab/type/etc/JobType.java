@@ -13,5 +13,5 @@ public enum JobType {
     COOLDOWN_REDUCTION2,
     COOLDOWN_REDUCTION_MAX,
     GLOVE,
-    ETC;
+    ETC
 }

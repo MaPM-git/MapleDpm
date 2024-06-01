@@ -20,27 +20,27 @@ public class BlasterDealCycle extends DealCycle {
      */
 
     // 메용2, 6차, 리레, 스인미, 크오솔
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 메용2, 6차, 웨폰퍼프
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 메용2, 리레, 스인미, 코오솔
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 메용2, 웨폰퍼프
-    private List<Skill> dealCycle4 = new ArrayList<>();
+    private final List<Skill> dealCycle4 = new ArrayList<>();
 
     // 웨폰퍼프
-    private List<Skill> dealCycle5 = new ArrayList<>();
+    private final List<Skill> dealCycle5 = new ArrayList<>();
 
     // 매그팡
-    private List<Skill> flatDeal1 = new ArrayList<>();
+    private final List<Skill> flatDeal1 = new ArrayList<>();
 
     // 릴파벙해머
-    private List<Skill> flatDeal2 = new ArrayList<>();
+    private final List<Skill> flatDeal2 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AfterImageShockActive());
             //add(new AfterImageShockPassive());
@@ -74,7 +74,7 @@ public class BlasterDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new BurningBreakerDelay());
             add(new DuckingCharge());
@@ -86,7 +86,7 @@ public class BlasterDealCycle extends DealCycle {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AfterImageShock());
             add(new AuraWeaponBuff());
@@ -578,6 +578,7 @@ public class BlasterDealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {

@@ -14,5 +14,6 @@ public class GloryWingEnchantJavelinMagicMissile extends AttackSkill {
         this.addFinalDamage(0.66666666666);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.setApplyFinalAttack(true);
     }
 }

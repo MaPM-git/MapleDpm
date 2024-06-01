@@ -16,24 +16,24 @@ import java.util.List;
 public class EunwolDealCycle extends DealCycle {
 
     // 메용2, 6차, 리레, 스인미, 크오솔
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 메용2, 6차, 웨폰퍼프
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 메용2, 리레, 스인미, 코오솔
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 메용2, 웨폰퍼프
-    private List<Skill> dealCycle4 = new ArrayList<>();
+    private final List<Skill> dealCycle4 = new ArrayList<>();
 
     // 웨폰퍼프
-    private List<Skill> dealCycle5 = new ArrayList<>();
+    private final List<Skill> dealCycle5 = new ArrayList<>();
 
     // 60초
-    private List<Skill> shortDealCycle = new ArrayList<>();
+    private final List<Skill> shortDealCycle = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdventOfTheFox());
             add(new BladeImpDownward());
@@ -74,13 +74,13 @@ public class EunwolDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new SmashingMultipunchFirstDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AdventOfTheFoxBuff());
             add(new BladeImpBuff());
@@ -100,7 +100,7 @@ public class EunwolDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> spiritConcentrationAttackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> spiritConcentrationAttackSkillList = new ArrayList<>(){
         {
             add(new BladeImpDownward());
             add(new BladeImpForward());
@@ -301,6 +301,7 @@ public class EunwolDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(shortDealCycle)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (cooldownCheck(soulContract)) {
                     addSkillEvent(soulContract);
@@ -442,17 +443,6 @@ public class EunwolDealCycle extends DealCycle {
                             }
                         }
                     }
-                    if (skill instanceof SmashingMultipunchEnd) {
-                        if (getStart().before(adventOfTheFoxEndTime)) {
-                            for (int j = 0; j < 15; j++) {
-                                addSkillEvent(foxSpiritOrb);
-                            }
-                        } else {
-                            for (int j = 0; j < 15; j++) {
-                                addSkillEvent(foxSpirit);
-                            }
-                        }
-                    }
                 }
                 this.setStart(tmp);
             } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
@@ -492,22 +482,57 @@ public class EunwolDealCycle extends DealCycle {
                 || skill instanceof SoulSplitter
                 || skill instanceof SpiritClaw
                 || skill instanceof TrueSpiritClaw
+                || skill instanceof BladeImpDownward
+                || skill instanceof FoxGodAvatar
+                || skill instanceof BladeImpForward
+                || skill instanceof BladeImpSpinInstall
+                || skill instanceof BombPunch
+                || skill instanceof DeathMark
+                || skill instanceof FoxGodClaw1
+                || skill instanceof FoxGodClaw2
+                || skill instanceof FoxGodClaw3
+                || skill instanceof GroundPound
+                || skill instanceof ShockwavePunch1
+                || skill instanceof ShockwavePunch2
+                || skill instanceof ShockwavePunch3
+                || skill instanceof SpiritClawInstall
         ) {
             Long ran = (long) (Math.random() * 99 + 1);
             if (ran <= foxSpirit.getProp()) {
                 if (getStart().before(adventOfTheFoxEndTime)) {
-                    addSkillEvent(foxSpiritOrb);
+                    if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                        for (int i = 0; i < ((AttackSkill) skill).getMultiAttackInfo().size(); i++) {
+                            addSkillEvent(foxSpiritOrb);
+                        }
+                    } else {
+                        addSkillEvent(foxSpiritOrb);
+                    }
                 } else {
-                    addSkillEvent(foxSpirit);
+                    if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                        for (int i = 0; i < ((AttackSkill) skill).getMultiAttackInfo().size(); i++) {
+                            addSkillEvent(foxSpirit);
+                        }
+                    } else {
+                        addSkillEvent(foxSpirit);
+                    }
                 }
             }
-        } else if (
+        }
+        if (
                 skill instanceof FoxGodAvatar
         ) {
-            Long ran = (long) (Math.random() * 99 + 1);
-            if (ran <= foxSpirit.getProp()) {
-                for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
+                addSkillEvent(foxSpiritOrb);
+            }
+        }
+        if (skill instanceof SmashingMultipunchEnd) {
+            if (getStart().before(adventOfTheFoxEndTime)) {
+                for (int j = 0; j < 16; j++) {
                     addSkillEvent(foxSpiritOrb);
+                }
+            } else {
+                for (int j = 0; j < 16; j++) {
+                    addSkillEvent(foxSpirit);
                 }
             }
         }

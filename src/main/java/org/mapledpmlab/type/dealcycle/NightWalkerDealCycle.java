@@ -16,21 +16,21 @@ import java.util.List;
 public class NightWalkerDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레, 초시축
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 극딜 마지막, 6차 포함
-    private List<Skill> final1 = new ArrayList<>();
+    private final List<Skill> final1 = new ArrayList<>();
 
     // 극딜 마지막
-    private List<Skill> final2 = new ArrayList<>();
+    private final List<Skill> final2 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
@@ -54,14 +54,14 @@ public class NightWalkerDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new CygnusPhalanxDelay());
             add(new RapidThrowBeforeDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new DominionBuff());
             add(new GloryOfGuardians());
@@ -82,8 +82,8 @@ public class NightWalkerDealCycle extends DealCycle {
 
     private int batCount = 0;
     int attackCount = 0;
-    private RavenousBatReinforce ravenousBatReinforce = new RavenousBatReinforce();
-    private ShadowSpear shadowSpear = new ShadowSpear();
+    private final RavenousBatReinforce ravenousBatReinforce = new RavenousBatReinforce();
+    private final ShadowSpear shadowSpear = new ShadowSpear();
     SilenceShadowStar silenceShadowStar = new SilenceShadowStar();
     Timestamp silenceEndTime = new Timestamp(-1);
     Timestamp shadowSpearEndTime = new Timestamp(-1);
@@ -210,6 +210,7 @@ public class NightWalkerDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(dealCycle3)
                     && finalChk == 0
+                    && getStart().after(new Timestamp(readyToDie.getActivateTime().getTime() + 16000))
             ) {
                 addDealCycle(dealCycle3);
             } else if (
@@ -361,22 +362,30 @@ public class NightWalkerDealCycle extends DealCycle {
                     }
                 } else {
                     Long attackCount = 0L;
+                    if (skill instanceof RapidThrow) {
+                        skill = new RapidThrow();
+                        if ((new Timestamp(getStart().getTime() + i)).before(shadowSpearEndTime)) {
+                            ((RapidThrow) skill).setDamage(1045.0 + 290);
+                        }
+                        if (getStart().before(shadowIllusionEndTime)) {
+                            ((AttackSkill) skill).setFinalDamage(0.81);
+                            ((AttackSkill) skill).setInterval(((AttackSkill) skill).getInterval() * 2 / 5);
+                            ((AttackSkill) skill).setLimitAttackCount(((AttackSkill) skill).getLimitAttackCount() * 5 / 2);
+                        } else if (getStart().before(shadowServantExtendEndTime)) {
+                            ((AttackSkill) skill).setInterval(((AttackSkill) skill).getInterval() * 2 / 3);
+                            ((AttackSkill) skill).setLimitAttackCount(((AttackSkill) skill).getLimitAttackCount() * 3 / 2);
+                        }
+                    }
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
-                        if (skill instanceof RapidThrow) {
-                            skill = new RapidThrow();
-                            if ((new Timestamp(getStart().getTime() + i)).before(shadowSpearEndTime)) {
-                                ((RapidThrow) skill).setDamage(1045.0 + 290);
-                            }
-                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                        if (skill instanceof RapidThrow) {
-                            skill = new RapidThrow();
-                            if ((new Timestamp(getStart().getTime() + i)).before(shadowSpearEndTime)) {
-                                ((RapidThrow) skill).setDamage(1045.0);
-                            }
-                        }
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
+                    }
+                    if (skill instanceof RapidThrow) {
+                        skill = new RapidThrow();
+                        if ((new Timestamp(getStart().getTime() + i)).before(shadowSpearEndTime)) {
+                            ((RapidThrow) skill).setDamage(1045.0);
+                        }
                     }
                 }
                 this.setStart(tmp);

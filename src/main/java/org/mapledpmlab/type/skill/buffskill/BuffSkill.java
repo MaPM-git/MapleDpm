@@ -29,6 +29,7 @@ public class BuffSkill extends Skill {
     private Long buffSubStat;
     private boolean isApplyPlusBuffDuration = false;
     private Long colNum = 0L;
+    private Long useCount = 0L;
 
     public BuffSkill() {
         this.buffAttMagic = 0L;
@@ -137,7 +138,7 @@ public class BuffSkill extends Skill {
 
     public Object[] getOpject() {
         Object[] result = new Object[]{
-                this.getName(), "", "", "", this.getInfo()
+                this.getName(), this.getUseCount(), "", "", this.getInfo()
         };
         return result;
     }

@@ -8,6 +8,7 @@ public class SeaWave extends AttackSkill {
         this.setAttackCount(4L);
         this.setDamage(190.0 + 102);        // 윈드 부스터
         this.setCooldown(12.0);
+        this.addFinalDamage(1.71);          // 축뢰
         this.addFinalDamage(4.0);           // 코어강화
         this.addIgnoreDefenseList(20L);
     }

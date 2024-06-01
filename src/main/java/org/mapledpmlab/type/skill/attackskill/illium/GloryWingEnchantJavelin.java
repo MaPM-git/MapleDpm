@@ -15,5 +15,6 @@ public class GloryWingEnchantJavelin extends AttackSkill {
         this.getMultiAttackInfo().add(140L);
         this.getMultiAttackInfo().add(140L);
         this.getMultiAttackInfo().add(140L);
+        this.setApplyFinalAttack(true);
     }
 }

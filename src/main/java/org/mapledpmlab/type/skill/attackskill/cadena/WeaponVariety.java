@@ -8,7 +8,7 @@ public class WeaponVariety extends AttackSkill {
         this.setDamage(660.0);
         this.setAttackCount(4L);
         this.setCooldown(0.2);
-        this.setApplyReuse(true);
+        //this.setApplyReuse(true);
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);
     }

@@ -27,18 +27,18 @@ public class DemonAvenger30DealCycle extends DealCycle {
      */
 
     // 메용2, 6차, 리레, 스인미, 크오솔
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 메용2, 6차, 웨폰퍼프
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 메용2, 리레, 스인미, 코오솔
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 메용2, 웨폰퍼프
-    private List<Skill> dealCycle4 = new ArrayList<>();
+    private final List<Skill> dealCycle4 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new ArmorBreak());
             add(new BloodFeast());
@@ -65,13 +65,13 @@ public class DemonAvenger30DealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new DimensionSwordDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new ArmorBreakDebuff());
             add(new AuraWeaponBuffDA());
@@ -100,13 +100,15 @@ public class DemonAvenger30DealCycle extends DealCycle {
 
     int demonFrenzyAttackCnt = 0;
     int demonFrenzyHpReduceCnt = 0;
+    int furyStorage = 0;
+    Double thornOfFuryCooldown = 0.0;
     Timestamp revenantEndTime = new Timestamp(-1);
     ThornOfFury thornOfFury = new ThornOfFury();
 
     public DemonAvenger30DealCycle(Job job) {
         super(job, new FinalAttackDemonAvenger());
 
-        getJob().setName("데몬 어벤져(30프렌지)");
+        getJob().setName("데몬 어벤져(30)");
         demonFrenzy30.setCooldown(0.21);
 
         this.setAttackSkillList(attackSkillList);
@@ -222,10 +224,32 @@ public class DemonAvenger30DealCycle extends DealCycle {
             if (getStart().after(buffEndTime1)) {
                 hp -= maxHP * 0.2;
                 buffEndTime1 = new Timestamp(getStart().getTime() + 270 * 1000);
+                if (getStart().before(revenantEndTime)) {
+                    furyStorage += maxHP * 0.2;
+                    if (furyStorage >= 300000) {
+                        furyStorage = 300000;
+                    }
+                    thornOfFury.setCooldownByFury(furyStorage);
+                    if (thornOfFuryCooldown > thornOfFury.getCooldown()) {
+                        thornOfFury.setActivateTimeByFury(thornOfFuryCooldown);
+                        thornOfFuryCooldown = thornOfFury.getCooldown();
+                    }
+                }
             }
             if (getStart().after(buffEndTime2)) {
                 hp -= 1800;
                 buffEndTime2 = new Timestamp(getStart().getTime() + 180 * 1000);
+                if (getStart().before(revenantEndTime)) {
+                    furyStorage += 1800;
+                    if (furyStorage >= 300000) {
+                        furyStorage = 300000;
+                    }
+                    thornOfFury.setCooldownByFury(furyStorage);
+                    if (thornOfFuryCooldown > thornOfFury.getCooldown()) {
+                        thornOfFury.setActivateTimeByFury(thornOfFuryCooldown);
+                        thornOfFuryCooldown = thornOfFury.getCooldown();
+                    }
+                }
             }
             if (getStart().after(diabolicRecoveryTime)) {
                 hp += maxHP * 0.05;
@@ -271,6 +295,9 @@ public class DemonAvenger30DealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
                     && (dealCycleOrder == 2 || dealCycleOrder == 6)
             ) {
+                addSkillEvent(exceedExecution5);
+                addSkillEvent(exceedExecution5);
+                addSkillEvent(exceedExecution5);
                 addDealCycle(dealCycle4);
                 releaseOverloadTime = new Timestamp(getStart().getTime() + 45000);
                 dealCycleOrder ++;
@@ -333,10 +360,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
             ) {
                 addSkillEvent(releaseOverload);
                 exceed = 9;
-            } else if (
-                    cooldownCheck(bloodFeast)
-                    && hp == 150000
-            ) {
+            } else if (cooldownCheck(bloodFeast)) {
                 addSkillEvent(bloodFeast);
             } else if (cooldownCheck(shieldChasing)) {
                 addSkillEvent(shieldChasing);
@@ -362,22 +386,65 @@ public class DemonAvenger30DealCycle extends DealCycle {
         if (skill instanceof Revenant) {
             revenantEndTime = new Timestamp(getStart().getTime() + 18000);
         }
-        while (demonFrenzyAttackCnt < getStart().getTime() / 210) {
+        while (demonFrenzyAttackCnt < getStart().getTime() / 240) {
             getSkillEventList().add(new DemonAvengerSkillEvent(demonFrenzy30, new Timestamp(getStart().getTime() + j), new Timestamp(getStart().getTime() + j), (long) this.hp));
             getEventTimeList().add(new Timestamp(getStart().getTime() + j));
             j++;
             demonFrenzyAttackCnt++;
+            hp += 500000 * 0.01;
+            if (hp > 500000) {
+                hp = 500000;
+            }
         }
         while (demonFrenzyHpReduceCnt < getStart().getTime() / 1000) {
             hp -= 6000;
             demonFrenzyHpReduceCnt++;
+            if (getStart().before(revenantEndTime)) {
+                furyStorage += 6000;
+                if (furyStorage >= 300000) {
+                    furyStorage = 300000;
+                }
+                thornOfFury.setCooldownByFury(furyStorage);
+            }
         }
         if (skill instanceof GaugeAttackSkill) {
             hp += ((GaugeAttackSkill) skill).getGaugeCharge();
             hp += maxHP * ((GaugeAttackSkill) skill).getGaugePer() * 0.01;
+            if (getStart().before(revenantEndTime)) {
+                if (((GaugeAttackSkill) skill).getGaugeCharge() < 0) {
+                    furyStorage -= ((GaugeAttackSkill) skill).getGaugeCharge();
+                }
+                if (((GaugeAttackSkill) skill).getGaugePer() < 0) {
+                    furyStorage -= maxHP * ((GaugeAttackSkill) skill).getGaugePer() * 0.01;
+                }
+                if (furyStorage >= 300000) {
+                    furyStorage = 300000;
+                }
+                thornOfFury.setCooldownByFury(furyStorage);
+                if (thornOfFuryCooldown > thornOfFury.getCooldown()) {
+                    thornOfFury.setActivateTimeByFury(thornOfFuryCooldown);
+                    thornOfFuryCooldown = thornOfFury.getCooldown();
+                }
+            }
         } else if (skill instanceof GaugeBuffSkill) {
             hp += ((GaugeBuffSkill) skill).getGaugeCharge();
             hp += maxHP * ((GaugeBuffSkill) skill).getGaugePer() * 0.01;
+            if (getStart().before(revenantEndTime)) {
+                if (((GaugeBuffSkill) skill).getGaugeCharge() < 0) {
+                    furyStorage -= ((GaugeBuffSkill) skill).getGaugeCharge();
+                }
+                if (((GaugeBuffSkill) skill).getGaugePer() < 0) {
+                    furyStorage -= maxHP * ((GaugeBuffSkill) skill).getGaugePer() * 0.01;
+                }
+                if (furyStorage >= 300000) {
+                    furyStorage = 300000;
+                }
+                thornOfFury.setCooldownByFury(furyStorage);
+                if (thornOfFuryCooldown > thornOfFury.getCooldown()) {
+                    thornOfFury.setActivateTimeByFury(thornOfFuryCooldown);
+                    thornOfFuryCooldown = thornOfFury.getCooldown();
+                }
+            }
         }
         if (hp > 500000) {
             hp = 500000;
@@ -460,7 +527,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
                         && getStart().before(revenantEndTime)
                         && cooldownCheck(thornOfFury)
                 ) {
-                    getSkillEventList().add(new DemonAvengerSkillEvent(thornOfFury, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
+                    getSkillEventList().add(new DemonAvengerSkillEvent(thornOfFury, endTime, endTime, (long) this.hp));
                     applyCooldown(thornOfFury);
                 }
             }
@@ -570,6 +637,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {

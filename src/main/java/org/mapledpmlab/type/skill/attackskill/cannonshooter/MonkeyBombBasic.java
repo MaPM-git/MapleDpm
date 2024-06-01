@@ -7,10 +7,15 @@ public class MonkeyBombBasic extends AttackSkill {
         this.setName("스페셜 몽키 에스코트(기본의 로이-몽키 봄)");
         this.setDamage(990.0);
         this.setAttackCount(7L);
-        this.setDotDuration(35000L);
-        this.setInterval(6000L);
+        /*this.setDotDuration(35000L);
+        this.setInterval(6000L);*/
         this.addIgnoreDefenseList(100L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new MonkeyBombBomb());
+        this.getMultiAttackInfo().add(2400L);
+        this.getMultiAttackInfo().add(7490L);
+        this.getMultiAttackInfo().add(7490L);
+        this.getMultiAttackInfo().add(7490L);
+        this.getMultiAttackInfo().add(7490L);
     }
 }

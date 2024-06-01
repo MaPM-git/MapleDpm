@@ -10,6 +10,5 @@ public class PoisonZoneExplosion extends AttackSkill {
         this.setCooldown(0.9);
         this.addFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
     }
 }

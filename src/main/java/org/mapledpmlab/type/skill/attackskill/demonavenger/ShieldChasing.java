@@ -2,7 +2,12 @@ package org.mapledpmlab.type.skill.attackskill.demonavenger;
 
 import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 
+import java.sql.Timestamp;
+
 public class ShieldChasing extends GaugeAttackSkill {
+
+    Timestamp shieldChasingEndTime = new Timestamp(-1);
+
     public ShieldChasing() {
         this.setName("실드 체이싱(첫타)");
         this.setAttackCount(2L);
@@ -15,5 +20,6 @@ public class ShieldChasing extends GaugeAttackSkill {
         this.setCooldown(6.0);
         this.addFinalDamage(2.2);   // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.setApplyReuse(true);
     }
 }

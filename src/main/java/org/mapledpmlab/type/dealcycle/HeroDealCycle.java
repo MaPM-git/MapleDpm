@@ -25,24 +25,24 @@ public class HeroDealCycle extends DealCycle {
     // 메용2 2극딜 제외 모두 사용
 
     // 메용2, 6차, 리레, 스인미, 크오솔
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 메용2, 6차, 웨폰퍼프
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 메용2, 리레, 스인미, 코오솔
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 메용2, 웨폰퍼프
-    private List<Skill> dealCycle4 = new ArrayList<>();
+    private final List<Skill> dealCycle4 = new ArrayList<>();
 
     // 웨폰퍼프
-    private List<Skill> dealCycle5 = new ArrayList<>();
+    private final List<Skill> dealCycle5 = new ArrayList<>();
 
     // 일루전 쿨마다 사용 - 인사이징 - 일루전 - 데폴 - 레업라
-    private List<Skill> shortDealCycle = new ArrayList<>();
+    private final List<Skill> shortDealCycle = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdvancedFinalAttackHero());
             add(new AuraWeaponDot());
@@ -65,12 +65,12 @@ public class HeroDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
             add(new ComboInstinctsBuff());
@@ -200,10 +200,9 @@ public class HeroDealCycle extends DealCycle {
         dealCycle5.add(restraintRing);
         dealCycle5.add(comboInstinctsBuff);
 
-        shortDealCycle.add(incisingAttack);
+        //shortDealCycle.add(incisingAttack);
         shortDealCycle.add(swordIllusionBuff);
-        shortDealCycle.add(comboDeathFault);
-        shortDealCycle.add(rageUprising);
+        //shortDealCycle.add(rageUprising);
 
         advancedComboAttack.setBuffFinalDamage(2.3);
         advancedComboAttack.setDuration(720L);
@@ -262,18 +261,24 @@ public class HeroDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(soulContract)
-                    && !cooldownCheck(epicAdventure)
+                    && (
+                            getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 50000))
+                            || getStart().after(new Timestamp(600 * 1000))
+                    )
             ) {
+                addSkillEvent(incisingAttack);
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(shortDealCycle)
                     && getStart().after(comboInstinctEndTime)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 13000))
+                    && (
+                            getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 13000))
+                            || getStart().after(new Timestamp(600 * 1000))
+                    )
             ) {
                 addDealCycle(shortDealCycle);
             } else if (
                     cooldownCheck(rageUprising)
-                    && getStart().before(new Timestamp(comboDeathFault.getActivateTime().getTime() - 3000))
             ) {
                 addSkillEvent(rageUprising);
             } else {

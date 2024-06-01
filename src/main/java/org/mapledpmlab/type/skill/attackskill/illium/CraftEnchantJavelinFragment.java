@@ -14,5 +14,6 @@ public class CraftEnchantJavelinFragment extends AttackSkill {
         this.addFinalDamage(0.5833333333);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.setApplyFinalAttack(true);
     }
 }

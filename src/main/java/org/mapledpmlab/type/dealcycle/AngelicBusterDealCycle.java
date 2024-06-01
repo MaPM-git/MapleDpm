@@ -14,17 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AngelicBusterDealCycle extends DealCycle {
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<Skill> dealCycle4 = new ArrayList<>();
+    private final List<Skill> dealCycle4 = new ArrayList<>();
 
-    private List<Skill> dealCycle5 = new ArrayList<>();
+    private final List<Skill> dealCycle5 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new CheeringBalloon());
             add(new CheeringBalloonExaltation());
@@ -47,13 +47,13 @@ public class AngelicBusterDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new MascotFamiliarBeforeDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new FinalContract());
             add(new GrandisGoddessBlessingNova());
@@ -270,6 +270,7 @@ public class AngelicBusterDealCycle extends DealCycle {
                                 skill instanceof SoulSeeker
                                 || skill instanceof CheeringBalloon
                                 || skill instanceof CheeringBalloonFinale
+                                || skill instanceof CheeringBalloonExaltation
                         )
                 ) {
                     for (SkillEvent skillEvent : this.getSkillEventList()) {
@@ -352,9 +353,7 @@ public class AngelicBusterDealCycle extends DealCycle {
                         if (
                                 skill instanceof SoulSeeker
                                 || skill instanceof CheeringBalloon
-                                || skill instanceof SoulSeekerExaltation
                         ) {
-                            attackCount++;
                             Long ran = (long) (Math.random() * 99 + 1);
                             if (getStart().before(soulExaltationEndTime)) {
                                 ran -= 5;

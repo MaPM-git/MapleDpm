@@ -9,5 +9,6 @@ public class ThanatosDescentDeathArrow extends AttackSkill {
         this.setAttackCount(3L * 6);
         this.setCooldown(3.0);
         this.addFinalDamage(1.6);   // 코어강화
+        this.setApplyReuse(true);
     }
 }

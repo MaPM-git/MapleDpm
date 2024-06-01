@@ -13,6 +13,6 @@ public class VortexSphere extends AttackSkill {
         this.setInterval(180L);
         this.setLimitAttackCount(20L);
         this.addFinalDamage(1.6);       // 코어강화
-        //this.setApplyFinalAttack(true);
+        this.setApplyFinalAttack(true);
     }
 }

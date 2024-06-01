@@ -3,8 +3,7 @@ package org.mapledpmlab.type.union;
 public class UnionArcher extends Union {
 
     public UnionArcher() {
-        this.setDescription("" +
-                "유니온 공격대 점령효과" +
+        this.setDescription("유니온 공격대 점령효과" +
                 "\n1.크리티컬 데미지 20%" +        // 40
                 "\n2.보스 공격 시 데미지 40%" +     // 40
                 "\n3.몬스터 방어율 무시 30%" +      // 30

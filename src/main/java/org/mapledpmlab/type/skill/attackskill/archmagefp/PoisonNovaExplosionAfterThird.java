@@ -9,6 +9,5 @@ public class PoisonNovaExplosionAfterThird extends AttackSkill {
         this.setAttackCount(108L);
         this.addFinalDamage(1.6);       // 코어 강화
         this.addFinalDamage(0.5);
-        this.setApplyFinalAttack(true);
     }
 }

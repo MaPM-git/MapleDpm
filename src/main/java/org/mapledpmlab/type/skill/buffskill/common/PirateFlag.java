@@ -14,7 +14,7 @@ public class PirateFlag extends BuffSkill {
         this.addBuffIgnoreDefense(25L);
         this.addBuffMainStat(
                 (long) Math.floor(
-                        (275 + 2) * 5 * 0.25
+                        (285 + 2) * 5 * 0.25
                 )
         );
         this.setDuration(30L);

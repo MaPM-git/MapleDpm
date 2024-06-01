@@ -27,6 +27,7 @@ public class AttackSkill extends Skill {
     private Long useCount = 0L;
     private Double share = 0.0;
     private Long colNum = 0L;
+    private Long cumulativeAttackCount = 0L;
 
     public String getInfo() {
         String str = "";
@@ -94,7 +95,7 @@ public class AttackSkill extends Skill {
 
     public Object[] getOpject() {
         Object[] result = new Object[]{
-                this.getName(), this.getUseCount(), this.getCumulativeDamage() + "", this.getShare(), this.getInfo()
+                this.getName(), this.getUseCount(), this.getCumulativeAttackCount(), this.getShare(), this.getInfo()
         };
         return result;
     }

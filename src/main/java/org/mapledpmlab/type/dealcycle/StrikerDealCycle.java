@@ -18,27 +18,27 @@ import java.util.List;
 public class StrikerDealCycle extends DealCycle {
 
     // 리레, 스인미, 크오솔
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 웨펖, 초시축
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 웨펖
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     // 극딜 마지막, 6차 포함
-    private List<Skill> final1 = new ArrayList<>();
+    private final List<Skill> final1 = new ArrayList<>();
 
     // 극딜 마지막
-    private List<Skill> final2 = new ArrayList<>();
+    private final List<Skill> final2 = new ArrayList<>();
 
     // 극딜 마지막
-    private List<Skill> final3 = new ArrayList<>();
+    private final List<Skill> final3 = new ArrayList<>();
 
     // 극딜 마지막
-    private List<Skill> final4 = new ArrayList<>();
+    private final List<Skill> final4 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new Annihilation());
             add(new CreateThunderChain());
@@ -68,13 +68,13 @@ public class StrikerDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new CygnusPhalanxDelay());
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new CreationOfTheWorld());
             add(new GloryOfGuardians());
@@ -93,10 +93,10 @@ public class StrikerDealCycle extends DealCycle {
 
     CreateThunderChainHugeLightning createThunderChainHugeLightning = new CreateThunderChainHugeLightning();
     CreateThunderChainLightning createThunderChainLightning = new CreateThunderChainLightning();
-    private Lightning lightning = new Lightning();
-    private LightningGodSpearStrike lightningGodSpearStrike = new LightningGodSpearStrike();
-    private SeaWave seaWave = new SeaWave();
-    private SharkWave sharkWave = new SharkWave();
+    private final Lightning lightning = new Lightning();
+    private final LightningGodSpearStrike lightningGodSpearStrike = new LightningGodSpearStrike();
+    private final SeaWave seaWave = new SeaWave();
+    private final SharkWave sharkWave = new SharkWave();
     Thunderstroke thunderstroke = new Thunderstroke();
     ThunderstrokeGiant thunderstrokeGiant = new ThunderstrokeGiant();
 
@@ -106,7 +106,7 @@ public class StrikerDealCycle extends DealCycle {
     private int sharkWaveCount = 0;
 
     private Timestamp creationOfTheWorldEndTime = new Timestamp(-1);
-    boolean isThunderStroke = false;
+    private Timestamp lightningUnionEndTime = new Timestamp(-1);
 
     public StrikerDealCycle(Job job) {
         super(job, null);
@@ -310,8 +310,14 @@ public class StrikerDealCycle extends DealCycle {
                     getStart().before(creationOfTheWorldEndTime)
             ) {
                 addSkillEvent(typhoon);
+                typhoon.setActivateTime(new Timestamp(-1));
                 addSkillEvent(annihilation);
-            } else {
+            } /*else if (
+                    cooldownCheck(typhoon)
+            ) {
+                addSkillEvent(typhoon);
+                addSkillEvent(annihilation);
+            }*/ else {
                 if (cooldownCheck(thunderboltFlash)) {
                     addSkillEvent(thunderboltFlash);
                 } else {
@@ -352,6 +358,9 @@ public class StrikerDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof LightningUnion) {
+                lightningUnionEndTime = new Timestamp(getStart().getTime() + 62000);
+            }
             if (skill instanceof CreationOfTheWorld) {
                 creationOfTheWorldEndTime = new Timestamp(getStart().getTime() + 30000);
                 sharkWaveCount = 0;
@@ -382,6 +391,21 @@ public class StrikerDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    skill instanceof Thunderbolt
+                    || skill instanceof ThunderboltFlash
+                    || skill instanceof GodOfTheSea
+            ) {
+                addSkillEvent(thunderstroke);
+            }
+            if (
+                    skill instanceof Typhoon
+                    || skill instanceof SharkWave
+                    || skill instanceof LightningGodSpearStrike
+                    || skill instanceof CreateThunderChainFinal
+            ) {
+                addSkillEvent(thunderstrokeGiant);
+            }
             if (skill instanceof SeaWave) {
                 seaWaveCount = 0;
             }
@@ -390,33 +414,6 @@ public class StrikerDealCycle extends DealCycle {
             }
             if (skill instanceof SharkWave) {
                 sharkWaveCount = 0;
-            }
-            if (skill instanceof Annihilation && !isThunderStroke) {
-                isThunderStroke = true;
-            }
-            if (
-                    isThunderStroke
-                    && (
-                            skill instanceof Thunderbolt
-                            || skill instanceof ThunderboltFlash
-                            || skill instanceof GodOfTheSea
-                    )
-            ) {
-                addSkillEvent(thunderstroke);
-                isThunderStroke = false;
-            }
-            if (
-                    isThunderStroke
-                    && (
-                            skill instanceof Typhoon
-                            || skill instanceof SharkWave
-                            || skill instanceof LightningGodSpearStrike
-                            || skill instanceof CreateThunderChain
-                            || skill instanceof ThunderBreakTheSea
-                    )
-            ) {
-                addSkillEvent(thunderstrokeGiant);
-                isThunderStroke = false;
             }
             if (getStart().before(creationOfTheWorldEndTime)) {
                 if (
@@ -453,19 +450,22 @@ public class StrikerDealCycle extends DealCycle {
                 }
             }
             if (
-                    skill instanceof CreateThunderChain
-                    || skill instanceof CreateThunderChainFinal
-                    || skill instanceof CreateThunderChainHugeLightning
-                    || skill instanceof CreateThunderChainLightning
-                    || skill instanceof GodOfTheSea
-                    || skill instanceof LightningGodSpearStrike
-                    || skill instanceof LightningGodSpearStrikeDot
-                    || skill instanceof SharkWave
-                    || skill instanceof Thunderbolt
-                    || skill instanceof ThunderBreakTheSea
-                    || skill instanceof ThunderBreakTheSeaFinal
-                    || skill instanceof Typhoon
-                    || skill instanceof WaterWave
+                    getStart().before(lightningUnionEndTime)
+                    && (
+                            skill instanceof CreateThunderChain
+                            || skill instanceof CreateThunderChainFinal
+                            || skill instanceof CreateThunderChainHugeLightning
+                            || skill instanceof CreateThunderChainLightning
+                            || skill instanceof GodOfTheSea
+                            || skill instanceof LightningGodSpearStrike
+                            || skill instanceof LightningGodSpearStrikeDot
+                            || skill instanceof SharkWave
+                            || skill instanceof Thunderbolt
+                            || skill instanceof ThunderBreakTheSea
+                            || skill instanceof ThunderBreakTheSeaFinal
+                            || skill instanceof Typhoon
+                            || skill instanceof WaterWave
+                    )
             ) {
                 addSkillEvent(lightning);
             }
@@ -493,7 +493,7 @@ public class StrikerDealCycle extends DealCycle {
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         if (skill instanceof CreateThunderChain) {
                             getSkillEventList().add(new SkillEvent(createThunderChainLightning, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                            getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                            getSkillEventList().add(new SkillEvent(thunderstrokeGiant, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         }
                         attackCount += 1;
                     }
@@ -544,5 +544,21 @@ public class StrikerDealCycle extends DealCycle {
             }
         }
         return overlappingSkillEvents;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (
+                    skill instanceof ThunderBreakTheSea
+                    || skill instanceof ThunderBreakTheSeaFinal
+            ) {
+                getSkillEventList().add(new SkillEvent(thunderstrokeGiant, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            }
+        }
     }
 }

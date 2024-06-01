@@ -9,7 +9,7 @@ public class BlackMagicAltar extends AttackSkill {
         this.setInterval(1140L);
         this.setDotDuration(40000L);
         this.setDamage(1675.0);
-        this.setAttackCount(8L);
+        this.setAttackCount(4L);
         this.setCooldown(40.0);
         this.addFinalDamage(1.6);       // 코어 강화
         this.setApplyCooldownReduction(false);

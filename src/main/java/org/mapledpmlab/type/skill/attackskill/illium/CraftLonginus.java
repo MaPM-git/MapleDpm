@@ -12,5 +12,6 @@ public class CraftLonginus extends AttackSkill {
         this.setCooldown(15.0);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.setApplyFinalAttack(true);
     }
 }

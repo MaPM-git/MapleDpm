@@ -16,15 +16,15 @@ import java.util.List;
 public class KinesisDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AnotherRealm());
             add(new AnotherRealmBomb());
@@ -61,12 +61,12 @@ public class KinesisDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new OtherWorldGoddessBlessing());
             add(new OtherworldlyAfterimage(275));
@@ -274,24 +274,24 @@ public class KinesisDealCycle extends DealCycle {
             ) {
                 addSkillEvent(psychicGround);
                 addSkillEvent(psychicDrain);
-            } else if (
+            }/* else if (
                     cooldownCheck(ultimateTrain)
                     && psychicPoint >= 15
             ) {
                 addSkillEvent(ultimateTrain);
-            } else if (
+            }*/ else if (
                     psychicPoint >= 6
                     && !cooldownCheck(psychicOver)
             ){
                 addSkillEvent(ultimateMaterial);
-            } else if (
+            }/* else if (
                     psychicPoint >= 4
                     && grabCnt > 0
                     && !cooldownCheck(psychicOver)
             ) {
                 addSkillEvent(ultimatePsychicShoot);
                 grabCnt = 0;
-            } else if (grabCnt > 0) {
+            }*/ else if (grabCnt > 0) {
                 addSkillEvent(psychicSmashing);
                 grabCnt --;
             } else {
@@ -550,6 +550,7 @@ public class KinesisDealCycle extends DealCycle {
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {

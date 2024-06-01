@@ -16,18 +16,18 @@ import java.util.List;
 public class HoYoungDealCycle extends DealCycle {
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
 
-    private List<Skill> finalCycle = new ArrayList<>();
+    private final List<Skill> finalCycle = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new ChasingGhostTalisman());
             //add(new ConflagrationChainHeaven());
@@ -74,12 +74,12 @@ public class HoYoungDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AllCreationOfHeavenAndEarth());
             add(new FistMethodButterflyDreamBuff());
@@ -310,7 +310,10 @@ public class HoYoungDealCycle extends DealCycle {
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
 
-        if (getStart().before(skill.getActivateTime())) {
+        if (
+                getStart().before(skill.getActivateTime())
+                && !(skill instanceof MysticEnergyIllusionOfHeavenEarthAndHumanAttack)
+        ) {
             return;
         }
         if (
@@ -494,7 +497,10 @@ public class HoYoungDealCycle extends DealCycle {
                     flyingFanHumanReinforce.setActivateTime(new Timestamp(flyingFanHuman.getActivateTime().getTime()));
                     goldCudgelHumanReinforce.setActivateTime(new Timestamp(goldCudgelHuman.getActivateTime().getTime()));
                 }
-                if (getStart().before(mountainEndTime)) {
+                if (
+                        getStart().before(mountainEndTime)
+                        && cooldownCheck(fistMethodMountainSpiritSummonRoar)
+                ) {
                     addSkillEvent(fistMethodMountainSpiritSummonRoar);
                 }
             }
@@ -713,7 +719,16 @@ public class HoYoungDealCycle extends DealCycle {
                             || skill instanceof MysticEnergyApotheosisKeydown2
                     )
             ) {
-                addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHumanAttack);
+                if (getStart().before(illusionEndTime)) {
+                    mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setCooldown(0.0);
+                    addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHumanAttack);
+                    mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setCooldown(2.0);
+                    addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHumanAttack);
+                    mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setActivateTime(new Timestamp(getStart().getTime() + 1880));
+                } else {
+                    mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setCooldown(5.0);
+                    addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHumanAttack);
+                }
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -797,36 +812,6 @@ public class HoYoungDealCycle extends DealCycle {
     }
 
     @Override
-    public void applyCooldown(Skill skill) {
-        if (skill.getCooldown() != 0) {
-            if (skill.isApplyReuse()) {
-                Long ran = (long) (Math.random() * 99 + 1);
-                if (ran <= getJob().getReuse()) {
-                } else  {
-                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
-                }
-            } else {
-                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
-            }
-            if (!skill.isApplyCooldownReduction()) {
-                if (
-                        getStart().before(illusionEndTime)
-                        && skill instanceof MysticEnergyIllusionOfHeavenEarthAndHumanAttack
-                ) {
-                    if (illusionAttack == 1) {
-                        skill.setActivateTime(new Timestamp((int) (getStart().getTime() + 2000)));
-                        illusionAttack = 0;
-                    } else {
-                        illusionAttack = 1;
-                    }
-                } else {
-                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + skill.getCooldown() * 1000)));
-                }
-            }
-        }
-    }
-
-    @Override
     public Long calcTotalDamage(List<Timestamp> eventTimeList) {
         Long totalDamage = 0L;
         Timestamp start = null;
@@ -852,6 +837,7 @@ public class HoYoungDealCycle extends DealCycle {
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof AdventOfGodsBuff) {
                     isAdventOfGods = true;
+                    break;
                 }
             }
             for (SkillEvent skillEvent : useBuffSkillList) {
@@ -965,5 +951,39 @@ public class HoYoungDealCycle extends DealCycle {
                 getStart().setTime(tmp.getTime());
             }
         }
+    }
+
+    @Override
+    public Double applyCooldownReduction(Skill skill) {
+        Double cooldown = 0.0;
+        Double cooldownReduction = 0.0;
+        if (skill.getCooldown() <= 1) {
+            return skill.getCooldown();
+        }
+        cooldown = skill.getCooldown() * (1 - getJob().getCooldownReductionP() * 0.01);
+        if (cooldown <= 1) {
+            cooldown = 1.0;
+            return cooldown;
+        }
+        if (cooldown <= 5) {
+            return cooldown;
+        }
+        cooldownReduction = getJob().getCooldownReductionSec().doubleValue();
+        while (cooldownReduction != 0) {
+            if (cooldown - 10 > 0) {
+                cooldown -= cooldownReduction;
+                cooldownReduction = 0.0;
+            } else if (cooldown <= 10) {
+                cooldown -= cooldownReduction * 0.5;
+                cooldownReduction = 0.0;
+            } else if (cooldown - 10 <= cooldownReduction) {
+                cooldown = 10.0;
+                cooldownReduction -= (cooldown - 10);
+            }
+            if (cooldown <= 5) {
+                cooldown = 5.0;
+            }
+        }
+        return cooldown;
     }
 }

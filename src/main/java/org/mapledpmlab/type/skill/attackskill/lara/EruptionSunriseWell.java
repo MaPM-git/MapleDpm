@@ -8,7 +8,7 @@ public class EruptionSunriseWell extends AttackSkill {
         this.setDelayByAttackSpeed(450L);
         this.setDamage(1048.0 + 48);
         this.setAttackCount(6L);
-        this.setCooldown(18.0);
+        this.setCooldown(10.7);
         this.setApplyCooldownReduction(false);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);

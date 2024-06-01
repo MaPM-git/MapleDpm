@@ -8,11 +8,11 @@ public class AncientWrath extends GaugeAttackSkill implements AncientForce {
         this.setAttackCount(15L);
         this.setDamage(1280.0);
         this.setCooldown(10.0);
-        this.setDotDuration(30L);
-        this.setInterval(10L);
-        this.setLimitAttackCount(3L);
         this.addFinalDamage(1.1);       // 에인션트 아처리
         this.setAddDamage(51 + 20L);    // 에이션트 포스-보스 킬러
         this.addIgnoreDefenseList(20L); // 에인션트 포스-이그노어 가드
+        this.getMultiAttackInfo().add(180L);
+        this.getMultiAttackInfo().add(180L);
+        this.getMultiAttackInfo().add(180L);
     }
 }

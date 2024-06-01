@@ -9,7 +9,6 @@ public class SolunarPower extends AttackSkill {
         this.setDamage(6500.0);
         this.setCooldown(20.0);
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드
-        this.addFinalDamage(1.6);       // 코어강화
         this.getMultiAttackInfo().add(1050L);
         this.getMultiAttackInfo().add(1050L);
     }

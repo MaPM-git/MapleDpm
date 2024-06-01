@@ -10,7 +10,7 @@ public class MegaSmasher extends AttackSkill {
         this.setDelay(9960L + 180);
         this.setDotDuration(9960L);
         this.setInterval(120L);
-        this.setLimitAttackCount(83L);
+        this.setLimitAttackCount(82L);
         this.addFinalDamage(1.6);           // 코어 강화
         this.addFinalDamage(0.85);          // 버추얼 프로텍션
     }

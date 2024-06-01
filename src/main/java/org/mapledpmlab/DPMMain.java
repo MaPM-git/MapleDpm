@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class DPMMain {
 
     public void init() {
         dealCycleList = new ArrayList<>();
-        dealCycleList.add(new AdeleDealCycle(new Adele()));
+        //dealCycleList.add(new AdeleDealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
@@ -78,7 +79,7 @@ public class DPMMain {
         dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         dealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
         this.exportExcel();
-        this.exportSVG();
+        //this.exportSVG();
     }
 
     private void exportSVG() {
@@ -96,7 +97,7 @@ public class DPMMain {
             // Save the SVG to a file
             try {
                 OutputStream outputStream = new FileOutputStream(new File("버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
-                Writer out = new OutputStreamWriter(outputStream, "UTF-8");
+                Writer out = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
                 svgGenerator.stream(out, true);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -143,7 +144,7 @@ public class DPMMain {
         }
 
         // 선 그래프 스타일과 데이터 경로 추가
-        writer.write("<path fill='none' stroke='blue' stroke-width='2' d='" + path.toString() + "'/>");
+        writer.write("<path fill='none' stroke='blue' stroke-width='2' d='" + path + "'/>");
     }
 
     private static void drawActivities(SVGGraphics2D g, DealCycle dealCycle) {
@@ -271,7 +272,7 @@ public class DPMMain {
             colNum = colNum + 1;
 
             data.put("04", new Object[]{
-                    "공격스킬이름", "사용횟수", "딜량", "점유율", "기타정보"
+                    "공격스킬이름", "사용횟수", "타수", "점유율", "기타정보"
             });
             colNum = 5;
             for (int i = colNum; i < dealCycle.getAttackSkillList().size() + colNum; i++) {
@@ -331,7 +332,7 @@ public class DPMMain {
 
         data = new TreeMap<>();
         data.put("1", new Object[]{
-                "직업이름", "DPM", "DPM 배율", "15딜", "15딜 배율", "40초 딜", "40초딜 배율"
+                "직업이름", "DPM", "DPM 배율", "리스트레인트링딜", "리스트레인트링딜 배율", "40초 딜", "40초딜 배율"
         });
         for (int i = 0; i < dealCycleList.size(); i++) {
             data.put(String.valueOf(i + 2), dealCycleList.get(i).getObject());

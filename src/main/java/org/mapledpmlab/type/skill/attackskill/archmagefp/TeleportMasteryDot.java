@@ -11,6 +11,5 @@ public class TeleportMasteryDot extends AttackSkill {
         this.setDotDuration(4000L * 2); // 익스트림 매직
         this.addFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
     }
 }

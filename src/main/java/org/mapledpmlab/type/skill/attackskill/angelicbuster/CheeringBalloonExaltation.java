@@ -7,7 +7,7 @@ public class CheeringBalloonExaltation extends AttackSkill {
         this.setName("응원 풍선(소울 익절트)");
         this.setDamage(673.0);
         this.setAttackCount(1L);
-        this.setDotDuration(2130L);
+        this.setDotDuration(3000L);
         this.setInterval(60L);
         this.setLimitAttackCount(28L);
         this.addFinalDamage(0.55);

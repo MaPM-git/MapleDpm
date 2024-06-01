@@ -12,7 +12,6 @@ public class BladeTornadoTyphoon extends AttackSkill {
         this.setLimitAttackCount(6L);
         this.addIgnoreDefenseList(100L);
         this.addFinalDamage(1.6);           // 코어강화
-        this.setApplyFinalAttack(true);
         this.addFinalDamage(0.85);           // 미러 이미징
     }
 }

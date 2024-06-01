@@ -16,15 +16,15 @@ import java.util.List;
 
 public class ZeroDealCycle extends DealCycle {
 
-    private Job job2 = new ZeroBeta();
+    private final Job job2 = new ZeroBeta();
 
-    private List<Skill> dealCycle1 = new ArrayList<>();
-    private List<Skill> dealCycle2 = new ArrayList<>();
-    private List<Skill> dealCycle3 = new ArrayList<>();
-    private List<Skill> dealCycle4 = new ArrayList<>();
-    private List<Skill> dealCycle5 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle4 = new ArrayList<>();
+    private final List<Skill> dealCycle5 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponDot());
             add(new ChronoTrigger1());
@@ -88,12 +88,12 @@ public class ZeroDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
             add(new CriticalBind());

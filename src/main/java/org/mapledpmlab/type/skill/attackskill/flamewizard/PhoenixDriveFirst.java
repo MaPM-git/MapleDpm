@@ -10,5 +10,6 @@ public class PhoenixDriveFirst extends AttackSkill {
         this.addFinalDamage(2.2);
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new PhoenixDriveAfterSecond());
+        this.getMultiAttackInfo().add(120L);
     }
 }

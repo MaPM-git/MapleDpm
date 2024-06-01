@@ -5,8 +5,7 @@ import org.mapledpmlab.type.farm.Farm;
 public class DemonAvengerArtifact extends Farm {
 
     public DemonAvengerArtifact() {
-        this.setDescription("" +
-                "아티팩트" +
+        this.setDescription("아티팩트" +
                 "\n1.부스탯 150" +
                 "\n2.최대 HP 7500" +
                 "\n3.공격력/마력 30" +

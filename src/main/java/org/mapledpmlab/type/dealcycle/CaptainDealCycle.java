@@ -23,15 +23,15 @@ public class CaptainDealCycle extends DealCycle {
      */
 
     // 6차, 리레
-    private List<Skill> dealCycle1 = new ArrayList<>();
+    private final List<Skill> dealCycle1 = new ArrayList<>();
 
     // 리레
-    private List<Skill> dealCycle2 = new ArrayList<>();
+    private final List<Skill> dealCycle2 = new ArrayList<>();
 
     // 준극딜
-    private List<Skill> dealCycle3 = new ArrayList<>();
+    private final List<Skill> dealCycle3 = new ArrayList<>();
 
-    private List<AttackSkill> attackSkillList = new ArrayList<>(){
+    private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new BattleShipBomber());
             add(new BulletParty());
@@ -57,7 +57,7 @@ public class CaptainDealCycle extends DealCycle {
         }
     };
 
-    private List<AttackSkill> delaySkillList = new ArrayList<>(){
+    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
         {
             add(new AssembleCrewDelay());
             add(new BulletPartyAfterDelay());
@@ -68,7 +68,7 @@ public class CaptainDealCycle extends DealCycle {
         }
     };
 
-    private List<BuffSkill> buffSkillList = new ArrayList<>(){
+    private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new EpicAdventure());
             add(new LuckyDice());
@@ -153,9 +153,9 @@ public class CaptainDealCycle extends DealCycle {
         dealCycle1.add(soulContract);
         dealCycle1.add(restraintRing);
         dealCycle1.add(headShot);
+        dealCycle1.add(deathTrigger);
         dealCycle1.add(nautilusAssaultHull);
         dealCycle1.add(dreadnought);
-        dealCycle1.add(deathTrigger);
         dealCycle1.add(headShot);
         dealCycle1.add(deadEye);
         dealCycle1.add(bulletParty);
@@ -168,8 +168,8 @@ public class CaptainDealCycle extends DealCycle {
         dealCycle2.add(soulContract);
         dealCycle2.add(restraintRing);
         dealCycle2.add(headShot);
-        dealCycle2.add(nautilusAssaultHull);
         dealCycle2.add(deathTrigger);
+        dealCycle2.add(nautilusAssaultHull);
         dealCycle2.add(deadEye);
         dealCycle2.add(bulletParty);
 
@@ -191,7 +191,7 @@ public class CaptainDealCycle extends DealCycle {
         addSkillEvent(luckyDice);
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
 
-        Long clipCount = 49L;
+        Long clipCount = 9L;
         Timestamp spreeEndTime = new Timestamp(-1);
 
         while (getStart().before(getEnd())) {
@@ -218,19 +218,16 @@ public class CaptainDealCycle extends DealCycle {
             if (
                     cooldownCheck(dealCycle1)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && clipCount == 49
             ) {
                 mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addDealCycle(dealCycle1);
             } else if (
                     cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && clipCount == 49
             ) {
                 addDealCycle(dealCycle2);
             } else if (
                     cooldownCheck(dealCycle3)
-                    && clipCount == 49
             ) {
                 addDealCycle(dealCycle3);
             } else if (
@@ -241,7 +238,7 @@ public class CaptainDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(pirateFlag)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime()))
             ) {
                 addSkillEvent(pirateFlag);
             } else if (
@@ -251,12 +248,12 @@ public class CaptainDealCycle extends DealCycle {
                 addSkillEvent(deathTrigger);
             } else if (
                     cooldownCheck(deadEye)
-                    && getStart().before(new Timestamp(untiringNectar.getActivateTime().getTime()))
+                    && getStart().before(new Timestamp(untiringNectar.getActivateTime().getTime() - 25000))
             ) {
                 addSkillEvent(deadEye);
             } else if (
                     cooldownCheck(headShot)
-                    && !cooldownCheck(soulContract)
+                    && !cooldownCheck(untiringNectar)
             ) {
                 addSkillEvent(headShot);
             } else if (
@@ -266,7 +263,7 @@ public class CaptainDealCycle extends DealCycle {
             } else {
                 addSkillEvent(rapidFire);
                 clipCount ++;
-                if (clipCount == 50) {
+                if (clipCount >= 10) {
                     spreeEndTime = new Timestamp(getStart().getTime() + 6000);
                     clipCount = 0L;
                 }
