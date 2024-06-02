@@ -23,7 +23,6 @@
       /><line x1="737" x2="797" y1="100" style="fill:none; stroke:red; stroke-width:4;" y2="100"
       /><line x1="793" x2="853" y1="100" style="fill:none; stroke:red; stroke-width:4;" y2="100"
       /><line x1="852" x2="912" y1="100" style="fill:none; stroke:red; stroke-width:4;" y2="100"
-      /><line x1="909" x2="969" y1="100" style="fill:none; stroke:red; stroke-width:4;" y2="100"
       /><text x="10" xml:space="preserve" y="150" style="stroke-width:4; stroke:none;"
       >히어로즈 오쓰</text
       ><line x1="202" x2="262" y1="150" style="fill:none; stroke-width:4;" y2="150"
@@ -35,10 +34,10 @@
       /><text x="10" xml:space="preserve" y="200" style="stroke-width:4; stroke:none;"
       >럭키 다이스</text
       ><line x1="200" x2="380" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
-      /><line x1="367" x2="547" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
-      /><line x1="534" x2="714" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
-      /><line x1="702" x2="882" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
-      /><line x1="869" x2="1049" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
+      /><line x1="369" x2="549" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
+      /><line x1="537" x2="717" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
+      /><line x1="704" x2="884" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
+      /><line x1="872" x2="1052" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
       /><text x="10" xml:space="preserve" y="250" style="stroke-width:4; stroke:none;"
       >메이플 여신의 축복</text
       ><line x1="202" x2="262" y1="250" style="fill:none; stroke:aqua; stroke-width:4;" y2="250"
@@ -60,7 +59,6 @@
       /><line x1="738" x2="766" y1="300" style="fill:none; stroke:rgb(64,64,64); stroke-width:4;" y2="300"
       /><line x1="796" x2="824" y1="300" style="fill:none; stroke:rgb(64,64,64); stroke-width:4;" y2="300"
       /><line x1="853" x2="881" y1="300" style="fill:none; stroke:rgb(64,64,64); stroke-width:4;" y2="300"
-      /><line x1="910" x2="938" y1="300" style="fill:none; stroke:rgb(64,64,64); stroke-width:4;" y2="300"
       /><text x="10" xml:space="preserve" y="350" style="stroke-width:4; stroke:none;"
       >오버 드라이브(디버프)</text
       ><line x1="205" x2="265" y1="350" style="fill:none; stroke:gray; stroke-width:4;" y2="350"
@@ -75,7 +73,6 @@
       /><line x1="738" x2="798" y1="350" style="fill:none; stroke:gray; stroke-width:4;" y2="350"
       /><line x1="796" x2="856" y1="350" style="fill:none; stroke:gray; stroke-width:4;" y2="350"
       /><line x1="853" x2="913" y1="350" style="fill:none; stroke:gray; stroke-width:4;" y2="350"
-      /><line x1="910" x2="970" y1="350" style="fill:none; stroke:gray; stroke-width:4;" y2="350"
       /><text x="10" xml:space="preserve" y="400" style="stroke-width:4; stroke:none;"
       >프라이어 프리퍼레이션</text
       ><line x1="200" x2="220" y1="400" style="fill:none; stroke:lime; stroke-width:4;" y2="400"
@@ -116,7 +113,6 @@
       /><line x1="736" x2="756" y1="500" style="fill:none; stroke:fuchsia; stroke-width:4;" y2="500"
       /><line x1="795" x2="814" y1="500" style="fill:none; stroke:fuchsia; stroke-width:4;" y2="500"
       /><line x1="852" x2="871" y1="500" style="fill:none; stroke:fuchsia; stroke-width:4;" y2="500"
-      /><line x1="909" x2="928" y1="500" style="fill:none; stroke:fuchsia; stroke-width:4;" y2="500"
       /><text x="10" xml:space="preserve" y="550" style="stroke-width:4; stroke:none;"
       >분혼 격참</text
       ><line x1="211" x2="221" y1="550" style="fill:none; stroke:rgb(255,175,175); stroke-width:4;" y2="550"
@@ -147,7 +143,6 @@
       /><line x1="740" x2="776" y1="650" style="fill:none; stroke:blue; stroke-width:4;" y2="650"
       /><line x1="796" x2="832" y1="650" style="fill:none; stroke:blue; stroke-width:4;" y2="650"
       /><line x1="855" x2="891" y1="650" style="fill:none; stroke:blue; stroke-width:4;" y2="650"
-      /><line x1="912" x2="948" y1="650" style="fill:none; stroke:blue; stroke-width:4;" y2="650"
       /><text x="10" xml:space="preserve" y="700" style="stroke-width:4; stroke:none;"
       >시프 커닝</text
       ><line x1="200" x2="210" y1="700" style="fill:none; stroke:red; stroke-width:4;" y2="700"

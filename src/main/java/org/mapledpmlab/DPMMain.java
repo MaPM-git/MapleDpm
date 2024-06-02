@@ -1,11 +1,16 @@
 package org.mapledpmlab;
 
+import com.aspose.html.HTMLDocument;
+import com.aspose.html.converters.Converter;
+import com.aspose.html.dom.svg.SVGDocument;
+import com.aspose.html.rendering.image.ImageFormat;
+import com.aspose.html.saving.ImageSaveOptions;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.*;
 import org.mapledpmlab.type.dealcycle.*;
 import org.mapledpmlab.type.job.*;
 import org.w3c.dom.DOMImplementation;
@@ -29,7 +34,7 @@ public class DPMMain {
 
     public void init() {
         dealCycleList = new ArrayList<>();
-        //dealCycleList.add(new AdeleDealCycle(new Adele()));
+        dealCycleList.add(new AdeleDealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
@@ -128,7 +133,7 @@ public class DPMMain {
     private static void drawLineGraph(FileWriter writer, List<Long> data) throws IOException {
         // 선 그래프 시작점
         int startX = 50;
-        int startY = 1900;
+        int startY = 450;
 
         // 선 그래프 경로 생성
         StringBuilder path = new StringBuilder();
@@ -325,6 +330,106 @@ public class DPMMain {
                     }
                 }
             }
+
+            DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+            String svgNamespaceURI = "http://www.w3.org/2000/svg";
+            Document document = domImpl.createDocument(svgNamespaceURI, "svg", null);
+
+            // Create an instance of the SVG Generator
+            SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
+
+            // Drawing code
+            drawActivities(svgGenerator, dealCycle);
+
+            // Save the SVG to a file
+            try {
+                OutputStream outputStream = new FileOutputStream(new File("버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
+                Writer out = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+                svgGenerator.stream(out, true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // SVG 파일 생성
+            try {
+                dealCycle.calcDps();
+                FileWriter writer = new FileWriter("딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg");
+
+                // SVG 헤더 작성
+                writer.write("<svg xmlns='http://www.w3.org/2000/svg' width='720' height='500'>");
+
+                // 선 그래프 그리기
+                drawLineGraph(writer, dealCycle.getDpsList());
+
+                // SVG 푸터 작성
+                writer.write("</svg>");
+
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String svgPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg";
+                String pngPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.png";
+
+                SVGDocument svgDocument = new SVGDocument(svgPath);
+                ImageSaveOptions options = new ImageSaveOptions(ImageFormat.Png);
+                Converter.convertSVG(svgDocument, options, pngPath);
+                svgDocument.dispose();
+
+                pngPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프_1.png";
+                InputStream is = new FileInputStream(pngPath);
+                byte[] bytes = IOUtils.toByteArray(is);
+
+                xssfWorkbook.addPicture(is, XSSFWorkbook.PICTURE_TYPE_PNG);
+                int picIdx = xssfWorkbook.addPicture(bytes, XSSFWorkbook.PICTURE_TYPE_PNG);
+                is.close();
+
+                XSSFCreationHelper helper = xssfWorkbook.getCreationHelper();
+                XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
+                XSSFClientAnchor anchor = helper.createClientAnchor();
+
+                // 이미지 출력할 cell 위치
+                anchor.setRow1(colNum + 10);
+                anchor.setCol1(3);
+                // 이미지 그리기
+                XSSFPicture pic = drawing.createPicture(anchor, picIdx);
+                pic.resize();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String svgPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg";
+                String pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.png";
+
+                SVGDocument svgDocument = new SVGDocument(svgPath);
+                ImageSaveOptions options = new ImageSaveOptions(ImageFormat.Png);
+                Converter.convertSVG(svgDocument, options, pngPath);
+                svgDocument.dispose();
+
+                pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간_1.png";
+                InputStream is = new FileInputStream(pngPath);
+                byte[] bytes = IOUtils.toByteArray(is);
+
+                xssfWorkbook.addPicture(is, XSSFWorkbook.PICTURE_TYPE_PNG);
+                int picIdx = xssfWorkbook.addPicture(bytes, XSSFWorkbook.PICTURE_TYPE_PNG);
+                is.close();
+
+                XSSFCreationHelper helper = xssfWorkbook.getCreationHelper();
+                XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
+                XSSFClientAnchor anchor = helper.createClientAnchor();
+
+                // 이미지 출력할 cell 위치
+                anchor.setRow1(colNum + 10);
+                anchor.setCol1(0);
+                // 이미지 그리기
+                XSSFPicture pic = drawing.createPicture(anchor, picIdx);
+                pic.resize();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         xssfSheet = xssfWorkbook.createSheet("DPM");
@@ -368,12 +473,12 @@ public class DPMMain {
         row.setHeightInPoints(100.0f);
         xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 6));
         Cell cell = row.createCell(0);
-        cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 정옵 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성, 주흔작 / 펫장비 프펫공, 프악마 / " +
-                "\n예티X핑크빈 칭호 / 모자 쿨감뚝일 경우 2초 + 18%, 에디 1초 + 6% / 유니온 8500 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / " +
-                "\n캐릭터레벨 275 / 아케인포스 1320, 어센틱포스 200 / 유니온 아티팩트 만렙 / 길드스킬 45포인트 / " +
+        cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 한줄 이탈 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성, 주흔작 / 펫장비 프펫공, 프악마 / " +
+                "\n예티X핑크빈 칭호 / 유니온 8500 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / " +
+                "\n캐릭터레벨 285 / 아케인포스 1320, 어센틱포스 660 / 유니온 아티팩트 만렙 / 길드스킬 60포인트 / " +
                 "\n영메, 반빨별, 장비 명장, 익스트림 레드 및 블루, 길축, 우뿌, 유힘, 슈퍼파워, 붕뿌, 향산된 10단계 물약 / 어빌 레유유 최대옵션 / " +
-                "\n리레 4렙, 웨퍼 4렙 사용(스위칭) / 리레딜은 6차 포함하여 측정 / 최종뎀 고려 X / 히어로, 팔라딘 - 두손검 착용 / 마법사 및 섀도어 20성 방패 착용 / " +
-                "\n듀얼블레이드 22성 아케인 블레이드 착용, 데몬 직업군 루포실 착용 / 하이퍼 스킬은 사냥기를 제외하고 선택 / 몬스터 방어율 300% / 렙뻥, 포뻥 미적용");
+                "\n리레 4렙, 웨퍼 4렙 사용(스위칭) / 리레딜은 6차 포함하여 측정 / 히어로, 팔라딘 - 두손검 착용 / 마법사 및 섀도어 20성 방패 착용 / " +
+                "\n듀얼블레이드 22성 아케인 블레이드 착용, 데몬 직업군 루인포스실드 착용 / 하이퍼 스킬은 사냥기를 제외하고 선택 / 몬스터 방어율 380% / 렙뻥, 포뻥 미적용");
         cell.setCellStyle(cellStyle);
         cell = row.createCell(1);
         cell.setCellStyle(cellStyle);

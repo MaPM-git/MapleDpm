@@ -29,9 +29,10 @@
       /><line x1="717" x2="777" y1="150" style="fill:none; stroke-width:4;" y2="150"
       /><text x="10" xml:space="preserve" y="200" style="stroke-width:4; stroke:none;"
       >조커(모래시계)</text
-      ><text x="10" xml:space="preserve" y="250" style="stroke-width:4; stroke:none;"
+      ><line x1="561" x2="591" y1="200" style="fill:none; stroke:rgb(255,200,0); stroke-width:4;" y2="200"
+      /><text x="10" xml:space="preserve" y="250" style="stroke-width:4; stroke:none;"
       >조커(날카로운 검)</text
-      ><line x1="561" x2="591" y1="250" style="fill:none; stroke:aqua; stroke-width:4;" y2="250"
+      ><line x1="217" x2="247" y1="250" style="fill:none; stroke:aqua; stroke-width:4;" y2="250"
       /><text x="10" xml:space="preserve" y="300" style="stroke-width:4; stroke:none;"
       >메이플 여신의 축복</text
       ><line x1="200" x2="260" y1="300" style="fill:none; stroke:rgb(64,64,64); stroke-width:4;" y2="300"

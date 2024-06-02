@@ -332,8 +332,7 @@ public class ShadowerDealCycle extends DealCycle {
         }
         if (
                 getStart().before(smokeBombEndTime)
-                && (skill instanceof Heartbreaker
-                || skill instanceof HeartbreakerCancle)
+                && skill instanceof Heartbreaker
         ) {
             skill.setCooldown(3.2);
             applyCooldown(skill);
