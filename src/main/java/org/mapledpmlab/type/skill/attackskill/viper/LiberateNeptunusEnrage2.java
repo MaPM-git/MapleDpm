@@ -8,8 +8,7 @@ public class LiberateNeptunusEnrage2 extends AttackSkill {
         this.setAttackCount(13L);
         this.setDamage(1800.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new LiberateNeptunusEnrage3());
         this.getMultiAttackInfo().add(540L);
     }

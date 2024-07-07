@@ -88,24 +88,18 @@ public class DemonAvenger extends Job {
 
         // 5차
         this.addHp(1500L);              // 바디 오브 스틸
-        //this.addFinalDamage(1.2);       // 데몬 프렌지
         this.addMainStatP(40L);         // 쓸만한 하이퍼 바디
         this.addHp(475L);               // 쓸만한 어드밴스드 블레스
 
         // 환산 보정
-        this.addMainStatP(47L);
-        this.addAtt(9L);
-        this.addMainStat(-45L);
-
-        // 환산 보정 85519
-        //this.addMainStatP(48L);
-        //this.addAtt(6L);
+        this.addMainStatP(84L);
+        this.addAtt(2L);
+        this.addMainStat(-30L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new IronWill());
         this.getLinkList().add(new PhantomInstinct());
-        this.getLinkList().add(new Noblesse());
         this.setUnion(new DemonAvengerUnion());
 
         this.addObject(this.getAbility());
@@ -175,7 +169,7 @@ public class DemonAvenger extends Job {
             attMagicP = this.getMagicP();
         }
         Object[] result = new Object[]{
-                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
                 this.getFinalHp(), this.getFinalHpHyperBodyX(), this.getAp(),
                 this.getStr(), "X", this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),

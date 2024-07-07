@@ -9,5 +9,6 @@ public class EverPsychicFinish extends AttackSkill {
         this.setAttackCount(1L);
         this.getMultiAttackInfo().add(6900L - 60);
         this.addIgnoreDefenseList(50L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

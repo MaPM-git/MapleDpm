@@ -10,8 +10,7 @@ public class Eternity extends AttackSkill {
         this.setDelay(5070L);
         this.setDamage(2100.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new EternityCirculation());
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(30L);

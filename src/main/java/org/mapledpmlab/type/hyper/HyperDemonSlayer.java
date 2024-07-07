@@ -14,19 +14,6 @@ public class HyperDemonSlayer extends Hyper {
             point = 1518 + 18 * (level % 10);
         }
 
-        /*if (criticalP <= 70) {
-        } else if (criticalP < 100) {
-            Long reqCriticalP = (long) (100 - criticalP);
-            if (reqCriticalP <= 5) {
-                point -= reqPoint[Math.toIntExact(reqCriticalP)];
-                this.addCriticalP(Double.valueOf(reqCriticalP));
-            } else {
-                Long reqLevel = 5L;
-                point -= reqPoint[(int) (reqLevel + Math.ceil((reqCriticalP - 5) / 2.0))];
-                this.addCriticalP(5.0 + Math.ceil((reqCriticalP - 5) / 2.0) * 2);
-            }
-        }*/
-
         this.addBossDamage(51L);
         point -= 440L;
         this.addCriticalDamage(12.0);
@@ -77,7 +64,8 @@ public class HyperDemonSlayer extends Hyper {
                 "\n5.몬스터 방어율 무시 : " + this.getIgnoreDefense() + "%" +
                 "\n6.공격력/마력 : " + this.getAtt() +
                 "\n7.주스탯(%미적용) : " + this.getPerXMainStat() +
-                "\n8.부스탯(%미적용) : " + this.getPerXSubStat()
+                "\n8.부스탯(%미적용) : " + this.getPerXSubStat() +
+                "\n9.DF : 40"
         );
     }
 }

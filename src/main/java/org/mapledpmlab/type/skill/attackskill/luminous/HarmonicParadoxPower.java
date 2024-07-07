@@ -9,8 +9,8 @@ public class HarmonicParadoxPower extends AttackSkill {
         this.setDamage(1538.0);
         this.setDelay(5280L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
+        this.addFinalDamage(1.08);  // 오버로드 마나
         this.getMultiAttackInfo().add(2400L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

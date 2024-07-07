@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.kinesis.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -11,18 +12,11 @@ import org.mapledpmlab.type.skill.buffskill.kinesis.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class KinesisDealCycle extends DealCycle {
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -38,6 +32,7 @@ public class KinesisDealCycle extends DealCycle {
             add(new LawOfGravityPull3());
             add(new LawOfGravityPull4());
             add(new LawOfGravityPull5());
+            add(new LawOfGravityFinish());
             add(new OtherWorldVoid());
             add(new PsychicDrain());
             add(new PsychicGrab());
@@ -61,22 +56,16 @@ public class KinesisDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new OtherWorldGoddessBlessing());
-            add(new OtherworldlyAfterimage(275));
-            add(new PriorPreparation());
+            add(new OtherworldlyAfterimage(Math.toIntExact(getJob().getLevel())));
             add(new PsychicCharge());
             add(new PsychicGroundBuff());
             add(new PsychicOver());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new UltimateMaterialBuff());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
@@ -92,11 +81,12 @@ public class KinesisDealCycle extends DealCycle {
     Timestamp psychicOverEndTime = new Timestamp(-1);
     Timestamp blessEndTime = new Timestamp(-1);
 
+    List<Timestamp> drainTime = new ArrayList<>();
+
     public KinesisDealCycle(Job job) {
         super(job, new Telekinesis());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AnotherRealm anotherRealm = new AnotherRealm();
@@ -104,8 +94,7 @@ public class KinesisDealCycle extends DealCycle {
         EverPsychic everPsychic = new EverPsychic();
         LawOfGravity lawOfGravity = new LawOfGravity();
         OtherWorldGoddessBlessing otherWorldGoddessBlessing = new OtherWorldGoddessBlessing();
-        OtherworldlyAfterimage otherworldlyAfterimage = new OtherworldlyAfterimage(275);
-        PriorPreparation priorPreparation = new PriorPreparation();
+        OtherworldlyAfterimage otherworldlyAfterimage = new OtherworldlyAfterimage(Math.toIntExact(getJob().getLevel()));
         PsychicCharge psychicCharge = new PsychicCharge();
         PsychicDrain psychicDrain = new PsychicDrain();
         PsychicGrab psychicGrab = new PsychicGrab();
@@ -118,7 +107,6 @@ public class KinesisDealCycle extends DealCycle {
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         UltimateBPM ultimateBPM = new UltimateBPM();
         UltimateMaterial ultimateMaterial = new UltimateMaterial();
         UltimateMovingMatter ultimateMovingMatter = new UltimateMovingMatter();
@@ -127,129 +115,80 @@ public class KinesisDealCycle extends DealCycle {
         UltimateTrain ultimateTrain = new UltimateTrain();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ultimateBPMTic.setActivateTime(new Timestamp(600));
 
+        otherWorldGoddessBlessing.setCooldown(120.0);
+
         ringSwitching.setCooldown(90.0);
-
-        dealCycle1.add(ultimateMaterial);
-        dealCycle1.add(psychicGround);
-        dealCycle1.add(psychicDrain);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(otherworldlyAfterimage);
-        dealCycle1.add(otherWorldGoddessBlessing);
-        dealCycle1.add(psychicOver);
-        dealCycle1.add(psychicTornado);         // 720
-        dealCycle1.add(ultimateMovingMatter);   // 630
-        dealCycle1.add(lawOfGravity);           // 960
-        dealCycle1.add(ultimateTrain);          // 630
-        dealCycle1.add(soulContract);
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(restraintRing);          // 30
-        dealCycle1.add(anotherRealm);           // 7920
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(ultimateMaterial);       // 630
-        dealCycle1.add(psychicTornadoThrow);
-
-        dealCycle2.add(ultimateMaterial);
-        dealCycle2.add(psychicGround);
-        dealCycle2.add(psychicDrain);
-        dealCycle2.add(otherworldlyAfterimage);
-        dealCycle2.add(otherWorldGoddessBlessing);
-        dealCycle2.add(psychicOver);
-        dealCycle2.add(psychicTornado);         // 720
-        dealCycle2.add(ultimateMovingMatter);   // 630
-        dealCycle2.add(lawOfGravity);           // 960
-        dealCycle2.add(ultimateTrain);          // 630
-        dealCycle2.add(soulContract);
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(restraintRing);          // 30   //7380
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(ultimateMaterial);       // 630
-        dealCycle2.add(psychicTornadoThrow);    // 2520
-
-        dealCycle3.add(everPsychic);
-        dealCycle3.add(ultimateMaterial);
-        dealCycle3.add(ultimateMovingMatter);
-        dealCycle3.add(ultimateTrain);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(weaponJumpRing);
 
         addSkillEvent(ultimateBPM);
         while (getStart().before(getEnd())) {
             if (
-                    getStart().after(blessEndTime)
-                    && (
-                            (
-                                    getStart().before(new Timestamp(60 * 1000))
-                            ) || (
-                                    getStart().after(new Timestamp(380 * 1000))
-                                    && getStart().before(new Timestamp(420 * 1000))
-                            ) || (
-                                    getStart().after(new Timestamp(560 * 1000))
-                                    && getStart().before(new Timestamp(620 * 1000))
-                            )
-                    )
+                    /*psychicPoint > 6
+                    && */getStart().before(new Timestamp(10 * 60 * 1000))
+                    && cooldownCheck(psychicGround)
+                    && cooldownCheck(psychicDrain)
+                    && cooldownCheck(otherWorldGoddessBlessing)
+                    && cooldownCheck(psychicOver)
+                    && cooldownCheck(psychicTornado)
+                    && cooldownCheck(ultimateMovingMatter)
+                    && cooldownCheck(lawOfGravity)
+                    //&& cooldownCheck(ultimateTrain)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
             ) {
+                if (
+                        cooldownCheck(psychicCharge)
+                        && psychicPoint <= 20
+                ) {
+                    addSkillEvent(psychicCharge);
+                }
+                addSkillEvent(psychicGround);
+                addSkillEvent(psychicDrain);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                }
+                addSkillEvent(otherworldlyAfterimage);
+                if (
+                        getStart().after(new Timestamp(2 * 60 * 1000))
+                        && getStart().before(new Timestamp(4 * 60 * 1000))
+                ) {
+                    otherWorldGoddessBlessing.setCooldown(90.0);
+                } else if (getStart().after(new Timestamp(8 * 60 * 1000))) {
+                    otherWorldGoddessBlessing.setCooldown(90.0);
+                } else {
+                    otherWorldGoddessBlessing.setCooldown(120.0);
+                }
                 addSkillEvent(otherWorldGoddessBlessing);
-            }
-            if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-                    && psychicPoint > 6
-            ) {
-                addDealCycle(dealCycle1);
+                addSkillEvent(psychicOver);
+                addSkillEvent(psychicTornado);
+                addSkillEvent(ultimateMovingMatter);
+                addSkillEvent(lawOfGravity);
+                //addSkillEvent(ultimateTrain);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                if (cooldownCheck(anotherRealm)) {
+                    addSkillEvent(anotherRealm);
+                }
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-                    && psychicPoint > 6
+                    cooldownCheck(everPsychic)
+                    && cooldownCheck(ultimateMovingMatter)
+                    //&& cooldownCheck(ultimateTrain)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(weaponJumpRing)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
+                if (cooldownCheck(otherWorldGoddessBlessing)) {
+                    addSkillEvent(otherWorldGoddessBlessing);
+                }
+                addSkillEvent(everPsychic);
+                addSkillEvent(ultimateMovingMatter);
+                //addSkillEvent(ultimateTrain);
+                addSkillEvent(soulContract);
+                addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -309,6 +248,18 @@ public class KinesisDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             return;
         }
+        if (drainTime.size() > 0) {
+            for (int i = 0; i < drainTime.size(); i++) {
+                if (drainTime.get(i).before(getStart())) {
+                    drainTime.remove(i);
+                    i--;
+                    psychicPoint += 1;
+                    if (psychicPoint > 40) {
+                        psychicPoint = 40;
+                    }
+                }
+            }
+        }
         if (
                 getStart().before(psychicOverEndTime)
                 && cooldownCheck(psychicOverTic)
@@ -316,15 +267,15 @@ public class KinesisDealCycle extends DealCycle {
             psychicPoint ++;
             psychicOverTic.setActivateTime(new Timestamp(psychicOverTic.getActivateTime().getTime() + 750));
         }
-        if (cooldownCheck(psychicDrainTic)) {
+        if (cooldownCheck(ultimateBPMTic)) {
+            psychicPoint -= 1;
             Long ran = (long) (Math.random() * 99 + 1);
             if (ran <= 40) {
                 psychicPoint += 1;
+                if (psychicPoint > 40) {
+                    psychicPoint = 40;
+                }
             }
-            psychicDrainTic.setActivateTime(new Timestamp(psychicDrainTic.getActivateTime().getTime() + 500));
-        }
-        if (cooldownCheck(ultimateBPMTic)) {
-            psychicPoint -= 1;
             ultimateBPMTic.setActivateTime(new Timestamp(ultimateBPMTic.getActivateTime().getTime() + 600));
         }
         if (skill instanceof BuffSkill) {
@@ -351,6 +302,17 @@ public class KinesisDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -359,7 +321,30 @@ public class KinesisDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    skill instanceof UltimateTrain
+                    || skill instanceof UltimatePsychicShoot
+                    || skill instanceof UltimatePsychicBullet
+                    || skill instanceof CrestOfTheSolar
+                    || skill instanceof SpiderInMirror
+                    || skill instanceof LawOfGravity
+                    || skill instanceof LawOfGravityPull1
+                    || skill instanceof PsychicSmashing
+                    || skill instanceof UltimateMaterial
+            ) {
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 40) {
+                    psychicPoint += 1;
+                    if (((AttackSkill) skill).isApplyFinalAttack()) {
+                        psychicPoint += 1;
+                    }
+                    if (psychicPoint > 40) {
+                        psychicPoint = 40;
+                    }
+                }
+            }
             if (skill instanceof PsychicDrain) {
+                psychicPoint += 1;
                 psychicDrainTic.setActivateTime(new Timestamp(getStart().getTime() + 500));
             }
             if (skill instanceof PsychicSmashing) {
@@ -368,10 +353,7 @@ public class KinesisDealCycle extends DealCycle {
                 psychicPoint += 1;
             }
             if (getStart().before(psychicOverEndTime)) {
-                if (
-                        skill instanceof EverPsychic
-                        || skill instanceof UltimatePsychicBullet
-                ) {
+                if (skill instanceof UltimatePsychicBullet) {
                     psychicPoint -= 1;
                 } else if (skill instanceof LawOfGravity) {
                     psychicPoint -= 2;
@@ -388,11 +370,8 @@ public class KinesisDealCycle extends DealCycle {
                     psychicPoint -= 7;
                 }
             } else {
-                if (
-                        skill instanceof EverPsychic
-                        || skill instanceof UltimatePsychicBullet
-                ) {
-                    psychicPoint -= 2;
+                if (skill instanceof UltimatePsychicBullet) {
+                    psychicPoint -= 3;
                 } else if (skill instanceof LawOfGravity) {
                     psychicPoint -= 5;
                 } else if (skill instanceof UltimatePsychicShoot) {
@@ -428,6 +407,23 @@ public class KinesisDealCycle extends DealCycle {
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        if (skill instanceof OtherWorldVoid) {
+                            Long ran = 0L;
+                            ran = (long) (Math.random() * 99 + 1);
+                            if (ran >= 75) {
+                                for (int drain = 0; drain < 12; drain ++) {
+                                    drainTime.add(new Timestamp(getStart().getTime() + i));
+                                }
+                                continue;
+                            } else if (ran >= 25) {
+                                continue;
+                            } else {
+                                ran = (long) (Math.random() * 99 + 1);
+                                if (ran <= 40) {
+                                    drainTime.add(new Timestamp(getStart().getTime() + i));
+                                }
+                            }
+                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -448,6 +444,20 @@ public class KinesisDealCycle extends DealCycle {
                             skill = new UltimateTrain();
                             for (int j = 0; j < attackCount; j++) {
                                 ((UltimateTrain) skill).setDamage(((UltimateTrain) skill).getDamage() - 5);
+                            }
+                        }
+                        if (
+                                skill instanceof UltimateMovingMatter
+                                || skill instanceof PsychicTornado
+                                || skill instanceof LawOfGravityPull5
+                                || skill instanceof EverPsychic
+                        ) {
+                            Long ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= 40) {
+                                if (((AttackSkill) skill).isApplyFinalAttack()) {
+                                    drainTime.add(new Timestamp(getStart().getTime() + i));
+                                }
+                                drainTime.add(new Timestamp(getStart().getTime() + i));
                             }
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -476,39 +486,39 @@ public class KinesisDealCycle extends DealCycle {
     }
 
     @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            if (
+                    skill instanceof UltimateMovingMatterExtinction
+                    || skill instanceof PsychicTornadoBomb
+                    || skill instanceof PsychicTornadoThrow
+                    || skill instanceof LawOfGravityFinish
+                    || skill instanceof LawOfGravityPull2
+                    || skill instanceof LawOfGravityPull3
+                    || skill instanceof LawOfGravityPull4
+                    || skill instanceof EverPsychicFinish
+                    || skill instanceof AnotherRealm
+                    || skill instanceof AnotherRealmBomb
+            ) {
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 40) {
+                    if (((AttackSkill) skill).isApplyFinalAttack()) {
+                        drainTime.add(new Timestamp(getStart().getTime() + sum));
+                    }
+                    drainTime.add(new Timestamp(getStart().getTime() + sum));
+                }
+            }
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
+    }
+
+    @Override
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        if (
-                attackSkill instanceof AnotherRealm
-                || attackSkill instanceof AnotherRealmBomb
-                || attackSkill instanceof EverPsychic
-                || attackSkill instanceof EverPsychicFinish
-                || attackSkill instanceof LawOfGravity
-                || attackSkill instanceof LawOfGravityPull1
-                || attackSkill instanceof LawOfGravityPull2
-                || attackSkill instanceof LawOfGravityPull3
-                || attackSkill instanceof LawOfGravityPull4
-                || attackSkill instanceof LawOfGravityPull5
-                || attackSkill instanceof PsychicDrain
-                || attackSkill instanceof PsychicGrab
-                || attackSkill instanceof PsychicGround
-                || attackSkill instanceof PsychicSmashing
-                || attackSkill instanceof PsychicTornado
-                || attackSkill instanceof PsychicTornadoBomb
-                || attackSkill instanceof PsychicTornadoThrow
-                || attackSkill instanceof PsychoMetry
-                || attackSkill instanceof UltimateBPM
-                || attackSkill instanceof UltimateMaterial
-                || attackSkill instanceof UltimateMovingMatter
-                || attackSkill instanceof UltimateMovingMatterExtinction
-                || attackSkill instanceof UltimatePsychicBullet
-                || attackSkill instanceof UltimatePsychicBulletBlackHole
-                || attackSkill instanceof UltimatePsychicShoot
-                || attackSkill instanceof UltimateTrain
-        ) {
-            buffSkill.addBuffFinalDamage(1.08);
-        }
         for (AttackSkill as : getAttackSkillList()) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 if (
@@ -527,23 +537,27 @@ public class KinesisDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                        + getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((getJob().getMagic() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((getJob().getMagic() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
@@ -571,36 +585,6 @@ public class KinesisDealCycle extends DealCycle {
                 }
                 break;
             }
-        }
-        if (
-                attackSkill instanceof AnotherRealm
-                        || attackSkill instanceof AnotherRealmBomb
-                        || attackSkill instanceof EverPsychic
-                        || attackSkill instanceof EverPsychicFinish
-                        || attackSkill instanceof LawOfGravity
-                        || attackSkill instanceof LawOfGravityPull1
-                        || attackSkill instanceof LawOfGravityPull2
-                        || attackSkill instanceof LawOfGravityPull3
-                        || attackSkill instanceof LawOfGravityPull4
-                        || attackSkill instanceof LawOfGravityPull5
-                        || attackSkill instanceof PsychicDrain
-                        || attackSkill instanceof PsychicGrab
-                        || attackSkill instanceof PsychicGround
-                        || attackSkill instanceof PsychicSmashing
-                        || attackSkill instanceof PsychicTornado
-                        || attackSkill instanceof PsychicTornadoBomb
-                        || attackSkill instanceof PsychicTornadoThrow
-                        || attackSkill instanceof PsychoMetry
-                        || attackSkill instanceof UltimateBPM
-                        || attackSkill instanceof UltimateMaterial
-                        || attackSkill instanceof UltimateMovingMatter
-                        || attackSkill instanceof UltimateMovingMatterExtinction
-                        || attackSkill instanceof UltimatePsychicBullet
-                        || attackSkill instanceof UltimatePsychicBulletBlackHole
-                        || attackSkill instanceof UltimatePsychicShoot
-                        || attackSkill instanceof UltimateTrain
-        ) {
-            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

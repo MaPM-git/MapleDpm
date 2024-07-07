@@ -1,6 +1,5 @@
 package org.mapledpmlab;
 
-import com.aspose.html.HTMLDocument;
 import com.aspose.html.converters.Converter;
 import com.aspose.html.dom.svg.SVGDocument;
 import com.aspose.html.rendering.image.ImageFormat;
@@ -36,14 +35,15 @@ public class DPMMain {
         dealCycleList = new ArrayList<>();
         dealCycleList.add(new AdeleDealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
-        dealCycleList.add(new AranDealCycle(new Aran()));
+        //dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
         dealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
         dealCycleList.add(new ArkDealCycle(new Ark()));
         dealCycleList.add(new BattleMageDealCycle(new BattleMage()));
         dealCycleList.add(new Bishop2DealCycle(new Bishop()));
         dealCycleList.add(new Bishop3DealCycle(new Bishop()));
-        dealCycleList.add(new BlasterDealCycle(new Blaster()));
+        dealCycleList.add(new Blaster440DealCycle(new Blaster()));
+        dealCycleList.add(new Blaster520DealCycle(new Blaster()));
         dealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
         dealCycleList.add(new CadenaDealCycle(new Cadena()));
         dealCycleList.add(new CannonShooterDealCycle(new CannonShooter()));
@@ -53,7 +53,7 @@ public class DPMMain {
         dealCycleList.add(new DemonAvenger30DealCycle(new DemonAvenger()));
         dealCycleList.add(new DemonSlayerDealCycle(new DemonSlayer()));
         dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
-        dealCycleList.add(new EunwolDealCycle(new Eunwol()));
+        //dealCycleList.add(new EunwolDealCycle(new Eunwol()));
         dealCycleList.add(new EvanDealCycle(new Evan()));
         dealCycleList.add(new FlameWizardDealCycle(new FlameWizard()));
         dealCycleList.add(new HeroDealCycle(new Hero()));
@@ -83,12 +83,25 @@ public class DPMMain {
         dealCycleList.add(new XenonDealCycle(new Xenon()));
         dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         dealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
+        /*for (DealCycle dealCycle : dealCycleList) {
+            if (dealCycle instanceof ZeroDealCycle) {
+                ((ZeroDealCycle) dealCycle).getJob();
+                dealCycle.getJobInfo();
+                break;
+            }
+        }*/
         this.exportExcel();
         //this.exportSVG();
     }
 
     private void exportSVG() {
         for (DealCycle dealCycle : dealCycleList) {
+            if (dealCycle.getJob().getName().equals("제로 - 알파")) {
+                continue;
+            }
+            if (dealCycle.getJob().getName().equals("제로 - 베타")) {
+                dealCycle.getJob().setName("제로");
+            }
             DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
             String svgNamespaceURI = "http://www.w3.org/2000/svg";
             Document document = domImpl.createDocument(svgNamespaceURI, "svg", null);
@@ -256,6 +269,12 @@ public class DPMMain {
         }
 
         for (DealCycle dealCycle : dealCycleList) {
+            if (dealCycle.getJob().getName().equals("제로 - 알파")) {
+                continue;
+            }
+            if (dealCycle.getJob().getName().equals("제로 - 베타")) {
+                dealCycle.getJob().setName("제로");
+            }
             xssfSheet = xssfWorkbook.createSheet(dealCycle.getJob().getName());
             xssfSheet.setDefaultColumnWidth(50);
             dealCycle.applyDoping();
@@ -265,11 +284,11 @@ public class DPMMain {
                     "유니온", "링크", "하이퍼스탯", "아티팩트", "어빌리티"
             });
             data.put("02", new Object[]{
-                    dealCycle.getJob().getUnion().getDescription(),
+                    dealCycle.getJob().getUnion().getDescription() + dealCycle.getJob().getUnion(),
                     dealCycle.getJob().getLinkListStr(),
-                    dealCycle.getJob().getHyper().getDescription(),
-                    dealCycle.getJob().getArtifact().getDescription(),
-                    dealCycle.getJob().getAbility().getDescription()
+                    dealCycle.getJob().getHyper().getDescription() + dealCycle.getJob().getHyper(),
+                    dealCycle.getJob().getArtifact().getDescription() + dealCycle.getJob().getArtifact(),
+                    dealCycle.getJob().getAbility().getDescription() + dealCycle.getJob().getAbility()
             });
 
             int colNum = 3;
@@ -293,22 +312,11 @@ public class DPMMain {
             colNum = colNum + 1;
 
             data.put(String.valueOf(colNum), new Object[]{
-                    "공격스킬이름", "", "", "", "기타정보"
-            });
-
-            colNum = colNum + 1;
-            for (int i = colNum; i < dealCycle.getDelaySkillList().size() + colNum; i++) {
-                data.put(String.valueOf(i), dealCycle.getDelaySkillList().get(i - colNum).getOpject());
-            }
-            colNum = colNum + dealCycle.getDelaySkillList().size();
-            data.put(String.valueOf(colNum), new Object[]{});
-            colNum = colNum + 1;
-            data.put(String.valueOf(colNum), new Object[]{
-                    "버프스킬이름", "", "", "", "기타정보"
+                    "버프스킬이름", "사용횟수", "시작 시간", "종료 시간", "기타정보"
             });
             colNum = colNum + 1;
             for (int i = colNum; i < dealCycle.getBuffSkillList().size() + colNum; i++) {
-                data.put(String.valueOf(i), dealCycle.getBuffSkillList().get(i - colNum).getOpject());
+                data.put(String.valueOf(i), dealCycle.getBuffSkillList().get(i - colNum).getObject());
             }
 
             keyset = data.keySet();
@@ -437,9 +445,15 @@ public class DPMMain {
 
         data = new TreeMap<>();
         data.put("1", new Object[]{
-                "직업이름", "DPM", "DPM 배율", "리스트레인트링딜", "리스트레인트링딜 배율", "40초 딜", "40초딜 배율"
+                "직업이름", "DPM", "DPM 배율", "리스트레인트링딜", "리스트레인트링딜 배율", "40초 딜", "40초딜 배율", "오리진X 리레딜", "오리진X 리레딜 배율"
         });
         for (int i = 0; i < dealCycleList.size(); i++) {
+            if (dealCycleList.get(i).getJob().getName().equals("제로 - 알파")) {
+                continue;
+            }
+            if (dealCycleList.get(i).getJob().getName().equals("제로 - 베타")) {
+                dealCycleList.get(i).getJob().setName("제로");
+            }
             data.put(String.valueOf(i + 2), dealCycleList.get(i).getObject());
         }
 
@@ -471,11 +485,11 @@ public class DPMMain {
 
         Row row = xssfSheet.createRow(rownum);
         row.setHeightInPoints(100.0f);
-        xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 6));
+        xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 8));
         Cell cell = row.createCell(0);
-        cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 한줄 이탈 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성, 주흔작 / 펫장비 프펫공, 프악마 / " +
-                "\n예티X핑크빈 칭호 / 유니온 8500 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / " +
-                "\n캐릭터레벨 285 / 아케인포스 1320, 어센틱포스 660 / 유니온 아티팩트 만렙 / 길드스킬 60포인트 / " +
+        cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 한줄 이탈 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성, 주흔작 / 펫장비 프펫공, 프펫마 / " +
+                "\n예티X핑크빈 칭호 / 유니온 8500 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / 헥사 풀강 / 동일 환산 / " +
+                "\n캐릭터레벨 285 / 아케인포스 1320, 어센틱포스 660 / 유니온 아티팩트 54렙 / 길드스킬 60포인트 / 대형몹 / " +
                 "\n영메, 반빨별, 장비 명장, 익스트림 레드 및 블루, 길축, 우뿌, 유힘, 슈퍼파워, 붕뿌, 향산된 10단계 물약 / 어빌 레유유 최대옵션 / " +
                 "\n리레 4렙, 웨퍼 4렙 사용(스위칭) / 리레딜은 6차 포함하여 측정 / 히어로, 팔라딘 - 두손검 착용 / 마법사 및 섀도어 20성 방패 착용 / " +
                 "\n듀얼블레이드 22성 아케인 블레이드 착용, 데몬 직업군 루인포스실드 착용 / 하이퍼 스킬은 사냥기를 제외하고 선택 / 몬스터 방어율 380% / 렙뻥, 포뻥 미적용");
@@ -491,6 +505,10 @@ public class DPMMain {
         cell = row.createCell(5);
         cell.setCellStyle(cellStyle);
         cell = row.createCell(6);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(7);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(8);
         cell.setCellStyle(cellStyle);
 
         try {

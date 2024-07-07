@@ -9,8 +9,7 @@ public class ChainArtsMassacre2 extends AttackSkill {
         this.setDelay(1080L);
         this.setDamage(730.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new ChainArtsMassacre3());
         this.getMultiAttackInfo().add(600L);
         this.getMultiAttackInfo().add(30L);

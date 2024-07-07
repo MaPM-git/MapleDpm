@@ -12,5 +12,6 @@ public class ChainLightningElectric extends ThunderAttack {
         this.setAddDamage(20L);             // 체인 라이트닝-리인포스
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

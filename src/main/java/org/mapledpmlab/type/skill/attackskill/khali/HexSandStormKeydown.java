@@ -8,8 +8,7 @@ public class HexSandStormKeydown extends AttackSkill implements HexSkill {
         this.setAttackCount(15L);
         this.setDamage(770.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setDotDuration(2700L);
         this.setInterval(90L);
         this.setLimitAttackCount(30L);

@@ -9,8 +9,7 @@ public class MysticEnergyApotheosisFinish extends AttackSkill {
         this.setDamage(1077.0);
         this.setDelay(2880L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

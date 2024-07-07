@@ -16,20 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DemonSlayerDealCycle extends DealCycle {
-    /*
-     */
-
-    // 메용2, 6차, 리레, 스인미, 크오솔
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 메용2, 6차, 웨폰퍼프
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 메용2, 리레, 스인미, 코오솔
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    // 메용2, 웨폰퍼프
-    private final List<Skill> dealCycle4 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -37,6 +23,7 @@ public class DemonSlayerDealCycle extends DealCycle {
             add(new Cerburus());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
+            add(new DemonBaneStartDelay());
             add(new DemonBane1());
             add(new DemonBane2());
             add(new DemonicSphere());
@@ -67,12 +54,6 @@ public class DemonSlayerDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new DemonBaneStartDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
@@ -83,10 +64,9 @@ public class DemonSlayerDealCycle extends DealCycle {
             add(new NightmareTerritory());
             add(new Orthrus());
             add(new OtherWorldGoddessBlessing());
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new WeaponJumpRing(707L));
         }
     };
@@ -105,7 +85,6 @@ public class DemonSlayerDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
@@ -126,12 +105,10 @@ public class DemonSlayerDealCycle extends DealCycle {
         NightmareJudgement nightmareJudgement = new NightmareJudgement();
         Orthrus orthrus = new Orthrus();
         OtherWorldGoddessBlessing otherWorldGoddessBlessing = new OtherWorldGoddessBlessing();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         for (int i = 0; i < 720 * 1000; i += metamorphosis.getInterval()) {
@@ -144,172 +121,82 @@ public class DemonSlayerDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(130.0);
 
-        // 1-4-3-2-3-4
-        // 메용2, 6차, 리레, 스인미, 크오솔
-        dealCycle1.add(infinityForce);
-        dealCycle1.add(demonicFortitude);
-        dealCycle1.add(demonAwakening);
-        dealCycle1.add(orthrus);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(callMastema);
-        dealCycle1.add(otherWorldGoddessBlessing);
-        dealCycle1.add(nightmareWave);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(jormungand);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(demonSlashReinforce1);
-        dealCycle1.add(demonSlashReinforce1);
-        dealCycle1.add(demonSlashReinforce1);
-        dealCycle1.add(demonBaneStartDelay);
-        dealCycle1.add(demonSlashReinforce1);
-        dealCycle1.add(nightmareJudgement);
+        auraWeaponBuff.setCooldown(180.0);
+        auraWeaponBuff.setApplyCooldownReduction(false);
+        otherWorldGoddessBlessing.setCooldown(120.0);
 
-        // 메용2, 6차, 웨폰퍼프
-        dealCycle2.add(infinityForce);
-        dealCycle2.add(demonicFortitude);
-        dealCycle2.add(demonAwakening);
-        dealCycle2.add(orthrus);
-        dealCycle2.add(callMastema);
-        dealCycle2.add(otherWorldGoddessBlessing);
-        dealCycle2.add(nightmareWave);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(jormungand);
-        dealCycle2.add(weaponJumpRing);
-        dealCycle2.add(demonSlashReinforce1);
-        dealCycle2.add(demonSlashReinforce1);
-        dealCycle2.add(demonSlashReinforce1);
-        dealCycle2.add(demonBaneStartDelay);
-        dealCycle2.add(demonSlashReinforce1);
-        dealCycle2.add(nightmareJudgement);
-
-        // 메용2, 리레, 스인미, 코오솔
-        dealCycle3.add(infinityForce);
-        dealCycle3.add(demonicFortitude);
-        dealCycle3.add(demonAwakening);
-        dealCycle3.add(orthrus);
-        dealCycle3.add(crestOfTheSolar);
-        dealCycle3.add(spiderInMirror);
-        dealCycle3.add(callMastema);
-        dealCycle3.add(otherWorldGoddessBlessing);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(jormungand);
-        dealCycle3.add(restraintRing);
-        dealCycle3.add(demonSlashReinforce1);
-        dealCycle3.add(demonSlashReinforce1);
-        dealCycle3.add(demonSlashReinforce1);
-        dealCycle3.add(demonBaneStartDelay);
-
-        // 메용2, 웨폰퍼프
-        dealCycle4.add(infinityForce);
-        dealCycle4.add(demonicFortitude);
-        dealCycle4.add(demonAwakening);
-        dealCycle4.add(orthrus);
-        dealCycle4.add(callMastema);
-        dealCycle4.add(otherWorldGoddessBlessing);
-        dealCycle4.add(soulContract);
-        dealCycle4.add(jormungand);
-        dealCycle4.add(weaponJumpRing);
-        dealCycle4.add(demonSlashReinforce1);
-        dealCycle4.add(demonSlashReinforce1);
-        dealCycle4.add(demonSlashReinforce1);
-        dealCycle4.add(demonBaneStartDelay);
+        boolean isOrigin = false;
 
         int dealCycleOrder = 1;
         addSkillEvent(demonImpactChain);
         while (getStart().before(getEnd())) {
             if (
-                    getStart().after(auraWeaponBuff.getEndTime())
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(auraWeaponBuff)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
-                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
             }
             if (
-                    cooldownCheck(dealCycle1)
+                    cooldownCheck(infinityForce)
+                    && cooldownCheck(demonicFortitude)
+                    && cooldownCheck(demonAwakening)
+                    && cooldownCheck(orthrus)
+                    && cooldownCheck(callMastema)
+                    && cooldownCheck(otherWorldGoddessBlessing)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(jormungand)
+                    && cooldownCheck(demonBaneStartDelay)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 1
                     && demonForce >= 100
             ) {
-                addDealCycle(dealCycle1);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 4
-                    && demonForce >= 100
-            ) {
-                addDealCycle(dealCycle2);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (dealCycleOrder == 3 || dealCycleOrder == 5)
-                    && demonForce >= 100
-            ) {
-                addDealCycle(dealCycle3);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle4)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
-                    && demonForce >= 100
-            ) {
-                addDealCycle(dealCycle4);
+                addSkillEvent(infinityForce);
+                addSkillEvent(demonAwakening);
+                addSkillEvent(orthrus);
+                addSkillEvent(demonicFortitude);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(demonSlashReinforce1);
+                }
+                addSkillEvent(callMastema);
+                addSkillEvent(otherWorldGoddessBlessing);
+                if (cooldownCheck(nightmareWave)) {
+                    addSkillEvent(nightmareWave);
+                    isOrigin = true;
+                }
+                addSkillEvent(soulContract);
+                addSkillEvent(jormungand);
+                if (cooldownCheck(restraintRing)) {
+                    addSkillEvent(restraintRing);
+                } else if (cooldownCheck(weaponJumpRing)) {
+                    addSkillEvent(weaponJumpRing);
+                }
+                addSkillEvent(demonSlashReinforce1);
+                addSkillEvent(demonSlashReinforce1);
+                addSkillEvent(demonSlashReinforce1);
+                addSkillEvent(demonBaneStartDelay);
+                if (isOrigin) {
+                    addSkillEvent(demonSlashReinforce1);
+                    //addSkillEvent(demonSlashReinforce1);
+                    //addSkillEvent(demonSlashReinforce1);
+                    //addSkillEvent(demonSlashReinforce1);
+                    addSkillEvent(nightmareJudgement);
+                    isOrigin = false;
+                }
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(soulContract)
-                    && (
-                            (
-                                    getStart().after(new Timestamp(30 * 1000))
-                                    && getStart().before(new Timestamp(90 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(150 * 1000))
-                                    && getStart().before(new Timestamp(210 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(270 * 1000))
-                                    && getStart().before(new Timestamp(330 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(390 * 1000))
-                                    && getStart().before(new Timestamp(450 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(510 * 1000))
-                                    && getStart().before(new Timestamp(570 * 1000))
-                            )
-                            ||
-                            (
-                                    getStart().after(new Timestamp(630 * 1000))
-                                    && getStart().before(new Timestamp(690 * 1000))
-                            )
-                    )
+                    && getStart().before(new Timestamp(demonicFortitude.getActivateTime().getTime() - 45000))
             ) {
-                if (getStart().before(new Timestamp(90 * 1000))) {
-                    addSkillEvent(otherWorldGoddessBlessing);
-                }
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
+                    && getStart().after(new Timestamp(100 * 1000))
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -369,6 +256,17 @@ public class DemonSlayerDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (skill instanceof DemonAwakening) {
                 demonAwakeningEndTime = new Timestamp(getStart().getTime() + 65000);
@@ -462,6 +360,19 @@ public class DemonSlayerDealCycle extends DealCycle {
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        if (skill instanceof OtherWorldVoid) {
+                            Long ran = 0L;
+                            ran = (long) (Math.random() * 99 + 1);
+                            if (ran >= 75) {
+                                demonForce += 45;
+                                if (demonForce > 150) {
+                                    demonForce = 150;
+                                }
+                                continue;
+                            } else if (ran >= 25) {
+                                continue;
+                            }
+                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -527,6 +438,16 @@ public class DemonSlayerDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -550,6 +471,16 @@ public class DemonSlayerDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 Long ran = (long) (Math.random() * 99 + 1);

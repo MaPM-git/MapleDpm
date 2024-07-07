@@ -18,27 +18,20 @@ import java.util.List;
 
 public class CaptainDealCycle extends DealCycle {
 
-    /*
-        엔버 리레 헤드샷 어썰트 드레드 트리거 헤샷 데드아이 풀파
-     */
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
+            add(new AssembleCrewDelay());
             add(new BattleShipBomber());
+            add(new BulletPartyBeforeDelay());
             add(new BulletParty());
+            add(new BulletPartyAfterDelay());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DeadEye());
+            add(new DeathTriggerBeforeDelay());
             add(new DeathTrigger());
+            add(new DeathTriggerLoopDelay());
+            add(new DeathTriggerAfterDelay());
             add(new Dreadnought());
             add(new DreadnoughtBombard());
             add(new DualPistolCrew());
@@ -57,30 +50,17 @@ public class CaptainDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new AssembleCrewDelay());
-            add(new BulletPartyAfterDelay());
-            add(new BulletPartyBeforeDelay());
-            add(new DeathTriggerAfterDelay());
-            add(new DeathTriggerBeforeDelay());
-            add(new DeathTriggerLoopDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new EpicAdventure());
             add(new LuckyDice());
-            //add(new LuckyDiceOneMoreChance());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new Overdrive(249L));
             add(new OverdriveDebuff(249L));
             add(new PirateFlag());
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new UntiringNectar());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
@@ -90,7 +70,6 @@ public class CaptainDealCycle extends DealCycle {
     HeadShot headShot = new HeadShot();
 
     DeathTrigger deathTrigger = new DeathTrigger();
-    List<Timestamp> quickDrawTimeList = new ArrayList<>();
 
     boolean isQuickDraw = false;
 
@@ -98,7 +77,6 @@ public class CaptainDealCycle extends DealCycle {
         super(job, new FinalAttackCaptain());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AssembleCrewDelay assembleCrewDelay = new AssembleCrewDelay();
@@ -107,16 +85,13 @@ public class CaptainDealCycle extends DealCycle {
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DeathTriggerBeforeDelay deathTrigger = new DeathTriggerBeforeDelay();
         Dreadnought dreadnought = new Dreadnought();
-        DualPistolCrew dualPistolCrew = new DualPistolCrew();
         EpicAdventure epicAdventure = new EpicAdventure();
         LuckyDice luckyDice = new LuckyDice();
         LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MarksmanCrew marksmanCrew = new MarksmanCrew();
         NautilusAssaultHull nautilusAssaultHull = new NautilusAssaultHull();
         Overdrive overdrive = new Overdrive(249L);
         PirateFlag pirateFlag = new PirateFlag();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RapidFire rapidFire = new RapidFire();
         RapidFireSpree rapidFireSpree = new RapidFireSpree();
         RestraintRing restraintRing = new RestraintRing();
@@ -124,66 +99,10 @@ public class CaptainDealCycle extends DealCycle {
         SiegeBomber siegeBomber = new SiegeBomber();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         UntiringNectar untiringNectar = new UntiringNectar();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(100.0);
-
-        /*
-            파이렛플래그 옵드 언티어링넥타 엔버 리레 헤드샷 어썰트 드레드 트리거 헤샷 데드아이 풀파
-        */
-        dealCycle1.add(epicAdventure);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(pirateFlag);
-        dealCycle1.add(overdrive);
-        dealCycle1.add(untiringNectar);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(headShot);
-        dealCycle1.add(deathTrigger);
-        dealCycle1.add(nautilusAssaultHull);
-        dealCycle1.add(dreadnought);
-        dealCycle1.add(headShot);
-        dealCycle1.add(deadEye);
-        dealCycle1.add(bulletParty);
-
-        dealCycle2.add(epicAdventure);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(pirateFlag);
-        dealCycle2.add(overdrive);
-        dealCycle2.add(untiringNectar);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(headShot);
-        dealCycle2.add(deathTrigger);
-        dealCycle2.add(nautilusAssaultHull);
-        dealCycle2.add(deadEye);
-        dealCycle2.add(bulletParty);
-
-        dealCycle3.add(pirateFlag);
-        dealCycle3.add(overdrive);
-        dealCycle3.add(untiringNectar);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(headShot);
-        dealCycle3.add(deathTrigger);
-        dealCycle3.add(deadEye);
-        dealCycle3.add(bulletParty);
-        
-        // 데스트리거, 데드아이, 헤드샷 쿨마다 사용
 
         luckyDice.setCooldown(180.0);
         luckyDice.setBuffAttMagic(0L);
@@ -193,6 +112,8 @@ public class CaptainDealCycle extends DealCycle {
 
         Long clipCount = 9L;
         Timestamp spreeEndTime = new Timestamp(-1);
+
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         while (getStart().before(getEnd())) {
             if (cooldownCheck(luckyDice)) {
@@ -209,27 +130,65 @@ public class CaptainDealCycle extends DealCycle {
                 addSkillEvent(siegeBomber);
             }
             if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
+                    cooldownCheck(epicAdventure)
+                    && cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(pirateFlag)
+                    && cooldownCheck(overdrive)
+                    && cooldownCheck(untiringNectar)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(headShot)
+                    && cooldownCheck(deathTrigger)
+                    && cooldownCheck(nautilusAssaultHull)
+                    && cooldownCheck(deadEye)
+                    && cooldownCheck(bulletParty)
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
+                addSkillEvent(epicAdventure);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(rapidFire);
+                }
                 addSkillEvent(mapleWorldGoddessBlessing);
-            }
-            if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
+                addSkillEvent(pirateFlag);
+                addSkillEvent(overdrive);
+                addSkillEvent(untiringNectar);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                addSkillEvent(headShot);
+                addSkillEvent(nautilusAssaultHull);
+                if (cooldownCheck(dreadnought)) {
+                    addSkillEvent(dreadnought);
+                }
+                addSkillEvent(deathTrigger);
+                if (cooldownCheck(headShot)) {
+                    addSkillEvent(headShot);
+                }
+                addSkillEvent(deadEye);
+                addSkillEvent(bulletParty);
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                    cooldownCheck(pirateFlag)
+                    && cooldownCheck(overdrive)
+                    && cooldownCheck(untiringNectar)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(weaponJumpRing)
+                    && cooldownCheck(headShot)
+                    && cooldownCheck(deathTrigger)
+                    && cooldownCheck(deadEye)
+                    && cooldownCheck(bulletParty)
             ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
+                addSkillEvent(pirateFlag);
+                addSkillEvent(overdrive);
+                addSkillEvent(untiringNectar);
+                addSkillEvent(soulContract);
+                addSkillEvent(weaponJumpRing);
+                addSkillEvent(headShot);
+                addSkillEvent(deathTrigger);
+                addSkillEvent(deadEye);
+                addSkillEvent(bulletParty);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -287,6 +246,16 @@ public class CaptainDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -330,6 +299,16 @@ public class CaptainDealCycle extends DealCycle {
                     buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                     buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                     buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                    for (BuffSkill bs : buffSkillList) {
+                        if (
+                                bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                        && start.equals(skillEvent.getStart())
+                        ) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
+                    }
                 } else {
                     useAttackSkillList.add(skillEvent);
                 }
@@ -416,12 +395,27 @@ public class CaptainDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
-                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                if (skill instanceof OverdriveDebuff) {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 28000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
+                } else {
+                    endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                }
             }
         } else {
             Long ran = (long) (Math.random() * 99 + 1);

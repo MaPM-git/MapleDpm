@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class CraftEnchantJavelinFragment extends AttackSkill {
     public CraftEnchantJavelinFragment() {
         this.setName("크래프트:인챈트 자벨린(파편)");
-        this.setDamage(200.0 + 200);
+        this.setDamage(200.0 + 170);
         this.setAttackCount(1L);
         this.setDotDuration(1000L);
         this.setInterval(300L);

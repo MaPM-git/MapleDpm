@@ -13,5 +13,6 @@ public class FlameHaze extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.setApplyFinalAttack(true);
         this.setRelatedSkill(new FlameHazeDot());
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

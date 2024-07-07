@@ -9,8 +9,7 @@ public class ChronoTrigger3 extends AttackSkill {
         this.setDamage(1430.0);
         this.setDelay(2580L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(540L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

@@ -11,8 +11,7 @@ public class KarmaBlade1 extends AttackSkill {
         this.setDelay(180L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new KarmaBlade2());
         this.addFinalDamage(0.85);           // 미러 이미징
         this.getMultiAttackInfo().add(30L);

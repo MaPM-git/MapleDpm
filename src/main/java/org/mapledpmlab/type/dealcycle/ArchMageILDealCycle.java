@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.archmageil.*;
 import org.mapledpmlab.type.skill.attackskill.common.CrestOfTheSolar;
 import org.mapledpmlab.type.skill.attackskill.common.CrestOfTheSolarDot;
@@ -18,65 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArchMageILDealCycle extends DealCycle {
-
-    /*
-        프로스트 이펙트 5중첩 유지
-        썬더 스피어 무한 지속
-
-        인피니티 지속시간(벞지 196%) - 121.36초
-        인피니티 달구기(최대까지 60초) - 극딜 60초 전에 인피니티 사용
-        인피니티 쿨타임 180초(169.8초)
-        언스태이블 메모라이즈 쿨타임 및 확률
-        20% 258.4초  1%
-        23% 248.71초 6%
-        24% 245.48초 6%
-        25% 242.25초 6%
-        27% 235.79초 10%
-        30% 226.1초  11%
-        33% 216.41초 12%
-        35% 209.95초 12%
-        38% 200.26초 12%
-        40% 193.8초  8%
-        45% 177.65초 6%
-        50% 161.5초  5%
-        55% 145.35초 2%
-        60% 129.2초  2%
-        65% 113.05초 1%
-
-        아이스 에이지, 라이트닝 스피어, 썬더 스피어, 썬더 브레이크, 프로즌 오브 쿨마다 사용
-
-        6차 극딜 - 첫번째 리레 / 두번째 웨폰퍼프
-        메용2(60초) - 에픽(60초) - 아이스 오라 설치 - 크오솔 - 스인미
-        스피릿 오브 스노우(30초) - 엔버링크 - 시드링 - 아이스 에이지 - 주피터 썬더
-        프로즌 라이트닝 - 프로즌 오브 - 썬더 브레이크 - 라이트닝 스피어 - 프리징 브레스(13초)
-
-        극딜 - 메용2, 리레, 스인미, 크오솔
-        메용2(60초) - 에픽(60초) - 아이스 오라 설치 - 크오솔 - 스인미
-        스피릿 오브 스노우 - 엔버링크 - 프리징 브레스 - 시드링 - 주피터 썬더
-        아이스 에이지 - 프로즌 오브 - 썬더 브레이크 - 라이트닝 스피어
-
-        메용2, 웨폰퍼프
-        메용2(60초) - 에픽(60초) - 아이스 오라 설치
-        스피릿 오브 스노우 - 엔버링크 - 프리징 브레스 - 시드링 - 주피터 썬더
-        아이스 에이지 - 프로즌 오브 - 썬더 브레이크 - 라이트닝 스피어
-
-        웨폰퍼프
-        에픽(60초) - 아이스 오라 설치
-        스피릿 오브 스노우 - 엔버링크 - 프리징 브레스 - 시드링 - 주피터 썬더
-        아이스 에이지 - 프로즌 오브 - 썬더 브레이크 - 라이트닝 스피어
-     */
-
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    private final List<Skill> dealCycle4 = new ArrayList<>();
-
-    private final List<Skill> dealCycle5 = new ArrayList<>();
-
-    private final List<Skill> shortDealCycle = new ArrayList<>();
 
     private final List<Timestamp> jupiterThunderStartList = new ArrayList<>();
 
@@ -101,6 +43,7 @@ public class ArchMageILDealCycle extends DealCycle {
             add(new IceAuraInstall());
             add(new JupiterThunder());
             add(new JupiterThunderElectric());
+            add(new LightningSphereDelay());
             add(new LightningSphere());
             add(new LightningSphereFinish());
             add(new SpiderInMirror());
@@ -111,12 +54,6 @@ public class ArchMageILDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new LightningSphereDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new Elquines());
@@ -124,10 +61,9 @@ public class ArchMageILDealCycle extends DealCycle {
             add(new FreezingBreathBuff());
             add(new Infinity(0L));
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new UnstableMemorize());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
@@ -136,11 +72,13 @@ public class ArchMageILDealCycle extends DealCycle {
     int frostEffect = 5;
     ChainLightningElectric chainLightningElectric = new ChainLightningElectric();
 
+    Timestamp infinityEndTime = new Timestamp(0);
+    Timestamp infinityFinalTime = new Timestamp(0);
+
     public ArchMageILDealCycle(Job job) {
         super(job, new FinalAttackArchMageIL());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         ChainLightning chainLightning = new ChainLightning();
@@ -157,123 +95,31 @@ public class ArchMageILDealCycle extends DealCycle {
         JupiterThunder jupiterThunder = new JupiterThunder();
         LightningSphereDelay lightningSphere = new LightningSphereDelay();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SpiritOfSnow spiritOfSnow = new SpiritOfSnow();
-        ThiefCunning thiefCunning = new ThiefCunning();
         ThunderBreak thunderBreak = new ThunderBreak();
         ThunderSpear thunderSpear = new ThunderSpear();
         UnstableMemorize unstableMemorize = new UnstableMemorize();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 인피니티 달구기
-        getStart().setTime(-60000);
-        infinity.setActivateTime(new Timestamp(-70000));
+        getStart().setTime(-75000);
+        infinity.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
         getStart().setTime(0);
-        /*getSkillEventList().add(new SkillEvent(new Infinity(70000L), getStart(), new Timestamp(61360)));
-        getEventTimeList().add(getStart());
-        getEventTimeList().add(new Timestamp(61360));*/
 
         for (int i = 0; i < 720 * 1000; i += iceAura.getInterval()) {
             getSkillEventList().add(new SkillEvent(iceAura, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(120.0);
+        ringSwitching.setApplyCooldownReduction(false);
 
-        dealCycle1.add(thunderSpear);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(epicAdventure);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(iceAuraInstall);
-        dealCycle1.add(spiritOfSnow);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(freezingBreathBuff);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(iceAgeDot);
-        dealCycle1.add(jupiterThunder);     // 9.9초 동안 전기 최종뎀 12퍼
-        dealCycle1.add(frozenLightning1);
-        dealCycle1.add(frozenOrb);
-        dealCycle1.add(thunderBreak);
-        dealCycle1.add(lightningSphere);
-
-        dealCycle2.add(thunderSpear);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(epicAdventure);
-        dealCycle2.add(iceAuraInstall);
-        dealCycle2.add(spiritOfSnow);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(weaponJumpRing);
-        dealCycle2.add(iceAgeDot);
-        dealCycle2.add(jupiterThunder);
-        dealCycle2.add(frozenLightning1);
-        dealCycle2.add(frozenOrb);
-        dealCycle2.add(thunderBreak);
-        dealCycle2.add(lightningSphere);
-
-        dealCycle3.add(thunderSpear);
-        dealCycle3.add(mapleWorldGoddessBlessing);
-        dealCycle3.add(epicAdventure);
-        dealCycle3.add(crestOfTheSolar);
-        dealCycle3.add(spiderInMirror);
-        dealCycle3.add(iceAuraInstall);
-        dealCycle3.add(spiritOfSnow);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(freezingBreathBuff);
-        dealCycle3.add(restraintRing);
-        dealCycle3.add(jupiterThunder);
-        dealCycle3.add(iceAgeDot);
-        dealCycle3.add(frozenOrb);
-        dealCycle3.add(thunderBreak);
-        dealCycle3.add(lightningSphere);
-
-        dealCycle4.add(thunderSpear);
-        dealCycle4.add(mapleWorldGoddessBlessing);
-        dealCycle4.add(epicAdventure);
-        dealCycle4.add(iceAuraInstall);
-        dealCycle4.add(spiritOfSnow);
-        dealCycle4.add(soulContract);
-        dealCycle4.add(weaponJumpRing);
-        dealCycle4.add(jupiterThunder);
-        dealCycle4.add(iceAgeDot);
-        dealCycle4.add(frozenOrb);
-        dealCycle4.add(thunderBreak);
-        dealCycle4.add(lightningSphere);
-
-        dealCycle5.add(thunderSpear);
-        dealCycle5.add(epicAdventure);
-        dealCycle5.add(iceAuraInstall);
-        dealCycle5.add(spiritOfSnow);
-        dealCycle5.add(soulContract);
-        dealCycle5.add(restraintRing);
-        dealCycle5.add(jupiterThunder);
-        dealCycle5.add(iceAgeDot);
-        dealCycle5.add(frozenOrb);
-        dealCycle5.add(thunderBreak);
-        dealCycle5.add(lightningSphere);
-
-        shortDealCycle.add(iceAuraInstall);
-        shortDealCycle.add(soulContract);
-        shortDealCycle.add(iceAgeDot);
-        shortDealCycle.add(lightningSphere);
-
-        Timestamp infinityEndTime = new Timestamp(61360);
-        Timestamp infinityFinalTime = new Timestamp(0);
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
@@ -284,16 +130,12 @@ public class ArchMageILDealCycle extends DealCycle {
                     cooldownCheck(infinity)
                     && getStart().after(infinityEndTime)
             ) {
-                infinityFinalTime = new Timestamp(getStart().getTime() + 60000);
-                infinityEndTime = new Timestamp(getStart().getTime() + 121360);
                 addSkillEvent(infinity);
             }
             if (
                     cooldownCheck(unstableMemorize)
                     && getStart().after(infinityEndTime)
             ) {
-                infinityFinalTime = new Timestamp(getStart().getTime() + 60000);
-                infinityEndTime = new Timestamp(getStart().getTime() + unstableMemorize.getDelay() + 121360);
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (ran <= 1) {
                     unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.8);
@@ -329,54 +171,73 @@ public class ArchMageILDealCycle extends DealCycle {
                 addSkillEvent(unstableMemorize);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                    cooldownCheck(thunderSpear)
+                    && cooldownCheck(epicAdventure)
+                    && cooldownCheck(iceAuraInstall)
+                    && cooldownCheck(spiritOfSnow)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(iceAgeDot)
+                    && cooldownCheck(jupiterThunder)
+                    && cooldownCheck(frozenOrb)
+                    && cooldownCheck(thunderBreak)
+                    && cooldownCheck(lightningSphere)
                     && getStart().after(infinityFinalTime)
-                    && dealCycleOrder == 1
             ) {
-                addDealCycle(dealCycle1);
+                addSkillEvent(thunderSpear);
+                if (cooldownCheck(mapleWorldGoddessBlessing)) {
+                    if (dealCycleOrder == 3) {
+                        mapleWorldGoddessBlessing.setCooldown(0.0);
+                    } else {
+                        mapleWorldGoddessBlessing.setCooldown(180.0);
+                    }
+                    addSkillEvent(mapleWorldGoddessBlessing);
+                }
+                addSkillEvent(epicAdventure);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(chainLightning);
+                }
+                addSkillEvent(iceAuraInstall);
+                addSkillEvent(spiritOfSnow);
+                addSkillEvent(soulContract);
+                if (cooldownCheck(freezingBreathBuff)) {
+                    addSkillEvent(freezingBreathBuff);
+                }
+                if (cooldownCheck(restraintRing)) {
+                    addSkillEvent(restraintRing);
+                } else {
+                    addSkillEvent(weaponJumpRing);
+                }
+                addSkillEvent(iceAgeDot);
+                addSkillEvent(jupiterThunder);
+                if (cooldownCheck(frozenLightning1)) {
+                    addSkillEvent(frozenLightning1);
+                }
+                addSkillEvent(frozenOrb);
+                addSkillEvent(thunderBreak);
+                addSkillEvent(lightningSphere);
                 dealCycleOrder ++;
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && getStart().after(infinityFinalTime)
-                    && dealCycleOrder == 4
+                    cooldownCheck(iceAuraInstall)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(iceAgeDot)
+                    && cooldownCheck(lightningSphere)
+                    && !cooldownCheck(epicAdventure)
             ) {
-                addDealCycle(dealCycle2);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && getStart().after(infinityFinalTime)
-                    && getStart().before(new Timestamp(5 * 60 * 1000))
-                    && dealCycleOrder == 3
-            ) {
-                addDealCycle(dealCycle3);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle4)
-                    && getStart().after(infinityFinalTime)
-                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
-            ) {
-                addDealCycle(dealCycle4);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle5)
-                    && getStart().after(infinityFinalTime)
-                    && dealCycleOrder == 5
-            ) {
-                addDealCycle(dealCycle5);
-                dealCycleOrder ++;
+                addSkillEvent(iceAuraInstall);
+                addSkillEvent(soulContract);
+                addSkillEvent(iceAgeDot);
+                addSkillEvent(lightningSphere);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(70 * 1000))
+                    && getStart().after(new Timestamp(90 * 1000))
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(shortDealCycle)
-                    && !cooldownCheck(epicAdventure)
-            ) {
-                addDealCycle(shortDealCycle);
             } else if (
                     cooldownCheck(thunderBreak)
                     && !cooldownCheck(epicAdventure)
@@ -384,6 +245,7 @@ public class ArchMageILDealCycle extends DealCycle {
                 addSkillEvent(thunderBreak);
             } else if (
                     cooldownCheck(frozenOrb)
+                    && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(frozenOrb);
             } else {
@@ -441,49 +303,33 @@ public class ArchMageILDealCycle extends DealCycle {
             frostEffect = 5;
         }
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        if (
-                attackSkill instanceof ChainLightning
-                || attackSkill instanceof ChainLightningElectric
-                || attackSkill instanceof ElquinesSummon
-                || attackSkill instanceof FreezingBreath
-                || attackSkill instanceof FrozenLightning1
-                || attackSkill instanceof FrozenLightning2
-                || attackSkill instanceof FrozenLightningEnlightenmentOfMana
-                || attackSkill instanceof FrozenOrb
-                || attackSkill instanceof IceAge
-                || attackSkill instanceof JupiterThunder
-                || attackSkill instanceof JupiterThunderElectric
-                || attackSkill instanceof LightningSphere
-                || attackSkill instanceof LightningSphereFinish
-                || attackSkill instanceof SpiritOfSnow
-                || attackSkill instanceof ThunderBreak
-                || attackSkill instanceof ThunderSpear
-        ) {
-            buffSkill.addBuffFinalDamage(1.08);
-        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 this.getJob().addMainStat(buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
-                        + this.getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
-                        * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + this.getJob().getPerXAtt())
-                        * this.getJob().getConstant()
-                        * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * this.getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * this.getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                            + this.getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
+                            * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + this.getJob().getPerXAtt())
+                            * this.getJob().getConstant()
+                            * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (this.getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * this.getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * this.getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
@@ -504,26 +350,6 @@ public class ArchMageILDealCycle extends DealCycle {
         buffSkill.addBuffIgnoreDefense(-2L * frostEffect);
         if (isJupiter) {
             buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.12);
-        }
-        if (
-                attackSkill instanceof ChainLightning
-                        || attackSkill instanceof ChainLightningElectric
-                        || attackSkill instanceof ElquinesSummon
-                        || attackSkill instanceof FreezingBreath
-                        || attackSkill instanceof FrozenLightning1
-                        || attackSkill instanceof FrozenLightning2
-                        || attackSkill instanceof FrozenLightningEnlightenmentOfMana
-                        || attackSkill instanceof FrozenOrb
-                        || attackSkill instanceof IceAge
-                        || attackSkill instanceof JupiterThunder
-                        || attackSkill instanceof JupiterThunderElectric
-                        || attackSkill instanceof LightningSphere
-                        || attackSkill instanceof LightningSphereFinish
-                        || attackSkill instanceof SpiritOfSnow
-                        || attackSkill instanceof ThunderBreak
-                        || attackSkill instanceof ThunderSpear
-        ) {
-            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }
@@ -550,14 +376,27 @@ public class ArchMageILDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 if (skill instanceof Infinity) {
-                    for (long i = 0; i < 60000; i += 4000) {
-                        getSkillEventList().add(new SkillEvent(new Infinity(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 4000)));
-                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 4000));
+                    infinityEndTime = new Timestamp(getStart().getTime() + 120000);
+                    infinityFinalTime = new Timestamp(getStart().getTime() + 75000);
+                    for (long i = 0; i < 75000; i += 5000) {
+                        getSkillEventList().add(new SkillEvent(new Infinity(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 5000)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 5000));
                     }
-                    getSkillEventList().add(new SkillEvent(new Infinity(60000L), new Timestamp(getStart().getTime() + 60000), new Timestamp(getStart().getTime() + 121360)));
-                    endTime = new Timestamp(getStart().getTime() + 121360);
+                    getSkillEventList().add(new SkillEvent(new Infinity(75000L), new Timestamp(getStart().getTime() + 75000), new Timestamp(getStart().getTime() + 120000)));
+                    endTime = new Timestamp(getStart().getTime() + 120000);
                 } else {
                     endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                     getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));

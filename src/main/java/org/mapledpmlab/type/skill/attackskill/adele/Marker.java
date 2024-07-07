@@ -6,7 +6,7 @@ public class Marker extends AttackSkill {
     public Marker() {
         this.setName("마커");
         this.setDamage(2000.0);
-        this.setAttackCount(6L * 7);
+        this.setAttackCount(6L * 8);
         this.setCooldown(60.0);
         this.setDelayByAttackSpeed(900L);
         this.addFinalDamage(2.2);   // 코어강화

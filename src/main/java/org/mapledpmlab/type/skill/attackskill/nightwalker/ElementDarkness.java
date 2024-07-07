@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.nightwalker;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 
-public class ElementDarkness extends AttackSkill implements DarkAttack {
+public class ElementDarkness extends DotAttackSkill implements DarkAttack {
     public ElementDarkness() {
         this.setName("엘리멘트 : 다크니스");
         this.setAttackCount(1L);

@@ -15,5 +15,6 @@ public class SpiralOfMana extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.6);           // 코어 강화
         this.setCooldown(7.0);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

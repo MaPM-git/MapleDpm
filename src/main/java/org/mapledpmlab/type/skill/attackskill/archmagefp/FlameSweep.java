@@ -13,5 +13,6 @@ public class FlameSweep extends AttackSkill {
         this.setApplyFinalAttack(true);
         this.setAddDamage(10L);         // 플레임 스윕-리인포스
         this.setRelatedSkill(new FlameSweepDot());
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

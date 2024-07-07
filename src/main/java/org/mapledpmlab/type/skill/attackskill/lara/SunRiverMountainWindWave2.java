@@ -8,6 +8,7 @@ public class SunRiverMountainWindWave2 extends AttackSkill {
         this.setDamage(1850.0);
         this.setAttackCount(10L);
         this.addFinalDamage(1.6);   // 코어강화
+        this.addFinalDamage(1.08);      // 오버로드 마나
         this.setRelatedSkill(new SunRiverMountainWindWave3());
         this.getMultiAttackInfo().add(1560L + 30);
         this.getMultiAttackInfo().add(30L);

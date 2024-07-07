@@ -10,8 +10,7 @@ public class SuperCannonExplosion2 extends AttackSkill {
         this.setDelay(1560L);
         this.addFinalDamage(0.45);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setApplyFinalAttack(true);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

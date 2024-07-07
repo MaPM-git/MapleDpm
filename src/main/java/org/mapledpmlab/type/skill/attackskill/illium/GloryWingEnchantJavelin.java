@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class GloryWingEnchantJavelin extends AttackSkill {
     public GloryWingEnchantJavelin() {
         this.setName("글로리 윙:인챈트 자벨린");
-        this.setDamage(925.0 + 170 + 205);
+        this.setDamage(925.0 + 170);
         this.setDelayByAttackSpeed(540L);
         this.setAttackCount(6L + 1);
         this.setAddDamage(20L + 20);    // 자벨린-리인포스, 보스 킬러

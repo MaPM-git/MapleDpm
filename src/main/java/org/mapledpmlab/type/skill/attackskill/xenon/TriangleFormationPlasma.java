@@ -7,7 +7,7 @@ public class TriangleFormationPlasma extends AttackSkill {
         this.setName("트라이앵글 포메이션(플라즈마 전류)");
         this.setAttackCount(4L);
         this.setDamage(240.0);
-        this.addFinalDamage(2.2);               // 코어 강화
+        this.addFinalDamage(2.8);               // 코어 강화
         this.addIgnoreDefenseList(20L);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(60L);

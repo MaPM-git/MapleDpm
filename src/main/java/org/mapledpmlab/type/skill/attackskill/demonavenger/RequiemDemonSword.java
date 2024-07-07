@@ -10,8 +10,7 @@ public class RequiemDemonSword extends GaugeAttackSkill {
         this.setAttackCount(12L);
         this.setLimitAttackCount(5L);
         this.setDamage(2270.0);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setAddDamage(50L);
     }
 }

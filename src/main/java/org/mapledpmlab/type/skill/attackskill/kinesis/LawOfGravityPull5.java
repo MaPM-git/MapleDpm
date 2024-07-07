@@ -13,5 +13,7 @@ public class LawOfGravityPull5 extends AttackSkill {
         this.setDotDuration(22000L);
         this.setInterval(1200L);
         this.setLimitAttackCount(12L);
+        this.setRelatedSkill(new LawOfGravityFinish());
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

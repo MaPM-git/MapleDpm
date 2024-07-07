@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class EarthChainEarth extends AttackSkill {
     public EarthChainEarth() {
         this.setName("토파류 : 지");
-        this.setDamage(750.0 + 100 + 230);
+        this.setDamage(750.0);
         this.setDelay(540L + 30);
         // this.setDelayByAttackSpeed(690L);
         this.setAttackCount(4L);

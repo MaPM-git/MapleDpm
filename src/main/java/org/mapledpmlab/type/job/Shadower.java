@@ -75,9 +75,9 @@ public class Shadower extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(15L);
-        this.addMainStat(-15L);
-        this.addSubStat(5L);
+        this.addMainStatP(-9L);
+        this.addMainStat(12L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new Artifact());
@@ -123,7 +123,7 @@ public class Shadower extends Job {
             attMagicP = this.getMagicP();
         }
         Object[] result = new Object[]{
-                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
                 this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
                 this.getFinalSubstat(), this.getFinalSubStat2(), this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),

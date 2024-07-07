@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.mercedes.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -14,15 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MercedesDealCycle extends DealCycle {
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -39,7 +31,9 @@ public class MercedesDealCycle extends DealCycle {
             add(new GuidedArrow());
             add(new GustDive());
             add(new HighkickDemolition());
+            add(new IrkallaBreathBeforeDelay());
             add(new IrkallaBreath());
+            add(new IrkallaBreathAfterDelay());
             add(new LeafTornado());
             add(new LeafTornadoSpiritEnchant());
             add(new LegendarySpear());
@@ -63,13 +57,6 @@ public class MercedesDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new IrkallaBreathAfterDelay());
-            add(new IrkallaBreathBeforeDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new CriticalReinforce(100.0));
@@ -77,13 +64,12 @@ public class MercedesDealCycle extends DealCycle {
             add(new HeroesOath());
             add(new LegendarySpearBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new RoyalKnights());
             add(new SoulContract());
             add(new Sylphidia());
             add(new SylphidiaEnd());
-            add(new ThiefCunning());
             add(new UnfadingGlorySpiritKing());
             add(new UnicornSpikeBuff());
             //add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
@@ -109,7 +95,6 @@ public class MercedesDealCycle extends DealCycle {
 
     boolean isUnfadingGlory = false;
     boolean isCriticalReinforce = false;
-    boolean isStigmaComplete = false;
 
     public MercedesDealCycle(Job job) {
         super(job, new AdvancedFinalAttackMercedes());
@@ -125,7 +110,6 @@ public class MercedesDealCycle extends DealCycle {
         }
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AdvancedStrikeDualShot advancedStrikeDualShot = new AdvancedStrikeDualShot();
@@ -144,7 +128,6 @@ public class MercedesDealCycle extends DealCycle {
         LegendarySpear legendarySpear = new LegendarySpear();
         LightningEdge lightningEdge = new LightningEdge();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingOfIshtar ringOfIshtar = new RingOfIshtar();
         RingSwitching ringSwitching = new RingSwitching();
@@ -155,21 +138,10 @@ public class MercedesDealCycle extends DealCycle {
         Sylphidia sylphidia = new Sylphidia();
         SylphidiaEnd sylphidiaEnd = new SylphidiaEnd();
         SylphidiaRush sylphidiaRush = new SylphidiaRush();
-        ThiefCunning thiefCunning = new ThiefCunning();
         UnfadingGloryWave unfadingGloryWave = new UnfadingGloryWave();
         UnicornSpike unicornSpike = new UnicornSpike();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WrathOfEnlil wrathOfEnlil = new WrathOfEnlil();
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
 
         ringSwitching.setCooldown(180.0);
 
@@ -178,106 +150,77 @@ public class MercedesDealCycle extends DealCycle {
         criticalReinforce.setDelay(criticalReinforce.getDelay() / 2);
         elementalGhost.setDelay(elementalGhost.getDelay() / 2);
 
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(legendarySpear);
-        dealCycle1.add(elementalGhost);
-        dealCycle1.add(sylphidia);
-        dealCycle1.add(heroesOath);
-        dealCycle1.add(criticalReinforce);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(royalKnights);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(unfadingGloryWave);
-        dealCycle1.add(irkallaBreathBeforeDelay);
-        dealCycle1.add(sylphidiaEnd);
-
-        dealCycle2.add(legendarySpear);
-        dealCycle2.add(elementalGhost);
-        dealCycle2.add(sylphidia);
-        dealCycle2.add(heroesOath);
-        dealCycle2.add(criticalReinforce);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(royalKnights);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(irkallaBreathBeforeDelay);
-        dealCycle2.add(sylphidiaEnd);
-
-        //dealCycle3.add(weaponJumpRing);
-
-        List<Skill> linkCycle = new ArrayList<>();
-        linkCycle.add(wrathOfEnlil);
-        linkCycle.add(advancedStrikeDualShot);
-        linkCycle.add(unicornSpike);
-        linkCycle.add(advancedStrikeDualShot);
-        linkCycle.add(legendarySpear);
-        linkCycle.add(leafTornado);
-        /*linkCycle.add(chargeDrive1);
-        linkCycle.add(highkickDemolition);
-        linkCycle.add(wrathOfEnlil);
-        linkCycle.add(advancedStrikeDualShot);
-        linkCycle.add(unicornSpike);
-        linkCycle.add(advancedStrikeDualShot);*/
-
         addSkillEvent(elementalKnightsDark);
         addSkillEvent(elementalKnightsFlame);
         addSkillEvent(guidedArrow);
         addSkillEvent(unicornSpike);
 
+        mapleWorldGoddessBlessing.setCooldown(180.0);
+
+        legendarySpear.setDelayByAttackSpeed(870L);
+        legendarySpearSpiritEnchant.setDelayByAttackSpeed(870L);
+        wrathOfEnlil.setDelayByAttackSpeed(270L);
+        wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
+        leafTornado.setDelayByAttackSpeed(480L);
+        leafTornadoSpiritEnchant.setDelayByAttackSpeed(480L);
+
         while (getStart().before(getEnd())) {
             if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
+                    cooldownCheck(legendarySpear)
+                    && cooldownCheck(elementalGhost)
+                    && cooldownCheck(sylphidia)
+                    && cooldownCheck(heroesOath)
+                    && cooldownCheck(criticalReinforce)
+                    && cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(royalKnights)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(irkallaBreathBeforeDelay)
+                    && getStart().before(new Timestamp(600 * 1000))
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
+                addSkillEvent(heroesOath);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(ringOfIshtar);
+                }
+                addSkillEvent(legendarySpear);
+                addSkillEvent(elementalGhost);
+                addSkillEvent(sylphidia);
+                addSkillEvent(criticalReinforce);
                 addSkillEvent(mapleWorldGoddessBlessing);
-            }
-            if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
+                addSkillEvent(royalKnights);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                if (cooldownCheck(unfadingGloryWave)) {
+                    addSkillEvent(unfadingGloryWave);
+                }
+                addSkillEvent(irkallaBreathBeforeDelay);
+                addSkillEvent(sylphidiaEnd);
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addDealCycle(dealCycle2);
-            }/* else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
-            } else if (
-                    cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))) {
-                addSkillEvent(ringSwitching);
-            }*/ else if (
                     cooldownCheck(soulContract)
                     && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 30000))
             ) {
                 addSkillEvent(soulContract);
-                addSkillEvent(legendarySpear);
-            } /*else if (getStart().before(sylphidiaEndTime)) {
-                addSkillEvent(ringOfIshtar);
-            }*/ else if (getStart().before(elementalGhostEndTime)) {
+            } else if (getStart().before(elementalGhostEndTime)) {
                 // 엔릴 스듀샷 유니콘 레전 리프
-                wrathOfEnlil.setDelayByAttackSpeed(270L);
-                wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
+                advancedStrikeDualShot = new AdvancedStrikeDualShot();
                 advancedStrikeDualShot.setDelayByAttackSpeed(450L);
                 unicornSpike.setDelayByAttackSpeed(600L);
-                legendarySpear.setDelayByAttackSpeed(870L);
-                legendarySpearSpiritEnchant.setDelayByAttackSpeed(870L);
-                leafTornado.setDelayByAttackSpeed(480L);
-                leafTornadoSpiritEnchant.setDelayByAttackSpeed(480L);
-                addDealCycle(linkCycle);
+                addSkillEvent(wrathOfEnlil);
+                addSkillEvent(advancedStrikeDualShot);
+                addSkillEvent(unicornSpike);
+                addSkillEvent(advancedStrikeDualShot);
+                addSkillEvent(legendarySpear);
+                addSkillEvent(leafTornado);
             } else if (getStart().after(unicornSpikeEndTime)) {
+                unicornSpike = new UnicornSpike();
                 addSkillEvent(unicornSpike);
             } else if (cooldownCheck(wrathOfEnlil)) {
-                wrathOfEnlil.setDelayByAttackSpeed(270L);
-                wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
+                advancedStrikeDualShot = new AdvancedStrikeDualShot();
                 advancedStrikeDualShot.setDelayByAttackSpeed(630L);
                 addSkillEvent(wrathOfEnlil);
                 addSkillEvent(advancedStrikeDualShot);
@@ -324,6 +267,17 @@ public class MercedesDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -438,7 +392,11 @@ public class MercedesDealCycle extends DealCycle {
                 this.getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof RoyalKnightsAttack) {
+                        i = 0;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         if (skill instanceof RoyalKnightsAttack) {
                             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -913,6 +871,16 @@ public class MercedesDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -942,6 +910,16 @@ public class MercedesDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -974,23 +952,27 @@ public class MercedesDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                        + getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());

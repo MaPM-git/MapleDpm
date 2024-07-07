@@ -8,5 +8,6 @@ public class DarkFog extends AttackSkill {
         this.setDamage(402.0);
         this.setAttackCount(6L);
         this.setCooldown(40.0);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

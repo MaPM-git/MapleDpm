@@ -8,8 +8,7 @@ public class HexSandStormSlash extends AttackSkill implements HexSkill {
         this.setAttackCount(10L);
         this.setDamage(830.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setDelay(1770L);
         this.setRelatedSkill(new HexSandStormBomb());
         this.getMultiAttackInfo().add(720L);

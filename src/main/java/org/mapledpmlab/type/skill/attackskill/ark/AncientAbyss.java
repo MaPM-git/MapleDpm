@@ -9,8 +9,7 @@ public class AncientAbyss extends AttackSkill {
         this.setDamage(1101.0);
         this.setDelay(7320L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(1440L);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

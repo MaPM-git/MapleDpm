@@ -11,8 +11,7 @@ public class Durandal1 extends AttackSkill {
         this.setDelay(360L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new Durandal2());
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

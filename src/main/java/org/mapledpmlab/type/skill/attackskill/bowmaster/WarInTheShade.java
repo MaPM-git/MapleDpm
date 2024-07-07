@@ -11,8 +11,7 @@ public class WarInTheShade extends AttackSkill {
         this.setDelay(4560L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(660L);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

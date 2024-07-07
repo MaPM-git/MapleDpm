@@ -12,5 +12,6 @@ public class LightReflection extends AttackSkill {
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(20L);     // 라이트 리플렉션-리인포스
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

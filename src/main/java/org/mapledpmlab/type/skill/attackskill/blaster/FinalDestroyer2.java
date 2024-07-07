@@ -9,8 +9,7 @@ public class FinalDestroyer2 extends AttackSkill {
         this.setDamage(1550.0);
         this.setDelay(870L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         //this.setRelatedSkill(new RevolvingCannonReinforce());
         this.setApplyFinalAttack(true);
         this.getMultiAttackInfo().add(30L);

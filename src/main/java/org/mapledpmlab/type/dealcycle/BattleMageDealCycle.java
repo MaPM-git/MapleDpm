@@ -3,10 +3,10 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.battlemage.*;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
-import org.mapledpmlab.type.skill.buffskill.battlemage.DebuffAura;
 import org.mapledpmlab.type.skill.buffskill.battlemage.MasterOfDeath;
 import org.mapledpmlab.type.skill.buffskill.battlemage.UnionAura;
 import org.mapledpmlab.type.skill.buffskill.common.*;
@@ -16,15 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BattleMageDealCycle extends DealCycle {
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -48,25 +39,18 @@ public class BattleMageDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new NetherworldLightning());
             add(new ReaperScythe());
-            add(new ResistanceLineInfantry());
-        }
-    };
-
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
             add(new ResistanceLineInfantryDelay());
+            add(new ResistanceLineInfantry());
         }
     };
 
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            //add(new DebuffAura());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new MasterOfDeath());
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new UnionAura());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
             add(new WillOfLiberty());
@@ -92,7 +76,6 @@ public class BattleMageDealCycle extends DealCycle {
         super(job, new FinalAttackBattleMage());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AbyssalLightning abyssalLightning = new AbyssalLightning();
@@ -100,106 +83,88 @@ public class BattleMageDealCycle extends DealCycle {
         BlackMagicAltar blackMagicAltar = new BlackMagicAltar();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         CrimsonPactum1 crimsonPactum1 = new CrimsonPactum1();
-        DebuffAura debuffAura = new DebuffAura();
         FinishBlow finishBlow = new FinishBlow();
         GrimReaper grimReaper = new GrimReaper();
         GrimReaperMOD grimReaperMOD = new GrimReaperMOD();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         MasterOfDeath masterOfDeath = new MasterOfDeath();
-        PriorPreparation priorPreparation = new PriorPreparation();
         ReaperScythe reaperScythe = new ReaperScythe();
         ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         UnionAura unionAura = new UnionAura();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WillOfLiberty willOfLiberty = new WillOfLiberty();
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
+        ringSwitching.setCooldown(95.0);
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
-        ringSwitching.setCooldown(180.0);
-
-        dealCycle1.add(willOfLiberty);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(blackMagicAltar);
-        dealCycle1.add(unionAura);
-        dealCycle1.add(abyssalLightning);
-        dealCycle1.add(masterOfDeath);
-        dealCycle1.add(grimReaperMOD);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(crimsonPactum1);
-
-        dealCycle2.add(willOfLiberty);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(blackMagicAltar);
-        dealCycle2.add(unionAura);
-        dealCycle2.add(abyssalLightning);
-        dealCycle2.add(masterOfDeath);
-        dealCycle2.add(grimReaperMOD);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-
-        dealCycle3.add(blackMagicAltar);
-        dealCycle3.add(unionAura);
-        dealCycle3.add(grimReaper);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(weaponJumpRing);
+        resistanceLineInfantry.addFinalDamage(1.08);            // 오버로드 마나
 
         addSkillEvent(resistanceLineInfantry);
         while (getStart().before(getEnd())) {
-            if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
-            ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addSkillEvent(mapleWorldGoddessBlessing);
+            if (cooldownCheck(resistanceLineInfantry)) {
+                addSkillEvent(resistanceLineInfantry);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(willOfLiberty)
+                    && cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(blackMagicAltar)
+                    && cooldownCheck(unionAura)
+                    && cooldownCheck(abyssalLightning)
+                    && cooldownCheck(masterOfDeath)
+                    && cooldownCheck(grimReaperMOD)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
+                addSkillEvent(willOfLiberty);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(finishBlow);
+                }
+                addSkillEvent(mapleWorldGoddessBlessing);
+                addSkillEvent(blackMagicAltar);
+                addSkillEvent(unionAura);
+                addSkillEvent(abyssalLightning);
+                addSkillEvent(masterOfDeath);
+                addSkillEvent(grimReaperMOD);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                if (cooldownCheck(crimsonPactum1)) {
+                    addSkillEvent(crimsonPactum1);
+                }
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(blackMagicAltar)
+                    && cooldownCheck(unionAura)
+                    && cooldownCheck(grimReaper)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(weaponJumpRing)
             ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
+                addSkillEvent(blackMagicAltar);
+                addSkillEvent(unionAura);
+                addSkillEvent(grimReaper);
+                addSkillEvent(soulContract);
+                addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))) {
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+            ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(blackMagicAltar)
                     && !cooldownCheck(soulContract)
             ) {
                 addSkillEvent(blackMagicAltar);
-            } else if (
-                    cooldownCheck(resistanceLineInfantry)
-            ) {
-                addSkillEvent(resistanceLineInfantry);
-            } else if (
-                    cooldownCheck(battleKingBar1)
-            ) {
+            } else if (cooldownCheck(battleKingBar1)) {
                 addSkillEvent(battleKingBar1);
             } else {
                 if (getStart().before(unionAuraEndTime)) {
@@ -275,6 +240,17 @@ public class BattleMageDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -334,7 +310,14 @@ public class BattleMageDealCycle extends DealCycle {
                 this.getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (
+                            skill instanceof GrimReaper
+                            || skill instanceof GrimReaperMOD
+                    ) {
+                        i += 840;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -397,6 +380,16 @@ public class BattleMageDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -420,6 +413,16 @@ public class BattleMageDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -435,49 +438,33 @@ public class BattleMageDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        if (
-                attackSkill instanceof AbyssalLightning
-                || attackSkill instanceof BattleKingBar1
-                || attackSkill instanceof BattleKingBar2
-                || attackSkill instanceof BlackMagicAltar
-                || attackSkill instanceof BlackMark
-                || attackSkill instanceof CrimsonPactum1
-                || attackSkill instanceof CrimsonPactum2
-                || attackSkill instanceof DarkLightning
-                || attackSkill instanceof Death
-                || attackSkill instanceof DeathReinforce
-                || attackSkill instanceof FinishBlow
-                || attackSkill instanceof GrimReaper
-                || attackSkill instanceof GrimReaperMOD
-                || attackSkill instanceof NetherworldLightning
-                || attackSkill instanceof ReaperScythe
-                || attackSkill instanceof ResistanceLineInfantry
-        ) {
-            buffSkill.addBuffFinalDamage(1.08);
-        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 this.getJob().addMainStat(buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
-                        + this.getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
-                        * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + this.getJob().getPerXAtt())
-                        * this.getJob().getConstant()
-                        * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * this.getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * this.getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                            + this.getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
+                            * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + this.getJob().getPerXAtt())
+                            * this.getJob().getConstant()
+                            * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (this.getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * this.getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * this.getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
@@ -493,26 +480,6 @@ public class BattleMageDealCycle extends DealCycle {
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
-        }
-        if (
-                attackSkill instanceof AbyssalLightning
-                        || attackSkill instanceof BattleKingBar1
-                        || attackSkill instanceof BattleKingBar2
-                        || attackSkill instanceof BlackMagicAltar
-                        || attackSkill instanceof BlackMark
-                        || attackSkill instanceof CrimsonPactum1
-                        || attackSkill instanceof CrimsonPactum2
-                        || attackSkill instanceof DarkLightning
-                        || attackSkill instanceof Death
-                        || attackSkill instanceof DeathReinforce
-                        || attackSkill instanceof FinishBlow
-                        || attackSkill instanceof GrimReaper
-                        || attackSkill instanceof GrimReaperMOD
-                        || attackSkill instanceof NetherworldLightning
-                        || attackSkill instanceof ReaperScythe
-                        || attackSkill instanceof ResistanceLineInfantry
-        ) {
-            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

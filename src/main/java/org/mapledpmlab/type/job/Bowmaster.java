@@ -57,8 +57,8 @@ public class Bowmaster extends Job {
 
         // 4차
         this.addFinalDamage(1.06);      // 어드밴스드 퀴버
-        this.addCriticalP(20.0);        // 샤프 아이즈
-        this.addCriticalDamage(15.0);
+        this.addCriticalP(26.0 - 10);   // 샤프 아이즈
+        this.addCriticalDamage(16.0 - 8);
         this.addIgnoreDefenseList(5L);
         this.addAtt(62L);               // 보우 엑스퍼트
         this.addCriticalDamage(16.0);
@@ -67,8 +67,9 @@ public class Bowmaster extends Job {
         this.addIgnoreDefenseList(40L); // 아머 피어싱
 
         // 환산 보정
-        this.addMainStatP(-39L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-30L);
+        this.addMainStat(-16L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());

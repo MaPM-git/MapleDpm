@@ -8,8 +8,7 @@ public class UnfadingGlorySpiritKingAttackReinforce extends AttackSkill {
         this.setAttackCount(15L);
         this.setDamage(1440.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setCooldown(2.0);
         this.getMultiAttackInfo().add(540L);
         this.getMultiAttackInfo().add(60L);

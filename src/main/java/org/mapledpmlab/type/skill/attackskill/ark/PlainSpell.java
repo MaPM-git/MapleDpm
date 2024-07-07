@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class PlainSpell extends AttackSkill {
     public PlainSpell() {
         this.setName("플레인 스펠");
-        this.setDamage(595.0 + 160 + 163);
+        this.setDamage(595.0);
         this.setAttackCount(1L);
         this.getMultiAttackInfo().add(500L);
         this.getMultiAttackInfo().add(100L);

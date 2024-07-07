@@ -14,5 +14,6 @@ public class UltimateMovingMatter extends AttackSkill {
         this.setLimitAttackCount(72L);
         this.addFinalDamage(1.6);   // 코어강화
         this.setRelatedSkill(new UltimateMovingMatterExtinction());
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.marksman.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -16,26 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MarksmanDealCycle extends DealCycle {
-    /*
-    스플릿 애로우-리피팅 크로스보우 카트리지-메용2-에픽어드벤쳐
-    크오솔-스인미-불스아이-이볼브-크리티컬 리인포스-소울컨트랙트-시드링
-    6차-트루 스나이핑-리피팅 크로스보우 카트리지 소모
-     */
-
-    // 메용2, 6차, 리레, 스인미, 크오솔
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 메용2, 6차, 웨폰퍼프
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 메용2, 리레, 스인미, 코오솔
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    // 메용2, 웨폰퍼프
-    private final List<Skill> dealCycle4 = new ArrayList<>();
-
-    // 웨폰퍼프
-    private final List<Skill> dealCycle5 = new ArrayList<>();
 
     private boolean isCriticalReinforce = false;
 
@@ -67,11 +48,6 @@ public class MarksmanDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new BullsEye());
@@ -79,12 +55,11 @@ public class MarksmanDealCycle extends DealCycle {
             add(new EpicAdventure());
             add(new EvolveBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
-            add(new PriorPreparation());
             add(new RepeatingCrossbowCartridgeBuff());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
             add(new SplitArrowBuff());
-            add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
@@ -93,7 +68,6 @@ public class MarksmanDealCycle extends DealCycle {
         super(job, new FinalAttackMarksman());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         BullsEye bullsEye = new BullsEye();
@@ -107,7 +81,6 @@ public class MarksmanDealCycle extends DealCycle {
         Freezer freezer = new Freezer();
         GuidedArrow guidedArrow = new GuidedArrow();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        PriorPreparation priorPreparation = new PriorPreparation();
         RepeatingCrossbowCartridge repeatingCrossbowCartridge = new RepeatingCrossbowCartridge();
         RepeatingCrossbowCartridgeBuff repeatingCrossbowCartridgeBuff = new RepeatingCrossbowCartridgeBuff();
         RestraintRing restraintRing = new RestraintRing();
@@ -116,20 +89,9 @@ public class MarksmanDealCycle extends DealCycle {
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SplitArrowBuff splitArrowBuff = new SplitArrowBuff();
-        ThiefCunning thiefCunning = new ThiefCunning();
         TrueSnipe trueSnipe = new TrueSnipe();
         UltimateSnipe ultimateSnipe = new UltimateSnipe();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
 
         // 가이디드 에로우
         for (int i = 0; i < 720 * 1000; i += guidedArrow.getInterval()) {
@@ -138,86 +100,7 @@ public class MarksmanDealCycle extends DealCycle {
         }
 
         ringSwitching.setCooldown(130.0);
-
-        dealCycle1.add(splitArrowBuff);
-        dealCycle1.add(repeatingCrossbowCartridgeBuff);
-        dealCycle1.add(epicAdventure);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(bullsEye);
-        dealCycle1.add(evolve);
-        dealCycle1.add(criticalReinforce);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(chargedArrow);
-        dealCycle1.add(trueSnipe);
-        dealCycle1.add(finalAimWave);
-        for (int i = 0; i < 8; i++) {
-            dealCycle1.add(repeatingCrossbowCartridge);
-        }
-
-        dealCycle2.add(splitArrowBuff);
-        dealCycle2.add(repeatingCrossbowCartridgeBuff);
-        dealCycle2.add(epicAdventure);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(bullsEye);
-        dealCycle2.add(evolve);
-        dealCycle2.add(criticalReinforce);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(weaponJumpRing);
-        dealCycle2.add(chargedArrow);
-        dealCycle2.add(trueSnipe);
-        dealCycle2.add(finalAimWave);
-        for (int i = 0; i < 8; i++) {
-            dealCycle2.add(repeatingCrossbowCartridge);
-        }
-
-        dealCycle3.add(splitArrowBuff);
-        dealCycle3.add(repeatingCrossbowCartridgeBuff);
-        dealCycle3.add(epicAdventure);
-        dealCycle3.add(mapleWorldGoddessBlessing);
-        dealCycle3.add(crestOfTheSolar);
-        dealCycle3.add(spiderInMirror);
-        dealCycle3.add(bullsEye);
-        dealCycle3.add(evolve);
-        dealCycle3.add(criticalReinforce);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(restraintRing);
-        dealCycle3.add(chargedArrow);
-        dealCycle3.add(trueSnipe);
-        for (int i = 0; i < 8; i++) {
-            dealCycle3.add(repeatingCrossbowCartridge);
-        }
-
-        dealCycle4.add(splitArrowBuff);
-        dealCycle4.add(repeatingCrossbowCartridgeBuff);
-        dealCycle4.add(epicAdventure);
-        dealCycle4.add(mapleWorldGoddessBlessing);
-        dealCycle4.add(bullsEye);
-        dealCycle4.add(evolve);
-        dealCycle4.add(criticalReinforce);
-        dealCycle4.add(soulContract);
-        dealCycle4.add(weaponJumpRing);
-        dealCycle4.add(chargedArrow);
-        dealCycle4.add(trueSnipe);
-        for (int i = 0; i < 8; i++) {
-            dealCycle4.add(repeatingCrossbowCartridge);
-        }
-
-        dealCycle5.add(splitArrowBuff);
-        dealCycle5.add(repeatingCrossbowCartridgeBuff);
-        dealCycle5.add(epicAdventure);
-        dealCycle5.add(bullsEye);
-        dealCycle5.add(evolve);
-        dealCycle5.add(criticalReinforce);
-        dealCycle5.add(soulContract);
-        dealCycle5.add(restraintRing);
-        dealCycle5.add(chargedArrow);
-        dealCycle5.add(trueSnipe);
-        for (int i = 0; i < 8; i++) {
-            dealCycle5.add(repeatingCrossbowCartridge);
-        }
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         List<AttackSkill> snipeList = new ArrayList<>();
         snipeList.add(snipe);
@@ -231,43 +114,53 @@ public class MarksmanDealCycle extends DealCycle {
                 addSkillEvent(freezer);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 1
+                    cooldownCheck(splitArrowBuff)
+                    && cooldownCheck(repeatingCrossbowCartridgeBuff)
+                    && cooldownCheck(epicAdventure)
+                    && cooldownCheck(bullsEye)
+                    && cooldownCheck(evolve)
+                    && cooldownCheck(criticalReinforce)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(chargedArrow)
+                    && cooldownCheck(trueSnipe)
             ) {
-                addDealCycle(dealCycle1);
-                dealCycleOrder ++;
-                splitArrow6th = 13;
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 4
-            ) {
-                addDealCycle(dealCycle2);
-                dealCycleOrder ++;
-                splitArrow6th = 13;
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(6 * 60 * 1000))
-                    && dealCycleOrder == 3
-            ) {
-                addDealCycle(dealCycle3);
-                dealCycleOrder ++;
-                splitArrow6th = 13;
-            } else if (
-                    cooldownCheck(dealCycle4)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
-            ) {
-                addDealCycle(dealCycle4);
-                dealCycleOrder ++;
-                splitArrow6th = 13;
-            } else if (
-                    cooldownCheck(dealCycle5)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 5
-            ) {
-                addDealCycle(dealCycle5);
+                addSkillEvent(splitArrowBuff);
+                addSkillEvent(repeatingCrossbowCartridgeBuff);
+                addSkillEvent(epicAdventure);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(snipeList.get(snipeCount % 4));
+                    snipeCount++;
+                }
+                if (cooldownCheck(mapleWorldGoddessBlessing)) {
+                    if (dealCycleOrder == 3) {
+                        mapleWorldGoddessBlessing.setCooldown(0.0);
+                    } else {
+                        mapleWorldGoddessBlessing.setCooldown(180.0);
+                    }
+                    addSkillEvent(mapleWorldGoddessBlessing);
+                }
+                addSkillEvent(evolve);
+                addSkillEvent(bullsEye);
+                addSkillEvent(criticalReinforce);
+                addSkillEvent(soulContract);
+                if (cooldownCheck(restraintRing)) {
+                    addSkillEvent(restraintRing);
+                } else if (cooldownCheck(weaponJumpRing)) {
+                    addSkillEvent(weaponJumpRing);
+                }
+                addSkillEvent(chargedArrow);
+                addSkillEvent(trueSnipe);
+                if (cooldownCheck(finalAimWave)) {
+                    addSkillEvent(finalAimWave);
+                }
+                for (int i = 0; i < 8; i++) {
+                    addSkillEvent(repeatingCrossbowCartridge);
+                }
                 dealCycleOrder ++;
                 splitArrow6th = 13;
             } else if (
@@ -310,6 +203,16 @@ public class MarksmanDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -359,6 +262,16 @@ public class MarksmanDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -408,23 +321,27 @@ public class MarksmanDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
-                        + this.getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((this.getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (this.getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + this.getJob().getPerXAtt())
-                        * this.getJob().getConstant()
-                        * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * this.getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * this.getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                            + this.getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((this.getJob().getAtt() + buffSkill.getBuffAttMagic())
+                            * (1 + (this.getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + this.getJob().getPerXAtt())
+                            * this.getJob().getConstant()
+                            * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (this.getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * this.getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * this.getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());

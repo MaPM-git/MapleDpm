@@ -10,8 +10,9 @@ public class FountainForAngel extends AttackSkill {
         this.setDelayByAttackSpeed(960L);
         this.setCooldown(60.0);             // 갱신용
         this.setDotDuration(60000L);
-        this.setInterval(2000L);
+        this.setInterval(2010L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

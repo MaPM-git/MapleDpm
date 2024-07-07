@@ -11,8 +11,7 @@ public class UnfadingGloryWave extends AttackSkill {
         this.setDamage(840.0);
         this.setDelay(2880L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new UnfadingGloryImpact());
         this.setApplyFinalAttack(true);
         this.getMultiAttackInfo().add(120L);

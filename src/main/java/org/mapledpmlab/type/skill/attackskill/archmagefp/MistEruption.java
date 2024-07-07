@@ -10,6 +10,7 @@ public class MistEruption extends AttackSkill {
         this.setAttackCount(10L);
         this.addIgnoreDefenseList(45L);
         this.addFinalDamage(2.7);
+        this.addFinalDamage(1.08);      // 오버로드 마나
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setApplyFinalAttack(true);

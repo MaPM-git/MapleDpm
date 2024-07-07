@@ -77,7 +77,8 @@ public class HyperKinesis extends Hyper {
                 "\n5.몬스터 방어율 무시 : " + this.getIgnoreDefense() + "%" +
                 "\n6.공격력/마력 : " + this.getAtt() +
                 "\n7.주스탯(%미적용) : " + this.getPerXMainStat() +
-                "\n8.부스탯(%미적용) : " + this.getPerXSubStat()
+                "\n8.부스탯(%미적용) : " + this.getPerXSubStat() +
+                "\n9.PP : 10"
         );
     }
 }

@@ -10,8 +10,7 @@ public class GroundZeroEarthquake extends AttackSkill {
         this.setCooldown(360.0);
         this.setDamage(2040.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new GroundZeroExplosion());
         this.getMultiAttackInfo().add(600L);
         this.getMultiAttackInfo().add(1260L);

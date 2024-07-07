@@ -73,8 +73,8 @@ public class HoYoung extends Job {
 
         // 환산 보정
         this.addMainStatP(-12L);
-        this.addMainStat(-18L);
-        //this.addSubStat(10L);
+        this.addMainStat(4L);
+        this.addSubStat(10L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());
@@ -89,5 +89,11 @@ public class HoYoung extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+    
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addFinalDamage(1.1);       // 천지만물
     }
 }

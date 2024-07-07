@@ -11,8 +11,7 @@ public class MistralSpringNormal extends AttackSkill {
         this.setDotDuration(20000L);
         this.setInterval(170L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new MistralSpringExcited());
     }
 }

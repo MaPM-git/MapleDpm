@@ -8,7 +8,7 @@ public class FrozenLightningEnlightenmentOfMana extends ThunderAttack {
         this.setDotDuration(30000L);
         this.setInterval(2000L);
         this.setAddDamage(50L + 60);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

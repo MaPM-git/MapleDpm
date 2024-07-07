@@ -4,6 +4,7 @@ import org.mapledpmlab.type.job.DualBlade;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.dualblade.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -18,26 +19,15 @@ import java.util.List;
 
 public class DualBladeDealCycle extends DealCycle {
 
-    /*
-     */
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 6차X,
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜, 웨폰퍼프
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    // 블토카퓨
-    private final List<Skill> shortDealCycle = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
+            add(new AsuraBeforeDelay());
             add(new Asura());
-            add(new BladeStormKeydown());
+            add(new AsuraAfterDelay());
+            add(new BladeStormBeforeDelay());
             add(new BladeStormFirst());
+            add(new BladeStormKeydown());
+            add(new BladeStormAfterDelay());
             add(new BladeTornado());
             add(new BladeTornadoTyphoon());
             add(new CrestOfTheSolar());
@@ -58,28 +48,17 @@ public class DualBladeDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new AsuraAfterDelay());
-            add(new AsuraBeforeDelay());
-            add(new BladeStormAfterDelay());
-            add(new BladeStormBeforeDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            //add(new DarkSight());
             add(new EpicAdventure());
             add(new FinalCutBuff());
             add(new FlashbangBuff());
             add(new KarmaBladeBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
-            add(new PriorPreparation());
             add(new ReadyToDie());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new UltimateDarkSight());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
@@ -98,7 +77,6 @@ public class DualBladeDealCycle extends DealCycle {
         super(job, new HiddenBlade());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AsuraBeforeDelay asura = new AsuraBeforeDelay();
@@ -113,25 +91,13 @@ public class DualBladeDealCycle extends DealCycle {
         KarmaFury karmaFury = new KarmaFury();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         PhantomBlow phantomBlow = new PhantomBlow();
-        PriorPreparation priorPreparation = new PriorPreparation();
         ReadyToDie readyToDie = new ReadyToDie();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
 
         // 페이탈 베놈
         for (int i = 0; i < 720 * 1000; i += fatalVenom.getInterval()) {
@@ -141,95 +107,79 @@ public class DualBladeDealCycle extends DealCycle {
 
         ultimateDarkSight.setBuffFinalDamage(1.34);
 
-        ringSwitching.setCooldown(100.0);
+        ringSwitching.setCooldown(95.0);
 
-        dealCycle1.add(finalCutBuff);
-        dealCycle1.add(epicAdventure);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(ultimateDarkSight);
-        dealCycle1.add(readyToDie);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(bladeTornado);
-        dealCycle1.add(karmaFury);
-        dealCycle1.add(phantomBlow);
-        dealCycle1.add(karmaBlade1);
-        dealCycle1.add(bladeStormFirst);
-        dealCycle1.add(bladeTornado);
-        dealCycle1.add(karmaFury);
-        dealCycle1.add(phantomBlow);
-        dealCycle1.add(asura);
-
-        dealCycle2.add(finalCutBuff);
-        dealCycle2.add(epicAdventure);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(ultimateDarkSight);
-        dealCycle2.add(readyToDie);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(bladeTornado);
-        dealCycle2.add(karmaFury);
-        dealCycle2.add(phantomBlow);
-        dealCycle2.add(bladeStormFirst);
-        dealCycle2.add(asura);
-        dealCycle2.add(bladeTornado);
-        dealCycle2.add(karmaFury);
-        dealCycle2.add(phantomBlow);
-
-        dealCycle3.add(finalCutBuff);
-        dealCycle3.add(readyToDie);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(bladeTornado);
-        dealCycle3.add(karmaFury);
-        dealCycle3.add(phantomBlow);
-        dealCycle3.add(bladeStormFirst);
-        dealCycle3.add(asura);
-        dealCycle3.add(bladeTornado);
-        dealCycle3.add(karmaFury);
-        dealCycle3.add(phantomBlow);
-
-        shortDealCycle.add(bladeTornado);
-        shortDealCycle.add(karmaFury);
-        shortDealCycle.add(phantomBlow);
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         while (getStart().before(getEnd())) {
             if (cooldownCheck(flashbangBuff)) {
                 addSkillEvent(flashbangBuff);
             }
             if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
+                    cooldownCheck(finalCutBuff)
+                    && cooldownCheck(epicAdventure)
+                    && cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(ultimateDarkSight)
+                    && cooldownCheck(readyToDie)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(bladeTornado)
+                    && cooldownCheck(karmaFury)
+                    && cooldownCheck(bladeStormFirst)
+                    && cooldownCheck(asura)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
+                addSkillEvent(finalCutBuff);
+                addSkillEvent(epicAdventure);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(phantomBlow);
+                }
                 addSkillEvent(mapleWorldGoddessBlessing);
-            }
-            if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && getStart().before(new Timestamp(hauntedEdge.getActivateTime().getTime() - 5000))
-            ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
+                addSkillEvent(ultimateDarkSight);
+                addSkillEvent(readyToDie);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                addSkillEvent(bladeTornado);
+                addSkillEvent(karmaFury);
+                addSkillEvent(phantomBlow);
+                if (cooldownCheck(karmaBlade1)) {
+                    addSkillEvent(karmaBlade1);
+                }
+                addSkillEvent(bladeStormFirst);
+                addSkillEvent(bladeTornado);
+                addSkillEvent(karmaFury);
+                addSkillEvent(phantomBlow);
+                addSkillEvent(asura);
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && getStart().before(new Timestamp(hauntedEdge.getActivateTime().getTime() - 3000))
+                    cooldownCheck(finalCutBuff)
+                    && cooldownCheck(readyToDie)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(weaponJumpRing)
+                    && cooldownCheck(bladeTornado)
+                    && cooldownCheck(karmaFury)
+                    && cooldownCheck(bladeStormFirst)
+                    && cooldownCheck(asura)
             ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(hauntedEdge.getActivateTime().getTime() - 3000))
+                addSkillEvent(finalCutBuff);
+                addSkillEvent(readyToDie);
+                addSkillEvent(soulContract);
+                addSkillEvent(weaponJumpRing);
+                addSkillEvent(bladeTornado);
+                addSkillEvent(karmaFury);
+                addSkillEvent(phantomBlow);
+                addSkillEvent(bladeStormFirst);
+                addSkillEvent(asura);
+            } else if (cooldownCheck(bladeTornado)
             ) {
-                addDealCycle(dealCycle3);
-            } else if (
-                    cooldownCheck(shortDealCycle)
-                    && !cooldownCheck(finalCutBuff)
-                    && getStart().before(new Timestamp(hauntedEdge.getActivateTime().getTime() - 1500))
+                addSkillEvent(bladeTornado);
+            } else if (cooldownCheck(karmaFury)
             ) {
-                addDealCycle(shortDealCycle);
+                addSkillEvent(karmaFury);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -264,6 +214,17 @@ public class DualBladeDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -336,6 +297,16 @@ public class DualBladeDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -359,6 +330,16 @@ public class DualBladeDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -394,6 +375,30 @@ public class DualBladeDealCycle extends DealCycle {
     }
 
     @Override
+    public Long getDotDamage(AttackSkill attackSkill, BuffSkill buffSkill) {
+        Long attackDamage;
+        attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                + getJob().getFinalSubstat() + ((DualBlade) getJob()).getFinalSubStat2()) * 0.01
+                * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                + getJob().getPerXAtt())
+                * getJob().getConstant()
+                        * (1 + (
+                        getJob().getDamage()
+                                + getJob().getBossDamage()
+                                + getJob().getStatXDamage()
+                                + buffSkill.getBuffDamage()
+                                + attackSkill.getAddDamage()
+                                - 310
+                                - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01)
+                ) * 0.01)
+                * getJob().getMastery()
+                * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+        );
+        return attackDamage;
+    }
+
+    @Override
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
@@ -403,23 +408,27 @@ public class DualBladeDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                        + getJob().getFinalSubstat() + ((DualBlade) getJob()).getFinalSubStat2()) * 0.01
-                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat() + ((DualBlade) getJob()).getFinalSubStat2()) * 0.01
+                            * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());

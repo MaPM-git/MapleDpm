@@ -10,8 +10,8 @@ public class HolyAdventCharity extends AttackSkill {
         this.setDotDuration(60000L);
         this.setInterval(4000L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
         this.setRelatedSkill(new HolyAdvent1());
     }
 }

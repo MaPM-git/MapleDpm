@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.mapledpmlab.type.skill.Skill;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class BuffSkill extends Skill {
     private boolean isApplyPlusBuffDuration = false;
     private Long colNum = 0L;
     private Long useCount = 0L;
+    private List<Timestamp> startTimeList = new ArrayList<>();
+    private List<Timestamp> endTimeList = new ArrayList<>();
 
     public BuffSkill() {
         this.buffAttMagic = 0L;
@@ -136,9 +140,19 @@ public class BuffSkill extends Skill {
         return str;
     }
 
-    public Object[] getOpject() {
+    public Object[] getObject() {
+        String start = "";
+        String end = "";
+        for (Timestamp timestamp : startTimeList) {
+            String format = new SimpleDateFormat("mm:ss").format(timestamp);
+            start += format + "\n";
+        }
+        for (Timestamp timestamp : endTimeList) {
+            String format = new SimpleDateFormat("mm:ss").format(timestamp);
+            end += format + "\n";
+        }
         Object[] result = new Object[]{
-                this.getName(), this.getUseCount(), "", "", this.getInfo()
+                this.getName(), this.getUseCount(), start, end, this.getInfo()
         };
         return result;
     }

@@ -11,7 +11,7 @@ public class ReleaseOverload extends GaugeBuffSkill {
         this.setName("릴리즈 오버로드");
         this.setDuration(90L);
         this.addBuffFinalDamage(1.25);
-        this.setCooldown(60.0);
         this.setGaugePer(1L);
+        this.setApplyPlusBuffDuration(true);
     }
 }

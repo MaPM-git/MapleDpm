@@ -23,5 +23,6 @@ public class BaptismOfLightAndDarkness extends AttackSkill {
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(360L);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

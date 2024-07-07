@@ -17,31 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaladinDealCycle extends DealCycle {
-
-    /*
-        팔라딘 딜사이클
-        오라웨폰(140초) - 노블 디맨드(80초) - 에픽 어드벤쳐(60초) - 메용2(60초)
-        크오솔(51초) - 스인미(50초)
-        홀리 유니티(45초) - 블래스드 해머(30초) - 엔버(10초) - 시드링(15초)
-        그랜드 크로스 - 세이크리드 바스티온
-        
-        쿨마다 묠니르 - 생츄어리
-     */
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜 - 오라웨폰, 노블 디맨드, 메용2, 홀리 유니티, 엔버, 웨폰퍼프
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-    
-    // 쿨마다 사용 - 묠니르, 생츄어리
-    private final List<Skill> shortDealCycle = new ArrayList<>();
-
-    private Timestamp sacredBastionEndTime = new Timestamp(0);
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponDot());
@@ -52,8 +27,14 @@ public class PaladinDealCycle extends DealCycle {
             add(new DivineJudgement());
             add(new FallingJustice());
             add(new FinalAttackPaladin());
+            add(new GrandCrossFirstDelay());
             add(new GrandCross1());
+            add(new GrandCross1Delay());
+            add(new GrandCrossLoopDelay());
             add(new GrandCross2());
+            add(new GrandCross2Delay());
+            add(new GrandCrossAfterDelay());
+            add(new MightyMjolnirDelay());
             add(new MightyMjolnir());
             add(new MightyMjolnirImpact());
             add(new SacredBastion1());
@@ -65,17 +46,6 @@ public class PaladinDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new GrandCross1Delay());
-            add(new GrandCross2Delay());
-            add(new GrandCrossAfterDelay());
-            add(new GrandCrossFirstDelay());
-            add(new GrandCrossLoopDelay());
-            add(new MightyMjolnirDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
@@ -83,14 +53,15 @@ public class PaladinDealCycle extends DealCycle {
             add(new EpicAdventure());
             add(new HolyUnity());
             add(new NobleDemand());
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SacredBastionBuff());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
+
+    private Timestamp sacredBastionEndTime = new Timestamp(0);
 
     Double divineBrandCount = 0.0;      // 신성 낙인 개수
 
@@ -98,121 +69,69 @@ public class PaladinDealCycle extends DealCycle {
     SacredBastionLight sacredBastionLight = new SacredBastionLight();
     MightyMjolnir mightyMjolnir = new MightyMjolnir();
     MightyMjolnirImpact mightyMjolnirImpact = new MightyMjolnirImpact();
+    DivineJudgement divineJudgement = new DivineJudgement();
 
     public PaladinDealCycle(Job job) {
         super(job, new FinalAttackPaladin());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
         Blast blast = new Blast();
         BlessedHammerBuff blessedHammerBuff = new BlessedHammerBuff();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DivineJudgement divineJudgement = new DivineJudgement();
         EpicAdventure epicAdventure = new EpicAdventure();
         GrandCrossFirstDelay grandCrossFirstDelay = new GrandCrossFirstDelay();
         HolyUnity holyUnity = new HolyUnity();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         MightyMjolnirDelay mightyMjolnirDelay = new MightyMjolnirDelay();
         NobleDemand nobleDemand = new NobleDemand();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SacredBastion1 sacredBastion1 = new SacredBastion1();
         Sanctuary sanctuary = new Sanctuary();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(90.0);
-
-        dealCycle1.add(nobleDemand);
-        dealCycle1.add(epicAdventure);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(holyUnity);
-        dealCycle1.add(blessedHammerBuff);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(sacredBastion1);
-        dealCycle1.add(grandCrossFirstDelay);
-
-        dealCycle2.add(nobleDemand);
-        dealCycle2.add(epicAdventure);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(holyUnity);
-        dealCycle2.add(blessedHammerBuff);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(grandCrossFirstDelay);
-
-        dealCycle3.add(nobleDemand);
-        dealCycle3.add(holyUnity);
-        dealCycle3.add(blessedHammerBuff);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(weaponJumpRing);
-
-        shortDealCycle.add(mightyMjolnirDelay);
-        //shortDealCycle.add(sanctuary);
+        auraWeaponBuff.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         while (getStart().before(getEnd())) {
-            if (divineBrandCount >= 5) {
-                addSkillEvent(divineJudgement);
-                divineBrandCount -= 5;
-            }
             if (
-                    getStart().after(auraWeaponBuff.getEndTime())
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
-                addSkillEvent(auraWeaponBuff);
-            }
-            if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
-            ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addSkillEvent(mapleWorldGoddessBlessing);
-            }
-            if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(holyUnity)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && !cooldownCheck(epicAdventure)
+                    cooldownCheck(auraWeaponBuff)
+                    && cooldownCheck(nobleDemand)
+                    && cooldownCheck(epicAdventure)
+                    && cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(holyUnity)
+                    && cooldownCheck(blessedHammerBuff)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(grandCrossFirstDelay)
+                    && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(nobleDemand);
+                addSkillEvent(auraWeaponBuff);
+                addSkillEvent(epicAdventure);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(blast);
+                }
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(holyUnity);
-            } else if (
-                    cooldownCheck(blessedHammerBuff)
-                    && cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() + 10000))
-            ) {
                 addSkillEvent(blessedHammerBuff);
                 addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                if (cooldownCheck(sacredBastion1)) {
+                    addSkillEvent(sacredBastion1);
+                }
+                addSkillEvent(grandCrossFirstDelay);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -220,9 +139,23 @@ public class PaladinDealCycle extends DealCycle {
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
-                    cooldownCheck(shortDealCycle)
+                    cooldownCheck(holyUnity)
+                            && cooldownCheck(weaponJumpRing)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                    && !cooldownCheck(epicAdventure)
             ) {
-                addDealCycle(shortDealCycle);
+                addSkillEvent(nobleDemand);
+                addSkillEvent(holyUnity);
+                addSkillEvent(weaponJumpRing);
+            } else if (
+                    cooldownCheck(blessedHammerBuff)
+                    && cooldownCheck(soulContract)
+                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() + 10000))
+            ) {
+                addSkillEvent(blessedHammerBuff);
+                addSkillEvent(soulContract);
+            } else if (cooldownCheck(mightyMjolnirDelay)) {
+                addSkillEvent(mightyMjolnirDelay);
             } else {
                 addSkillEvent(blast);
             }
@@ -250,6 +183,17 @@ public class PaladinDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -300,6 +244,10 @@ public class PaladinDealCycle extends DealCycle {
             } else {
                 if (skill instanceof Blast) {
                     divineBrandCount ++;
+                    if (divineBrandCount >= 5) {
+                        addSkillEvent(divineJudgement);
+                        divineBrandCount -= 5;
+                    }
                 }
                 if (
                         getStart().before(sacredBastionEndTime)
@@ -309,6 +257,10 @@ public class PaladinDealCycle extends DealCycle {
                     getEventTimeList().add(new Timestamp(getStart().getTime()));
                     applyCooldown(sacredBastionLight);
                     divineBrandCount ++;
+                    if (divineBrandCount >= 5) {
+                        addSkillEvent(divineJudgement);
+                        divineBrandCount -= 5;
+                    }
                 }
                 if (skill instanceof MightyMjolnirDelay) {
                     for (int i = 840; i < 840 + 210 * 4; i += 210) {

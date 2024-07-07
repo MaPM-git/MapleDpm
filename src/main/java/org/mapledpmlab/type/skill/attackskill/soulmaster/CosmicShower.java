@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class CosmicShower extends AttackSkill {
     public CosmicShower(Long cosmicOrbCount) {
         this.setName("코스믹 샤워");
-        this.setAttackCount(3L/* 2*/);
+        this.setAttackCount(3L);
         this.setDamage(740.0);
         this.setCooldown(45.0 + cosmicOrbCount * 3);
         this.setDotDuration(45000L + cosmicOrbCount * 3000);

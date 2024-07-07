@@ -8,6 +8,8 @@ public class AstralBlitz2 extends AttackSkill {
         this.setAttackCount(7L * 2);
         this.setDamage(2062.0);
         this.setDelay(2490L);
+        this.setAddDamage(50L);
+        this.addIgnoreDefenseList(50L);
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

@@ -10,8 +10,7 @@ public class Annihilation extends AttackSkill {
         this.setDamage(830.0);
         this.setDelay(2520L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new AnnihilationFinish());
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(120L);

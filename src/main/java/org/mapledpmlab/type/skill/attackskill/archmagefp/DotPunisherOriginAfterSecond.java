@@ -12,5 +12,6 @@ public class DotPunisherOriginAfterSecond extends AttackSkill {
         this.setLimitAttackCount(24L);
         this.addFinalDamage(1.6);       // 코어강화
         this.addFinalDamage(0.55);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

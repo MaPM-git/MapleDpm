@@ -9,7 +9,7 @@ public class ShaftBreakEnchantTornado extends AttackSkill {
         this.setAttackCount(3L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setDotDuration(1440L);
+        this.setDotDuration(3000L);
         this.setInterval(120L);
         this.setLimitAttackCount(12L);
         this.setAddDamage(10L + 15);

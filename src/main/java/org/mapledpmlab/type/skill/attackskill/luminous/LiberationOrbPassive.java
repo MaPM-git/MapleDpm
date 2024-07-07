@@ -9,5 +9,6 @@ public class LiberationOrbPassive extends AttackSkill {
         this.setAttackCount(4L);
         this.setCooldown(6.0);
         this.addFinalDamage(1.6);       // 코어 강화
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

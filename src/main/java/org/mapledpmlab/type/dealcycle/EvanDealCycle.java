@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.evan.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -18,15 +19,6 @@ import java.util.List;
 
 public class EvanDealCycle extends DealCycle {
 
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdvancedDragonSpark());
@@ -37,6 +29,7 @@ public class EvanDealCycle extends DealCycle {
             add(new CircleOfEarth());
             add(new CircleOfMana1());
             add(new CircleOfMana2());
+            add(new CircleOfMana2Cancel());
             add(new CircleOfThunder());
             add(new CircleOfWind());
             add(new CrestOfTheSolar());
@@ -59,13 +52,8 @@ public class EvanDealCycle extends DealCycle {
             add(new SwiftOfWind());
             add(new ZodiacBurst());
             add(new ZodiacBurstMeteor());
-            add(new ZodiacRay());
-        }
-    };
-
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
             add(new ZodiacRayDelay());
+            add(new ZodiacRay());
         }
     };
 
@@ -75,11 +63,10 @@ public class EvanDealCycle extends DealCycle {
             add(new ElementalBlastBuff());
             add(new HeroesOath());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
             add(new SwiftComeBack());
-            add(new ThiefCunning());
             //add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
             add(new ZodiacBurstBuff());
         }
@@ -93,7 +80,6 @@ public class EvanDealCycle extends DealCycle {
         super(job, new AdvancedDragonSpark());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         BreakComeBack breakComeBack = new BreakComeBack();
@@ -101,14 +87,14 @@ public class EvanDealCycle extends DealCycle {
         BreathOfEarth breathOfEarth = new BreathOfEarth();
         BreathOfWind breathOfWind = new BreathOfWind();
         CircleOfEarth circleOfEarth = new CircleOfEarth();
-        CircleOfMana1 circleOfMana1 = new CircleOfMana1();
+        CircleOfMana1 circleOfMana = new CircleOfMana1();
+        CircleOfMana1 circleOfManaCancel = new CircleOfMana1();
         CircleOfThunder circleOfThunder = new CircleOfThunder();
         CircleOfWind circleOfWind = new CircleOfWind();
         ComeBack comeBack = new ComeBack();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DarkFog darkFog = new DarkFog();
         DiveOfEarth diveOfEarth = new DiveOfEarth();
-        DiveOfThunder diveOfThunder = new DiveOfThunder();
         DragonBreak dragonBreak = new DragonBreak();
         DragonBreath dragonBreath = new DragonBreath();
         DragonDive dragonDive = new DragonDive();
@@ -116,9 +102,7 @@ public class EvanDealCycle extends DealCycle {
         ElementalBlast elementalBlast = new ElementalBlast();
         HeroesOath heroesOath = new HeroesOath();
         ImperialBreath imperialBreath = new ImperialBreath();
-        MagicDebris magicDebris = new MagicDebris();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
@@ -128,80 +112,15 @@ public class EvanDealCycle extends DealCycle {
         SwiftComeBack swiftComeBack = new SwiftComeBack();
         SwiftOfThunder swiftOfThunder = new SwiftOfThunder();
         SwiftOfWind swiftOfWind = new SwiftOfWind();
-        ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         ZodiacBurst zodiacBurst = new ZodiacBurst();
         ZodiacRay zodiacRay = new ZodiacRay();
         ZodiacRayDelay zodiacRayDelay = new ZodiacRayDelay();
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(95.0);
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
-        dealCycle1.add(heroesOath);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(summonOnyxDragon);
-        dealCycle1.add(zodiacRayDelay);
-        dealCycle1.add(dragonBreath);
-        dealCycle1.add(circleOfWind);
-        dealCycle1.add(breathOfWind);
-        dealCycle1.add(breathComeBack);             // 12스택
-        dealCycle1.add(dragonSwift);
-        dealCycle1.add(circleOfWind);
-        dealCycle1.add(swiftOfWind);                // 16스택
-        dealCycle1.add(swiftComeBack);
-        dealCycle1.add(dragonDive);
-        dealCycle1.add(circleOfEarth);
-        dealCycle1.add(diveOfEarth);                // 23스택
-        dealCycle1.add(darkFog);                    // 26스택
-        dealCycle1.add(zodiacRay);
-        dealCycle1.add(comeBack);
-        dealCycle1.add(dragonBreak);
-        dealCycle1.add(elementalBlast);
-        dealCycle1.add(imperialBreath);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(zodiacBurst);
-
-        dealCycle2.add(heroesOath);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(summonOnyxDragon);
-        dealCycle2.add(dragonBreath);
-        dealCycle2.add(circleOfWind);
-        dealCycle2.add(breathOfWind);
-        dealCycle2.add(breathComeBack);             // 12스택
-        dealCycle2.add(dragonSwift);
-        dealCycle2.add(circleOfWind);
-        dealCycle2.add(swiftOfWind);                // 16스택
-        dealCycle2.add(swiftComeBack);
-        dealCycle2.add(dragonDive);
-        dealCycle2.add(circleOfEarth);
-        dealCycle2.add(diveOfEarth);                // 23스택
-        dealCycle2.add(darkFog);                    // 26스택
-        dealCycle2.add(zodiacRay);
-        dealCycle2.add(comeBack);
-        dealCycle2.add(dragonBreak);
-        dealCycle2.add(elementalBlast);
-        dealCycle2.add(imperialBreath);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(circleOfMana1);
-        dealCycle2.add(circleOfMana1);
-        dealCycle2.add(circleOfMana1);
-        dealCycle2.add(circleOfMana1);
-        dealCycle2.add(circleOfMana1);
-        dealCycle2.add(circleOfMana1);
-        dealCycle2.add(breakComeBack);
+        circleOfManaCancel.setRelatedSkill(new CircleOfMana2Cancel());
 
         List<Skill> swiftOfThunderCycle = new ArrayList<>();
         List<Skill> diveOfEarthCycle = new ArrayList<>();
@@ -210,55 +129,109 @@ public class EvanDealCycle extends DealCycle {
         swiftOfThunderCycle.add(dragonSwift);
         swiftOfThunderCycle.add(circleOfThunder);
         swiftOfThunderCycle.add(swiftOfThunder);
-        swiftOfThunderCycle.add(circleOfMana1);
-        swiftOfThunderCycle.add(circleOfMana1);
+        swiftOfThunderCycle.add(circleOfMana);
+        swiftOfThunderCycle.add(circleOfMana);
         swiftOfThunderCycle.add(swiftComeBack);
 
         diveOfEarthCycle.add(dragonDive);
         diveOfEarthCycle.add(circleOfEarth);
         diveOfEarthCycle.add(diveOfEarth);
-        diveOfEarthCycle.add(circleOfMana1);
-        diveOfEarthCycle.add(circleOfMana1);
-        diveOfEarthCycle.add(circleOfMana1);
-        diveOfEarthCycle.add(circleOfMana1);
+        diveOfEarthCycle.add(circleOfMana);
+        diveOfEarthCycle.add(circleOfMana);
+        diveOfEarthCycle.add(circleOfMana);
+        diveOfEarthCycle.add(circleOfMana);
         diveOfEarthCycle.add(comeBack);
 
         breathOfEarthCycle.add(dragonBreath);
         breathOfEarthCycle.add(circleOfEarth);
         breathOfEarthCycle.add(breathOfEarth);
-        breathOfEarthCycle.add(circleOfMana1);
-        breathOfEarthCycle.add(circleOfMana1);
+        breathOfEarthCycle.add(circleOfMana);
+        breathOfEarthCycle.add(circleOfMana);
         breathOfEarthCycle.add(breathComeBack);
 
         while (getStart().before(getEnd())) {
             if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
+                    cooldownCheck(heroesOath)
+                    && cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(summonOnyxDragon)
+                    && cooldownCheck(zodiacRayDelay)
+                    && cooldownCheck(dragonBreath)
+                    && cooldownCheck(dragonSwift)
+                    && cooldownCheck(dragonDive)
+                    && cooldownCheck(dragonBreak)
+                    && cooldownCheck(elementalBlast)
+                    && cooldownCheck(imperialBreath)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
+                //getStart().setTime(getStart().getTime() + 210);
+                addSkillEvent(heroesOath);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else if (cooldownCheck(spiralOfMana)) {
+                    addSkillEvent(spiralOfMana);
+                } else {
+                    addSkillEvent(circleOfMana);
+                }
                 addSkillEvent(mapleWorldGoddessBlessing);
-            }
-            if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
+                addSkillEvent(summonOnyxDragon);
+                addSkillEvent(zodiacRayDelay);
+                addSkillEvent(circleOfManaCancel);
+                addSkillEvent(dragonBreath);
+                addSkillEvent(circleOfWind);
+                addSkillEvent(breathOfWind);
+                addSkillEvent(breathComeBack);
+                addSkillEvent(circleOfManaCancel);
+                addSkillEvent(dragonSwift);
+                addSkillEvent(circleOfWind);
+                addSkillEvent(swiftOfWind);
+                addSkillEvent(swiftComeBack);
+                addSkillEvent(circleOfManaCancel);
+                addSkillEvent(dragonDive);
+                addSkillEvent(circleOfEarth);
+                addSkillEvent(diveOfEarth);
+                addSkillEvent(darkFog);
+                addSkillEvent(comeBack);
+                addSkillEvent(dragonBreak);
+                addSkillEvent(elementalBlast);
+                addSkillEvent(imperialBreath);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                addSkillEvent(zodiacRay);
+                if (cooldownCheck(spiralOfMana)) {
+                    addSkillEvent(spiralOfMana);
+                }
+                if (cooldownCheck(zodiacBurst)) {
+                    addSkillEvent(zodiacBurst);
+                    if (cooldownCheck(spiralOfMana)) {
+                        addSkillEvent(spiralOfMana);
+                        addSkillEvent(spiralOfMana);
+                        addSkillEvent(breakComeBack);
+                    } else {
+                        addSkillEvent(circleOfMana);
+                        addSkillEvent(circleOfMana);
+                        addSkillEvent(circleOfMana);
+                        addSkillEvent(breakComeBack);
+                    }
+                } else {
+                    int delay = 4650;
+                    for (int i = 0; i < 8; i++) {
+                        if (cooldownCheck(spiralOfMana)) {
+                            addSkillEvent(spiralOfMana);
+                            addSkillEvent(circleOfMana);
+                        } else {
+                            addSkillEvent(circleOfMana);
+                        }
+                    }
+                    addSkillEvent(breakComeBack);
+                }
+            } else if (cooldownCheck(spiralOfMana)) {
+                addSkillEvent(spiralOfMana);
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addDealCycle(dealCycle2);
-            }/* else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
-            } else if (
-                    cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))) {
-                addSkillEvent(ringSwitching);
-            }*/ else if (
                     cooldownCheck(summonOnyxDragon)
                     && !cooldownCheck(heroesOath)
             ) {
@@ -274,50 +247,100 @@ public class EvanDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(dragonBreak);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
+                boolean som = false;
+                for (int i = 0; i < 3; i++) {
+                    if (cooldownCheck(spiralOfMana)) {
+                        addSkillEvent(spiralOfMana);
+                        som = true;
+                    } else {
+                        addSkillEvent(circleOfMana);
+                    }
+                }
+                if (som) {
+                    addSkillEvent(circleOfMana);
+                }
                 addSkillEvent(elementalBlast);
                 addSkillEvent(imperialBreath);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
+                for (int i = 0; i < 8; i++) {
+                    if (cooldownCheck(spiralOfMana)) {
+                        addSkillEvent(spiralOfMana);
+                        addSkillEvent(circleOfMana);
+                    } else {
+                        addSkillEvent(circleOfMana);
+                    }
+                }
                 addSkillEvent(breakComeBack);
             } else if (
                     cooldownCheck(dragonBreak)
                     && getStart().before(new Timestamp(elementalBlast.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(dragonBreak);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
-                addSkillEvent(circleOfMana1);
+                boolean som = false;
+                for (int i = 0; i < 3; i++) {
+                    if (cooldownCheck(spiralOfMana)) {
+                        addSkillEvent(spiralOfMana);
+                        som = true;
+                    } else {
+                        addSkillEvent(circleOfMana);
+                    }
+                }
+                if (som) {
+                    addSkillEvent(circleOfMana);
+                }
                 addSkillEvent(breakComeBack);
-            } else if (
-                    cooldownCheck(spiralOfMana)
-            ) {
-                addSkillEvent(spiralOfMana);
-            } else if (
-                    cooldownCheck(dragonDive)
-                    && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
-            ) {
-                addDealCycle(diveOfEarthCycle);
             } else if (
                     cooldownCheck(dragonSwift)
                     && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
             ) {
-                addDealCycle(swiftOfThunderCycle);
+                addSkillEvent(dragonSwift);
+                addSkillEvent(circleOfThunder);
+                addSkillEvent(swiftOfThunder);
+                if (cooldownCheck(spiralOfMana)) {
+                    addSkillEvent(spiralOfMana);
+                    addSkillEvent(circleOfMana);
+                } else {
+                    addSkillEvent(circleOfMana);
+                }
+                if (!cooldownCheck(dragonSwift)) {
+                    addSkillEvent(circleOfMana);
+                }
+                addSkillEvent(circleOfManaCancel);
+                addSkillEvent(swiftComeBack);
+            } else if (
+                    cooldownCheck(dragonDive)
+                    && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
+            ) {
+                addSkillEvent(dragonDive);
+                addSkillEvent(circleOfEarth);
+                addSkillEvent(diveOfEarth);
+                addSkillEvent(circleOfMana);
+                addSkillEvent(circleOfManaCancel);
+                addSkillEvent(comeBack);
             } else if (
                     cooldownCheck(dragonBreath)
                     && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
             ) {
-                addDealCycle(breathOfEarthCycle);
+                addSkillEvent(dragonBreath);
+                addSkillEvent(circleOfWind);
+                addSkillEvent(breathOfWind);
+                for (int i = 0; i < 3; i++) {
+                    if (cooldownCheck(spiralOfMana)) {
+                        addSkillEvent(spiralOfMana);
+                        addSkillEvent(circleOfMana);
+                    } else if (
+                            cooldownCheck(dragonSwift)
+                            || cooldownCheck(dragonDive)
+                            || cooldownCheck(dragonBreak)
+                    ) {
+                        break;
+                    } else {
+                        addSkillEvent(circleOfMana);
+                    }
+                }
+                addSkillEvent(circleOfManaCancel);
+                addSkillEvent(breathComeBack);
             } else {
-                addSkillEvent(circleOfMana1);
+                addSkillEvent(circleOfMana);
             }
         }
         sortEventTimeList();
@@ -421,6 +444,17 @@ public class EvanDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -479,14 +513,18 @@ public class EvanDealCycle extends DealCycle {
                     long i = 0;
                     if (skill instanceof BreathOfEarth) {
                         i += 300;
-                    }/* else if (skill instanceof DragonDive) {
+                    } else if (skill instanceof DragonDive) {
                         i += 60;
-                    }*/ else if (skill instanceof DiveOfEarth) {
-                        i += 960;
+                    } else if (skill instanceof DiveOfEarth) {
+                        Skill doe = new DiveOfEarth();
+                        getSkillEventList().add(new SkillEvent(doe, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        i += 900;
                     } else if (skill instanceof ImperialBreath) {
-                        i += 820;
+                        i += 840;
                     } else if (skill instanceof SwiftOfThunder) {
                         i += 480;
+                    } else if (skill instanceof BreathOfWind) {
+                        i += 390;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         if (skill instanceof SwiftOfThunder) {
@@ -495,7 +533,7 @@ public class EvanDealCycle extends DealCycle {
                             getSkillEventList().add(new SkillEvent(sot, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         } else if (skill instanceof DiveOfEarth) {
                             Skill doe = new DiveOfEarth();
-                            ((DiveOfEarth) doe).addFinalDamage(Math.pow(0.5, attackCount));
+                            ((DiveOfEarth) doe).addFinalDamage(Math.pow(0.5, attackCount + 1));
                             getSkillEventList().add(new SkillEvent(doe, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         } else {
                             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -538,59 +576,33 @@ public class EvanDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        if (
-                attackSkill instanceof BreakComeBack
-                || attackSkill instanceof BreathComeBack
-                || attackSkill instanceof BreathOfEarth
-                || attackSkill instanceof BreathOfWind
-                || attackSkill instanceof CircleOfEarth
-                || attackSkill instanceof CircleOfMana1
-                || attackSkill instanceof CircleOfMana2
-                || attackSkill instanceof CircleOfThunder
-                || attackSkill instanceof CircleOfWind
-                || attackSkill instanceof DarkFog
-                || attackSkill instanceof DiveOfEarth
-                || attackSkill instanceof DiveOfThunder
-                || attackSkill instanceof DragonBreak
-                || attackSkill instanceof DragonBreath
-                || attackSkill instanceof DragonDive
-                || attackSkill instanceof DragonSwift
-                || attackSkill instanceof ElementalBlast
-                || attackSkill instanceof ImperialBreath
-                || attackSkill instanceof MagicDebris
-                || attackSkill instanceof SpiralOfMana
-                || attackSkill instanceof SummonOnyxDragon
-                || attackSkill instanceof SwiftOfThunder
-                || attackSkill instanceof SwiftOfWind
-                || attackSkill instanceof ZodiacBurst
-                || attackSkill instanceof ZodiacBurstMeteor
-                || attackSkill instanceof ZodiacRay
-        ) {
-            buffSkill.addBuffFinalDamage(1.08);
-        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 this.getJob().addMainStat(buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                        + getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((getJob().getMagic() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((getJob().getMagic() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
@@ -606,36 +618,6 @@ public class EvanDealCycle extends DealCycle {
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
-        }
-        if (
-                attackSkill instanceof BreakComeBack
-                        || attackSkill instanceof BreathComeBack
-                        || attackSkill instanceof BreathOfEarth
-                        || attackSkill instanceof BreathOfWind
-                        || attackSkill instanceof CircleOfEarth
-                        || attackSkill instanceof CircleOfMana1
-                        || attackSkill instanceof CircleOfMana2
-                        || attackSkill instanceof CircleOfThunder
-                        || attackSkill instanceof CircleOfWind
-                        || attackSkill instanceof DarkFog
-                        || attackSkill instanceof DiveOfEarth
-                        || attackSkill instanceof DiveOfThunder
-                        || attackSkill instanceof DragonBreak
-                        || attackSkill instanceof DragonBreath
-                        || attackSkill instanceof DragonDive
-                        || attackSkill instanceof DragonSwift
-                        || attackSkill instanceof ElementalBlast
-                        || attackSkill instanceof ImperialBreath
-                        || attackSkill instanceof MagicDebris
-                        || attackSkill instanceof SpiralOfMana
-                        || attackSkill instanceof SummonOnyxDragon
-                        || attackSkill instanceof SwiftOfThunder
-                        || attackSkill instanceof SwiftOfWind
-                        || attackSkill instanceof ZodiacBurst
-                        || attackSkill instanceof ZodiacBurstMeteor
-                        || attackSkill instanceof ZodiacRay
-        ) {
-            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

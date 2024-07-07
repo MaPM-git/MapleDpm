@@ -4,6 +4,7 @@ import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.job.Xenon;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.xenon.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -15,16 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XenonDealCycle extends DealCycle {
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AegisSystem());
@@ -36,25 +27,20 @@ public class XenonDealCycle extends DealCycle {
             add(new FuzzyRobMasqueradeSnipe());
             add(new HologramGraffitiForceField());
             add(new HologramGraffitiFusion());
+            add(new MegaSmasherBeforeDelay());
             add(new MegaSmasher());
             add(new MegaSmasherReinforce());
             add(new MeltdownExplosion());
             add(new OverloadModePlasmaCurrent());
+            add(new PhotonRayBeforeDelay());
             add(new PhotonRay());
             add(new PinpointRocket());
+            add(new ResistanceLineInfantryDelay());
             add(new ResistanceLineInfantry());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new TriangleFormation());
             add(new TriangleFormationPlasma());
-        }
-    };
-
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new PhotonRayBeforeDelay());
-            add(new ResistanceLineInfantryDelay());
-            add(new MegaSmasherBeforeDelay());
         }
     };
 
@@ -72,11 +58,10 @@ public class XenonDealCycle extends DealCycle {
             add(new Overdrive(255L));
             add(new OverdriveDebuff(255L));
             add(new OverloadMode());
-            add(new PriorPreparation());
             add(new ReadyToDie());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
@@ -101,7 +86,6 @@ public class XenonDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AegisSystem aegisSystem = new AegisSystem();
@@ -115,7 +99,8 @@ public class XenonDealCycle extends DealCycle {
         HologramGraffitiFusion hologramGraffitiFusion = new HologramGraffitiFusion();
         LoadedDice loadedDice = new LoadedDice();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MegaSmasherBeforeDelay megaSmasher = new MegaSmasherBeforeDelay();
+        MegaSmasherBeforeDelay megaSmasherBeforeDelay = new MegaSmasherBeforeDelay();
+        MegaSmasher megaSmasher = new MegaSmasher();
         MegaSmasherReinforce megaSmasherReinforce = new MegaSmasherReinforce();
         MeltdownExplosion meltdownExplosion = new MeltdownExplosion();
         OopartsCode oopartsCode = new OopartsCode();
@@ -123,109 +108,128 @@ public class XenonDealCycle extends DealCycle {
         OverloadMode overloadMode = new OverloadMode();
         PhotonRay photonRay = new PhotonRay();
         PhotonRayBeforeDelay photonRayBeforeDelay = new PhotonRayBeforeDelay();
-        PriorPreparation priorPreparation = new PriorPreparation();
         ReadyToDie readyToDie = new ReadyToDie();
         ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
 
         /*for (int i = 0; i < 720 * 1000; i += aegisSystem.getInterval()) {
             getSkillEventList().add(new SkillEvent(aegisSystem, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }*/
 
-        ringSwitching.setCooldown(95.0);
+        ringSwitching.setCooldown(90.0);
+        mapleWorldGoddessBlessing.setCooldown(180.0);
+        inclinePower.setApplyCooldownReduction(false);
+        applyCooldown(inclinePower);
 
-        dealCycle1.add(photonRayBeforeDelay);
-        dealCycle1.add(loadedDice);
-        dealCycle1.add(oopartsCode);
-        dealCycle1.add(amaranceGenerator);
-        dealCycle1.add(overloadMode);
-        dealCycle1.add(hologramGraffitiForceField);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(hologramGraffitiFusion);
-        dealCycle1.add(overdrive);
-        dealCycle1.add(meltdownExplosion);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(readyToDie);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(resistanceLineInfantry);
-        dealCycle1.add(artificialEvolution);
-        dealCycle1.add(megaSmasherReinforce);
-        dealCycle1.add(photonRay);
-
-        dealCycle2.add(photonRayBeforeDelay);
-        dealCycle2.add(loadedDice);
-        dealCycle2.add(oopartsCode);
-        dealCycle2.add(amaranceGenerator);
-        dealCycle2.add(overloadMode);
-        dealCycle2.add(hologramGraffitiForceField);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(hologramGraffitiFusion);
-        dealCycle2.add(overdrive);
-        dealCycle2.add(meltdownExplosion);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(readyToDie);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(resistanceLineInfantry);
-        dealCycle2.add(megaSmasher);
-        dealCycle2.add(photonRay);
-
-        dealCycle3.add(photonRayBeforeDelay);
-        dealCycle3.add(oopartsCode);
-        dealCycle3.add(amaranceGenerator);
-        dealCycle3.add(hologramGraffitiFusion);
-        dealCycle3.add(overdrive);
-        dealCycle3.add(meltdownExplosion);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(readyToDie);
-        dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(photonRay);
+        getStart().setTime(-7000);
+        overloadMode.setActivateTime(new Timestamp(-5555555));
+        megaSmasherBeforeDelay.setActivateTime(new Timestamp(-5555555));
+        addSkillEvent(overloadMode);
+        addSkillEvent(megaSmasherBeforeDelay);
+        getStart().setTime(0);
+        energyCnt = 50;
 
         while (getStart().before(getEnd())) {
             if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
+                    cooldownCheck(overloadMode)
+                    && cooldownCheck(megaSmasherBeforeDelay)
+                    && cooldownCheck(loadedDice)
+                    && getStart().before(new Timestamp(600 * 1000))
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addSkillEvent(mapleWorldGoddessBlessing);
+                addSkillEvent(overloadMode);
+                addSkillEvent(megaSmasherBeforeDelay);
+            }
+            if (cooldownCheck(resistanceLineInfantry)) {
+                addSkillEvent(resistanceLineInfantry);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && energyCnt == 20
+                    cooldownCheck(photonRayBeforeDelay)
+                    && cooldownCheck(loadedDice)
+                    && cooldownCheck(oopartsCode)
+                    && cooldownCheck(amaranceGenerator)
+                    && cooldownCheck(hologramGraffitiForceField)
+                    && cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(hologramGraffitiFusion)
+                    && cooldownCheck(overdrive)
+                    && cooldownCheck(meltdownExplosion)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(readyToDie)
+                    && cooldownCheck(restraintRing)
+                    && getStart().before(new Timestamp(600 * 1000))
+                    && energyCnt >= 20
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
+                boolean isOrigin = false;
+                addSkillEvent(photonRayBeforeDelay);
+                addSkillEvent(loadedDice);
+                addSkillEvent(meltdownExplosion);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                }
+                if (cooldownCheck(fuzzyRobMasqueradeExecution)) {
+                    addSkillEvent(fuzzyRobMasqueradeExecution);
+                } else {
+                    addSkillEvent(fuzzyRobMasqueradeSnipe);
+                }
+                addSkillEvent(hologramGraffitiFusion);
+                addSkillEvent(mapleWorldGoddessBlessing);
+                addSkillEvent(oopartsCode);
+                addSkillEvent(hologramGraffitiForceField);
+                addSkillEvent(overdrive);
+                addSkillEvent(soulContract);
+                addSkillEvent(readyToDie);
+                addSkillEvent(restraintRing);
+                if (cooldownCheck(fuzzyRobMasqueradeExecution)) {
+                    addSkillEvent(fuzzyRobMasqueradeExecution);
+                } else {
+                    addSkillEvent(fuzzyRobMasqueradeSnipe);
+                }
+                if (cooldownCheck(artificialEvolution)) {
+                    addSkillEvent(artificialEvolution);
+                    if (cooldownCheck(fuzzyRobMasqueradeExecution)) {
+                        addSkillEvent(fuzzyRobMasqueradeExecution);
+                    } else {
+                        addSkillEvent(fuzzyRobMasqueradeSnipe);
+                    }
+                    isOrigin = true;
+                }
+                if (isOrigin) {
+                    addSkillEvent(megaSmasherReinforce);
+                } else {
+                    addSkillEvent(megaSmasher);
+                }
+                addSkillEvent(photonRay);
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && getStart().after(new Timestamp(60 * 1000))
+                    cooldownCheck(photonRayBeforeDelay)
+                    && cooldownCheck(oopartsCode)
+                    && cooldownCheck(amaranceGenerator)
+                    && cooldownCheck(hologramGraffitiFusion)
+                    && cooldownCheck(overdrive)
+                    && cooldownCheck(meltdownExplosion)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(readyToDie)
+                    && cooldownCheck(weaponJumpRing)
+                    && cooldownCheck(photonRay)
+                    && getStart().before(new Timestamp(660 * 1000))
                     && energyCnt == 20
             ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && getStart().after(new Timestamp(60 * 1000))
-                    && energyCnt == 20
-            ) {
-                addDealCycle(dealCycle3);
+                addSkillEvent(photonRayBeforeDelay);
+                addSkillEvent(oopartsCode);
+                addSkillEvent(amaranceGenerator);
+                addSkillEvent(hologramGraffitiFusion);
+                addSkillEvent(overdrive);
+                addSkillEvent(meltdownExplosion);
+                addSkillEvent(soulContract);
+                addSkillEvent(readyToDie);
+                addSkillEvent(weaponJumpRing);
+                addSkillEvent(photonRay);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -239,7 +243,12 @@ public class XenonDealCycle extends DealCycle {
                 addSkillEvent(hologramGraffitiForceField);
             } else if (
                     cooldownCheck(photonRayBeforeDelay)
-                    && getStart().before(new Timestamp(loadedDice.getActivateTime().getTime() - 30000))
+                    && (
+                            (
+                                    !cooldownCheck(readyToDie)
+                                    && getStart().before(new Timestamp(loadedDice.getActivateTime().getTime() - 20000))
+                            ) || getStart().after(new Timestamp(660 * 1000))
+                    )
             ) {
                 addSkillEvent(photonRayBeforeDelay);
                 for (int i = 0; i < 10; i++) {
@@ -250,11 +259,6 @@ public class XenonDealCycle extends DealCycle {
                     }
                 }
                 addSkillEvent(photonRay);
-            } else if (
-                    cooldownCheck(resistanceLineInfantry)
-                    && getStart().before(new Timestamp(loadedDice.getActivateTime().getTime() - 25000))
-            ) {
-                addSkillEvent(resistanceLineInfantry);
             } else {
                 if (cooldownCheck(fuzzyRobMasqueradeExecution)) {
                     addSkillEvent(fuzzyRobMasqueradeExecution);
@@ -274,6 +278,7 @@ public class XenonDealCycle extends DealCycle {
             if (
                     skill instanceof FuzzyRobMasqueradeExecution
                     || skill instanceof ArtificialEvolution
+                    || skill instanceof ArtificialEvolutionAirFrame
             ) {
                 Long ran = (long) (Math.random() * 9 + 1);
                 if (ran <= 3) {
@@ -316,14 +321,11 @@ public class XenonDealCycle extends DealCycle {
                     && energyCnt < 50
             ) {
                 energyCnt ++;
-                supplySurplus.setCooldown(0.5);
-            } else if (
-                    energyCnt < 20
-            ) {
+                supplySurplus.setActivateTime(new Timestamp(supplySurplus.getActivateTime().getTime() + 500));
+            } else if (energyCnt < 20) {
                 energyCnt ++;
-                supplySurplus.setCooldown(4.0);
+                supplySurplus.setActivateTime(new Timestamp(supplySurplus.getActivateTime().getTime() + 4000));
             }
-            applyCooldown(supplySurplus);
         }
         if (getStart().after(overloadModeEndTime) && energyCnt > 20) {
             energyCnt = 20;
@@ -338,7 +340,10 @@ public class XenonDealCycle extends DealCycle {
             if (skill instanceof OverloadMode) {
                 overloadModeEndTime = new Timestamp(getStart().getTime() + 70000);
             }
-            if (skill instanceof OopartsCode) {
+            if (
+                    skill instanceof OopartsCode
+                    && getStart().after(overloadModeEndTime)
+            ) {
                 energyCnt -= 20;
             }
             if (skill instanceof AmaranceGenerator) {
@@ -356,18 +361,33 @@ public class XenonDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
-                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                if (skill instanceof OverdriveDebuff) {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 28000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
+                } else {
+                    endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                }
             }
         } else {
             if (
                     skill instanceof FuzzyRobMasqueradeExecution
                     || skill instanceof MeltdownExplosion
-                    || skill instanceof ArtificialEvolutionAirFrame
+                    //|| skill instanceof ArtificialEvolutionAirFrame
             ) {
                 Long ran = (long) (Math.random() * 9 + 1);
                 if (ran <= 3) {
@@ -383,6 +403,8 @@ public class XenonDealCycle extends DealCycle {
                     getStart().before(evolutionEndTime)
                     && !(skill instanceof ArtificialEvolutionAirFrame)
                     && cooldownCheck(artificialEvolutionAirFrame)
+                    && !(skill instanceof TriangleFormationPlasma)
+                    && !(skill instanceof TriangleFormation)
             ) {
                 addSkillEvent(artificialEvolutionAirFrame);
             }
@@ -473,6 +495,16 @@ public class XenonDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -503,6 +535,16 @@ public class XenonDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 Long currentEnergyCnt = ((XenonSkillEvent) se).getCurrentEnergyCnt();
@@ -562,6 +604,34 @@ public class XenonDealCycle extends DealCycle {
     }
 
     @Override
+    public Long getDotDamage(AttackSkill attackSkill, BuffSkill buffSkill) {
+        Long attackDamage;
+        attackDamage = (long) Math.floor(
+                (
+                        getJob().getFinalMainStat()
+                                + getJob().getFinalSubstat()
+                                + ((Xenon) getJob()).getFinalSubStat2()
+                ) * 4 * 0.01
+                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                        + getJob().getPerXAtt())
+                        * getJob().getConstant()
+                        * (1 + (
+                        getJob().getDamage()
+                                + getJob().getBossDamage()
+                                + getJob().getStatXDamage()
+                                + buffSkill.getBuffDamage()
+                                + attackSkill.getAddDamage()
+                                - 310
+                                - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01)
+                ) * 0.01)
+                        * getJob().getMastery()
+                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+        );
+        return attackDamage;
+    }
+
+    @Override
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
@@ -580,27 +650,31 @@ public class XenonDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(
-                        (
-                                getJob().getFinalMainStat()
-                                + getJob().getFinalSubstat()
-                                + ((Xenon) getJob()).getFinalSubStat2()
-                        ) * 4 * 0.01
-                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(
+                            (
+                                    getJob().getFinalMainStat()
+                                            + getJob().getFinalSubstat()
+                                            + ((Xenon) getJob()).getFinalSubStat2()
+                            ) * 4 * 0.01
+                                    * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                                    * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                                    + getJob().getPerXAtt())
+                                    * getJob().getConstant()
+                                    * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                                    * (getJob().getFinalDamage())
+                                    * buffSkill.getBuffFinalDamage()
+                                    * getJob().getStatXFinalDamage()
+                                    * attackSkill.getFinalDamage()
+                                    * getJob().getMastery()
+                                    * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                                    * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                                    * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                                    * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());

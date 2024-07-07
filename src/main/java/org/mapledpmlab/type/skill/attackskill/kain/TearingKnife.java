@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class TearingKnife extends AttackSkill {
     public TearingKnife() {
         this.setName("[처형] 테어링 나이프");
-        this.setDamage(890.0 + 239);
+        this.setDamage(890.0);
         this.setAttackCount(7L);
         this.setDelayByAttackSpeed(660L);
         this.setCooldown(4.5);

@@ -14,15 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AngelicBusterDealCycle extends DealCycle {
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    private final List<Skill> dealCycle4 = new ArrayList<>();
-
-    private final List<Skill> dealCycle5 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -34,6 +25,7 @@ public class AngelicBusterDealCycle extends DealCycle {
             add(new EnergyBurst());
             add(new GrandFinale());
             add(new GrandFinaleFinish());
+            add(new MascotFamiliarBeforeDelay());
             add(new MascotFamiliar());
             add(new MascotFamiliarEnd());
             add(new SoulSeeker());
@@ -47,12 +39,6 @@ public class AngelicBusterDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new MascotFamiliarBeforeDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new FinalContract());
@@ -60,18 +46,15 @@ public class AngelicBusterDealCycle extends DealCycle {
             add(new LoadedDice());
             add(new Overdrive(255L));
             add(new OverdriveDebuff(255L));
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContractAB());
             add(new SoulExaltation());
             add(new SpotlightBuff());
-            add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 
-    CheeringBalloon cheeringBalloon = new CheeringBalloon();
-    CheeringBalloonFinale cheeringBalloonFinale = new CheeringBalloonFinale();
     SoulSeeker soulSeeker = new SoulSeeker();
 
     Timestamp grandFinaleBuffEndTime = new Timestamp(-1);
@@ -81,7 +64,6 @@ public class AngelicBusterDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
@@ -92,7 +74,6 @@ public class AngelicBusterDealCycle extends DealCycle {
         LoadedDice loadedDice = new LoadedDice();
         MascotFamiliarBeforeDelay mascotFamiliarBeforeDelay = new MascotFamiliarBeforeDelay();
         Overdrive overdrive = new Overdrive(255L);
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContractAB soulContractAB = new SoulContractAB();
@@ -100,121 +81,79 @@ public class AngelicBusterDealCycle extends DealCycle {
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SpotlightBuff spotlight = new SpotlightBuff();
         SuperNova superNova = new SuperNova();
-        ThiefCunning thiefCunning = new ThiefCunning();
         Trinity trinity = new Trinity();
         TrinityFusion trinityFusion = new TrinityFusion();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(130.0);
 
-        // 리레, 그여축, 6차
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(grandisGoddessBlessingNova);
-        dealCycle1.add(finalContract);
-        dealCycle1.add(spotlight);
-        dealCycle1.add(overdrive);
-        dealCycle1.add(soulExaltation);
-        dealCycle1.add(soulContractAB);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(superNova);
-        dealCycle1.add(grandFinale);
-        dealCycle1.add(energyBurst);
-        dealCycle1.add(mascotFamiliarBeforeDelay);
+        grandisGoddessBlessingNova.setCooldown(240.0);
 
-        // 웨퍼, 그여축, 6차
-        dealCycle2.add(grandisGoddessBlessingNova);
-        dealCycle2.add(finalContract);
-        dealCycle2.add(spotlight);
-        dealCycle2.add(overdrive);
-        dealCycle2.add(soulExaltation);
-        dealCycle2.add(soulContractAB);
-        dealCycle2.add(weaponJumpRing);
-        dealCycle2.add(superNova);
-        dealCycle2.add(grandFinale);
-        dealCycle2.add(energyBurst);
-        dealCycle2.add(mascotFamiliarBeforeDelay);
-
-        // 리레, 그여축
-        dealCycle3.add(crestOfTheSolar);
-        dealCycle3.add(spiderInMirror);
-        dealCycle3.add(grandisGoddessBlessingNova);
-        dealCycle3.add(finalContract);
-        dealCycle3.add(spotlight);
-        dealCycle3.add(overdrive);
-        dealCycle3.add(soulExaltation);
-        dealCycle3.add(soulContractAB);
-        dealCycle3.add(restraintRing);
-        dealCycle3.add(superNova);
-        dealCycle3.add(energyBurst);
-        dealCycle3.add(mascotFamiliarBeforeDelay);
-
-        // 웨퍼
-        dealCycle4.add(finalContract);
-        dealCycle4.add(spotlight);
-        dealCycle4.add(overdrive);
-        dealCycle4.add(soulExaltation);
-        dealCycle4.add(soulContractAB);
-        dealCycle4.add(weaponJumpRing);
-        dealCycle4.add(superNova);
-        dealCycle4.add(energyBurst);
-        dealCycle4.add(mascotFamiliarBeforeDelay);
-
-        dealCycle5.add(overdrive);
-        dealCycle5.add(soulExaltation);
-        dealCycle5.add(soulContractAB);
-        dealCycle5.add(superNova);
-        dealCycle5.add(mascotFamiliarBeforeDelay);
-
-        // 그여축 1345 1-4-3-2-3-4
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(loadedDice)) {
                 addSkillEvent(loadedDice);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 1
+                    cooldownCheck(finalContract)
+                    && cooldownCheck(spotlight)
+                    && cooldownCheck(overdrive)
+                    && cooldownCheck(soulExaltation)
+                    && cooldownCheck(soulContractAB)
+                    && cooldownCheck(superNova)
+                    && cooldownCheck(energyBurst)
+                    && cooldownCheck(mascotFamiliarBeforeDelay)
+                    && getStart().after(new Timestamp(trinityFusion.getActivateTime().getTime() - 2500))
             ) {
-                addDealCycle(dealCycle1);
-                dealCycleOrder ++;
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                }
+                if (
+                        cooldownCheck(grandisGoddessBlessingNova)
+                ) {
+                    if (getStart().before(new Timestamp(60 * 1000))) {
+                        grandisGoddessBlessingNova.setCooldown(360.0);
+                    } else if (getStart().after(new Timestamp(470 * 1000))) {
+                        grandisGoddessBlessingNova.setCooldown(240.0);
+                    } else if (getStart().after(new Timestamp(350 * 1000))) {
+                        grandisGoddessBlessingNova.setCooldown(120.0);
+                    }
+                    addSkillEvent(grandisGoddessBlessingNova);
+                }
+                addSkillEvent(finalContract);
+                addSkillEvent(spotlight);
+                addSkillEvent(overdrive);
+                addSkillEvent(soulExaltation);
+                addSkillEvent(soulContractAB);
+                addSkillEvent(superNova);
+                if (cooldownCheck(restraintRing)) {
+                    addSkillEvent(restraintRing);
+                } else {
+                    addSkillEvent(weaponJumpRing);
+                }
+                addSkillEvent(trinity);
+                addSkillEvent(trinityFusion);
+                if (cooldownCheck(grandFinale)) {
+                    addSkillEvent(grandFinale);
+                }
+                addSkillEvent(energyBurst);
+                addSkillEvent(mascotFamiliarBeforeDelay);
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 4
-            ) {
-                addDealCycle(dealCycle2);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (dealCycleOrder == 3 || dealCycleOrder == 5)
-            ) {
-                addDealCycle(dealCycle3);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle4)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
-            ) {
-                addDealCycle(dealCycle4);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle5)
+                    cooldownCheck(overdrive)
+                    && cooldownCheck(soulExaltation)
+                    && cooldownCheck(soulContractAB)
+                    && cooldownCheck(superNova)
+                    && cooldownCheck(mascotFamiliarBeforeDelay)
                     && !cooldownCheck(finalContract)
             ) {
-                addDealCycle(dealCycle5);
+                addSkillEvent(overdrive);
+                addSkillEvent(soulExaltation);
+                addSkillEvent(soulContractAB);
+                addSkillEvent(superNova);
+                addSkillEvent(mascotFamiliarBeforeDelay);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
@@ -255,12 +194,27 @@ public class AngelicBusterDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
-                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                if (skill instanceof OverdriveDebuff) {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 28000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
+                } else {
+                    endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                }
             }
         } else {
             if (((AttackSkill) skill).getInterval() != 0) {

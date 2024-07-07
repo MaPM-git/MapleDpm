@@ -12,7 +12,6 @@ public class SilenceShadowStar extends AttackSkill implements DarkAttack {
         this.setInterval(60L);
         this.setCooldown(3.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
     }
 }

@@ -14,5 +14,6 @@ public class ElquinesSummon extends AttackSkill {
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(-40L);        // 아케인 에임 소환수 미적용
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

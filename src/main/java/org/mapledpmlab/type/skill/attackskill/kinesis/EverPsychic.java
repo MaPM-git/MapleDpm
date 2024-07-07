@@ -13,5 +13,6 @@ public class EverPsychic extends AttackSkill {
         this.setDelay(60L);
         this.setCooldown(120.0);
         this.setRelatedSkill(new EverPsychicFinish());
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

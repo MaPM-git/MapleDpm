@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class EarthquakeChainEarthAloofBlueMoon extends AttackSkill {
     public EarthquakeChainEarthAloofBlueMoon() {
         this.setName("지진쇄 : 지(고고한 청월)");
-        this.setDamage(730.0 + 255);
+        this.setDamage(730.0);
         this.setDelayByAttackSpeed(660L);
         this.setAttackCount(5L);
         this.setDotDuration(5000L);

@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.mechanic.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -17,18 +18,6 @@ import java.util.List;
 
 public class MechanicDealCycle extends DealCycle {
 
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    // 설치기
-    private final List<Skill> summonCycle = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new CrestOfTheSolar());
@@ -38,35 +27,30 @@ public class MechanicDealCycle extends DealCycle {
             add(new GroundZeroEarthquake());
             add(new GroundZeroExplosion());
             add(new HomingMissile());
+            add(new MagneticFieldSummon());
             add(new MagneticField());
             add(new MagneticFieldDie());
             add(new MassiveFireIRONBExplosion());
             add(new MassiveFireIRONBHit());
+            add(new MechaCarrierSummon());
             add(new MechaCarrier());
+            add(new MetalArmorFullBurstBeforeDelay());
             add(new MetalArmorFullBurst());
             add(new MicroMissileContainer());
+            add(new MultipleOptionMFLSummon());
             add(new MultipleOptionMFLGatlingGun());
             add(new MultipleOptionMFLMissile());
+            add(new ResistanceLineInfantryDelay());
             add(new ResistanceLineInfantry());
+            add(new RobotFactoryRM1Summon());
             add(new RobotFactoryRM1());
             add(new RobotFactoryRM1Die());
+            add(new RobotLauncherRM7Summon());
             add(new RobotLauncherRM7());
             add(new RobotLauncherRM7Die());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new SupportWaverHEXDie());
-        }
-    };
-
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new MagneticFieldSummon());
-            add(new MechaCarrierSummon());
-            add(new MetalArmorFullBurstBeforeDelay());
-            add(new MultipleOptionMFLSummon());
-            add(new ResistanceLineInfantryDelay());
-            add(new RobotFactoryRM1Summon());
-            add(new RobotLauncherRM7Summon());
         }
     };
 
@@ -77,11 +61,10 @@ public class MechanicDealCycle extends DealCycle {
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new Overdrive(249L));
             add(new OverdriveDebuff(249L));
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
             add(new SupportWaverHEX());
-            add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
             add(new WillOfLiberty());
         }
@@ -99,7 +82,6 @@ public class MechanicDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         BomberTime bomberTime = new BomberTime();
@@ -116,7 +98,6 @@ public class MechanicDealCycle extends DealCycle {
         MicroMissileContainer microMissileContainer = new MicroMissileContainer();
         MultipleOptionMFLSummon multipleOptionMFLSummon = new MultipleOptionMFLSummon();
         Overdrive overdrive = new Overdrive(249L);
-        PriorPreparation priorPreparation = new PriorPreparation();
         ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
@@ -125,19 +106,8 @@ public class MechanicDealCycle extends DealCycle {
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SupportWaverHEXDie supportWaverHEXDie = new SupportWaverHEXDie();
-        ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WillOfLiberty willOfLiberty = new WillOfLiberty();
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
 
         for (int i = 0; i < 720 * 1000; i += homingMissile.getInterval()) {
             getSkillEventList().add(new SkillEvent(homingMissile, new Timestamp(i), new Timestamp(i)));
@@ -146,50 +116,12 @@ public class MechanicDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(95.0);
 
-        summonCycle.add(supportWaverHEXDie);
-        summonCycle.add(robotLauncherRM7Die);
-        summonCycle.add(robotFactoryRM1Die);
-        summonCycle.add(magneticFieldDie);
-
-        dealCycle1.addAll(summonCycle);
-        dealCycle1.add(multipleOptionMFLSummon);
-        dealCycle1.add(mechaCarrierSummon);
-        dealCycle1.add(willOfLiberty);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(overdrive);
-        dealCycle1.add(resistanceLineInfantry);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(microMissileContainer);
-        dealCycle1.add(bomberTime);
-        dealCycle1.add(groundZeroEarthquake);
-        dealCycle1.add(metalArmorFullBurstBeforeDelay);
-
-        dealCycle2.addAll(summonCycle);
-        dealCycle2.add(multipleOptionMFLSummon);
-        dealCycle2.add(mechaCarrierSummon);
-        dealCycle2.add(willOfLiberty);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(overdrive);
-        dealCycle2.add(resistanceLineInfantry);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(microMissileContainer);
-        dealCycle2.add(bomberTime);
-        dealCycle2.add(metalArmorFullBurstBeforeDelay);
-
-        dealCycle3.addAll(summonCycle);
-        dealCycle3.add(overdrive);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(bomberTime);
-
         luckyDice.setCooldown(180.0);
         luckyDice.setBuffAttMagic(0L);
         luckyDice.setBuffDamage(40L);
         addSkillEvent(luckyDice);
+
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         while (getStart().before(getEnd())) {
             if (cooldownCheck(luckyDice)) {
@@ -202,40 +134,77 @@ public class MechanicDealCycle extends DealCycle {
                 }
                 addSkillEvent(luckyDice);
             }
-            if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
-            ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addSkillEvent(mapleWorldGoddessBlessing);
+            if (cooldownCheck(resistanceLineInfantry)) {
+                addSkillEvent(resistanceLineInfantry);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                    cooldownCheck(supportWaverHEXDie)
+                    && cooldownCheck(robotLauncherRM7Die)
+                    && cooldownCheck(robotFactoryRM1Die)
+                    && cooldownCheck(magneticFieldDie)
+                    && cooldownCheck(multipleOptionMFLSummon)
+                    && cooldownCheck(mechaCarrierSummon)
+                    && cooldownCheck(willOfLiberty)
+                    && cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(overdrive)
+                    && cooldownCheck(microMissileContainer)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(bomberTime)
+                    && cooldownCheck(metalArmorFullBurstBeforeDelay)
+                    && getStart().before(new Timestamp(600 * 1000))
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
+                addSkillEvent(supportWaverHEXDie);
+                addSkillEvent(robotLauncherRM7Die);
+                addSkillEvent(robotFactoryRM1Die);
+                addSkillEvent(magneticFieldDie);
+                addSkillEvent(multipleOptionMFLSummon);
+                addSkillEvent(mechaCarrierSummon);
+                addSkillEvent(willOfLiberty);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(massiveFireIRONBHit);
+                }
+                addSkillEvent(mapleWorldGoddessBlessing);
+                addSkillEvent(overdrive);
+                addSkillEvent(microMissileContainer);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                if (cooldownCheck(groundZeroEarthquake)) {
+                    addSkillEvent(groundZeroEarthquake);
+                }
+                addSkillEvent(bomberTime);
+                addSkillEvent(metalArmorFullBurstBeforeDelay);
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                    cooldownCheck(supportWaverHEXDie)
+                    && cooldownCheck(robotLauncherRM7Die)
+                    && cooldownCheck(robotFactoryRM1Die)
+                    && cooldownCheck(magneticFieldDie)
+                    && cooldownCheck(overdrive)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(weaponJumpRing)
+                    && cooldownCheck(bomberTime)
             ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
+                addSkillEvent(supportWaverHEXDie);
+                addSkillEvent(robotLauncherRM7Die);
+                addSkillEvent(robotFactoryRM1Die);
+                addSkillEvent(magneticFieldDie);
+                addSkillEvent(overdrive);
+                addSkillEvent(soulContract);
+                addSkillEvent(weaponJumpRing);
+                addSkillEvent(bomberTime);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(microMissileContainer)
-                    && !cooldownCheck(supportWaverHEXDie)
-            ) {
+            } else if (cooldownCheck(microMissileContainer)) {
                 addSkillEvent(microMissileContainer);
-                addSkillEvent(resistanceLineInfantry);
             } else if (
                     cooldownCheck(distortionField)
             ) {
@@ -269,12 +238,27 @@ public class MechanicDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
-                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
-                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                if (skill instanceof OverdriveDebuff) {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 28000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
+                } else {
+                    endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                }
             }
         } else {
             if (skill instanceof MultipleOptionMFLSummon) {
@@ -366,6 +350,16 @@ public class MechanicDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -389,6 +383,16 @@ public class MechanicDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -425,23 +429,27 @@ public class MechanicDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                        + getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());

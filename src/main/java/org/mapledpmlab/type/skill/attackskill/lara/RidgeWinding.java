@@ -10,6 +10,7 @@ public class RidgeWinding extends AttackSkill {
         this.setDelay(960L);
         this.setCooldown(60.0);
         this.addFinalDamage(1.6);   // 코어강화
+        this.addFinalDamage(1.08);      // 오버로드 마나
         this.setDotDuration(4800L);
         this.setInterval(80L);
         this.setLimitAttackCount(60L);

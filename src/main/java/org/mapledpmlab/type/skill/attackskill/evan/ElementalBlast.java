@@ -16,5 +16,6 @@ public class ElementalBlast extends AttackSkill {
         this.getMultiAttackInfo().add(660L);
         this.getMultiAttackInfo().add(1230L);
         this.getMultiAttackInfo().add(2070L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

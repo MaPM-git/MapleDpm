@@ -9,7 +9,6 @@ public class UnlimitedCrystalResonance extends AttackSkill {
         this.setDamage(1920.0);
         this.setCooldown(1.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
     }
 }

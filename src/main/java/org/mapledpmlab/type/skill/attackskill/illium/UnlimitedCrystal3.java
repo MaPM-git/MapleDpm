@@ -11,8 +11,7 @@ public class UnlimitedCrystal3 extends AttackSkill {
         this.setDelay(1800L);
         this.setRelatedSkill(new UnlimitedCrystalBuff());
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(1320L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

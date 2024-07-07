@@ -16,7 +16,7 @@ public class MapleWorldGoddessBlessing extends BuffSkill {
         this.setCooldown(0.0);  // 스택형이라 딜사이클에서 따로 처리
         this.setDelay(630L);
         this.setDuration(60L);
-        this.setBuffDamage(10L);
-        this.setBuffMainStat((long) ((level + 2) * 5 * 0.16 * 5));
+        this.setBuffDamage(20L);
+        this.setBuffMainStat((long) ((level + 2) * 5 * 0.16 * 4));
     }
 }

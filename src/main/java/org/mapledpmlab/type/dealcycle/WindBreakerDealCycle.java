@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.windbreaker.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -17,37 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WindBreakerDealCycle extends DealCycle {
-
-    // 리레, 스인미, 크오솔
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 웨펖, 초시축
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 웨펖
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    // 극딜 마지막, 6차 포함
-    private final List<Skill> final1 = new ArrayList<>();
-
-    // 극딜 마지막
-    private final List<Skill> final2 = new ArrayList<>();
-
-    // 극딜 마지막
-    private final List<Skill> final3 = new ArrayList<>();
-
-    // 극딜 마지막
-    private final List<Skill> final4 = new ArrayList<>();
-
-    private final StormBringer stormBringer = new StormBringer();
-    private final StormWhim stormWhim = new StormWhim();
-    private final TriflingWhim triflingWhim = new TriflingWhim();
-    private final TriflingWhimReinforce triflingWhimReinforce = new TriflingWhimReinforce();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
+            add(new CygnusPhalanxDelay());
             add(new CygnusPhalanx());
             add(new GuidedArrow());
             add(new HowlingGale1());
@@ -73,29 +48,28 @@ public class WindBreakerDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new CygnusPhalanxDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new CriticalReinforce(100.0));
             add(new EmeraldFlower());
             add(new GloryOfGuardians());
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new RiskTakerRing());
             add(new PinpointPierceBuff());
             add(new SoulContract());
             add(new StormWhimBuff());
-            add(new ThiefCunning());
             add(new TranscendentCygnusBlessing(0L));
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
             add(new WindWall());
         }
     };
+
+    private final StormBringer stormBringer = new StormBringer();
+    private final StormWhim stormWhim = new StormWhim();
+    private final TriflingWhim triflingWhim = new TriflingWhim();
+    private final TriflingWhimReinforce triflingWhimReinforce = new TriflingWhimReinforce();
+
 
     HowlingGale1 howlingGale1 = new HowlingGale1();
     HowlingGale2 howlingGale2 = new HowlingGale2();
@@ -119,7 +93,6 @@ public class WindBreakerDealCycle extends DealCycle {
         getJob().addMainStatP(8L);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
@@ -131,7 +104,6 @@ public class WindBreakerDealCycle extends DealCycle {
         IdleWhimFirst idleWhimFirst = new IdleWhimFirst();
         MistralSpring mistralSpring = new MistralSpring();
         PinpointPierce pinpointPierce = new PinpointPierce();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         RiskTakerRing riskTakerRing = new RiskTakerRing();
@@ -140,22 +112,11 @@ public class WindBreakerDealCycle extends DealCycle {
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         StoneWind stoneWind = new StoneWind();
         StormWhimBuff stormWhimBuff = new StormWhimBuff();
-        ThiefCunning thiefCunning = new ThiefCunning();
         TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
         VortexSphere vortexSphere = new VortexSphere();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         cygnusPhalanx.setApplyFinalAttack(true);
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
 
         // 가이디드 에로우
         for (int i = 0; i < 720 * 1000; i += guidedArrow.getInterval()) {
@@ -165,8 +126,29 @@ public class WindBreakerDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(66.0);
 
+        transcendentCygnusBlessing.setCooldown(370.0);
+        //transcendentCygnusBlessing.setApplyCooldownReduction(false);
+        transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
+
+        getStart().setTime(-10000);
+        addSkillEvent(transcendentCygnusBlessing);
+        getStart().setTime(0);
+
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
+            if (
+                    cooldownCheck(transcendentCygnusBlessing)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+            ) {
+                if (dealCycleOrder == 1) {
+                    transcendentCygnusBlessing.setCooldown(360.0);
+                } else if (dealCycleOrder == 4) {
+                    transcendentCygnusBlessing.setCooldown(130.0);
+                } else {
+                    transcendentCygnusBlessing.setCooldown(244440.0);
+                }
+                addSkillEvent(transcendentCygnusBlessing);
+            }
             if (
                     cooldownCheck(emeraldFlower)
                     && cooldownCheck(pinpointPierce)
@@ -175,15 +157,8 @@ public class WindBreakerDealCycle extends DealCycle {
                     && cooldownCheck(criticalReinforce)
                     && cooldownCheck(howlingGale3)
                     && cooldownCheck(soulContract)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
-                if (
-                        dealCycleOrder == 1
-                        || dealCycleOrder == 3
-                        || dealCycleOrder == 4
-                        || dealCycleOrder == 5
-                ) {
-                    addSkillEvent(transcendentCygnusBlessing);
-                }
                 addSkillEvent(emeraldFlower);
                 addSkillEvent(pinpointPierce);
                 addSkillEvent(gloryOfGuardians);
@@ -192,8 +167,13 @@ public class WindBreakerDealCycle extends DealCycle {
                         || dealCycleOrder == 3
                         || dealCycleOrder == 5
                 ) {
+                    while (!cooldownCheck(crestOfTheSolar)) {
+                        addSkillEvent(songOfHeaven);
+                    }
                     addSkillEvent(crestOfTheSolar);
                     addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(songOfHeaven);
                 }
                 if (
                         dealCycleOrder == 1
@@ -226,7 +206,7 @@ public class WindBreakerDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(emeraldFlower)
                     && cooldownCheck(pinpointPierce)
-                    && cooldownCheck(howlingGale2)
+                    && cooldownCheck(howlingGale1)
                     && cooldownCheck(soulContract)
                     && !cooldownCheck(gloryOfGuardians)
             ) {
@@ -240,13 +220,13 @@ public class WindBreakerDealCycle extends DealCycle {
                 } else if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(riskTakerRing)) {
-                    addSkillEvent(ringSwitching);
+                    addSkillEvent(riskTakerRing);
                 }
-                addSkillEvent(howlingGale2);
+                addSkillEvent(howlingGale1);
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(45 * 1000))
+                    && getStart().after(new Timestamp(50 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -263,17 +243,16 @@ public class WindBreakerDealCycle extends DealCycle {
                                     && getStart().after(new Timestamp(380 * 1000))
                                     && getStart().before(new Timestamp(400 * 1000))
                             )
-                            || getStart().after(new Timestamp(600 * 1000))
+                            || (
+                                    getStart().after(new Timestamp(600 * 1000))
+                                    && getStart().before(new Timestamp(660 * 1000))
+                            )
                     )
             ) {
                 addSkillEvent(stoneWind);
-            } else if (
-                    cooldownCheck(cygnusPhalanx)
-            ) {
+            } else if (cooldownCheck(cygnusPhalanx)) {
                 addSkillEvent(cygnusPhalanx);
-            } else if (
-                    cooldownCheck(vortexSphere)
-            ) {
+            } else if (cooldownCheck(vortexSphere)) {
                 addSkillEvent(vortexSphere);
             } else if (
                     cooldownCheck(howlingGale1)
@@ -310,6 +289,17 @@ public class WindBreakerDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -343,7 +333,7 @@ public class WindBreakerDealCycle extends DealCycle {
                             || skill instanceof HowlingGale2
                             || skill instanceof HowlingGale3
                     ) {
-                        i = skill.getDelay();
+                        i = 840;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -402,6 +392,16 @@ public class WindBreakerDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -438,6 +438,16 @@ public class WindBreakerDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -458,7 +468,7 @@ public class WindBreakerDealCycle extends DealCycle {
                         if (ran <= triflingWhimReinforce.getProp() && start.equals(se.getStart())) {
                             totalDamage += getAttackDamage(new SkillEvent(triflingWhimReinforce, start, end), buffSkill, start, end);
                             totalDamage += getAttackDamage(new SkillEvent(triflingWhimReinforce, start, end), buffSkill, start, end);
-                        } else {
+                        } else if (start.equals(se.getStart())) {
                             totalDamage += getAttackDamage(new SkillEvent(triflingWhim, start, end), buffSkill, start, end);
                             totalDamage += getAttackDamage(new SkillEvent(triflingWhim, start, end), buffSkill, start, end);
                         }
@@ -487,23 +497,27 @@ public class WindBreakerDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                        + getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());

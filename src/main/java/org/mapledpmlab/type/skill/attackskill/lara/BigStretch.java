@@ -14,5 +14,6 @@ public class BigStretch extends AttackSkill {
         for (int i = 0; i < 34; i ++) {
             this.getMultiAttackInfo().add(90L);
         }
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

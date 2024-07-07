@@ -10,7 +10,6 @@ public class RapidThrow extends AttackSkill implements DarkAttack {
         this.setDelay(3240L);
         this.setDotDuration(3240L);
         this.setInterval(90L);
-        this.setCooldown(90.0);
         this.setLimitAttackCount(36L);
         this.addFinalDamage(0.85);      // 쉐도우 파트너
         this.setRelatedSkill(new RapidThrowEnd());

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class GloryWingEnchantJavelinMagicMissile extends AttackSkill {
     public GloryWingEnchantJavelinMagicMissile() {
         this.setName("글로리 윙:인챈트 자벨린(매직 미사일)");
-        this.setDamage(375.0);
+        this.setDamage(375.0 + 170);
         this.setAttackCount(3L);
         this.setDotDuration(1000L);
         this.setInterval(250L);

@@ -8,6 +8,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 @Setter
 public class RingSwitching extends BuffSkill {
     public RingSwitching() {
+        this.setName("시드링 교체");
         this.setDelay(5000L);   // 5초
     }
 }

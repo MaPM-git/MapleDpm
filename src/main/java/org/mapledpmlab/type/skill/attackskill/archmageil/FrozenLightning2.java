@@ -7,8 +7,8 @@ public class FrozenLightning2 extends ThunderAttack {
         this.setDamage(818.0);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L + 60);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
         this.setRelatedSkill(new FrozenLightningEnlightenmentOfMana());
         this.getMultiAttackInfo().add(30L + 4080);
         this.getMultiAttackInfo().add(30L);

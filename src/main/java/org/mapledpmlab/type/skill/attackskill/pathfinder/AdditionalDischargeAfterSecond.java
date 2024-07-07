@@ -6,7 +6,7 @@ public class AdditionalDischargeAfterSecond extends AttackSkill {
     public AdditionalDischargeAfterSecond() {
         this.setName("에디셔널 디스차지(첫타 이후)");
         this.setAttackCount(3L);
-        this.setDamage(275.0 + 66);     // 에인션트 아처리
+        this.setDamage(275.0);
         this.setProp(55L);              // 카디널 포스-에디셔널 인핸스
         this.setDotDuration(2000L);
         this.setInterval(100L);

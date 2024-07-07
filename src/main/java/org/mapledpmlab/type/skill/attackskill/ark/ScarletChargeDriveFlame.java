@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ScarletChargeDriveFlame extends AttackSkill implements LefSkill {
     public ScarletChargeDriveFlame() {
         this.setName("스칼렛 차지드라이브(불길)");
-        this.setDamage(565.0 + 100 + 173);
+        this.setDamage(565.0);
         this.setAttackCount(3L);
         this.setCooldown(3.0);
         this.setRelatedSkill(new ScarletChargeDrive());

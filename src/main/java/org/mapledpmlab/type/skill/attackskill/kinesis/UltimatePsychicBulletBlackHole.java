@@ -12,5 +12,6 @@ public class UltimatePsychicBulletBlackHole extends AttackSkill {
         this.getMultiAttackInfo().add(270L);
         this.getMultiAttackInfo().add(270L);
         this.getMultiAttackInfo().add(270L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

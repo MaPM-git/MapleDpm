@@ -56,20 +56,20 @@ public class Kain extends Job {
         this.addIgnoreDefenseList(10L);
 
         // 4차
-        this.addAtt(31L);               // 그라인딩 II
-        this.addFinalDamage(1.2);       // 도그마
+        this.addAtt(32L);               // 그라인딩 II
+        this.addFinalDamage(1.21);      // 도그마
+        this.addCriticalDamage(22.0);
+        this.addIgnoreDefenseList(32L);
+        this.addFinalDamage(1.31);      // 브레스 슈터 엑스퍼트
+        this.addAtt(32L);
         this.addCriticalDamage(21.0);
-        this.addIgnoreDefenseList(31L);
-        this.addFinalDamage(1.3);       // 브레스 슈터 엑스퍼트
-        this.addAtt(31L);
-        this.addCriticalDamage(20.0);
         this.addDamage(14L);            // 어댑트 투 데스
         this.addBossDamage(10L);
 
         // 환산 보정
-        this.addMainStatP(24L);
-        this.addMainStat(-26L);
-        this.addSubStat(5L);
+        this.addMainStatP(-36L);
+        this.addMainStat(-12L);
+        this.addSubStat(-10L);
 
         this.setAbility(new PassiveBossCritical());
         this.setArtifact(new Artifact());

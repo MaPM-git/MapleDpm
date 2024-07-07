@@ -4,9 +4,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
 public class BoostEndHuntersTargetingBeforeDelay extends AttackSkill {
     public BoostEndHuntersTargetingBeforeDelay() {
-        this.setName("부스트 엔드-헌터즈 타겟팅(키다운)");
-        this.setDelay(720L);
-        this.setRelatedSkill(new BoostEndHuntersTargetingKeydown());
+        this.setName("부스트 엔드-헌터즈 타겟팅(선딜)");
+        this.setDelayByAttackSpeed(990L);
+        this.setCooldown(30.0);
+        this.setRelatedSkill(new BoostEndHuntersTargeting());
     }
 }
-

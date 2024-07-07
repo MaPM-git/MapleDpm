@@ -11,9 +11,8 @@ public class InfernalVenomExplosion2 extends AttackSkill {
         this.setApplyFinalAttack(true);
         this.setDelay(6600L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
-        this.setRelatedSkill(new InfernalVenomBuff());
+        this.addIgnoreDefenseList(50L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
         this.getMultiAttackInfo().add(4740L);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

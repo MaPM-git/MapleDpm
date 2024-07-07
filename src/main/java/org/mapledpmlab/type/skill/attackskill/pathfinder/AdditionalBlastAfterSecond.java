@@ -6,7 +6,7 @@ public class AdditionalBlastAfterSecond extends AttackSkill {
     public AdditionalBlastAfterSecond() {
         this.setName("에디셔널 블래스트(첫타 이후)");
         this.setAttackCount(3L);
-        this.setDamage(401.0);          // 에인션트 아처리
+        this.setDamage(330.0);
         this.setProp(60L);
         this.setDotDuration(2000L);
         this.setInterval(100L);

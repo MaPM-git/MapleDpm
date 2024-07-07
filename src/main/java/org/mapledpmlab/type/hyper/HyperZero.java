@@ -14,6 +14,8 @@ public class HyperZero extends Hyper {
             point = 1518 + 18 * (level % 10);
         }
 
+        point -= 60;        // TF 7레벨
+
         criticalP = 95.0;
         if (criticalP <= 70) {
         } else if (criticalP < 100) {
@@ -76,7 +78,8 @@ public class HyperZero extends Hyper {
                 "\n5.몬스터 방어율 무시 : " + this.getIgnoreDefense() + "%" +
                 "\n6.공격력/마력 : " + this.getAtt() +
                 "\n7.주스탯(%미적용) : " + this.getPerXMainStat() +
-                "\n8.부스탯(%미적용) : " + this.getPerXSubStat()
+                "\n8.부스탯(%미적용) : " + this.getPerXSubStat() +
+                "\n9.TF : 70"
         );
     }
 }

@@ -11,8 +11,7 @@ public class DefyingFateHeroWill extends AttackSkill {
         this.setInterval(600L);
         this.setLimitAttackCount(50L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setApplyFinalAttack(true);
     }
 }

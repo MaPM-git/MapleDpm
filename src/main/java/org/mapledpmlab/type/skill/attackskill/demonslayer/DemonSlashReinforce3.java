@@ -6,7 +6,7 @@ public class DemonSlashReinforce3 extends GaugeAttackSkill {
     public DemonSlashReinforce3() {
         this.setName("강화 데몬 슬래시(3타)");
         this.setAttackCount(3L);
-        this.addFinalDamage(0.9);       // 블루 블러드
+        this.addFinalDamage(0.95);          // 블루 블러드
         this.setAttackCount(this.getAttackCount() * 2);
         this.setDamage(700.0 + 80 + 80);
         this.setDelayByAttackSpeed(450L);

@@ -8,6 +8,7 @@ public class MagicDebris extends AttackSkill {
         this.setAddDamage(22L);         // 다크 포그
         this.addFinalDamage(2.2);                   // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 
     public void setByCnt(Long cnt) {

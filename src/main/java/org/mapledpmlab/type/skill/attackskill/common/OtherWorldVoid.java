@@ -8,6 +8,6 @@ public class OtherWorldVoid extends AttackSkill {
         this.setDamage(2640.0);
         this.setAttackCount(12L);
         this.setDotDuration(40000L);
-        this.setInterval(4000L);
+        this.setInterval(5000L);
     }
 }

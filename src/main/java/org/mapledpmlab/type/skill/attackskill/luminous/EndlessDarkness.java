@@ -11,5 +11,6 @@ public class EndlessDarkness extends AttackSkill {
         this.addFinalDamage(1.05);  // 어둠 마법 강화
         this.getMultiAttackInfo().add(300L);
         this.setCooldown(2.0);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

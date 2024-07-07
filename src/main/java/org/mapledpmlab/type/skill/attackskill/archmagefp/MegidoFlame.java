@@ -13,5 +13,6 @@ public class MegidoFlame extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.setApplyFinalAttack(true);
         this.setRelatedSkill(new MegidoFlameDot());
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

@@ -11,8 +11,7 @@ public class FinalAimWave extends AttackSkill {
         this.setDelay(5760L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new FinalAimArrow());
         this.getMultiAttackInfo().add(1020L);
         this.getMultiAttackInfo().add(30L);

@@ -70,9 +70,9 @@ public class Mercedes extends Job {
         this.addFinalDamage(1.1);
 
         // 환산 보정
-        this.addMainStatP(-3L);
-        this.addMainStat(-4L);
-        this.addSubStat(5L);
+        this.addMainStatP(-33L);
+        this.addMainStat(-7L);
+        this.addSubStat(-15L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());

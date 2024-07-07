@@ -8,7 +8,7 @@ public class MeltdownExplosion extends AttackSkill {
         this.setName("멜트다운 익스플로젼");
         this.setAttackCount(6L * 2);
         this.setDamage(1500.0);
-        this.setDelay(3150L);
+        this.setDelayByAttackSpeed(3150L);
         this.setRelatedSkill(new MeltdownExplosionDebuff());
         this.addFinalDamage(2.2);               // 코어 강화
         this.addIgnoreDefenseList(20L);

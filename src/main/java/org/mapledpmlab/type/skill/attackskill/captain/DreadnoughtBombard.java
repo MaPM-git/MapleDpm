@@ -10,7 +10,6 @@ public class DreadnoughtBombard extends AttackSkill {
         this.setDotDuration(15000L);
         this.setInterval(187L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
     }
 }

@@ -8,11 +8,11 @@ public class Union extends Common {
         this.setDescription("유니온 공격대 점령효과" +
                 "\n1.크리티컬 데미지 20%" +
                 "\n2.보스 공격 시 데미지 40%" +
-                "\n3.몬스터 방어율 무시 30%" +
-                "\n4.버프 지속시간 40%" +
-                "\n5.공격력/마력 5" +
-                "\n6.주스탯 25" +
-                "\n7.부스탯 5" +
+                "\n3.몬스터 방어율 무시 40%" +
+                "\n4.버프 지속시간 40%" +         // 160칸
+                "\n5.공격력/마력 5" +            // 5칸
+                "\n6.주스탯 25" +              // 5칸
+                "\n7.부스탯 5" +               // 1칸 = 171칸
                 "\n\n유니온 공격대원 효과" +
                 "\n1.블래스터 250 : 몬스터 방어율 무시 5%" +
                 "\n2.데몬 어벤져 250 : 보스 공격 시 데미지 5%" +
@@ -39,7 +39,7 @@ public class Union extends Common {
 
         this.addCriticalDamage(20.0);   // 공격대 점령
         this.addBossDamage(40L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(40L);
         this.addPlusBuffDuration(40L);
         this.addAtt(5L);
         this.addMagic(5L);

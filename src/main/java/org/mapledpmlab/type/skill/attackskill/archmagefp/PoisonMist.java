@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.archmagefp;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 
-public class PoisonMist extends AttackSkill {
+public class PoisonMist extends DotAttackSkill {
     public PoisonMist() {
         this.setName("포이즌 미스트");
         this.setDamage(301.0);              // 미스트 이럽션

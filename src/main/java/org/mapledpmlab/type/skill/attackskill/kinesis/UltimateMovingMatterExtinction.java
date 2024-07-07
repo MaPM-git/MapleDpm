@@ -9,5 +9,6 @@ public class UltimateMovingMatterExtinction extends AttackSkill {
         this.setAttackCount(12L);
         this.addFinalDamage(1.6);   // 코어강화
         this.getMultiAttackInfo().add(29970L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

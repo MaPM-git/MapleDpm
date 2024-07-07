@@ -67,8 +67,8 @@ public class Khali extends Job {
 
         // 환산 보정
         this.addMainStatP(-6L);
-        this.addMainStat(15L);
-        //this.addSubStat(5L);
+        this.addMainStat(9L);
+        this.addSubStat(15L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());

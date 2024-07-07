@@ -131,6 +131,9 @@ public class Job extends Common {
         this.addAtt(30L);               // 붕어빵 뿌리기
         this.addMagic(30L);
         this.addMainStat(30L);          // 향상된 10단계 물약
+
+        this.addDamage(9L);             // 시프 커닝
+        this.addDamage(8L);             // 프라이어 프리퍼레이션
     }
 
     public Object[] getOpject() {
@@ -144,7 +147,7 @@ public class Job extends Common {
             attMagicP = this.getMagicP();
         }
         Object[] result = new Object[]{
-                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
                 this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
                 this.getFinalSubstat(), "X", this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
@@ -208,7 +211,7 @@ public class Job extends Common {
         }
         str += "소울 컨트랙트\n";
         str += "시프 커닝\n";
-        str += "프라이어 프리퍼레이션\n";
+        str += "프라이어 프리퍼레이션";
         return str;
     }
 }

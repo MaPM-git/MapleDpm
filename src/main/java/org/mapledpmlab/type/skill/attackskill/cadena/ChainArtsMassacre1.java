@@ -10,8 +10,7 @@ public class ChainArtsMassacre1 extends AttackSkill {
         this.setCooldown(360.0);
         this.setDamage(700.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new ChainArtsMassacre2());
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

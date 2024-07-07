@@ -6,6 +6,7 @@ import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
+import org.mapledpmlab.type.union.MihileUnion;
 import org.mapledpmlab.type.union.StrUnion;
 
 import java.util.stream.Collectors;
@@ -74,14 +75,14 @@ public class Mihile extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-24L);
-        this.addMainStat(7L);
-        //this.addSubStat(5L);
+        this.addMainStatP(-33L);
+        this.addMainStat(-10L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
-        this.setUnion(new StrUnion());
+        this.setUnion(new MihileUnion());
 
         this.addObject(this.getAbility());
         this.addObject(this.getArtifact());

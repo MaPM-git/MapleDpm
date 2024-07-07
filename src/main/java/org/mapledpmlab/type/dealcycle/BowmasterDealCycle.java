@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.bowmaster.*;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -14,25 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BowmasterDealCycle extends DealCycle {
-    /*
-    에로우 레인-메용2-에픽어드벤쳐-크오솔-스인미-퀴버풀버스트-프리퍼레이션
-    이볼브-잔영의시-크리티컬리인포스-소울컨트랙트-시드링-6차-난사모드
-     */
-
-    // 메용2, 6차, 리레, 스인미, 크오솔
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 메용2, 6차, 웨폰퍼프
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 메용2, 리레, 스인미, 코오솔
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    // 메용2, 웨폰퍼프
-    private final List<Skill> dealCycle4 = new ArrayList<>();
-
-    // 웨폰퍼프
-    private final List<Skill> dealCycle5 = new ArrayList<>();
 
     private final AdvancedQuiver advancedQuiver = new AdvancedQuiver();
 
@@ -71,26 +53,19 @@ public class BowmasterDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new ArrowRainBuff());
             add(new CriticalReinforce(100.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
-            add(new MapleWorldGoddessBlessing(275L));
-            //add(new MortalBlow());
+            add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new Preparation());
-            add(new PriorPreparation());
             add(new QuiverFullBurstBuff());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
-            add(new WeaponJumpRing(318L));
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 
@@ -102,7 +77,6 @@ public class BowmasterDealCycle extends DealCycle {
         super(job, new AdvancedFinalAttackBowmaster());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AfterimageShotActive afterimageShotActive = new AfterimageShotActive();
@@ -117,7 +91,6 @@ public class BowmasterDealCycle extends DealCycle {
         HurricaneSpree hurricaneSpree = new HurricaneSpree();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         Preparation preparation = new Preparation();
-        PriorPreparation priorPreparation = new PriorPreparation();
         Phoenix phoenix = new Phoenix();
         QuiverFullBurst quiverFullBurst = new QuiverFullBurst();
         RestraintRing restraintRing = new RestraintRing();
@@ -125,19 +98,8 @@ public class BowmasterDealCycle extends DealCycle {
         SilhouetteMirage silhouetteMirage = new SilhouetteMirage();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         WarInTheShade warInTheShade = new WarInTheShade();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
 
         // 피닉스
         for (int i = 0; i < 720 * 1000; i += phoenix.getInterval()) {
@@ -165,69 +127,11 @@ public class BowmasterDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(130.0);
 
-        dealCycle1.add(arrawRain);
-        dealCycle1.add(epicAdventure);
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(quiverFullBurst);
-        dealCycle1.add(preparation);
-        dealCycle1.add(evolve);
-        dealCycle1.add(afterimageShotActive);
-        dealCycle1.add(criticalReinforce);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(warInTheShade);
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
-        dealCycle2.add(arrawRain);
-        dealCycle2.add(epicAdventure);
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(quiverFullBurst);
-        dealCycle2.add(preparation);
-        dealCycle2.add(evolve);
-        dealCycle2.add(afterimageShotActive);
-        dealCycle2.add(criticalReinforce);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(weaponJumpRing);
-        dealCycle2.add(warInTheShade);
-
-        dealCycle3.add(arrawRain);
-        dealCycle3.add(epicAdventure);
-        dealCycle3.add(mapleWorldGoddessBlessing);
-        dealCycle3.add(crestOfTheSolar);
-        dealCycle3.add(spiderInMirror);
-        dealCycle3.add(quiverFullBurst);
-        dealCycle3.add(preparation);
-        dealCycle3.add(evolve);
-        dealCycle3.add(afterimageShotActive);
-        dealCycle3.add(criticalReinforce);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(restraintRing);
-
-        dealCycle4.add(arrawRain);
-        dealCycle4.add(epicAdventure);
-        dealCycle4.add(mapleWorldGoddessBlessing);
-        dealCycle4.add(quiverFullBurst);
-        dealCycle4.add(preparation);
-        dealCycle4.add(evolve);
-        dealCycle4.add(afterimageShotActive);
-        dealCycle4.add(criticalReinforce);
-        dealCycle4.add(soulContract);
-        dealCycle4.add(weaponJumpRing);
-
-        dealCycle5.add(arrawRain);
-        dealCycle5.add(epicAdventure);
-        dealCycle5.add(quiverFullBurst);
-        dealCycle5.add(preparation);
-        dealCycle5.add(evolve);
-        dealCycle5.add(afterimageShotActive);
-        dealCycle5.add(criticalReinforce);
-        dealCycle5.add(soulContract);
-        dealCycle5.add(restraintRing);
-
-        Long specialArrow = 75L;
+        Long specialArrow = 74L;
         boolean isSpree = false;
 
         int dealCycleOrder = 1;
@@ -239,50 +143,53 @@ public class BowmasterDealCycle extends DealCycle {
                 isSpree = true;
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && specialArrow == 75
-                    && dealCycleOrder == 1
+                    cooldownCheck(arrawRain)
+                    && cooldownCheck(epicAdventure)
+                    && cooldownCheck(quiverFullBurst)
+                    && cooldownCheck(preparation)
+                    && cooldownCheck(evolve)
+                    && cooldownCheck(afterimageShotActive)
+                    && cooldownCheck(criticalReinforce)
+                    && cooldownCheck(soulContract)
+                    && specialArrow >= 70
             ) {
-                addDealCycle(dealCycle1);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && specialArrow == 75
-                    && dealCycleOrder == 4
-            ) {
-                addDealCycle(dealCycle2);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && specialArrow == 75
-                    && getStart().before(new Timestamp(5 * 60 * 1000))
-                    && dealCycleOrder == 3
-            ) {
-                addDealCycle(dealCycle3);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle4)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && specialArrow == 75
-                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
-            ) {
-                addDealCycle(dealCycle4);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle5)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && specialArrow == 75
-                    && dealCycleOrder == 5
-            ) {
-                addDealCycle(dealCycle5);
+                addSkillEvent(arrawRain);
+                addSkillEvent(epicAdventure);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(hurricane);
+                }
+                if (cooldownCheck(mapleWorldGoddessBlessing)) {
+                    if (dealCycleOrder == 3) {
+                        mapleWorldGoddessBlessing.setCooldown(0.0);
+                    } else {
+                        mapleWorldGoddessBlessing.setCooldown(180.0);
+                    }
+                    addSkillEvent(mapleWorldGoddessBlessing);
+                }
+                addSkillEvent(quiverFullBurst);
+                addSkillEvent(preparation);
+                addSkillEvent(evolve);
+                addSkillEvent(afterimageShotActive);
+                addSkillEvent(criticalReinforce);
+                addSkillEvent(soulContract);
+                if (cooldownCheck(restraintRing)) {
+                    addSkillEvent(restraintRing);
+                } else if (cooldownCheck(weaponJumpRing)) {
+                    addSkillEvent(weaponJumpRing);
+                }
+                if (cooldownCheck(warInTheShade)) {
+                    addSkillEvent(warInTheShade);
+                }
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(9 * 60 * 1000)))
+                    && getStart().after(new Timestamp(100 * 1000))
+                    && getStart().before(new Timestamp(11 * 60 * 1000)))
             {
                 addSkillEvent(ringSwitching);
             } else if (
@@ -319,6 +226,16 @@ public class BowmasterDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -369,6 +286,16 @@ public class BowmasterDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -463,23 +390,27 @@ public class BowmasterDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
-                        + this.getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((this.getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (this.getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + this.getJob().getPerXAtt())
-                        * this.getJob().getConstant()
-                        * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * this.getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * this.getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                            + this.getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((this.getJob().getAtt() + buffSkill.getBuffAttMagic())
+                            * (1 + (this.getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + this.getJob().getPerXAtt())
+                            * this.getJob().getConstant()
+                            * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (this.getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * this.getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * this.getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
@@ -520,6 +451,17 @@ public class BowmasterDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));

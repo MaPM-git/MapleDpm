@@ -66,9 +66,8 @@ public class ArchMageIL extends Job {
         this.addMainStat(30L);          // 언스태이블 메모라이즈
 
         // 환산 보정
-        this.addMainStatP(114L);
-        this.addMainStat(4L);
-        this.addSubStat(10L);
+        this.addMainStatP(129L);
+        this.addMainStat(-3L);
 
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new Artifact());

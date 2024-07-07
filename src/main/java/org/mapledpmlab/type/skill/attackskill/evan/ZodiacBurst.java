@@ -11,8 +11,9 @@ public class ZodiacBurst extends AttackSkill {
         this.setDelay(3180L);
         this.setRelatedSkill(new ZodiacBurstBuff());
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
+        this.setCooldown(360.0);
+        this.addFinalDamage(1.08);          // 오버로드 마나
         this.getMultiAttackInfo().add(180L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

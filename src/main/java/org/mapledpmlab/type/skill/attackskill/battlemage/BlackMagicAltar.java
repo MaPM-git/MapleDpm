@@ -13,5 +13,7 @@ public class BlackMagicAltar extends AttackSkill {
         this.setCooldown(40.0);
         this.addFinalDamage(1.6);       // 코어 강화
         this.setApplyCooldownReduction(false);
+        this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

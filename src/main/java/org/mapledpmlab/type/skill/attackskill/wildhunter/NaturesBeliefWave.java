@@ -11,8 +11,7 @@ public class NaturesBeliefWave extends AttackSkill {
         this.setDamage(1950.0);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new NaturesBeliefRoar());
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(120L);

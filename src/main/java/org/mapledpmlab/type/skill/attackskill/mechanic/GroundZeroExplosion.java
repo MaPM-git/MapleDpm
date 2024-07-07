@@ -9,8 +9,7 @@ public class GroundZeroExplosion extends AttackSkill {
         this.setDelay(1800L);
         this.setDamage(1980.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new GroundZeroBombardment());
         this.getMultiAttackInfo().add(660L);
         this.getMultiAttackInfo().add(30L);

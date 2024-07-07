@@ -6,7 +6,7 @@ public class MagnumPunch250 extends AttackSkill {
     public MagnumPunch250() {
         this.setName("매그넘 펀치(딜레이 250)");
         this.setAttackCount(3L);
-        this.setDamage(985.0 + 100 + 130 + 219);
+        this.setDamage(985.0);
         this.setDelay(250L);
         this.setAddDamage(10L);         // 펀치-리인포스
         this.addIgnoreDefenseList(20L); // 펀치-이그노어 가드

@@ -13,5 +13,6 @@ public class MegidoFlameAfterSecond extends AttackSkill {
         this.addFinalDamage(0.45);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

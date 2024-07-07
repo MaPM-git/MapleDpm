@@ -10,8 +10,7 @@ public class FinalDestroyer1 extends AttackSkill {
         this.setDamage(1500.0);
         this.setDelay(6390L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new FinalDestroyer2());
         this.setApplyFinalAttack(true);
         this.getMultiAttackInfo().add(360L);

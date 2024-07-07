@@ -18,7 +18,7 @@ public class WindBreaker extends Job {
         super();
         this.setName("윈드브레이커");
         this.setConstant(1.3);          // 무기상수
-        this.setMastery(1.96 / 2);      // 숙련도
+        this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
 
         // 무기
@@ -67,8 +67,8 @@ public class WindBreaker extends Job {
         this.addCriticalP(10.0);
 
         // 4차
-        this.addCriticalP(20.0);        // 샤프 아이즈
-        this.addCriticalDamage(15.0);
+        this.addCriticalP(21.0 - 10);   // 샤프 아이즈
+        this.addCriticalDamage(16.0 - 8);
         this.addAttP(11L);              // 윈드 블레싱
         this.addMainStatP(16L);
         this.addAtt(31L);               // 보우 엑스퍼트
@@ -81,9 +81,8 @@ public class WindBreaker extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(-51L);
-        //this.addMainStat(-1L);
-        this.addSubStat(5L);
+        this.addMainStatP(-36L);
+        this.addMainStat(1L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());

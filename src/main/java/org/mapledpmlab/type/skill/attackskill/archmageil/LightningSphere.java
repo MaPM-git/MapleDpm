@@ -13,5 +13,6 @@ public class LightningSphere extends ThunderAttack {
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new LightningSphereFinish());
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

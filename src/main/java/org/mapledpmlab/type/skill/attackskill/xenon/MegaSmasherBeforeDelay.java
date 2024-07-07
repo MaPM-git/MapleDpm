@@ -6,6 +6,6 @@ public class MegaSmasherBeforeDelay extends AttackSkill {
     public MegaSmasherBeforeDelay() {
         this.setName("메가 스매셔(선딜)");
         this.setDelay(600L);
-        this.setRelatedSkill(new MegaSmasher());
+        this.setCooldown(165.0);
     }
 }

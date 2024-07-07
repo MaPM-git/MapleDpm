@@ -257,37 +257,95 @@ public class Common {
 
     @Override
     public String toString() {
-        return "Common{" +
-                "att=" + att +
-                ", attP=" + attP +
-                ", allStatP=" + allStatP +
-                ", bossDamage=" + bossDamage +
-                ", cooldownReductionP=" + cooldownReductionP +
-                ", cooldownReductionSec=" + cooldownReductionSec +
-                ", criticalDamage=" + criticalDamage +
-                ", criticalP=" + criticalP +
-                ", damage=" + damage +
-                ", finalDamage=" + finalDamage +
-                ", hp=" + hp +
-                ", ignoreDefenseList=" + ignoreDefenseList +
-                ", level=" + level +
-                ", magic=" + magic +
-                ", magicP=" + magicP +
-                ", mainStat=" + mainStat +
-                ", mainStatP=" + mainStatP +
-                ", otherStat1=" + otherStat1 +
-                ", otherStat2=" + otherStat2 +
-                ", perXAtt=" + perXAtt +
-                ", perXMainStat=" + perXMainStat +
-                ", perXOtherStat=" + perXOtherStat +
-                ", perXSubStat=" + perXSubStat +
-                ", plusBuffDuration=" + plusBuffDuration +
-                ", property=" + property +
-                ", reuse=" + reuse +
-                ", statXFinalDamage=" + statXFinalDamage +
-                ", statXDamage=" + statXDamage +
-                ", statXIgnoreDefenseList=" + statXIgnoreDefenseList +
-                ", subStat=" + subStat +
-                '}';
+        String str = "\n";
+        if (getAtt() != 0) {
+            str += "\n공격력 : " + getAtt();
+        }
+        if (getAttP() != 0) {
+            str += "\n공격력% : " + getAttP();
+        }
+        if (getAllStatP() != 0) {
+            str += "\n올스탯% : " + getAllStatP();
+        }
+        if (getBossDamage() != 0) {
+            str += "\n보스 공격 시 데미지 : " + getBossDamage();
+        }
+        if (getCooldownReductionP() != 0) {
+            str += "\n쿨타임 감소% : " + getCooldownReductionP();
+        }
+        if (getCooldownReductionSec() != 0) {
+            str += "\n쿨타임 감소 : " + getCooldownReductionSec();
+        }
+        if (getCriticalDamage() != 0) {
+            str += "\n크리티컬 데미지 : " + getCriticalDamage();
+        }
+        if (getCriticalP() != 0) {
+            str += "\n크리티컬 확률 : " + getCriticalP();
+        }
+        if (getDamage() != 0) {
+            str += "\n데미지 : " + getDamage();
+        }
+        if (getFinalDamage() != 1) {
+            str += "\n최종데미지 : " + getFinalDamage();
+        }
+        if (getHp() != 0) {
+            str += "\nHP : " + getHp();
+        }
+        if (getIgnoreDefense() != 0) {
+            str += "\n방어율 무시 : " + getIgnoreDefenseList();
+        }
+        if (getMagic() != 0) {
+            str += "\n마력 : " + getMagic();
+        }
+        if (getMagicP() != 0) {
+            str += "\n마력% : " + getMagicP();
+        }
+        if (getMainStat() != 0) {
+            str += "\n주스탯 : " + getMainStat();
+        }
+        if (getMainStatP() != 0) {
+            str += "\n주스탯% : " + getMainStatP();
+        }
+        if (getSubStat() != 0) {
+            str += "\n부스탯 : " + getSubStat();
+        }
+        if (getOtherStat1() != 0) {
+            str += "\n이외 스탯1 : " + getOtherStat1();
+        }
+        if (getOtherStat2() != 0) {
+            str += "\n이외 스탯2 : " + getOtherStat2();
+        }
+        if (getPerXAtt() != 0) {
+            str += "\n% 미적용 공격력 : " + getPerXAtt();
+        }
+        if (getPerXMainStat() != 0) {
+            str += "\n% 미적용 주스탯 : " + getPerXMainStat();
+        }
+        if (getPerXSubStat() != 0) {
+            str += "\n% 미적용 부스탯 : " + getPerXSubStat();
+        }
+        if (getPerXOtherStat() != 0) {
+            str += "\n% 미적용 이외 스탯 : " + getPerXOtherStat();
+        }
+        if (getPlusBuffDuration() != 0) {
+            str += "\n버프 지속 시간 : " + getPlusBuffDuration();
+        }
+        if (getProperty() != 0) {
+            str += "\n속성 내성 무시 : " + getProperty();
+        }
+        if (getReuse() != 0) {
+            str += "\n재사용 : " + getReuse();
+        }
+        if (getStatXFinalDamage() != 1) {
+            str += "\n스탯창에 적용되지 않는 최종데미지 : " + getStatXFinalDamage();
+        }
+        if (getStatXDamage() != 0) {
+            str += "\n스탯창에 적용되지 않는 데미지 : " + getStatXDamage();
+        }
+        if (getStatXIgnoreDefense() != 0) {
+            str += "\n스탯창에 적용되지 않는 방어율 무시 : " + getStatXIgnoreDefenseList();
+        }
+
+        return str;
     }
 }

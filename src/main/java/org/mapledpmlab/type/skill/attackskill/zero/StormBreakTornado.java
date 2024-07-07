@@ -7,7 +7,7 @@ public class StormBreakTornado extends AttackSkill {
         this.setName("스톰 브레이크(소용돌이)");
         this.setAttackCount(4L);
         this.setDamage(535.0);
-        this.setDotDuration(3000L);
+        this.setDotDuration(1000L);
         this.setInterval(500L);
         this.setRelatedSkill(new StormBreakElectricity());
         this.addFinalDamage(2.2);               // 코어 강화

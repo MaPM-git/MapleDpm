@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ArtsCrescentum extends AttackSkill implements ArtsSkill {
     public ArtsCrescentum() {
         this.setName("아츠 : 크레센텀");
-        this.setDamage(975.0 + 120 + 131);
+        this.setDamage(975.0);
         this.setAttackCount(4L + 1);
         this.setCooldown(5.0);
         //this.setDelay(150L);

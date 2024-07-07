@@ -11,5 +11,6 @@ public class DoorOfTruth extends AttackSkill {
         this.setDotDuration(40000L);
         this.setInterval(3000L);
         this.addFinalDamage(1.6);       // 코어 강화
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

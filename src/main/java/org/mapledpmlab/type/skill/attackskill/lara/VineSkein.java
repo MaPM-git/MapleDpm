@@ -9,5 +9,6 @@ public class VineSkein extends AttackSkill {
         this.setAttackCount(6L);
         this.setCooldown(180.0);
         this.setDelayByAttackSpeed(840L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

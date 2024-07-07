@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.ability.PassiveBossAbnormal;
 import org.mapledpmlab.type.ability.PassiveBossReuse;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
@@ -60,11 +61,11 @@ public class Lara extends Job {
         this.addMagic(54L);             // 유유
 
         // 환산 보정
-        this.addMainStatP(78L);
-        this.addMainStat(-10L);
-        this.addSubStat(10L);
+        this.addMainStatP(69L);
+        this.addMainStat(2L);
+        this.addSubStat(15L);
 
-        this.setAbility(new PassiveBossReuse());
+        this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new PhantomInstinct());
         this.getLinkList().add(new NatureFriend());

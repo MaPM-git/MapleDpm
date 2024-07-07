@@ -11,5 +11,6 @@ public class NetherworldLightning extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.6);       // 코어 강화
         this.getMultiAttackInfo().add(600L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

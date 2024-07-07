@@ -6,7 +6,7 @@ public class Cerburus extends GaugeAttackSkill {
     public Cerburus() {
         this.setName("서버러스(자동)");
         this.setAttackCount(6L);
-        this.addFinalDamage(0.9);       // 블루 블러드
+        this.addFinalDamage(0.95);          // 블루 블러드
         this.setAttackCount(this.getAttackCount() * 2);
         this.setDamage(450.0);
         //this.setDelayByAttackSpeed(780L);

@@ -8,7 +8,7 @@ public class Typhoon extends AttackSkill {
         this.setName("태풍");
         this.setAttackCount(5L + 1);                // 질풍-보너스 어택
         this.setDamage(323.0 + 101);
-        this.setDelayByAttackSpeed(420L);
+        this.setDelayByAttackSpeed(390L);
         this.setCooldown(12.0);
         //this.setRelatedSkill(new TyphoonBuff());
         this.addFinalDamage(2.2);           // 코어강화

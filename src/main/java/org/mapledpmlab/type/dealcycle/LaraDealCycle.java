@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.lara.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -18,15 +19,6 @@ import java.util.List;
 
 public class LaraDealCycle extends DealCycle {
 
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             //add(new AbsorptionFierceWind());
@@ -38,6 +30,9 @@ public class LaraDealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DragonVeinAbsorption());
+            add(new DragonVeinFree());
+            add(new DragonVeinJump());
+            add(new DragonVeinSwitch());
             add(new DragonVeinTrace());
             add(new EruptionRipplingRiver());
             add(new EruptionRipplingRiverBig());
@@ -47,7 +42,6 @@ public class LaraDealCycle extends DealCycle {
             add(new EruptionSunriseWellVolcanicCoal());
             add(new EruptionWhirlwind());
             add(new EssenceSprinkle());
-            add(new FreeDragonVein());
             add(new MountainKid());
             add(new MountainSeed());
             add(new RidgeWinding());
@@ -64,21 +58,15 @@ public class LaraDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new ArmfulTree());
             add(new DragonVeinEcho());
             add(new GrandisGoddessBlessingAnima());
-            add(new PriorPreparation());
             add(new ManifestationSunlightFilledGround());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             //add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
@@ -91,11 +79,12 @@ public class LaraDealCycle extends DealCycle {
     Timestamp mountainSeedEndTime3 = new Timestamp(-1);
     Timestamp mountainSeedEndTime4 = new Timestamp(-1);
 
+    int eruptionCnt = 0;
+
     public LaraDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         ArmfulTree armfulTree = new ArmfulTree();
@@ -103,16 +92,17 @@ public class LaraDealCycle extends DealCycle {
         BloomingFlowerWorld bloomingFlowerWorld = new BloomingFlowerWorld();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DragonVeinAbsorption dragonVeinAbsorption = new DragonVeinAbsorption();
+        DragonVeinFree dragonVeinFree = new DragonVeinFree();
         DragonVeinEcho dragonVeinEcho = new DragonVeinEcho();
+        DragonVeinJump dragonVeinJump = new DragonVeinJump();
+        DragonVeinSwitch dragonVeinSwitch = new DragonVeinSwitch();
         DragonVeinTrace dragonVeinTrace = new DragonVeinTrace();
         EruptionRipplingRiver eruptionRipplingRiver = new EruptionRipplingRiver();
         EruptionSunriseWell eruptionSunriseWell = new EruptionSunriseWell();
         EruptionWhirlwind eruptionWhirlwind = new EruptionWhirlwind();
         EssenceSprinkle essenceSprinkle = new EssenceSprinkle();
-        FreeDragonVein freeDragonVein = new FreeDragonVein();
         GrandisGoddessBlessingAnima grandisGoddessBlessingAnima = new GrandisGoddessBlessingAnima();
         ManifestationSunlightFilledGround manifestationSunlightFilledGround = new ManifestationSunlightFilledGround();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RidgeWinding ridgeWinding = new RidgeWinding();
         RingSwitching ringSwitching = new RingSwitching();
@@ -120,80 +110,69 @@ public class LaraDealCycle extends DealCycle {
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SunRiverMountainWindWave1 sunRiverMountainWindWave1 = new SunRiverMountainWindWave1();
-        ThiefCunning thiefCunning = new ThiefCunning();
         VineSkein vineSkein = new VineSkein();
         Wakeup wakeup = new Wakeup();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(180.0);
 
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(grandisGoddessBlessingAnima);
-        dealCycle1.add(armfulTree);
-        dealCycle1.add(eruptionWhirlwind);
-        dealCycle1.add(eruptionRipplingRiver);
-        dealCycle1.add(eruptionSunriseWell);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(ridgeWinding);
-        dealCycle1.add(soaringSpirit);
-        dealCycle1.add(bigStretch);
-        dealCycle1.add(sunRiverMountainWindWave1);
-        dealCycle1.add(bloomingFlowerWorld);
-
-        dealCycle2.add(grandisGoddessBlessingAnima);
-        dealCycle2.add(armfulTree);
-        dealCycle2.add(eruptionWhirlwind);
-        dealCycle2.add(eruptionRipplingRiver);
-        dealCycle2.add(eruptionSunriseWell);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(ridgeWinding);
-        dealCycle2.add(soaringSpirit);
-        dealCycle2.add(bigStretch);
-        dealCycle2.add(sunRiverMountainWindWave1);
-
-        dealCycle3.add(soulContract);
-        dealCycle3.add(weaponJumpRing);
+        grandisGoddessBlessingAnima.setCooldown(240.0);
 
         addSkillEvent(dragonVeinEcho);
         while (getStart().before(getEnd())) {
-            if (
-                    cooldownCheck(manifestationSunlightFilledGround)
-            ) {
+            if (cooldownCheck(manifestationSunlightFilledGround)) {
                 addSkillEvent(manifestationSunlightFilledGround);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(armfulTree)
+                    && cooldownCheck(dragonVeinTrace)
+                    && cooldownCheck(eruptionWhirlwind)
+                    && cooldownCheck(dragonVeinSwitch)
+                    && cooldownCheck(eruptionRipplingRiver)
+                    && cooldownCheck(dragonVeinFree)
+                    && cooldownCheck(eruptionSunriseWell)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(ridgeWinding)
+                    && cooldownCheck(soaringSpirit)
+                    && cooldownCheck(bigStretch)
+                    && cooldownCheck(sunRiverMountainWindWave1)
             ) {
-                addDealCycle(dealCycle1);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(essenceSprinkle);
+                }
+                if (cooldownCheck(grandisGoddessBlessingAnima)) {
+                    if (getStart().before(new Timestamp(10 * 1000))) {
+                        grandisGoddessBlessingAnima.setCooldown(360.0);
+                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
+                        grandisGoddessBlessingAnima.setCooldown(180.0);
+                    }
+                    addSkillEvent(grandisGoddessBlessingAnima);
+                }
+                addSkillEvent(armfulTree);
+                addSkillEvent(dragonVeinTrace);
+                addSkillEvent(eruptionWhirlwind);
+                addSkillEvent(dragonVeinJump);
+                addSkillEvent(dragonVeinSwitch);
+                addSkillEvent(eruptionRipplingRiver);
+                addSkillEvent(dragonVeinFree);
+                addSkillEvent(eruptionSunriseWell);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                addSkillEvent(ridgeWinding);
+                addSkillEvent(soaringSpirit);
+                addSkillEvent(dragonVeinFree);
+                addSkillEvent(bigStretch);
+                addSkillEvent(sunRiverMountainWindWave1);
+                if (cooldownCheck(bloomingFlowerWorld)) {
+                    addSkillEvent(bloomingFlowerWorld);
+                }
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addDealCycle(dealCycle2);
-            } /*else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
-            } else if (
-                    cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))) {
-                addSkillEvent(ringSwitching);
-            }*/ else if (
                     cooldownCheck(soulContract)
                     && !cooldownCheck(armfulTree)
             ) {
@@ -202,6 +181,7 @@ public class LaraDealCycle extends DealCycle {
                     cooldownCheck(bigStretch)
                     && !cooldownCheck(armfulTree)
             ) {
+                addSkillEvent(dragonVeinFree);
                 addSkillEvent(bigStretch);
             } else if (
                     cooldownCheck(ridgeWinding)
@@ -217,34 +197,43 @@ public class LaraDealCycle extends DealCycle {
                     cooldownCheck(eruptionWhirlwind)
                     && !cooldownCheck(armfulTree)
             ) {
-                if (cooldownCheck(dragonVeinTrace)) {
+                if (eruptionCnt % 3 == 0) {
                     addSkillEvent(dragonVeinTrace);
-                    getStart().setTime(getStart().getTime() + 910);
-                } else {
-                    getStart().setTime(getStart().getTime() + 1000);
+                } else if (eruptionCnt % 3 == 1) {
+                    addSkillEvent(dragonVeinJump);
+                    addSkillEvent(dragonVeinSwitch);
+                } else if (eruptionCnt % 3 == 2) {
+                    addSkillEvent(dragonVeinFree);
                 }
+                eruptionCnt ++;
                 addSkillEvent(eruptionWhirlwind);
             } else if (
                     cooldownCheck(eruptionRipplingRiver)
                     && !cooldownCheck(armfulTree)
             ) {
-                if (cooldownCheck(dragonVeinTrace)) {
+                if (eruptionCnt % 3 == 0) {
                     addSkillEvent(dragonVeinTrace);
-                    getStart().setTime(getStart().getTime() + 910);
-                } else {
-                    getStart().setTime(getStart().getTime() + 1000);
+                } else if (eruptionCnt % 3 == 1) {
+                    addSkillEvent(dragonVeinJump);
+                    addSkillEvent(dragonVeinSwitch);
+                } else if (eruptionCnt % 3 == 2) {
+                    addSkillEvent(dragonVeinFree);
                 }
+                eruptionCnt ++;
                 addSkillEvent(eruptionRipplingRiver);
             } else if (
                     cooldownCheck(eruptionSunriseWell)
                     && !cooldownCheck(armfulTree)
             ) {
-                if (cooldownCheck(dragonVeinTrace)) {
+                if (eruptionCnt % 3 == 0) {
                     addSkillEvent(dragonVeinTrace);
-                    getStart().setTime(getStart().getTime() + 910);
-                } else {
-                    getStart().setTime(getStart().getTime() + 1000);
+                } else if (eruptionCnt % 3 == 1) {
+                    addSkillEvent(dragonVeinJump);
+                    addSkillEvent(dragonVeinSwitch);
+                } else if (eruptionCnt % 3 == 2) {
+                    addSkillEvent(dragonVeinFree);
                 }
+                eruptionCnt ++;
                 addSkillEvent(eruptionSunriseWell);
             } else {
                 addSkillEvent(essenceSprinkle);
@@ -270,6 +259,17 @@ public class LaraDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -379,6 +379,16 @@ public class LaraDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -417,6 +427,16 @@ public class LaraDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -438,58 +458,33 @@ public class LaraDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        if (
-                attackSkill instanceof AbsorptionFierceWind
-                || attackSkill instanceof AbsorptionRiverPuddleDouse
-                || attackSkill instanceof AbsorptionSunlitightGrain
-                || attackSkill instanceof BigStretch
-                || attackSkill instanceof BloomingFlowerWorld
-                || attackSkill instanceof BloomingFlowerWorldFinish
-                || attackSkill instanceof DragonVeinTrace
-                || attackSkill instanceof EruptionRipplingRiver
-                || attackSkill instanceof EruptionRipplingRiverBig
-                || attackSkill instanceof EruptionSunriseWell
-                || attackSkill instanceof EruptionSunriseWellDot
-                || attackSkill instanceof EruptionSunriseWellLava
-                || attackSkill instanceof EruptionSunriseWellVolcanicCoal
-                || attackSkill instanceof EruptionWhirlwind
-                || attackSkill instanceof EssenceSprinkle
-                || attackSkill instanceof MountainSeed
-                || attackSkill instanceof RidgeWinding
-                || attackSkill instanceof SoaringSpirit
-                || attackSkill instanceof SunRiverMountainWindBomb
-                || attackSkill instanceof SunRiverMountainWindWave1
-                || attackSkill instanceof SunRiverMountainWindWave2
-                || attackSkill instanceof SunRiverMountainWindWave3
-                || attackSkill instanceof SunRiverMountainWindWave4
-                || attackSkill instanceof VineSkein
-                || attackSkill instanceof Wakeup
-        ) {
-            buffSkill.addBuffFinalDamage(1.08);
-        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 this.getJob().addMainStat(buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
-                        + this.getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
-                        * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + this.getJob().getPerXAtt())
-                        * this.getJob().getConstant()
-                        * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * this.getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * this.getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                            + this.getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
+                            * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + this.getJob().getPerXAtt())
+                            * this.getJob().getConstant()
+                            * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (this.getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * this.getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * this.getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
@@ -505,35 +500,6 @@ public class LaraDealCycle extends DealCycle {
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
-        }
-        if (
-                attackSkill instanceof AbsorptionFierceWind
-                        || attackSkill instanceof AbsorptionRiverPuddleDouse
-                        || attackSkill instanceof AbsorptionSunlitightGrain
-                        || attackSkill instanceof BigStretch
-                        || attackSkill instanceof BloomingFlowerWorld
-                        || attackSkill instanceof BloomingFlowerWorldFinish
-                        || attackSkill instanceof DragonVeinTrace
-                        || attackSkill instanceof EruptionRipplingRiver
-                        || attackSkill instanceof EruptionRipplingRiverBig
-                        || attackSkill instanceof EruptionSunriseWell
-                        || attackSkill instanceof EruptionSunriseWellDot
-                        || attackSkill instanceof EruptionSunriseWellLava
-                        || attackSkill instanceof EruptionSunriseWellVolcanicCoal
-                        || attackSkill instanceof EruptionWhirlwind
-                        || attackSkill instanceof EssenceSprinkle
-                        || attackSkill instanceof MountainSeed
-                        || attackSkill instanceof RidgeWinding
-                        || attackSkill instanceof SoaringSpirit
-                        || attackSkill instanceof SunRiverMountainWindBomb
-                        || attackSkill instanceof SunRiverMountainWindWave1
-                        || attackSkill instanceof SunRiverMountainWindWave2
-                        || attackSkill instanceof SunRiverMountainWindWave3
-                        || attackSkill instanceof SunRiverMountainWindWave4
-                        || attackSkill instanceof VineSkein
-                        || attackSkill instanceof Wakeup
-        ) {
-            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
         }
         return attackDamage;
     }

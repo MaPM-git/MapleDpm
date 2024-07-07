@@ -28,7 +28,7 @@ public class Xenon extends Job {
         this.addMainStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
         this.addSubStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
         this.addOtherStat1((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
-        this.setMastery(1.86 / 2);      // 숙련도
+        this.setMastery(1.91 / 2);      // 숙련도
         this.addMainStat(30L);          // 향상된 10단계 물약
         this.setJobType(JobType.XENON);
 
@@ -104,10 +104,10 @@ public class Xenon extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addAllStatP(3L);
+        this.addAllStatP(4L);
         //this.addMainStatP(5L);
         this.addMainStat(5L);
-        this.addSubStat(4L);
+        this.addSubStat(5L);
         this.addOtherStat1(4L);
 
         this.setAbility(new BossAbnormalAttack());
@@ -160,7 +160,7 @@ public class Xenon extends Job {
             attMagicP = this.getMagicP();
         }
         Object[] result = new Object[]{
-                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
                 this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
                 this.getFinalSubstat(), this.getFinalSubStat2(), this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),

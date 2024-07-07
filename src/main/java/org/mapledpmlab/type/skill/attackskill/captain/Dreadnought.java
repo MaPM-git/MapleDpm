@@ -12,8 +12,7 @@ public class Dreadnought extends AttackSkill {
         this.setApplyFinalAttack(true);
         this.setRelatedSkill(new DreadnoughtBombard());
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(1020L);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

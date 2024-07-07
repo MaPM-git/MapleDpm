@@ -7,5 +7,6 @@ public class IceAura extends AttackSkill {
         this.setName("아이스 오라");
         this.setDotDuration(720 * 1000L);
         this.setInterval(8000L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

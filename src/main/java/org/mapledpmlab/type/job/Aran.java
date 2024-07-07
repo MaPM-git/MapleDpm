@@ -1,7 +1,6 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
-import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
@@ -45,31 +44,33 @@ public class Aran extends Job {
         this.addAttP(5L);               // 되찾은 기억
         
         // 1차
-        this.addAtt(20L);               // 콤보 어빌리티
         this.addMainStat(20L);          // 폴암 액셀레이션
+        this.addAtt(20L);               // 페이브
+        this.addCriticalP(10.0);
 
         // 2차
+        this.addCriticalP(20.0);        // 콤보 어빌리티
         this.addDamage(10L);            // 스노우 차지
-        this.addFinalDamage(1.08);      // 폴암 마스터리
+        this.addFinalDamage(1.1);       // 폴암 마스터리
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
 
         // 3차
         this.addAtt(10L);               // 어드밴스드 콤보 어빌리티
-        this.addCriticalP(20.0);
         this.addCriticalDamage(10.0);
-        this.addCriticalP(30.0);
         this.addAtt(20L);
         this.addAtt(30L);               // 블레싱 마하
         this.addMagic(30L);
         this.addAtt(40L);               // 마이트
-        this.addDamage(30L);            // 클리빙 어택
-        this.addIgnoreDefenseList(40L);
+        this.addCriticalP(20.0);
+        this.addBossDamage(15L);
 
         // 4차
         this.addAtt(31L);               // 하이 마스터리
         this.addCriticalDamage(8.0);
         this.addFinalDamage(1.16);
+        this.addDamage(31L);            // 클리빙 어택
+        this.addIgnoreDefenseList(41L);
         this.addAtt(31L);               // 어드밴스드 파이널 어택
 
         // 5차
@@ -91,5 +92,11 @@ public class Aran extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addDamage(10L);            // 스노우 차지
     }
 }

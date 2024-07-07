@@ -67,7 +67,7 @@ public class AngelicBuster extends Job {
         this.addCriticalDamage(15.0);
 
         // 4차
-        this.addCriticalDamage(31.0);   // 소울 게이즈
+        this.addCriticalDamage(21.0);   // 소울 게이즈
         this.addAtt(31L);               // 소울슈터 엑스퍼트
         this.addFinalDamage(1.23);
 
@@ -79,9 +79,9 @@ public class AngelicBuster extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-57L);
-        this.addMainStat(-4L);
-        this.addSubStat(8L);
+        this.addMainStatP(-6L);
+        this.addMainStat(-9L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

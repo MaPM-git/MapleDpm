@@ -13,8 +13,7 @@ public class MysticEnergyApotheosisKeydown1 extends AttackSkill {
         this.setInterval(210L);
         this.setLimitAttackCount(10L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new MysticEnergyApotheosisKeydown2());
     }
 }

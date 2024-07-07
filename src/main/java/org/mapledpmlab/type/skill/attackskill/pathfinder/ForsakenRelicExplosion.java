@@ -9,8 +9,7 @@ public class ForsakenRelicExplosion extends GaugeAttackSkill {
         this.setDamage(1545.0);
         this.setDelay(2760L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(480L);
         this.getMultiAttackInfo().add(120L);

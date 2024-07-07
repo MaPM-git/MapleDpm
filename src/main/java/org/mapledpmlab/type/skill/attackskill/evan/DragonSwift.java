@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DragonSwift extends AttackSkill {
     public DragonSwift() {
         this.setName("드래곤 스위프트");
-        this.setDamage(790.0 + 322);
+        this.setDamage(790.0);
         this.setAttackCount(4L);
         this.setDotDuration(3500L);
         this.setInterval(540L);
@@ -14,5 +14,6 @@ public class DragonSwift extends AttackSkill {
         this.addFinalDamage(2.2);                   // 코어 강화
         this.addIgnoreDefenseList(20L);
         this.setApplyReuse(true);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

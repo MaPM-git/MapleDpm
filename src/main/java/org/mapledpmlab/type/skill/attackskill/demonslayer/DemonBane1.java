@@ -10,7 +10,7 @@ public class DemonBane1 extends AttackSkill {
         this.setInterval(240L);
         this.setLimitAttackCount(11L);
         this.setAttackCount(6L);
-        this.addFinalDamage(0.9);       // 블루 블러드
+        this.addFinalDamage(0.95);          // 블루 블러드
         this.setAttackCount(this.getAttackCount() * 2);
         this.setDamage(580.0);
         this.addIgnoreDefenseList(30L);

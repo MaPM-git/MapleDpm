@@ -1,13 +1,13 @@
 package org.mapledpmlab.type.job;
 
-import org.mapledpmlab.type.ability.BuffBossAbnormal;
+import org.mapledpmlab.type.ability.BossAbnormalBuff;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PhantomInstinct;
-import org.mapledpmlab.type.union.IntUnion;
+import org.mapledpmlab.type.union.LuminousUnion;
 
 import java.util.stream.Collectors;
 
@@ -63,15 +63,15 @@ public class Luminous extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(51L);
-        this.addMainStat(9L);
-        //this.addSubStat(5L);
+        this.addMainStatP(39L);
+        this.addMainStat(-7L);
+        this.addSubStat(-10L);
 
-        this.setAbility(new BuffBossAbnormal());
+        this.setAbility(new BossAbnormalBuff());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PhantomInstinct());
-        this.setUnion(new IntUnion());
+        this.setUnion(new LuminousUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());

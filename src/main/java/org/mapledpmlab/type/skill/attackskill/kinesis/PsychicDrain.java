@@ -13,5 +13,6 @@ public class PsychicDrain extends AttackSkill {
         this.setInterval(500L);
         this.addFinalDamage(4.0);   // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

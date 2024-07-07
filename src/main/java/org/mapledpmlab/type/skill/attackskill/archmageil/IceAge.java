@@ -10,5 +10,6 @@ public class IceAge extends AttackSkill {
         this.setDelay(870L);
         this.setApplyFinalAttack(true);
         this.addFinalDamage(1.6);           // 코어강화
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

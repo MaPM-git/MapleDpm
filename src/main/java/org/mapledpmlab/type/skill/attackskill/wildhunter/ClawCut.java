@@ -3,7 +3,7 @@ package org.mapledpmlab.type.skill.attackskill.wildhunter;
 public class ClawCut extends JaguarSkill {
     public ClawCut() {
         this.setName("클로우 컷");
-        this.setDamage(700.0 + 30 + 40 + 50 + 150);
+        this.setDamage(700.0);
         this.setAttackCount(4L);
         this.setCooldown(5.0);
         this.setAddDamage(20L);             // 서먼 재규어-리인포스

@@ -12,5 +12,6 @@ public class DragonBreak extends AttackSkill {
         this.setLimitAttackCount(6L);
         this.setCooldown(20.0);
         this.addFinalDamage(1.6);           // 코어 강화
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

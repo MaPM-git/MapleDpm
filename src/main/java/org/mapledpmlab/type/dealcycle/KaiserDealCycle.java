@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.kaiser.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -16,15 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KaiserDealCycle extends DealCycle {
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    private final List<Skill> dealCycle4 = new ArrayList<>();
-
-    private final List<Skill> dealCycle5 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -38,6 +30,7 @@ public class KaiserDealCycle extends DealCycle {
             add(new DragonBlazeFireOrb());
             add(new DragonSlash());
             add(new GigaSlasher());
+            add(new GuardianOfNova());
             add(new GuardianOfNova6th());
             add(new GuardianOfNova15th());
             add(new GuardianOfNova27th());
@@ -46,6 +39,7 @@ public class KaiserDealCycle extends DealCycle {
             add(new MightOfNova());
             add(new MightOfNovaFinish());
             add(new Petrified());
+            add(new Prominence());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new WallOfSword());
@@ -56,12 +50,6 @@ public class KaiserDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new GuardianOfNova());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
@@ -69,10 +57,9 @@ public class KaiserDealCycle extends DealCycle {
             add(new FinalTrance());
             add(new GrandisGoddessBlessingNova());
             add(new MajestyOfKaiser());
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
@@ -96,18 +83,17 @@ public class KaiserDealCycle extends DealCycle {
     Timestamp grandisGoddessBlessingEndTime = new Timestamp(-1);
     Timestamp soulContractEndTime = new Timestamp(-1);
 
+    DracoSlasher dracoSlasher = new DracoSlasher();
     int gauge = 700;
 
     public KaiserDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DracoSlasher dracoSlasher = new DracoSlasher();
         DragonBlaze dragonBlaze = new DragonBlaze();
         DragonSlash dragonSlash = new DragonSlash();
         FinalFiguration finalFiguration = new FinalFiguration();
@@ -118,101 +104,29 @@ public class KaiserDealCycle extends DealCycle {
         MightOfNova mightOfNova = new MightOfNova();
         Petrified petrified = new Petrified();
         Prominence prominence = new Prominence();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         WallOfSwordStrike wallOfSwordStrike = new WallOfSwordStrike();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WingBeat wingBeat = new WingBeat();
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(130.0);
-
-        // 리레, 그여축, 6차
-        dealCycle1.add(petrified);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(infernoBreath);
-        dealCycle1.add(dragonSlash);
-        dealCycle1.add(wingBeat);
-        dealCycle1.add(wingBeat);
-        dealCycle1.add(guardianOfNova);
-        dealCycle1.add(grandisGoddessBlessingNova);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(dragonBlaze);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(dracoSlasher);
-        dealCycle1.add(mightOfNova);
-        dealCycle1.add(dracoSlasher);
-        dealCycle1.add(prominence);
-        dealCycle1.add(wallOfSwordStrike);
-
-        // 웨퍼, 그여축, 6차
-        dealCycle2.add(petrified);
-        dealCycle2.add(infernoBreath);
-        dealCycle2.add(dragonSlash);
-        dealCycle2.add(wingBeat);
-        dealCycle2.add(wingBeat);
-        dealCycle2.add(guardianOfNova);
-        dealCycle2.add(grandisGoddessBlessingNova);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(dragonBlaze);
-        dealCycle2.add(weaponJumpRing);
-        dealCycle2.add(dracoSlasher);
-        dealCycle2.add(mightOfNova);
-        dealCycle2.add(dracoSlasher);
-        dealCycle2.add(prominence);
-        dealCycle2.add(wallOfSwordStrike);
-
-        // 리레, 그여축
-        dealCycle3.add(petrified);
-        dealCycle3.add(crestOfTheSolar);
-        dealCycle3.add(spiderInMirror);
-        dealCycle3.add(infernoBreath);
-        dealCycle3.add(dragonSlash);
-        dealCycle3.add(wingBeat);
-        dealCycle3.add(wingBeat);
-        dealCycle3.add(guardianOfNova);
-        dealCycle3.add(grandisGoddessBlessingNova);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(dragonBlaze);
-        dealCycle3.add(restraintRing);
-        dealCycle3.add(dracoSlasher);
-        dealCycle3.add(prominence);
-        dealCycle3.add(wallOfSwordStrike);
-
-        // 웨퍼
-        dealCycle4.add(petrified);
-        dealCycle4.add(infernoBreath);
-        dealCycle4.add(dragonSlash);
-        dealCycle4.add(wingBeat);
-        dealCycle4.add(wingBeat);
-        dealCycle4.add(guardianOfNova);
-        dealCycle4.add(soulContract);
-        dealCycle4.add(majestyOfKaiser);
-        dealCycle4.add(dragonBlaze);
-        dealCycle4.add(weaponJumpRing);
-        dealCycle4.add(dracoSlasher);
-        dealCycle4.add(prominence);
-        dealCycle4.add(wallOfSwordStrike);
+        auraWeaponBuff.setCooldown(180.0);
+        auraWeaponBuff.setApplyCooldownReduction(false);
+        grandisGoddessBlessingNova.setCooldown(240.0);
 
         soulContract.setApplyReuse(true);
         grandisGoddessBlessingNova.addBuffDamage(33L);
 
-        // 그여축 1345 1-4-3-2-3-4
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
+            if (
+                    getStart().after(finalFigurationEndTime)
+                    && cooldownCheck(finalTrance)
+            ) {
+                addSkillEvent(finalTrance);
+            }
             if (
                     getStart().after(finalFigurationEndTime)
                     && gauge >= 700
@@ -220,50 +134,67 @@ public class KaiserDealCycle extends DealCycle {
                 addSkillEvent(finalFiguration);
             }
             if (
-                    getStart().after(finalFigurationEndTime)
-                    && gauge <= 200
-                    && cooldownCheck(finalTrance)
+                    cooldownCheck(auraWeaponBuff)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
-                addSkillEvent(finalTrance);
-            }
-            if (
-                    getStart().after(auraWeaponBuff.getEndTime())
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
             }
             if (
-                    cooldownCheck(dealCycle1)
+                    cooldownCheck(petrified)
+                    && cooldownCheck(infernoBreath)
+                    && cooldownCheck(guardianOfNova)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(dragonBlaze)
+                    && cooldownCheck(dracoSlasher)
+                    && cooldownCheck(prominence)
+                    && cooldownCheck(wallOfSwordStrike)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 1
+                    && getStart().before(finalFigurationEndTime)
             ) {
-                addDealCycle(dealCycle1);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && dealCycleOrder == 4
-            ) {
-                addDealCycle(dealCycle2);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (dealCycleOrder == 3 || dealCycleOrder == 5)
-            ) {
-                addDealCycle(dealCycle3);
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(dealCycle4)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (dealCycleOrder == 2 || dealCycleOrder == 6)
-            ) {
-                addDealCycle(dealCycle4);
+                //addSkillEvent(petrified);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                }
+                //addSkillEvent(infernoBreath);
+                //addSkillEvent(dragonSlash);
+                //addSkillEvent(wingBeat);
+                //addSkillEvent(wingBeat);
+                addSkillEvent(guardianOfNova);
+                if (cooldownCheck(grandisGoddessBlessingNova)) {
+                    if (dealCycleOrder == 1) {
+                        grandisGoddessBlessingNova.setCooldown(360.0);
+                    } else if (dealCycleOrder == 4) {
+                        grandisGoddessBlessingNova.setCooldown(120.0);
+                    } else {
+                        grandisGoddessBlessingNova.setCooldown(240.0);
+                    }
+                    addSkillEvent(grandisGoddessBlessingNova);
+                }
+                addSkillEvent(soulContract);
+                addSkillEvent(dragonBlaze);
+                if (cooldownCheck(restraintRing)) {
+                    addSkillEvent(restraintRing);
+                } else if (cooldownCheck(weaponJumpRing)) {
+                    addSkillEvent(weaponJumpRing);
+                }
+                addSkillEvent(dracoSlasher);
+                if (cooldownCheck(mightOfNova)) {
+                    addSkillEvent(mightOfNova);
+                    addSkillEvent(dracoSlasher);
+                }
+                addSkillEvent(prominence);
+                addSkillEvent(wallOfSwordStrike);
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
+                    && getStart().after(new Timestamp(100 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -273,24 +204,32 @@ public class KaiserDealCycle extends DealCycle {
                     && getStart().after(soulContractEndTime)
             ) {
                 addSkillEvent(soulContract);
-            } else if (
+            } /*else if (
                     cooldownCheck(petrified)
                     && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(petrified);
-            } else if (
+            }*/ else if (
                     cooldownCheck(prominence)
                     && cooldownCheck(wallOfSwordStrike)
                     && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(prominence);
                 addSkillEvent(wallOfSwordStrike);
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
             } else if (
                     cooldownCheck(wallOfSwordStrike)
                     && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 20000))
             ) {
                 addSkillEvent(wallOfSwordStrike);
-            } else if (
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
+                addSkillEvent(dracoSlasher);
+            } /*else if (
                     cooldownCheck(infernoBreath)
                     && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 15000))
                     && getStart().after(finalFigurationEndTime)
@@ -303,7 +242,7 @@ public class KaiserDealCycle extends DealCycle {
                 addSkillEvent(dragonSlash);
                 addSkillEvent(wingBeat);
                 addSkillEvent(wingBeat);
-            } else if (
+            }*/ else if (
                     cooldownCheck(wallOfSword)
             ) {
                 addSkillEvent(wallOfSword);
@@ -347,6 +286,17 @@ public class KaiserDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -428,6 +378,7 @@ public class KaiserDealCycle extends DealCycle {
                 dragonBlowChk = true;
             }
             if (skill instanceof WallOfSwordStrike) {
+                dracoSlasher.setActivateTime(new Timestamp(-1));
                 strikeCnt = 3;
             }
             if (
@@ -569,6 +520,16 @@ public class KaiserDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -611,6 +572,16 @@ public class KaiserDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (isFinalFiguration) {
@@ -701,6 +672,8 @@ public class KaiserDealCycle extends DealCycle {
                 attackSkill.setAttackCount(attackSkill.getAttackCount() + 2);
             } else if (attackSkill instanceof DracoSlasher) {
                 attackSkill.setAttackCount(attackSkill.getAttackCount() + 2);
+            } else if (attackSkill instanceof DracoSlasherEnergy) {
+                attackSkill.setAttackCount(attackSkill.getAttackCount() + 2);
             } else if (attackSkill instanceof WallOfSwordStrike) {
                 attackSkill.setAttackCount(attackSkill.getAttackCount() + 1);
             } else if (attackSkill instanceof WallOfSwordStrikeBlaze) {
@@ -713,23 +686,27 @@ public class KaiserDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                        + getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
@@ -754,6 +731,8 @@ public class KaiserDealCycle extends DealCycle {
             } else if (attackSkill instanceof GigaSlasher) {
                 attackSkill.setAttackCount(attackSkill.getAttackCount() - 2);
             } else if (attackSkill instanceof DracoSlasher) {
+                attackSkill.setAttackCount(attackSkill.getAttackCount() - 2);
+            } else if (attackSkill instanceof DracoSlasherEnergy) {
                 attackSkill.setAttackCount(attackSkill.getAttackCount() - 2);
             } else if (attackSkill instanceof WallOfSwordStrike) {
                 attackSkill.setAttackCount(attackSkill.getAttackCount() - 1);

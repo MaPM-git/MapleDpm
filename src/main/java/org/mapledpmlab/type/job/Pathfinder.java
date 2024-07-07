@@ -57,18 +57,17 @@ public class Pathfinder extends Job {
         this.addIgnoreDefenseList(30L);
 
         // 4차
-        this.addCriticalP(20.0);        // 샤프 아이즈
-        this.addCriticalDamage(15.0);
-        this.addIgnoreDefenseList(5L);
+        this.addCriticalP(21.0 - 10);   // 샤프 아이즈
+        this.addCriticalDamage(16.0 - 8);
         this.addAttP(21L);              // 에디셔널 트랜지션
         this.addAtt(62L);               // 에이션트 보우 엑스퍼트
         this.addCriticalDamage(11.0);
         this.addMainStat(82L);          // 일루전 스탭
 
         // 환산 보정
-        this.addMainStatP(-42L);
-        this.addMainStat(-14L);
-        //this.addSubStat(5L);
+        this.addMainStatP(-39L);
+        this.addMainStat(3L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossCriticalReuse());
         this.setArtifact(new Artifact());

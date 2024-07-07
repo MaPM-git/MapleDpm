@@ -8,8 +8,7 @@ public class Requiem extends GaugeAttackSkill {
         this.setDelay(3600L);
         this.setAttackCount(10L);
         this.setDamage(1200.0);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setAddDamage(50L);
         this.setCooldown(360.0);
         this.setGaugePer(-15L);

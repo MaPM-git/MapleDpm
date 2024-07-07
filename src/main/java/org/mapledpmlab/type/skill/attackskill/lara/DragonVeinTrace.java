@@ -8,6 +8,8 @@ public class DragonVeinTrace extends AttackSkill {
         this.setDamage(500.0 + 59);
         this.setAttackCount(2L);
         this.setCooldown(1.0);
-        this.setDelayByAttackSpeed(120L);
+        this.setDelay(120L);
+        this.setApplyCooldownReduction(false);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

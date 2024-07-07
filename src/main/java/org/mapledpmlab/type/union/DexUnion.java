@@ -13,5 +13,6 @@ public class DexUnion extends UnionArcher {
         this.addPerXSubStat(640L);
         this.addPerXMainStat(40L);
         this.addPerXSubStat(40L);
+        this.addCriticalP(40.0);
     }
 }

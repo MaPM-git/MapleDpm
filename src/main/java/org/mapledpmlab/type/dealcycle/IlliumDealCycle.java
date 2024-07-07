@@ -3,6 +3,7 @@ package org.mapledpmlab.type.dealcycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.illium.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
@@ -15,15 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IlliumDealCycle extends DealCycle {
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -38,7 +30,9 @@ public class IlliumDealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new CrystalGate());
+            add(new CrystalIgnitionBeforeDelay());
             add(new CrystalIgnition());
+            add(new CrystalIgnitionAfterDelay());
             add(new CrystalSkillDeus());
             add(new CrystalSkillDeusSatellite1());
             add(new CrystalSkillDeusSatellite2());
@@ -70,13 +64,6 @@ public class IlliumDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new CrystalIgnitionAfterDelay());
-            add(new CrystalIgnitionBeforeDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new CrystalGateBuff());
@@ -86,6 +73,7 @@ public class IlliumDealCycle extends DealCycle {
             add(new MagicCircuitFullDriveBuff());
             add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
             add(new SoulOfCrystal());
             add(new SoulOfCrystalBuff());
@@ -135,7 +123,6 @@ public class IlliumDealCycle extends DealCycle {
         super(job, new CurseMark());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         CraftJavelin craftJavelin = new CraftJavelin();
@@ -155,89 +142,75 @@ public class IlliumDealCycle extends DealCycle {
         GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(520L);
         Machina machina = new Machina();
         MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SoulOfCrystal soulOfCrystal = new SoulOfCrystal();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         UnlimitedCrystal1 unlimitedCrystal1 = new UnlimitedCrystal1();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WrathOfGod wrathOfGod = new WrathOfGod();
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(90.0);
-
-        dealCycle1.add(lio1);
-        dealCycle1.add(crystalGateBuff);
-        dealCycle1.add(soulOfCrystal);
-        dealCycle1.add(wrathOfGod);
-        dealCycle1.add(magicCircuitFullDriveBuff);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(grandisGoddessBlessingLef);
-        dealCycle1.add(gramholder);
-        dealCycle1.add(crystalSkillDeus);
-        dealCycle1.add(crystalSkillMortalSwing);
-        dealCycle1.add(crystalSkillGloryWing);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(unlimitedCrystal1);
-        dealCycle1.add(gloryWingMortalWingBeat);
-        dealCycle1.add(crystalIgnitionBeforeDelay);
-
-        dealCycle2.add(lio1);
-        dealCycle2.add(crystalGateBuff);
-        dealCycle2.add(soulOfCrystal);
-        dealCycle2.add(wrathOfGod);
-        dealCycle2.add(magicCircuitFullDriveBuff);
-        dealCycle2.add(grandisGoddessBlessingLef);
-        dealCycle2.add(gramholder);
-        dealCycle2.add(crystalSkillDeus);
-        dealCycle2.add(crystalSkillMortalSwing);
-        dealCycle2.add(crystalSkillGloryWing);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(gloryWingMortalWingBeat);
-        dealCycle2.add(crystalIgnitionBeforeDelay);
-
-        dealCycle3.add(fastCharge);
-        dealCycle3.add(ringSwitching);
-        dealCycle3.add(soulOfCrystal);
-        dealCycle3.add(crystalSkillDeus);
-        dealCycle3.add(crystalSkillMortalSwing);
-        dealCycle3.add(crystalSkillGloryWing);
-        dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(gloryWingMortalWingBeat);
 
         addSkillEvent(lio1);
         addSkillEvent(machina);
 
         soulContract.setApplyReuse(true);
 
+        grandisGoddessBlessingLef.setCooldown(240.0);
+        magicCircuitFullDriveBuff.setCooldown(180.0);
+
         while (getStart().before(getEnd())) {
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(crystalGateBuff)
+                    && cooldownCheck(soulOfCrystal)
+                    && cooldownCheck(wrathOfGod)
+                    && cooldownCheck(magicCircuitFullDriveBuff)
+                    && cooldownCheck(gramholder)
+                    && cooldownCheck(crystalSkillDeus)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(crystalIgnitionBeforeDelay)
                     && crystalCharge >= 150
-            ) {
-                addDealCycle(dealCycle1);
-            } else if (
-                    cooldownCheck(dealCycle2)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
-                    && crystalCharge >= 150
             ) {
-                addDealCycle(dealCycle2);
+                addSkillEvent(lio1);
+                addSkillEvent(crystalGateBuff);
+                addSkillEvent(soulOfCrystal);
+                addSkillEvent(wrathOfGod);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(craftJavelin);
+                    crystalFragment++;
+                    if (crystalFragment > 30) {
+                        crystalFragment = 30;
+                    }
+                }
+                addSkillEvent(magicCircuitFullDriveBuff);
+                if (cooldownCheck(grandisGoddessBlessingLef)) {
+                    if (getStart().before(new Timestamp(10 * 1000))) {
+                        grandisGoddessBlessingLef.setCooldown(360.0);
+                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
+                        grandisGoddessBlessingLef.setCooldown(180.0);
+                    }
+                    addSkillEvent(grandisGoddessBlessingLef);
+                }
+                addSkillEvent(gramholder);
+                addSkillEvent(crystalSkillDeus);
+                addSkillEvent(crystalSkillMortalSwing);
+                addSkillEvent(crystalSkillGloryWing);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                if (cooldownCheck(unlimitedCrystal1)) {
+                    addSkillEvent(unlimitedCrystal1);
+                }
+                addSkillEvent(gloryWingMortalWingBeat);
+                addSkillEvent(crystalIgnitionBeforeDelay);
             } else if (
                     cooldownCheck(fastCharge)
                     && getStart().after(crystalSkillGloryWingEndTime)
@@ -255,7 +228,14 @@ public class IlliumDealCycle extends DealCycle {
                         crystalFragment++;
                     }
                 }
-                addDealCycle(dealCycle3);
+                addSkillEvent(fastCharge);
+                addSkillEvent(ringSwitching);
+                addSkillEvent(soulOfCrystal);
+                addSkillEvent(crystalSkillDeus);
+                addSkillEvent(crystalSkillMortalSwing);
+                addSkillEvent(crystalSkillGloryWing);
+                addSkillEvent(weaponJumpRing);
+                addSkillEvent(gloryWingMortalWingBeat);
                 if (cooldownCheck(fastCharge)) {
                     addSkillEvent(fastCharge);
                     addSkillEvent(crystalSkillMortalSwing);
@@ -278,13 +258,7 @@ public class IlliumDealCycle extends DealCycle {
                     addSkillEvent(soulContract);
                 }
                 addSkillEvent(gloryWingMortalWingBeat);
-            } /* else if (
-                    cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
-            }*/ /*else if (
+            } /*else if (
                     cooldownCheck(craftLonginus)
             ) {
                 addSkillEvent(craftLonginus);
@@ -383,6 +357,17 @@ public class IlliumDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -627,6 +612,16 @@ public class IlliumDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -667,6 +662,16 @@ public class IlliumDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (isSoulOfCrystal && se.getSkill() instanceof ReactionDestruction) {
@@ -743,23 +748,27 @@ public class IlliumDealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
-                        + this.getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
-                        * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + this.getJob().getPerXAtt())
-                        * this.getJob().getConstant()
-                        * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * this.getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * this.getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
+                            + this.getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
+                            * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + this.getJob().getPerXAtt())
+                            * this.getJob().getConstant()
+                            * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (this.getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * this.getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * this.getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());

@@ -10,10 +10,10 @@ public class CrimsonPactum1 extends AttackSkill {
         this.setCooldown(360.0);
         this.setDamage(1772.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new CrimsonPactum2());
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);          // 오버로드 마나
         this.getMultiAttackInfo().add(900L);    // 1
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

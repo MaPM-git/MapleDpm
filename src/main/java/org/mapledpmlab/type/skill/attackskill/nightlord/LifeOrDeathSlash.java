@@ -11,8 +11,7 @@ public class LifeOrDeathSlash extends AttackSkill {
         this.setDelay(3300L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new LifeOrDeathJavelin());
         this.addFinalDamage(1.7);       // 쉐도우 파트너
         this.getMultiAttackInfo().add(1440L);

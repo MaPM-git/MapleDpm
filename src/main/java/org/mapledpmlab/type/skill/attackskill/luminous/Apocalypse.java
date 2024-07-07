@@ -13,5 +13,6 @@ public class Apocalypse extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.05);  // 어둠 마법 강화
         this.setAddDamage(20L);     // 아포칼립스-리인포스
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

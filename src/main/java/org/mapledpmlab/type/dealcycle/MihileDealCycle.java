@@ -15,24 +15,6 @@ import java.util.List;
 
 public class MihileDealCycle extends DealCycle {
 
-    /*
-     */
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레, 초시축
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    // 극딜 마지막, 6차 포함
-    private final List<Skill> final1 = new ArrayList<>();
-
-    // 극딜 마지막
-    private final List<Skill> final2 = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdvancedFinalAttackMihile());
@@ -40,6 +22,7 @@ public class MihileDealCycle extends DealCycle {
             add(new ClaimhSolais());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
+            add(new CygnusPhalanxDelay());
             add(new CygnusPhalanx());
             add(new DeadlyCharge());
             add(new Durandal1());
@@ -58,25 +41,18 @@ public class MihileDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-            add(new CygnusPhalanxDelay());
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
             add(new GloryOfGuardians());
             add(new GuardOfLight());
             add(new LightOfCourage());
-            add(new PriorPreparation());
             add(new RestraintRing());
             add(new RhoAias());
+            add(new RingSwitching());
             add(new SoulContract());
             add(new SoulMajesty());
             add(new SwordOfSoulLightBuff());
-            add(new ThiefCunning());
             add(new TranscendentCygnusBlessing(0L));
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
@@ -92,7 +68,6 @@ public class MihileDealCycle extends DealCycle {
         super(job, new AdvancedFinalAttackMihile());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
@@ -106,7 +81,6 @@ public class MihileDealCycle extends DealCycle {
         InstallShield installShield = new InstallShield();
         LightForceRei lightForceRei = new LightForceRei();
         LightOfCourage lightOfCourage = new LightOfCourage();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RhoAias rhoAias = new RhoAias();
         RingSwitching ringSwitching = new RingSwitching();
@@ -117,148 +91,122 @@ public class MihileDealCycle extends DealCycle {
         SoulMajesty soulMajesty = new SoulMajesty();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SwordOfSoulLight swordOfSoulLight = new SwordOfSoulLight();
-        ThiefCunning thiefCunning = new ThiefCunning();
         TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
+        ringSwitching.setCooldown(85.0);
+        ringSwitching.setApplyCooldownReduction(false);
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
+        auraWeaponBuff.setCooldown(180.0);
+        transcendentCygnusBlessing.setCooldown(240.0);
+        transcendentCygnusBlessing.setApplyCooldownReduction(false);
+        transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
-        ringSwitching.setCooldown(90.0);
-
-        // 극딜 예열
-        dealCycle1.add(rhoAias);
-        dealCycle1.add(gloryOfGuardians);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(transcendentCygnusBlessing);
-        dealCycle1.add(royalGuard);
-        dealCycle1.add(guardOfLight);
-        //dealCycle1.add(cygnusPhalanx);
-        dealCycle1.add(lightOfCourage);
-        dealCycle1.add(swordOfSoulLight);
-        dealCycle1.add(soulMajesty);
-        dealCycle1.add(deadlyCharge);
-        dealCycle1.add(claimhSolais);
-
-        // 예열 후 사용(6차)
-        final1.add(soulContract);
-        final1.add(restraintRing);
-        final1.add(royalGuard);
-        final1.add(deadlyCharge);
-        final1.add(claimhSolais);
-        final1.add(lightForceRei);
-        final1.add(durandal1);
-
-        // 극딜 예열
-        dealCycle2.add(rhoAias);
-        dealCycle2.add(gloryOfGuardians);
-        dealCycle2.add(transcendentCygnusBlessing);
-        dealCycle2.add(royalGuard);
-        dealCycle2.add(guardOfLight);
-        //dealCycle2.add(cygnusPhalanx);
-        dealCycle2.add(lightOfCourage);
-        dealCycle2.add(swordOfSoulLight);
-        dealCycle2.add(soulMajesty);
-        dealCycle2.add(deadlyCharge);
-        dealCycle2.add(claimhSolais);
-
-        // 예열 후 사용
-        final2.add(soulContract);
-        final2.add(restraintRing);
-        final2.add(royalGuard);
-        final2.add(deadlyCharge);
-        final2.add(claimhSolais);
-        final2.add(lightForceRei);
-
-        // 준극딜
-        dealCycle3.add(lightOfCourage);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(royalGuard);
-        dealCycle3.add(deadlyCharge);
-        dealCycle3.add(claimhSolais);
-
-        int finalChk = 0;
+        getStart().setTime(-10000);
+        addSkillEvent(transcendentCygnusBlessing);
+        getStart().setTime(0);
 
         while (getStart().before(getEnd())) {
-            if (
-                    getStart().after(auraWeaponBuff.getEndTime())
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
-                addSkillEvent(auraWeaponBuff);
-            }
             if (cooldownCheck(installShield)) {
                 addSkillEvent(installShield);
             }
-            if (
-                    cooldownCheck(cygnusPhalanx)
-            ) {
+            if (cooldownCheck(cygnusPhalanx)) {
                 addSkillEvent(cygnusPhalanx);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(transcendentCygnusBlessing)
+                    && getStart().after(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                addDealCycle(dealCycle1);
-                finalChk = 0;
+                if (getStart().before(new Timestamp(10 * 1000))) {
+                    transcendentCygnusBlessing.setCooldown(360.0);
+                } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
+                    transcendentCygnusBlessing.setCooldown(180.0);
+                }
+                addSkillEvent(transcendentCygnusBlessing);
+            }
+            if (
+                    cooldownCheck(auraWeaponBuff)
+                    && cooldownCheck(rhoAias)
+                    && cooldownCheck(gloryOfGuardians)
+                    && cooldownCheck(royalGuard)
+                    && cooldownCheck(guardOfLight)
+                    && cooldownCheck(lightOfCourage)
+                    && cooldownCheck(swordOfSoulLight)
+                    && cooldownCheck(soulMajesty)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(deadlyCharge)
+                    && cooldownCheck(claimhSolais)
+                    && getStart().before(new Timestamp(600 * 1000))
+            ) {
+                addSkillEvent(auraWeaponBuff);
+                addSkillEvent(rhoAias);
+                addSkillEvent(gloryOfGuardians);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(shiningCrossAssault);
+                }
+                addSkillEvent(guardOfLight);
+                addSkillEvent(lightOfCourage);
+                addSkillEvent(swordOfSoulLight);
+                addSkillEvent(soulMajesty);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                addSkillEvent(royalGuard);
+                addSkillEvent(deadlyCharge);
+                addSkillEvent(claimhSolais);
+                addSkillEvent(lightForceRei);
+                if (cooldownCheck(durandal1)) {
+                    addSkillEvent(durandal1);
+                }
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(lightOfCourage)
+                    && !cooldownCheck(gloryOfGuardians)
             ) {
-                addDealCycle(dealCycle2);
-                finalChk = 1;
+                addSkillEvent(lightOfCourage);
             } else if (
-                    cooldownCheck(dealCycle3)
+                    cooldownCheck(soulContract)
+                    && !cooldownCheck(lightOfCourage)
             ) {
-                addDealCycle(dealCycle3);
-            } else if (
-                    getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 10000))
-                    && finalChk == 0
-                    && cooldownCheck(final1)
+                addSkillEvent(soulContract);
+            } /*else if (
+                    cooldownCheck(lightOfCourage)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(weaponJumpRing)
             ) {
-                addDealCycle(final1);
-                finalChk = 2;
-            } else if (
-                    getStart().after(new Timestamp(soulMajestyEndTime.getTime() - 10000))
-                    && finalChk == 1
-                    && cooldownCheck(final2)
-            ) {
-                addDealCycle(final2);
-                finalChk = 2;
+                addSkillEvent(lightOfCourage);
+                addSkillEvent(soulContract);
+                addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
+            }*/ else if (
                     cooldownCheck(deadlyCharge)
-                    && getStart().before(new Timestamp(lightOfCourage.getActivateTime().getTime() - 15000))
-                    && getStart().after(soulMajestyEndTime)
+                    && (
+                            getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
+                            || getStart().after(new Timestamp(600 * 1000))
+                    )
             ) {
                 addSkillEvent(deadlyCharge);
             } else if (
                     cooldownCheck(claimhSolais)
-                    && getStart().before(new Timestamp(lightOfCourage.getActivateTime().getTime() - 15000))
-                    && getStart().after(soulMajestyEndTime)
+                    && (
+                            getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
+                            || getStart().after(new Timestamp(600 * 1000))
+                    )
             ) {
                 addSkillEvent(claimhSolais);
-            } else if (
-                    cooldownCheck(royalGuard)
-            ) {
+            } else if (cooldownCheck(royalGuard)) {
                 addSkillEvent(royalGuard);
-            } else if (
-                    getStart().before(swordOfSoulLightEndTime)
-            ) {
+            } else if (getStart().before(swordOfSoulLightEndTime)) {
                 addSkillEvent(soulLightSlash);
             } else {
                 addSkillEvent(shiningCrossAssault);
@@ -272,6 +220,7 @@ public class MihileDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(skill.getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -290,6 +239,17 @@ public class MihileDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));

@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.cadena;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 
-public class WeakPointConvergingAttack extends AttackSkill {
+public class WeakPointConvergingAttack extends DotAttackSkill {
     public WeakPointConvergingAttack() {
         this.setName("위크 포인트 컨버징 어택");
         this.setDamage(112.0);

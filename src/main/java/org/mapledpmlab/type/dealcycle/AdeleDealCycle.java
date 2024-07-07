@@ -15,15 +15,6 @@ import java.util.List;
 
 public class AdeleDealCycle extends DealCycle {
 
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponDot());
@@ -59,21 +50,15 @@ public class AdeleDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
             add(new GrandisGoddessBlessingLef(442L));
             add(new MagicCircuitFullDriveBuff());
-            add(new PriorPreparation());
             add(new RestoreBuff());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             //add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
             add(new WrathOfGod());
         }
@@ -97,7 +82,6 @@ public class AdeleDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
@@ -114,7 +98,6 @@ public class AdeleDealCycle extends DealCycle {
         Order order2 = new Order();
         Order order3 = new Order();
         OrderRestore orderRestore = new OrderRestore();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestoreBuff restoreBuff = new RestoreBuff();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
@@ -123,72 +106,19 @@ public class AdeleDealCycle extends DealCycle {
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         Squall squall = new Squall();
         Territory territory = new Territory();
-        ThiefCunning thiefCunning = new ThiefCunning();
-        Tread tread = new Tread();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WrathOfGod wrathOfGod = new WrathOfGod();
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(90.0);
 
-        dealCycle1.add(grave);
-        dealCycle1.add(impale);
-        dealCycle1.add(wrathOfGod);
-        dealCycle1.add(magicCircuitFullDriveBuff);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(grandisGoddessBlessingLef);
-        dealCycle1.add(restoreBuff);
-        dealCycle1.add(orderRestore);
-        dealCycle1.add(infinite);
-        dealCycle1.add(gathering);
-        dealCycle1.add(squall);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(storm);
-        dealCycle1.add(ruin);
-        dealCycle1.add(marker);
-        dealCycle1.add(maestro);
+        impale.setCooldown(30.0);       // 스택 유지만
 
-        dealCycle2.add(grave);
-        dealCycle2.add(impale);
-        dealCycle2.add(wrathOfGod);
-        dealCycle2.add(magicCircuitFullDriveBuff);
-        dealCycle2.add(grandisGoddessBlessingLef);
-        dealCycle2.add(restoreBuff);
-        dealCycle2.add(orderRestore);
-        dealCycle2.add(infinite);
-        dealCycle2.add(gathering);
-        dealCycle2.add(squall);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(storm);
-        dealCycle2.add(ruin);
-        dealCycle2.add(marker);
+        auraWeaponBuff.setCooldown(180.0);
+        grandisGoddessBlessingLef.setCooldown(240.0);
 
-        dealCycle3.add(grave);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(gathering);
-        dealCycle3.add(ruin);
-        dealCycle3.add(marker);
-
+        addSkillEvent(grave);
+        etherSword = 3L;
         while (getStart().before(getEnd())) {
-            if (
-                    getStart().after(auraWeaponBuff.getEndTime())
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
-                addSkillEvent(auraWeaponBuff);
-            }
             if (cooldownCheck(order1)) {
                 addSkillEvent(order1);
             }
@@ -199,69 +129,84 @@ public class AdeleDealCycle extends DealCycle {
                 addSkillEvent(order3);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(auraWeaponBuff)
+                    && cooldownCheck(impale)
+                    && cooldownCheck(wrathOfGod)
+                    && cooldownCheck(restoreBuff)
+                    && cooldownCheck(infinite)
+                    && cooldownCheck(gathering)
+                    && cooldownCheck(squall)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(storm)
+                    && cooldownCheck(ruin)
+                    && cooldownCheck(marker)
                     && etherSword == 3
             ) {
-                addDealCycle(dealCycle1);
+                addSkillEvent(auraWeaponBuff);
+                addSkillEvent(impale);
+                addSkillEvent(wrathOfGod);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(devide);
+                }
+                addSkillEvent(magicCircuitFullDriveBuff);
+                if (cooldownCheck(grandisGoddessBlessingLef)) {
+                    if (getStart().before(new Timestamp(10 * 1000))) {
+                        grandisGoddessBlessingLef.setCooldown(360.0);
+                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
+                        grandisGoddessBlessingLef.setCooldown(180.0);
+                    }
+                    addSkillEvent(grandisGoddessBlessingLef);
+                }
+                addSkillEvent(restoreBuff);
+                addSkillEvent(orderRestore);
+                addSkillEvent(infinite);
+                addSkillEvent(gathering);
+                addSkillEvent(squall);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                addSkillEvent(storm);
+                addSkillEvent(ruin);
+                addSkillEvent(marker);
+                if (cooldownCheck(maestro)) {
+                    addSkillEvent(maestro);
+                }
             } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-                    && etherSword == 3
-            ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(dealCycle3)
-                    && etherSword == 3
-                    && !cooldownCheck(restoreBuff)
-            ) {
-                addDealCycle(dealCycle3);
-            }/* else if (
-                    cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
-            }*/ else if (
                     cooldownCheck(storm)
                     && etherSword == 3
                     && !cooldownCheck(wrathOfGod)
             ) {
                 addSkillEvent(storm);
             } else if (
-                    cooldownCheck(territory)
-                    && !(
-                            cooldownCheck(restoreBuff)
-                            && etherSword == 3
-                    )
+                    cooldownCheck(soulContract)
+                    && cooldownCheck(ruin)
+                    && cooldownCheck(marker)
+                    && getStart().before(new Timestamp(auraWeaponBuff.getActivateTime().getTime() - 10000))
             ) {
+                addSkillEvent(soulContract);
+                addSkillEvent(ruin);
+                addSkillEvent(marker);
+            } else if (cooldownCheck(territory)) {
                 addSkillEvent(territory);
             } else if (
                     cooldownCheck(gathering)
                     && etherSword > 1
-                    && !(
-                            cooldownCheck(restoreBuff)
-                            && etherSword == 3
-                    )
+                    && !cooldownCheck(auraWeaponBuff)
             ) {
                 addSkillEvent(gathering);
             } else if (
                     cooldownCheck(impale)
-                    && !(
-                            cooldownCheck(restoreBuff)
-                            && etherSword == 3
-                    )
+                    && !cooldownCheck(auraWeaponBuff)
             ) {
                 addSkillEvent(impale);
-            } else if (
-                    cooldownCheck(shard)
-            ) {
+            } else if (cooldownCheck(shard)) {
                 addSkillEvent(shard);
-            } /*else if (
-                    cooldownCheck(tread)
-            ) {
-                addSkillEvent(tread);
-            }*/ else {
+            } else {
                 addSkillEvent(devide);
             }
         }
@@ -309,6 +254,17 @@ public class AdeleDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));

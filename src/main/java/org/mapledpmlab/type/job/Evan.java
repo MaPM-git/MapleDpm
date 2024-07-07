@@ -76,11 +76,11 @@ public class Evan extends Job {
         this.addMagic(35L);             // 스파이럴 오브 마나
 
         // 환산 보정
-        this.addMainStatP(63L);
-        this.addMainStat(15L);
-        this.addSubStat(5L);
+        this.addMainStatP(81L);
+        this.addMainStat(-2L);
+        this.addSubStat(10L);
 
-        this.setAbility(new BossAbnormalReuse());
+        this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new IntUnion());

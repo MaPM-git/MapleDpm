@@ -10,8 +10,7 @@ public class KarmaBlade3 extends AttackSkill {
         this.setCooldown(0.1);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.addFinalDamage(0.85);           // 미러 이미징
     }
 }

@@ -10,7 +10,7 @@ public class FlameDischarge extends AttackSkill {
         this.setAttackCount(1L);
         this.setCooldown(20.0);
         this.setDotDuration(4400L + (flameCount - 2) * 550 * 2);
-        this.setInterval(68L);
+        this.setInterval(60L);
         this.setLimitAttackCount(8L * (8 + (flameCount - 2) * 2));
         this.addFinalDamage(1.6);       // 코어강화
     }

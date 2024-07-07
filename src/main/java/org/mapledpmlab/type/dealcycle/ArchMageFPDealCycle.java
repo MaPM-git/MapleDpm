@@ -2,6 +2,7 @@ package org.mapledpmlab.type.dealcycle;
 
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 import org.mapledpmlab.type.skill.attackskill.archmagefp.*;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.CrestOfTheSolar;
@@ -18,75 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArchMageFPDealCycle extends DealCycle {
-
-    /*
-        파이어 오라, 메기도 플레임, 이프리트, 플레임 헤이즈, 플레임 스윕, 포이즌 미스트, 텔레포트 마스터리 7개 도트 상시 중첩
-
-        불독 딜사이클
-        인피니티 지속시간(벞지 196%) - 121.36초
-        인피니티 달구기(최대까지 60초) - 극딜 60초 전에 인피니티 사용
-        인피니티 쿨타임 180초(169.8초)
-        언스태이블 메모라이즈 쿨타임 및 확률
-        20% 258.4초  1%
-        23% 248.71초 6%
-        24% 245.48초 6%
-        25% 242.25초 6%
-        27% 235.79초 10%
-        30% 226.1초  11%
-        33% 216.41초 12%
-        35% 209.95초 12%
-        38% 200.26초 12%
-        40% 193.8초  8%
-        45% 177.65초 6%
-        50% 161.5초  5%
-        55% 145.35초 2%
-        60% 129.2초  2%
-        65% 113.05초 1%
-
-        6차 극딜
-        메용2(60초) - 에픽(60초) - 크오솔 - 스인미 - 엔버링크 - 시드링 - 인페르날 베놈
-        퓨리 오브 이프리트 - 포이즌 노바 - 도트 퍼니셔 - 포이즌 체인 - 미스트 이럽션
-        + 스윕 / 플레임 헤이즈 + 미스트 이럽션
-
-        극딜
-        메용2(60초) - 에픽(60초) - 크오솔 - 스인미 - 플레임 헤이즈 - 플레임 스윕
-        텔레포트 마스터리 - 엔버링크 - 메기도 플레임 - 시드링 - 퓨리 오브 이프리트
-        포이즌 노바 - 도트 퍼니셔 - 포이즌 체인 - 미스트 이럽션
-
-        준극딜
-        메용2(60초) - 플레임 헤이즈 - 플레임 스윕 - 텔레포트 마스터리 - 엔버링크
-        메기도 플레임 - 시드링 - 퓨리오브 이프리트 - 포이즌 노바 - 도트 퍼니셔
-        포이즌 체인 - 미스트 이럽션
-
-        짧은쿨 극딜
-        포이즌 노바, 도트 퍼니셔, 포이즌 체인, 미스트 이럽션
-
-        쿨마다 사용
-        포이즌 리젼, 메기도 플레임
-        
-        쿨마다 사용
-        플레임 헤이즈 - 미스트 이럽션
-
-        텔레포트 8초마다 사용
-     */
-
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-    // 쿨마다 사용   6차후 도퍼노바
-    private final List<Skill> shortDealCycle1 = new ArrayList<>();
-
-    // 쿨마다 사용   6차 X 도퍼노바
-    private final List<Skill> shortDealCycle2 = new ArrayList<>();
-
-    // 쿨마다 사용   헤이즈 이럽션
-    private final List<Skill> shortDealCycle3 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -138,11 +70,6 @@ public class ArchMageFPDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new EpicAdventure());
@@ -150,10 +77,9 @@ public class ArchMageFPDealCycle extends DealCycle {
             add(new InfernalVenomBuff());
             add(new Infinity(0L));
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new UnstableMemorize());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
@@ -165,28 +91,29 @@ public class ArchMageFPDealCycle extends DealCycle {
 
     PoisonZoneExplosion poisonZoneExplosion = new PoisonZoneExplosion();
 
+    Timestamp infernalVenomEndTime = new Timestamp(0);
+    Timestamp infinityEndTime = new Timestamp(0);
+    DotPunisherFirst dotPunisherFirst = new DotPunisherFirst();
+    DotPunisherOriginFirst dotPunisherOriginFirst = new DotPunisherOriginFirst();
+    FuryOfIfrit furyOfIfrit = new FuryOfIfrit();
+    FuryOfIfritOrigin furyOfIfritOrigin = new FuryOfIfritOrigin();
+
     public ArchMageFPDealCycle(Job job) {
         super(job, new FinalAttackArchMageFP());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DotPunisherFirst dotPunisherFirst = new DotPunisherFirst();
-        DotPunisherOriginFirst dotPunisherOriginFirst = new DotPunisherOriginFirst();
         EpicAdventure epicAdventure = new EpicAdventure();
         FireAura fireAura = new FireAura();
         FireAuraDot fireAuraDot = new FireAuraDot();
         FlameHaze flameHaze = new FlameHaze();
         FlameSweep flameSweep = new FlameSweep();
-        FuryOfIfrit furyOfIfrit = new FuryOfIfrit();
-        FuryOfIfritOrigin furyOfIfritOrigin = new FuryOfIfritOrigin();
         Ifrit ifrit = new Ifrit();
         IfritDot ifritDot = new IfritDot();
         IfritSummon ifritSummon = new IfritSummon();
         InfernalVenomBuff infernalVenomBuff = new InfernalVenomBuff();
-        InfernalVenomExplosion1 infernalVenomExplosion1 = new InfernalVenomExplosion1();
         Infinity infinity = new Infinity(0L);
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         MegidoFlame megidoFlame = new MegidoFlame();
@@ -195,13 +122,11 @@ public class ArchMageFPDealCycle extends DealCycle {
         PoisonNovaDot poisonNovaDot = new PoisonNovaDot();
         PoisonNovaExplosion poisonNovaExplosion = new PoisonNovaExplosion();
         PoisonZone poisonZone = new PoisonZone();
-        PriorPreparation priorPreparation = new PriorPreparation();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         TeleportMastery teleportMastery = new TeleportMastery();
-        ThiefCunning thiefCunning = new ThiefCunning();
         UnstableMemorize unstableMemorize = new UnstableMemorize();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
@@ -230,99 +155,31 @@ public class ArchMageFPDealCycle extends DealCycle {
         }
 
         // 인피니티 달구기
-        getStart().setTime(-60000);
-        infinity.setActivateTime(new Timestamp(-70000));
+        getStart().setTime(-75000);
+        infinity.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
         getStart().setTime(0);
-        /*getSkillEventList().add(new SkillEvent(new Infinity(70000L), getStart(), new Timestamp(61360)));
-        getEventTimeList().add(getStart());
-        getEventTimeList().add(new Timestamp(61360));*/
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        ringSwitching.setCooldown(90.0);
-
-        dealCycle1.add(mapleWorldGoddessBlessing);
-        dealCycle1.add(epicAdventure);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(megidoFlame);
-        dealCycle1.add(restraintRing);
-        dealCycle1.add(infernalVenomExplosion1);
-        dealCycle1.add(furyOfIfritOrigin);
-        dealCycle1.add(poisonNovaDot);
-        dealCycle1.add(dotPunisherOriginFirst);
-        dealCycle1.add(poisonChainExplosion0);
-        dealCycle1.add(mistEruption);
-        dealCycle1.add(poisonNovaExplosion);
-
-        dealCycle2.add(mapleWorldGoddessBlessing);
-        dealCycle2.add(epicAdventure);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(megidoFlame);
-        dealCycle2.add(restraintRing);
-        dealCycle2.add(furyOfIfrit);
-        dealCycle2.add(poisonNovaDot);
-        dealCycle2.add(dotPunisherFirst);
-        dealCycle2.add(poisonChainExplosion0);
-        dealCycle2.add(mistEruption);
-        dealCycle2.add(poisonNovaExplosion);
-
-        dealCycle3.add(soulContract);
-        dealCycle3.add(megidoFlame);
-        dealCycle3.add(weaponJumpRing);
-        dealCycle3.add(furyOfIfrit);
-        dealCycle3.add(poisonNovaDot);
-        dealCycle3.add(dotPunisherFirst);
-        dealCycle3.add(poisonChainExplosion0);
-        dealCycle3.add(mistEruption);
-        dealCycle3.add(poisonNovaExplosion);
-
-        shortDealCycle1.add(poisonNovaDot);
-        shortDealCycle1.add(dotPunisherOriginFirst);
-        shortDealCycle1.add(poisonChainExplosion0);
-        shortDealCycle1.add(mistEruption);
-        shortDealCycle1.add(poisonNovaExplosion);
-
-        shortDealCycle2.add(poisonNovaDot);
-        shortDealCycle2.add(dotPunisherFirst);
-        shortDealCycle2.add(poisonChainExplosion0);
-        shortDealCycle2.add(mistEruption);
-        shortDealCycle2.add(poisonNovaExplosion);
-
-        shortDealCycle3.add(flameHaze);
-        shortDealCycle3.add(mistEruption);
+        ringSwitching.setCooldown(95.0);
 
         fervantDrain.setBuffFinalDamage(1.25);
         fervantDrain.setDuration(720L);
         fervantDrain.setName("퍼번트 드레인");
         addSkillEvent(fervantDrain);
 
-        Timestamp infernalVenomEndTime = new Timestamp(0);
-        Timestamp infinityEndTime = new Timestamp(61360);
+        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(infinity)
                     && getStart().after(infinityEndTime)
             ) {
-                infinityEndTime = new Timestamp(getStart().getTime() + 121360);
                 addSkillEvent(infinity);
             }
             if (
                     cooldownCheck(unstableMemorize)
                     && getStart().after(infinityEndTime)
             ) {
-                infinityEndTime = new Timestamp(getStart().getTime() + unstableMemorize.getDelay() + 121360);
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (ran <= 1) {
                     unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.8);
@@ -367,42 +224,48 @@ public class ArchMageFPDealCycle extends DealCycle {
                 addSkillEvent(teleportMastery);
             }
             if (
-                    getStart().after(mapleWorldGoddessBlessing.getEndTime())
-                    && getStart().before(new Timestamp(90 * 1000))
+                    cooldownCheck(mapleWorldGoddessBlessing)
+                    && cooldownCheck(epicAdventure)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(megidoFlame)
+                    && cooldownCheck(restraintRing)
+                    && cooldownCheck(furyOfIfrit)
+                    && cooldownCheck(poisonNovaDot)
+                    && cooldownCheck(dotPunisherFirst)
+                    && cooldownCheck(poisonChainExplosion0)
+                    && cooldownCheck(mistEruption)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
                 addSkillEvent(mapleWorldGoddessBlessing);
-            }
-            if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (
-                            getStart().before(new Timestamp(60 * 1000))
-                            || getStart().after(new Timestamp(5 * 60 * 1000 + 55 * 1000))
-                    )
-            ) {
-                infernalVenomEndTime = new Timestamp(getStart().getTime() + 2940 + infernalVenomBuff.getDuration() * 1000);
-                mapleWorldGoddessBlessing.setEndTime(new Timestamp(getStart().getTime() + mapleWorldGoddessBlessing.getDuration() * 1000));
-                addDealCycle(dealCycle1);
-                dotPunisherFirst.setActivateTime(dotPunisherOriginFirst.getActivateTime());
-                furyOfIfrit.setActivateTime(furyOfIfritOrigin.getActivateTime());
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (
-                            getStart().before(new Timestamp(5 * 60 * 1000))
-                            || getStart().after(new Timestamp(7 * 60 * 1000))
-                    )
-            ) {
-                addDealCycle(dealCycle2);
-                dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
-                furyOfIfritOrigin.setActivateTime(furyOfIfrit.getActivateTime());
-            } else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
-                dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
-                furyOfIfritOrigin.setActivateTime(furyOfIfrit.getActivateTime());
+                addSkillEvent(epicAdventure);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(flameSweep);
+                }
+                addSkillEvent(soulContract);
+                addSkillEvent(megidoFlame);
+                addSkillEvent(restraintRing);
+                if (cooldownCheck(infernalVenomBuff)) {
+                    addSkillEvent(infernalVenomBuff);
+                }
+                if (getStart().before(infernalVenomEndTime)) {
+                    addSkillEvent(furyOfIfritOrigin);
+                } else {
+                    addSkillEvent(furyOfIfrit);
+                }
+                addSkillEvent(poisonNovaDot);
+                if (getStart().before(infernalVenomEndTime)) {
+                    addSkillEvent(dotPunisherOriginFirst);
+                } else {
+                    addSkillEvent(dotPunisherFirst);
+                }
+                addSkillEvent(poisonChainExplosion0);
+                addSkillEvent(mistEruption);
+                addSkillEvent(poisonNovaExplosion);
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(70 * 1000))
@@ -410,158 +273,68 @@ public class ArchMageFPDealCycle extends DealCycle {
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
-                    cooldownCheck(poisonNovaDot)
-                    && getStart().before(infernalVenomEndTime)
+                    cooldownCheck(soulContract)
+                    && cooldownCheck(megidoFlame)
+                    && cooldownCheck(weaponJumpRing)
+                    && cooldownCheck(furyOfIfrit)
+                    && cooldownCheck(poisonNovaDot)
+                    && cooldownCheck(dotPunisherFirst)
+                    && cooldownCheck(poisonChainExplosion0)
+                    && cooldownCheck(mistEruption)
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                addDealCycle(shortDealCycle1);
-                dotPunisherFirst.setActivateTime(dotPunisherOriginFirst.getActivateTime());
+                addSkillEvent(soulContract);
+                addSkillEvent(megidoFlame);
+                addSkillEvent(weaponJumpRing);
+                addSkillEvent(furyOfIfrit);
+                addSkillEvent(poisonNovaDot);
+                addSkillEvent(dotPunisherFirst);
+                addSkillEvent(poisonChainExplosion0);
+                addSkillEvent(mistEruption);
+                addSkillEvent(poisonNovaExplosion);
+            } else if (
+                    cooldownCheck(megidoFlame)
+                    && (
+                            !cooldownCheck(furyOfIfrit)
+                            || getStart().after(new Timestamp(600 * 1000))
+                    )
+                    && getStart().before(new Timestamp(700 * 1000))
+            ) {
+                addSkillEvent(megidoFlame);
             } else if (
                     cooldownCheck(poisonNovaDot)
                     && (
-                            getStart().before(new Timestamp(furyOfIfrit.getActivateTime().getTime() + 1900))
-                            || (
-                                    getStart().after(new Timestamp(5 * 60 * 1000))
-                                    && getStart().before(new Timestamp(5 * 60 * 1000 + 40 * 1000))
-                            )
-                            || getStart().after(new Timestamp(11 * 60 * 1000))
+                            !cooldownCheck(furyOfIfrit)
+                            || getStart().after(new Timestamp(630 * 1000))
                     )
+                    //&& getStart().before(new Timestamp(mapleWorldGoddessBlessing.getActivateTime().getTime() - 20000))
+                    //&& cooldownCheck(dotPunisherFirst)
+                    //&& cooldownCheck(poisonChainExplosion0)
+                    //&& cooldownCheck(mistEruption)
             ) {
-                addDealCycle(shortDealCycle2);
-                dotPunisherOriginFirst.setActivateTime(dotPunisherFirst.getActivateTime());
+                addSkillEvent(poisonNovaDot);
+                if (getStart().before(infernalVenomEndTime)) {
+                    addSkillEvent(dotPunisherOriginFirst);
+                } else {
+                    addSkillEvent(dotPunisherFirst);
+                }
+                addSkillEvent(poisonChainExplosion0);
+                addSkillEvent(mistEruption);
+                addSkillEvent(poisonNovaExplosion);
             } else if (
-                    cooldownCheck(shortDealCycle3)
-                    && !cooldownCheck(poisonNovaDot)
-                    && !cooldownCheck(furyOfIfrit)
+                    cooldownCheck(flameHaze)
+                    && cooldownCheck(mistEruption)
+                    && getStart().before(new Timestamp(poisonNovaDot.getActivateTime().getTime() - 4500))
             ) {
-                addDealCycle(shortDealCycle3);
+                addSkillEvent(flameHaze);
+                addSkillEvent(mistEruption);
+                addSkillEvent(flameHaze);
             } else {
                 addSkillEvent(flameSweep);
             }
         }
 
         sortEventTimeList();
-    }
-
-    @Override
-    public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
-        Long attackDamage = 0L;
-        AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        if (
-                attackSkill instanceof DotPunisherAfterSecond
-                || attackSkill instanceof DotPunisherDot
-                || attackSkill instanceof DotPunisherFirst
-                || attackSkill instanceof DotPunisherOriginAfterSecond
-                || attackSkill instanceof DotPunisherOriginDot
-                || attackSkill instanceof DotPunisherOriginFirst
-                || attackSkill instanceof FlameHaze
-                || attackSkill instanceof FlameHazeDot
-                || attackSkill instanceof FlameSweep
-                || attackSkill instanceof FlameSweepDot
-                || attackSkill instanceof FuryOfIfrit
-                || attackSkill instanceof FuryOfIfritOrigin
-                || attackSkill instanceof IfritDot
-                || attackSkill instanceof IfritSummon
-                || attackSkill instanceof InfernalVenomExplosion1
-                || attackSkill instanceof InfernalVenomExplosion2
-                || attackSkill instanceof MegidoFlame
-                || attackSkill instanceof MegidoFlameAfterSecond
-                || attackSkill instanceof MegidoFlameDot
-                || attackSkill instanceof MistEruption
-                || attackSkill instanceof PoisonChain
-                || attackSkill instanceof PoisonChainExplosion0
-                || attackSkill instanceof PoisonChainExplosion1
-                || attackSkill instanceof PoisonChainExplosion2
-                || attackSkill instanceof PoisonChainExplosion3
-                || attackSkill instanceof PoisonChainExplosion4
-                || attackSkill instanceof PoisonChainExplosion5
-                || attackSkill instanceof PoisonMist
-                || attackSkill instanceof PoisonNova
-                || attackSkill instanceof PoisonNovaDot
-                || attackSkill instanceof PoisonNovaExplosion
-                || attackSkill instanceof PoisonNovaExplosionAfterThird
-                || attackSkill instanceof PoisonZone
-                || attackSkill instanceof PoisonZoneExplosion
-        ) {
-            buffSkill.addBuffFinalDamage(1.08);
-        }
-        for (AttackSkill as : attackSkillList) {
-            if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                this.getJob().addMainStat(buffSkill.getBuffMainStat());
-                this.getJob().addSubStat(buffSkill.getBuffSubStat());
-                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
-                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((this.getJob().getFinalMainStat()) * 4
-                        + this.getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((this.getJob().getMagic() + buffSkill.getBuffAttMagic())
-                        * (1 + (this.getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + this.getJob().getPerXAtt())
-                        * this.getJob().getConstant()
-                        * (1 + (this.getJob().getDamage() + this.getJob().getBossDamage() + this.getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (this.getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * this.getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * this.getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
-                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
-                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
-                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
-                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
-                if (skillEvent.getStart().equals(start)) {
-                    as.setUseCount(as.getUseCount() + 1);
-                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
-                }
-                Long distance = end.getTime() - start.getTime();
-                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
-                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
-                }
-                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
-                break;
-            }
-        }
-        if (
-                attackSkill instanceof DotPunisherAfterSecond
-                        || attackSkill instanceof DotPunisherDot
-                        || attackSkill instanceof DotPunisherFirst
-                        || attackSkill instanceof DotPunisherOriginAfterSecond
-                        || attackSkill instanceof DotPunisherOriginDot
-                        || attackSkill instanceof DotPunisherOriginFirst
-                        || attackSkill instanceof FlameHaze
-                        || attackSkill instanceof FlameHazeDot
-                        || attackSkill instanceof FlameSweep
-                        || attackSkill instanceof FlameSweepDot
-                        || attackSkill instanceof FuryOfIfrit
-                        || attackSkill instanceof FuryOfIfritOrigin
-                        || attackSkill instanceof IfritDot
-                        || attackSkill instanceof IfritSummon
-                        || attackSkill instanceof InfernalVenomExplosion1
-                        || attackSkill instanceof InfernalVenomExplosion2
-                        || attackSkill instanceof MegidoFlame
-                        || attackSkill instanceof MegidoFlameAfterSecond
-                        || attackSkill instanceof MegidoFlameDot
-                        || attackSkill instanceof MistEruption
-                        || attackSkill instanceof PoisonChain
-                        || attackSkill instanceof PoisonChainExplosion0
-                        || attackSkill instanceof PoisonChainExplosion1
-                        || attackSkill instanceof PoisonChainExplosion2
-                        || attackSkill instanceof PoisonChainExplosion3
-                        || attackSkill instanceof PoisonChainExplosion4
-                        || attackSkill instanceof PoisonChainExplosion5
-                        || attackSkill instanceof PoisonMist
-                        || attackSkill instanceof PoisonNova
-                        || attackSkill instanceof PoisonNovaDot
-                        || attackSkill instanceof PoisonNovaExplosion
-                        || attackSkill instanceof PoisonNovaExplosionAfterThird
-                        || attackSkill instanceof PoisonZone
-                        || attackSkill instanceof PoisonZoneExplosion
-        ) {
-            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.08);
-        }
-        return attackDamage;
     }
 
     @Override
@@ -572,6 +345,9 @@ public class ArchMageFPDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof InfernalVenomBuff) {
+                infernalVenomEndTime = new Timestamp(getStart().getTime() + 20000);
+            }
             if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime == null
@@ -582,14 +358,26 @@ public class ArchMageFPDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 if (skill instanceof Infinity) {
-                    for (long i = 0; i < 60000; i += 4000) {
-                        getSkillEventList().add(new SkillEvent(new Infinity(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 4000)));
-                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 4000));
+                    infinityEndTime = new Timestamp(getStart().getTime() + 120000);
+                    for (long i = 0; i < 75000; i += 5000) {
+                        getSkillEventList().add(new SkillEvent(new Infinity(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 5000)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 5000));
                     }
-                    getSkillEventList().add(new SkillEvent(new Infinity(60000L), new Timestamp(getStart().getTime() + 60000), new Timestamp(getStart().getTime() + 121360)));
-                    endTime = new Timestamp(getStart().getTime() + 121360);
+                    getSkillEventList().add(new SkillEvent(new Infinity(75000L), new Timestamp(getStart().getTime() + 75000), new Timestamp(getStart().getTime() + 120000)));
+                    endTime = new Timestamp(getStart().getTime() + 120000);
                 } else {
                     endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                     getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -603,27 +391,16 @@ public class ArchMageFPDealCycle extends DealCycle {
             if (
                     (
                             skill instanceof DotPunisherAfterSecond
-                            || skill instanceof DotPunisherDot
                             || skill instanceof DotPunisherFirst
                             || skill instanceof DotPunisherOriginAfterSecond
-                            || skill instanceof DotPunisherOriginDot
                             || skill instanceof DotPunisherOriginFirst
-                            || skill instanceof FinalAttackArchMageFP
                             || skill instanceof FlameHaze
-                            || skill instanceof FlameHazeDot
                             || skill instanceof FlameSweep
-                            || skill instanceof FlameSweepDot
                             || skill instanceof FlameSweepExplosion
                             || skill instanceof FuryOfIfrit
                             || skill instanceof FuryOfIfritOrigin
-                            || skill instanceof IfritDot
                             || skill instanceof IfritSummon
-                            || skill instanceof InfernalVenomExplosion1
-                            || skill instanceof InfernalVenomExplosion2
                             || skill instanceof MegidoFlame
-                            || skill instanceof MegidoFlameDot
-                            || skill instanceof TeleportMastery
-                            || skill instanceof TeleportMasteryDot
                     )
                     && ran <= 50
             ) {
@@ -637,30 +414,36 @@ public class ArchMageFPDealCycle extends DealCycle {
                     && getStart().after(poisonZoneExplosionTime)
                     && (
                             skill instanceof DotPunisherAfterSecond
-                            || skill instanceof DotPunisherDot
                             || skill instanceof DotPunisherFirst
                             || skill instanceof DotPunisherOriginAfterSecond
-                            || skill instanceof DotPunisherOriginDot
                             || skill instanceof DotPunisherOriginFirst
-                            || skill instanceof FinalAttackArchMageFP
                             || skill instanceof FlameHaze
-                            || skill instanceof FlameHazeDot
                             || skill instanceof FlameSweep
-                            || skill instanceof FlameSweepDot
                             || skill instanceof FlameSweepExplosion
                             || skill instanceof FuryOfIfrit
                             || skill instanceof FuryOfIfritOrigin
-                            || skill instanceof IfritDot
                             || skill instanceof IfritSummon
                             || skill instanceof InfernalVenomExplosion1
                             || skill instanceof InfernalVenomExplosion2
                             || skill instanceof MegidoFlame
-                            || skill instanceof MegidoFlameDot
-                            || skill instanceof TeleportMastery
-                            || skill instanceof TeleportMasteryDot
                     )
             ) {
                 addSkillEvent(poisonZoneExplosion);
+            }
+            if (((AttackSkill) skill).isApplyFinalAttack()) {
+                ran = (long) (Math.random() * 99 + 1);
+                if (ran <= getFinalAttack().getProp()) {
+                    ran = (long) (Math.random() * 99 + 1);
+                    if (ran <= 50) {
+                        addSkillEvent(new Ignite());
+                    }
+                    if (
+                            cooldownCheck(poisonZoneExplosion)
+                            && getStart().before(poisonZoneExplosionTime)
+                    ) {
+                        addSkillEvent(poisonZoneExplosion);
+                    }
+                }
             }
             if (skill instanceof MistEruption) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -717,6 +500,15 @@ public class ArchMageFPDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof DotPunisherFirst) {
+            dotPunisherOriginFirst.setActivateTime(new Timestamp(skill.getActivateTime().getTime()));
+        } else if (skill instanceof DotPunisherOriginFirst) {
+            dotPunisherFirst.setActivateTime(new Timestamp(skill.getActivateTime().getTime()));
+        } else if (skill instanceof FuryOfIfrit) {
+            furyOfIfritOrigin.setActivateTime(new Timestamp(skill.getActivateTime().getTime()));
+        } else if (skill instanceof FuryOfIfritOrigin) {
+            furyOfIfrit.setActivateTime(new Timestamp(skill.getActivateTime().getTime()));
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -743,6 +535,16 @@ public class ArchMageFPDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -774,6 +576,16 @@ public class ArchMageFPDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                            && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -792,5 +604,55 @@ public class ArchMageFPDealCycle extends DealCycle {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
         }
         return totalDamage;
+    }
+
+    @Override
+    public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
+        Long attackDamage = 0L;
+        AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
+        for (AttackSkill as : getAttackSkillList()) {
+            if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
+                this.getJob().addMainStat(buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((getJob().getMagic() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getMagicP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
+                this.getJob().addMainStat(-buffSkill.getBuffMainStat());
+                this.getJob().addSubStat(-buffSkill.getBuffSubStat());
+                this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
+                this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
+                if (skillEvent.getStart().equals(start)) {
+                    as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
+                }
+                Long distance = end.getTime() - start.getTime();
+                if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
+                    attackDamage = attackDamage / attackSkill.getDelay() * distance;
+                }
+                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
+                break;
+            }
+        }
+        return attackDamage;
     }
 }

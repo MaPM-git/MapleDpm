@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class CraftEnchantJavelin extends AttackSkill {
     public CraftEnchantJavelin() {
         this.setName("크래프트:인챈트 자벨린");
-        this.setDamage(580.0 + 170 + 200 + 97);
+        this.setDamage(580.0 + 170);
         this.setDelayByAttackSpeed(690L);
         this.setAttackCount(3L + 1);
         this.setAddDamage(20L + 20);    // 자벨린-리인포스, 보스 킬러

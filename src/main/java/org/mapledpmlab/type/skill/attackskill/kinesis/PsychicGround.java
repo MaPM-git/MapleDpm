@@ -12,5 +12,6 @@ public class PsychicGround extends AttackSkill {
         this.setCooldown(30.0);
         this.setApplyFinalAttack(true);
         this.setRelatedSkill(new PsychicGroundBuff());
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

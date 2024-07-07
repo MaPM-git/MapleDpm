@@ -66,8 +66,8 @@ public class DemonSlayer extends Job {
 
         // 환산 보정
         this.addMainStatP(72L);
-        this.addMainStat(24L);
-        this.addSubStat(5L);
+        this.addMainStat(8L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

@@ -12,5 +12,6 @@ public class LawOfGravityPull3 extends AttackSkill {
         this.setApplyFinalAttack(true);
         this.getMultiAttackInfo().add(1980L + 2790 - 210);
         this.setRelatedSkill(new LawOfGravityPull4());
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

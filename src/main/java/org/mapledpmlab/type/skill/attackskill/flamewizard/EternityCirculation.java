@@ -8,9 +8,8 @@ public class EternityCirculation extends AttackSkill {
         this.setAttackCount(13L);
         this.setDamage(3700.0);
         this.setDotDuration(30000L);
-        this.setInterval(1200L);
+        this.setInterval(1500L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
     }
 }

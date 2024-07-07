@@ -13,5 +13,6 @@ public class SummonOnyxDragon extends AttackSkill {
         this.setCooldown(80.0);
         this.addFinalDamage(2.2);                   // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

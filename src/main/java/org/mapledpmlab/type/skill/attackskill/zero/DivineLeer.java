@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.zero;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
 
-public class DivineLeer extends AttackSkill implements AlphaSkill {
+public class DivineLeer extends DotAttackSkill implements AlphaSkill {
     public DivineLeer() {
         this.setName("디바인 리어");
         this.setAttackCount(1L);

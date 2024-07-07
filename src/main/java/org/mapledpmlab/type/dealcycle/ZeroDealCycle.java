@@ -15,15 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ZeroDealCycle extends DealCycle {
-
-    private final Job job2 = new ZeroBeta();
-
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-    private final List<Skill> dealCycle4 = new ArrayList<>();
-    private final List<Skill> dealCycle5 = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponDot());
@@ -88,20 +79,14 @@ public class ZeroDealCycle extends DealCycle {
         }
     };
 
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
-        }
-    };
-
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
             add(new CriticalBind());
             add(new LimitBreakBuff());
-            add(new PriorPreparation());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new TimeDistotion());
             add(new TimeHolding());
             add(new TimePiece());
@@ -112,6 +97,8 @@ public class ZeroDealCycle extends DealCycle {
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
+
+    Job job2 = new ZeroBeta();
 
     AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
     ChronoTrigger1 chronoTrigger1 = new ChronoTrigger1();
@@ -130,7 +117,6 @@ public class ZeroDealCycle extends DealCycle {
     MoonStrike moonStrike = new MoonStrike();
     PierceThrust pierceThrust = new PierceThrust();
     PowerStomp powerStomp = new PowerStomp();
-    PriorPreparation priorPreparation = new PriorPreparation();
     RestraintRing restraintRing = new RestraintRing();
     RingSwitching ringSwitching = new RingSwitching();
     RollingAssaulter rollingAssaulter = new RollingAssaulter();
@@ -150,7 +136,6 @@ public class ZeroDealCycle extends DealCycle {
     StormBreakElectricity stormBreakElectricity = new StormBreakElectricity();
     StormBreakTornado stormBreakTornado = new StormBreakTornado();
     Tag tag = new Tag();
-    ThiefCunning thiefCunning = new ThiefCunning();
     ThrowingWeapon throwingWeapon = new ThrowingWeapon();
     TimeDistotion timeDistotion = new TimeDistotion();
     TimeHolding timeHolding = new TimeHolding();
@@ -194,154 +179,121 @@ public class ZeroDealCycle extends DealCycle {
         job2.addTotal(job2.getJobType());
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(120.0);
+        transcendentRhinneBless.setCooldown(240.0);
+        auraWeaponBuff.setCooldown(180.0);
 
-        dealCycle1.add(shadowFlashBeta);
-        dealCycle1.add(shadowFlashAlpha);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(timeDistotion);
-        dealCycle1.add(shadowRainBeta);
-        dealCycle1.add(soulContract);
-        dealCycle1.add(transcendentLife);
-        dealCycle1.add(limitBreak);
-        dealCycle1.add(jointAttack1);
-        dealCycle1.add(chronoTrigger1);
-
-        dealCycle2.add(shadowFlashBeta);
-        dealCycle2.add(shadowFlashAlpha);
-        dealCycle2.add(soulContract);
-        dealCycle2.add(transcendentLife);
-        dealCycle2.add(limitBreak);
-        dealCycle2.add(jointAttack1);
-
-        dealCycle3.add(shadowFlashBeta);
-        dealCycle3.add(shadowFlashAlpha);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(transcendentLife);
-        dealCycle3.add(limitBreak);
-        dealCycle3.add(jointAttack1);
+        int dealCycleOrder = 1;
 
         while (getStart().before(getEnd())) {
             if (
-                    getStart().after(auraWeaponBuff.getEndTime())
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(auraWeaponBuff)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
-                auraWeaponBuff.setEndTime(new Timestamp(getStart().getTime() + auraWeaponBuff.getDuration() * 1000));
                 addSkillEvent(auraWeaponBuff);
             }
             if (
-                    cooldownCheck(dealCycle1)
-                    && getStart().before(new Timestamp(7 * 60 * 1000))
-                    && zero == 1
+                    getStart().before(new Timestamp(660 * 1000))
+                    && (
+                            (
+                                    zero == 1
+                                    && (
+                                            dealCycleOrder == 1
+                                            || dealCycleOrder == 4
+                                    )
+                            ) || (
+                                    zero == 0
+                                    && (
+                                            dealCycleOrder == 2
+                                            || dealCycleOrder == 3
+                                            || dealCycleOrder == 5
+                                            || dealCycleOrder == 6
+                                    )
+                            )
+                    )
+                    && cooldownCheck(shadowFlashBeta)
+                    && cooldownCheck(shadowFlashAlpha)
+                    && cooldownCheck(soulContract)
+                    && getStart().after(new Timestamp(transcendentLife.getActivateTime().getTime() - 10000))
+                    && getStart().after(new Timestamp(limitBreak.getActivateTime().getTime() - 10000))
+                    && getStart().after(new Timestamp(jointAttack1.getActivateTime().getTime() - 10000))
             ) {
-                betaCancelCycle(shadowFlashBeta);
-                alphaCancelCycle(shadowFlashAlpha);
-                addSkillEvent(timeDistotion);
-                addSkillEvent(spiderInMirror);
-                addSkillEvent(crestOfTheSolar);
-                betaCancelCycle(shadowRainBeta);
-                alphaCancelCycle(transcendentLife);
-                addSkillEvent(soulContract);
-                addSkillEvent(transcendentRhinneBless);
-                addSkillEvent(limitBreak);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
+                if (zero == 1) {
+                    betaCancelCycle(shadowFlashBeta);
+                    alphaCancelCycle(shadowFlashAlpha);
                 } else {
-                    addSkillEvent(weaponJumpRing);
+                    alphaCancelCycle(shadowFlashAlpha);
+                    betaCancelCycle(shadowFlashBeta);
                 }
-                jointAttackCancelCycle(chronoTrigger1);
-                shadowFlashBetaFinish = new ShadowFlashBetaFinish();
-                addSkillEvent(shadowFlashBetaFinish);
-                addSkillEvent(limitBreakFinish);
-                addSkillEvent(tag);
-                alphaCancelCycle(shadowFlashAlphaFinish);
-                addSkillEvent(soulContract);
-                betaCancelCycle(shadowRainBeta);
-                addSkillEvent(timeHolding);
-                alphaCycle();
-                betaCycle();
-                alphaCycle();
-                betaCycle();
-                alphaCycle();
-                addSkillEvent(soulContract);
-                betaCancelCycle(shadowRainBeta);
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().after(new Timestamp(2 * 60 * 1000))
-                    && getStart().before(new Timestamp(5 * 60 * 1000))
-                    && zero == 0
-            ) {
-                alphaCancelCycle(shadowFlashAlpha);
-                betaCancelCycle(shadowFlashBeta);
-                alphaCancelCycle(transcendentLife);
-                addSkillEvent(soulContract);
-                addSkillEvent(limitBreak);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else {
-                    addSkillEvent(weaponJumpRing);
-                }
-                shadowFlashBetaFinish = new ShadowFlashBetaFinish();
-                shadowFlashBetaFinish.setDelay(240L);
-                jointAttackCancelCycle(shadowFlashBetaFinish);
-                addSkillEvent(limitBreakFinish);
-                addSkillEvent(tag);
-                alphaCancelCycle(shadowFlashAlphaFinish);
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().after(new Timestamp(7 * 60 * 1000))
-                    && zero == 0
-            ) {
-                alphaCancelCycle(shadowFlashAlpha);
-                betaCancelCycle(shadowFlashBeta);
                 if (cooldownCheck(timeDistotion)) {
                     addSkillEvent(timeDistotion);
-                }
-                if (cooldownCheck(spiderInMirror)) {
-                    addSkillEvent(spiderInMirror);
                 }
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                }
+                if (
+                        cooldownCheck(shadowRainBeta)
+                        && zero == 1
+                ) {
+                    betaCancelCycle(shadowRainBeta);
+                }
                 alphaCancelCycle(transcendentLife);
                 addSkillEvent(soulContract);
-                addSkillEvent(transcendentRhinneBless);
+                if (cooldownCheck(transcendentRhinneBless)) {
+                    if (dealCycleOrder == 1) {
+                        transcendentRhinneBless.setCooldown(360.0);
+                    } else if (dealCycleOrder == 4) {
+                        transcendentRhinneBless.setCooldown(120.0);
+                    } else {
+                        transcendentRhinneBless.setCooldown(240.0);
+                    }
+                    addSkillEvent(transcendentRhinneBless);
+                }
                 addSkillEvent(limitBreak);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
-                } else {
+                } else if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
                 }
                 shadowFlashBetaFinish = new ShadowFlashBetaFinish();
-                shadowFlashBetaFinish.setDelay(240L);
-                jointAttackCancelCycle(shadowFlashBetaFinish);
+                if (cooldownCheck(chronoTrigger1)) {
+                    jointAttackCancelCycle(chronoTrigger1);
+                    addSkillEvent(shadowFlashBetaFinish);
+                } else {
+                    jointAttackCancelCycle(shadowFlashBetaFinish);
+                }
                 addSkillEvent(limitBreakFinish);
                 addSkillEvent(tag);
+                shadowFlashAlphaFinish = new ShadowFlashAlphaFinish();
                 alphaCancelCycle(shadowFlashAlphaFinish);
-                betaCancelCycle(shadowRainBeta);
-                if (cooldownCheck(timeHolding)) {
-                    addSkillEvent(timeHolding);
+                if (
+                        cooldownCheck(soulContract)
+                        && cooldownCheck(shadowRainBeta)
+                ) {
                     addSkillEvent(soulContract);
-                    alphaCycle();
+                    shadowRainBeta = new ShadowRainBeta();
                     betaCancelCycle(shadowRainBeta);
                 }
+                if (cooldownCheck(timeHolding)) {
+                    addSkillEvent(timeHolding);
+                    alphaCycle();
+                    betaCycle();
+                    alphaCycle();
+                    betaCycle();
+                    alphaCycle();
+                    addSkillEvent(soulContract);
+                    shadowRainBeta = new ShadowRainBeta();
+                    betaCancelCycle(shadowRainBeta);
+                }
+                dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
+                    && getStart().after(new Timestamp(100 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -742,7 +694,11 @@ public class ZeroDealCycle extends DealCycle {
         moonStrike = new MoonStrike();
         moonStrike.setDelay(390L);
         addSkillEvent(moonStrike);
-        skill.setDelay(90L);
+        if (skill instanceof TranscendentLife) {
+            skill.getRelatedSkill().getRelatedSkill().setDelay(90L);
+        } else {
+            skill.setDelay(90L);
+        }
         addSkillEvent(skill);
         addSkillEvent(tag);
     }
@@ -991,6 +947,17 @@ public class ZeroDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -1155,6 +1122,16 @@ public class ZeroDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -1192,6 +1169,16 @@ public class ZeroDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (
@@ -1286,5 +1273,34 @@ public class ZeroDealCycle extends DealCycle {
             }
         }
         return attackDamage;
+    }
+
+    @Override
+    public void getJobInfo() {
+        System.out.println("-------------------");
+        System.out.println("직업 : " + job2.getName());
+        System.out.println("기본 주스탯 수치 : " + job2.getMainStat());
+        System.out.println("주스탯 % 수치 : " + (job2.getMainStatP() + job2.getAllStatP()));
+        System.out.println("% 미적용 주스탯 수치 : " + job2.getPerXMainStat());
+        System.out.println("기본 부스탯 수치 : " + job2.getSubStat());
+        System.out.println("부스탯 % 수치 : " + job2.getAllStatP());
+        System.out.println("% 미적용 부스탯 수치 : " + job2.getPerXSubStat());
+        System.out.println("기본 스공 : " + job2.getStatDamage());
+        System.out.println("데미지 : " + job2.getDamage());
+        System.out.println("최종데미지 : " + job2.getFinalDamage());
+        System.out.println("보스 데미지 : " + job2.getBossDamage());
+        System.out.println("방어율 무시 : " + job2.getIgnoreDefense());
+        System.out.println("크리티컬 확률 : " + job2.getCriticalP());
+        System.out.println("장비 공격력 % : " + job2.getAttP());
+        System.out.println("장비 마력 % : " + job2.getMagicP());
+        System.out.println("크리티컬 데미지 : " + job2.getCriticalDamage());
+        System.out.println("쿨타임 감소 초 : " + job2.getCooldownReductionSec());
+        System.out.println("쿨타임 감소 % : " + job2.getCooldownReductionP());
+        System.out.println("버프 지속 시간 : " + job2.getPlusBuffDuration());
+        System.out.println("재사용 : " + job2.getReuse());
+        System.out.println("속성 내성 무시 : " + job2.getProperty());
+        System.out.println("무기 공격력 : " + job2.getWeaponAttMagic());
+        System.out.println(job2.getLinkListStr());
+        System.out.println(job2.getAbility().getDescription());
     }
 }

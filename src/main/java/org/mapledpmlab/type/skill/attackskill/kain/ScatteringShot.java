@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ScatteringShot extends AttackSkill {
     public ScatteringShot() {
         this.setName("스캐터링 샷");
-        this.setDamage(448.0 + 75 + 104);
+        this.setDamage(448.0);
         this.setAttackCount(4L * 6);
         this.setDelayByAttackSpeed(630L);
         this.setCooldown(6.0);

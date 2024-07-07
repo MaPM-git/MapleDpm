@@ -10,8 +10,7 @@ public class UnfadingGloryImpact extends AttackSkill {
         this.setDamage(870.0);
         this.setDelay(5580L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new UnfadingGlorySpiritKing());
         this.setApplyFinalAttack(true);
         this.getMultiAttackInfo().add(120L);

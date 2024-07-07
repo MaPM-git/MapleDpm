@@ -12,5 +12,6 @@ public class ZodiacRay extends AttackSkill {
         this.setInterval(150L);
         this.setLimitAttackCount(69L);
         this.addFinalDamage(1.6);           // 코어 강화
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

@@ -10,8 +10,7 @@ public class ChronoTrigger2 extends AttackSkill {
         this.setDelay(1530L);
         this.setRelatedSkill(new ChronoTrigger3());
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(480L);
         this.getMultiAttackInfo().add(90L);
         this.getMultiAttackInfo().add(90L);

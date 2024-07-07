@@ -10,5 +10,6 @@ public class FreezingBreath extends AttackSkill {
         this.setCooldown(180.0);
         this.setDelayByAttackSpeed(960L);
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

@@ -10,9 +10,9 @@ public class AnotherRealm extends AttackSkill {
         this.setDamage(1575.0);
         this.setDelay(5220L);
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);          // 오버로드 마나
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new AnotherRealmBomb());
         this.getMultiAttackInfo().add(1200L);
         this.getMultiAttackInfo().add(30L);

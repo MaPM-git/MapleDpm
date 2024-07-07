@@ -5,6 +5,10 @@ import lombok.Setter;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
+import org.mapledpmlab.type.skill.attackskill.common.CrestOfTheSolar;
+import org.mapledpmlab.type.skill.attackskill.common.CrestOfTheSolarDot;
+import org.mapledpmlab.type.skill.attackskill.common.SpiderInMirrorDot;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.RestraintRing;
 
@@ -28,13 +32,16 @@ public class DealCycle {
     private List<SkillEvent> skillEventList = new ArrayList<>();
     private List<Timestamp> eventTimeList = new ArrayList<>();
     private List<Long> dpsList = new ArrayList<>();
-    Timestamp restraintRingStartTime = null;
-    Timestamp restraintRingEndTime = null;
-    Timestamp fortyEndTime = null;
+    public Timestamp restraintRingStartTime = null;
+    public Timestamp restraintRingEndTime = null;
+    public Timestamp fortyEndTime = null;
+    public Timestamp originXRestraintRingStartTime = null;
+    public Timestamp originXRestraintRingEndTime = null;
     Long totalDamage;
     Long DPM;
     Long restraintRingDeal;
     Long fortyDeal;
+    Long originXRestraintRingDeal;
     int i=0;
 
     public DealCycle() {}
@@ -61,6 +68,17 @@ public class DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                    && restraintRingStartTime != null
+                    && restraintRingEndTime != null
+                    && fortyEndTime != null
+                    && originXRestraintRingStartTime == null
+                    && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -180,7 +198,7 @@ public class DealCycle {
                 cooldown -= cooldownReduction;
                 cooldownReduction = 0.0;
             } else if (cooldown <= 10) {
-                cooldown -= cooldownReduction * 0.5;
+                cooldown = cooldown * (1 - cooldownReduction * 0.05);
                 cooldownReduction = 0.0;
             } else if (cooldown - 10 <= cooldownReduction) {
                 cooldown = 10.0;
@@ -218,11 +236,13 @@ public class DealCycle {
         setDPM(getTotalDamage() / 12);
         setRestraintRingDeal(calcRestraintRingDeal());
         setFortyDeal(calcFortyDeal());
+        setOriginXRestraintRingDeal(calcOriginXRestraintDeal());
         Object[] result = new Object[]{
                 this.getJob().getName(), String.valueOf(this.getDPM()),
                 "=TEXT(" + getDPM() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(B2:B50),0)),\"0.0%\")", String.valueOf(this.getRestraintRingDeal()),
                 "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(D2:D50),0)),\"0.0%\")", String.valueOf(this.getFortyDeal()),
-                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(F2:F50),0)),\"0.0%\")"
+                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(F2:F50),0)),\"0.0%\")", String.valueOf(this.getOriginXRestraintRingDeal()),
+                "=TEXT(" + getOriginXRestraintRingDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(H2:H50),0)),\"0.0%\")"
         };
         return result;
     }
@@ -254,6 +274,16 @@ public class DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                        && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -277,6 +307,16 @@ public class DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                            && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -294,6 +334,29 @@ public class DealCycle {
         return totalDamage;
     }
 
+    public Long getDotDamage(AttackSkill attackSkill, BuffSkill buffSkill) {
+        Long attackDamage;
+        attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                + getJob().getFinalSubstat()) * 0.01
+                * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                + getJob().getPerXAtt())
+                * getJob().getConstant()
+                * (1 + (
+                        getJob().getDamage()
+                                + getJob().getBossDamage()
+                                + getJob().getStatXDamage()
+                                + buffSkill.getBuffDamage()
+                                + attackSkill.getAddDamage()
+                                - 310
+                                - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01)
+                ) * 0.01)
+                * getJob().getMastery()
+                * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+        );
+        return attackDamage;
+    }
+
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
@@ -303,23 +366,27 @@ public class DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
-                attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                        + getJob().getFinalSubstat()) * 0.01
-                        * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
-                        * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                        + getJob().getPerXAtt())
-                        * getJob().getConstant()
-                        * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                        * (getJob().getFinalDamage())
-                        * buffSkill.getBuffFinalDamage()
-                        * getJob().getStatXFinalDamage()
-                        * attackSkill.getFinalDamage()
-                        * getJob().getMastery()
-                        * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-                        * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                        * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
-                        * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
-                );
+                if (attackSkill instanceof DotAttackSkill) {
+                    attackDamage = getDotDamage(attackSkill, buffSkill);
+                } else {
+                    attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                            + getJob().getFinalSubstat()) * 0.01
+                            * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                            * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                            + getJob().getPerXAtt())
+                            * getJob().getConstant()
+                            * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
+                            * (getJob().getFinalDamage())
+                            * buffSkill.getBuffFinalDamage()
+                            * getJob().getStatXFinalDamage()
+                            * attackSkill.getFinalDamage()
+                            * getJob().getMastery()
+                            * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                            * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
+                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
+                    );
+                }
                 this.getJob().addMainStat(-buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
@@ -375,6 +442,24 @@ public class DealCycle {
         return calcTotalDamage(tmp);
     }
 
+    public Long calcOriginXRestraintDeal() {
+        for (AttackSkill as : getAttackSkillList()) {
+            as.setShare(0.0);
+            as.setUseCount(0L);
+            as.setCumulativeDamage(0L);
+        }
+        List<Timestamp> tmp = new ArrayList<>();
+        for (Timestamp ts : getEventTimeList()) {
+            if (
+                    (ts.equals(getOriginXRestraintRingStartTime()) || ts.after(getOriginXRestraintRingStartTime()))
+                            && (ts.equals(getOriginXRestraintRingEndTime()) || ts.before(getOriginXRestraintRingEndTime()))
+            ) {
+                tmp.add(ts);
+            }
+        }
+        return calcTotalDamage(tmp);
+    }
+
     public void calcDps() {
         for (AttackSkill as : getAttackSkillList()) {
             as.setShare(0.0);
@@ -415,7 +500,7 @@ public class DealCycle {
    private static <T> Predicate<T> deduplication(Function<? super T, ?> key) {
         final Set<Object> set = ConcurrentHashMap.newKeySet();
         return predicate -> set.add(key.apply(predicate));
-    }
+   }
 
     public void getJobInfo() {
         System.out.println("-------------------");

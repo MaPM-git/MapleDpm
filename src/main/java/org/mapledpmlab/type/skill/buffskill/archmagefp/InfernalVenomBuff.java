@@ -11,5 +11,7 @@ public class InfernalVenomBuff extends BuffSkill {
     public InfernalVenomBuff() {
         this.setName("인페르날 베놈(버프)");
         this.setDuration(20L);
+        this.setRelatedSkill(new InfernalVenomExplosion1());
+        this.setCooldown(360.0);
     }
 }

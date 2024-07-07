@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class EndlessHunger extends AttackSkill implements SpecterSkill {
     public EndlessHunger() {
         this.setName("채워지지 않는 굶주림");
-        this.setDamage(980.0 + 193);
+        this.setDamage(980.0);
         this.setAttackCount(7L);
         this.setCooldown(5.0);
         this.setDelayByAttackSpeed(990L);

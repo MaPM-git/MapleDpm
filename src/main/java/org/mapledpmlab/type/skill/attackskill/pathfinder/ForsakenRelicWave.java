@@ -9,8 +9,7 @@ public class ForsakenRelicWave extends GaugeAttackSkill {
         this.setDamage(1555.0);
         this.setDelay(3780L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new ForsakenRelicExplosion());
         this.getMultiAttackInfo().add(1140L);
         this.getMultiAttackInfo().add(30L);

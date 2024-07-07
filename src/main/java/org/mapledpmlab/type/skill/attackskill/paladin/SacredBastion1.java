@@ -9,8 +9,7 @@ public class SacredBastion1 extends AttackSkill {
         this.setAttackCount(9L);
         this.setDamage(787.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setCooldown(360.0);
         this.setRelatedSkill(new SacredBastion2());
         this.getMultiAttackInfo().add(1320L);

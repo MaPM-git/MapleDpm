@@ -9,8 +9,7 @@ public class AncientAbyssDot extends AttackSkill {
         this.setCooldown(360.0);
         this.setDamage(1730.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setDotDuration(30000L);
         this.setInterval(1500L);
         this.setRelatedSkill(new AncientAbyss());

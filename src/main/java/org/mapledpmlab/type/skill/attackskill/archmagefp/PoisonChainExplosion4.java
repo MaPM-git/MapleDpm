@@ -12,5 +12,6 @@ public class PoisonChainExplosion4 extends AttackSkill {
         this.setRelatedSkill(new PoisonChainExplosion5());
         this.setApplyFinalAttack(true);
         this.getMultiAttackInfo().add(1800L * 4);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

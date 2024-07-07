@@ -6,7 +6,7 @@ public class DemonSlash3 extends GaugeAttackSkill {
     public DemonSlash3() {
         this.setName("데몬 슬래시(3타)");
         this.setAttackCount(3L);
-        this.addFinalDamage(0.9);       // 블루 블러드
+        this.addFinalDamage(0.95);          // 블루 블러드
         this.setAttackCount(this.getAttackCount() * 2);
         this.setDamage(325.0 + 80);
         this.setDelayByAttackSpeed(450L);

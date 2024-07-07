@@ -12,5 +12,6 @@ public class GrimReaperMOD extends AttackSkill {
         this.setAttackCount(12L);
         this.setCooldown(90.0);
         this.addFinalDamage(1.6);       // 코어 강화
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

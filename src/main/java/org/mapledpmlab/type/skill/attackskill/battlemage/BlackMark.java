@@ -11,5 +11,6 @@ public class BlackMark extends AttackSkill {
         this.setAddDamage(61L);     // 다크 제네시스
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

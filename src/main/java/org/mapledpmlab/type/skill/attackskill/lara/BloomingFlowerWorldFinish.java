@@ -9,8 +9,8 @@ public class BloomingFlowerWorldFinish extends AttackSkill {
         this.setDamage(1385.0);
         this.setDelay(5100L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
+        this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

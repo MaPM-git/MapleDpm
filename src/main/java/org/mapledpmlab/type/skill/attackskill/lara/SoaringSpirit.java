@@ -10,6 +10,7 @@ public class SoaringSpirit extends AttackSkill {
         this.setDelay(630L);
         this.setCooldown(20.0);
         this.addFinalDamage(1.6);   // 코어강화
+        this.addFinalDamage(1.08);      // 오버로드 마나
         this.getMultiAttackInfo().add(180L);
         this.getMultiAttackInfo().add(180L);
         this.getMultiAttackInfo().add(900L);

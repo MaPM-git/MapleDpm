@@ -9,7 +9,6 @@ public class SacredBastionLight extends AttackSkill {
         this.setDamage(1200.0);
         this.setCooldown(0.5);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
     }
 }

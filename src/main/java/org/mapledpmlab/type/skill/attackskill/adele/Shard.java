@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Shard extends AttackSkill {
     public Shard() {
         this.setName("샤드");
-        this.setDamage(720.0 + 115 + 228);
+        this.setDamage(720.0);
         this.setAttackCount(3L);
         this.setCooldown(6.0);
         this.setDelayByAttackSpeed(810L);

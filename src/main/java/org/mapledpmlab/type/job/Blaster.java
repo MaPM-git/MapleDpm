@@ -64,7 +64,6 @@ public class Blaster extends Job {
         // 환산 보정
         this.addMainStatP(-3L);
         this.addMainStat(5L);
-        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

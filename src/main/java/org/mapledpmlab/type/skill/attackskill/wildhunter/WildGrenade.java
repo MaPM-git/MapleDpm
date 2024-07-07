@@ -11,6 +11,6 @@ public class WildGrenade extends AttackSkill {
         this.setDamage(1320.0);
         this.setAttackCount(6L);
         this.addFinalDamage(1.6);       // 코어 강화
-        this.setCooldown(40.0);
+        this.setCooldown(36.0);
     }
 }

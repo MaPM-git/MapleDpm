@@ -10,8 +10,7 @@ public class ThunderBreakTheSea extends AttackSkill {
         this.setDelay(4200L);
         this.setCooldown(360.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new ThunderBreakTheSeaFinal());
         this.addFinalDamage(1.71);          // 축뢰
         this.addFinalDamage(1.18);          // 연쇄

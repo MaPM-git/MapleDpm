@@ -68,7 +68,7 @@ public class FlameWizard extends Job {
         this.addIgnoreDefenseList(31L); // 스피릿 오브 플레임
 
         // 환산 보정
-        this.addMainStatP(90L);
+        this.addMainStatP(63L);
         this.addMainStat(9L);
         this.addSubStat(5L);
 

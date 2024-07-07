@@ -77,8 +77,7 @@ public class Kaiser extends Job {
 
         // 환산 보정
         this.addMainStatP(-24L);
-        this.addMainStat(-32L);
-        this.addSubStat(5L);
+        this.addMainStat(8L);
 
         this.setAbility(new BossAbnormalBuff());
         this.setArtifact(new Artifact());

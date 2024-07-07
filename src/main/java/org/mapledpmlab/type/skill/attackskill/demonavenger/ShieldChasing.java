@@ -11,7 +11,7 @@ public class ShieldChasing extends GaugeAttackSkill {
     public ShieldChasing() {
         this.setName("실드 체이싱(첫타)");
         this.setAttackCount(2L);
-        this.setDamage(840.0 + 20);     // 디펜스 엑스퍼타이즈
+        this.setDamage(840.0);
         this.setDelayByAttackSpeed(480L);
         this.setGaugePer(-8L);
         this.setRelatedSkill(new ShieldChasingAfterSecond());

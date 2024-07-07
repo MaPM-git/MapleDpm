@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class OrderRestore extends AttackSkill {
     public OrderRestore() {
         this.setName("오더(리스토어)");
-        this.setDamage(800.0 + 123);
+        this.setDamage(800.0);
         this.setAttackCount(2L);
         this.setCooldown(0.5);
         this.setDotDuration(30000L);

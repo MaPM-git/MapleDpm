@@ -10,7 +10,7 @@ public class SwordOfSoulLight extends AttackSkill {
         this.setDamage(990.0);
         this.setCooldown(180.0);
         this.setDotDuration(35000L);
-        this.setInterval(1800L);
+        this.setInterval(1600L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new SwordOfSoulLightBuff());

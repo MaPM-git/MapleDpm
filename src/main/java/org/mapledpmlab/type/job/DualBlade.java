@@ -65,9 +65,8 @@ public class DualBlade extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-12L);
-        this.addMainStat(-21L);
-        this.addSubStat(5L);
+        this.addMainStatP(-21L);
+        this.addMainStat(-8L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
@@ -119,7 +118,7 @@ public class DualBlade extends Job {
             attMagicP = this.getMagicP();
         }
         Object[] result = new Object[]{
-                this.getName(), this.getConstant(), this.getMastery(), this.getLevel(),
+                this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
                 this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
                 this.getFinalSubstat(), this.getFinalSubStat2(), this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),

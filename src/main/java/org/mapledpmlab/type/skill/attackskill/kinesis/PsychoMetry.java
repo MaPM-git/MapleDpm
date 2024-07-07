@@ -10,5 +10,6 @@ public class PsychoMetry extends AttackSkill {
         this.setAttackCount(1L);
         this.setCooldown(180.0);
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

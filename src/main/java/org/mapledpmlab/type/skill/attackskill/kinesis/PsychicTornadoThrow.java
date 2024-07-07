@@ -10,8 +10,9 @@ public class PsychicTornadoThrow extends AttackSkill {
         this.setAttackCount(2L);
         this.addFinalDamage(3.0);
         this.addFinalDamage(1.6);   // 코어강화
-        this.getMultiAttackInfo().add(180L + 540);
+        this.getMultiAttackInfo().add(20000L + 180L + 540);
         this.setRelatedSkill(new PsychicTornadoBomb());
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

@@ -15,26 +15,14 @@ import java.util.List;
 
 public class HoYoungDealCycle extends DealCycle {
 
-    // 6차, 리레
-    private final List<Skill> dealCycle1 = new ArrayList<>();
-
-    // 리레
-    private final List<Skill> dealCycle2 = new ArrayList<>();
-
-    // 준극딜
-    private final List<Skill> dealCycle3 = new ArrayList<>();
-
-
-    private final List<Skill> finalCycle = new ArrayList<>();
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new ChasingGhostTalisman());
             //add(new ConflagrationChainHeaven());
             //add(new ConflagrationChainHeavenFalseTrue());
-            add(new ConflagrationChainHeavenReinforce());
-            add(new ConflagrationChainHeavenFlame());
-            add(new ConflagrationChainHeavenFalseTrueReinforce());
+            //add(new ConflagrationChainHeavenReinforce());
+            //add(new ConflagrationChainHeavenFlame());
+            //add(new ConflagrationChainHeavenFalseTrueReinforce());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new EarthChainEarth());
@@ -58,8 +46,8 @@ public class HoYoungDealCycle extends DealCycle {
             add(new GoldCudgelHumanReinforce());
             add(new GoldCudgelHumanEnergyOfGoblin());
             add(new GoldCudgelHumanFinishReinforce());
-            add(new MagicCalabash1());
-            add(new MagicCalabash2());
+            //add(new MagicCalabash1());
+            //add(new MagicCalabash2());
             add(new MysticEnergyApotheosisKeydown1());
             add(new MysticEnergyApotheosisKeydown2());
             add(new MysticEnergyApotheosisFinish());
@@ -71,17 +59,15 @@ public class HoYoungDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new AdventOfGods());
             add(new StrokeOfGods());
-        }
-    };
-
-    private final List<AttackSkill> delaySkillList = new ArrayList<>(){
-        {
+            add(new WindWaveHeaven());
+            add(new WindWaveFalseTrue());
         }
     };
 
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new AllCreationOfHeavenAndEarth());
+            add(new AdventOfGodsBuff());
+            //add(new AllCreationOfHeavenAndEarth());
             add(new FistMethodButterflyDreamBuff());
             add(new FistMethodDoomingLightBuff());
             add(new GrandisGoddessBlessingAnima());
@@ -90,11 +76,10 @@ public class HoYoungDealCycle extends DealCycle {
             add(new MysticEnergyIllusionOfHeavenEarthAndHuman());
             add(new MysticEnergyTaeulDivineMedicine());
             add(new PhantasmalCloneTalisman());
-            add(new PriorPreparation());
             add(new ReadyToDie());
             add(new RestraintRing());
+            add(new RingSwitching());
             add(new SoulContract());
-            add(new ThiefCunning());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
@@ -119,8 +104,10 @@ public class HoYoungDealCycle extends DealCycle {
     MysticEnergyTaeulDivineMedicineTic mysticEnergyTaeulDivineMedicineTic = new MysticEnergyTaeulDivineMedicineTic();
     PhantasmalCloneTalismanAttack phantasmalCloneTalismanAttack = new PhantasmalCloneTalismanAttack();
     StrokeOfGods strokeOfGods = new StrokeOfGods();
+    WindWaveHeaven windWaveHeaven = new WindWaveHeaven();
 
     boolean isReinforce = false;
+    boolean isCooldownReset =false;
 
     int advent = 0;
     int talisman = 100;
@@ -151,7 +138,6 @@ public class HoYoungDealCycle extends DealCycle {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
-        this.setDelaySkillList(delaySkillList);
         this.setBuffSkillList(buffSkillList);
 
         ChasingGhostTalisman chasingGhostTalisman = new ChasingGhostTalisman();
@@ -169,106 +155,99 @@ public class HoYoungDealCycle extends DealCycle {
         MysticEnergyIllusionOfHeavenEarthAndHuman mysticEnergyIllusionOfHeavenEarthAndHuman = new MysticEnergyIllusionOfHeavenEarthAndHuman();
         MysticEnergyTaeulDivineMedicine mysticEnergyTaeulDivineMedicine = new MysticEnergyTaeulDivineMedicine();
         PhantasmalCloneTalisman phantasmalCloneTalisman = new PhantasmalCloneTalisman();
-        PriorPreparation priorPreparation = new PriorPreparation();
         ReadyToDie readyToDie = new ReadyToDie();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        ThiefCunning thiefCunning = new ThiefCunning();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(thiefCunning) * 1000) {
-            getSkillEventList().add(new SkillEvent(thiefCunning, new Timestamp(i), new Timestamp(i + 10000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        for (int i = 0; i < 720 * 1000; i += applyCooldownReduction(priorPreparation) * 1000) {
-            getSkillEventList().add(new SkillEvent(priorPreparation, new Timestamp(i), new Timestamp(i + 20000)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
         ringSwitching.setCooldown(90.0);
-
-        dealCycle1.add(phantasmalCloneTalisman);
-        dealCycle1.add(fistMethodButterflyDreamBuff);
-        dealCycle1.add(crestOfTheSolar);
-        dealCycle1.add(spiderInMirror);
-        dealCycle1.add(grandisGoddessBlessingAnima);
-        dealCycle1.add(mysticEnergyTaeulDivineMedicine);
-        dealCycle1.add(fistMethodMountainSpiritSummon);
-        dealCycle1.add(chasingGhostTalisman);
-        dealCycle1.add(fistMethodInhalingVortex);
-        dealCycle1.add(mysticEnergyIllusionOfHeavenEarthAndHuman);
-        dealCycle1.add(fistMethodDoomingLight);
-        dealCycle1.add(mysticEnergyExtremeCloneRampage);
-        dealCycle1.add(flyingFanHuman);
-        dealCycle1.add(mysticEnergyAdventOfRebelliousPower);
-
-        dealCycle2.add(phantasmalCloneTalisman);
-        dealCycle2.add(fistMethodButterflyDreamBuff);
-        dealCycle2.add(grandisGoddessBlessingAnima);
-        dealCycle2.add(mysticEnergyTaeulDivineMedicine);
-        dealCycle2.add(fistMethodMountainSpiritSummon);
-        dealCycle2.add(chasingGhostTalisman);
-        dealCycle2.add(fistMethodInhalingVortex);
-        dealCycle2.add(mysticEnergyIllusionOfHeavenEarthAndHuman);
-        dealCycle2.add(fistMethodDoomingLight);
-        dealCycle2.add(mysticEnergyExtremeCloneRampage);
-        dealCycle2.add(flyingFanHuman);
-        dealCycle2.add(mysticEnergyAdventOfRebelliousPower);
-
-        dealCycle3.add(fistMethodButterflyDreamBuff);
-        dealCycle3.add(mysticEnergyTaeulDivineMedicine);
-        dealCycle3.add(chasingGhostTalisman);
-        dealCycle3.add(fistMethodInhalingVortex);
-        dealCycle3.add(mysticEnergyIllusionOfHeavenEarthAndHuman);
-        dealCycle3.add(fistMethodDoomingLight);
-        dealCycle3.add(soulContract);
-        dealCycle3.add(readyToDie);
-        dealCycle3.add(weaponJumpRing);
-
-        finalCycle.add(mysticEnergyCloneSageTaeul);
-        finalCycle.add(readyToDie);
-        finalCycle.add(soulContract);
-        finalCycle.add(restraintRing);
+        ringSwitching.setApplyCooldownReduction(false);
 
         conflagrationChainHeavenReinforce.setCooldown(15.0);
 
-        addSkillEvent(flyingFanHumanReinforce);
         while (getStart().before(getEnd())) {
             if (
-                    cooldownCheck(dealCycle1)
+                    cooldownCheck(mysticEnergyTaeulDivineMedicine)
+                    && cooldownCheck(fistMethodMountainSpiritSummon)
+                    && cooldownCheck(chasingGhostTalisman)
+                    && cooldownCheck(fistMethodInhalingVortex)
+                    && cooldownCheck(mysticEnergyIllusionOfHeavenEarthAndHuman)
+                    && cooldownCheck(fistMethodDoomingLight)
+                    && cooldownCheck(mysticEnergyExtremeCloneRampage)
+                    && cooldownCheck(mysticEnergyAdventOfRebelliousPower)
+                    && cooldownCheck(mysticEnergyCloneSageTaeul)
+                    && cooldownCheck(readyToDie)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(restraintRing)
                     && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
-                addDealCycle(dealCycle1);
-            } else if (
-                    cooldownCheck(dealCycle2)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addDealCycle(dealCycle2);
-            } else if (
-                    cooldownCheck(dealCycle3)
-            ) {
-                addDealCycle(dealCycle3);
-            } else if (
-                    getStart().after(finalTime)
-                    && cooldownCheck(finalCycle)
-            ) {
-                addDealCycle(finalCycle);
+                addSkillEvent(phantasmalCloneTalisman);
+                addSkillEvent(fistMethodButterflyDreamBuff);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(flyingFanHuman);
+                }
+                if (cooldownCheck(grandisGoddessBlessingAnima)) {
+                    if (getStart().before(new Timestamp(10 * 1000))) {
+                        grandisGoddessBlessingAnima.setCooldown(360.0);
+                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
+                        grandisGoddessBlessingAnima.setCooldown(180.0);
+                    }
+                    addSkillEvent(grandisGoddessBlessingAnima);
+                }
+                addSkillEvent(mysticEnergyTaeulDivineMedicine);
+                addSkillEvent(fistMethodMountainSpiritSummon);
+                addSkillEvent(chasingGhostTalisman);
+                addSkillEvent(fistMethodInhalingVortex);
+                addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHuman);
+                addSkillEvent(fistMethodDoomingLight);
+                addSkillEvent(mysticEnergyExtremeCloneRampage);
+                addSkillEvent(flyingFanHuman);
+                addSkillEvent(mysticEnergyAdventOfRebelliousPower);
+                addSkillEvent(mysticEnergyCloneSageTaeul);
+                addSkillEvent(readyToDie);
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
                 if (cooldownCheck(mysticEnergyApotheosisKeydown1)) {
                     addSkillEvent(mysticEnergyApotheosisKeydown1);
                 }
+            } else if (
+                    cooldownCheck(mysticEnergyTaeulDivineMedicine)
+                    && cooldownCheck(chasingGhostTalisman)
+                    && cooldownCheck(fistMethodInhalingVortex)
+                    && cooldownCheck(mysticEnergyIllusionOfHeavenEarthAndHuman)
+                    && cooldownCheck(fistMethodDoomingLight)
+                    && cooldownCheck(soulContract)
+                    && cooldownCheck(readyToDie)
+                    && cooldownCheck(weaponJumpRing)
+            ) {
+                addSkillEvent(fistMethodButterflyDreamBuff);
+                addSkillEvent(mysticEnergyTaeulDivineMedicine);
+                addSkillEvent(chasingGhostTalisman);
+                addSkillEvent(fistMethodInhalingVortex);
+                addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHuman);
+                addSkillEvent(fistMethodDoomingLight);
+                addSkillEvent(soulContract);
+                addSkillEvent(readyToDie);
+                addSkillEvent(weaponJumpRing);
+            } else if (getStart().after(finalTime)) {
                 addSkillEvent(adventOfGods);
+                finalTime = new Timestamp(720 * 1000);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(90 * 1000))
+                    && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(chasingGhostTalisman)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
                     && talisman >= 100
             ) {
                 addSkillEvent(chasingGhostTalisman);
@@ -283,9 +262,7 @@ public class HoYoungDealCycle extends DealCycle {
                     addSkillEvent(earthquakeChainEarthReinforce);
                 } else if (cooldownCheck(goldCudgelHumanReinforce)) {
                     addSkillEvent(goldCudgelHumanReinforce);
-                } /*else if (cooldownCheck(conflagrationChainHeavenReinforce)) {
-                    addSkillEvent(conflagrationChainHeavenReinforce);
-                }*/ else if (cooldownCheck(flyingFanHumanReinforce)) {
+                } else if (cooldownCheck(flyingFanHumanReinforce)) {
                     addSkillEvent(flyingFanHumanReinforce);
                 }
                 earthquakeChainEarth.setActivateTime(new Timestamp(earthquakeChainEarthReinforce.getActivateTime().getTime()));
@@ -293,6 +270,21 @@ public class HoYoungDealCycle extends DealCycle {
                 conflagrationChainHeaven.setActivateTime(new Timestamp(conflagrationChainHeavenReinforce.getActivateTime().getTime()));
                 flyingFanHuman.setActivateTime(new Timestamp(flyingFanHumanReinforce.getActivateTime().getTime()));
                 isReinforce = false;
+            } else if (getStart().before(illusionEndTime)) {
+                if (!property.get(1)) {
+                    addSkillEvent(earthChainEarth);
+                }
+                addSkillEvent(earthChainEarth);
+                if (cooldownCheck(goldCudgelHuman)) {
+                    addSkillEvent(goldCudgelHuman);
+                    if (!property.get(0)) {
+                        addSkillEvent(windWaveHeaven);
+                    }
+                    if (!property.get(1)) {
+                        addSkillEvent(earthChainEarth);
+                    }
+                    addSkillEvent(goldCudgelHuman);
+                }
             } else {
                 if (cooldownCheck(goldCudgelHuman)) {
                     addSkillEvent(goldCudgelHuman);
@@ -310,10 +302,7 @@ public class HoYoungDealCycle extends DealCycle {
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
 
-        if (
-                getStart().before(skill.getActivateTime())
-                && !(skill instanceof MysticEnergyIllusionOfHeavenEarthAndHumanAttack)
-        ) {
+        if (getStart().before(skill.getActivateTime())) {
             return;
         }
         if (
@@ -342,6 +331,7 @@ public class HoYoungDealCycle extends DealCycle {
         if (skill instanceof BuffSkill) {
             if (skill instanceof MysticEnergyExtremeCloneRampage) {
                 extremeEndTime = new Timestamp(getStart().getTime() + 30000);
+                addSkillEvent(mysticEnergyExtremeRampageAttack);
             }
             if (skill instanceof MysticEnergyIllusionOfHeavenEarthAndHuman) {
                 illusionEndTime = new Timestamp(getStart().getTime() + 30000);
@@ -362,17 +352,7 @@ public class HoYoungDealCycle extends DealCycle {
                 scroll = 900;
             }
             if (skill instanceof MysticEnergyAdventOfRebelliousPower) {
-                if (
-                        getStart().before(new Timestamp(60 * 1000))
-                        || (
-                                getStart().after(new Timestamp(5 * 60 * 1000))
-                                && getStart().before(new Timestamp(7 * 60 * 1000))
-                        )
-                ) {
-                    finalTime = new Timestamp(getStart().getTime() + 18000);
-                } else {
-                    finalTime = new Timestamp(getStart().getTime() + 25000);
-                }
+                finalTime = new Timestamp(getStart().getTime() + 29000);
             }
             if (
                     skill instanceof RestraintRing
@@ -384,6 +364,17 @@ public class HoYoungDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
@@ -392,7 +383,7 @@ public class HoYoungDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
-            if (
+            /*if (
                     cooldownCheck(allCreationOfHeavenAndEarth)
                     && (
                             skill instanceof ConflagrationChainHeavenReinforce
@@ -407,7 +398,7 @@ public class HoYoungDealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(allCreationOfHeavenAndEarth);
-            }
+            }*/
             if (
                     skill instanceof EarthChainEarth
                     || skill instanceof EarthChainFalseTrue
@@ -483,27 +474,6 @@ public class HoYoungDealCycle extends DealCycle {
                     propertyCnt ++;
                 }
             }
-            if (propertyCnt == 3) {
-                property.set(0, false);
-                property.set(1, false);
-                property.set(2, false);
-                linkCnt ++;
-                if (linkCnt == 3) {
-                    isReinforce = true;
-                    linkCnt = 0;
-                    conflagrationChainHeavenReinforce.setActivateTime(new Timestamp(conflagrationChainHeaven.getActivateTime().getTime()));
-                    earthChainEarthReinforce.setActivateTime(new Timestamp(earthChainEarth.getActivateTime().getTime()));
-                    earthquakeChainEarthReinforce.setActivateTime(new Timestamp(earthquakeChainEarth.getActivateTime().getTime()));
-                    flyingFanHumanReinforce.setActivateTime(new Timestamp(flyingFanHuman.getActivateTime().getTime()));
-                    goldCudgelHumanReinforce.setActivateTime(new Timestamp(goldCudgelHuman.getActivateTime().getTime()));
-                }
-                if (
-                        getStart().before(mountainEndTime)
-                        && cooldownCheck(fistMethodMountainSpiritSummonRoar)
-                ) {
-                    addSkillEvent(fistMethodMountainSpiritSummonRoar);
-                }
-            }
             if (skill instanceof MysticEnergyIllusionOfHeavenEarthAndHumanAttack) {
                 int tmpProperty = beforeProperty;
                 if (!property.get(0)) {
@@ -534,15 +504,19 @@ public class HoYoungDealCycle extends DealCycle {
             if (
                     skill instanceof ConflagrationChainHeaven
                     || skill instanceof ConflagrationChainHeavenReinforce
+                    || skill instanceof WindWaveHeaven
             ) {
                 beforeProperty = 0;
                 property.set(0, true);
                 if (skill instanceof ConflagrationChainHeaven) {
                     conflagrationChainHeaven = new ConflagrationChainHeaven();
                     skill = conflagrationChainHeaven;
-                } else {
+                } else if (skill instanceof ConflagrationChainHeavenReinforce) {
                     conflagrationChainHeavenReinforce = new ConflagrationChainHeavenReinforce();
                     skill = conflagrationChainHeavenReinforce;
+                } else if (skill instanceof WindWaveHeaven) {
+                    windWaveHeaven = new WindWaveHeaven();
+                    skill = windWaveHeaven;
                 }
                 if (tmpProperty != beforeProperty) {
                     ((AttackSkill) skill).addFinalDamage(1.05);
@@ -632,7 +606,15 @@ public class HoYoungDealCycle extends DealCycle {
                     || skill instanceof GoldCudgelHumanReinforce
                     || skill instanceof GoldCudgelHumanFinishReinforce
                     || skill instanceof MysticEnergyIllusionOfHeavenEarthAndHumanAttack
+                    || skill instanceof MysticEnergyExtremeRampageAttack
+                    || skill instanceof FistMethodMountainSpiritSummonRoar
+                    || skill instanceof FistMethodButterflyDreamAttack
             ) {
+                if (skill instanceof MysticEnergyExtremeRampageAttack) {
+                    advent += 9;
+                } else if (skill instanceof FistMethodButterflyDreamAttack) {
+                    advent += 4;
+                }
                 advent ++;
             }
             if (
@@ -720,14 +702,41 @@ public class HoYoungDealCycle extends DealCycle {
                     )
             ) {
                 if (getStart().before(illusionEndTime)) {
-                    mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setCooldown(0.0);
                     addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHumanAttack);
-                    mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setCooldown(2.0);
+                    mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setActivateTime(new Timestamp(-1));
                     addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHumanAttack);
                     mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setActivateTime(new Timestamp(getStart().getTime() + 1880));
                 } else {
                     mysticEnergyIllusionOfHeavenEarthAndHumanAttack.setCooldown(5.0);
                     addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHumanAttack);
+                }
+            }
+            if (propertyCnt == 3) {
+                property.set(0, false);
+                property.set(1, false);
+                property.set(2, false);
+                linkCnt ++;
+                if (getStart().before(illusionEndTime)) {   // 지진쇄 or 금고봉
+                    isCooldownReset = true;
+                }
+                if (
+                        linkCnt >= 3
+                                && cooldownCheck(allCreationOfHeavenAndEarth)
+                ) {
+                    applyCooldown(allCreationOfHeavenAndEarth);
+                    isReinforce = true;
+                    linkCnt = 0;
+                    conflagrationChainHeavenReinforce.setActivateTime(new Timestamp(conflagrationChainHeaven.getActivateTime().getTime()));
+                    earthChainEarthReinforce.setActivateTime(new Timestamp(earthChainEarth.getActivateTime().getTime()));
+                    earthquakeChainEarthReinforce.setActivateTime(new Timestamp(earthquakeChainEarth.getActivateTime().getTime()));
+                    flyingFanHumanReinforce.setActivateTime(new Timestamp(flyingFanHuman.getActivateTime().getTime()));
+                    goldCudgelHumanReinforce.setActivateTime(new Timestamp(goldCudgelHuman.getActivateTime().getTime()));
+                }
+                if (
+                        getStart().before(mountainEndTime)
+                                && cooldownCheck(fistMethodMountainSpiritSummonRoar)
+                ) {
+                    addSkillEvent(fistMethodMountainSpiritSummonRoar);
                 }
             }
             if (((AttackSkill) skill).getInterval() != 0) {
@@ -797,6 +806,12 @@ public class HoYoungDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (getStart().before(illusionEndTime) && isCooldownReset) {
+            if (skill instanceof GoldCudgelHuman) {
+                goldCudgelHuman.setActivateTime(new Timestamp(-1));
+                goldCudgelHumanReinforce.setActivateTime(new Timestamp(-1));
+            }
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -826,6 +841,16 @@ public class HoYoungDealCycle extends DealCycle {
             overlappingSkillEvents = getOverlappingSkillEvents(start, end);
             List<SkillEvent> useBuffSkillList = new ArrayList<>();
             for (SkillEvent skillEvent : overlappingSkillEvents) {
+                StackTraceElement[] stackTraceElement = new Throwable().getStackTrace();
+                if (
+                        stackTraceElement[1].getMethodName().equals("calcOriginXRestraintDeal")
+                                && (
+                                skillEvent.getSkill() instanceof CrestOfTheSolarDot
+                                        || skillEvent.getSkill() instanceof SpiderInMirrorDot
+                        )
+                ) {
+                    continue;
+                }
                 if (skillEvent.getSkill() instanceof BuffSkill) {
                     useBuffSkillList.add(skillEvent);
                 } else {
@@ -856,6 +881,16 @@ public class HoYoungDealCycle extends DealCycle {
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (
@@ -974,7 +1009,7 @@ public class HoYoungDealCycle extends DealCycle {
                 cooldown -= cooldownReduction;
                 cooldownReduction = 0.0;
             } else if (cooldown <= 10) {
-                cooldown -= cooldownReduction * 0.5;
+                cooldown -= cooldownReduction * 0.05;
                 cooldownReduction = 0.0;
             } else if (cooldown - 10 <= cooldownReduction) {
                 cooldown = 10.0;

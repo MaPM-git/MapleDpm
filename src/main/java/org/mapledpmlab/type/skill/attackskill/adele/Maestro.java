@@ -10,8 +10,7 @@ public class Maestro extends AttackSkill {
         this.setDamage(1370.0);
         this.setDelay(1440L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new MaestroFinish());
         this.getMultiAttackInfo().add(600L);
         this.getMultiAttackInfo().add(30L);

@@ -10,8 +10,7 @@ public class GrandFinaleFinish extends AttackSkill {
         this.setDamage(703.0);
         this.setDelay(5460L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new GrandFinaleBuff());
         this.getMultiAttackInfo().add(3720L);
         this.getMultiAttackInfo().add(30L);

@@ -19,7 +19,12 @@ public class Hero extends Job {
         this.setName("히어로");
         this.setConstant(1.44);         // 무기상수
         this.setMastery(1.9 / 2);       // 숙련도
-        this.setJobType(JobType.COOLDOWN_REDUCTION2);
+        //this.setJobType(JobType.COOLDOWN_REDUCTION2);
+        this.setJobType(JobType.ETC);
+
+        // 3초뚝
+        //this.addCooldownReductionSec(1L);
+        //this.addMainStatP(-8L);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -64,10 +69,13 @@ public class Hero extends Job {
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
 
-        // 환산 보정
-        this.addMainStatP(12L);
-        this.addMainStat(-8L);
-        this.addSubStat(10L);
+        // 환산 보정, 3초뚝
+        //this.addMainStat(8L);
+
+        // 환산 보정, 스탯뚝
+        this.addMainStatP(48L);
+        this.addMainStat(5L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

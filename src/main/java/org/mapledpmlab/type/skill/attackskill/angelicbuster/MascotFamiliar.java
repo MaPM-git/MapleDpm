@@ -6,7 +6,7 @@ public class MascotFamiliar extends AttackSkill {
     public MascotFamiliar() {
         this.setName("마스코트 패밀리어");
         this.setDelay(1560L);
-        this.setDamage(1540.0);
+        this.setDamage(1265.0);
         this.setAttackCount(5L);
         this.setDotDuration(1560L);
         this.setInterval(120L);

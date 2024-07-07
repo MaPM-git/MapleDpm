@@ -9,6 +9,7 @@ public class MountainSeed extends AttackSkill {
         this.setAttackCount(1L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
         this.setDotDuration(20000L);
         this.setInterval(2000L);
     }

@@ -72,9 +72,8 @@ public class NightLord extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(27L);
-        this.addMainStat(8L);
-        this.addSubStat(-5L);
+        this.addMainStatP(30L);
+        this.addMainStat(1L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

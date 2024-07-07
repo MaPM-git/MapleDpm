@@ -8,7 +8,6 @@ public class ForsakenRelicMagicArrow extends AttackSkill {
         this.setAttackCount(5L);
         this.setDamage(1620.0);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
     }
 }

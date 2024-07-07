@@ -13,5 +13,6 @@ public class FuryOfIfrit extends AttackSkill {
         this.setDelay(480L);
         this.setCooldown(75.0);
         this.addFinalDamage(1.6);       // 코어강화
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

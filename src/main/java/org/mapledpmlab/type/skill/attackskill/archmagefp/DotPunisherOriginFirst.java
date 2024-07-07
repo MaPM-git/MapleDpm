@@ -12,5 +12,6 @@ public class DotPunisherOriginFirst extends AttackSkill {
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new DotPunisherOriginDot());
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

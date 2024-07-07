@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Order extends AttackSkill {
     public Order() {
         this.setName("오더");
-        this.setDamage(800.0 + 123);
+        this.setDamage(800.0);
         this.setAttackCount(2L);
         this.setCooldown(60.0);
         this.setDotDuration(60000L);

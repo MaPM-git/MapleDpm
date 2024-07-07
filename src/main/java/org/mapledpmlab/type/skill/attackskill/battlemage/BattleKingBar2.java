@@ -15,5 +15,6 @@ public class BattleKingBar2 extends AttackSkill {
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
+        this.addFinalDamage(1.08);          // 오버로드 마나
     }
 }

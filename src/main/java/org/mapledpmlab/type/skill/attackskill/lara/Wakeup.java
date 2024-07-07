@@ -14,5 +14,6 @@ public class Wakeup extends AttackSkill {
         this.setDotDuration(4000L);
         this.setInterval(90L);
         this.setLimitAttackCount(7L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

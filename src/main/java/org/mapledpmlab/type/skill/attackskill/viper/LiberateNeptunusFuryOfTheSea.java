@@ -11,8 +11,7 @@ public class LiberateNeptunusFuryOfTheSea extends AttackSkill {
         this.setApplyFinalAttack(true);
         this.setDelay(2280L);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new LiberateNeptunusBuff());
         this.getMultiAttackInfo().add(2580 + 1200L);
         this.getMultiAttackInfo().add(60L);
