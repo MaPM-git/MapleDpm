@@ -82,6 +82,7 @@ public class ZeroDealCycle extends DealCycle {
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
+            add(new BodyOfSteel(0L));
             add(new CriticalBind());
             add(new LimitBreakBuff());
             add(new RestraintRing());
@@ -101,6 +102,7 @@ public class ZeroDealCycle extends DealCycle {
     Job job2 = new ZeroBeta();
 
     AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
     ChronoTrigger1 chronoTrigger1 = new ChronoTrigger1();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     EarthBreak earthBreak = new EarthBreak();
@@ -166,12 +168,14 @@ public class ZeroDealCycle extends DealCycle {
     Timestamp transcendentLightEndTime = new Timestamp(-1);
     Timestamp transcendentTimeEndTime = new Timestamp(-1);
     Timestamp blessEndTime = new Timestamp(-1);
-    Timestamp shadowFlashAlphaEndTime = new Timestamp(-1);
-    Timestamp shadowFlashBetaEndTime = new Timestamp(-1);
+    Timestamp continuousRingEndTime = new Timestamp(-1);
 
     int zero = 1;   // 0 - 알파, 1 - 베타
     int lightSphereCnt = 0;
     int timePieceCnt = 0;
+
+    boolean isShadowFlashAlpha = false;
+    boolean isShadowFlashBeta = false;
 
     public ZeroDealCycle(Job job) {
         super(job, null);
@@ -187,6 +191,7 @@ public class ZeroDealCycle extends DealCycle {
 
         int dealCycleOrder = 1;
 
+        boolean isOrigin = false;
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(auraWeaponBuff)
@@ -213,12 +218,11 @@ public class ZeroDealCycle extends DealCycle {
                                     )
                             )
                     )
-                    && cooldownCheck(shadowFlashBeta)
-                    && cooldownCheck(shadowFlashAlpha)
-                    && cooldownCheck(soulContract)
                     && getStart().after(new Timestamp(transcendentLife.getActivateTime().getTime() - 10000))
-                    && getStart().after(new Timestamp(limitBreak.getActivateTime().getTime() - 10000))
-                    && getStart().after(new Timestamp(jointAttack1.getActivateTime().getTime() - 10000))
+                    && getStart().after(new Timestamp(limitBreak.getActivateTime().getTime() - 12000))
+                    && getStart().after(new Timestamp(jointAttack1.getActivateTime().getTime() - 15000))
+                    && getStart().after(new Timestamp(shadowFlashAlpha.getActivateTime().getTime() - 2000))
+                    && getStart().after(new Timestamp(shadowFlashBeta.getActivateTime().getTime() - 2000))
             ) {
                 if (zero == 1) {
                     betaCancelCycle(shadowFlashBeta);
@@ -236,6 +240,7 @@ public class ZeroDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
+                addSkillEvent(bodyOfSteel);
                 if (
                         cooldownCheck(shadowRainBeta)
                         && zero == 1
@@ -254,6 +259,9 @@ public class ZeroDealCycle extends DealCycle {
                     }
                     addSkillEvent(transcendentRhinneBless);
                 }
+                if (!cooldownCheck(limitBreak)) {
+                    addSkillEvent(new UpperSlash());
+                }
                 addSkillEvent(limitBreak);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
@@ -264,6 +272,7 @@ public class ZeroDealCycle extends DealCycle {
                 if (cooldownCheck(chronoTrigger1)) {
                     jointAttackCancelCycle(chronoTrigger1);
                     addSkillEvent(shadowFlashBetaFinish);
+                    isOrigin = true;
                 } else {
                     jointAttackCancelCycle(shadowFlashBetaFinish);
                 }
@@ -282,14 +291,22 @@ public class ZeroDealCycle extends DealCycle {
                 if (cooldownCheck(timeHolding)) {
                     addSkillEvent(timeHolding);
                     alphaCycle();
-                    betaCycle();
-                    alphaCycle();
-                    betaCycle();
-                    alphaCycle();
+                    if (isOrigin) {
+                        betaCancelCycle(shadowFlashBeta);
+                        alphaCancelCycle(shadowFlashAlpha);
+                        betaCancelCycle(shadowFlashBetaFinish);
+                        alphaCancelCycle(shadowFlashAlphaFinish);
+                    } else {
+                        betaCycle();
+                        alphaCycle();
+                        betaCycle();
+                        alphaCycle();
+                    }
                     addSkillEvent(soulContract);
                     shadowRainBeta = new ShadowRainBeta();
                     betaCancelCycle(shadowRainBeta);
                 }
+                isOrigin = false;
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
@@ -303,30 +320,31 @@ public class ZeroDealCycle extends DealCycle {
             ) {
                 addSkillEvent(soulContract);
             } else if (
-                    cooldownCheck(shadowFlashAlpha)
+                    getStart().after(new Timestamp(shadowFlashAlpha.getActivateTime().getTime() - 2000))
                     && zero == 0
-                    && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 50000))
+                    && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 30000))
             ) {
                 alphaCancelCycle(shadowFlashAlpha);
+                isShadowFlashAlpha = true;
             } else if (
-                    cooldownCheck(shadowFlashBeta)
+                    getStart().after(new Timestamp(shadowFlashBeta.getActivateTime().getTime() - 2000))
                     && zero == 1
-                    && !cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 50000))
+                    && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 30000))
             ) {
-                alphaCancelCycle(shadowFlashBeta);
+                betaCancelCycle(shadowFlashBeta);
+                isShadowFlashBeta = true;
             } else if (
-                    getStart().after(shadowFlashAlphaEndTime)
-                    && zero == 0
+                    zero == 0
+                    && isShadowFlashAlpha
             ) {
-                shadowFlashAlphaEndTime = new Timestamp(13 * 60 * 1000);
                 alphaCancelCycle(shadowFlashAlphaFinish);
+                isShadowFlashAlpha = false;
             } else if (
-                    getStart().after(shadowFlashBetaEndTime)
-                    && zero == 1
+                    zero == 1
+                    && isShadowFlashBeta
             ) {
-                shadowFlashBetaEndTime = new Timestamp(13 * 60 * 1000);
                 betaCancelCycle(shadowFlashBetaFinish);
+                isShadowFlashBeta = false;
             } else if (zero == 1) {     // 베타
                 betaCycle();
             } else {
@@ -344,6 +362,8 @@ public class ZeroDealCycle extends DealCycle {
     }
 
     public void alphaCycle() {
+        timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
+        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
         addSkillEvent(timePieceCrystalOfTime);
         getSkillEventList().add(new SkillEvent(alpha, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3330)));
         frontSlash = new FrontSlash();
@@ -454,9 +474,12 @@ public class ZeroDealCycle extends DealCycle {
         windCutter.setDelay(90L);
         addSkillEvent(windCutter);
         addSkillEvent(tag);
+        timePieceCnt += 7;
     }
 
     public void betaCycle() {
+        timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
+        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
         addSkillEvent(timePieceCrystalOfTime);
         getSkillEventList().add(new SkillEvent(beta, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3150)));
         rollingCurve = new RollingCurve();
@@ -466,40 +489,40 @@ public class ZeroDealCycle extends DealCycle {
         getEventTimeList().add(new Timestamp(getStart().getTime() + 420));
         rollingCurveBlade = new RollingCurveBlade();
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        rollingCurveBlade = new RollingCurveBlade();
+        /*rollingCurveBlade = new RollingCurveBlade();
         rollingCurveBlade.addFinalDamage(0.3);
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
+        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));*/
         getEventTimeList().add(new Timestamp(getStart().getTime() + 480));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));
         rollingAssaulter = new RollingAssaulter();
         rollingAssaulter.setDelay(510L);
         getSkillEventList().add(new SkillEvent(rollingAssaulter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 960)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 960));
         rollingAssaulterBlade = new RollingAssaulterBlade();
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        rollingAssaulterBlade = new RollingAssaulterBlade();
+        /*rollingAssaulterBlade = new RollingAssaulterBlade();
         rollingAssaulterBlade.addFinalDamage(0.3);
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
+        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));*/
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1020));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));
         windCutter = new WindCutter();
         windCutter.setDelay(540L);
         getSkillEventList().add(new SkillEvent(windCutter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 990)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 990));
         getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1490), new Timestamp(getStart().getTime() + 1490)));
         getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1990), new Timestamp(getStart().getTime() + 1990)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1490));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1990));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2490));
@@ -516,10 +539,10 @@ public class ZeroDealCycle extends DealCycle {
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2310));
         getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 2810), new Timestamp(getStart().getTime() + 2810)));
         getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2810));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 3310));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 3810));
@@ -537,30 +560,30 @@ public class ZeroDealCycle extends DealCycle {
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2640));
         rollingCurveBlade = new RollingCurveBlade();
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2700), new Timestamp(getStart().getTime() + 2700)));
-        rollingCurveBlade = new RollingCurveBlade();
+        /*rollingCurveBlade = new RollingCurveBlade();
         rollingCurveBlade.addFinalDamage(0.3);
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2700), new Timestamp(getStart().getTime() + 2700)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2700), new Timestamp(getStart().getTime() + 2700)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2760), new Timestamp(getStart().getTime() + 2760)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2760), new Timestamp(getStart().getTime() + 2760)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2760), new Timestamp(getStart().getTime() + 2760)));
+        getEventTimeList().add(new Timestamp(getStart().getTime() + 2760));*/
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2700));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2760));
         rollingAssaulter = new RollingAssaulter();
         rollingAssaulter.setDelay(320L);
         getSkillEventList().add(new SkillEvent(rollingAssaulter, new Timestamp(getStart().getTime() + 2670), new Timestamp(getStart().getTime() + 3090)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 3120));
         rollingAssaulterBlade = new RollingAssaulterBlade();
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3150), new Timestamp(getStart().getTime() + 3150)));
-        rollingAssaulterBlade = new RollingAssaulterBlade();
+        /*rollingAssaulterBlade = new RollingAssaulterBlade();
         rollingAssaulterBlade.addFinalDamage(0.3);
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3150), new Timestamp(getStart().getTime() + 3150)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3150), new Timestamp(getStart().getTime() + 3150)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3210), new Timestamp(getStart().getTime() + 3210)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3210), new Timestamp(getStart().getTime() + 3210)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3210), new Timestamp(getStart().getTime() + 3210)));
+        getEventTimeList().add(new Timestamp(getStart().getTime() + 3210));*/
         getEventTimeList().add(new Timestamp(getStart().getTime() + 3150));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3210));
         turningDrive = new TurningDrive();
         turningDrive.setDelay(360L);
         addSkillEvent(turningDrive);
@@ -585,9 +608,12 @@ public class ZeroDealCycle extends DealCycle {
         throwingWeapon.setDelay(30L);
         addSkillEvent(throwingWeapon);
         addSkillEvent(tag);
+        timePieceCnt += 7;
     }
 
     public void alphaCancelCycle(Skill skill) {
+        timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
+        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
         addSkillEvent(timePieceCrystalOfTime);
         getSkillEventList().add(new SkillEvent(alpha, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3330)));
         frontSlash = new FrontSlash();
@@ -701,9 +727,12 @@ public class ZeroDealCycle extends DealCycle {
         }
         addSkillEvent(skill);
         addSkillEvent(tag);
+        timePieceCnt += 7;
     }
 
     public void betaCancelCycle(Skill skill) {
+        timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
+        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
         addSkillEvent(timePieceCrystalOfTime);
         getSkillEventList().add(new SkillEvent(beta, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3180)));
         rollingCurve = new RollingCurve();
@@ -713,40 +742,40 @@ public class ZeroDealCycle extends DealCycle {
         getEventTimeList().add(new Timestamp(getStart().getTime() + 420));
         rollingCurveBlade = new RollingCurveBlade();
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        rollingCurveBlade = new RollingCurveBlade();
+        /*rollingCurveBlade = new RollingCurveBlade();
         rollingCurveBlade.addFinalDamage(0.3);
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
+        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));*/
         getEventTimeList().add(new Timestamp(getStart().getTime() + 480));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));
         rollingAssaulter = new RollingAssaulter();
         rollingAssaulter.setDelay(510L);
         getSkillEventList().add(new SkillEvent(rollingAssaulter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 960)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 960));
         rollingAssaulterBlade = new RollingAssaulterBlade();
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        rollingAssaulterBlade = new RollingAssaulterBlade();
+        /*rollingAssaulterBlade = new RollingAssaulterBlade();
         rollingAssaulterBlade.addFinalDamage(0.3);
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
+        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));*/
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1020));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));
         windCutter = new WindCutter();
         windCutter.setDelay(540L);
         getSkillEventList().add(new SkillEvent(windCutter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 990)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 990));
         getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1490), new Timestamp(getStart().getTime() + 1490)));
         getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1990), new Timestamp(getStart().getTime() + 1990)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1490));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1990));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2490));
@@ -763,10 +792,10 @@ public class ZeroDealCycle extends DealCycle {
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2310));
         getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 2810), new Timestamp(getStart().getTime() + 2810)));
         getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2810));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 3310));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 3810));
@@ -812,9 +841,12 @@ public class ZeroDealCycle extends DealCycle {
         skill.setDelay(30L);
         addSkillEvent(skill);
         addSkillEvent(tag);
+        timePieceCnt += 7;
     }
 
     public void jointAttackCancelCycle(Skill skill) {
+        timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
+        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
         addSkillEvent(timePieceCrystalOfTime);
         getSkillEventList().add(new SkillEvent(beta, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3180)));
         rollingCurve = new RollingCurve();
@@ -824,40 +856,40 @@ public class ZeroDealCycle extends DealCycle {
         getEventTimeList().add(new Timestamp(getStart().getTime() + 420));
         rollingCurveBlade = new RollingCurveBlade();
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        rollingCurveBlade = new RollingCurveBlade();
+        /*rollingCurveBlade = new RollingCurveBlade();
         rollingCurveBlade.addFinalDamage(0.3);
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
         getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
+        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));*/
         getEventTimeList().add(new Timestamp(getStart().getTime() + 480));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));
         rollingAssaulter = new RollingAssaulter();
         rollingAssaulter.setDelay(510L);
         getSkillEventList().add(new SkillEvent(rollingAssaulter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 960)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 960));
         rollingAssaulterBlade = new RollingAssaulterBlade();
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        rollingAssaulterBlade = new RollingAssaulterBlade();
+        /*rollingAssaulterBlade = new RollingAssaulterBlade();
         rollingAssaulterBlade.addFinalDamage(0.3);
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
         getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
+        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));*/
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1020));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));
         windCutter = new WindCutter();
         windCutter.setDelay(540L);
         getSkillEventList().add(new SkillEvent(windCutter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 990)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 990));
         getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1490), new Timestamp(getStart().getTime() + 1490)));
         getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1990), new Timestamp(getStart().getTime() + 1990)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
+        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1490));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 1990));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2490));
@@ -874,10 +906,10 @@ public class ZeroDealCycle extends DealCycle {
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2310));
         getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 2810), new Timestamp(getStart().getTime() + 2810)));
         getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
+        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 2810));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 3310));
         getEventTimeList().add(new Timestamp(getStart().getTime() + 3810));
@@ -905,6 +937,7 @@ public class ZeroDealCycle extends DealCycle {
         addSkillEvent(earthBreak);
         addSkillEvent(jointAttack1);
         addSkillEvent(skill);
+        timePieceCnt += 5;
     }
 
     @Override
@@ -922,6 +955,9 @@ public class ZeroDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof ContinuousRing) {
+                continuousRingEndTime = new Timestamp(getStart().getTime() + 8000);
+            }
             if (skill instanceof TranscendentRhinneBless) {
                 blessEndTime = new Timestamp(getStart().getTime() + 45000);
             }
@@ -946,8 +982,7 @@ public class ZeroDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -962,6 +997,12 @@ public class ZeroDealCycle extends DealCycle {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
+                if (skill instanceof BodyOfSteel) {
+                    for (long i = 0; i < 18000; i += 1000) {
+                        getSkillEventList().add(new SkillEvent(new BodyOfSteel(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
+                    }
+                }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
@@ -992,41 +1033,57 @@ public class ZeroDealCycle extends DealCycle {
             ) {
                 addSkillEvent(egoWeaponBeta);
             }
-            if (skill instanceof ShadowFlashAlpha) {
-                shadowFlashAlphaEndTime = new Timestamp(getStart().getTime() + 36500);
-            }
-            if (skill instanceof ShadowFlashBeta) {
-                shadowFlashBetaEndTime = new Timestamp(getStart().getTime() + 36500);
-            }
             if (
                     getStart().before(blessEndTime)
-                    && !(skill instanceof ExtraAttack)
-                    && !(skill instanceof EgoWeaponAlpha)
-                    && !(skill instanceof EgoWeaponBeta)
-                    && !(skill instanceof TimeAfterImageZero)
-                    && !(skill instanceof TimeAfterImage)
-                    && !(skill instanceof LightSphere)
-                    && !(skill instanceof LightSphereDot)
+                    && (
+                            skill instanceof EarthBreak
+                            || skill instanceof FlashAssault
+                            || skill instanceof FrontSlash
+                            || skill instanceof GigaCrash
+                            || skill instanceof JumpingCrash
+                            || skill instanceof MoonStrike
+                            || skill instanceof PierceThrust
+                            || skill instanceof PowerStomp
+                            || skill instanceof RollingAssaulter
+                            || skill instanceof RollingCurve
+                            || skill instanceof ShadowStrike
+                            || skill instanceof SpinCutter
+                            || skill instanceof StormBreak
+                            || skill instanceof ThrowingWeapon
+                            || skill instanceof TurningDrive
+                            || skill instanceof UpperSlash
+                            || skill instanceof WhirlWind
+                            || skill instanceof WindCutter
+                            || skill instanceof WindStrike
+                    )
             ) {
                 addSkillEvent(extraAttack);
             }
-            if (getStart().before(transcendentTimeEndTime)) {
-                if (
-                        skill instanceof AlphaSkill
-                        || skill instanceof BetaSkill
-                ) {
-                    addSkillEvent(timeAfterImageZero);
-                } else if (
-                        !(skill instanceof TimeAfterImageZero)
-                        && !(skill instanceof TimeAfterImage)
-                        && !(skill instanceof EgoWeaponAlpha)
-                        && !(skill instanceof EgoWeaponBeta)
-                        && !(skill instanceof ExtraAttack)
-                        && !(skill instanceof LightSphere)
-                        && !(skill instanceof LightSphereDot)
-                ) {
-                    addSkillEvent(timeAfterImage);
-                }
+            if (
+                    getStart().before(transcendentTimeEndTime)
+                    && (
+                            skill instanceof EarthBreak
+                            || skill instanceof FlashAssault
+                            || skill instanceof FrontSlash
+                            || skill instanceof GigaCrash
+                            || skill instanceof JumpingCrash
+                            || skill instanceof MoonStrike
+                            || skill instanceof PierceThrust
+                            || skill instanceof PowerStomp
+                            || skill instanceof RollingAssaulter
+                            || skill instanceof RollingCurve
+                            || skill instanceof ShadowStrike
+                            || skill instanceof SpinCutter
+                            || skill instanceof StormBreak
+                            || skill instanceof ThrowingWeapon
+                            || skill instanceof TurningDrive
+                            || skill instanceof UpperSlash
+                            || skill instanceof WhirlWind
+                            || skill instanceof WindCutter
+                            || skill instanceof WindStrike
+                    )
+            ) {
+                addSkillEvent(timeAfterImageZero);
             }
             if (
                     getStart().before(transcendentLightEndTime)
@@ -1167,7 +1224,6 @@ public class ZeroDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -1221,7 +1277,7 @@ public class ZeroDealCycle extends DealCycle {
                             + getJob().getPerXAtt())
                             * getJob().getConstant()
                             * (1 + (getJob().getDamage() + getJob().getBossDamage() + getJob().getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                            * (getJob().getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                            * (getJob().getFinalDamage())
                             * buffSkill.getBuffFinalDamage()
                             * getJob().getStatXFinalDamage()
                             * attackSkill.getFinalDamage()
@@ -1250,7 +1306,7 @@ public class ZeroDealCycle extends DealCycle {
                             + job2.getPerXAtt())
                             * job2.getConstant()
                             * (1 + (job2.getDamage() + job2.getBossDamage() + job2.getStatXDamage() + buffSkill.getBuffDamage() + attackSkill.getAddDamage()) * 0.01)
-                            * (job2.getFinalDamage() + buffSkill.getBuffPlusFinalDamage() - 1)
+                            * (job2.getFinalDamage())
                             * buffSkill.getBuffFinalDamage()
                             * job2.getStatXFinalDamage()
                             * attackSkill.getFinalDamage()
@@ -1273,6 +1329,33 @@ public class ZeroDealCycle extends DealCycle {
             }
         }
         return attackDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        int cnt = 0;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            if (
+                    cnt != 0
+                    && (
+                            skill instanceof RollingCurveBlade
+                            || skill instanceof RollingAssaulterBlade
+                    )
+            ) {
+                if (skill instanceof RollingCurveBlade) {
+                    skill = new RollingCurveBlade();
+                    ((RollingCurveBlade) skill).addFinalDamage(0.7);
+                } else {
+                    skill = new RollingAssaulterBlade();
+                    ((RollingAssaulterBlade) skill).addFinalDamage(0.7);
+                }
+            }
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            cnt ++;
+        }
     }
 
     @Override

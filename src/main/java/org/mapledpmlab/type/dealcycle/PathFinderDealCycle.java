@@ -22,21 +22,21 @@ public class PathFinderDealCycle extends DealCycle {
             add(new AdditionalBlastFirst());
             add(new AdditionalBlastREAfterSecond());
             add(new AdditionalBlastREFirst());
+            add(new CurseArrow());
             add(new AdditionalDischargeAfterSecond());
             add(new AdditionalDischargeFirst());
             add(new AdditionalDischargeREAfterSecond());
             add(new AdditionalDischargeREFirst());
-            add(new AncientWrath());
             add(new CardinalBlast());
             add(new CardinalDischarge());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
-            add(new CurseArrow());
             add(new EdgeOfResonance());
             add(new Evolve());
+            add(new ForsakenRelicWave());
             add(new ForsakenRelicExplosion());
             add(new ForsakenRelicMagicArrow());
-            add(new ForsakenRelicWave());
+            add(new AncientWrath());
             add(new GuidedArrow());
             add(new ObsidianBarrier());
             add(new Raven());
@@ -51,7 +51,7 @@ public class PathFinderDealCycle extends DealCycle {
 
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new CriticalReinforce(100.0));
+            add(new CriticalReinforce(0.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
@@ -60,19 +60,19 @@ public class PathFinderDealCycle extends DealCycle {
             add(new RestraintRing());
             add(new RingSwitching());
             add(new SoulContract());
-            add(new WeaponJumpRing(318L));
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
-    private boolean isCriticalReinforce = false;
-    private boolean isRelicEvolution = false;
-    private boolean isRelicLiberation = false;
-    private final Long relicGauge = 0L;
+    boolean isCriticalReinforce = false;
+    boolean isRelicEvolution = false;
+    boolean isRelicLiberation = false;
     AncientWrath ancientWrath = new AncientWrath();
-    private final AdditionalBlastFirst additionalBlastFirst = new AdditionalBlastFirst();
-    private final AdditionalBlastREFirst additionalBlastREFirst = new AdditionalBlastREFirst();
-    private final AdditionalDischargeFirst additionalDischargeFirst = new AdditionalDischargeFirst();
-    private final AdditionalDischargeREFirst additionalDischargeREFirst = new AdditionalDischargeREFirst();
+    AdditionalBlastFirst additionalBlastFirst = new AdditionalBlastFirst();
+    AdditionalBlastREFirst additionalBlastREFirst = new AdditionalBlastREFirst();
+    AdditionalDischargeFirst additionalDischargeFirst = new AdditionalDischargeFirst();
+    AdditionalDischargeREFirst additionalDischargeREFirst = new AdditionalDischargeREFirst();
     EdgeOfResonance edgeOfResonance = new EdgeOfResonance();
+    ForsakenRelicMagicArrow forsakenRelicMagicArrow = new ForsakenRelicMagicArrow();
     SoulContract soulContract = new SoulContract();
 
     Timestamp relicLiberationEndTime = new Timestamp(-1);
@@ -94,7 +94,7 @@ public class PathFinderDealCycle extends DealCycle {
         CardinalBlast cardinalBlast = new CardinalBlast();
         CardinalDischarge cardinalDischarge = new CardinalDischarge();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         CurseArrow curseArrow = new CurseArrow();
         EpicAdventure epicAdventure = new EpicAdventure();
         Evolve evolve = new Evolve();
@@ -142,13 +142,22 @@ public class PathFinderDealCycle extends DealCycle {
                     && cooldownCheck(criticalReinforce)
                     && cooldownCheck(ravenTempest)
                     && cooldownCheck(soulContract)
-                    && cooldownCheck(edgeOfResonance)
+                    //&& cooldownCheck(edgeOfResonance)
                     && cooldownCheck(ultimateBlast)
                     && cooldownCheck(relicEvolution)
                     && cooldownCheck(relicUnbound)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
                 getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(evolve);
+                if (cooldownCheck(mapleWorldGoddessBlessing)) {
+                    if (dealCycleOrder == 3) {
+                        mapleWorldGoddessBlessing.setCooldown(0.0);
+                    } else {
+                        mapleWorldGoddessBlessing.setCooldown(180.0);
+                    }
+                    addSkillEvent(mapleWorldGoddessBlessing);
+                }
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -159,14 +168,6 @@ public class PathFinderDealCycle extends DealCycle {
                     addSkillEvent(cardinalBlast);
                     addSkillEvent(cardinalDischarge);
                     getStart().setTime(getStart().getTime() + 150);
-                }
-                if (cooldownCheck(mapleWorldGoddessBlessing)) {
-                    if (dealCycleOrder == 3) {
-                        mapleWorldGoddessBlessing.setCooldown(0.0);
-                    } else {
-                        mapleWorldGoddessBlessing.setCooldown(180.0);
-                    }
-                    addSkillEvent(mapleWorldGoddessBlessing);
                 }
                 addSkillEvent(obsidianBarrier);
                 addSkillEvent(criticalReinforce);
@@ -203,21 +204,20 @@ public class PathFinderDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(soulContract)
                     && getStart().after(soulContractEndTime)
-                    && (
-                            getStart().before(new Timestamp(evolve.getActivateTime().getTime() - 35000))
-                            || getStart().after(new Timestamp(11 * 60 * 1000))
-                    )
+                    && getStart().before(new Timestamp(evolve.getActivateTime().getTime() - 35000))
             ) {
                 getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(soulContract);
                 applyCooldown(tripleImpact);
             } else if (cooldownCheck(tripleImpact)) {
+                getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(tripleImpact);
             } else {
                 addSkillEvent(cardinalBlast);
                 addSkillEvent(cardinalDischarge);
             }
         }
+        getStart().setTime(-1);
         sortEventTimeList();
     }
 
@@ -247,8 +247,7 @@ public class PathFinderDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -273,6 +272,13 @@ public class PathFinderDealCycle extends DealCycle {
                     && !(skill instanceof AncientWrath)
             ) {
                 addSkillEvent(ancientWrath);
+            }
+            if (
+                    skill instanceof CardinalForce
+                    && cooldownCheck(forsakenRelicMagicArrow)
+                    && getStart().before(relicLiberationEndTime)
+            ) {
+                addSkillEvent(forsakenRelicMagicArrow);
             }
             if (
                     cooldownCheck(edgeOfResonance)
@@ -450,7 +456,6 @@ public class PathFinderDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -465,12 +470,6 @@ public class PathFinderDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (isRelicLiberation) {
-                    if (
-                            se.getSkill() instanceof CardinalForce
-                            && start.equals(se.getStart())
-                    ) {
-                        totalDamage += getAttackDamage(new SkillEvent(new ForsakenRelicMagicArrow(), start, end), buffSkill, start, end);
-                    }
                     if (
                             se.getSkill() instanceof EdgeOfResonance
                             || se.getSkill() instanceof UltimateBlast

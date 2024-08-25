@@ -193,8 +193,7 @@ public class AngelicBusterDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -293,7 +292,10 @@ public class AngelicBusterDealCycle extends DealCycle {
                         }
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
-                        if (skill instanceof SuperNova) {
+                        if (
+                                skill instanceof SuperNova
+                                || skill instanceof MascotFamiliar
+                        ) {
                             Long ran = (long) (Math.random() * 99 + 1);
                             if (getStart().before(soulExaltationEndTime)) {
                                 ran -= 15;
@@ -342,7 +344,7 @@ public class AngelicBusterDealCycle extends DealCycle {
             if (getStart().before(soulExaltationEndTime)) {
                 ran -= 15;
             }
-            if (ran <= 51) {
+            if (ran <= 61) {
                 addSkillEvent(soulSeeker);
             }
         }
@@ -362,6 +364,7 @@ public class AngelicBusterDealCycle extends DealCycle {
                     skill instanceof TrinityFusion
                     || skill instanceof GrandFinale
                     || skill instanceof GrandFinaleFinish
+                    || skill instanceof EnergyBurst
             ) {
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (getStart().before(soulExaltationEndTime)) {

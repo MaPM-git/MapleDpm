@@ -128,6 +128,7 @@ public class LuminousDealCycle extends DealCycle {
                             || eclipseCnt >= 19
                     )
             ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -141,7 +142,6 @@ public class LuminousDealCycle extends DealCycle {
                         addSkillEvent(lightReflection);
                     }
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(liberationOrb);
                 addSkillEvent(soulContract);
                 addSkillEvent(baptismOfLightAndDarkness);
@@ -244,8 +244,7 @@ public class LuminousDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -285,6 +284,10 @@ public class LuminousDealCycle extends DealCycle {
                         && getStart().after(liberationOrbEndTime)
                 ) {
                     addSkillEvent(liberationOrbPassive);
+                    if (getStart().before(equilibriumEndTime)) {
+                        liberationOrbPassive.setActivateTime(new Timestamp(-1));
+                        addSkillEvent(liberationOrbPassive);
+                    }
                 }
             }
             if (skill instanceof HarmonicParadoxKeydown) {

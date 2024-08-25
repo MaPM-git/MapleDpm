@@ -11,5 +11,6 @@ public class EternityCirculation extends AttackSkill {
         this.setInterval(1500L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

@@ -9,6 +9,9 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class SoulOfCrystal extends BuffSkill {
     public SoulOfCrystal() {
         this.setName("소울 오브 크리스탈");
-        this.setDuration(40L);
+        this.setDuration(30L);
+        this.setCooldown(40.0);
+        this.setDelay(660L);
+        this.setApplyCooldownReduction(false);
     }
 }

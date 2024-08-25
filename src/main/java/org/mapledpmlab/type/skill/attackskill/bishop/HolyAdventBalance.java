@@ -7,7 +7,7 @@ public class HolyAdventBalance extends AttackSkill {
         this.setName("홀리 어드밴트(균형의 천사)");
         this.setAttackCount(14L);
         this.setDamage(515.0);
-        this.setDotDuration(60000L);
+        this.setDotDuration(60000L - 1800);
         this.setInterval(3000L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);

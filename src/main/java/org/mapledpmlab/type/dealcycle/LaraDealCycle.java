@@ -137,6 +137,7 @@ public class LaraDealCycle extends DealCycle {
                     && cooldownCheck(soaringSpirit)
                     && cooldownCheck(bigStretch)
                     && cooldownCheck(sunRiverMountainWindWave1)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -194,8 +195,28 @@ public class LaraDealCycle extends DealCycle {
             ) {
                 addSkillEvent(soaringSpirit);
             } else if (
+                    cooldownCheck(eruptionSunriseWell)
+                    && (
+                            !cooldownCheck(armfulTree)
+                            || getStart().after(new Timestamp(660 * 1000))
+                    )
+            ) {
+                if (eruptionCnt % 3 == 0) {
+                    addSkillEvent(dragonVeinTrace);
+                } else if (eruptionCnt % 3 == 1) {
+                    addSkillEvent(dragonVeinJump);
+                    addSkillEvent(dragonVeinSwitch);
+                } else if (eruptionCnt % 3 == 2) {
+                    addSkillEvent(dragonVeinFree);
+                }
+                eruptionCnt ++;
+                addSkillEvent(eruptionSunriseWell);
+            } else if (
                     cooldownCheck(eruptionWhirlwind)
-                    && !cooldownCheck(armfulTree)
+                    && (
+                            !cooldownCheck(armfulTree)
+                            || getStart().after(new Timestamp(660 * 1000))
+                    )
             ) {
                 if (eruptionCnt % 3 == 0) {
                     addSkillEvent(dragonVeinTrace);
@@ -209,7 +230,10 @@ public class LaraDealCycle extends DealCycle {
                 addSkillEvent(eruptionWhirlwind);
             } else if (
                     cooldownCheck(eruptionRipplingRiver)
-                    && !cooldownCheck(armfulTree)
+                    && (
+                            !cooldownCheck(armfulTree)
+                            || getStart().after(new Timestamp(660 * 1000))
+                    )
             ) {
                 if (eruptionCnt % 3 == 0) {
                     addSkillEvent(dragonVeinTrace);
@@ -221,20 +245,6 @@ public class LaraDealCycle extends DealCycle {
                 }
                 eruptionCnt ++;
                 addSkillEvent(eruptionRipplingRiver);
-            } else if (
-                    cooldownCheck(eruptionSunriseWell)
-                    && !cooldownCheck(armfulTree)
-            ) {
-                if (eruptionCnt % 3 == 0) {
-                    addSkillEvent(dragonVeinTrace);
-                } else if (eruptionCnt % 3 == 1) {
-                    addSkillEvent(dragonVeinJump);
-                    addSkillEvent(dragonVeinSwitch);
-                } else if (eruptionCnt % 3 == 2) {
-                    addSkillEvent(dragonVeinFree);
-                }
-                eruptionCnt ++;
-                addSkillEvent(eruptionSunriseWell);
             } else {
                 addSkillEvent(essenceSprinkle);
             }
@@ -259,8 +269,7 @@ public class LaraDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -425,7 +434,6 @@ public class LaraDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -507,6 +515,22 @@ public class LaraDealCycle extends DealCycle {
     @Override
     public void multiAttackProcess(Skill skill) {
         Long sum = 0L;
+        if (
+                skill instanceof EruptionWhirlwind
+                || skill instanceof EruptionRipplingRiver
+                || skill instanceof EruptionRipplingRiverBig
+        ) {
+            List<SkillEvent> remove = new ArrayList<>();
+            for (SkillEvent skillEvent : this.getSkillEventList()) {
+                if (
+                        skillEvent.getStart().after(getStart())
+                        && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                ) {
+                    remove.add(skillEvent);
+                }
+            }
+            getSkillEventList().removeAll(remove);
+        }
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
             sum += info;
             if (skill instanceof BigStretch && sum != 1980) {

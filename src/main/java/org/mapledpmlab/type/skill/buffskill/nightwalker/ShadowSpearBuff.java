@@ -10,7 +10,8 @@ public class ShadowSpearBuff extends BuffSkill {
     public ShadowSpearBuff() {
         this.setName("쉐도우 스피어");
         this.setCooldown(177.0);
-        this.setDelay(600L);
+        this.setDelay(360L);
+        //this.setDelay(600L);
         this.setDuration(87L);
     }
 }

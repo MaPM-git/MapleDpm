@@ -6,9 +6,7 @@ import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperDemonAvenger;
-import org.mapledpmlab.type.link.IronWill;
-import org.mapledpmlab.type.link.Noblesse;
-import org.mapledpmlab.type.link.PhantomInstinct;
+import org.mapledpmlab.type.link.*;
 import org.mapledpmlab.type.union.DemonAvengerUnion;
 
 import java.util.stream.Collectors;
@@ -92,14 +90,14 @@ public class DemonAvenger extends Job {
         this.addHp(475L);               // 쓸만한 어드밴스드 블레스
 
         // 환산 보정
-        this.addMainStatP(84L);
-        this.addAtt(2L);
-        this.addMainStat(-30L);
+        this.addMainStatP(33L);
+        this.addAtt(-2L);
+        this.addMainStat(-20L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new IronWill());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new CygnusBlessing());
         this.setUnion(new DemonAvengerUnion());
 
         this.addObject(this.getAbility());
@@ -173,7 +171,7 @@ public class DemonAvenger extends Job {
                 this.getFinalHp(), this.getFinalHpHyperBodyX(), this.getAp(),
                 this.getStr(), "X", this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
-                this.getCriticalP(), "114", this.getWeaponAttMagic(), this.getPerXMainStat(),
+                this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
                 this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
                 this.getFinalDamage()
         };

@@ -6,6 +6,7 @@ import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
+import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.LuminousUnion;
 
@@ -63,14 +64,14 @@ public class Luminous extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(39L);
-        this.addMainStat(-7L);
-        this.addSubStat(-10L);
+        this.addMainStatP(6L);
+        this.addMainStat(3L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalBuff());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new Noblesse());
         this.setUnion(new LuminousUnion());
         this.addPerXMainStat(20L);
 

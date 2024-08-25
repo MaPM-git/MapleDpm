@@ -13,5 +13,6 @@ public class CraftJavelin extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new CraftJavelinFragment());
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

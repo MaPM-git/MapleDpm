@@ -11,5 +11,6 @@ public class MeltdownExplosionBuff extends BuffSkill {
         this.setName("멜트다운 익스플로전");
         this.setDuration(25L);
         this.addBuffDamage(10L);
+        this.addBuffIgnoreDefense(30L);
     }
 }

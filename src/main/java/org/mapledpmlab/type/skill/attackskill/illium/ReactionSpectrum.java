@@ -10,5 +10,6 @@ public class ReactionSpectrum extends AttackSkill {
         this.setAddDamage(20L);
         this.setCooldown(1.0);
         this.addFinalDamage(1.6);   // 코어강화
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

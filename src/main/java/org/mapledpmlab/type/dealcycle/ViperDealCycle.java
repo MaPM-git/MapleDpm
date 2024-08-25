@@ -154,6 +154,7 @@ public class ViperDealCycle extends DealCycle {
             ) {
                 addSkillEvent(stimulate);
                 addSkillEvent(lightningForm);
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -163,7 +164,6 @@ public class ViperDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(fistEnrage);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
@@ -315,7 +315,6 @@ public class ViperDealCycle extends DealCycle {
         ) {
             addSkillEvent(liberateNeptunusEnrage1);
         }
-
         if (getStart().before(skill.getActivateTime())) {
             return;
         }
@@ -335,8 +334,7 @@ public class ViperDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -369,15 +367,13 @@ public class ViperDealCycle extends DealCycle {
                     skill instanceof FistEnrage
                     || skill instanceof SuperFistEnrage
             ) {
-                if (cooldownCheck(seaSerpentEnrage)) {
-                    if (serpentStoneCount == 5) {
-                        addSkillEvent(serpentAssaultEnrage);
-                        superEndTime = new Timestamp(getStart().getTime() + 10000);
-                        serpentStoneCount = 0L;
-                    } else {
-                        addSkillEvent(seaSerpentEnrage);
-                        serpentStoneCount += 1;
-                    }
+                if (serpentStoneCount == 5) {
+                    addSkillEvent(serpentAssaultEnrage);
+                    superEndTime = new Timestamp(getStart().getTime() + 10000);
+                    serpentStoneCount = 0L;
+                } else if (cooldownCheck(seaSerpentEnrage)) {
+                    addSkillEvent(seaSerpentEnrage);
+                    serpentStoneCount += 1;
                 }
             }
             if (((AttackSkill) skill).getInterval() != 0) {
@@ -420,7 +416,7 @@ public class ViperDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
-        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime()));
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
             getEventTimeList().add(endTime);
@@ -447,6 +443,7 @@ public class ViperDealCycle extends DealCycle {
         ) {
             endTime = new Timestamp(getStart().getTime() + screwPunch.getDelay());
             getSkillEventList().add(new SkillEvent(screwPunch, new Timestamp(getStart().getTime()), endTime));
+            getEventTimeList().add(endTime);
             applyCooldown(screwPunch);
             getStart().setTime(getStart().getTime() + screwPunch.getDelay());
         } else {

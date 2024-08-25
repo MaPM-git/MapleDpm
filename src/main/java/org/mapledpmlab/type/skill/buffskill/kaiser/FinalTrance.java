@@ -11,6 +11,7 @@ public class FinalTrance extends BuffSkill {
         this.setName("파이널 트랜스");
         this.setDuration(60L);
         this.setBuffFinalDamage(1.15);
+        this.setBuffDamage(10L);        // 공격모드 3차 강화
         this.setCooldown(240.0);
     }
 }

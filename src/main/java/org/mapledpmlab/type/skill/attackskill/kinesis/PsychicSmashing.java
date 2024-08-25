@@ -7,7 +7,8 @@ public class PsychicSmashing extends AttackSkill {
     public PsychicSmashing() {
         this.setName("싸이킥 스매싱");
         this.setDamage(1034.0);
-        this.setDelay(600L);
+        //this.setDelay(600L);
+        this.setDelayByAttackSpeed(600L);
         this.setAttackCount(5L);
         this.setApplyFinalAttack(true);
         this.setRelatedSkill(new UltimateMaterialBuff());

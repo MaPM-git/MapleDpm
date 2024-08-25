@@ -13,6 +13,6 @@ public class CraftJavelinFragment extends AttackSkill {
         this.setAddDamage(20L + 20);    // 자벨린-리인포스, 보스 킬러
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

@@ -7,6 +7,7 @@ public class BladeStormKeydown extends AttackSkill {
         this.setName("블레이드 스톰(연속 공격)");
         this.setDamage(960.0);
         this.setAttackCount(10L);
+        this.setDelay(3780L);
         this.setDotDuration(3780L);
         this.setInterval(90L);
         this.setLimitAttackCount(42L);

@@ -50,7 +50,7 @@ public class WindBreakerDealCycle extends DealCycle {
 
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new CriticalReinforce(100.0));
+            add(new CriticalReinforce(0.0));
             add(new EmeraldFlower());
             add(new GloryOfGuardians());
             add(new RestraintRing());
@@ -96,7 +96,7 @@ public class WindBreakerDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
         EmeraldFlower emeraldFlower = new EmeraldFlower();
         GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
@@ -288,8 +288,7 @@ public class WindBreakerDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -436,7 +435,6 @@ public class WindBreakerDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

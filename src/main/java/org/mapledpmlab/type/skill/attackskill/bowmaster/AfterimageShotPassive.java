@@ -11,6 +11,6 @@ public class AfterimageShotPassive extends AttackSkill {
         this.setDotDuration(1000L);
         this.setInterval(180L);
         this.setFinalDamage(1.6);       // 코어강화
-        this.setCooldown(1.0);
+        this.setCooldown(2.5);
     }
 }

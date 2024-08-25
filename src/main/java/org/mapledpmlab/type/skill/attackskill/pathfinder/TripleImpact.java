@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 public class TripleImpact extends GaugeAttackSkill implements AncientForce {
     public TripleImpact() {
         this.setName("트리플 임팩트");
-        this.setAttackCount(5L);
+        this.setAttackCount(5L * 3);
         this.setDamage(265.0);
         this.setDelayByAttackSpeed(540L);
         this.setCooldown(15.0);

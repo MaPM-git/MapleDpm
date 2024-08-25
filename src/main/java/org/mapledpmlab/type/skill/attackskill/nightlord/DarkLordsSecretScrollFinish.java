@@ -9,5 +9,6 @@ public class DarkLordsSecretScrollFinish extends AttackSkill {
         this.setDamage(2365.0);
         this.setAddDamage(30L);
         this.addFinalDamage(1.6);       // 코어강화
+        this.getMultiAttackInfo().add(12000L);
     }
 }

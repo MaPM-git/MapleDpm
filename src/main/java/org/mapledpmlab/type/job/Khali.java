@@ -5,6 +5,7 @@ import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
+import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.NatureFriend;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.LukUnion;
@@ -66,14 +67,14 @@ public class Khali extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-6L);
-        this.addMainStat(9L);
-        this.addSubStat(15L);
+        this.addMainStatP(-54L);
+        this.addMainStat(16L);
+        //this.addSubStat(-5L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new NatureFriend());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new HybridLogic());
         this.setUnion(new LukUnion());
         this.addPerXMainStat(20L);
 

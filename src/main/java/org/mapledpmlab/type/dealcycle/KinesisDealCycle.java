@@ -37,6 +37,7 @@ public class KinesisDealCycle extends DealCycle {
             add(new PsychicDrain());
             add(new PsychicGrab());
             add(new PsychicGround());
+            add(new PsychicForce());
             add(new PsychicSmashing());
             add(new PsychicTornado());
             add(new PsychicTornadoBomb());
@@ -80,6 +81,7 @@ public class KinesisDealCycle extends DealCycle {
 
     Timestamp psychicOverEndTime = new Timestamp(-1);
     Timestamp blessEndTime = new Timestamp(-1);
+    Timestamp movingMatterEndTime = new Timestamp(-1);
 
     List<Timestamp> drainTime = new ArrayList<>();
 
@@ -97,6 +99,7 @@ public class KinesisDealCycle extends DealCycle {
         OtherworldlyAfterimage otherworldlyAfterimage = new OtherworldlyAfterimage(Math.toIntExact(getJob().getLevel()));
         PsychicCharge psychicCharge = new PsychicCharge();
         PsychicDrain psychicDrain = new PsychicDrain();
+        PsychicForce psychicForce = new PsychicForce();
         PsychicGrab psychicGrab = new PsychicGrab();
         PsychicGround psychicGround = new PsychicGround();
         PsychicOver psychicOver = new PsychicOver();
@@ -172,6 +175,7 @@ public class KinesisDealCycle extends DealCycle {
                 addSkillEvent(restraintRing);
                 if (cooldownCheck(anotherRealm)) {
                     addSkillEvent(anotherRealm);
+                    movingMatterEndTime = new Timestamp(-1);
                 }
             } else if (
                     cooldownCheck(everPsychic)
@@ -219,6 +223,16 @@ public class KinesisDealCycle extends DealCycle {
             ) {
                 addSkillEvent(ultimateTrain);
             }*/ else if (
+                    getStart().before(movingMatterEndTime)
+                    && cooldownCheck(psychicForce)
+            ) {
+                addSkillEvent(psychicForce);
+            } else if (
+                    getStart().before(psychicOverEndTime)
+                    && psychicPoint >= 3
+            ) {
+                addSkillEvent(ultimateMaterial);
+            } else if (
                     psychicPoint >= 6
                     && !cooldownCheck(psychicOver)
             ){
@@ -267,7 +281,10 @@ public class KinesisDealCycle extends DealCycle {
             psychicPoint ++;
             psychicOverTic.setActivateTime(new Timestamp(psychicOverTic.getActivateTime().getTime() + 750));
         }
-        if (cooldownCheck(ultimateBPMTic)) {
+        if (
+                cooldownCheck(ultimateBPMTic)
+                && psychicPoint >= 1
+        ) {
             psychicPoint -= 1;
             Long ran = (long) (Math.random() * 99 + 1);
             if (ran <= 40) {
@@ -301,8 +318,7 @@ public class KinesisDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -321,6 +337,9 @@ public class KinesisDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof UltimateMovingMatter) {
+                movingMatterEndTime = new Timestamp(getStart().getTime() + 30000);
+            }
             if (
                     skill instanceof UltimateTrain
                     || skill instanceof UltimatePsychicShoot
@@ -349,13 +368,19 @@ public class KinesisDealCycle extends DealCycle {
             }
             if (skill instanceof PsychicSmashing) {
                 psychicPoint += 2;
-            } else if (skill instanceof PsychicGround) {
+            } else if (
+                    skill instanceof PsychicGround
+                    || skill instanceof PsychicForce
+            ) {
                 psychicPoint += 1;
             }
             if (getStart().before(psychicOverEndTime)) {
                 if (skill instanceof UltimatePsychicBullet) {
                     psychicPoint -= 1;
-                } else if (skill instanceof LawOfGravity) {
+                } else if (
+                        skill instanceof LawOfGravity
+                        || skill instanceof AnotherRealm
+                ) {
                     psychicPoint -= 2;
                 } else if (skill instanceof UltimatePsychicShoot) {
                     psychicPoint -= 2;
@@ -372,7 +397,10 @@ public class KinesisDealCycle extends DealCycle {
             } else {
                 if (skill instanceof UltimatePsychicBullet) {
                     psychicPoint -= 3;
-                } else if (skill instanceof LawOfGravity) {
+                } else if (
+                        skill instanceof LawOfGravity
+                        || skill instanceof AnotherRealm
+                ) {
                     psychicPoint -= 5;
                 } else if (skill instanceof UltimatePsychicShoot) {
                     psychicPoint -= 4;

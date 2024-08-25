@@ -8,6 +8,7 @@ public class BaptismOfLightAndDarkness extends AttackSkill {
         this.setDamage(990.0);
         this.setDelay(940L);
         this.setAttackCount(7L);
+        this.addIgnoreDefenseList(100L);
         this.addFinalDamage(1.6);       // 코어 강화
         this.setCooldown(45.0);
         this.getMultiAttackInfo().add(0L);

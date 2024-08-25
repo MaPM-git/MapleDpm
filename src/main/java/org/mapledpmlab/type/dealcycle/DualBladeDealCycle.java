@@ -68,8 +68,7 @@ public class DualBladeDealCycle extends DealCycle {
     KarmaBlade3 karmaBlade3 = new KarmaBlade3();
     KarmaBladeFinish karmaBladeFinish = new KarmaBladeFinish();
 
-    List<Timestamp> karmaBladeStartTimeList = new ArrayList<>();
-    List<Timestamp> karmaBladeEndTimeList = new ArrayList<>();
+    Timestamp karmaBladeEndTime = new Timestamp(-1);
 
     int karmaBladeCnt= 0;
 
@@ -111,6 +110,8 @@ public class DualBladeDealCycle extends DealCycle {
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
+        karmaBlade3.setCooldown(0.0);
+
         while (getStart().before(getEnd())) {
             if (cooldownCheck(flashbangBuff)) {
                 addSkillEvent(flashbangBuff);
@@ -129,7 +130,9 @@ public class DualBladeDealCycle extends DealCycle {
                     && cooldownCheck(asura)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                boolean isOrigin = false;
                 addSkillEvent(finalCutBuff);
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -139,29 +142,47 @@ public class DualBladeDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(phantomBlow);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(ultimateDarkSight);
                 addSkillEvent(readyToDie);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
                 addSkillEvent(bladeTornado);
                 addSkillEvent(karmaFury);
-                addSkillEvent(phantomBlow);
+                if (cooldownCheck(hauntedEdge)) {
+                    addSkillEvent(phantomBlow);
+                }
                 if (cooldownCheck(karmaBlade1)) {
+                    isOrigin = true;
                     addSkillEvent(karmaBlade1);
                 }
+                if (cooldownCheck(bladeTornado)) {
+                    addSkillEvent(bladeTornado);
+                }
+                if (cooldownCheck(karmaFury)) {
+                    addSkillEvent(karmaFury);
+                }
+                if (cooldownCheck(hauntedEdge)) {
+                    addSkillEvent(phantomBlow);
+                }
                 addSkillEvent(bladeStormFirst);
+                while (!cooldownCheck(bladeTornado)) {
+                    addSkillEvent(phantomBlow);
+                }
                 addSkillEvent(bladeTornado);
+                while (!cooldownCheck(karmaFury)) {
+                    addSkillEvent(phantomBlow);
+                }
                 addSkillEvent(karmaFury);
                 addSkillEvent(phantomBlow);
+                if (isOrigin) {
+                    addSkillEvent(karmaBladeFinish);
+                }
                 addSkillEvent(asura);
             } else if (
                     cooldownCheck(finalCutBuff)
                     && cooldownCheck(readyToDie)
                     && cooldownCheck(soulContract)
                     && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(bladeTornado)
-                    && cooldownCheck(karmaFury)
                     && cooldownCheck(bladeStormFirst)
                     && cooldownCheck(asura)
             ) {
@@ -169,15 +190,40 @@ public class DualBladeDealCycle extends DealCycle {
                 addSkillEvent(readyToDie);
                 addSkillEvent(soulContract);
                 addSkillEvent(weaponJumpRing);
-                addSkillEvent(bladeTornado);
-                addSkillEvent(karmaFury);
-                addSkillEvent(phantomBlow);
+                if (cooldownCheck(bladeTornado)) {
+                    addSkillEvent(bladeTornado);
+                }
+                if (cooldownCheck(karmaFury)) {
+                    addSkillEvent(karmaFury);
+                }
+                if (cooldownCheck(hauntedEdge)) {
+                    addSkillEvent(phantomBlow);
+                }
                 addSkillEvent(bladeStormFirst);
+                if (cooldownCheck(bladeTornado)) {
+                    addSkillEvent(bladeTornado);
+                }
+                if (cooldownCheck(karmaFury)) {
+                    addSkillEvent(karmaFury);
+                }
+                if (cooldownCheck(hauntedEdge)) {
+                    addSkillEvent(phantomBlow);
+                }
                 addSkillEvent(asura);
-            } else if (cooldownCheck(bladeTornado)
+            } else if (
+                    cooldownCheck(bladeTornado)
+                    && (
+                            !cooldownCheck(finalCutBuff)
+                            || getStart().after(new Timestamp(660 * 1000))
+                    )
             ) {
                 addSkillEvent(bladeTornado);
-            } else if (cooldownCheck(karmaFury)
+            } else if (
+                    cooldownCheck(karmaFury)
+                    && (
+                            getStart().before(new Timestamp(finalCutBuff.getActivateTime().getTime() + 3000))
+                            || getStart().after(new Timestamp(660 * 1000))
+                    )
             ) {
                 addSkillEvent(karmaFury);
             } else if (
@@ -202,8 +248,8 @@ public class DualBladeDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof KarmaBladeBuff) {
-                karmaBladeStartTimeList.add(new Timestamp(getStart().getTime()));
-                karmaBladeEndTimeList.add(new Timestamp(getStart().getTime() + 20000));
+                karmaBladeEndTime = new Timestamp(getStart().getTime() + 20000);
+                karmaBladeCnt = 0;
             }
             if (
                     skill instanceof RestraintRing
@@ -214,8 +260,7 @@ public class DualBladeDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -234,6 +279,21 @@ public class DualBladeDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    getStart().before(karmaBladeEndTime)
+                    && cooldownCheck(karmaBlade3)
+                    && karmaBladeCnt < 50
+                    && (
+                            skill instanceof Flashbang
+                            || skill instanceof FinalCut
+                            || skill instanceof PhantomBlow
+                            || skill instanceof BladeStormFirst
+                            || skill instanceof BladeTornado
+                    )
+            ) {
+                addSkillEvent(karmaBlade3);
+                karmaBladeCnt ++;
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
@@ -254,6 +314,23 @@ public class DualBladeDealCycle extends DealCycle {
                 } else {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        Timestamp temp = new Timestamp(getStart().getTime());
+                        getStart().setTime(getStart().getTime() + i);
+                        if (
+                                getStart().before(karmaBladeEndTime)
+                                && cooldownCheck(karmaBlade3)
+                                && karmaBladeCnt < 50
+                                && (
+                                        skill instanceof Asura
+                                        || skill instanceof BladeStormKeydown
+                                        || skill instanceof KarmaFury
+                                        || skill instanceof BladeTornadoTyphoon
+                                )
+                        ) {
+                            addSkillEvent(karmaBlade3);
+                            karmaBladeCnt ++;
+                        }
+                        getStart().setTime(temp.getTime());
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
@@ -328,7 +405,6 @@ public class DualBladeDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -343,23 +419,6 @@ public class DualBladeDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
-                for (int j = 0; j < karmaBladeStartTimeList.size(); j++) {
-                    if (
-                            start.after(karmaBladeStartTimeList.get(j))
-                            && end.before(karmaBladeEndTimeList.get(j))
-                            && karmaBladeCnt < 50
-                    ) {
-                        totalDamage += getAttackDamage(new SkillEvent(karmaBlade3, start, end), buffSkill, start, end);
-                        karmaBladeCnt ++;
-                    } else if (karmaBladeCnt == 50) {
-                        for (int k = 0; k < 30; k++) {
-                            totalDamage += getAttackDamage(new SkillEvent(karmaBladeFinish, start, end), buffSkill, start, end);
-                        }
-                        karmaBladeCnt = 0;
-                        karmaBladeStartTimeList.remove(j);
-                        karmaBladeEndTimeList.remove(j);
-                    }
-                }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
@@ -446,6 +505,28 @@ public class DualBladeDealCycle extends DealCycle {
             }
         }
         return attackDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            Timestamp temp = new Timestamp(getStart().getTime());
+            getStart().setTime(getStart().getTime() + i);
+            if (
+                    getStart().before(karmaBladeEndTime)
+                    && cooldownCheck(karmaBlade3)
+                    && karmaBladeCnt < 50
+                    && skill instanceof HauntedEdge
+            ) {
+                addSkillEvent(karmaBlade3);
+                karmaBladeCnt ++;
+            }
+            getStart().setTime(temp.getTime());
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
     }
 
     @Override

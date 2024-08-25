@@ -10,7 +10,7 @@ public class ChainArtsTakedownBeat extends AttackSkill {
         //this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setAddDamage(20L);             // 체인아츠:테이크다운-리인포스
+        //this.setAddDamage(20L);             // 체인아츠:테이크다운-리인포스
         this.getMultiAttackInfo().add(5000L - 540);
         this.setRelatedSkill(new ChainArtsTakedownFinish());
     }

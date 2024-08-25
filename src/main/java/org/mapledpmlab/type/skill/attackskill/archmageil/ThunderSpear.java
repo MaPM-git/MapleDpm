@@ -5,7 +5,6 @@ public class ThunderSpear extends ThunderAttack {
         this.setName("썬더 스피어");
         this.setDamage(370.0);
         this.setAttackCount(3L);
-        this.setCooldown(120.0);        // 120초마다 사용하기
         this.setDelayByAttackSpeed(900L);
         this.setDotDuration(120000L);
         this.setInterval(1080L);

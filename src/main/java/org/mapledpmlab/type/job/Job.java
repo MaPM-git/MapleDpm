@@ -93,6 +93,16 @@ public class Job extends Common {
         this.addMagic(20L);
         this.addAtt(30L);               // 블링크
         this.addMagic(30L);
+        this.addCriticalP(20.0);        // 세이람의 영약
+
+        this.addCriticalDamage(4.55);   // 헥사스탯1(크공보 866)
+        this.addAtt(30L);
+        this.addMagic(30L);
+        this.addBossDamage(6L);
+        this.addAtt(65L);               // 헥사스탯2(공크보 866)
+        this.addMagic(65L);
+        this.addCriticalDamage(2.1);
+        this.addBossDamage(6L);
 
         linkList.add(new FuryUnleashed());
         linkList.add(new EmpiricalKnowledge());
@@ -108,6 +118,11 @@ public class Job extends Common {
     }
 
     public void Doping() {
+        this.addCriticalP(-10.0);       // 쓸샵, 쓸어블
+        this.addCriticalDamage(-8.0);
+        this.addAtt(-20L);
+        this.addMagic(-20L);
+        
         this.addAttP(4L);               // 영웅의 메아리
         this.addMagicP(4L);
 
@@ -131,6 +146,23 @@ public class Job extends Common {
         this.addAtt(30L);               // 붕어빵 뿌리기
         this.addMagic(30L);
         this.addMainStat(30L);          // 향상된 10단계 물약
+        this.addAtt(50L);               // 275 인기도
+        this.addMagic(50L);
+        this.addAttP(10L);              // 세이람의 영약
+        this.addMagicP(10L);
+        this.addAtt(50L);
+        this.addMagic(50L);
+        this.addBossDamage(10L);
+        this.addCriticalDamage(16.0);
+        this.addMainStat(15L);          // VIP 버프
+        this.addSubStat(15L);
+        this.addOtherStat1(15L);
+        this.addOtherStat2(15L);
+        this.addHp(1500L);
+        this.addAtt(15L);
+        this.addMagic(15L);
+        this.addIgnoreDefenseList(15L);
+        this.addBossDamage(15L);
 
         this.addDamage(9L);             // 시프 커닝
         this.addDamage(8L);             // 프라이어 프리퍼레이션
@@ -151,7 +183,7 @@ public class Job extends Common {
                 this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
                 this.getFinalSubstat(), "X", this.getStatDamage(), this.getDamage(),
                 this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
-                this.getCriticalP(), "114", this.getWeaponAttMagic(), this.getPerXMainStat(),
+                this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
                 this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
                 this.getFinalDamage()
         };

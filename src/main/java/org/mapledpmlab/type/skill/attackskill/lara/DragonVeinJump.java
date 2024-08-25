@@ -5,6 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DragonVeinJump extends AttackSkill {
     public DragonVeinJump() {
         this.setName("용맥으로 이동(점프)");
-        this.setDelay(2000L);
+        //this.setDelay(500L);
+        this.setRelatedSkill(new EssenceSprinkle());
     }
 }

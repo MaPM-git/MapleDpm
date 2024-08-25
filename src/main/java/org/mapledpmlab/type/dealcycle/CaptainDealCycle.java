@@ -110,7 +110,7 @@ public class CaptainDealCycle extends DealCycle {
         addSkillEvent(luckyDice);
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
 
-        Long clipCount = 9L;
+        Long clipCount = 48L;
         Timestamp spreeEndTime = new Timestamp(-1);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
@@ -143,6 +143,7 @@ public class CaptainDealCycle extends DealCycle {
                     && cooldownCheck(deadEye)
                     && cooldownCheck(bulletParty)
             ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -151,8 +152,12 @@ public class CaptainDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 } else {
                     addSkillEvent(rapidFire);
+                    clipCount ++;
+                    if (clipCount >= 50) {
+                        spreeEndTime = new Timestamp(getStart().getTime() + 6000);
+                        clipCount = 0L;
+                    }
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(pirateFlag);
                 addSkillEvent(overdrive);
                 addSkillEvent(untiringNectar);
@@ -222,7 +227,7 @@ public class CaptainDealCycle extends DealCycle {
             } else {
                 addSkillEvent(rapidFire);
                 clipCount ++;
-                if (clipCount >= 10) {
+                if (clipCount >= 50) {
                     spreeEndTime = new Timestamp(getStart().getTime() + 6000);
                     clipCount = 0L;
                 }
@@ -297,7 +302,6 @@ public class CaptainDealCycle extends DealCycle {
                     buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                     buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                     buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                    buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                     buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                     for (BuffSkill bs : buffSkillList) {
                         if (
@@ -394,8 +398,7 @@ public class CaptainDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null

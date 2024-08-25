@@ -52,14 +52,16 @@ public class DemonAvenger29DealCycle extends DealCycle {
         {
             add(new ArmorBreakDebuff());
             add(new AuraWeaponBuffDA());
+            add(new BodyOfSteelDA(0L));
             add(new CallMastemaDA());
             add(new DemonicFortitudeDA());
             add(new OtherWorldGoddessBlessingDA());
+            add(new ReleaseOverload());
             add(new RestraintRingDA());
             add(new Revenant());
             add(new RingSwitching());
             add(new SoulContract());
-            add(new WeaponJumpRingDA(875L));
+            add(new WeaponJumpRingDA(getJob().getWeaponAttMagic()));
         }
     };
 
@@ -93,6 +95,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
         ArmorBreak armorBreak = new ArmorBreak();
         AuraWeaponBuffDA auraWeaponBuff = new AuraWeaponBuffDA();
         BloodFeast bloodFeast = new BloodFeast();
+        BodyOfSteelDA bodyOfSteel = new BodyOfSteelDA(0L);
         CallMastemaDA callMastema = new CallMastemaDA();
         CrestOfTheSolarDA crestOfTheSolar = new CrestOfTheSolarDA();
         DemonicFortitudeDA demonicFortitudeDA = new DemonicFortitudeDA();
@@ -198,6 +201,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
                     addSkillEvent(exceedExecution5);
                 }
                 addSkillEvent(callMastema);
+                addSkillEvent(bodyOfSteel);
                 addSkillEvent(otherWorldGoddessBlessing);
                 addSkillEvent(revenant);
                 addSkillEvent(soulContract);
@@ -260,13 +264,17 @@ public class DemonAvenger29DealCycle extends DealCycle {
 
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
         int j = 0;
         if (hpTime.size() > 0) {
             for (int i = 0; i < hpTime.size(); i++) {
                 if (hpTime.get(i).before(getStart())) {
                     hpTime.remove(i);
                     i--;
-                    //hp += 500000 * 0.0067;
+                    hp += 500000 * 0.0067;
                     if (hp > 500000) {
                         hp = 500000;
                     }
@@ -351,7 +359,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof ReleaseOverload) {
-                releaseOverloadTime = new Timestamp(getStart().getTime() + 175000);
+                releaseOverloadTime = new Timestamp(getStart().getTime() + 175500);
             }
             if (
                     skill instanceof RestraintRingDA
@@ -362,8 +370,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRingDA
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -378,6 +385,12 @@ public class DemonAvenger29DealCycle extends DealCycle {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
             } else {
+                if (skill instanceof BodyOfSteelDA) {
+                    for (long i = 0; i < 18000; i += 1000) {
+                        getSkillEventList().add(new SkillEvent(new BodyOfSteelDA(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
+                    }
+                }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
                 getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
             }
@@ -509,7 +522,6 @@ public class DemonAvenger29DealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

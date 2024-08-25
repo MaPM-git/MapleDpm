@@ -13,6 +13,7 @@ public class FlameDischarge extends AttackSkill {
         this.setInterval(60L);
         this.setLimitAttackCount(8L * (8 + (flameCount - 2) * 2));
         this.addFinalDamage(1.6);       // 코어강화
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 
     public void setByFlameCount(Long flameCount) {

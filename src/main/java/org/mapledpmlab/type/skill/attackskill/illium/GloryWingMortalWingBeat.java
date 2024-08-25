@@ -16,5 +16,6 @@ public class GloryWingMortalWingBeat extends AttackSkill {
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

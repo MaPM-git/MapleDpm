@@ -68,9 +68,9 @@ public class Mechanic extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-30L);
-        this.addMainStat(-14L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-75L);
+        this.addMainStat(2L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

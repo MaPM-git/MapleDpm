@@ -14,5 +14,6 @@ public class ReactionDestruction extends AttackSkill {
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(810L);
         this.setApplyReuse(true);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

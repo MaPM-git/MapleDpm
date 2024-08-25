@@ -11,8 +11,14 @@ public class MonkeyCannonRapidFire extends AttackSkill {
         this.setInterval(700L);*/
         this.addFinalDamage(1.6);       // 코어강화
         this.getMultiAttackInfo().add(2400L + 1200);
-        for (int i = 0; i < 42; i++) {
-            this.getMultiAttackInfo().add(700L);
+        for (int i = 0; i < 39; i ++) {
+            this.getMultiAttackInfo().add(720L);
         }
+        this.getMultiAttackInfo().add(720L + 1200);
+        this.getMultiAttackInfo().add(720L);
+
+        /*for (int i = 0; i < 42; i++) {
+            this.getMultiAttackInfo().add(700L);
+        }*/
     }
 }

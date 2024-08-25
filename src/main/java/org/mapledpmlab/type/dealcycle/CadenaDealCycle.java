@@ -53,6 +53,7 @@ public class CadenaDealCycle extends DealCycle {
             add(new SummonStrikingBrick());
             add(new SummonThrowingWingDagger());
             add(new SummonThrowingWingDaggerBomb());
+            add(new VenomBurst());
             add(new WeakPointConvergingAttack());
             add(new WeaponVariety());
             add(new WeaponVarietyFinale());
@@ -98,6 +99,7 @@ public class CadenaDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         ADOrdnance adOrdnance = new ADOrdnance();
+        ChainArtsChase chainArtsChase = new ChainArtsChase();
         ChainArtsCrush chainArtsCrush = new ChainArtsCrush();
         ChainArtsFuryBuff chainArtsFuryBuff = new ChainArtsFuryBuff();
         ChainArtsMaelstrom chainArtsMaelstrom = new ChainArtsMaelstrom();
@@ -124,6 +126,7 @@ public class CadenaDealCycle extends DealCycle {
         SummonSlashingKnife summonSlashingKnife = new SummonSlashingKnife();
         SummonStrikingBrick summonStrikingBrick = new SummonStrikingBrick();
         SummonThrowingWingDaggerBomb summonThrowingWingDagger = new SummonThrowingWingDaggerBomb();
+        VenomBurst venomBurst = new VenomBurst();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WeakPointConvergingAttack weakPointConvergingAttack = new WeakPointConvergingAttack();
 
@@ -133,8 +136,11 @@ public class CadenaDealCycle extends DealCycle {
 
         grandisGoddessBlessingNova.setCooldown(240.0);
 
+        boolean isAir = false;
+
         addSkillEvent(weakPointConvergingAttack);
         addSkillEvent(weaponVarietyBuff);
+        addSkillEvent(venomBurst);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(chainArtsFuryBuff)
@@ -185,12 +191,14 @@ public class CadenaDealCycle extends DealCycle {
                     cooldownCheck(soulContract)
                     && cooldownCheck(readyToDie)
                     && cooldownCheck(weaponJumpRing)
+                    && cooldownCheck(chainArtsTakedown)
                     && cooldownCheck(adOrdnance)
                     && cooldownCheck(chainArtsMaelstrom)
             ) {
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
                 addSkillEvent(weaponJumpRing);
+                addSkillEvent(chainArtsTakedown);
                 addSkillEvent(adOrdnance);
                 addSkillEvent(chainArtsStroke1);
                 addSkillEvent(chainArtsStroke2);
@@ -223,11 +231,21 @@ public class CadenaDealCycle extends DealCycle {
                             || getStart().after(new Timestamp(630 * 1000))
                     )
             ) {
+                if (isAir) {
+                    addSkillEvent(chainArtsStroke1);
+                    addSkillEvent(chainArtsStroke2);
+                    isAir = false;
+                }
                 addSkillEvent(adOrdnance);
             } else if (
                     cooldownCheck(summonThrowingWingDagger)
                     && !cooldownCheck(adOrdnance)
             ) {
+                if (isAir) {
+                    addSkillEvent(chainArtsStroke1);
+                    addSkillEvent(chainArtsStroke2);
+                    isAir = false;
+                }
                 addSkillEvent(chainArtsStroke1Cancle);
                 addSkillEvent(summonThrowingWingDagger);
             } else if (cooldownCheck(summonBeatingNeedleBat1)) {
@@ -239,6 +257,7 @@ public class CadenaDealCycle extends DealCycle {
             } else if (cooldownCheck(summonShootingShotgun)) {
                 addSkillEvent(chainArtsStroke1Cancle);
                 addSkillEvent(summonShootingShotgun);
+                isAir = true;
             } else if (cooldownCheck(summonSlashingKnife)) {
                 addSkillEvent(chainArtsStroke1Cancle);
                 addSkillEvent(summonSlashingKnife);
@@ -248,17 +267,26 @@ public class CadenaDealCycle extends DealCycle {
             } else if (cooldownCheck(summonReleasingBomb)) {
                 addSkillEvent(chainArtsStroke1Cancle);
                 addSkillEvent(summonReleasingBomb);
+                isAir = true;
             } else if (cooldownCheck(summonScratchingClaw)) {
+                if (!isAir) {
+                    addSkillEvent(chainArtsStroke1);
+                    addSkillEvent(chainArtsStroke2);
+                }
                 addSkillEvent(chainArtsStroke1Cancle);
                 addSkillEvent(summonScratchingClaw);
+                isAir = false;
             } else if (cooldownCheck(chainArtsCrush)) {
+                addSkillEvent(chainArtsStroke1);
+                addSkillEvent(chainArtsChase);
                 addSkillEvent(chainArtsCrush);
-            } /*else if (
+            } else if (
                     cooldownCheck(summonCuttingScimitar)
             ) {
                 addSkillEvent(chainArtsStroke1);
                 addSkillEvent(summonCuttingScimitar);
-            }*/ else {
+                addSkillEvent(chainArtsChase);
+            } else {
                 addSkillEvent(chainArtsStroke1);
                 addSkillEvent(chainArtsStroke2);
             }
@@ -271,6 +299,7 @@ public class CadenaDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -296,8 +325,7 @@ public class CadenaDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -347,6 +375,30 @@ public class CadenaDealCycle extends DealCycle {
                     addSkillEvent(weaponVarietyFinale);
                     weaponVarietyCnt = 0;
                 }
+            }
+            if (
+                    skill instanceof SummonBeatingNeedleBat1
+                    || skill instanceof SummonBeatingNeedleBat2
+                    || skill instanceof SummonBeatingNeedleBat3
+                    || skill instanceof SummonCuttingScimitar
+                    || skill instanceof SummonReleasingBomb
+                    || skill instanceof SummonScratchingClaw
+                    || skill instanceof SummonShootingShotgun
+                    || skill instanceof SummonSlashingKnife
+                    || skill instanceof SummonStrikingBrick
+                    || skill instanceof SummonThrowingWingDagger
+                    || skill instanceof SummonThrowingWingDaggerBomb
+                    || skill instanceof ChainArtsCrush
+                    || skill instanceof WeaponVariety
+                    || skill instanceof ChainArtsStroke1
+                    || skill instanceof ChainArtsStroke1Cancle
+                    || skill instanceof ChainArtsStroke2
+                    || skill instanceof ChainArtsStroke2Reinforce
+                    || skill instanceof ChainArtsStroke2ReinforceWave
+                    || skill instanceof ChainArtsTakedown
+                    || skill instanceof ChainArtsTakedownBeat
+                    || skill instanceof ChainArtsTakedownFinish
+            ) {
                 if (getStart().before(professionalAgentEndTime)) {
                     addSkillEvent(professionalAgentBomb);
                 }
@@ -412,14 +464,10 @@ public class CadenaDealCycle extends DealCycle {
                         ) {
                             i += 1080;
                         }
-                        if (
-                                getStart().before(professionalAgentEndTime)
-                                && (
-                                        skill instanceof ADOrdnance
-                                        || skill instanceof SummonThrowingWingDagger
-                                )
-                        ) {
-                            getSkillEventList().add(new SkillEvent(professionalAgentBomb, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        if (skill instanceof ChainArtsTakedownWave) {
+                            if (getStart().before(professionalAgentEndTime)) {
+                                getSkillEventList().add(new SkillEvent(professionalAgentBomb, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                            }
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
@@ -451,15 +499,21 @@ public class CadenaDealCycle extends DealCycle {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
                 Long ran = (long) (Math.random() * 99 + 1);
-                if (
-                        getStart().before(grandisGoddessBlessingEndTime)
-                        && reuseCnt > 0
-                ) {
-                    ran -= 55;
-                }
                 if (ran <= getJob().getReuse()) {
-                    reuseCnt--;
-                } else  {
+                    return;
+                } else {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
+                }
+            }
+            if (
+                    skill.isApplyReuse()
+                            && getStart().before(grandisGoddessBlessingEndTime)
+                            && reuseCnt > 0
+            ) {
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= getJob().getReuse()) {
+                    return;
+                } else {
                     skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
                 }
             } else {
@@ -527,7 +581,6 @@ public class CadenaDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -648,6 +701,15 @@ public class CadenaDealCycle extends DealCycle {
         }
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
             sum += info;
+            if (
+                    skill instanceof ChainArtsMassacre1
+                    || skill instanceof ChainArtsMassacre2
+                    || skill instanceof ChainArtsMassacre3
+            ) {
+                if (getStart().before(professionalAgentEndTime)) {
+                    getSkillEventList().add(new SkillEvent(professionalAgentBomb, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+                }
+            }
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
             Timestamp temp = new Timestamp(getStart().getTime());

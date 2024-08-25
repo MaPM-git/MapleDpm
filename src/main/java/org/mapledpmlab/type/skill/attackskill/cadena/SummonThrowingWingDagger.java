@@ -11,7 +11,7 @@ public class SummonThrowingWingDagger extends AttackSkill {
         //this.setDelayByAttackSpeed(780L);
         this.setDotDuration(7000L);
         this.setInterval(330L);
-        this.setLimitAttackCount(40L);
+        this.setLimitAttackCount(5L);
         this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);

@@ -7,10 +7,13 @@ public class DragonFang extends AttackSkill {
         this.setName("드래곤 팡");
         this.setDamage(100.0 + 60 + 95);
         this.setAttackCount(4L);
-        this.setDotDuration(9450L);
-        this.setInterval(1350L);
+        //this.setDotDuration(9450L);
+        //this.setInterval(1350L);
+        //this.setCooldown(13.45);
+        this.setDotDuration(8400L);
+        this.setInterval(1200L);
+        this.setCooldown(11.4);
         this.setLimitAttackCount(7L);
-        this.setCooldown(13.95);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setApplyCooldownReduction(false);

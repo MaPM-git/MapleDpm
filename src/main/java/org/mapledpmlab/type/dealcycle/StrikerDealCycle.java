@@ -203,7 +203,11 @@ public class StrikerDealCycle extends DealCycle {
             } else if (
                     getStart().before(creationOfTheWorldEndTime)
             ) {
-                addSkillEvent(typhoon);
+                if (cooldownCheck(thunderboltFlash)) {
+                    addSkillEvent(thunderboltFlash);
+                } else {
+                    addSkillEvent(typhoon);
+                }
                 typhoon.setActivateTime(new Timestamp(-1));
                 addSkillEvent(annihilation);
             } /*else if (
@@ -238,7 +242,7 @@ public class StrikerDealCycle extends DealCycle {
     }
 
     public void seaWaveCooldownReduction() {
-        if (seaWaveCount < 4) {
+        if (seaWaveCount < 6) {//4) {
             seaWave.setActivateTime(new Timestamp(seaWave.getActivateTime().getTime() - 1500));
             seaWaveCount ++;
         }
@@ -270,8 +274,7 @@ public class StrikerDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -339,7 +342,6 @@ public class StrikerDealCycle extends DealCycle {
             }
             if (
                     skill instanceof Annihilation
-                    || skill instanceof CreateThunderChainFinal
                     || skill instanceof GodOfTheSea
                     || skill instanceof SharkWave
                     || skill instanceof Thunderbolt
@@ -404,6 +406,9 @@ public class StrikerDealCycle extends DealCycle {
                             if (linkCount > 8 && cooldownCheck(lightningGodSpearStrike)) {
                                 addSkillEvent(lightningGodSpearStrike);
                                 linkCount = 0;
+                            }
+                            if (cooldownCheck(seaWave)) {
+                                addSkillEvent(seaWave);
                             }
                             getStart().setTime(current.getTime());
                         }
@@ -481,6 +486,9 @@ public class StrikerDealCycle extends DealCycle {
                 if (linkCount > 8 && cooldownCheck(lightningGodSpearStrike)) {
                     addSkillEvent(lightningGodSpearStrike);
                     linkCount = 0;
+                }
+                if (cooldownCheck(seaWave)) {
+                    addSkillEvent(seaWave);
                 }
                 getStart().setTime(current.getTime());
                 getSkillEventList().add(new SkillEvent(thunderstrokeGiant, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));

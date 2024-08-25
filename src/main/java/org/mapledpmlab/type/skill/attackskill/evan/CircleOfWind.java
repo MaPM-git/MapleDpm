@@ -5,6 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class CircleOfWind extends AttackSkill {
     public CircleOfWind() {
         this.setName("서클 오브 윈드");
+        this.setDelay(30L);
         /*this.setDamage(108.0 + 213);
         this.setAttackCount(5L);
         this.setDelayByAttackSpeed(870L);

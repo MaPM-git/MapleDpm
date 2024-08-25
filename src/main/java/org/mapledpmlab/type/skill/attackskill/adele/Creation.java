@@ -6,7 +6,7 @@ public class Creation extends AttackSkill {
     public Creation(Long etherSword) {
         this.setName("크리에이션");
         this.setDamage(200.0 + 240 + 273);
-        this.setAttackCount(etherSword);
+        this.setAttackCount(etherSword * 2);
         this.setCooldown(1.5);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);

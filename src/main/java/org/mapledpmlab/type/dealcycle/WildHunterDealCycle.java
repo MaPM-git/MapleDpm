@@ -37,14 +37,14 @@ public class WildHunterDealCycle extends DealCycle {
             add(new JaguarMaximum());
             add(new JaguarMaximumEnd());
             add(new JaguarSoul());
-            add(new NaturesBeliefRoar());
             add(new NaturesBeliefWave());
+            add(new NaturesBeliefRoar());
+            add(new SoulResonation());
             add(new RampageAsOne());
             add(new ResistanceLineInfantryDelay());
             add(new ResistanceLineInfantry());
             add(new RideJaguar());
             add(new SonicBoom());
-            add(new SoulResonation());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new SummonJaguar());
@@ -58,7 +58,7 @@ public class WildHunterDealCycle extends DealCycle {
 
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new CriticalReinforce(100.0));
+            add(new CriticalReinforce(0.0));
             add(new JaguarStorm());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new RestraintRing());
@@ -83,6 +83,11 @@ public class WildHunterDealCycle extends DealCycle {
     AnotherBite2 anotherBite2 = new AnotherBite2();
     AnotherBite3 anotherBite3 = new AnotherBite3();
     AssistantHuntingUnit assistantHuntingUnit = new AssistantHuntingUnit();
+    ClawCut clawCut = new ClawCut();
+    Crossroad crossroad = new Crossroad();
+    RampageAsOne rampageAsOne = new RampageAsOne();
+    SonicBoom sonicBoom = new SonicBoom();
+    SoulContract soulContract = new SoulContract();
     SoulResonation soulResonation = new SoulResonation();
     SummonJaguar summonJaguar = new SummonJaguar();
 
@@ -96,10 +101,8 @@ public class WildHunterDealCycle extends DealCycle {
 
         AssistantHuntingUnit assistantHuntingUnit = new AssistantHuntingUnit();
         AssistantHuntingUnitDelay assistantHuntingUnitDelay = new AssistantHuntingUnitDelay();
-        ClawCut clawCut = new ClawCut();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        Crossroad crossroad = new Crossroad();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         DrillContainer drillContainer = new DrillContainer();
         GetOffJaguar getOffJaguar = new GetOffJaguar();
         Grenade grenade = new Grenade();
@@ -109,14 +112,11 @@ public class WildHunterDealCycle extends DealCycle {
         JaguarStorm jaguarStorm = new JaguarStorm();
         MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
         NaturesBeliefWave naturesBeliefWave = new NaturesBeliefWave();
-        RampageAsOne rampageAsOne = new RampageAsOne();
         ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
         RestraintRing restraintRing = new RestraintRing();
         RideJaguar rideJaguar = new RideJaguar();
         RingSwitching ringSwitching = new RingSwitching();
         SilentRampage silentRampage = new SilentRampage();
-        SonicBoom sonicBoom = new SonicBoom();
-        SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WildGrenade wildGrenade = new WildGrenade();
@@ -135,6 +135,7 @@ public class WildHunterDealCycle extends DealCycle {
         mapleWorldGoddessBlessing.setCooldown(180.0);
         Long ran;
 
+        int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(rampageAsOne)
@@ -187,6 +188,14 @@ public class WildHunterDealCycle extends DealCycle {
                 jaguarSkillDelay = new Timestamp(getStart().getTime() + crossroad.getJaguarDelay());
             }
             if (
+                    cooldownCheck(resistanceLineInfantry)
+                    && getStart().after(new Timestamp(10000))
+                    && !cooldownCheck(willOfLiberty)
+                    && getStart().before(new Timestamp(700 * 1000))
+            ) {
+                addSkillEvent(resistanceLineInfantry);
+            }
+            if (
                     cooldownCheck(willOfLiberty)
                     && cooldownCheck(assistantHuntingUnitDelay)
                     && cooldownCheck(silentRampage)
@@ -202,6 +211,14 @@ public class WildHunterDealCycle extends DealCycle {
                     && cooldownCheck(wildVulcanTypeXBeforeDelay)
                     && getStart().before(new Timestamp(660 * 1000))
             ) {
+                if (cooldownCheck(mapleWorldGoddessBlessing)) {
+                    if (dealCycleOrder == 3) {
+                        mapleWorldGoddessBlessing.setCooldown(0.0);
+                    } else {
+                        mapleWorldGoddessBlessing.setCooldown(180.0);
+                    }
+                    addSkillEvent(mapleWorldGoddessBlessing);
+                }
                 addSkillEvent(willOfLiberty);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -211,20 +228,19 @@ public class WildHunterDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(wildVulcanReinforce);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(assistantHuntingUnitDelay);
                 addSkillEvent(silentRampage);
                 addSkillEvent(criticalReinforce);
                 addSkillEvent(drillContainer);
                 addSkillEvent(resistanceLineInfantry);
-                addSkillEvent(jaguarSoul);
+                addSkillEvent(jaguarStorm);
                 addSkillEvent(soulContract);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
                 }
-                addSkillEvent(jaguarStorm);
+                addSkillEvent(jaguarSoul);
                 addSkillEvent(rampageAsOne);
                 if (cooldownCheck(naturesBeliefWave)) {
                     addSkillEvent(naturesBeliefWave);
@@ -233,6 +249,8 @@ public class WildHunterDealCycle extends DealCycle {
                 addSkillEvent(getOffJaguar);
                 addSkillEvent(wildGrenade);
                 addSkillEvent(wildVulcanTypeXBeforeDelay);
+
+                dealCycleOrder++;
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(110 * 1000))
@@ -255,7 +273,6 @@ public class WildHunterDealCycle extends DealCycle {
                     && !cooldownCheck(willOfLiberty)
             ) {
                 addSkillEvent(drillContainer);
-                addSkillEvent(resistanceLineInfantry);
             } else {
                 addSkillEvent(wildVulcanReinforce);
             }
@@ -315,8 +332,7 @@ public class WildHunterDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -379,6 +395,73 @@ public class WildHunterDealCycle extends DealCycle {
                             if (biteCnt < 3) {
                                 biteCnt ++;
                             }
+                        }
+                        if (skill instanceof WildVulcanTypeX) {
+                            Timestamp now = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
+                            Long ran;
+                            if (
+                                    cooldownCheck(rampageAsOne)
+                                            && getStart().after(jaguarSkillDelay)
+                                            && !cooldownCheck(soulContract)
+                            ) {
+                                if (biteCnt < 3) {
+                                    biteCnt ++;
+                                }
+                                addSkillEvent(rampageAsOne);
+                                jaguarSkillDelay = new Timestamp(getStart().getTime() + rampageAsOne.getJaguarDelay());
+                            }
+                            if (
+                                    cooldownCheck(sonicBoom)
+                                            && getStart().after(jaguarSkillDelay)
+                            ) {
+                                ran = (long) (Math.random() * 99 + 1);
+                                if (biteCnt == 0) {
+                                    biteCnt ++;
+                                } else if (ran <= 40 && biteCnt < 3) {
+                                    biteCnt ++;
+                                }
+                                addSkillEvent(sonicBoom);
+                                jaguarSkillDelay = new Timestamp(getStart().getTime() + sonicBoom.getJaguarDelay());
+                            }
+                            if (
+                                    cooldownCheck(clawCut)
+                                            && getStart().after(jaguarSkillDelay)
+                            ) {
+                                ran = (long) (Math.random() * 99 + 1);
+                                if (biteCnt == 0) {
+                                    biteCnt ++;
+                                } else if (ran <= 30 && biteCnt < 3) {
+                                    biteCnt ++;
+                                }
+                                addSkillEvent(clawCut);
+                                jaguarSkillDelay = new Timestamp(getStart().getTime() + clawCut.getJaguarDelay());
+                            }
+                            if (
+                                    cooldownCheck(crossroad)
+                                            && getStart().after(jaguarSkillDelay)
+                            ) {
+                                ran = (long) (Math.random() * 99 + 1);
+                                if (biteCnt == 0) {
+                                    biteCnt ++;
+                                } else if (ran <= 90 && biteCnt < 3) {
+                                    biteCnt ++;
+                                }
+                                addSkillEvent(crossroad);
+                                jaguarSkillDelay = new Timestamp(getStart().getTime() + crossroad.getJaguarDelay());
+                            }
+                            if (
+                                    cooldownCheck(summonJaguar)
+                                            && getStart().after(jaguarSkillDelay)
+                            ) {
+                                ran = (long) (Math.random() * 99 + 1);
+                                if (ran <= 15 && biteCnt < 3) {
+                                    biteCnt ++;
+                                }
+                                addSkillEvent(summonJaguar);
+                                jaguarSkillDelay = new Timestamp(getStart().getTime() + summonJaguar.getJaguarDelay());
+                            }
+                            getStart().setTime(now.getTime());
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
@@ -486,7 +569,6 @@ public class WildHunterDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -501,6 +583,13 @@ public class WildHunterDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (se.getSkill() instanceof JaguarSkill && isJaguarStorm) {
+                    buffSkill.addBuffFinalDamage(3.6);
+                    totalDamage += getAttackDamage(se, buffSkill, start, end);
+                    totalDamage += getAttackDamage(se, buffSkill, start, end);
+                    totalDamage += getAttackDamage(se, buffSkill, start, end);
+                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 3.6);
+                }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (
@@ -536,10 +625,6 @@ public class WildHunterDealCycle extends DealCycle {
         }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
-                if (attackSkill instanceof JaguarSkill && isJaguarStorm) {
-                    attackSkill.setAttackCount(attackSkill.getAttackCount() * 3);
-                    buffSkill.addBuffFinalDamage(3.6);
-                }
                 this.getJob().addMainStat(buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
@@ -569,22 +654,15 @@ public class WildHunterDealCycle extends DealCycle {
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
-                if (skillEvent.getStart().equals(start)) {
-                    if (attackSkill instanceof JaguarSkill && isJaguarStorm) {
-                        as.setUseCount(as.getUseCount() + 2);
-                    }
-                    as.setUseCount(as.getUseCount() + 1);
-                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
-                }
                 Long distance = end.getTime() - start.getTime();
                 if (attackSkill.getMultiAttackInfo().size() == 0 && attackSkill.getInterval() == 0 && attackSkill.getDelay() != 0 && distance != 0) {
                     attackDamage = attackDamage / attackSkill.getDelay() * distance;
                 }
-                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
-                if (attackSkill instanceof JaguarSkill && isJaguarStorm) {
-                    attackSkill.setAttackCount(attackSkill.getAttackCount() / 3);
-                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 3.6);
+                if (skillEvent.getStart().equals(start)) {
+                    as.setUseCount(as.getUseCount() + 1);
+                    as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
                 }
+                as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
         }

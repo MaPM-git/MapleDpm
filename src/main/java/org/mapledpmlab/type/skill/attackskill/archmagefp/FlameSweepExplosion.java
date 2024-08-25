@@ -10,7 +10,6 @@ public class FlameSweepExplosion extends AttackSkill {
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         //this.setRelatedSkill(new PoisonNovaExplosion());
-        this.setAddDamage(10L);         // 플레임 스윕-리인포스
         this.setRelatedSkill(new FlameSweepDot());
     }
 }

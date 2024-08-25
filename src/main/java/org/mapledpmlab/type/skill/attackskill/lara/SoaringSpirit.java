@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SoaringSpirit extends AttackSkill {
     public SoaringSpirit() {
         this.setName("용솟음치는 정기");
-        this.setDamage(1120.0);
+        this.setDamage(1500.0);
         this.setAttackCount(8L);
         this.setDelay(630L);
         this.setCooldown(20.0);

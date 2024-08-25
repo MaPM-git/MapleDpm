@@ -47,6 +47,7 @@ public class DarkKnightDealCycle extends DealCycle {
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
+            add(new BodyOfSteel(0L));
             add(new DarknessAura());
             add(new DarkThirst());
             add(new EpicAdventure());
@@ -70,6 +71,7 @@ public class DarkKnightDealCycle extends DealCycle {
         BeholderDominant beholderDominant = new BeholderDominant();
         BeholderImpact beholderImpact = new BeholderImpact();
         BeholderShock beholderShock = new BeholderShock();
+        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DarknessAuraDot darknessAuraDot = new DarknessAuraDot();
         DarknessAuraFinish darknessAuraFinish = new DarknessAuraFinish();
@@ -119,6 +121,7 @@ public class DarkKnightDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -128,7 +131,7 @@ public class DarkKnightDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(gungnirDescent);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
+                addSkillEvent(bodyOfSteel);
                 addSkillEvent(darkThirst);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
@@ -200,8 +203,7 @@ public class DarkKnightDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null

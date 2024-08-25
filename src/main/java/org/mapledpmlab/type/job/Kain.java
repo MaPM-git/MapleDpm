@@ -67,9 +67,9 @@ public class Kain extends Job {
         this.addBossDamage(10L);
 
         // 환산 보정
-        this.addMainStatP(-36L);
-        this.addMainStat(-12L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-69L);
+        this.addMainStat(3L);
+        this.addSubStat(-5L);
 
         this.setAbility(new PassiveBossCritical());
         this.setArtifact(new Artifact());
@@ -84,5 +84,13 @@ public class Kain extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
         this.addObject(this.getHyper());
+
+        this.addCriticalP(-20.0);       // 세이람의 영약
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addCriticalP(20.0);        // 세이람의 영약
     }
 }

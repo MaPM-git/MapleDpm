@@ -10,6 +10,8 @@ public class HyperBoostEndLastStand1 extends AttackSkill {
         this.setDelayByAttackSpeed(420L);
         this.setApplyFinalAttack(true);
         this.setCooldown(30.0);
+        this.setAddDamage(30L);         // 부스트 엔드-리인포스
+        this.addIgnoreDefenseList(20L); // 부스트 엔드-이그노어 가드
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.getMultiAttackInfo().add(60L);

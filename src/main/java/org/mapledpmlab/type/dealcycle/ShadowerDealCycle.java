@@ -109,7 +109,8 @@ public class ShadowerDealCycle extends DealCycle {
 
         ultimateDarkSight.setBuffFinalDamage(1.29);
 
-        ringSwitching.setCooldown(100.0);
+        ringSwitching.setCooldown(90.0);
+        ringSwitching.setApplyCooldownReduction(false);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
@@ -130,6 +131,7 @@ public class ShadowerDealCycle extends DealCycle {
                     && cooldownCheck(eviscerate)
                     && getStart().before(new Timestamp(600 * 1000))
             ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -141,7 +143,6 @@ public class ShadowerDealCycle extends DealCycle {
                     addSkillEvent(assassinationFinishCancle);
                     addSkillEvent(mesoExplosion);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(ultimateDarkSight);
                 addSkillEvent(smokeBomb);
                 addSkillEvent(readyToDie);
@@ -172,6 +173,7 @@ public class ShadowerDealCycle extends DealCycle {
                 addSkillEvent(veilOfShadow);
                 addSkillEvent(readyToDie);
                 addSkillEvent(soulContract);
+                addSkillEvent(weaponJumpRing);
                 addSkillEvent(assassination);
                 addSkillEvent(slashShadowFormation);
                 addSkillEvent(sonicBlow);
@@ -189,8 +191,15 @@ public class ShadowerDealCycle extends DealCycle {
             ) {
                 addSkillEvent(veilOfShadow);
             } else if (
+                    cooldownCheck(ringSwitching)
+                    && getStart().after(new Timestamp(80 * 1000))
+                    && getStart().before(new Timestamp(11 * 60 * 1000))
+            ) {
+                addSkillEvent(ringSwitching);
+            } else if (
                     cooldownCheck(sonicBlow)
                     && cooldownCheck(eviscerate)
+                    && getStart().before(new Timestamp(700 * 1000))
             ) {
                 addSkillEvent(sonicBlow);
                 addSkillEvent(eviscerate);
@@ -241,8 +250,7 @@ public class ShadowerDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -387,7 +395,6 @@ public class ShadowerDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

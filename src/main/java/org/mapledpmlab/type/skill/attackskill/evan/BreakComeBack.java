@@ -8,7 +8,8 @@ public class BreakComeBack extends AttackSkill {
         this.setDamage(330.0);
         this.setAttackCount(3L);
         this.setDotDuration(5000L);
-        this.setInterval(320L);
+        this.setInterval(500L);
+        this.setLimitAttackCount(9L);
         this.addFinalDamage(1.6);           // 코어 강화
         this.addFinalDamage(1.08);          // 오버로드 마나
     }

@@ -6,6 +6,7 @@ import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.hyper.HyperKinesis;
+import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
@@ -74,12 +75,13 @@ public class Kinesis extends Job {
         this.addCriticalDamage(12.0);   // 숙달
 
         // 환산 보정
-        this.addMainStatP(81L);
+        this.addMainStatP(24L);
         this.addMainStat(-9L);
+        this.addSubStat(5L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);

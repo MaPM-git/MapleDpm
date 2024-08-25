@@ -68,8 +68,7 @@ public class DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                     && restraintRingStartTime != null
                     && restraintRingEndTime != null
@@ -239,10 +238,10 @@ public class DealCycle {
         setOriginXRestraintRingDeal(calcOriginXRestraintDeal());
         Object[] result = new Object[]{
                 this.getJob().getName(), String.valueOf(this.getDPM()),
-                "=TEXT(" + getDPM() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(B2:B50),0)),\"0.0%\")", String.valueOf(this.getRestraintRingDeal()),
-                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(D2:D50),0)),\"0.0%\")", String.valueOf(this.getFortyDeal()),
-                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(F2:F50),0)),\"0.0%\")", String.valueOf(this.getOriginXRestraintRingDeal()),
-                "=TEXT(" + getOriginXRestraintRingDeal() + "/SUM(IF(A2:A50=\"비숍(2분)\", VALUE(H2:H50),0)),\"0.0%\")"
+                "=TEXT(" + getDPM() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(B2:B100),0)),\"0.0%\")", String.valueOf(this.getRestraintRingDeal()),
+                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(D2:D100),0)),\"0.0%\")", String.valueOf(this.getFortyDeal()),
+                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(F2:F100),0)),\"0.0%\")", String.valueOf(this.getOriginXRestraintRingDeal()),
+                "=TEXT(" + getOriginXRestraintRingDeal() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(H2:H100),0)),\"0.0%\")"
         };
         return result;
     }
@@ -305,7 +304,6 @@ public class DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

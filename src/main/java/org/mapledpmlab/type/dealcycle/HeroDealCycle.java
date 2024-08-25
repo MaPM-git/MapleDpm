@@ -41,6 +41,7 @@ public class HeroDealCycle extends DealCycle {
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
+            add(new BodyOfSteel(0L));
             add(new ComboInstinctsBuff());
             add(new EpicAdventure());
             add(new IncisingBuff());
@@ -66,6 +67,7 @@ public class HeroDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         ComboDeathFault comboDeathFault = new ComboDeathFault();
         ComboInstinctsAttack comboInstinctsAttack = new ComboInstinctsAttack();
@@ -122,6 +124,15 @@ public class HeroDealCycle extends DealCycle {
             ) {
                 addSkillEvent(swordOfBurningSoulBuff);
                 addSkillEvent(incisingAttack);
+                addSkillEvent(bodyOfSteel);
+                if (cooldownCheck(mapleWorldGoddessBlessing)) {
+                    if (dealCycleOrder == 3) {
+                        mapleWorldGoddessBlessing.setCooldown(0.0);
+                    } else {
+                        mapleWorldGoddessBlessing.setCooldown(180.0);
+                    }
+                    addSkillEvent(mapleWorldGoddessBlessing);
+                }
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -130,14 +141,6 @@ public class HeroDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 } else {
                     addSkillEvent(ragingBlow);
-                }
-                if (cooldownCheck(mapleWorldGoddessBlessing)) {
-                    if (dealCycleOrder == 3) {
-                        mapleWorldGoddessBlessing.setCooldown(0.0);
-                    } else {
-                        mapleWorldGoddessBlessing.setCooldown(180.0);
-                    }
-                    addSkillEvent(mapleWorldGoddessBlessing);
                 }
                 addSkillEvent(valhallaBuff);
                 addSkillEvent(soulContract);
@@ -214,11 +217,23 @@ public class HeroDealCycle extends DealCycle {
                 }
             }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            boolean isComboInstincts = false;
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                if (skillEvent.getSkill() instanceof ComboInstinctsBuff) {
+                    isComboInstincts = true;
+                    advancedComboAttack.setBuffFinalDamage(2.56);
+                    break;
+                }
+            }
             boolean isSwordIllusionBuff = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof SwordIllusionBuff) {
                     isSwordIllusionBuff = true;
-                    advancedComboAttack.setBuffFinalDamage(2.3 + 0.78);
+                    if (isComboInstincts) {
+                        advancedComboAttack.setBuffFinalDamage(3.496);
+                    } else {
+                        advancedComboAttack.setBuffFinalDamage(3.08);
+                    }
                     break;
                 }
             }
@@ -236,7 +251,6 @@ public class HeroDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -258,7 +272,7 @@ public class HeroDealCycle extends DealCycle {
                     }
                 }
             }
-            if (isSwordIllusionBuff) {
+            if (isComboInstincts || isSwordIllusionBuff) {
                 advancedComboAttack.setBuffFinalDamage(2.3);
             }
         }
@@ -276,6 +290,9 @@ public class HeroDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof ComboInstinctsBuff) {
+                comboInstinctEndTime = new Timestamp(getStart().getTime() + 20000);
+            }
             if (
                     skill instanceof RestraintRing
                     && restraintRingStartTime == null
@@ -285,8 +302,7 @@ public class HeroDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -301,6 +317,12 @@ public class HeroDealCycle extends DealCycle {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
+                if (skill instanceof BodyOfSteel) {
+                    for (long i = 0; i < 18000; i += 1000) {
+                        getSkillEventList().add(new SkillEvent(new BodyOfSteel(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
+                    }
+                }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
@@ -343,9 +365,6 @@ public class HeroDealCycle extends DealCycle {
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
             getEventTimeList().add(endTime);
-            if (skill instanceof ComboInstinctsBuff) {
-                comboInstinctEndTime = endTime;
-            }
         }
         getStart().setTime(getStart().getTime() + skill.getDelay());
         if (skill.getRelatedSkill() != null) {

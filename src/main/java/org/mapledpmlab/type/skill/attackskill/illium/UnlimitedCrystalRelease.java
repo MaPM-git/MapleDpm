@@ -13,5 +13,7 @@ public class UnlimitedCrystalRelease extends AttackSkill {
         this.setLimitAttackCount(25L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
+        this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

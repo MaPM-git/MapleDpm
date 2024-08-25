@@ -104,11 +104,12 @@ public class Xenon extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addAllStatP(4L);
+        this.addAllStatP(-36L);
         //this.addMainStatP(5L);
-        this.addMainStat(5L);
-        this.addSubStat(5L);
-        this.addOtherStat1(4L);
+        //this.addMainStat(1L);
+        this.addSubStat(1L);
+        this.addOtherStat1(1L);
+        this.addAtt(2L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

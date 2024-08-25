@@ -6,6 +6,7 @@ import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
+import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.NatureFriend;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
@@ -61,13 +62,13 @@ public class Lara extends Job {
         this.addMagic(54L);             // 유유
 
         // 환산 보정
-        this.addMainStatP(69L);
-        this.addMainStat(2L);
-        this.addSubStat(15L);
+        this.addMainStatP(12L);
+        this.addMainStat(-5L);
+        //this.addSubStat(-3L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new NatureFriend());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);

@@ -70,7 +70,7 @@ public class WildHunter extends Job {
         this.addAtt(10L);
 
         // 4차
-        this.addCriticalP(21.0 - 10);   // 샤프 아이즈
+        this.addCriticalP(21.0 - 20 - 10);   // 샤프 아이즈
         this.addCriticalDamage(16.0 - 8);
         this.addFinalDamage(1.2);       // 익스텐드 매거진
         this.addMainStat(62L);
@@ -83,9 +83,9 @@ public class WildHunter extends Job {
         this.addAtt(65L);               // 재규어 스톰
 
         // 환산 보정
-        this.addMainStatP(9L);
-        this.addMainStat(11L);
-        //this.addSubStat(-5L);
+        this.addMainStatP(-30L);
+        this.addMainStat(-2L);
+        //this.addSubStat(-10L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());
@@ -105,5 +105,13 @@ public class WildHunter extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addAttP(-10L);             // 하울링
+        this.addCriticalP(-1.0);        // 샤프 아이즈
+        this.addCriticalDamage(-16.0);
     }
 }

@@ -7,9 +7,10 @@ public class Death extends AttackSkill {
         this.setName("데스");
         this.setDamage(930.0);
         this.setAttackCount(12L);
-        this.setCooldown(4.0);
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.08);          // 오버로드 마나
+        this.setCooldown(4.0);
+        this.setApplyCooldownReduction(false);
     }
 }

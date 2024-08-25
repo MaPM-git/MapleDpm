@@ -70,7 +70,7 @@ public class Bishop3DealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DivinePunishmentDelay());
-            add(new DivinePunishment());
+            add(new DivinePunishment9());
             add(new FountainForAngel());
             add(new HeavensDoor());
             add(new HolyAdvent1());
@@ -112,6 +112,7 @@ public class Bishop3DealCycle extends DealCycle {
 
     AngelicOfJudgement angelicOfJudgement = new AngelicOfJudgement();
     Long holySwordCount = 0L;   // 성검 개수
+    TriumphFeather triumphFeather = new TriumphFeather();
 
     public Bishop3DealCycle(Job job) {
         super(job, null);
@@ -140,7 +141,6 @@ public class Bishop3DealCycle extends DealCycle {
         RingSwitching ringSwitching = new RingSwitching();
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
-        TriumphFeather triumphFeather = new TriumphFeather();
         UnstableMemorize unstableMemorize = new UnstableMemorize();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
@@ -149,18 +149,6 @@ public class Bishop3DealCycle extends DealCycle {
         infinity.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
         getStart().setTime(0);
-
-        for (long i = triumphFeather.getInterval(); i <= 720000; i += triumphFeather.getInterval()) {
-            if (i % 4000 > 2000) {
-                continue;
-            }
-            triumphFeather = new TriumphFeather();
-            if (i % 4000 != 500) {
-                triumphFeather.addFinalDamage(0.5);
-            }
-            getSkillEventList().add(new SkillEvent(triumphFeather, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-            getEventTimeList().add(new Timestamp(getStart().getTime() + i));
-        }
 
         ringSwitching.setCooldown(90.0);
 
@@ -232,6 +220,7 @@ public class Bishop3DealCycle extends DealCycle {
                     && cooldownCheck(divinePunishment)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -240,12 +229,11 @@ public class Bishop3DealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 } else {
                     addSkillEvent(angelicRay);
-                    if (holySwordCount == 12) {
+                    if (holySwordCount >= 24) {
                         addSkillEvent(angelicOfJudgement);
-                        holySwordCount = 0L;
+                        holySwordCount -= 24;
                     }
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(pray);
                 addSkillEvent(angelOfLibra);
                 addSkillEvent(soulContract);
@@ -258,6 +246,11 @@ public class Bishop3DealCycle extends DealCycle {
                 addSkillEvent(peacemaker);
                 addSkillEvent(heavensDoor);
                 if (cooldownCheck(holyAdvent)) {
+                    addSkillEvent(angelicRay);
+                    if (holySwordCount >= 24) {
+                        addSkillEvent(angelicOfJudgement);
+                        holySwordCount -= 24;
+                    }
                     addSkillEvent(holyAdvent);
                 }
                 addSkillEvent(divinePunishment);
@@ -279,15 +272,13 @@ public class Bishop3DealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(peacemaker)
-            ) {
+            } else if (cooldownCheck(peacemaker)) {
                 addSkillEvent(peacemaker);
             } else {
                 addSkillEvent(angelicRay);
-                if (holySwordCount == 12) {
+                if (holySwordCount >= 24) {
                     addSkillEvent(angelicOfJudgement);
-                    holySwordCount = 0L;
+                    holySwordCount -= 24;
                 }
             }
         }
@@ -304,6 +295,27 @@ public class Bishop3DealCycle extends DealCycle {
                 }
             }
             this.addSkillEvent(s);
+        }
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            if (
+                    skill instanceof HolyAdvent1
+                    || skill instanceof HolyAdvent2
+            ) {
+                Timestamp t = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                if (cooldownCheck(triumphFeather)) {
+                    addSkillEvent(triumphFeather);
+                }
+                getStart().setTime(t.getTime());
+            }
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
         }
     }
 
@@ -348,7 +360,8 @@ public class Bishop3DealCycle extends DealCycle {
             if (isLibra) {
                 for (int j = 0; j < useAttackSkillList.size(); j++) {
                     if (useAttackSkillList.get(j).getSkill() instanceof BahamutSummon) {
-                        useAttackSkillList.get(j).setSkill(new AngelOfLibraRevenge());
+                        useAttackSkillList.remove(j);
+                        j--;
                     }
                 }
             }
@@ -390,7 +403,6 @@ public class Bishop3DealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -449,8 +461,8 @@ public class Bishop3DealCycle extends DealCycle {
             buffSkill.addBuffDamage(angelOfLibraCharity.getBuffDamage());
         }
         if (isPray) {
-            mainStat = this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat();
-            Pray pray = new Pray(mainStat);
+            this.getJob().addMainStat(buffSkill.getBuffMainStat());
+            Pray pray = new Pray(this.getJob().getFinalMainStat());
             buffSkill.addBuffFinalDamage(pray.getBuffFinalDamage());
         }
         for (AttackSkill as : attackSkillList) {
@@ -502,8 +514,8 @@ public class Bishop3DealCycle extends DealCycle {
             buffSkill.addBuffDamage(-angelOfLibraCharity.getBuffDamage());
         }
         if (isPray) {
-            mainStat = this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat();
-            Pray pray = new Pray(mainStat);
+            Pray pray = new Pray(this.getJob().getFinalMainStat());
+            this.getJob().addMainStat(-buffSkill.getBuffMainStat());
             buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / pray.getBuffFinalDamage());
         }
         return attackDamage;
@@ -526,8 +538,7 @@ public class Bishop3DealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -557,8 +568,14 @@ public class Bishop3DealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    cooldownCheck(triumphFeather)
+                    && !(skill instanceof TriumphFeather)
+            ) {
+                addSkillEvent(triumphFeather);
+            }
             if (skill instanceof AngelicRay) {
-                holySwordCount ++;
+                holySwordCount += 2;
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -577,6 +594,13 @@ public class Bishop3DealCycle extends DealCycle {
                     if (skill instanceof AngelOfLibraRevenge) {
                         i = 0;
                     }
+                    if (
+                            skill instanceof HolyAdventBalance
+                            || skill instanceof HolyAdventCharity
+                            || skill instanceof HolyAdventRevenge
+                    ) {
+                        i = 3660;
+                    }
                     for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
@@ -585,18 +609,21 @@ public class Bishop3DealCycle extends DealCycle {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         if (
-                                skill instanceof DivinePunishment
+                                skill instanceof DivinePunishment9
                                 || skill instanceof DivinePunishment1
-                                || skill instanceof DivinePunishment2
+                                || skill instanceof DivinePunishment3
                         ) {
+                            Timestamp t = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
                             holySwordCount ++;
-                            if (holySwordCount == 12) {
-                                Timestamp t = new Timestamp(getStart().getTime());
-                                getStart().setTime(getStart().getTime() + i);
+                            if (holySwordCount >= 24) {
                                 addSkillEvent(angelicOfJudgement);
-                                holySwordCount = 0L;
-                                getStart().setTime(t.getTime());
+                                holySwordCount -= 24;
                             }
+                            if (cooldownCheck(triumphFeather)) {
+                                addSkillEvent(triumphFeather);
+                            }
+                            getStart().setTime(t.getTime());
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));

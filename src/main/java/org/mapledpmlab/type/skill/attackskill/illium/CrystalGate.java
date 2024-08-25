@@ -12,5 +12,7 @@ public class CrystalGate extends AttackSkill {
         /*this.setDotDuration(190000L);
         this.setInterval(1500L);*/
         this.addFinalDamage(1.6);   // 코어강화
+        this.setApplyFinalAttack(true);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

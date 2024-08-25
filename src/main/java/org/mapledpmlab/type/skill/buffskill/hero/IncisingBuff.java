@@ -10,6 +10,6 @@ public class IncisingBuff extends BuffSkill {
     public IncisingBuff() {
         this.setName("인사이징 버프");
         this.setDuration(60L);
-        this.setBuffDamage(25L);
+        this.setBuffDamage(26L);
     }
 }

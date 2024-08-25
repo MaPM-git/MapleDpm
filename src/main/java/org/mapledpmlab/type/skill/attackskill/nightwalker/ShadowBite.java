@@ -6,9 +6,12 @@ import org.mapledpmlab.type.skill.buffskill.nightwalker.DominionBuff;
 public class ShadowBite extends AttackSkill implements DarkAttack {
     public ShadowBite() {
         this.setName("쉐도우 바이트");
-        this.setDelay(810L);
+        this.setDelay(360L);
+        //this.setDelay(810L);
         this.setAttackCount(14L);
         this.setDamage(1485.0);
         this.addFinalDamage(1.6);       // 코어강화
+        this.setRelatedSkill(new RavenousBat());
+        ((AttackSkill) this.getRelatedSkill()).getMultiAttackInfo().add(990L);
     }
 }

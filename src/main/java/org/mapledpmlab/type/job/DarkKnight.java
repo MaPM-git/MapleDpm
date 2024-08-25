@@ -68,9 +68,9 @@ public class DarkKnight extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-30L);
-        this.addMainStat(-7L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-75L);
+        this.addMainStat(10L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new Artifact());

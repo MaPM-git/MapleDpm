@@ -67,7 +67,7 @@ public class WindBreaker extends Job {
         this.addCriticalP(10.0);
 
         // 4차
-        this.addCriticalP(21.0 - 10);   // 샤프 아이즈
+        this.addCriticalP(21.0 - 20 - 10);   // 샤프 아이즈
         this.addCriticalDamage(16.0 - 8);
         this.addAttP(11L);              // 윈드 블레싱
         this.addMainStatP(16L);
@@ -81,8 +81,9 @@ public class WindBreaker extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(-36L);
-        this.addMainStat(1L);
+        this.addMainStatP(-72L);
+        this.addMainStat(7L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new Artifact());
@@ -103,5 +104,7 @@ public class WindBreaker extends Job {
     public void Doping() {
         super.Doping();
         this.addAtt(15L);               // 세컨드 윈드
+        this.addCriticalP(-1.0);        // 샤프 아이즈
+        this.addCriticalDamage(-16.0);
     }
 }

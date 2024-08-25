@@ -6,8 +6,8 @@ public class DivinePunishmentDelay extends AttackSkill {
     public DivinePunishmentDelay() {
         this.setName("디바인 퍼니시먼트");
         this.setDelay(240L);
-        this.setCooldown(76.5);
-        this.setRelatedSkill(new DivinePunishment());
+        this.setCooldown(2.5);
+        this.setRelatedSkill(new DivinePunishment9());
         this.setApplyCooldownReduction(false);
     }
 }

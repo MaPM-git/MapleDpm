@@ -9,7 +9,7 @@ public class RoyalGuard extends AttackSkill {
         this.setAttackCount(9L);
         this.setDamage(1745.0);
         this.setCooldown(6.0);
-        //this.setDelayByAttackSpeed(540L);
+        this.setDelayByAttackSpeed(540L);
         this.addIgnoreDefenseList(20L); // 로얄 가드-이그노어 가드
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

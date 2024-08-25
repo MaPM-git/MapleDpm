@@ -166,6 +166,7 @@ public class EvanDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 //getStart().setTime(getStart().getTime() + 210);
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -177,7 +178,6 @@ public class EvanDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(circleOfMana);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(summonOnyxDragon);
                 addSkillEvent(zodiacRayDelay);
                 addSkillEvent(circleOfManaCancel);
@@ -443,8 +443,7 @@ public class EvanDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null

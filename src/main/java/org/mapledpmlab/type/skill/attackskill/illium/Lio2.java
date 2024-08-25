@@ -9,5 +9,6 @@ public class Lio2 extends AttackSkill {
         this.setAttackCount(1L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

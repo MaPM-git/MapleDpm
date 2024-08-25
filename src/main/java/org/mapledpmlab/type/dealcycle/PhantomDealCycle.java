@@ -38,6 +38,7 @@ public class PhantomDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new TempestOfCardBeforeDelay());
             add(new TempestOfCard());
+            add(new Twilight());
             add(new UltimateDrive());
         }
     };
@@ -55,6 +56,7 @@ public class PhantomDealCycle extends DealCycle {
             add(new RestraintRing());
             add(new RingSwitching());
             add(new SoulContract());
+            add(new TwilightDebuff());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
@@ -65,6 +67,8 @@ public class PhantomDealCycle extends DealCycle {
     RiftBreak riftBreak = new RiftBreak();
 
     Long cardStack = 0L;
+
+    Timestamp twilightEndTime = new Timestamp(-1);
 
     public PhantomDealCycle(Job job) {
         super(job, new NoireCarte());
@@ -90,14 +94,19 @@ public class PhantomDealCycle extends DealCycle {
         SoulContract soulContract = new SoulContract();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         TempestOfCardBeforeDelay tempestOfCardBeforeDelay = new TempestOfCardBeforeDelay();
+        TwilightDebuff twilightDebuff = new TwilightDebuff();
         UltimateDrive ultimateDrive = new UltimateDrive();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
-        ringSwitching.setCooldown(100.0);
+        ringSwitching.setCooldown(85.0);
+        ringSwitching.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(180.0);
         //readyToDie.setCooldown(90.0);
 
         while (getStart().before(getEnd())) {
+            if (getStart().after(twilightEndTime)) {
+                addSkillEvent(twilightDebuff);
+            }
             if (
                     cooldownCheck(finalCutBuff)
                     && cooldownCheck(heroesOath)
@@ -114,6 +123,7 @@ public class PhantomDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(finalCutBuff);
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -123,7 +133,6 @@ public class PhantomDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(ultimateDrive);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(bullsEye);
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
@@ -159,7 +168,7 @@ public class PhantomDealCycle extends DealCycle {
                 addSkillEvent(roseCarteFinale);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(75 * 1000))
+                    && getStart().after(new Timestamp(80 * 1000))
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -212,6 +221,9 @@ public class PhantomDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof TwilightDebuff) {
+                twilightEndTime = new Timestamp(getStart().getTime() + 60000);
+            }
             if (
                     skill instanceof RestraintRing
                     && restraintRingStartTime == null
@@ -221,8 +233,7 @@ public class PhantomDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -344,7 +355,6 @@ public class PhantomDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

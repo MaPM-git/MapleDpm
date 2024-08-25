@@ -14,12 +14,11 @@ public class Pray extends BuffSkill {
         this.setDuration(45L);
         this.setDelay(360L);
         if (mainStat >= 100000) {
-            this.setBuffFinalDamage(1.05 + 0.4);
+            this.setBuffFinalDamage(1.15 + 0.4);
         } else if (mainStat == 0) {
             this.setBuffFinalDamage(1.0);
         } else {
-            this.setBuffFinalDamage(1.05 + 0.01 * (mainStat / 2500));
+            this.setBuffFinalDamage(1.15 + 0.01 * (mainStat / 2500));
         }
-        this.setBuffFinalDamage(this.getBuffFinalDamage() + 0.1);   // 코어 강화
     }
 }

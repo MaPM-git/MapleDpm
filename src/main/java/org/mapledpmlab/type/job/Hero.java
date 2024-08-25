@@ -6,6 +6,7 @@ import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
+import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
 
@@ -56,7 +57,6 @@ public class Hero extends Job {
 
         // 3차
         this.addCriticalP(20.0);        // 찬스 어택
-        this.addStatXFinalDamage(1.25);
 
         // 4차
         this.addCriticalDamage(20.0);   // 인레이지
@@ -73,13 +73,13 @@ public class Hero extends Job {
         //this.addMainStat(8L);
 
         // 환산 보정, 스탯뚝
-        this.addMainStatP(48L);
-        this.addMainStat(5L);
+        this.addMainStatP(12L);
+        this.addMainStat(3L);
         this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new HybridLogic());
         this.setUnion(new StrUnion());
         this.addPerXMainStat(20L);
 
@@ -95,5 +95,6 @@ public class Hero extends Job {
     public void Doping() {
         super.Doping();
         this.minusFinalDamage(2.3);     // 어드밴스드 콤보는 딜사이클 클래스에서 따로 관리
+        this.addFinalDamage(1.25);      // 찬스 어택
     }
 }

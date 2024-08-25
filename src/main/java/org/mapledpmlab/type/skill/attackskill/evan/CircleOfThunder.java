@@ -5,6 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class CircleOfThunder extends AttackSkill {
     public CircleOfThunder() {
         this.setName("서클 오브 썬더");
+        this.setDelay(30L);
         /*this.setDamage(730.0);
         this.setAttackCount(5L);
         this.setDelayByAttackSpeed(870L);

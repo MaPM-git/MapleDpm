@@ -8,7 +8,8 @@ public class HeartbreakerFinishCancle extends AttackSkill {
         this.setName("분쇄(마무리 일격)");
         this.setAttackCount(6L);
         this.setDamage(835.0);
-        this.setDelayByAttackSpeed(360L);
+        this.setDelayByAttackSpeed(540L);
+        //this.setDelayByAttackSpeed(360L);
         this.addFinalDamage(1.5);
         this.setAddDamage(20L);         // 블래스트-리인포스
         this.addFinalDamage(2.2);       // 코어강화

@@ -59,7 +59,7 @@ public class MercedesDealCycle extends DealCycle {
 
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
-            add(new CriticalReinforce(100.0));
+            add(new CriticalReinforce(0.0));
             add(new ElementalGhost());
             add(new HeroesOath());
             add(new LegendarySpearBuff());
@@ -83,6 +83,7 @@ public class MercedesDealCycle extends DealCycle {
     StigmaOfIshtarComplete stigmaOfIshtarComplete = new StigmaOfIshtarComplete();
     UnfadingGlorySpiritKingAttack unfadingGlorySpiritKingAttack = new UnfadingGlorySpiritKingAttack();
     UnfadingGlorySpiritKingAttackReinforce unfadingGlorySpiritKingAttackReinforce = new UnfadingGlorySpiritKingAttackReinforce();
+    WrathOfEnlil wrathOfEnlil = new WrathOfEnlil();
     WrathOfEnlilSpiritEnchant wrathOfEnlilSpiritEnchant = new WrathOfEnlilSpiritEnchant();
 
     Timestamp elementalGhostEndTime = new Timestamp(-1);
@@ -115,7 +116,7 @@ public class MercedesDealCycle extends DealCycle {
         AdvancedStrikeDualShot advancedStrikeDualShot = new AdvancedStrikeDualShot();
         ChargeDrive1 chargeDrive1 = new ChargeDrive1();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         ElementalGhost elementalGhost = new ElementalGhost();
         ElementalKnightsDark elementalKnightsDark = new ElementalKnightsDark();
         ElementalKnightsFlame elementalKnightsFlame = new ElementalKnightsFlame();
@@ -141,7 +142,6 @@ public class MercedesDealCycle extends DealCycle {
         UnfadingGloryWave unfadingGloryWave = new UnfadingGloryWave();
         UnicornSpike unicornSpike = new UnicornSpike();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        WrathOfEnlil wrathOfEnlil = new WrathOfEnlil();
 
         ringSwitching.setCooldown(180.0);
 
@@ -150,24 +150,26 @@ public class MercedesDealCycle extends DealCycle {
         criticalReinforce.setDelay(criticalReinforce.getDelay() / 2);
         elementalGhost.setDelay(elementalGhost.getDelay() / 2);
 
-        addSkillEvent(elementalKnightsDark);
-        addSkillEvent(elementalKnightsFlame);
-        addSkillEvent(guidedArrow);
-        addSkillEvent(unicornSpike);
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
-        legendarySpear.setDelayByAttackSpeed(870L);
-        legendarySpearSpiritEnchant.setDelayByAttackSpeed(870L);
         wrathOfEnlil.setDelayByAttackSpeed(270L);
         wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
         leafTornado.setDelayByAttackSpeed(480L);
         leafTornadoSpiritEnchant.setDelayByAttackSpeed(480L);
+        unicornSpike.setDelayByAttackSpeed(600L);
 
+        addSkillEvent(elementalKnightsDark);
+        addSkillEvent(elementalKnightsFlame);
+        addSkillEvent(guidedArrow);
+        addSkillEvent(unicornSpike);
+        addSkillEvent(legendarySpear);
+        legendarySpear = new LegendarySpear();
+        legendarySpearSpiritEnchant = new LegendarySpearSpiritEnchant();
+        legendarySpear.setDelayByAttackSpeed(870L);
+        legendarySpearSpiritEnchant.setDelayByAttackSpeed(870L);
         while (getStart().before(getEnd())) {
             if (
-                    cooldownCheck(legendarySpear)
-                    && cooldownCheck(elementalGhost)
+                    cooldownCheck(elementalGhost)
                     && cooldownCheck(sylphidia)
                     && cooldownCheck(heroesOath)
                     && cooldownCheck(criticalReinforce)
@@ -187,7 +189,6 @@ public class MercedesDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(ringOfIshtar);
                 }
-                addSkillEvent(legendarySpear);
                 addSkillEvent(elementalGhost);
                 addSkillEvent(sylphidia);
                 addSkillEvent(criticalReinforce);
@@ -209,7 +210,6 @@ public class MercedesDealCycle extends DealCycle {
                 // 엔릴 스듀샷 유니콘 레전 리프
                 advancedStrikeDualShot = new AdvancedStrikeDualShot();
                 advancedStrikeDualShot.setDelayByAttackSpeed(450L);
-                unicornSpike.setDelayByAttackSpeed(600L);
                 addSkillEvent(wrathOfEnlil);
                 addSkillEvent(advancedStrikeDualShot);
                 addSkillEvent(unicornSpike);
@@ -217,8 +217,9 @@ public class MercedesDealCycle extends DealCycle {
                 addSkillEvent(legendarySpear);
                 addSkillEvent(leafTornado);
             } else if (getStart().after(unicornSpikeEndTime)) {
-                unicornSpike = new UnicornSpike();
                 addSkillEvent(unicornSpike);
+                legendarySpear = new LegendarySpear();
+                addSkillEvent(legendarySpear);
             } else if (cooldownCheck(wrathOfEnlil)) {
                 advancedStrikeDualShot = new AdvancedStrikeDualShot();
                 advancedStrikeDualShot.setDelayByAttackSpeed(630L);
@@ -267,8 +268,7 @@ public class MercedesDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -317,6 +317,9 @@ public class MercedesDealCycle extends DealCycle {
                             || skill instanceof RollingMoonsault
                             || skill instanceof UnicornSpike
                             || skill instanceof WrathOfEnlil
+                            || skill instanceof LeafTornadoSpiritEnchant
+                            || skill instanceof LegendarySpearSpiritEnchant
+                            || skill instanceof WrathOfEnlilSpiritEnchant
                     )
             ) {
                 formOfEurel.setActivateTime(new Timestamp(formOfEurel.getActivateTime().getTime() - 1000));
@@ -338,6 +341,7 @@ public class MercedesDealCycle extends DealCycle {
                     || skill instanceof WrathOfEnlilSpiritEnchant
             ) {
                 stigmaCnt += 2;
+                wrathOfEnlil.setActivateTime(new Timestamp(wrathOfEnlil.getActivateTime().getTime() - 1000));
             } else if (skill instanceof RingOfIshtar) {
                 stigmaCnt += 1;
             }
@@ -420,6 +424,7 @@ public class MercedesDealCycle extends DealCycle {
                             temp.addFinalDamage(0.75);
                             if (ran <= 45) {
                                 getSkillEventList().add(new SkillEvent(temp, new Timestamp(getStart().getTime() + temp.getInterval()), new Timestamp(getStart().getTime() + temp.getInterval() * 2)));
+                                getEventTimeList().add(new Timestamp(getStart().getTime() + temp.getInterval()));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + temp.getInterval() * 2));
                                 stigmaCnt ++;
                                 ran = (long) (Math.random() * 99 + 1);
@@ -455,6 +460,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -481,6 +487,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -507,6 +514,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -533,6 +541,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -559,6 +568,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -585,6 +595,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -611,6 +622,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -637,6 +649,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -663,6 +676,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -689,6 +703,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -715,6 +730,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -741,6 +757,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -767,6 +784,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -793,6 +811,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 90) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt += 2;
                         ran = (long) (Math.random() * 99 + 1);
@@ -819,6 +838,7 @@ public class MercedesDealCycle extends DealCycle {
                     tmp.addFinalDamage(0.75);
                     if (ran <= 45) {
                         getSkillEventList().add(new SkillEvent(tmp, new Timestamp(getStart().getTime() + tmp.getDelay()), new Timestamp(getStart().getTime() + tmp.getDelay() * 2)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay()));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + tmp.getDelay() * 2));
                         stigmaCnt ++;
                         ran = (long) (Math.random() * 99 + 1);
@@ -838,19 +858,15 @@ public class MercedesDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof WrathOfEnlilSpiritEnchant) {
+            applyCooldown(wrathOfEnlil);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
             getEventTimeList().add(endTime);
         }
-        if (
-                skill instanceof BuffSkill
-                && getStart().before(sylphidiaEndTime)
-        ) {
-            getStart().setTime(getStart().getTime() + skill.getDelay() / 2);
-        } else {
-            getStart().setTime(getStart().getTime() + skill.getDelay());
-        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
         }
@@ -908,7 +924,6 @@ public class MercedesDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -925,7 +940,27 @@ public class MercedesDealCycle extends DealCycle {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
-                    if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
+                    if (
+                            ((AttackSkill) se.getSkill()).getFinalDamage() < 2
+                            && (
+                                    se.getSkill() instanceof AdvancedStrikeDualShot
+                                    || se.getSkill() instanceof ChargeDrive2
+                                    || se.getSkill() instanceof GustDive
+                                    || se.getSkill() instanceof HighkickDemolition
+                                    || se.getSkill() instanceof LeafTornado
+                                    || se.getSkill() instanceof LeafTornadoSpiritEnchant
+                                    || se.getSkill() instanceof LegendarySpear
+                                    || se.getSkill() instanceof LegendarySpearSpiritEnchant
+                                    || se.getSkill() instanceof LightningEdge
+                                    || se.getSkill() instanceof RollingMoonsault
+                                    || se.getSkill() instanceof WrathOfEnlil
+                                    || se.getSkill() instanceof WrathOfEnlilSpiritEnchant
+                            )
+                            && ran <= 19
+                            && start.equals(se.getStart())
+                    ) {
+                        totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
+                    } else if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
                         totalDamage += getAttackDamage(new SkillEvent(getFinalAttack(), start, end), buffSkill, start, end);
                     }
                 }

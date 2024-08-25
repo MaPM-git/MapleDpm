@@ -12,7 +12,8 @@ public class RestoreBuff extends BuffSkill {
         this.setName("리스토어");
         this.setCooldown(180.0);
         this.setDelay(720L);
-        this.setDuration(45L);
+        this.setDuration(30L);
+        this.setBuffDamage(45L);
         this.setBuffFinalDamage(1.1);
         this.setRelatedSkill(new Restore());
     }

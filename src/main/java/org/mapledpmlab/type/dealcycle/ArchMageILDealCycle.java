@@ -70,7 +70,10 @@ public class ArchMageILDealCycle extends DealCycle {
     };
 
     int frostEffect = 5;
-    ChainLightningElectric chainLightningElectric = new ChainLightningElectric();
+    ChainLightningElectric chainLightningElectric1 = new ChainLightningElectric();
+    ChainLightningElectric chainLightningElectric2 = new ChainLightningElectric();
+    ChainLightningElectric chainLightningElectric3 = new ChainLightningElectric();
+    ChainLightningElectric chainLightningElectric4 = new ChainLightningElectric();
 
     Timestamp infinityEndTime = new Timestamp(0);
     Timestamp infinityFinalTime = new Timestamp(0);
@@ -109,15 +112,13 @@ public class ArchMageILDealCycle extends DealCycle {
         getStart().setTime(-75000);
         infinity.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
+        addSkillEvent(thunderSpear);
         getStart().setTime(0);
 
         for (int i = 0; i < 720 * 1000; i += iceAura.getInterval()) {
             getSkillEventList().add(new SkillEvent(iceAura, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
-
-        ringSwitching.setCooldown(120.0);
-        ringSwitching.setApplyCooldownReduction(false);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
@@ -130,7 +131,11 @@ public class ArchMageILDealCycle extends DealCycle {
                     cooldownCheck(infinity)
                     && getStart().after(infinityEndTime)
             ) {
+                addSkillEvent(thunderSpear);
                 addSkillEvent(infinity);
+                if (getStart().before(new Timestamp(10 * 60 * 1000))) {
+                    addSkillEvent(ringSwitching);
+                }
             }
             if (
                     cooldownCheck(unstableMemorize)
@@ -168,11 +173,14 @@ public class ArchMageILDealCycle extends DealCycle {
                 } else if (ran <= 100) {
                     unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.35);
                 }
+                addSkillEvent(thunderSpear);
                 addSkillEvent(unstableMemorize);
+                if (getStart().before(new Timestamp(10 * 60 * 1000))) {
+                    addSkillEvent(ringSwitching);
+                }
             }
             if (
-                    cooldownCheck(thunderSpear)
-                    && cooldownCheck(epicAdventure)
+                    cooldownCheck(epicAdventure)
                     && cooldownCheck(iceAuraInstall)
                     && cooldownCheck(spiritOfSnow)
                     && cooldownCheck(soulContract)
@@ -183,7 +191,6 @@ public class ArchMageILDealCycle extends DealCycle {
                     && cooldownCheck(lightningSphere)
                     && getStart().after(infinityFinalTime)
             ) {
-                addSkillEvent(thunderSpear);
                 if (cooldownCheck(mapleWorldGoddessBlessing)) {
                     if (dealCycleOrder == 3) {
                         mapleWorldGoddessBlessing.setCooldown(0.0);
@@ -232,12 +239,6 @@ public class ArchMageILDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
                 addSkillEvent(iceAgeDot);
                 addSkillEvent(lightningSphere);
-            } else if (
-                    cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(90 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(thunderBreak)
                     && !cooldownCheck(epicAdventure)
@@ -363,7 +364,7 @@ public class ArchMageILDealCycle extends DealCycle {
         }
         if (skill instanceof JupiterThunder) {
             jupiterThunderStartList.add(new Timestamp(getStart().getTime()));
-            jupiterThunderEndList.add(new Timestamp(getStart().getTime() + 13000));
+            jupiterThunderEndList.add(new Timestamp(getStart().getTime() + 10000));
         }
         if (skill instanceof BuffSkill) {
             if (
@@ -375,8 +376,7 @@ public class ArchMageILDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -436,6 +436,9 @@ public class ArchMageILDealCycle extends DealCycle {
                     if (skill instanceof FrozenOrb) {
                         i = 1680;
                     }
+                    if (skill instanceof ChainLightningElectric) {
+                        i = 1140;
+                    }
                     for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
@@ -448,16 +451,31 @@ public class ArchMageILDealCycle extends DealCycle {
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
-                Long ran = (long) (Math.random() * 99 + 1);
-                if (ran <= 35) {
-                    Long attackCount = 0L;
-                    for (long i = chainLightningElectric.getInterval(); i <= chainLightningElectric.getDotDuration() && attackCount < chainLightningElectric.getLimitAttackCount(); i += chainLightningElectric.getInterval()) {
-                        getSkillEventList().add(new SkillEvent(chainLightningElectric, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
-                        attackCount += 1;
+                if (skill instanceof ChainLightning) {
+                    for (int i = 0; i < 11; i ++) {
+                        Long ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= 35) {
+                            if (cooldownCheck(chainLightningElectric1)) {
+                                addSkillEvent(chainLightningElectric1);
+                            } else if (cooldownCheck(chainLightningElectric2)) {
+                                addSkillEvent(chainLightningElectric2);
+                            } else if (cooldownCheck(chainLightningElectric3)) {
+                                addSkillEvent(chainLightningElectric3);
+                            } else if (cooldownCheck(chainLightningElectric4)) {
+                                addSkillEvent(chainLightningElectric4);
+                            }
+                        }
+                        /*if (cooldownCheck(chainLightningElectric1)) {
+                            addSkillEvent(chainLightningElectric1);
+                        } else if (ran <= 35) {
+                            Long attackCount = 0L;
+                            for (long i = chainLightningElectric.getInterval(); i <= chainLightningElectric.getDotDuration() && attackCount < chainLightningElectric.getLimitAttackCount(); i += chainLightningElectric.getInterval()) {
+                                getSkillEventList().add(new SkillEvent(chainLightningElectric, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                                getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                                attackCount += 1;
+                            }
+                        }*/
                     }
-                } else if (cooldownCheck(chainLightningElectric)) {
-                    addSkillEvent(chainLightningElectric);
                 }
             }
         }

@@ -1,14 +1,12 @@
 package org.mapledpmlab.old.job;
 
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
-import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.link.PhantomInstinct;
-import org.mapledpmlab.type.union.AdeleUnion;
 import org.mapledpmlab.type.union.StrUnion;
 
 import java.util.stream.Collectors;
@@ -71,7 +69,7 @@ public class Eunwol extends Job {
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new PhantomInstinct());
-        this.setUnion(new AdeleUnion());
+        this.setUnion(new StrUnion());
 
         this.addObject(this.getAbility());
         this.addObject(this.getArtifact());

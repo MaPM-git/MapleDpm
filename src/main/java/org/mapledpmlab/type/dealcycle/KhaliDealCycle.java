@@ -142,6 +142,7 @@ public class KhaliDealCycle extends DealCycle {
                     && cooldownCheck(voidBurstCombo)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                addSkillEvent(magicCircuitFullDriveBuff);
                 addSkillEvent(wrathOfGod);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -151,7 +152,6 @@ public class KhaliDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(artsFlurry);
                 }
-                addSkillEvent(magicCircuitFullDriveBuff);
                 if (cooldownCheck(grandisGoddessBlessingLef)) {
                     if (getStart().before(new Timestamp(10 * 1000))) {
                         grandisGoddessBlessingLef.setCooldown(360.0);
@@ -201,7 +201,10 @@ public class KhaliDealCycle extends DealCycle {
                     cooldownCheck(hexPandemonium)
                     && (
                             !cooldownCheck(resonateUltimatum)
-                            || getStart().after(new Timestamp(10 * 60 * 1000))
+                            || (
+                                    getStart().after(new Timestamp(10 * 60 * 1000))
+                                    && getStart().before(new Timestamp(700 * 1000))
+                            )
                     )
             ) {
                 addSkillEvent(hexPandemonium);
@@ -338,8 +341,7 @@ public class KhaliDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -773,7 +775,6 @@ public class KhaliDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

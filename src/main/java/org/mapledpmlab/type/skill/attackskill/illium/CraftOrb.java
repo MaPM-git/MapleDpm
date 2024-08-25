@@ -8,5 +8,6 @@ public class CraftOrb extends AttackSkill {
         this.setDamage(50.0 + 264);
         this.setDelayByAttackSpeed(480L);
         this.setAttackCount(1L);
+        this.addFinalDamage(1.08);  // 오버로드 마나
     }
 }

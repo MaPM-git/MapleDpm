@@ -75,9 +75,9 @@ public class Mihile extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-33L);
-        this.addMainStat(-10L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-75L);
+        this.addMainStat(1L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new Artifact());
@@ -95,7 +95,7 @@ public class Mihile extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addAtt(45L);               // 로얄 가드
+        this.addAtt(100L);              // 로얄 가드
         this.addDamage(5L);             // 소울 링크
         this.addFinalDamage(1.25);      // 어드밴스드 소울 어택
         this.addDamage(10L);            // 데들리 차지

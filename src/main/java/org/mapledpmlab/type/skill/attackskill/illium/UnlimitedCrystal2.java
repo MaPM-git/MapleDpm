@@ -9,6 +9,7 @@ public class UnlimitedCrystal2 extends AttackSkill {
         this.setDamage(1330.0);
         this.setDelay(2520L);
         this.setRelatedSkill(new UnlimitedCrystal3());
+        this.addFinalDamage(1.08);  // 오버로드 마나
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(840L);

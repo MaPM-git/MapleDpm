@@ -65,12 +65,13 @@ public class DualBlade extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-21L);
-        this.addMainStat(-8L);
+        this.addMainStatP(-78L);
+        this.addMainStat(1L);
+        //this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Confidence());
         this.setUnion(new LukUnion());
         this.addPerXMainStat(20L);
@@ -86,7 +87,7 @@ public class DualBlade extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        //this.addFinalDamage(1.4);
+        this.addAtt(15L);           // 섀도우 인베이젼
     }
 
     public Long getFinalSubStat2() {

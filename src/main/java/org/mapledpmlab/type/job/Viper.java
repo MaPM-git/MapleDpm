@@ -70,9 +70,9 @@ public class Viper extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(18L);
-        this.addMainStat(10L);
-        this.addSubStat(10L);
+        this.addMainStatP(-27L);
+        this.addMainStat(6L);
+        //this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

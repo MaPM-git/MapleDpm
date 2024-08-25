@@ -57,7 +57,7 @@ public class Pathfinder extends Job {
         this.addIgnoreDefenseList(30L);
 
         // 4차
-        this.addCriticalP(21.0 - 10);   // 샤프 아이즈
+        this.addCriticalP(21.0 - 20 - 10);   // 샤프 아이즈
         this.addCriticalDamage(16.0 - 8);
         this.addAttP(21L);              // 에디셔널 트랜지션
         this.addAtt(62L);               // 에이션트 보우 엑스퍼트
@@ -65,9 +65,9 @@ public class Pathfinder extends Job {
         this.addMainStat(82L);          // 일루전 스탭
 
         // 환산 보정
-        this.addMainStatP(-39L);
-        this.addMainStat(3L);
-        this.addSubStat(5L);
+        this.addMainStatP(-78L);
+        this.addMainStat(-3L);
+        this.addSubStat(-2L);
 
         this.setAbility(new BossCriticalReuse());
         this.setArtifact(new Artifact());
@@ -96,5 +96,7 @@ public class Pathfinder extends Job {
         super.Doping();
         this.addCriticalDamage(20.0);   // 고대의 저주 디버프 5중첩
         this.addFinalDamage(1.08);      // 에인션트 가이던스
+        this.addCriticalP(-1.0);        // 샤프 아이즈
+        this.addCriticalDamage(-16.0);
     }
 }

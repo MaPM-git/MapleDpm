@@ -73,6 +73,12 @@ public class Bishop extends Job {
         // 6차
         this.addMainStat(90L);          // 프레이 강화
 
+        // 환산 보정
+        this.addMainStatP(-9L);
+        this.addMainStat(-4L);
+        this.addSubStat(30L);
+        this.addMagic(-7L);
+
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new Artifact());
         this.getLinkList().add(new HybridLogic());
@@ -95,6 +101,9 @@ public class Bishop extends Job {
         addFinalDamage(1.1);            // 엔젤레이 5중첩
         addDamage(40L);                 // 아케인 에임
         addIgnoreDefenseList(44L);      // 엔젤릭 터치 상시 유지
+        this.addAtt(-51L);              // 어드밴스드 블레스
+        this.addMagic(-51L);
+        this.addBossDamage(-10L);
     }
 
     public Long getStatDamage() {

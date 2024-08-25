@@ -67,6 +67,7 @@ public class BattleMageDealCycle extends DealCycle {
 
     Timestamp abyssalLightningEndTime = new Timestamp(-1);
     Timestamp unionAuraEndTime = new Timestamp(-1);
+    Timestamp masterOfDeathEndTime = new Timestamp(-1);
 
     int attackCnt = 0;
     int reaperScytheCnt = 0;
@@ -121,6 +122,7 @@ public class BattleMageDealCycle extends DealCycle {
                     && cooldownCheck(restraintRing)
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(willOfLiberty);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -130,7 +132,6 @@ public class BattleMageDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(finishBlow);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(blackMagicAltar);
                 addSkillEvent(unionAura);
                 addSkillEvent(abyssalLightning);
@@ -190,9 +191,10 @@ public class BattleMageDealCycle extends DealCycle {
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
             if (
-                    skill instanceof CrimsonPactum1
-                    || skill instanceof CrimsonPactum2
-                    || skill instanceof BattleKingBar2
+                    (
+                            skill instanceof CrimsonPactum1
+                            || skill instanceof BattleKingBar2
+                    ) && sum <= 3840
             ) {
                 Timestamp tmp = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);
@@ -216,6 +218,35 @@ public class BattleMageDealCycle extends DealCycle {
                 }
                 getStart().setTime(tmp.getTime());
             }
+            Timestamp tmp = new Timestamp(getStart().getTime());
+            getStart().setTime(getStart().getTime() + sum);
+            attackCnt++;
+            if (
+                    attackCnt >= 2
+                    && cooldownCheck(death)
+                    && !(skill instanceof Death)
+                    && !(skill instanceof DeathReinforce)
+            ) {
+                if (
+                        getStart().before(masterOfDeathEndTime)
+                        && soulCnt >= 1
+                ) {
+                    addSkillEvent(deathReinforce);
+                    death.setActivateTime(new Timestamp(deathReinforce.getActivateTime().getTime()));
+                    soulCnt = 0;
+                } else if (soulCnt >= 4) {
+                    addSkillEvent(deathReinforce);
+                    death.setActivateTime(new Timestamp(deathReinforce.getActivateTime().getTime()));
+                    soulCnt = 0;
+                } else {
+                    addSkillEvent(death);
+                    deathReinforce.setActivateTime(new Timestamp(death.getActivateTime().getTime()));
+                    soulCnt ++;
+                }
+                attackCnt = 0;
+                getEventTimeList().add(new Timestamp(getStart().getTime()));
+            }
+            getStart().setTime(tmp.getTime());
         }
     }
 
@@ -227,6 +258,9 @@ public class BattleMageDealCycle extends DealCycle {
             return;
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof MasterOfDeath) {
+                masterOfDeathEndTime = new Timestamp(getStart().getTime() + 30000);
+            }
             if (skill instanceof UnionAura) {
                 unionAuraEndTime = new Timestamp(getStart().getTime() + 40000);
             }
@@ -239,8 +273,7 @@ public class BattleMageDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -259,6 +292,20 @@ public class BattleMageDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    getStart().before(masterOfDeathEndTime)
+                    && (
+                            skill instanceof ReaperScythe
+                            || skill instanceof FinishBlow
+                            || skill instanceof DarkLightning
+                            || skill instanceof BlackMark
+                            || skill instanceof NetherworldLightning
+                            || skill instanceof FinalAttackBattleMage
+                    )
+            ) {
+                death.setActivateTime(new Timestamp(death.getActivateTime().getTime() - 500));
+                deathReinforce.setActivateTime(new Timestamp(deathReinforce.getActivateTime().getTime() - 500));
+            }
             if (
                     skill instanceof DarkLightning
                     && getStart().before(abyssalLightningEndTime)
@@ -335,22 +382,32 @@ public class BattleMageDealCycle extends DealCycle {
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
-            }
-            attackCnt++;
-            if (
-                    attackCnt >= 2
-                    && cooldownCheck(death)
-            ) {
-                if (soulCnt >= 4) {
-                    getSkillEventList().add(new SkillEvent(deathReinforce, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
-                    soulCnt = 0;
-                } else {
-                    getSkillEventList().add(new SkillEvent(death, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
-                    soulCnt ++;
+                attackCnt++;
+                if (
+                        attackCnt >= 2
+                        && cooldownCheck(death)
+                        && !(skill instanceof Death)
+                        && !(skill instanceof DeathReinforce)
+                ) {
+                    if (
+                            getStart().before(masterOfDeathEndTime)
+                            && soulCnt >= 1
+                    ) {
+                        addSkillEvent(deathReinforce);
+                        death.setActivateTime(new Timestamp(deathReinforce.getActivateTime().getTime()));
+                        soulCnt = 0;
+                    } else if (soulCnt >= 4) {
+                        addSkillEvent(deathReinforce);
+                        death.setActivateTime(new Timestamp(deathReinforce.getActivateTime().getTime()));
+                        soulCnt = 0;
+                    } else {
+                        addSkillEvent(death);
+                        deathReinforce.setActivateTime(new Timestamp(death.getActivateTime().getTime()));
+                        soulCnt ++;
+                    }
+                    attackCnt = 0;
+                    getEventTimeList().add(new Timestamp(getStart().getTime()));
                 }
-                applyCooldown(death);
-                attackCnt = 0;
-                getEventTimeList().add(new Timestamp(getStart().getTime()));
             }
         }
         applyCooldown(skill);
@@ -397,6 +454,13 @@ public class BattleMageDealCycle extends DealCycle {
                 }
             }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            boolean isMasterOfDeath = false;
+            for (int j = 0; j < useBuffSkillList.size(); j++) {
+                if (useBuffSkillList.get(j).getSkill() instanceof MasterOfDeath) {
+                    isMasterOfDeath = true;
+                    break;
+                }
+            }
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
@@ -411,7 +475,6 @@ public class BattleMageDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -425,7 +488,25 @@ public class BattleMageDealCycle extends DealCycle {
                 }
             }
             for (SkillEvent se : useAttackSkillList) {
+                if (
+                        isMasterOfDeath
+                        && (
+                                se.getSkill() instanceof Death
+                                || se.getSkill() instanceof DeathReinforce
+                        )
+                ) {
+                    buffSkill.addBuffFinalDamage(1.5);
+                }
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (
+                        isMasterOfDeath
+                        && (
+                                se.getSkill() instanceof Death
+                                || se.getSkill() instanceof DeathReinforce
+                        )
+                ) {
+                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.5);
+                }
             }
         }
         for (AttackSkill as : attackSkillList) {

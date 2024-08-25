@@ -7,8 +7,9 @@ public class MicroMissileContainer extends AttackSkill {
         this.setName("마이크로 미사일 컨테이너");
         this.setDelay(540L);
         this.setCooldown(25.0);
-        this.setDotDuration(1200L);
+        this.setDotDuration(3000L);
         this.setInterval(30L);
+        this.setLimitAttackCount(40L);
         this.setAttackCount(5L);
         this.setDamage(935.0);
         this.addFinalDamage(1.6);           // 코어 강화

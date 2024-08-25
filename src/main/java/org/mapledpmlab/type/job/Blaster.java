@@ -62,8 +62,9 @@ public class Blaster extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-3L);
+        this.addMainStatP(-54L);
         this.addMainStat(5L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

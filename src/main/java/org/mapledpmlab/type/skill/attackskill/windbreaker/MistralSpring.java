@@ -9,7 +9,6 @@ public class MistralSpring extends AttackSkill {
         this.setCooldown(360.0);
         this.setDamage(1670.0);
         this.setDelay(4560L);
-        this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
         this.setRelatedSkill(new MistralSpringNormal());

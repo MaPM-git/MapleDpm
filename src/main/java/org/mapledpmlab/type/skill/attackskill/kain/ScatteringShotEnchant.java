@@ -6,7 +6,7 @@ public class ScatteringShotEnchant extends AttackSkill {
     public ScatteringShotEnchant() {
         this.setName("[발현] 스캐터링 샷");
         this.setDamage(750.0);
-        this.setAttackCount(4L * 7);
+        this.setAttackCount(4L);
         this.setDelayByAttackSpeed(630L);
         this.setCooldown(6.0);
         this.addFinalDamage(2.2);   // 코어강화
@@ -14,5 +14,12 @@ public class ScatteringShotEnchant extends AttackSkill {
         this.setAddDamage(10L + 15);
         this.addFinalDamage(4.0 / 7);
         this.setApplyReuse(true);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);
     }
 }

@@ -7,9 +7,9 @@ public class FuryOfIfritOrigin extends AttackSkill {
         this.setName("퓨리 오브 이프리트(6차)");
         this.setDamage(440.0);
         this.setAttackCount(6L);
-        this.setDotDuration(7560L);
+        this.setDotDuration(9000L);
         this.setInterval(180L);
-        this.setLimitAttackCount(42L);
+        this.setLimitAttackCount(50L);
         this.setDelay(480L);
         this.setCooldown(75.0);
         this.addFinalDamage(1.6);       // 코어강화

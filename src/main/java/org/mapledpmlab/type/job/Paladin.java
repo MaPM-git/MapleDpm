@@ -61,9 +61,9 @@ public class Paladin extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(6L);
-        this.addMainStat(5L);
-        this.addSubStat(5L);
+        this.addMainStatP(-42L);
+        this.addMainStat(3L);
+        //this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

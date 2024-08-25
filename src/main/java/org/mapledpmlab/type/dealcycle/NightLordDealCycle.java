@@ -52,6 +52,7 @@ public class NightLordDealCycle extends DealCycle {
             add(new SpreadThrow());
             add(new ThrowBlasting());
             add(new UltimateDarkSight());
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 
@@ -85,6 +86,7 @@ public class NightLordDealCycle extends DealCycle {
         ThrowBlastingActive throwBlastingActive = new ThrowBlastingActive();
         ThrowBlastingPassive throwBlastingPassive = new ThrowBlastingPassive();
         UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
+        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 블리딩 톡신(도트)
         for (int i = 0; i < 720 * 1000; i += bleedingToxinDot.getInterval()) {
@@ -98,7 +100,7 @@ public class NightLordDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(90.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
         List<Skill> throwBlastingList;
@@ -106,7 +108,7 @@ public class NightLordDealCycle extends DealCycle {
 
         Long throwBlastingCount = 68L;
         Long ran = 0L;
-        Long quadrupleThrowCount = 3L;
+        Long quadrupleThrowCount = 2L;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(purgeArea)) {
                 addSkillEvent(purgeArea);
@@ -128,6 +130,7 @@ public class NightLordDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(throwBlasting);
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -135,14 +138,14 @@ public class NightLordDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 } else {
-                    if (quadrupleThrowCount % 4 == 0) {
+                    if (quadrupleThrowCount == 3) {
                         addSkillEvent(quadrupleThrowReinforce);
+                        quadrupleThrowCount = 0L;
                     } else {
                         addSkillEvent(quadrupleThrow);
+                        quadrupleThrowCount ++;
                     }
-                    quadrupleThrowCount ++;
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(ultimateDarkSight);
                 if (cooldownCheck(lifeOrDeathSlash)) {
                     addSkillEvent(lifeOrDeathSlash);
@@ -160,12 +163,13 @@ public class NightLordDealCycle extends DealCycle {
                     if (ran > throwBlastingCount) {
                         ran = throwBlastingCount;
                     }
-                    if (quadrupleThrowCount % 4 == 0) {
+                    if (quadrupleThrowCount == 3) {
                         throwBlastingList.add(quadrupleThrowReinforce);
+                        quadrupleThrowCount = 0L;
                     } else {
                         throwBlastingList.add(quadrupleThrow);
+                        quadrupleThrowCount++;
                     }
-                    quadrupleThrowCount++;
                     for (int i = 0; i < ran; i++) {
                         throwBlastingList.add(throwBlastingActive);
                     }
@@ -179,6 +183,7 @@ public class NightLordDealCycle extends DealCycle {
                     && !cooldownCheck(epicAdventure)
                     && getStart().before(new Timestamp(660 * 1000))
             ) {
+                //addSkillEvent(darkLordsSecretScroll);
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
                 addSkillEvent(fumaShuriken);
@@ -200,15 +205,103 @@ public class NightLordDealCycle extends DealCycle {
             ) {
                 addSkillEvent(fumaShuriken);
             } else {
-                if (quadrupleThrowCount % 4 == 0) {
+                if (quadrupleThrowCount == 3) {
                     addSkillEvent(quadrupleThrowReinforce);
+                    quadrupleThrowCount = 0L;
                 } else {
                     addSkillEvent(quadrupleThrow);
+                    quadrupleThrowCount ++;
                 }
-                quadrupleThrowCount ++;
             }
         }
         sortEventTimeList();
+    }
+
+    @Override
+    public void addSkillEvent(Skill skill) {
+        Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
+        if (skill instanceof BuffSkill) {
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime == null
+                            && restraintRingEndTime == null
+                            && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            } else if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
+            if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            } else {
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        } else {
+            if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                getSkillEventList().removeAll(remove);
+                Timestamp tmp = getStart();
+                if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        if (skill instanceof LifeOrDeathJavelin) {
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        }
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                } else {
+                    Long attackCount = 0L;
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        attackCount += 1;
+                    }
+                }
+                this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
+            } else {
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        }
+        applyCooldown(skill);
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
     }
 
     public Long calcTotalDamage(List<Timestamp> eventTimeList) {
@@ -262,7 +355,6 @@ public class NightLordDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

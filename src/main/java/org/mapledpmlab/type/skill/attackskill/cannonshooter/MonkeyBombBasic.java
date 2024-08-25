@@ -13,9 +13,14 @@ public class MonkeyBombBasic extends AttackSkill {
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new MonkeyBombBomb());
         this.getMultiAttackInfo().add(2400L);
+        this.getMultiAttackInfo().add(6450L);
+        this.getMultiAttackInfo().add(6450L);
+        this.getMultiAttackInfo().add(6450L);
+        this.getMultiAttackInfo().add(6450L);
+        //this.getMultiAttackInfo().add(6450L);
+        /*this.getMultiAttackInfo().add(7490L);
         this.getMultiAttackInfo().add(7490L);
         this.getMultiAttackInfo().add(7490L);
-        this.getMultiAttackInfo().add(7490L);
-        this.getMultiAttackInfo().add(7490L);
+        this.getMultiAttackInfo().add(7490L);*/
     }
 }

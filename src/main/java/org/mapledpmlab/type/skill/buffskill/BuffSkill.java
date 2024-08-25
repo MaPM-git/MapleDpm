@@ -27,7 +27,7 @@ public class BuffSkill extends Skill {
     private Long buffOtherStat1;
     private Long buffOtherStat2;
     private Long buffProperty;
-    private Double buffPlusFinalDamage;
+    //private Double buffPlusFinalDamage;
     private Long buffSubStat;
     private boolean isApplyPlusBuffDuration = false;
     private Long colNum = 0L;
@@ -50,7 +50,7 @@ public class BuffSkill extends Skill {
         this.buffOtherStat1 = 0L;
         this.buffOtherStat2 = 0L;
         this.buffProperty = 0L;
-        this.buffPlusFinalDamage = 1.0;
+        //this.buffPlusFinalDamage = 1.0;
         this.buffSubStat = 0L;
     }
     public String getInfo() {
@@ -117,10 +117,11 @@ public class BuffSkill extends Skill {
             str = str + "\n속성무시증가 : " + getBuffProperty();
             colNum ++;
         }
-        if (getBuffPlusFinalDamage() != 1) {
+        /*if (getBuffPlusFinalDamage() != 1) {
+
             str = str + "\n최종데미지합산증가 : " + getBuffPlusFinalDamage();
             colNum ++;
-        }
+        }*/
         if (getBuffSubStat() != 0) {
             str = str + "\n부스탯증가 : " + getBuffSubStat();
             colNum ++;
@@ -217,9 +218,9 @@ public class BuffSkill extends Skill {
         this.buffProperty += buffProperty;
     }
 
-    public void addBuffPlusFinalDamage(Double buffPlusFinalDamage) {
+    /*public void addBuffPlusFinalDamage(Double buffPlusFinalDamage) {
         this.buffPlusFinalDamage += buffPlusFinalDamage;
-    }
+    }*/
 
     public void addBuffSubStat(Long buffSubStat) {
         this.buffSubStat += buffSubStat;

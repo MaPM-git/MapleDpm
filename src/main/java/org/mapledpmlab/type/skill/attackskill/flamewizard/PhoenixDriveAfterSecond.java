@@ -13,5 +13,6 @@ public class PhoenixDriveAfterSecond extends AttackSkill {
         this.getMultiAttackInfo().add(240L);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(120L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

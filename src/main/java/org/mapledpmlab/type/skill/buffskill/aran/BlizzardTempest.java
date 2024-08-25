@@ -2,6 +2,7 @@ package org.mapledpmlab.type.skill.buffskill.aran;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mapledpmlab.type.skill.attackskill.aran.IceBlock;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 
 @Getter
@@ -12,5 +13,6 @@ public class BlizzardTempest extends BuffSkill {
         this.setDuration(30L);
         this.setCooldown(90.0);
         this.setDelay(720L);
+        this.setRelatedSkill(new IceBlock());
     }
 }

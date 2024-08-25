@@ -4,7 +4,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
 public class CurseArrow extends AttackSkill {
     public CurseArrow() {
-        this.setName("저주 화살");
+        this.setName("에디셔널 블래스트(저주 화살)");
         this.setAttackCount(4L);
         this.setDamage(180.0);
         this.setDotDuration(20000L);

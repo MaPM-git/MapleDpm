@@ -9,8 +9,7 @@ public class KarmaBladeFinish extends AttackSkill {
         this.setDamage(1100.0);
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);
-        this.addIgnoreDefenseList(20L);
-        this.addIgnoreDefenseList(30L);
+        this.addIgnoreDefenseList(50L);
         this.addFinalDamage(0.85);           // 미러 이미징
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

@@ -68,13 +68,13 @@ public class FlameWizard extends Job {
         this.addIgnoreDefenseList(31L); // 스피릿 오브 플레임
 
         // 환산 보정
-        this.addMainStatP(63L);
-        this.addMainStat(9L);
+        this.addMainStatP(3L);
+        this.addMainStat(21L);
         this.addSubStat(5L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);

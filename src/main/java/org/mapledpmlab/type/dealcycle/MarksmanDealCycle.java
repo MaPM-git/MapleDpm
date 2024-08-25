@@ -18,12 +18,6 @@ import java.util.List;
 
 public class MarksmanDealCycle extends DealCycle {
 
-    private boolean isCriticalReinforce = false;
-
-    private boolean isSplitArrow = false;
-
-    int splitArrow6th = 0;
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new ChargedArrow());
@@ -51,7 +45,7 @@ public class MarksmanDealCycle extends DealCycle {
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new BullsEye());
-            add(new CriticalReinforce(100.0));
+            add(new CriticalReinforce(0.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
@@ -64,6 +58,14 @@ public class MarksmanDealCycle extends DealCycle {
         }
     };
 
+    private boolean isCriticalReinforce = false;
+
+    int splitArrow6th = 0;
+
+    Timestamp splitArrowEndTime = new Timestamp(-1);
+
+    SplitArrow splitArrow = new SplitArrow();
+
     public MarksmanDealCycle(Job job) {
         super(job, new FinalAttackMarksman());
 
@@ -73,7 +75,7 @@ public class MarksmanDealCycle extends DealCycle {
         BullsEye bullsEye = new BullsEye();
         ChargedArrow chargedArrow = new ChargedArrow();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         EnhanceSnipe enhanceSnipe = new EnhanceSnipe();
         EpicAdventure epicAdventure = new EpicAdventure();
         Evolve evolve = new Evolve();
@@ -126,6 +128,14 @@ public class MarksmanDealCycle extends DealCycle {
             ) {
                 addSkillEvent(splitArrowBuff);
                 addSkillEvent(repeatingCrossbowCartridgeBuff);
+                if (cooldownCheck(mapleWorldGoddessBlessing)) {
+                    if (dealCycleOrder == 3) {
+                        mapleWorldGoddessBlessing.setCooldown(0.0);
+                    } else {
+                        mapleWorldGoddessBlessing.setCooldown(180.0);
+                    }
+                    addSkillEvent(mapleWorldGoddessBlessing);
+                }
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -135,14 +145,6 @@ public class MarksmanDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(snipeList.get(snipeCount % 4));
                     snipeCount++;
-                }
-                if (cooldownCheck(mapleWorldGoddessBlessing)) {
-                    if (dealCycleOrder == 3) {
-                        mapleWorldGoddessBlessing.setCooldown(0.0);
-                    } else {
-                        mapleWorldGoddessBlessing.setCooldown(180.0);
-                    }
-                    addSkillEvent(mapleWorldGoddessBlessing);
                 }
                 addSkillEvent(evolve);
                 addSkillEvent(bullsEye);
@@ -156,13 +158,13 @@ public class MarksmanDealCycle extends DealCycle {
                 addSkillEvent(chargedArrow);
                 addSkillEvent(trueSnipe);
                 if (cooldownCheck(finalAimWave)) {
+                    splitArrow6th = 13;
                     addSkillEvent(finalAimWave);
                 }
                 for (int i = 0; i < 8; i++) {
                     addSkillEvent(repeatingCrossbowCartridge);
                 }
                 dealCycleOrder ++;
-                splitArrow6th = 13;
             } else if (
                     cooldownCheck(ringSwitching)
                     && getStart().after(new Timestamp(100 * 1000))
@@ -187,6 +189,134 @@ public class MarksmanDealCycle extends DealCycle {
             }
         }
         sortEventTimeList();
+    }
+
+    @Override
+    public void addSkillEvent(Skill skill) {
+        Timestamp endTime = null;
+
+        if (getStart().before(skill.getActivateTime())) {
+            return;
+        }
+        if (skill instanceof BuffSkill) {
+            if (skill instanceof SplitArrowBuff) {
+                splitArrowEndTime = new Timestamp(getStart().getTime() + 72000);
+            }
+            if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime == null
+                            && restraintRingEndTime == null
+                            && fortyEndTime == null
+            ) {
+                restraintRingStartTime = new Timestamp(getStart().getTime());
+                restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+                fortyEndTime = new Timestamp(getStart().getTime() + 40000);
+            } else if (
+                    skill instanceof RestraintRing
+                            && restraintRingStartTime != null
+                            && restraintRingEndTime != null
+                            && fortyEndTime != null
+                            && originXRestraintRingStartTime == null
+                            && originXRestraintRingEndTime == null
+            ) {
+                originXRestraintRingStartTime = new Timestamp(getStart().getTime());
+                originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
+            if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
+                endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            } else {
+                endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        } else {
+            if (
+                    getStart().before(splitArrowEndTime)
+                    && (
+                            skill instanceof Snipe
+                            || skill instanceof EnhanceSnipe
+                    )
+            ) {
+                addSkillEvent(splitArrow);
+            }
+            if (((AttackSkill) skill).getInterval() != 0) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                getSkillEventList().removeAll(remove);
+                Timestamp tmp = getStart();
+                if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                    }
+                } else {
+                    Long attackCount = 0L;
+                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        if (skill instanceof UltimateSnipe) {
+                            Timestamp now = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
+                            if (getStart().before(splitArrowEndTime)) {
+                                addSkillEvent(splitArrow);
+                            }
+                            getStart().setTime(now.getTime());
+                        }
+                        getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        attackCount += 1;
+                    }
+                }
+                this.setStart(tmp);
+            } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+                this.multiAttackProcess(skill);
+            } else {
+                endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+            }
+        }
+        applyCooldown(skill);
+        getEventTimeList().add(getStart());
+        getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+        }
+        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (skill.getRelatedSkill() != null) {
+            addSkillEvent(skill.getRelatedSkill());
+        }
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            if (skill instanceof RepeatingCrossbowCartridge) {
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                if (getStart().before(splitArrowEndTime)) {
+                    addSkillEvent(splitArrow);
+                }
+                getStart().setTime(now.getTime());
+            } else if (
+                    skill instanceof FinalAimWave
+                    && splitArrow6th > 0
+            ) {
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                addSkillEvent(splitArrow);
+                getStart().setTime(now.getTime());
+                splitArrow6th --;
+            }
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
     }
 
     public Long calcTotalDamage(List<Timestamp> eventTimeList) {
@@ -240,12 +370,6 @@ public class MarksmanDealCycle extends DealCycle {
                     break;
                 }
             }
-            for (int j = 0; j < useBuffSkillList.size(); j++) {
-                if (useBuffSkillList.get(j).getSkill() instanceof SplitArrowBuff) {
-                    isSplitArrow = true;
-                    break;
-                }
-            }
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
@@ -260,7 +384,6 @@ public class MarksmanDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -275,22 +398,6 @@ public class MarksmanDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
-                if (
-                        isSplitArrow
-                        && start.equals(se.getStart())
-                        && (se.getSkill() instanceof Snipe
-                        || se.getSkill() instanceof EnhanceSnipe
-                        || se.getSkill() instanceof UltimateSnipe
-                        || se.getSkill() instanceof FinalAimWave
-                        || se.getSkill() instanceof RepeatingCrossbowCartridge)
-                ) {
-                    if (se.getSkill() instanceof FinalAimWave && splitArrow6th > 0) {
-                        totalDamage += getAttackDamage(new SkillEvent(new SplitArrow(), start, end), buffSkill, start, end);
-                        splitArrow6th --;
-                    } else if (!(se.getSkill() instanceof FinalAimWave)) {
-                        totalDamage += getAttackDamage(new SkillEvent(new SplitArrow(), start, end), buffSkill, start, end);
-                    }
-                }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp() && start.equals(se.getStart())) {
@@ -299,7 +406,6 @@ public class MarksmanDealCycle extends DealCycle {
                 }
             }
             isCriticalReinforce = false;
-            isSplitArrow = false;
         }
         for (AttackSkill as : attackSkillList) {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcycle;
 
+import org.mapledpmlab.type.job.DemonSlayerNormal;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -57,6 +58,7 @@ public class DemonSlayerDealCycle extends DealCycle {
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
+            add(new BodyOfSteel(0L));
             add(new CallMastema());
             add(new DemonAwakening());
             add(new DemonicFortitude());
@@ -67,7 +69,7 @@ public class DemonSlayerDealCycle extends DealCycle {
             add(new RestraintRing());
             add(new RingSwitching());
             add(new SoulContract());
-            add(new WeaponJumpRing(707L));
+            add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 
@@ -84,10 +86,15 @@ public class DemonSlayerDealCycle extends DealCycle {
     public DemonSlayerDealCycle(Job job) {
         super(job, null);
 
+        if (getJob() instanceof DemonSlayerNormal) {
+            getJob().setName("데몬슬레이어\n(극포실, 환산 84352)");
+        }
+
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
         CallMastema callMastema = new CallMastema();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         DemonAwakening demonAwakening = new DemonAwakening();
@@ -152,8 +159,6 @@ public class DemonSlayerDealCycle extends DealCycle {
                     && demonForce >= 100
             ) {
                 addSkillEvent(infinityForce);
-                addSkillEvent(demonAwakening);
-                addSkillEvent(orthrus);
                 addSkillEvent(demonicFortitude);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -164,13 +169,16 @@ public class DemonSlayerDealCycle extends DealCycle {
                     addSkillEvent(demonSlashReinforce1);
                 }
                 addSkillEvent(callMastema);
+                addSkillEvent(bodyOfSteel);
+                addSkillEvent(demonAwakening);
+                addSkillEvent(orthrus);
                 addSkillEvent(otherWorldGoddessBlessing);
                 if (cooldownCheck(nightmareWave)) {
                     addSkillEvent(nightmareWave);
                     isOrigin = true;
                 }
-                addSkillEvent(soulContract);
                 addSkillEvent(jormungand);
+                addSkillEvent(soulContract);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
@@ -256,8 +264,7 @@ public class DemonSlayerDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -281,6 +288,12 @@ public class DemonSlayerDealCycle extends DealCycle {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
+                if (skill instanceof BodyOfSteel) {
+                    for (long i = 0; i < 18000; i += 1000) {
+                        getSkillEventList().add(new SkillEvent(new BodyOfSteel(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
+                    }
+                }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
@@ -469,7 +482,6 @@ public class DemonSlayerDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

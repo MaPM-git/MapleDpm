@@ -134,25 +134,16 @@ public class MechanicDealCycle extends DealCycle {
                 }
                 addSkillEvent(luckyDice);
             }
+            if (cooldownCheck(distortionField)) {
+                addSkillEvent(distortionField);
+            }
             if (cooldownCheck(resistanceLineInfantry)) {
                 addSkillEvent(resistanceLineInfantry);
             }
             if (
-                    cooldownCheck(supportWaverHEXDie)
-                    && cooldownCheck(robotLauncherRM7Die)
-                    && cooldownCheck(robotFactoryRM1Die)
-                    && cooldownCheck(magneticFieldDie)
-                    && cooldownCheck(multipleOptionMFLSummon)
-                    && cooldownCheck(mechaCarrierSummon)
-                    && cooldownCheck(willOfLiberty)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(microMissileContainer)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(bomberTime)
-                    && cooldownCheck(metalArmorFullBurstBeforeDelay)
+                    cooldownCheck(multipleOptionMFLSummon)
                     && getStart().before(new Timestamp(600 * 1000))
+                    && getStart().after(new Timestamp(microMissileContainer.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(supportWaverHEXDie);
                 addSkillEvent(robotLauncherRM7Die);
@@ -160,6 +151,7 @@ public class MechanicDealCycle extends DealCycle {
                 addSkillEvent(magneticFieldDie);
                 addSkillEvent(multipleOptionMFLSummon);
                 addSkillEvent(mechaCarrierSummon);
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(willOfLiberty);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -169,15 +161,21 @@ public class MechanicDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(massiveFireIRONBHit);
                 }
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(overdrive);
                 addSkillEvent(microMissileContainer);
+                addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
                 if (cooldownCheck(groundZeroEarthquake)) {
                     addSkillEvent(groundZeroEarthquake);
                 }
                 addSkillEvent(bomberTime);
+                while (!cooldownCheck(metalArmorFullBurstBeforeDelay)) {
+                    if (cooldownCheck(distortionField)) {
+                        addSkillEvent(distortionField);
+                    } else {
+                        addSkillEvent(massiveFireIRONBHit);
+                    }
+                }
                 addSkillEvent(metalArmorFullBurstBeforeDelay);
             } else if (
                     cooldownCheck(supportWaverHEXDie)
@@ -188,6 +186,7 @@ public class MechanicDealCycle extends DealCycle {
                     && cooldownCheck(soulContract)
                     && cooldownCheck(weaponJumpRing)
                     && cooldownCheck(bomberTime)
+                    && getStart().after(new Timestamp(60 * 1000))
             ) {
                 addSkillEvent(supportWaverHEXDie);
                 addSkillEvent(robotLauncherRM7Die);
@@ -203,12 +202,23 @@ public class MechanicDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (cooldownCheck(microMissileContainer)) {
-                addSkillEvent(microMissileContainer);
             } else if (
-                    cooldownCheck(distortionField)
+                    cooldownCheck(supportWaverHEXDie)
+                    && getStart().after(new Timestamp(660 * 1000))
             ) {
-                addSkillEvent(distortionField);
+                addSkillEvent(supportWaverHEXDie);
+                addSkillEvent(robotLauncherRM7Die);
+                addSkillEvent(robotFactoryRM1Die);
+                addSkillEvent(magneticFieldDie);
+            } else if (
+                    cooldownCheck(microMissileContainer)
+                    && (
+                            !cooldownCheck(mapleWorldGoddessBlessing)
+                            || getStart().after(new Timestamp(660 * 1000))
+                            || getStart().before(new Timestamp(1000))
+                    )
+            ) {
+                addSkillEvent(microMissileContainer);
             } else {
                 addSkillEvent(massiveFireIRONBHit);
             }
@@ -221,6 +231,7 @@ public class MechanicDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println("--------------------------------" + skill.getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -237,8 +248,7 @@ public class MechanicDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -309,7 +319,11 @@ public class MechanicDealCycle extends DealCycle {
                     }
                 } else {
                     Long attackCount = 0L;
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof MicroMissileContainer) {
+                        i = 1440;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
@@ -381,7 +395,6 @@ public class MechanicDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -408,18 +421,16 @@ public class MechanicDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        Long tmp = 11L;
         if (skillEvent.getSkill() instanceof HomingMissile) {
-            tmp = ((HomingMissile) skillEvent.getSkill()).getAttackCount();
             for (int i = 0; i < bomberTimeEndTime.size(); i++) {
                 if (start.after(bomberTimeStartTime.get(i)) && end.before(bomberTimeEndTime.get(i))) {
-                    ((HomingMissile) skillEvent.getSkill()).setAttackCount(((HomingMissile) skillEvent.getSkill()).getAttackCount() + 6);
+                    attackSkill.setAttackCount(attackSkill.getAttackCount() + 6);
                 }
             }
             for (int i = 0; i < metarArmorFullBurstStartTime.size(); i++) {
                 if (start.after(metarArmorFullBurstStartTime.get(i)) && end.before(metarArmorFullBurstEndTime.get(i))) {
-                    ((HomingMissile) skillEvent.getSkill()).setAttackCount(((HomingMissile) skillEvent.getSkill()).getAttackCount() + 7);
-                    ((HomingMissile) skillEvent.getSkill()).addFinalDamage(1.67);
+                    attackSkill.setAttackCount(attackSkill.getAttackCount() + 7);
+                    attackSkill.addFinalDamage(1.67);
                 }
             }
         }
@@ -467,8 +478,8 @@ public class MechanicDealCycle extends DealCycle {
             }
         }
         if (skillEvent.getSkill() instanceof HomingMissile) {
-            ((HomingMissile) skillEvent.getSkill()).setAttackCount(tmp);
-            ((HomingMissile) skillEvent.getSkill()).setFinalDamage(2.2);
+            attackSkill.setAttackCount(12L);
+            attackSkill.setFinalDamage(2.2);
         }
         return attackDamage;
     }

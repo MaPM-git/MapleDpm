@@ -9,6 +9,6 @@ public class HomingMissile extends AttackSkill {
         this.setDamage(550.0);
         this.addFinalDamage(2.2);               // 코어 강화
         this.addIgnoreDefenseList(20L);
-        this.setInterval(660L);
+        this.setInterval(600L);
     }
 }

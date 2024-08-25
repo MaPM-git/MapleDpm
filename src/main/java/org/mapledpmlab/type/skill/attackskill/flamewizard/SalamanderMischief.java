@@ -18,5 +18,6 @@ public class SalamanderMischief extends AttackSkill {
             this.setFinalDamage(1.45);
         }
         this.addFinalDamage(1.6);       // 코어강화
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

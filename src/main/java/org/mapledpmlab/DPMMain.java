@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.*;
+import org.mapledpmlab.type.JobContinuous.*;
 import org.mapledpmlab.type.dealcycle.*;
 import org.mapledpmlab.type.job.*;
 import org.w3c.dom.DOMImplementation;
@@ -33,61 +34,92 @@ public class DPMMain {
 
     public void init() {
         dealCycleList = new ArrayList<>();
-        dealCycleList.add(new AdeleDealCycle(new Adele()));
+        dealCycleList.add(new AdeleMarker1DealCycle(new Adele()));
+        //dealCycleList.add(new AdeleMarker4DealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
-        //dealCycleList.add(new AranDealCycle(new Aran()));
+        dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
+        dealCycleList.add(new ArchMageFPContinuousDealCycle(new ArchMageFPContinuous()));
         dealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
         dealCycleList.add(new ArkDealCycle(new Ark()));
         dealCycleList.add(new BattleMageDealCycle(new BattleMage()));
+        dealCycleList.add(new BattleMageContinuousDealCycle(new BattleMageContinuous()));
         dealCycleList.add(new Bishop2DealCycle(new Bishop()));
         dealCycleList.add(new Bishop3DealCycle(new Bishop()));
-        dealCycleList.add(new Blaster440DealCycle(new Blaster()));
-        dealCycleList.add(new Blaster520DealCycle(new Blaster()));
+        dealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
+        dealCycleList.add(new Blaster480DealCycle(new Blaster()));
+        dealCycleList.add(new Blaster510DealCycle(new Blaster()));
+        dealCycleList.add(new Blaster540DealCycle(new Blaster()));
+        dealCycleList.add(new Blaster480ContinuousDealCycle(new BlasterContinuous()));
+        dealCycleList.add(new Blaster510ContinuousDealCycle(new BlasterContinuous()));
+        dealCycleList.add(new Blaster540ContinuousDealCycle(new BlasterContinuous()));
         dealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
+        dealCycleList.add(new BowmasterContinuousDealCycle(new BowmasterContinuous()));
         dealCycleList.add(new CadenaDealCycle(new Cadena()));
-        dealCycleList.add(new CannonShooterDealCycle(new CannonShooter()));
+        dealCycleList.add(new CadenaContinuousDealCycle(new CadenaContinuous()));
+        dealCycleList.add(new CannonShooter3DealCycle(new CannonShooter()));
         dealCycleList.add(new CaptainDealCycle(new Captain()));
+        dealCycleList.add(new CaptainContinuousDealCycle(new CaptainContinuous()));
         dealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
         dealCycleList.add(new DemonAvenger29DealCycle(new DemonAvenger()));
         dealCycleList.add(new DemonAvenger30DealCycle(new DemonAvenger()));
-        dealCycleList.add(new DemonSlayerDealCycle(new DemonSlayer()));
+        dealCycleList.add(new DemonAvenger29ContinuousDealCycle(new DemonAvengerContinuous()));
+        dealCycleList.add(new DemonAvenger30ContinuousDealCycle(new DemonAvengerContinuous()));
+        dealCycleList.add(new DemonSlayerDealCycle(new DemonSlayerRuin()));
+        dealCycleList.add(new DemonSlayerDealCycle(new DemonSlayerNormal()));
+        dealCycleList.add(new DemonSlayerContinuousDealCycle(new DemonSlayerRuinContinuous()));
+        dealCycleList.add(new DemonSlayerContinuousDealCycle(new DemonSlayerNormalContinuous()));
         dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
-        //dealCycleList.add(new EunwolDealCycle(new Eunwol()));
+        dealCycleList.add(new EunwolCancelDealCycle(new Eunwol()));
+        dealCycleList.add(new EunwolDealCycle(new Eunwol()));
         dealCycleList.add(new EvanDealCycle(new Evan()));
-        dealCycleList.add(new FlameWizardDealCycle(new FlameWizard()));
+        dealCycleList.add(new EvanContinuousDealCycle(new EvanContinuous()));
+        dealCycleList.add(new FlameWizard2DealCycle(new FlameWizard()));
+        dealCycleList.add(new FlameWizard3DealCycle(new FlameWizard()));
         dealCycleList.add(new HeroDealCycle(new Hero()));
         dealCycleList.add(new HoYoungDealCycle(new HoYoung()));
         dealCycleList.add(new IlliumDealCycle(new Illium()));
         dealCycleList.add(new KainDealCycle(new Kain()));
-        dealCycleList.add(new KaiserDealCycle(new Kaiser()));
+        dealCycleList.add(new KaiserDealCycle(new KaiserStat()));
+        dealCycleList.add(new KaiserDealCycle(new Kaiser2()));
+        dealCycleList.add(new KaiserContinuousDealCycle(new KaiserStatContinuous()));
+        dealCycleList.add(new KaiserContinuousDealCycle(new Kaiser2Continuous()));
         dealCycleList.add(new KhaliDealCycle(new Khali()));
         dealCycleList.add(new KinesisDealCycle(new Kinesis()));
         dealCycleList.add(new LaraDealCycle(new Lara()));
+        dealCycleList.add(new LaraContinuousDealCycle(new LaraContinuous()));
         dealCycleList.add(new LuminousDealCycle(new Luminous()));
+        dealCycleList.add(new LuminousContinuousDealCycle(new LuminousContinuous()));
         dealCycleList.add(new MarksmanDealCycle(new Marksman()));
         dealCycleList.add(new MechanicDealCycle(new Mechanic()));
         dealCycleList.add(new MercedesDealCycle(new Mercedes()));
+        dealCycleList.add(new MercedesContinuousDealCycle(new MercedesContinuous()));
         dealCycleList.add(new MihileDealCycle(new Mihile()));
+        dealCycleList.add(new MihileContinuousDealCycle(new MihileContinuous()));
         dealCycleList.add(new NightLordDealCycle(new NightLord()));
         dealCycleList.add(new NightWalkerDealCycle(new NightWalker()));
         dealCycleList.add(new PaladinDealCycle(new Paladin()));
         dealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
         dealCycleList.add(new PhantomDealCycle(new Phantom()));
+        dealCycleList.add(new PhantomContinuousDealCycle(new PhantomContinuous()));
         dealCycleList.add(new ShadowerDealCycle(new Shadower()));
+        dealCycleList.add(new ShadowerContinuousDealCycle(new ShadowerContinuous()));
         dealCycleList.add(new SoulMasterDealCycle(new SoulMaster()));
         dealCycleList.add(new StrikerDealCycle(new Striker()));
+        dealCycleList.add(new StrikerContinuousDealCycle(new StrikerContinuous()));
         dealCycleList.add(new ViperDealCycle(new Viper()));
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));
+        dealCycleList.add(new Xenon2HologramDealCycle(new Xenon()));
         dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         dealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
+        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroAlphaContinuous()));
+        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
         /*for (DealCycle dealCycle : dealCycleList) {
-            if (dealCycle instanceof ZeroDealCycle) {
-                ((ZeroDealCycle) dealCycle).getJob();
+            if (dealCycle instanceof ZeroContinuousDealCycle) {
                 dealCycle.getJobInfo();
-                break;
+                //break;
             }
         }*/
         this.exportExcel();
@@ -194,20 +226,20 @@ public class DPMMain {
         colorList.add(Color.yellow);
         for (int i = 0; i < dealCycle.getBuffSkillList().size(); i++) {
             g.setColor(Color.black);
-            g.setFont(new Font("Arial", Font.PLAIN, 12));
+            g.setFont(new Font("Arial", Font.PLAIN, 10));
             g.drawString(dealCycle.getBuffSkillList().get(i).getName(), 10, 50 * i + 50);
             g.setColor(colorList.get(i));
             g.setStroke(new BasicStroke(4));
             for (SkillEvent skillEvent : dealCycle.getSkillEventList()) {
                 if (skillEvent.getSkill().getClass().getName().equals(dealCycle.getBuffSkillList().get(i).getClass().getName())) {
-                    g.drawLine((int) skillEvent.getStart().getTime() / 1000 + 200, 50 * i + 50, (int) skillEvent.getEnd().getTime() / 1000 + 200, 50 * i + 50);
+                    g.drawLine((int) skillEvent.getStart().getTime() / 1000 + 80, 50 * i + 50, (int) skillEvent.getEnd().getTime() / 1000 + 80, 50 * i + 50);
                 }
             }
         }
         g.setColor(Color.black);
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         for (int i = 0; i < 13; i++) {
-            g.drawString(String.valueOf(i), 200 + 60 * i, 50 * dealCycle.getBuffSkillList().size() + 50);
+            g.drawString(String.valueOf(i), 90 + 60 * i, 50 * dealCycle.getBuffSkillList().size() + 50);
         }
     }
 
@@ -241,7 +273,7 @@ public class DPMMain {
         data.put("1", new Object[]{
                 "직업", "무기상수", "숙련도", "레벨", "메용O주스탯", "메용X주스탯", "AP",
                 "부스탯1", "부스탯2", "뒷스공", "데미지", "보스데미지   ", "방어율무시", "크리티컬데미지",
-                "크리티컬확률", "장비공격력%", "무기총공격력", "%미적용주스탯", "버프지속시간",
+                "크리티컬확률", "공격력%", "무기총공격력", "%미적용주스탯", "버프지속시간",
                 "재사용", "쿨타임감소", "최종데미지"
         });
         for (int i = 0; i < dealCycleList.size(); i++) {
@@ -269,11 +301,17 @@ public class DPMMain {
         }
 
         for (DealCycle dealCycle : dealCycleList) {
-            if (dealCycle.getJob().getName().equals("제로 - 알파")) {
+            if (
+                    dealCycle.getJob().getName().equals("제로 - 알파")
+                    || dealCycle.getJob().getName().equals("제로 - 알파(컨티)")
+            ) {
                 continue;
             }
             if (dealCycle.getJob().getName().equals("제로 - 베타")) {
                 dealCycle.getJob().setName("제로");
+            }
+            if (dealCycle.getJob().getName().equals("제로 - 베타(컨티)")) {
+                dealCycle.getJob().setName("제로(컨티)");
             }
             xssfSheet = xssfWorkbook.createSheet(dealCycle.getJob().getName());
             xssfSheet.setDefaultColumnWidth(50);
@@ -339,105 +377,8 @@ public class DPMMain {
                 }
             }
 
-            DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-            String svgNamespaceURI = "http://www.w3.org/2000/svg";
-            Document document = domImpl.createDocument(svgNamespaceURI, "svg", null);
-
-            // Create an instance of the SVG Generator
-            SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
-
-            // Drawing code
-            drawActivities(svgGenerator, dealCycle);
-
-            // Save the SVG to a file
-            try {
-                OutputStream outputStream = new FileOutputStream(new File("버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
-                Writer out = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-                svgGenerator.stream(out, true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // SVG 파일 생성
-            try {
-                dealCycle.calcDps();
-                FileWriter writer = new FileWriter("딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg");
-
-                // SVG 헤더 작성
-                writer.write("<svg xmlns='http://www.w3.org/2000/svg' width='720' height='500'>");
-
-                // 선 그래프 그리기
-                drawLineGraph(writer, dealCycle.getDpsList());
-
-                // SVG 푸터 작성
-                writer.write("</svg>");
-
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                String svgPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg";
-                String pngPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.png";
-
-                SVGDocument svgDocument = new SVGDocument(svgPath);
-                ImageSaveOptions options = new ImageSaveOptions(ImageFormat.Png);
-                Converter.convertSVG(svgDocument, options, pngPath);
-                svgDocument.dispose();
-
-                pngPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프_1.png";
-                InputStream is = new FileInputStream(pngPath);
-                byte[] bytes = IOUtils.toByteArray(is);
-
-                xssfWorkbook.addPicture(is, XSSFWorkbook.PICTURE_TYPE_PNG);
-                int picIdx = xssfWorkbook.addPicture(bytes, XSSFWorkbook.PICTURE_TYPE_PNG);
-                is.close();
-
-                XSSFCreationHelper helper = xssfWorkbook.getCreationHelper();
-                XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
-                XSSFClientAnchor anchor = helper.createClientAnchor();
-
-                // 이미지 출력할 cell 위치
-                anchor.setRow1(colNum + 10);
-                anchor.setCol1(3);
-                // 이미지 그리기
-                XSSFPicture pic = drawing.createPicture(anchor, picIdx);
-                pic.resize();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                String svgPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg";
-                String pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.png";
-
-                SVGDocument svgDocument = new SVGDocument(svgPath);
-                ImageSaveOptions options = new ImageSaveOptions(ImageFormat.Png);
-                Converter.convertSVG(svgDocument, options, pngPath);
-                svgDocument.dispose();
-
-                pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간_1.png";
-                InputStream is = new FileInputStream(pngPath);
-                byte[] bytes = IOUtils.toByteArray(is);
-
-                xssfWorkbook.addPicture(is, XSSFWorkbook.PICTURE_TYPE_PNG);
-                int picIdx = xssfWorkbook.addPicture(bytes, XSSFWorkbook.PICTURE_TYPE_PNG);
-                is.close();
-
-                XSSFCreationHelper helper = xssfWorkbook.getCreationHelper();
-                XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
-                XSSFClientAnchor anchor = helper.createClientAnchor();
-
-                // 이미지 출력할 cell 위치
-                anchor.setRow1(colNum + 10);
-                anchor.setCol1(0);
-                // 이미지 그리기
-                XSSFPicture pic = drawing.createPicture(anchor, picIdx);
-                pic.resize();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            // 이미지 삽입
+            //insertImg(xssfWorkbook, xssfSheet, colNum, dealCycle);
         }
 
         xssfSheet = xssfWorkbook.createSheet("DPM");
@@ -445,14 +386,20 @@ public class DPMMain {
 
         data = new TreeMap<>();
         data.put("1", new Object[]{
-                "직업이름", "DPM", "DPM 배율", "리스트레인트링딜", "리스트레인트링딜 배율", "40초 딜", "40초딜 배율", "오리진X 리레딜", "오리진X 리레딜 배율"
+                "직업이름", "DPM", "DPM 배율", "15초딜", "15초딜 배율", "40초 딜", "40초딜 배율", "오리진X 리레딜", "오리진X 리레딜 배율"
         });
         for (int i = 0; i < dealCycleList.size(); i++) {
-            if (dealCycleList.get(i).getJob().getName().equals("제로 - 알파")) {
+            if (
+                    dealCycleList.get(i).getJob().getName().equals("제로 - 알파")
+                    || dealCycleList.get(i).getJob().getName().equals("제로 - 알파(컨티)")
+            ) {
                 continue;
             }
             if (dealCycleList.get(i).getJob().getName().equals("제로 - 베타")) {
                 dealCycleList.get(i).getJob().setName("제로");
+            }
+            if (dealCycleList.get(i).getJob().getName().equals("제로 - 베타(컨티)")) {
+                dealCycleList.get(i).getJob().setName("제로(컨티)");
             }
             data.put(String.valueOf(i + 2), dealCycleList.get(i).getObject());
         }
@@ -488,11 +435,11 @@ public class DPMMain {
         xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 8));
         Cell cell = row.createCell(0);
         cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 한줄 이탈 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성, 주흔작 / 펫장비 프펫공, 프펫마 / " +
-                "\n예티X핑크빈 칭호 / 유니온 8500 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / 헥사 풀강 / 동일 환산 / " +
-                "\n캐릭터레벨 285 / 아케인포스 1320, 어센틱포스 660 / 유니온 아티팩트 54렙 / 길드스킬 60포인트 / 대형몹 / " +
-                "\n영메, 반빨별, 장비 명장, 익스트림 레드 및 블루, 길축, 우뿌, 유힘, 슈퍼파워, 붕뿌, 향산된 10단계 물약 / 어빌 레유유 최대옵션 / " +
-                "\n리레 4렙, 웨퍼 4렙 사용(스위칭) / 리레딜은 6차 포함하여 측정 / 히어로, 팔라딘 - 두손검 착용 / 마법사 및 섀도어 20성 방패 착용 / " +
-                "\n듀얼블레이드 22성 아케인 블레이드 착용, 데몬 직업군 루인포스실드 착용 / 하이퍼 스킬은 사냥기를 제외하고 선택 / 몬스터 방어율 380% / 렙뻥, 포뻥 미적용");
+                "\n예티X핑크빈 칭호 / 유니온 9000 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / 헥사 풀강 / 동일 환산(87791) / " +
+                "\n캐릭터레벨 285 / 아케인포스 1350, 어센틱포스 660 / 유니온 아티팩트 54렙 / 길드스킬 60포인트 / 대형몹 / " +
+                "\n영메, 반빨별, 장비 명장, 익스트림 레드 및 블루, 길축, 우뿌, 유힘, 슈퍼파워, 붕뿌, 향산된 10단계 물약, VIP 버프, 세이람의 영약 / 어빌 레유유 최대옵션 / " +
+                "\n리레 4렙, 웨퍼 4렙(스위칭) 혹은 컨티 4렙 / 15초딜은 6차 포함하여 측정 / 히어로, 팔라딘 - 두손검 착용 / 마법사 및 섀도어 20성 방패 착용 / " +
+                "\n듀얼블레이드 22성 아케인 블레이드 착용 / 하이퍼 스킬은 사냥기를 제외하고 선택 / 몬스터 방어율 380% / 렙뻥, 포뻥 미적용");
         cell.setCellStyle(cellStyle);
         cell = row.createCell(1);
         cell.setCellStyle(cellStyle);
@@ -515,6 +462,114 @@ public class DPMMain {
             FileOutputStream out = new FileOutputStream(new File(filePath, fileNm));
             xssfWorkbook.write(out);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertImg(XSSFWorkbook xssfWorkbook, XSSFSheet xssfSheet, int colNum, DealCycle dealCycle) {
+        if (dealCycle.getJob().getName().equals("데몬슬레이어\n(극포실, 환산 84352)")) {
+            dealCycle.getJob().setName("데몬슬레이어 (극포실, 환산 84352)");
+        }
+        if (dealCycle.getJob().getName().equals("데몬슬레이어\n(극포실, 환산 84318, 컨티)")) {
+            dealCycle.getJob().setName("데몬슬레이어 (극포실, 환산 84318, 컨티)");
+        }
+        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+        String svgNamespaceURI = "http://www.w3.org/2000/svg";
+        Document document = domImpl.createDocument(svgNamespaceURI, "svg", null);
+
+        // Create an instance of the SVG Generator
+        SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
+
+        // Drawing code
+        drawActivities(svgGenerator, dealCycle);
+
+        // Save the SVG to a file
+        try {
+            OutputStream outputStream = new FileOutputStream(new File("버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
+            Writer out = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+            svgGenerator.stream(out, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // SVG 파일 생성
+        try {
+            dealCycle.calcDps();
+            FileWriter writer = new FileWriter("딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg");
+
+            // SVG 헤더 작성
+            writer.write("<svg xmlns='http://www.w3.org/2000/svg' width='720' height='500'>");
+
+            // 선 그래프 그리기
+            drawLineGraph(writer, dealCycle.getDpsList());
+
+            // SVG 푸터 작성
+            writer.write("</svg>");
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String svgPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg";
+            String pngPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.png";
+
+            SVGDocument svgDocument = new SVGDocument(svgPath);
+            ImageSaveOptions options = new ImageSaveOptions(ImageFormat.Png);
+            Converter.convertSVG(svgDocument, options, pngPath);
+            svgDocument.dispose();
+
+            pngPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프_1.png";
+            InputStream is = new FileInputStream(pngPath);
+            byte[] bytes = IOUtils.toByteArray(is);
+
+            xssfWorkbook.addPicture(is, XSSFWorkbook.PICTURE_TYPE_PNG);
+            int picIdx = xssfWorkbook.addPicture(bytes, XSSFWorkbook.PICTURE_TYPE_PNG);
+            is.close();
+
+            XSSFCreationHelper helper = xssfWorkbook.getCreationHelper();
+            XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
+            XSSFClientAnchor anchor = helper.createClientAnchor();
+
+            // 이미지 출력할 cell 위치
+            anchor.setRow1(colNum + 10);
+            anchor.setCol1(3);
+            // 이미지 그리기
+            XSSFPicture pic = drawing.createPicture(anchor, picIdx);
+            pic.resize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String svgPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg";
+            String pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.png";
+
+            SVGDocument svgDocument = new SVGDocument(svgPath);
+            ImageSaveOptions options = new ImageSaveOptions(ImageFormat.Png);
+            Converter.convertSVG(svgDocument, options, pngPath);
+            svgDocument.dispose();
+
+            pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간_1.png";
+            InputStream is = new FileInputStream(pngPath);
+            byte[] bytes = IOUtils.toByteArray(is);
+
+            xssfWorkbook.addPicture(is, XSSFWorkbook.PICTURE_TYPE_PNG);
+            int picIdx = xssfWorkbook.addPicture(bytes, XSSFWorkbook.PICTURE_TYPE_PNG);
+            is.close();
+
+            XSSFCreationHelper helper = xssfWorkbook.getCreationHelper();
+            XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
+            XSSFClientAnchor anchor = helper.createClientAnchor();
+
+            // 이미지 출력할 cell 위치
+            anchor.setRow1(colNum + 10);
+            anchor.setCol1(0);
+            // 이미지 그리기
+            XSSFPicture pic = drawing.createPicture(anchor, picIdx);
+            pic.resize();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

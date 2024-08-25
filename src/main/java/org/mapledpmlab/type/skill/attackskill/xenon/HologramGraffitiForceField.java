@@ -10,7 +10,7 @@ public class HologramGraffitiForceField extends AttackSkill {
         this.setDelay(930L);
         this.setCooldown(60.0);
         this.setDotDuration(60000L + 10000);    // 홀로그램 그래피티-퍼시스트
-        this.setInterval(420L);
+        this.setInterval(250L);
         this.setAddDamage(10L);                 // 홀로그램 그래피티-리인포스
         this.addFinalDamage(2.2);               // 코어 강화
         this.addIgnoreDefenseList(20L);

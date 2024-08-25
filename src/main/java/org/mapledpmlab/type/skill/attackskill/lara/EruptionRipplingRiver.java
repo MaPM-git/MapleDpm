@@ -8,7 +8,7 @@ public class EruptionRipplingRiver extends AttackSkill {
         this.setDelayByAttackSpeed(450L);
         this.setDamage(1050.0);
         this.setAttackCount(5L);
-        this.setCooldown(12.0);
+        this.setCooldown(13.0);
         this.setApplyCooldownReduction(false);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);

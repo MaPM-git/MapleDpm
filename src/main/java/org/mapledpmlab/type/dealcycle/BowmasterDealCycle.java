@@ -56,7 +56,7 @@ public class BowmasterDealCycle extends DealCycle {
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new ArrowRainBuff());
-            add(new CriticalReinforce(100.0));
+            add(new CriticalReinforce(0.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
@@ -70,6 +70,9 @@ public class BowmasterDealCycle extends DealCycle {
     };
 
     Timestamp warInTheShadeEndTime = new Timestamp(-1);
+    Timestamp afterImageShotEndTime = new Timestamp(-1);
+
+    Long afterImageShotPassiveCount = 0L;
 
     WarInTheShadePerfusion warInTheShadePerfusion = new WarInTheShadePerfusion();
 
@@ -83,7 +86,7 @@ public class BowmasterDealCycle extends DealCycle {
         ArrawPlatter arrawPlatter = new ArrawPlatter();
         ArrawRain arrawRain = new ArrawRain();
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(100.0);
+        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
         EpicAdventure epicAdventure = new EpicAdventure();
         Evolve evolve = new Evolve();
         GuidedArrow guidedArrow = new GuidedArrow();
@@ -154,6 +157,14 @@ public class BowmasterDealCycle extends DealCycle {
                     && specialArrow >= 70
             ) {
                 addSkillEvent(arrawRain);
+                if (cooldownCheck(mapleWorldGoddessBlessing)) {
+                    if (dealCycleOrder == 3) {
+                        mapleWorldGoddessBlessing.setCooldown(0.0);
+                    } else {
+                        mapleWorldGoddessBlessing.setCooldown(180.0);
+                    }
+                    addSkillEvent(mapleWorldGoddessBlessing);
+                }
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -162,14 +173,6 @@ public class BowmasterDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 } else {
                     addSkillEvent(hurricane);
-                }
-                if (cooldownCheck(mapleWorldGoddessBlessing)) {
-                    if (dealCycleOrder == 3) {
-                        mapleWorldGoddessBlessing.setCooldown(0.0);
-                    } else {
-                        mapleWorldGoddessBlessing.setCooldown(180.0);
-                    }
-                    addSkillEvent(mapleWorldGoddessBlessing);
                 }
                 addSkillEvent(quiverFullBurst);
                 addSkillEvent(preparation);
@@ -284,7 +287,6 @@ public class BowmasterDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (
@@ -299,29 +301,6 @@ public class BowmasterDealCycle extends DealCycle {
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
-                if (
-                        !isAfterimageShot
-                        && se.getStart().equals(start)
-                        && (
-                                se.getSkill() instanceof AdvancedQuiver
-                                || se.getSkill() instanceof FlashMirage
-                                || se.getSkill() instanceof Hurricane
-                                || se.getSkill() instanceof HurricaneSpree
-                                || se.getSkill() instanceof ArrawRain
-                                || se.getSkill() instanceof QuiverFullBurst
-                                || se.getSkill() instanceof SilhouetteMirage
-                        )
-                ) {
-                    attackCount2 ++;
-                    if (attackCount2 == 10) {
-                        getStart().setTime(start.getTime());
-                        if (cooldownCheck(afterimageShotPassive)) {
-                            totalDamage += getAttackDamage(new SkillEvent(afterimageShotPassive, start, end), buffSkill, start, end);
-                            applyCooldown(afterimageShotPassive);
-                        }
-                        attackCount2 = 0L;
-                    }
-                }
                 if (
                         se.getStart().equals(start)
                         && (
@@ -346,6 +325,12 @@ public class BowmasterDealCycle extends DealCycle {
                             totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
                             totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
                             totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
+                            for (int m = 0; m < 4; m ++) {
+                                Long ran = (long) (Math.random() * 99 + 1);
+                                if (ran <= advancedQuiver.getProp()) {
+                                    totalDamage += getAttackDamage(new SkillEvent(advancedQuiver, start, end), buffSkill, start, end);
+                                }
+                            }
                             applyCooldown(flashMirage);
                         }
                         attackCount1 = 0L;
@@ -358,11 +343,23 @@ public class BowmasterDealCycle extends DealCycle {
                     }
                 }
                 if (
-                        !(se.getSkill() instanceof ArrawPlatter)
-                        && ((AttackSkill) se.getSkill()).getDamage() != 0
-                        && start.equals(se.getStart())
+                        start.equals(se.getStart())
+                        && (
+                                se.getSkill() instanceof ArrawRain
+                                || se.getSkill() instanceof Hurricane
+                                || se.getSkill() instanceof HurricaneSpree
+                                || se.getSkill() instanceof QuiverFullBurst
+                                || se.getSkill() instanceof SilhouetteMirage
+                                || se.getSkill() instanceof GuidedArrow
+                                || se.getSkill() instanceof AfterimageShotActive
+                                || se.getSkill() instanceof AfterimageShotPassive
+                                || se.getSkill() instanceof WarInTheShade
+                        )
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
+                    if (se.getSkill() instanceof ArrawRain) {
+                        ran = 100L;
+                    }
                     if (ran <= advancedQuiver.getProp()) {
                         totalDamage += getAttackDamage(new SkillEvent(advancedQuiver, start, end), buffSkill, start, end);
                     }
@@ -451,8 +448,7 @@ public class BowmasterDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -471,6 +467,24 @@ public class BowmasterDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof AfterimageShotActive) {
+                afterImageShotPassiveCount = 0L;
+                afterImageShotEndTime = new Timestamp(getStart().getTime() + 30000);
+            }
+            if (
+                    getStart().after(afterImageShotEndTime)
+                    && (
+                            skill instanceof Hurricane
+                            || skill instanceof HurricaneSpree
+                    )
+                    && cooldownCheck(afterimageShotPassive)
+            ) {
+                afterImageShotPassiveCount ++;
+                if (afterImageShotPassiveCount == 10) {
+                    addSkillEvent(afterimageShotPassive);
+                    afterImageShotPassiveCount = 0L;
+                }
+            }
             if (
                     getStart().before(warInTheShadeEndTime)
                     && cooldownCheck(warInTheShadePerfusion)

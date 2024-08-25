@@ -363,8 +363,7 @@ public class HoYoungDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -383,22 +382,6 @@ public class HoYoungDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
-            /*if (
-                    cooldownCheck(allCreationOfHeavenAndEarth)
-                    && (
-                            skill instanceof ConflagrationChainHeavenReinforce
-                            || skill instanceof ConflagrationChainHeavenFalseTrueReinforce
-                            || skill instanceof EarthChainEarthReinforce
-                            || skill instanceof EarthChainFalseTrueReinforce
-                            || skill instanceof EarthquakeChainEarthReinforce
-                            || skill instanceof EarthquakeChainFalseTrueReinforce
-                            || skill instanceof FlyingFanHumanReinforce
-                            || skill instanceof GoldCudgelHumanReinforce
-                            || skill instanceof GoldCudgelHumanFinishReinforce
-                    )
-            ) {
-                addSkillEvent(allCreationOfHeavenAndEarth);
-            }*/
             if (
                     skill instanceof EarthChainEarth
                     || skill instanceof EarthChainFalseTrue
@@ -807,9 +790,14 @@ public class HoYoungDealCycle extends DealCycle {
         }
         applyCooldown(skill);
         if (getStart().before(illusionEndTime) && isCooldownReset) {
-            if (skill instanceof GoldCudgelHuman) {
+            if (!cooldownCheck(goldCudgelHuman)) {
                 goldCudgelHuman.setActivateTime(new Timestamp(-1));
                 goldCudgelHumanReinforce.setActivateTime(new Timestamp(-1));
+                isCooldownReset = false;
+            } else if (!cooldownCheck(earthChainEarth)) {
+                earthquakeChainEarth.setActivateTime(new Timestamp(-1));
+                earthquakeChainEarthReinforce.setActivateTime(new Timestamp(-1));
+                isCooldownReset = false;
             }
         }
         getEventTimeList().add(getStart());
@@ -879,7 +867,6 @@ public class HoYoungDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

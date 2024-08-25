@@ -72,9 +72,9 @@ public class HoYoung extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-12L);
-        this.addMainStat(4L);
-        this.addSubStat(10L);
+        this.addMainStatP(-54L);
+        this.addMainStat(-1L);
+        this.addSubStat(-10L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new Artifact());

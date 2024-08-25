@@ -9,10 +9,11 @@ public class BlazingOrbitalFlame extends AttackSkill {
         this.setAttackCount(6L);
         this.setCooldown(5.0);
         this.setDelay(210L);
-        this.setDotDuration(960L);
+        this.setDotDuration(1920L);
         this.setInterval(240L);
-        this.setLimitAttackCount(4L);
+        this.setLimitAttackCount(8L);
         this.addIgnoreDefenseList(50L);
         this.addFinalDamage(1.6);       // 코어강화
+        this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

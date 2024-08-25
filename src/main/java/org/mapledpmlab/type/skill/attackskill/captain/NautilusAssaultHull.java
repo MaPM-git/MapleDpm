@@ -11,8 +11,7 @@ public class NautilusAssaultHull extends AttackSkill {
         this.setDelay(900L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new NautilusAssaultVolleyFire());
-        this.getMultiAttackInfo().add(150L);
-        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(990L);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(120L);

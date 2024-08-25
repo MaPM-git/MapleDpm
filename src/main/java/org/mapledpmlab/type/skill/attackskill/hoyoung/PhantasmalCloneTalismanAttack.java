@@ -9,7 +9,6 @@ public class PhantasmalCloneTalismanAttack extends AttackSkill {
         this.setAttackCount(4L);
         this.setCooldown(1.5);
         this.setApplyCooldownReduction(false);
-        this.setAddDamage(20L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.getMultiAttackInfo().add(0L);

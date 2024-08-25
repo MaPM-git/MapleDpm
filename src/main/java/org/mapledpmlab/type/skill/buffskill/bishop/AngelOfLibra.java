@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.skill.buffskill.bishop;
 
+import org.mapledpmlab.type.skill.attackskill.bishop.AngelOfLibraRevenge;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 
 public class AngelOfLibra extends BuffSkill {
@@ -8,5 +9,6 @@ public class AngelOfLibra extends BuffSkill {
         this.setCooldown(180.0);
         this.setDuration(40L);
         this.setDelay(540L);
+        this.setRelatedSkill(new AngelOfLibraRevenge());
     }
 }

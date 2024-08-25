@@ -10,5 +10,6 @@ public class DragonSlash extends AttackSkill {
         this.setDelayByAttackSpeed(270L);
         this.setAddDamage(40L + 70 + 90);
         this.setCooldown(20.0);
+        this.setApplyCooldownReduction(false);
     }
 }

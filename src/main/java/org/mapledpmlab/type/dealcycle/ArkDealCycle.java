@@ -65,12 +65,12 @@ public class ArkDealCycle extends DealCycle {
         {
             add(new ChargeSpellAmplification());
             add(new ContactCaravan());
-            add(new GrandisGoddessBlessingLef(302L));
+            add(new GrandisGoddessBlessingLef(382L));
             add(new InfinitySpell());
             add(new LoadedDice());
             add(new MagicCircuitFullDriveBuff());
-            add(new Overdrive(302L));
-            add(new OverdriveDebuff(302L));
+            add(new Overdrive(255L));
+            add(new OverdriveDebuff(255L));
             add(new RestraintRing());
             add(new RingSwitching());
             add(new SoulContract());
@@ -130,13 +130,13 @@ public class ArkDealCycle extends DealCycle {
         EndlesslyStarvingBeast endlesslyStarvingBeast = new EndlesslyStarvingBeast();
         EndlessNightmare endlessNightmare = new EndlessNightmare();
         EndlessOminousDream endlessOminousDream = new EndlessOminousDream();
-        GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(302L);
+        GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(382L);
         GustChargeDrive gustChargeDrive = new GustChargeDrive();
         InfinitySpell infinitySpell = new InfinitySpell();
         LoadedDice loadedDice = new LoadedDice();
         MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
         MemoryOfRootBeforeDelay memoryOfRootBeforeDelay = new MemoryOfRootBeforeDelay();
-        Overdrive overdrive = new Overdrive(302L);
+        Overdrive overdrive = new Overdrive(255L);
         PlainChargeDrive plainChargeDrive = new PlainChargeDrive();
         RestraintRing restraintRing = new RestraintRing();
         RingSwitching ringSwitching = new RingSwitching();
@@ -146,6 +146,7 @@ public class ArkDealCycle extends DealCycle {
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         UncontrollableChaos uncontrollableChaos = new UncontrollableChaos();
         UnfadingScar unfadingScar = new UnfadingScar();
+        UnstoppableImpulse unstoppableImpulse = new UnstoppableImpulse();
         UnstoppableInstinct unstoppableInstinct = new UnstoppableInstinct();
         WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
         WrathOfGod wrathOfGod = new WrathOfGod();
@@ -174,6 +175,14 @@ public class ArkDealCycle extends DealCycle {
                     && cooldownCheck(memoryOfRootBeforeDelay)
                     && cooldownCheck(returningHatred)
             ) {
+                if (cooldownCheck(magicCircuitFullDriveBuff)) {
+                    if (dealCycleOrder == 3) {
+                        magicCircuitFullDriveBuff.setCooldown(120.0);
+                    } else if (dealCycleOrder == 4) {
+                        magicCircuitFullDriveBuff.setCooldown(180.0);
+                    }
+                    addSkillEvent(magicCircuitFullDriveBuff);
+                }
                 addSkillEvent(wrathOfGod);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -186,14 +195,6 @@ public class ArkDealCycle extends DealCycle {
                     addSkillEvent(plainChargeDrive);
                 }
                 addSkillEvent(chargeSpellAmplification);
-                if (cooldownCheck(magicCircuitFullDriveBuff)) {
-                    if (dealCycleOrder == 3) {
-                        magicCircuitFullDriveBuff.setCooldown(120.0);
-                    } else if (dealCycleOrder == 4) {
-                        magicCircuitFullDriveBuff.setCooldown(180.0);
-                    }
-                    addSkillEvent(magicCircuitFullDriveBuff);
-                }
                 addSkillEvent(infinitySpell);
                 if (cooldownCheck(grandisGoddessBlessingLef)) {
                     if (dealCycleOrder == 1) {
@@ -253,12 +254,28 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(magicCircuitFullDriveBuff);
             } else if (isSpecter) {
                 endlessOminousDream = new EndlessOminousDream();
-                endlessOminousDream.setDelay(180L);
+                //endlessOminousDream.setDelay(180L);
+                endlessOminousDream.setDelay(210L);
                 endlessHunger = new EndlessHunger();
-                endlessHunger.setDelay(660L);
+                //endlessHunger.setDelay(660L);
+                endlessHunger.setDelay(690L);
                 uncontrollableChaos = new UncontrollableChaos();
-                uncontrollableChaos.setDelay(720L);
-                addSkillEvent(endlessOminousDream);
+                //uncontrollableChaos.setDelay(720L);
+                uncontrollableChaos.setDelay(750L);
+                Timestamp specterTime = new Timestamp(getStart().getTime() + 3000);
+                while (getStart().before(specterTime)) {
+                    addSkillEvent(endlessOminousDream);
+                    if (cooldownCheck(uncontrollableChaos)) {
+                        addSkillEvent(uncontrollableChaos);
+                    } else if (cooldownCheck(unfadingScar)) {
+                        addSkillEvent(unfadingScar);
+                    } else if (cooldownCheck(endlessHunger)) {
+                        addSkillEvent(endlessHunger);
+                    } else {
+                        addSkillEvent(unstoppableInstinct);
+                    }
+                }
+                /*addSkillEvent(endlessOminousDream);
                 addSkillEvent(unfadingScar);
                 addSkillEvent(endlessOminousDream);
                 addSkillEvent(endlessHunger);
@@ -269,21 +286,46 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(endlessOminousDream);
                 addSkillEvent(unfadingScar);
                 addSkillEvent(endlessOminousDream);
-                addSkillEvent(unstoppableInstinct);
+                addSkillEvent(unstoppableInstinct);*/
                 if (getStart().after(infinitySpellEndTime)) {
                     addSkillEvent(specterForm);
                     applyCooldown(lefGauge);
                 }
             } else if (!isSpecter) {
                 plainChargeDrive = new PlainChargeDrive();
-                plainChargeDrive.setDelay(180L);
-                scarletChargeDriveFlame = new ScarletChargeDriveFlame();
-                scarletChargeDriveFlame.getRelatedSkill().setDelay(470L);
-                gustChargeDrive = new GustChargeDrive();
-                gustChargeDrive.setDelay(410L);
+                //plainChargeDrive.setDelay(180L);
+                plainChargeDrive.setDelay(240L);
+                //scarletChargeDriveFlame = new ScarletChargeDriveFlame();
+                //scarletChargeDriveFlame.getRelatedSkill().setDelay(470L);
+                //gustChargeDrive = new GustChargeDrive();
+                //gustChargeDrive.setDelay(410L);
                 abyssChargeDriveMagic = new AbyssChargeDriveMagic();
-                abyssChargeDriveMagic.getRelatedSkill().setDelay(530L);
-                addSkillEvent(plainChargeDrive);
+                //abyssChargeDriveMagic.getRelatedSkill().setDelay(530L);
+                abyssChargeDriveMagic.getRelatedSkill().setDelay(590L);
+                unstoppableImpulse = new UnstoppableImpulse();
+                //unstoppableImpulse.setDelay(530L);
+                unstoppableImpulse.setDelay(560L);
+                Timestamp specterTime = new Timestamp(getStart().getTime() + 3000);
+                while (getStart().before(specterTime)) {
+                    addSkillEvent(plainChargeDrive);
+                    if (
+                            cooldownCheck(endlessNightmare)
+                            && cooldownCheck(deviousNightmare)
+                    ) {
+                        addSkillEvent(endlessNightmare);
+                    } else if (cooldownCheck(abyssChargeDriveMagic)) {
+                        addSkillEvent(abyssChargeDriveMagic);
+                    } else if (cooldownCheck(gustChargeDrive)) {
+                        addSkillEvent(gustChargeDrive);
+                    } else if (cooldownCheck(unstoppableImpulse)) {
+                        addSkillEvent(unstoppableImpulse);
+                    } else if (cooldownCheck(scarletChargeDriveFlame)) {
+                        addSkillEvent(scarletChargeDriveFlame);
+                    } else if (cooldownCheck(endlessNightmare)) {
+                        addSkillEvent(endlessNightmare);
+                    }
+                }
+                /*addSkillEvent(plainChargeDrive);
                 addSkillEvent(endlessNightmare);
                 addSkillEvent(plainChargeDrive);
                 addSkillEvent(scarletChargeDriveFlame);
@@ -296,10 +338,10 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(plainChargeDrive);
                 scarletChargeDriveFlame = new ScarletChargeDriveFlame();
                 scarletChargeDriveFlame.getRelatedSkill().setDelay(690L);
-                addSkillEvent(scarletChargeDriveFlame);
+                addSkillEvent(scarletChargeDriveFlame);*/
                 if (
                         getStart().before(new Timestamp(infinitySpell.getActivateTime().getTime() - 5000))
-                                && gauge > 800
+                        && gauge > 800
                 ) {
                     addSkillEvent(specterForm);
                     applyCooldown(specterGauge);
@@ -328,6 +370,7 @@ public class ArkDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName());
             return;
         }
         if (
@@ -391,8 +434,7 @@ public class ArkDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -518,7 +560,11 @@ public class ArkDealCycle extends DealCycle {
                 getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof AncientAbyssDot) {
+                        i = 2000;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         if (isSpecter && specterAura > 0) {
                             getSkillEventList().add(new ArkSkillEvent(awakenedAbyss, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), isSpecter));
                             specterAura --;
@@ -667,7 +713,6 @@ public class ArkDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                buffSkill.addBuffPlusFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffPlusFinalDamage());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
                 for (BuffSkill bs : buffSkillList) {
                     if (

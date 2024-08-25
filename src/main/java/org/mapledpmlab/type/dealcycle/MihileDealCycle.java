@@ -44,9 +44,10 @@ public class MihileDealCycle extends DealCycle {
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AuraWeaponBuff());
-            add(new GloryOfGuardians());
+            add(new BodyOfSteel(0L));
             add(new GuardOfLight());
             add(new LightOfCourage());
+            add(new QueenOfTomorrow());
             add(new RestraintRing());
             add(new RhoAias());
             add(new RingSwitching());
@@ -63,6 +64,11 @@ public class MihileDealCycle extends DealCycle {
 
     PhotonShockwave photonShockwave = new PhotonShockwave();
     PhotonWave photonWave = new PhotonWave();
+    RoyalGuard royalGuard = new RoyalGuard();
+    ClaimhSolais claimhSolais = new ClaimhSolais();
+    DeadlyCharge deadlyCharge = new DeadlyCharge();
+    ShiningCrossAssault shiningCrossAssault = new ShiningCrossAssault();
+    SoulLightSlash soulLightSlash = new SoulLightSlash();
 
     public MihileDealCycle(Job job) {
         super(job, new AdvancedFinalAttackMihile());
@@ -71,23 +77,19 @@ public class MihileDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        ClaimhSolais claimhSolais = new ClaimhSolais();
+        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
         CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
         CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
-        DeadlyCharge deadlyCharge = new DeadlyCharge();
         Durandal1 durandal1 = new Durandal1();
-        GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
         GuardOfLight guardOfLight = new GuardOfLight();
         InstallShield installShield = new InstallShield();
         LightForceRei lightForceRei = new LightForceRei();
         LightOfCourage lightOfCourage = new LightOfCourage();
+        QueenOfTomorrow queenOfTomorrow = new QueenOfTomorrow();
         RestraintRing restraintRing = new RestraintRing();
         RhoAias rhoAias = new RhoAias();
         RingSwitching ringSwitching = new RingSwitching();
-        RoyalGuard royalGuard = new RoyalGuard();
-        ShiningCrossAssault shiningCrossAssault = new ShiningCrossAssault();
         SoulContract soulContract = new SoulContract();
-        SoulLightSlash soulLightSlash = new SoulLightSlash();
         SoulMajesty soulMajesty = new SoulMajesty();
         SpiderInMirror spiderInMirror = new SpiderInMirror();
         SwordOfSoulLight swordOfSoulLight = new SwordOfSoulLight();
@@ -128,8 +130,8 @@ public class MihileDealCycle extends DealCycle {
             if (
                     cooldownCheck(auraWeaponBuff)
                     && cooldownCheck(rhoAias)
-                    && cooldownCheck(gloryOfGuardians)
-                    && cooldownCheck(royalGuard)
+                    && cooldownCheck(queenOfTomorrow)
+                    //&& cooldownCheck(royalGuard)
                     && cooldownCheck(guardOfLight)
                     && cooldownCheck(lightOfCourage)
                     && cooldownCheck(swordOfSoulLight)
@@ -141,8 +143,9 @@ public class MihileDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
+                addSkillEvent(queenOfTomorrow);
+                addSkillEvent(bodyOfSteel);
                 addSkillEvent(rhoAias);
-                addSkillEvent(gloryOfGuardians);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -157,7 +160,7 @@ public class MihileDealCycle extends DealCycle {
                 addSkillEvent(soulMajesty);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
-                addSkillEvent(royalGuard);
+                //addSkillEvent(royalGuard);
                 addSkillEvent(deadlyCharge);
                 addSkillEvent(claimhSolais);
                 addSkillEvent(lightForceRei);
@@ -166,7 +169,7 @@ public class MihileDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(lightOfCourage)
-                    && !cooldownCheck(gloryOfGuardians)
+                    && !cooldownCheck(queenOfTomorrow)
             ) {
                 addSkillEvent(lightOfCourage);
             } else if (
@@ -204,9 +207,9 @@ public class MihileDealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(claimhSolais);
-            } else if (cooldownCheck(royalGuard)) {
+            } /*else if (cooldownCheck(royalGuard)) {
                 addSkillEvent(royalGuard);
-            } else if (getStart().before(swordOfSoulLightEndTime)) {
+            }*/ else if (getStart().before(swordOfSoulLightEndTime)) {
                 addSkillEvent(soulLightSlash);
             } else {
                 addSkillEvent(shiningCrossAssault);
@@ -239,8 +242,7 @@ public class MihileDealCycle extends DealCycle {
                 restraintRingStartTime = new Timestamp(getStart().getTime());
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
-            }
-            if (
+            } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
@@ -259,6 +261,12 @@ public class MihileDealCycle extends DealCycle {
                     for (long i = 0; i < 45000; i += 4000) {
                         getSkillEventList().add(new SkillEvent(new TranscendentCygnusBlessing(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 4000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 4000));
+                    }
+                }
+                if (skill instanceof BodyOfSteel) {
+                    for (long i = 0; i < 18000; i += 1000) {
+                        getSkillEventList().add(new SkillEvent(new BodyOfSteel(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
+                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
                     }
                 }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
@@ -295,6 +303,21 @@ public class MihileDealCycle extends DealCycle {
                 this.multiAttackProcess(skill);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                if (cooldownCheck(royalGuard)) {
+                    if (skill instanceof ClaimhSolais) {
+                        claimhSolais = new ClaimhSolais();
+                        claimhSolais.setApplyFinalAttack(false);
+                    } else if (skill instanceof DeadlyCharge) {
+                        deadlyCharge = new DeadlyCharge();
+                        deadlyCharge.setApplyFinalAttack(false);
+                    } else if (skill instanceof ShiningCrossAssault) {
+                        shiningCrossAssault = new ShiningCrossAssault();
+                        shiningCrossAssault.setApplyFinalAttack(false);
+                    } else if (skill instanceof SoulLightSlash) {
+                        soulLightSlash = new SoulLightSlash();
+                        soulLightSlash.setApplyFinalAttack(false);
+                    }
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 if (
                         getStart().before(soulMajestyEndTime)
@@ -340,7 +363,30 @@ public class MihileDealCycle extends DealCycle {
         if (endTime != null) {
             getEventTimeList().add(endTime);
         }
-        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (
+                cooldownCheck(royalGuard)
+                && !(skill instanceof RoyalGuard)
+                && !(skill instanceof LightForceRei)
+                && !(skill instanceof Durandal1)
+                && !(skill instanceof Durandal2)
+                && !(skill instanceof Durandal3)
+                && !(skill instanceof RingSwitching)
+                && skill.getDelay() >= 540
+                && skill.getDelay() <= 1100
+        ) {
+            addSkillEvent(royalGuard);
+            if (skill instanceof ClaimhSolais) {
+                claimhSolais = new ClaimhSolais();
+            } else if (skill instanceof DeadlyCharge) {
+                deadlyCharge = new DeadlyCharge();
+            } else if (skill instanceof ShiningCrossAssault) {
+                shiningCrossAssault = new ShiningCrossAssault();
+            } else if (skill instanceof SoulLightSlash) {
+                soulLightSlash = new SoulLightSlash();
+            }
+        } else {
+            getStart().setTime(getStart().getTime() + skill.getDelay());
+        }
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
         }

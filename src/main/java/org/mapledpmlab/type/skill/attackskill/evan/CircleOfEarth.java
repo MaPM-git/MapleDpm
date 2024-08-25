@@ -5,6 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class CircleOfEarth extends AttackSkill {
     public CircleOfEarth() {
         this.setName("서클 오브 어스");
+        this.setDelay(30L);
         /*this.setDamage(321.0);
         this.setAttackCount(5L);
         this.setDelayByAttackSpeed(870L);

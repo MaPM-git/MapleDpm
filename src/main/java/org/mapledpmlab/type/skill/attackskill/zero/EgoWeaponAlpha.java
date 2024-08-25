@@ -8,7 +8,7 @@ public class EgoWeaponAlpha extends AttackSkill {
         this.setAttackCount(6L);
         this.setDamage(500.0);
         this.setCooldown(15.0);
-        this.setDotDuration(1300L);
+        this.setDotDuration(1500L);
         this.setInterval(120L);
         this.setLimitAttackCount(10L);
         this.addFinalDamage(1.6);       // 코어 강화

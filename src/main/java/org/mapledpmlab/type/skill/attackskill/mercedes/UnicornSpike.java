@@ -12,6 +12,6 @@ public class UnicornSpike extends AttackSkill {
         this.setRelatedSkill(new UnicornSpikeBuff());
         this.addFinalDamage(2.8);           // 코어 강화
         this.addIgnoreDefenseList(20L);
-        this.setApplyFinalAttack(true);
+        //this.setApplyFinalAttack(true);
     }
 }

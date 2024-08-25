@@ -76,12 +76,13 @@ public class NightWalker extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(21L);
-        this.addMainStat(1L);
+        this.addMainStatP(-42L);
+        this.addMainStat(16L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());
-        this.getLinkList().add(new PhantomInstinct());
+        this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new LukUnion());
         this.addPerXMainStat(20L);

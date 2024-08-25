@@ -11,10 +11,10 @@ public class RollingCurveBlade extends AttackSkill implements AlphaSkill {
         this.addFinalDamage(2.2);               // 코어 강화
         this.addIgnoreDefenseList(20L);
         this.getMultiAttackInfo().add(60L);
-        this.getMultiAttackInfo().add(0L);
+        /*this.getMultiAttackInfo().add(0L);
         this.getMultiAttackInfo().add(0L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(0L);
-        this.getMultiAttackInfo().add(0L);
+        this.getMultiAttackInfo().add(0L);*/
     }
 }

@@ -25,8 +25,8 @@ public class CannonShooter extends Job {
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
         this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (348 + 215 + 72 + 256));
-        this.setWeaponAttMagic((long) (348 + 215 + 72 + 256));
+        this.addAtt((long) (348 + 214 + 72 + 256));
+        this.setWeaponAttMagic((long) (348 + 214 + 72 + 256));
         this.addBossDamage((long) (30 + 10));
         this.addIgnoreDefenseList(20L);
         this.addBossDamage(70L);
@@ -73,8 +73,9 @@ public class CannonShooter extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-3L);
-        this.addMainStat(3L);
+        this.addMainStatP(-60L);
+        this.addMainStat(6L);
+        this.addSubStat(8L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new Artifact());

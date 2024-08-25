@@ -11,6 +11,7 @@ public class Eternity extends AttackSkill {
         this.setDamage(2100.0);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
+        this.addFinalDamage(1.08);      // 오버로드 마나
         this.setRelatedSkill(new EternityCirculation());
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(30L);
