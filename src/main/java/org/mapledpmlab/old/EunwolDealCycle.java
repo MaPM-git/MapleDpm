@@ -1,11 +1,9 @@
 package org.mapledpmlab.old;
 
 import org.mapledpmlab.old.skill.attackskill.eunwol.*;
-import org.mapledpmlab.old.skill.attackskill.eunwol.*;
 import org.mapledpmlab.old.skill.buffskill.eunwol.*;
-import org.mapledpmlab.old.skill.buffskill.eunwol.*;
-import org.mapledpmlab.type.dealcycle.DealCycle;
-import org.mapledpmlab.type.dealcycle.SkillEvent;
+import org.mapledpmlab.type.etc.DealCycle;
+import org.mapledpmlab.type.dealcyclesolo.SkillEvent;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;

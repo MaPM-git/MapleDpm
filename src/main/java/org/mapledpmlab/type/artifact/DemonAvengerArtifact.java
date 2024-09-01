@@ -1,6 +1,6 @@
 package org.mapledpmlab.type.artifact;
 
-import org.mapledpmlab.type.farm.Farm;
+import org.mapledpmlab.old.farm.Farm;
 
 public class DemonAvengerArtifact extends Farm {
 

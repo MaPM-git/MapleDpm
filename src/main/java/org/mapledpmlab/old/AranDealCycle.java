@@ -1,13 +1,12 @@
 package org.mapledpmlab.old;
 
 import org.mapledpmlab.old.skill.attackskill.aran.*;
-import org.mapledpmlab.type.dealcycle.DealCycle;
-import org.mapledpmlab.type.dealcycle.SkillEvent;
+import org.mapledpmlab.type.etc.DealCycle;
+import org.mapledpmlab.type.dealcyclesolo.SkillEvent;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
-import org.mapledpmlab.old.skill.attackskill.aran.*;
 import org.mapledpmlab.type.skill.attackskill.battlemage.FinishBlow;
 import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
