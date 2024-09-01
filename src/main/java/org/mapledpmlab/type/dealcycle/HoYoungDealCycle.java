@@ -84,47 +84,25 @@ public class HoYoungDealCycle extends DealCycle {
         }
     };
 
-    AdventOfGods adventOfGods = new AdventOfGods();
-    AllCreationOfHeavenAndEarth allCreationOfHeavenAndEarth = new AllCreationOfHeavenAndEarth();
-    ConflagrationChainHeaven conflagrationChainHeaven = new ConflagrationChainHeaven();
-    ConflagrationChainHeavenFlame conflagrationChainHeavenFlame = new ConflagrationChainHeavenFlame();
-    ConflagrationChainHeavenReinforce conflagrationChainHeavenReinforce = new ConflagrationChainHeavenReinforce();
-    EarthChainEarth earthChainEarth = new EarthChainEarth();
-    EarthChainEarthReinforce earthChainEarthReinforce = new EarthChainEarthReinforce();
-    EarthquakeChainEarth earthquakeChainEarth = new EarthquakeChainEarth();
-    EarthquakeChainEarthReinforce earthquakeChainEarthReinforce = new EarthquakeChainEarthReinforce();
-    FistMethodButterflyDreamAttack fistMethodButterflyDreamAttack = new FistMethodButterflyDreamAttack();
-    FistMethodMountainSpiritSummonRoar fistMethodMountainSpiritSummonRoar = new FistMethodMountainSpiritSummonRoar();
-    FlyingFanHuman flyingFanHuman = new FlyingFanHuman();
-    FlyingFanHumanReinforce flyingFanHumanReinforce = new FlyingFanHumanReinforce();
-    GoldCudgelHuman goldCudgelHuman = new GoldCudgelHuman();
-    GoldCudgelHumanReinforce goldCudgelHumanReinforce = new GoldCudgelHumanReinforce();
-    MysticEnergyExtremeRampageAttack mysticEnergyExtremeRampageAttack = new MysticEnergyExtremeRampageAttack();
-    MysticEnergyIllusionOfHeavenEarthAndHumanAttack mysticEnergyIllusionOfHeavenEarthAndHumanAttack = new MysticEnergyIllusionOfHeavenEarthAndHumanAttack();
-    MysticEnergyTaeulDivineMedicineTic mysticEnergyTaeulDivineMedicineTic = new MysticEnergyTaeulDivineMedicineTic();
-    PhantasmalCloneTalismanAttack phantasmalCloneTalismanAttack = new PhantasmalCloneTalismanAttack();
-    StrokeOfGods strokeOfGods = new StrokeOfGods();
-    WindWaveHeaven windWaveHeaven = new WindWaveHeaven();
-
-    boolean isReinforce = false;
     boolean isCooldownReset =false;
+    boolean isReinforce = false;
 
     int advent = 0;
-    int talisman = 100;
-    int scroll = 900;
-    int illusionAttack = 0;
     int beforeProperty = 0; // 0 - 천, 1 - 지, 2 - 인
-    int linkCnt = 0;
     int flameCnt = 0;
+    int illusionAttack = 0;
+    int linkCnt = 0;
+    int scroll = 900;
+    int talisman = 100;
 
     Timestamp adventEndTime = new Timestamp(-1);
+    Timestamp extremeEndTime = new Timestamp(-1);
     Timestamp finalTime = new Timestamp(-1);
+    Timestamp flameEndTime = new Timestamp(-1);
     Timestamp grandisEndTime = new Timestamp(-1);
     Timestamp illusionEndTime = new Timestamp(-1);
     Timestamp medicineEndTime = new Timestamp(-1);
-    Timestamp flameEndTime = new Timestamp(-1);
     Timestamp mountainEndTime = new Timestamp(-1);
-    Timestamp extremeEndTime = new Timestamp(-1);
 
     List<Boolean> property = new ArrayList<>(){
         {
@@ -134,54 +112,78 @@ public class HoYoungDealCycle extends DealCycle {
         }
     };
 
+    AdventOfGods adventOfGods = new AdventOfGods();
+    AllCreationOfHeavenAndEarth allCreationOfHeavenAndEarth = new AllCreationOfHeavenAndEarth();
+    ChasingGhostTalisman chasingGhostTalisman = new ChasingGhostTalisman();
+    ConflagrationChainHeaven conflagrationChainHeaven = new ConflagrationChainHeaven();
+    ConflagrationChainHeavenFlame conflagrationChainHeavenFlame = new ConflagrationChainHeavenFlame();
+    ConflagrationChainHeavenReinforce conflagrationChainHeavenReinforce = new ConflagrationChainHeavenReinforce();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    EarthChainEarth earthChainEarth = new EarthChainEarth();
+    EarthChainEarthReinforce earthChainEarthReinforce = new EarthChainEarthReinforce();
+    EarthquakeChainEarth earthquakeChainEarth = new EarthquakeChainEarth();
+    EarthquakeChainEarthReinforce earthquakeChainEarthReinforce = new EarthquakeChainEarthReinforce();
+    FistMethodButterflyDreamAttack fistMethodButterflyDreamAttack = new FistMethodButterflyDreamAttack();
+    FistMethodButterflyDreamBuff fistMethodButterflyDreamBuff = new FistMethodButterflyDreamBuff();
+    FistMethodDoomingLight fistMethodDoomingLight = new FistMethodDoomingLight();
+    FistMethodInhalingVortex fistMethodInhalingVortex = new FistMethodInhalingVortex();
+    FistMethodMountainSpiritSummon fistMethodMountainSpiritSummon = new FistMethodMountainSpiritSummon();
+    FistMethodMountainSpiritSummonRoar fistMethodMountainSpiritSummonRoar = new FistMethodMountainSpiritSummonRoar();
+    FlyingFanHuman flyingFanHuman = new FlyingFanHuman();
+    FlyingFanHumanReinforce flyingFanHumanReinforce = new FlyingFanHumanReinforce();
+    GoldCudgelHuman goldCudgelHuman = new GoldCudgelHuman();
+    GoldCudgelHumanReinforce goldCudgelHumanReinforce = new GoldCudgelHumanReinforce();
+    GrandisGoddessBlessingAnima grandisGoddessBlessingAnima = new GrandisGoddessBlessingAnima();
+    MagicCalabash1 magicCalabash1 = new MagicCalabash1();
+    MysticEnergyAdventOfRebelliousPower mysticEnergyAdventOfRebelliousPower = new MysticEnergyAdventOfRebelliousPower();
+    MysticEnergyApotheosisKeydown1 mysticEnergyApotheosisKeydown1 = new MysticEnergyApotheosisKeydown1();
+    MysticEnergyCloneSageTaeul mysticEnergyCloneSageTaeul = new MysticEnergyCloneSageTaeul();
+    MysticEnergyExtremeCloneRampage mysticEnergyExtremeCloneRampage = new MysticEnergyExtremeCloneRampage();
+    MysticEnergyExtremeRampageAttack mysticEnergyExtremeRampageAttack = new MysticEnergyExtremeRampageAttack();
+    MysticEnergyIllusionOfHeavenEarthAndHuman mysticEnergyIllusionOfHeavenEarthAndHuman = new MysticEnergyIllusionOfHeavenEarthAndHuman();
+    MysticEnergyIllusionOfHeavenEarthAndHumanAttack mysticEnergyIllusionOfHeavenEarthAndHumanAttack = new MysticEnergyIllusionOfHeavenEarthAndHumanAttack();
+    MysticEnergyTaeulDivineMedicine mysticEnergyTaeulDivineMedicine = new MysticEnergyTaeulDivineMedicine();
+    MysticEnergyTaeulDivineMedicineTic mysticEnergyTaeulDivineMedicineTic = new MysticEnergyTaeulDivineMedicineTic();
+    PhantasmalCloneTalisman phantasmalCloneTalisman = new PhantasmalCloneTalisman();
+    PhantasmalCloneTalismanAttack phantasmalCloneTalismanAttack = new PhantasmalCloneTalismanAttack();
+    ReadyToDie readyToDie = new ReadyToDie();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    StrokeOfGods strokeOfGods = new StrokeOfGods();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WindWaveHeaven windWaveHeaven = new WindWaveHeaven();
+
     public HoYoungDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ChasingGhostTalisman chasingGhostTalisman = new ChasingGhostTalisman();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        FistMethodButterflyDreamBuff fistMethodButterflyDreamBuff = new FistMethodButterflyDreamBuff();
-        FistMethodDoomingLight fistMethodDoomingLight = new FistMethodDoomingLight();
-        FistMethodInhalingVortex fistMethodInhalingVortex = new FistMethodInhalingVortex();
-        FistMethodMountainSpiritSummon fistMethodMountainSpiritSummon = new FistMethodMountainSpiritSummon();
-        GrandisGoddessBlessingAnima grandisGoddessBlessingAnima = new GrandisGoddessBlessingAnima();
-        MagicCalabash1 magicCalabash1 = new MagicCalabash1();
-        MysticEnergyAdventOfRebelliousPower mysticEnergyAdventOfRebelliousPower = new MysticEnergyAdventOfRebelliousPower();
-        MysticEnergyApotheosisKeydown1 mysticEnergyApotheosisKeydown1 = new MysticEnergyApotheosisKeydown1();
-        MysticEnergyCloneSageTaeul mysticEnergyCloneSageTaeul = new MysticEnergyCloneSageTaeul();
-        MysticEnergyExtremeCloneRampage mysticEnergyExtremeCloneRampage = new MysticEnergyExtremeCloneRampage();
-        MysticEnergyIllusionOfHeavenEarthAndHuman mysticEnergyIllusionOfHeavenEarthAndHuman = new MysticEnergyIllusionOfHeavenEarthAndHuman();
-        MysticEnergyTaeulDivineMedicine mysticEnergyTaeulDivineMedicine = new MysticEnergyTaeulDivineMedicine();
-        PhantasmalCloneTalisman phantasmalCloneTalisman = new PhantasmalCloneTalisman();
-        ReadyToDie readyToDie = new ReadyToDie();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         ringSwitching.setCooldown(90.0);
         ringSwitching.setApplyCooldownReduction(false);
 
         conflagrationChainHeavenReinforce.setCooldown(15.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(mysticEnergyTaeulDivineMedicine)
-                    && cooldownCheck(fistMethodMountainSpiritSummon)
-                    && cooldownCheck(chasingGhostTalisman)
-                    && cooldownCheck(fistMethodInhalingVortex)
-                    && cooldownCheck(mysticEnergyIllusionOfHeavenEarthAndHuman)
-                    && cooldownCheck(fistMethodDoomingLight)
-                    && cooldownCheck(mysticEnergyExtremeCloneRampage)
-                    && cooldownCheck(mysticEnergyAdventOfRebelliousPower)
-                    && cooldownCheck(mysticEnergyCloneSageTaeul)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && cooldownCheck(fistMethodMountainSpiritSummon)
+                            && cooldownCheck(chasingGhostTalisman)
+                            && cooldownCheck(fistMethodInhalingVortex)
+                            && cooldownCheck(mysticEnergyIllusionOfHeavenEarthAndHuman)
+                            && cooldownCheck(fistMethodDoomingLight)
+                            && cooldownCheck(mysticEnergyExtremeCloneRampage)
+                            && cooldownCheck(mysticEnergyAdventOfRebelliousPower)
+                            && cooldownCheck(mysticEnergyCloneSageTaeul)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(phantasmalCloneTalisman);
                 addSkillEvent(fistMethodButterflyDreamBuff);
@@ -219,13 +221,13 @@ public class HoYoungDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(mysticEnergyTaeulDivineMedicine)
-                    && cooldownCheck(chasingGhostTalisman)
-                    && cooldownCheck(fistMethodInhalingVortex)
-                    && cooldownCheck(mysticEnergyIllusionOfHeavenEarthAndHuman)
-                    && cooldownCheck(fistMethodDoomingLight)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(chasingGhostTalisman)
+                            && cooldownCheck(fistMethodInhalingVortex)
+                            && cooldownCheck(mysticEnergyIllusionOfHeavenEarthAndHuman)
+                            && cooldownCheck(fistMethodDoomingLight)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(weaponJumpRing)
             ) {
                 addSkillEvent(fistMethodButterflyDreamBuff);
                 addSkillEvent(mysticEnergyTaeulDivineMedicine);
@@ -241,20 +243,20 @@ public class HoYoungDealCycle extends DealCycle {
                 finalTime = new Timestamp(720 * 1000);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(chasingGhostTalisman)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
-                    && talisman >= 100
+                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
+                            && talisman >= 100
             ) {
                 addSkillEvent(chasingGhostTalisman);
             } else if (
                     cooldownCheck(fistMethodInhalingVortex)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
-                    && scroll == 900
+                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
+                            && scroll == 900
             ) {
                 addSkillEvent(fistMethodInhalingVortex);
             } else if (isReinforce) {

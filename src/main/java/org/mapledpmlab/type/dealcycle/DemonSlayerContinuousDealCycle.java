@@ -77,11 +77,32 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
     Timestamp infinityForceEndTime = new Timestamp(-1);
     Timestamp nightmareTerritoryEndTime = new Timestamp(-1);
 
+    AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
+    CallMastema callMastema = new CallMastema();
     Cerburus cerburus = new Cerburus();
     ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DemonAwakening demonAwakening = new DemonAwakening();
+    DemonBaneStartDelay demonBaneStartDelay = new DemonBaneStartDelay();
+    DemonImpact demonImpact = new DemonImpact();
+    DemonImpactChain demonImpactChain = new DemonImpactChain();
+    DemonSlash1 demonSlash1 = new DemonSlash1();
+    DemonSlashReinforce1 demonSlashReinforce1 = new DemonSlashReinforce1();
+    DemonicFortitude demonicFortitude = new DemonicFortitude();
     DemonicSphere demonicSphere = new DemonicSphere();
     DemonicSphereReinforce demonicSphereReinforce = new DemonicSphereReinforce();
+    InfinityForce infinityForce = new InfinityForce();
+    Jormungand jormungand = new Jormungand();
+    MaxForce maxForce = new MaxForce();
+    Metamorphosis metamorphosis = new Metamorphosis();
     NightmareFlame nightmareFlame = new NightmareFlame();
+    NightmareJudgement nightmareJudgement = new NightmareJudgement();
+    NightmareWave nightmareWave = new NightmareWave();
+    Orthrus orthrus = new Orthrus();
+    OtherWorldGoddessBlessing otherWorldGoddessBlessing = new OtherWorldGoddessBlessing();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
 
     boolean isNuke = false;
 
@@ -94,28 +115,6 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
-        CallMastema callMastema = new CallMastema();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DemonAwakening demonAwakening = new DemonAwakening();
-        DemonBaneStartDelay demonBaneStartDelay = new DemonBaneStartDelay();
-        DemonImpact demonImpact = new DemonImpact();
-        DemonImpactChain demonImpactChain = new DemonImpactChain();
-        DemonSlash1 demonSlash1 = new DemonSlash1();
-        DemonSlashReinforce1 demonSlashReinforce1 = new DemonSlashReinforce1();
-        DemonicFortitude demonicFortitude = new DemonicFortitude();
-        InfinityForce infinityForce = new InfinityForce();
-        Jormungand jormungand = new Jormungand();
-        MaxForce maxForce = new MaxForce();
-        Metamorphosis metamorphosis = new Metamorphosis();
-        NightmareWave nightmareWave = new NightmareWave();
-        NightmareJudgement nightmareJudgement = new NightmareJudgement();
-        Orthrus orthrus = new Orthrus();
-        OtherWorldGoddessBlessing otherWorldGoddessBlessing = new OtherWorldGoddessBlessing();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
 
         for (int i = 0; i < 720 * 1000; i += metamorphosis.getInterval()) {
             getSkillEventList().add(new SkillEvent(metamorphosis, new Timestamp(i), new Timestamp(i)));
@@ -130,7 +129,10 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         otherWorldGoddessBlessing.setCooldown(120.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         boolean isOrigin = false;
 
         int dealCycleOrder = 1;
@@ -138,22 +140,22 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
             }
             if (
                     cooldownCheck(infinityForce)
-                    && cooldownCheck(demonicFortitude)
-                    && cooldownCheck(demonAwakening)
-                    && cooldownCheck(orthrus)
-                    && cooldownCheck(callMastema)
-                    && cooldownCheck(otherWorldGoddessBlessing)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(jormungand)
-                    && cooldownCheck(demonBaneStartDelay)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && demonForce >= 100
+                            && cooldownCheck(demonicFortitude)
+                            && cooldownCheck(demonAwakening)
+                            && cooldownCheck(orthrus)
+                            && cooldownCheck(callMastema)
+                            && cooldownCheck(otherWorldGoddessBlessing)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(jormungand)
+                            && cooldownCheck(demonBaneStartDelay)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && demonForce >= 100
             ) {
                 isNuke = true;
                 addSkillEvent(infinityForce);
@@ -193,14 +195,14 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(demonicFortitude.getActivateTime().getTime() - 45000))
+                            && getStart().before(new Timestamp(demonicFortitude.getActivateTime().getTime() - 45000))
             ) {
                 addSkillEvent(soulContract);
             } else if (getStart().before(demonAwakeningEndTime)) {
                 addSkillEvent(demonSlashReinforce1);
             } else if (
                     cooldownCheck(demonImpactChain)
-                    && demonForce >= 8
+                            && demonForce >= 8
             ) {
                 addSkillEvent(demonImpactChain);
             } else if (demonForce >= 100) {

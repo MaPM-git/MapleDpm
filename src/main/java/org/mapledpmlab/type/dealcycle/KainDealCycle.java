@@ -86,25 +86,10 @@ public class KainDealCycle extends DealCycle {
         }
     };
 
-    AnnihilationDeathBlessing annihilationDeathBlessing = new AnnihilationDeathBlessing();
-    AnnihilationDragonBreath annihilationDragonBreath = new AnnihilationDragonBreath();
-    ChainSickle chainSickle = new ChainSickle();
-    DeathBlessing deathBlessing = new DeathBlessing();
-    DragonFang dragonFang1 = new DragonFang();
-    DragonFang dragonFang2 = new DragonFang();
-    DragonFang dragonFang3 = new DragonFang();
-    FatalBlitzBeforeDelay fatalBlitzBeforeDelay = new FatalBlitzBeforeDelay();
-    PhantomBlade phantomBlade = new PhantomBlade();
-    PoisonNeedle poisonNeedle = new PoisonNeedle();
-    PossessionMalice possessionMalice = new PossessionMalice();
-    RemainIncense remainIncense = new RemainIncense();
-    TearingKnife tearingKnife = new TearingKnife();
-    ThanatosDescentDeathArrow thanatosDescentDeathArrow = new ThanatosDescentDeathArrow();
-
     boolean isAnnihilation = false;
     boolean isCriticalReinforce = false;
-    boolean isIncarnation = false;
     boolean isDeathBlessingContribution = false;
+    boolean isIncarnation = false;
 
     int deathBlessingCnt = 15;
     int malice = 500;
@@ -116,45 +101,60 @@ public class KainDealCycle extends DealCycle {
     Timestamp grandisGoddessBlessingEndTime = new Timestamp(-1);
     Timestamp thanatosDescentEndTime = new Timestamp(-1);
 
+    List<AttackSkill> strikeArrowList = new ArrayList<>();
+
+    Annihilation annihilation = new Annihilation();
+    AnnihilationDeathBlessing annihilationDeathBlessing = new AnnihilationDeathBlessing();
+    AnnihilationDragonBreath annihilationDragonBreath = new AnnihilationDragonBreath();
+    ChainSickle chainSickle = new ChainSickle();
+    ChasingShot chasingShot = new ChasingShot();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+    DeathBlessing deathBlessing = new DeathBlessing();
+    DragonBurstBeforeDelay dragonBurstBeforeDelay = new DragonBurstBeforeDelay();
+    DragonFang dragonFang1 = new DragonFang();
+    DragonFang dragonFang2 = new DragonFang();
+    DragonFang dragonFang3 = new DragonFang();
+    FallingDust fallingDust = new FallingDust();
+    FallingDustEnchant fallingDustEnchant = new FallingDustEnchant();
+    FatalBlitzBeforeDelay fatalBlitzBeforeDelay = new FatalBlitzBeforeDelay();
+    GrandisGoddessBlessingNova grandisGoddessBlessingNova = new GrandisGoddessBlessingNova();
+    GripOfAgony gripOfAgony = new GripOfAgony();
+    GuidedArrow guidedArrow = new GuidedArrow();
+    Incarnation incarnation = new Incarnation();
+    PhantomBlade phantomBlade = new PhantomBlade();
+    PoisonNeedle poisonNeedle = new PoisonNeedle();
+    Possession possession = new Possession();
+    PossessionMalice possessionMalice = new PossessionMalice();
+    RemainIncense remainIncense = new RemainIncense();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    ScatteringShot scatteringShot = new ScatteringShot();
+    ScatteringShotEnchant scatteringShotEnchant = new ScatteringShotEnchant();
+    ShaftBreak shaftBreak = new ShaftBreak();
+    ShaftBreakEnchant shaftBreakEnchant = new ShaftBreakEnchant();
+    SneakySnipingBeforeDelay sneakySnipingBeforeDelay = new SneakySnipingBeforeDelay();
+    SneakySnipingEnchantBeforeDelay sneakySnipingEnchantBeforeDelay = new SneakySnipingEnchantBeforeDelay();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    StrikeArrow1 strikeArrow1 = new StrikeArrow1();
+    StrikeArrow2 strikeArrow2 = new StrikeArrow2();
+    StrikeArrow3 strikeArrow3 = new StrikeArrow3();
+    StrikeArrowEnchant strikeArrowEnchant = new StrikeArrowEnchant();
+    TearingKnife tearingKnife = new TearingKnife();
+    ThanatosDescentBuff thanatosDescentBuff = new ThanatosDescentBuff();
+    ThanatosDescentDeathArrow thanatosDescentDeathArrow = new ThanatosDescentDeathArrow();
+    ThanatosDescentFinish thanatosDescentFinish = new ThanatosDescentFinish();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+
     public KainDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        Annihilation annihilation = new Annihilation();
-        ChasingShot chasingShot = new ChasingShot();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
-        DragonBurstBeforeDelay dragonBurstBeforeDelay = new DragonBurstBeforeDelay();
-        FallingDust fallingDust = new FallingDust();
-        FallingDustEnchant fallingDustEnchant = new FallingDustEnchant();
-        GrandisGoddessBlessingNova grandisGoddessBlessingNova = new GrandisGoddessBlessingNova();
-        GripOfAgony gripOfAgony = new GripOfAgony();
-        GuidedArrow guidedArrow = new GuidedArrow();
-        Incarnation incarnation = new Incarnation();
-        Possession possession = new Possession();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        ScatteringShot scatteringShot = new ScatteringShot();
-        ScatteringShotEnchant scatteringShotEnchant = new ScatteringShotEnchant();
-        ShaftBreak shaftBreak = new ShaftBreak();
-        ShaftBreakEnchant shaftBreakEnchant = new ShaftBreakEnchant();
-        SneakySnipingBeforeDelay sneakySnipingBeforeDelay = new SneakySnipingBeforeDelay();
-        SneakySnipingEnchantBeforeDelay sneakySnipingEnchantBeforeDelay = new SneakySnipingEnchantBeforeDelay();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        StrikeArrow1 strikeArrow1 = new StrikeArrow1();
-        StrikeArrow2 strikeArrow2 = new StrikeArrow2();
-        StrikeArrow3 strikeArrow3 = new StrikeArrow3();
-        StrikeArrowEnchant strikeArrowEnchant = new StrikeArrowEnchant();
-        ThanatosDescentBuff thanatosDescentBuff = new ThanatosDescentBuff();
-        ThanatosDescentFinish thanatosDescentFinish = new ThanatosDescentFinish();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         ringSwitching.setCooldown(180.0);
 
-        List<AttackSkill> strikeArrowList = new ArrayList<>();
         strikeArrowList.add(strikeArrow1);
         strikeArrowList.add(strikeArrow2);
         strikeArrowList.add(strikeArrow3);
@@ -166,7 +166,10 @@ public class KainDealCycle extends DealCycle {
         fallingDust.setActivateTime(new Timestamp(-10000));
         scatteringShot.setActivateTime(new Timestamp(-12000));
         shaftBreak.setActivateTime(new Timestamp(-16000));
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         addSkillEvent(guidedArrow);
         addSkillEvent(poisonNeedle);
         addSkillEvent(possession);
@@ -174,17 +177,17 @@ public class KainDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(incarnation)
-                    && cooldownCheck(thanatosDescentBuff)
-                    && cooldownCheck(criticalReinforce)
-                    && cooldownCheck(gripOfAgony)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(dragonBurstBeforeDelay)
-                    && cooldownCheck(fatalBlitzBeforeDelay)
-                    && cooldownCheck(sneakySnipingEnchantBeforeDelay)
-                    && cooldownCheck(sneakySnipingBeforeDelay)
-                    && cooldownCheck(thanatosDescentFinish)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && cooldownCheck(thanatosDescentBuff)
+                            && cooldownCheck(criticalReinforce)
+                            && cooldownCheck(gripOfAgony)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(dragonBurstBeforeDelay)
+                            && cooldownCheck(fatalBlitzBeforeDelay)
+                            && cooldownCheck(sneakySnipingEnchantBeforeDelay)
+                            && cooldownCheck(sneakySnipingBeforeDelay)
+                            && cooldownCheck(thanatosDescentFinish)
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -220,12 +223,12 @@ public class KainDealCycle extends DealCycle {
                 addSkillEvent(thanatosDescentFinish);
             } else if (
                     cooldownCheck(gripOfAgony)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(dragonBurstBeforeDelay)
-                    && cooldownCheck(fatalBlitzBeforeDelay)
-                    && cooldownCheck(sneakySnipingEnchantBeforeDelay)
-                    && cooldownCheck(sneakySnipingBeforeDelay)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(dragonBurstBeforeDelay)
+                            && cooldownCheck(fatalBlitzBeforeDelay)
+                            && cooldownCheck(sneakySnipingEnchantBeforeDelay)
+                            && cooldownCheck(sneakySnipingBeforeDelay)
             ) {
                 addSkillEvent(gripOfAgony);
                 addSkillEvent(soulContract);
@@ -237,18 +240,18 @@ public class KainDealCycle extends DealCycle {
                 addSkillEvent(sneakySnipingBeforeDelay);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(170 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(170 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(sneakySnipingBeforeDelay)
-                    && !cooldownCheck(soulContract)
+                            && !cooldownCheck(soulContract)
             ) {
                 addSkillEvent(sneakySnipingBeforeDelay);
             } else if (
                     cooldownCheck(fallingDustEnchant)
-                    && malice >= 100
+                            && malice >= 100
             ) {
                 addSkillEvent(possession);
                 addSkillEvent(fallingDustEnchant);
@@ -263,7 +266,7 @@ public class KainDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(scatteringShotEnchant)
-                    && malice >= 100
+                            && malice >= 100
             ) {
                 addSkillEvent(possession);
                 addSkillEvent(scatteringShotEnchant);
@@ -278,7 +281,7 @@ public class KainDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(shaftBreakEnchant)
-                    && malice >= 100
+                            && malice >= 100
             ) {
                 addSkillEvent(possession);
                 addSkillEvent(shaftBreakEnchant);
@@ -293,7 +296,7 @@ public class KainDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(strikeArrowEnchant)
-                    && malice >= 100
+                            && malice >= 100
             ) {
                 addSkillEvent(possession);
                 addSkillEvent(strikeArrowEnchant);

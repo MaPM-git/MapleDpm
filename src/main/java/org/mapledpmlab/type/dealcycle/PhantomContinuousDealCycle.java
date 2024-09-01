@@ -62,17 +62,34 @@ public class PhantomContinuousDealCycle extends DealCycle {
         }
     };
 
-    BlackJackFinal blackJackFinal = new BlackJackFinal();
-    ContinuousRing continuousRing = new ContinuousRing();
-    Judgement judgement = new Judgement();
-    MarkOfPhantomFinal markOfPhantomFinal = new MarkOfPhantomFinal();
-    RiftBreak riftBreak = new RiftBreak();
-
     Long cardStack = 0L;
 
     Timestamp twilightEndTime = new Timestamp(-1);
 
     boolean isNuke = false;
+
+    BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
+    BlackJackFinal blackJackFinal = new BlackJackFinal();
+    BullsEyePhantom bullsEye = new BullsEyePhantom();
+    ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DefyingFate defyingFate = new DefyingFate();
+    FinalCutBuff finalCutBuff = new FinalCutBuff();
+    HeroesOath heroesOath = new HeroesOath();
+    JokerBeforeDelay jokerBeforeDelay = new JokerBeforeDelay();
+    Judgement judgement = new Judgement();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MarkOfPhantom markOfPhantom = new MarkOfPhantom();
+    MarkOfPhantomFinal markOfPhantomFinal = new MarkOfPhantomFinal();
+    PreparationPhantom preparationPhantom = new PreparationPhantom();
+    ReadyToDie readyToDie = new ReadyToDie();
+    RiftBreak riftBreak = new RiftBreak();
+    RoseCarteFinale roseCarteFinale = new RoseCarteFinale();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    TempestOfCardBeforeDelay tempestOfCardBeforeDelay = new TempestOfCardBeforeDelay();
+    TwilightDebuff twilightDebuff = new TwilightDebuff();
+    UltimateDrive ultimateDrive = new UltimateDrive();
 
     public PhantomContinuousDealCycle(Job job) {
         super(job, new NoireCarte());
@@ -80,45 +97,29 @@ public class PhantomContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
-        BullsEyePhantom bullsEye = new BullsEyePhantom();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DefyingFate defyingFate = new DefyingFate();
-        FinalCutBuff finalCutBuff = new FinalCutBuff();
-        HeroesOath heroesOath = new HeroesOath();
-        JokerBeforeDelay jokerBeforeDelay = new JokerBeforeDelay();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MarkOfPhantom markOfPhantom = new MarkOfPhantom();
-        PreparationPhantom preparationPhantom = new PreparationPhantom();
-        ReadyToDie readyToDie = new ReadyToDie();
-        RiftBreak riftBreak = new RiftBreak();
-        RoseCarteFinale roseCarteFinale = new RoseCarteFinale();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        TempestOfCardBeforeDelay tempestOfCardBeforeDelay = new TempestOfCardBeforeDelay();
-        TwilightDebuff twilightDebuff = new TwilightDebuff();
-        UltimateDrive ultimateDrive = new UltimateDrive();
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
         //readyToDie.setCooldown(90.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (getStart().after(twilightEndTime)) {
                 addSkillEvent(twilightDebuff);
             }
             if (
                     cooldownCheck(finalCutBuff)
-                    && cooldownCheck(heroesOath)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(bullsEye)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(blackJackBeforeDelay)
-                    && cooldownCheck(markOfPhantom)
-                    && cooldownCheck(riftBreak)
-                    && cooldownCheck(jokerBeforeDelay)
-                    && cooldownCheck(roseCarteFinale)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(heroesOath)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(bullsEye)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(blackJackBeforeDelay)
+                            && cooldownCheck(markOfPhantom)
+                            && cooldownCheck(riftBreak)
+                            && cooldownCheck(jokerBeforeDelay)
+                            && cooldownCheck(roseCarteFinale)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 isNuke = true;
                 addSkillEvent(finalCutBuff);
@@ -147,13 +148,13 @@ public class PhantomContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(finalCutBuff)
-                    && cooldownCheck(preparationPhantom)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(blackJackBeforeDelay)
-                    && cooldownCheck(markOfPhantom)
-                    && cooldownCheck(riftBreak)
-                    && cooldownCheck(roseCarteFinale)
+                            && cooldownCheck(preparationPhantom)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(blackJackBeforeDelay)
+                            && cooldownCheck(markOfPhantom)
+                            && cooldownCheck(riftBreak)
+                            && cooldownCheck(roseCarteFinale)
             ) {
                 addSkillEvent(finalCutBuff);
                 addSkillEvent(preparationPhantom);
@@ -165,33 +166,33 @@ public class PhantomContinuousDealCycle extends DealCycle {
                 addSkillEvent(roseCarteFinale);
             } else if (
                     cooldownCheck(markOfPhantom)
-                    && (
+                            && (
                             !cooldownCheck(readyToDie)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(markOfPhantom);
             } else if (
                     cooldownCheck(riftBreak)
-                    && (
+                            && (
                             !cooldownCheck(readyToDie)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(riftBreak);
             } else if (
                     cooldownCheck(roseCarteFinale)
-                    && (
+                            && (
                             !cooldownCheck(readyToDie)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(roseCarteFinale);
             } else if (
                     cooldownCheck(blackJackBeforeDelay)
-                    && (
+                            && (
                             getStart().before(new Timestamp(readyToDie.getActivateTime().getTime() + 10000))
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(blackJackBeforeDelay);

@@ -58,34 +58,35 @@ public class DarkKnightDealCycle extends DealCycle {
         }
     };
 
+    Timestamp beholderImpactEndTime = new Timestamp(0);
+
+    AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+    BeholderDominant beholderDominant = new BeholderDominant();
+    BeholderImpact beholderImpact = new BeholderImpact();
     BeholderRevenge beholderRevenge = new BeholderRevenge();
+    BeholderShock beholderShock = new BeholderShock();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DarknessAuraDot darknessAuraDot = new DarknessAuraDot();
+    DarknessAuraFinish darknessAuraFinish = new DarknessAuraFinish();
+    DarkSpear darkSpear = new DarkSpear();
+    DarkThirst darkThirst = new DarkThirst();
+    DeadSpaceSlash deadSpaceSlash = new DeadSpaceSlash();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    GungnirDescent gungnirDescent = new GungnirDescent();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    PiercingCycloneFirstDelay piercingCycloneFirstDelay = new PiercingCycloneFirstDelay();
     PiercingCycloneFinish piercingCycloneFinish = new PiercingCycloneFinish();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
 
     public DarkKnightDealCycle(Job job) {
         super(job, new FinalAttackDarkKnight());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        BeholderDominant beholderDominant = new BeholderDominant();
-        BeholderImpact beholderImpact = new BeholderImpact();
-        BeholderShock beholderShock = new BeholderShock();
-        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DarknessAuraDot darknessAuraDot = new DarknessAuraDot();
-        DarknessAuraFinish darknessAuraFinish = new DarknessAuraFinish();
-        DarkSpear darkSpear = new DarkSpear();
-        DarkThirst darkThirst = new DarkThirst();
-        DeadSpaceSlash deadSpaceSlash = new DeadSpaceSlash();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        GungnirDescent gungnirDescent = new GungnirDescent();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        PiercingCycloneFirstDelay piercingCycloneFirstDelay = new PiercingCycloneFirstDelay();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
 
         for (int i = 0; i < 720 * 1000; i += beholderDominant.getInterval()) {
             getSkillEventList().add(new SkillEvent(beholderDominant, new Timestamp(i), new Timestamp(i)));
@@ -101,24 +102,26 @@ public class DarkKnightDealCycle extends DealCycle {
         ringSwitching.setCooldown(180.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
         auraWeaponBuff.setCooldown(180.0);
+    }
 
-        Timestamp beholderImpactEndTime = new Timestamp(0);
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(darknessAuraDot)) {
                 addSkillEvent(darknessAuraDot);
             }
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(darkThirst)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(beholderShock)
-                    && cooldownCheck(darkSpear)
-                    && cooldownCheck(beholderImpact)
-                    && cooldownCheck(piercingCycloneFirstDelay)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(darkThirst)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(beholderShock)
+                            && cooldownCheck(darkSpear)
+                            && cooldownCheck(beholderImpact)
+                            && cooldownCheck(piercingCycloneFirstDelay)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -145,37 +148,37 @@ public class DarkKnightDealCycle extends DealCycle {
                 addSkillEvent(darknessAuraFinish);
             } else if (
                     cooldownCheck(darkThirst)
-                    && !cooldownCheck(epicAdventure)
+                            && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(darkThirst);
             } else if (
                     cooldownCheck(soulContract)
-                    && !cooldownCheck(epicAdventure)
+                            && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(beholderShock)
-                    && getStart().after(beholderImpactEndTime)
-                    && (
+                            && getStart().after(beholderImpactEndTime)
+                            && (
                             getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 5000))
-                            || getStart().after(new Timestamp(10 * 60 * 1000))
+                                    || getStart().after(new Timestamp(10 * 60 * 1000))
                     )
             ) {
                 addSkillEvent(beholderShock);
             } else if (
                     cooldownCheck(beholderImpact)
-                    && (
+                            && (
                             getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 5000))
-                            || getStart().after(new Timestamp(10 * 60 * 1000))
+                                    || getStart().after(new Timestamp(10 * 60 * 1000))
                     )
             ) {
                 beholderImpactEndTime = new Timestamp(getStart().getTime() + beholderImpact.getDotDuration());
                 addSkillEvent(beholderImpact);
             } else if (
                     cooldownCheck(darkSpear)
-                    && (
+                            && (
                             getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 5000))
-                            || getStart().after(new Timestamp(10 * 60 * 1000))
+                                    || getStart().after(new Timestamp(10 * 60 * 1000))
                     )
             ) {
                 addSkillEvent(darkSpear);

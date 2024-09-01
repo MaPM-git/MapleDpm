@@ -15,19 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BowmasterDealCycle extends DealCycle {
-
-    private final AdvancedQuiver advancedQuiver = new AdvancedQuiver();
-
-    private final FlashMirage flashMirage = new FlashMirage();
-
-    private final AfterimageShotPassive afterimageShotPassive = new AfterimageShotPassive();
-
-    private boolean isCriticalReinforce = false;
-
-    private Long attackCount1 = 0L;
-
-    private Long attackCount2 = 0L;
-
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdvancedFinalAttackBowmaster());
@@ -69,11 +56,42 @@ public class BowmasterDealCycle extends DealCycle {
         }
     };
 
+    boolean isCriticalReinforce = false;
+    boolean isSpree = false;
+
+    Long afterImageShotPassiveCount = 0L;
+    Long attackCount1 = 0L;
+
+    Long attackCount2 = 0L;
+    Long specialArrow = 74L;
+
     Timestamp warInTheShadeEndTime = new Timestamp(-1);
     Timestamp afterImageShotEndTime = new Timestamp(-1);
 
-    Long afterImageShotPassiveCount = 0L;
-
+    AdvancedQuiver advancedQuiver = new AdvancedQuiver();
+    AfterimageShotActive afterimageShotActive = new AfterimageShotActive();
+    AfterimageShotPassive afterimageShotPassive = new AfterimageShotPassive();
+    ArrawPlatter arrawPlatter = new ArrawPlatter();
+    ArrawRain arrawRain = new ArrawRain();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+    EpicAdventure epicAdventure = new EpicAdventure();
+    Evolve evolve = new Evolve();
+    FlashMirage flashMirage = new FlashMirage();
+    GuidedArrow guidedArrow = new GuidedArrow();
+    Hurricane hurricane = new Hurricane();
+    HurricaneSpree hurricaneSpree = new HurricaneSpree();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    Preparation preparation = new Preparation();
+    Phoenix phoenix = new Phoenix();
+    QuiverFullBurst quiverFullBurst = new QuiverFullBurst();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SilhouetteMirage silhouetteMirage = new SilhouetteMirage();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    WarInTheShade warInTheShade = new WarInTheShade();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
     WarInTheShadePerfusion warInTheShadePerfusion = new WarInTheShadePerfusion();
 
     public BowmasterDealCycle(Job job) {
@@ -81,28 +99,6 @@ public class BowmasterDealCycle extends DealCycle {
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AfterimageShotActive afterimageShotActive = new AfterimageShotActive();
-        ArrawPlatter arrawPlatter = new ArrawPlatter();
-        ArrawRain arrawRain = new ArrawRain();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
-        EpicAdventure epicAdventure = new EpicAdventure();
-        Evolve evolve = new Evolve();
-        GuidedArrow guidedArrow = new GuidedArrow();
-        Hurricane hurricane = new Hurricane();
-        HurricaneSpree hurricaneSpree = new HurricaneSpree();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        Preparation preparation = new Preparation();
-        Phoenix phoenix = new Phoenix();
-        QuiverFullBurst quiverFullBurst = new QuiverFullBurst();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SilhouetteMirage silhouetteMirage = new SilhouetteMirage();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        WarInTheShade warInTheShade = new WarInTheShade();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 피닉스
         for (int i = 0; i < 720 * 1000; i += phoenix.getInterval()) {
@@ -131,12 +127,11 @@ public class BowmasterDealCycle extends DealCycle {
         }
 
         ringSwitching.setCooldown(130.0);
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
-        Long specialArrow = 74L;
-        boolean isSpree = false;
-
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(arrawPlatter)){
@@ -147,14 +142,14 @@ public class BowmasterDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(arrawRain)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(quiverFullBurst)
-                    && cooldownCheck(preparation)
-                    && cooldownCheck(evolve)
-                    && cooldownCheck(afterimageShotActive)
-                    && cooldownCheck(criticalReinforce)
-                    && cooldownCheck(soulContract)
-                    && specialArrow >= 70
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(quiverFullBurst)
+                            && cooldownCheck(preparation)
+                            && cooldownCheck(evolve)
+                            && cooldownCheck(afterimageShotActive)
+                            && cooldownCheck(criticalReinforce)
+                            && cooldownCheck(soulContract)
+                            && specialArrow >= 70
             ) {
                 addSkillEvent(arrawRain);
                 if (cooldownCheck(mapleWorldGoddessBlessing)) {
@@ -191,13 +186,13 @@ public class BowmasterDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(100 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000)))
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000)))
             {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(soulContract)
-                    && !cooldownCheck(evolve)
+                            && !cooldownCheck(evolve)
             ) {
                 addSkillEvent(soulContract);
             } else if (specialArrow == 0) {

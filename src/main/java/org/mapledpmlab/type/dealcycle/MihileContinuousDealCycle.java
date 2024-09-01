@@ -56,20 +56,36 @@ public class MihileContinuousDealCycle extends DealCycle {
         }
     };
 
+    boolean isNuke = false;
+
     Timestamp continuousRingEndTime = new Timestamp(-1);
-    private Timestamp soulMajestyEndTime = new Timestamp(-1);
+    Timestamp soulMajestyEndTime = new Timestamp(-1);
     Timestamp swordOfSoulLightEndTime = null;
 
+    AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
+    ClaimhSolais claimhSolais = new ClaimhSolais();
     ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
+    DeadlyCharge deadlyCharge = new DeadlyCharge();
+    Durandal1 durandal1 = new Durandal1();
+    GuardOfLight guardOfLight = new GuardOfLight();
+    InstallShield installShield = new InstallShield();
+    LightForceRei lightForceRei = new LightForceRei();
+    LightOfCourage lightOfCourage = new LightOfCourage();
     PhotonShockwave photonShockwave = new PhotonShockwave();
     PhotonWave photonWave = new PhotonWave();
+    QueenOfTomorrow queenOfTomorrow = new QueenOfTomorrow();
+    RhoAias rhoAias = new RhoAias();
     RoyalGuard royalGuard = new RoyalGuard();
-    ClaimhSolais claimhSolais = new ClaimhSolais();
-    DeadlyCharge deadlyCharge = new DeadlyCharge();
     ShiningCrossAssault shiningCrossAssault = new ShiningCrossAssault();
+    SoulContract soulContract = new SoulContract();
     SoulLightSlash soulLightSlash = new SoulLightSlash();
-
-    boolean isNuke = false;
+    SoulMajesty soulMajesty = new SoulMajesty();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SwordOfSoulLight swordOfSoulLight = new SwordOfSoulLight();
+    TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
 
     public MihileContinuousDealCycle(Job job) {
         super(job, new AdvancedFinalAttackMihile());
@@ -77,22 +93,6 @@ public class MihileContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
-        Durandal1 durandal1 = new Durandal1();
-        GuardOfLight guardOfLight = new GuardOfLight();
-        InstallShield installShield = new InstallShield();
-        LightForceRei lightForceRei = new LightForceRei();
-        LightOfCourage lightOfCourage = new LightOfCourage();
-        QueenOfTomorrow queenOfTomorrow = new QueenOfTomorrow();
-        RhoAias rhoAias = new RhoAias();
-        SoulContract soulContract = new SoulContract();
-        SoulMajesty soulMajesty = new SoulMajesty();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SwordOfSoulLight swordOfSoulLight = new SwordOfSoulLight();
-        TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
 
         auraWeaponBuff.setCooldown(180.0);
         transcendentCygnusBlessing.setCooldown(240.0);
@@ -102,7 +102,10 @@ public class MihileContinuousDealCycle extends DealCycle {
         getStart().setTime(-10000);
         addSkillEvent(transcendentCygnusBlessing);
         getStart().setTime(0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(installShield)) {
                 addSkillEvent(installShield);
@@ -112,8 +115,8 @@ public class MihileContinuousDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(transcendentCygnusBlessing)
-                    && getStart().after(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (getStart().before(new Timestamp(10 * 1000))) {
                     transcendentCygnusBlessing.setCooldown(360.0);
@@ -124,17 +127,17 @@ public class MihileContinuousDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && cooldownCheck(rhoAias)
-                    && cooldownCheck(queenOfTomorrow)
-                    //&& cooldownCheck(royalGuard)
-                    && cooldownCheck(guardOfLight)
-                    && cooldownCheck(lightOfCourage)
-                    && cooldownCheck(swordOfSoulLight)
-                    && cooldownCheck(soulMajesty)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(deadlyCharge)
-                    && cooldownCheck(claimhSolais)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(rhoAias)
+                            && cooldownCheck(queenOfTomorrow)
+                            //&& cooldownCheck(royalGuard)
+                            && cooldownCheck(guardOfLight)
+                            && cooldownCheck(lightOfCourage)
+                            && cooldownCheck(swordOfSoulLight)
+                            && cooldownCheck(soulMajesty)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(deadlyCharge)
+                            && cooldownCheck(claimhSolais)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 isNuke = true;
                 addSkillEvent(auraWeaponBuff);
@@ -164,12 +167,12 @@ public class MihileContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(lightOfCourage)
-                    && !cooldownCheck(queenOfTomorrow)
+                            && !cooldownCheck(queenOfTomorrow)
             ) {
                 addSkillEvent(lightOfCourage);
             } else if (
                     cooldownCheck(soulContract)
-                    && !cooldownCheck(lightOfCourage)
+                            && !cooldownCheck(lightOfCourage)
             ) {
                 addSkillEvent(soulContract);
             } /*else if (
@@ -188,17 +191,17 @@ public class MihileContinuousDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             }*/ else if (
                     cooldownCheck(deadlyCharge)
-                    && (
+                            && (
                             getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
-                            || getStart().after(new Timestamp(600 * 1000))
+                                    || getStart().after(new Timestamp(600 * 1000))
                     )
             ) {
                 addSkillEvent(deadlyCharge);
             } else if (
                     cooldownCheck(claimhSolais)
-                    && (
+                            && (
                             getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
-                            || getStart().after(new Timestamp(600 * 1000))
+                                    || getStart().after(new Timestamp(600 * 1000))
                     )
             ) {
                 addSkillEvent(claimhSolais);

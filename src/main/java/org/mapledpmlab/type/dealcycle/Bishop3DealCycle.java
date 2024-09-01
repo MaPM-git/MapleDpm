@@ -105,14 +105,36 @@ public class Bishop3DealCycle extends DealCycle {
         }
     };
 
-    boolean bahamutAttack = false;
+    Long holySwordCount = 0L;   // 성검 개수
+
     boolean angelOfLibraRevengeAttack = false;
-    Timestamp infinityEndTime = new Timestamp(0);
+    boolean bahamutAttack = false;
     Timestamp infinityBurningTime = new Timestamp(0);
+    Timestamp infinityEndTime = new Timestamp(0);
 
     AngelicOfJudgement angelicOfJudgement = new AngelicOfJudgement();
-    Long holySwordCount = 0L;   // 성검 개수
+    AngelOfLibra angelOfLibra = new AngelOfLibra();
+    AngelicRay angelicRay = new AngelicRay();
+    AngelicTouch angelicTouch = new AngelicTouch();
+    BahamutSummon bahamutSummon = new BahamutSummon();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DivinePunishmentDelay divinePunishment = new DivinePunishmentDelay();
+    FountainForAngel fountainForAngel = new FountainForAngel();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    HeavensDoor heavensDoor = new HeavensDoor();
+    HolyAdventBuff holyAdvent = new HolyAdventBuff();
+    HolyBlood holyBlood = new HolyBlood();
+    Infinity infinity = new Infinity(0L);
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    Peacemaker peacemaker = new Peacemaker();
+    Pray pray = new Pray(0L);
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
     TriumphFeather triumphFeather = new TriumphFeather();
+    UnstableMemorize unstableMemorize = new UnstableMemorize();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public Bishop3DealCycle(Job job) {
         super(job, null);
@@ -122,28 +144,6 @@ public class Bishop3DealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AngelOfLibra angelOfLibra = new AngelOfLibra();
-        AngelicRay angelicRay = new AngelicRay();
-        AngelicTouch angelicTouch = new AngelicTouch();
-        BahamutSummon bahamutSummon = new BahamutSummon();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DivinePunishmentDelay divinePunishment = new DivinePunishmentDelay();
-        FountainForAngel fountainForAngel = new FountainForAngel();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        HeavensDoor heavensDoor = new HeavensDoor();
-        HolyAdventBuff holyAdvent = new HolyAdventBuff();
-        HolyBlood holyBlood = new HolyBlood();
-        Infinity infinity = new Infinity(0L);
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        Peacemaker peacemaker = new Peacemaker();
-        Pray pray = new Pray(0L);
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UnstableMemorize unstableMemorize = new UnstableMemorize();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         // 인피니티 달구기
         getStart().setTime(-75000);
         infinity.setActivateTime(new Timestamp(-80000));
@@ -151,21 +151,23 @@ public class Bishop3DealCycle extends DealCycle {
         getStart().setTime(0);
 
         ringSwitching.setCooldown(90.0);
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         addSkillEvent(bahamutSummon);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(infinity)
-                    && getStart().after(infinityEndTime)
+                            && getStart().after(infinityEndTime)
             ) {
                 infinityEndTime = new Timestamp(getStart().getTime() + 121360);
                 addSkillEvent(infinity);
             }
             if (
                     cooldownCheck(unstableMemorize)
-                    && getStart().after(infinityEndTime)
+                            && getStart().after(infinityEndTime)
             ) {
                 infinityEndTime = new Timestamp(getStart().getTime() + unstableMemorize.getDelay() + 121360);
                 Long ran = (long) (Math.random() * 99 + 1);
@@ -210,15 +212,15 @@ public class Bishop3DealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(pray)
-                    && cooldownCheck(angelOfLibra)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(holyBlood)
-                    && cooldownCheck(peacemaker)
-                    && cooldownCheck(heavensDoor)
-                    && cooldownCheck(divinePunishment)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(pray)
+                            && cooldownCheck(angelOfLibra)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(holyBlood)
+                            && cooldownCheck(peacemaker)
+                            && cooldownCheck(heavensDoor)
+                            && cooldownCheck(divinePunishment)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
@@ -256,10 +258,10 @@ public class Bishop3DealCycle extends DealCycle {
                 addSkillEvent(divinePunishment);
             } else if (
                     cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(peacemaker)
-                    && cooldownCheck(heavensDoor)
-                    && cooldownCheck(divinePunishment)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(peacemaker)
+                            && cooldownCheck(heavensDoor)
+                            && cooldownCheck(divinePunishment)
             ) {
                 addSkillEvent(soulContract);
                 addSkillEvent(weaponJumpRing);
@@ -268,8 +270,8 @@ public class Bishop3DealCycle extends DealCycle {
                 addSkillEvent(divinePunishment);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(70 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(70 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (cooldownCheck(peacemaker)) {

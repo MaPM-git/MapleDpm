@@ -92,31 +92,6 @@ public class IlliumDealCycle extends DealCycle {
         }
     };
 
-    CraftEnchantJavelin craftEnchantJavelin = new CraftEnchantJavelin();
-    CraftEnchantJavelinSOC craftEnchantJavelinSOC = new CraftEnchantJavelinSOC();
-    CraftEnchantJavelinCancel craftEnchantJavelinCancel = new CraftEnchantJavelinCancel();
-    CraftEnchantJavelinCancelSOC craftEnchantJavelinCancelSOC = new CraftEnchantJavelinCancelSOC();
-    CraftJavelinSOC craftJavelinSOC = new CraftJavelinSOC();
-    CraftJavelinCancelSOC craftJavelinCancelSOC = new CraftJavelinCancelSOC();
-    CrystalGate crystalGate = new CrystalGate();
-    CrystalSkillDeusSatellite1 crystalSkillDeusSatellite1 = new CrystalSkillDeusSatellite1();
-    CrystalSkillDeusSatellite2 crystalSkillDeusSatellite2 = new CrystalSkillDeusSatellite2();
-    CrystalSkillDeusSatellite3 crystalSkillDeusSatellite3 = new CrystalSkillDeusSatellite3();
-
-    GloryWingEnchantJavelin gloryWingEnchantJavelin = new GloryWingEnchantJavelin();
-    Lio1 lio1 = new Lio1();
-    Lio2 lio2 = new Lio2();
-    Lio3 lio3 = new Lio3();
-    MagicCircuitFullDrive magicCircuitFullDrive = new MagicCircuitFullDrive();
-    ReactionDestruction reactionDestruction = new ReactionDestruction();
-    ReactionDestructionSOC reactionDestructionSOC = new ReactionDestructionSOC();
-    ReactionDomination reactionDomination = new ReactionDomination();
-    ReactionDominationSOC reactionDominationSOC = new ReactionDominationSOC();
-    ReactionSpectrum reactionSpectrum = new ReactionSpectrum();
-    SoulOfCrystal soulOfCrystal = new SoulOfCrystal();
-    UnlimitedCrystalRelease unlimitedCrystalRelease = new UnlimitedCrystalRelease();
-    UnlimitedCrystalResonance unlimitedCrystalResonance = new UnlimitedCrystalResonance();
-
     Timestamp crystalGateEndTime = new Timestamp(-1);
     Timestamp crystalSkillDeusEndTime = new Timestamp(-1);
     Timestamp crystalSkillGloryWingEndTime = new Timestamp(-1);
@@ -125,13 +100,61 @@ public class IlliumDealCycle extends DealCycle {
     Timestamp unlimitedCrystalEndTime = new Timestamp(-1);
 
     int crystalCharge = 150;
-    int deusAttack = 0;
-    int lioAttack = 0;
     int crystalFragment = 0;
+    int deusAttack = 0;
     int gloryCrystalFragment = 0;
+    int lioAttack = 0;
     int resonance = 0;
 
     boolean fastChargeReuse = false;
+
+    CraftEnchantJavelin craftEnchantJavelin = new CraftEnchantJavelin();
+    CraftEnchantJavelinSOC craftEnchantJavelinSOC = new CraftEnchantJavelinSOC();
+    CraftEnchantJavelinCancel craftEnchantJavelinCancel = new CraftEnchantJavelinCancel();
+    CraftEnchantJavelinCancelSOC craftEnchantJavelinCancelSOC = new CraftEnchantJavelinCancelSOC();
+    CraftJavelin craftJavelin = new CraftJavelin();
+    CraftJavelinCancel craftJavelinCancel = new CraftJavelinCancel();
+    CraftJavelinSOC craftJavelinSOC = new CraftJavelinSOC();
+    CraftJavelinCancelSOC craftJavelinCancelSOC = new CraftJavelinCancelSOC();
+    CraftLonginus craftLonginus = new CraftLonginus();
+    CraftOrb craftOrb = new CraftOrb();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CrystalGate crystalGate = new CrystalGate();
+    CrystalGateBuff crystalGateBuff = new CrystalGateBuff();
+    CrystalIgnitionBeforeDelay crystalIgnitionBeforeDelay = new CrystalIgnitionBeforeDelay();
+    CrystalSkillDeus crystalSkillDeus = new CrystalSkillDeus();
+    CrystalSkillDeusSatellite1 crystalSkillDeusSatellite1 = new CrystalSkillDeusSatellite1();
+    CrystalSkillDeusSatellite2 crystalSkillDeusSatellite2 = new CrystalSkillDeusSatellite2();
+    CrystalSkillDeusSatellite3 crystalSkillDeusSatellite3 = new CrystalSkillDeusSatellite3();
+    CrystalSkillGloryWing crystalSkillGloryWing = new CrystalSkillGloryWing();
+    CrystalSkillMortalSwing crystalSkillMortalSwing = new CrystalSkillMortalSwing();
+    FastCharge fastCharge = new FastCharge();
+    GloryWingJavelin gloryWingJavelin = new GloryWingJavelin();
+    GloryWingEnchantJavelin gloryWingEnchantJavelin = new GloryWingEnchantJavelin();
+    GloryWingMortalWingBeat gloryWingMortalWingBeat = new GloryWingMortalWingBeat();
+    Gramholder gramholder = new Gramholder();
+    GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(600L);
+    Lio1 lio1 = new Lio1();
+    Lio2 lio2 = new Lio2();
+    Lio3 lio3 = new Lio3();
+    Machina machina = new Machina();
+    MagicCircuitFullDrive magicCircuitFullDrive = new MagicCircuitFullDrive();
+    MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
+    ReactionDestruction reactionDestruction = new ReactionDestruction();
+    ReactionDestructionSOC reactionDestructionSOC = new ReactionDestructionSOC();
+    ReactionDomination reactionDomination = new ReactionDomination();
+    ReactionDominationSOC reactionDominationSOC = new ReactionDominationSOC();
+    ReactionSpectrum reactionSpectrum = new ReactionSpectrum();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SoulOfCrystal soulOfCrystal = new SoulOfCrystal();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    UnlimitedCrystal1 unlimitedCrystal1 = new UnlimitedCrystal1();
+    UnlimitedCrystalRelease unlimitedCrystalRelease = new UnlimitedCrystalRelease();
+    UnlimitedCrystalResonance unlimitedCrystalResonance = new UnlimitedCrystalResonance();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WrathOfGod wrathOfGod = new WrathOfGod();
 
     public IlliumDealCycle(Job job) {
         super(job, new CurseMark());
@@ -139,36 +162,7 @@ public class IlliumDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        CraftJavelin craftJavelin = new CraftJavelin();
-        CraftJavelinCancel craftJavelinCancel = new CraftJavelinCancel();
-        CraftLonginus craftLonginus = new CraftLonginus();
-        CraftOrb craftOrb = new CraftOrb();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrystalGateBuff crystalGateBuff = new CrystalGateBuff();
-        CrystalIgnitionBeforeDelay crystalIgnitionBeforeDelay = new CrystalIgnitionBeforeDelay();
-        CrystalSkillDeus crystalSkillDeus = new CrystalSkillDeus();
-        CrystalSkillGloryWing crystalSkillGloryWing = new CrystalSkillGloryWing();
-        CrystalSkillMortalSwing crystalSkillMortalSwing = new CrystalSkillMortalSwing();
-        FastCharge fastCharge = new FastCharge();
-        GloryWingJavelin gloryWingJavelin = new GloryWingJavelin();
-        GloryWingMortalWingBeat gloryWingMortalWingBeat = new GloryWingMortalWingBeat();
-        Gramholder gramholder = new Gramholder();
-        GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(600L);
-        Machina machina = new Machina();
-        MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SoulOfCrystal soulOfCrystal = new SoulOfCrystal();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UnlimitedCrystal1 unlimitedCrystal1 = new UnlimitedCrystal1();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        WrathOfGod wrathOfGod = new WrathOfGod();
-
         ringSwitching.setCooldown(90.0);
-
-        addSkillEvent(lio1);
-        addSkillEvent(machina);
 
         soulContract.setApplyReuse(true);
 
@@ -178,26 +172,31 @@ public class IlliumDealCycle extends DealCycle {
         magicCircuitFullDrive.setApplyFinalAttack(true);
         spiderInMirror.setApplyFinalAttack(true);
         crestOfTheSolar.setApplyFinalAttack(true);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
+        addSkillEvent(lio1);
+        addSkillEvent(machina);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(crystalGateBuff)
-                    //&& cooldownCheck(soulOfCrystal)
-                    && cooldownCheck(wrathOfGod)
-                    && cooldownCheck(magicCircuitFullDriveBuff)
-                    && cooldownCheck(gramholder)
-                    && cooldownCheck(crystalSkillDeus)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(crystalIgnitionBeforeDelay)
-                    && crystalCharge >= 150
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            //&& cooldownCheck(soulOfCrystal)
+                            && cooldownCheck(wrathOfGod)
+                            && cooldownCheck(magicCircuitFullDriveBuff)
+                            && cooldownCheck(gramholder)
+                            && cooldownCheck(crystalSkillDeus)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(crystalIgnitionBeforeDelay)
+                            && crystalCharge >= 150
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(lio1);
                 addSkillEvent(crystalGateBuff);
                 while (
                         cooldownCheck(unlimitedCrystal1)
-                        && !cooldownCheck(soulOfCrystal)
+                                && !cooldownCheck(soulOfCrystal)
                 ) {
                     if (gloryCrystalFragment != 0) {
                         gloryCrystalFragment = 0;
@@ -249,7 +248,7 @@ public class IlliumDealCycle extends DealCycle {
                 addSkillEvent(crystalIgnitionBeforeDelay);
             } else if (
                     cooldownCheck(fastCharge)
-                    && getStart().after(crystalSkillGloryWingEndTime)
+                            && getStart().after(crystalSkillGloryWingEndTime)
             ) {
                 boolean isSOC = false;
                 while (!cooldownCheck(crystalSkillDeus)) {
@@ -274,8 +273,8 @@ public class IlliumDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
                 while (
                         !isSOC && (
-                            !cooldownCheck(soulOfCrystal)
-                            || getStart().before(soulOfCrystalEndTime)
+                                !cooldownCheck(soulOfCrystal)
+                                        || getStart().before(soulOfCrystalEndTime)
                         )
 
                 ) {
@@ -316,10 +315,10 @@ public class IlliumDealCycle extends DealCycle {
                 }
             } else if (
                     getStart().after(crystalSkillGloryWingEndTime)
-                    && crystalCharge >= 150
-                    && cooldownCheck(crystalSkillDeus)
-                    && !getStart().after(new Timestamp(710 * 1000))
-                    && !cooldownCheck(wrathOfGod)
+                            && crystalCharge >= 150
+                            && cooldownCheck(crystalSkillDeus)
+                            && !getStart().after(new Timestamp(710 * 1000))
+                            && !cooldownCheck(wrathOfGod)
             ) {
                 addSkillEvent(crystalSkillDeus);
                 addSkillEvent(crystalSkillMortalSwing);
@@ -330,7 +329,7 @@ public class IlliumDealCycle extends DealCycle {
                 addSkillEvent(gloryWingMortalWingBeat);
             } else if (
                     cooldownCheck(soulOfCrystal)
-                    && getStart().before(new Timestamp(fastCharge.getActivateTime().getTime() - 5000))
+                            && getStart().before(new Timestamp(fastCharge.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(soulOfCrystal);
             } else if (

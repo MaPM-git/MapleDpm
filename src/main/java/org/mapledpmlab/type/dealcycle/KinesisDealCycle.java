@@ -72,18 +72,44 @@ public class KinesisDealCycle extends DealCycle {
         }
     };
 
-    PsychicDrainTic psychicDrainTic = new PsychicDrainTic();
-    PsychicOverTic psychicOverTic = new PsychicOverTic();
-    UltimateBPMTic ultimateBPMTic = new UltimateBPMTic();
-
-    int psychicPoint = 40;
     int grabCnt = 0;
+    int psychicPoint = 40;
 
-    Timestamp psychicOverEndTime = new Timestamp(-1);
     Timestamp blessEndTime = new Timestamp(-1);
     Timestamp movingMatterEndTime = new Timestamp(-1);
+    Timestamp psychicOverEndTime = new Timestamp(-1);
 
     List<Timestamp> drainTime = new ArrayList<>();
+
+    AnotherRealm anotherRealm = new AnotherRealm();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    EverPsychic everPsychic = new EverPsychic();
+    LawOfGravity lawOfGravity = new LawOfGravity();
+    OtherWorldGoddessBlessing otherWorldGoddessBlessing = new OtherWorldGoddessBlessing();
+    OtherworldlyAfterimage otherworldlyAfterimage = new OtherworldlyAfterimage(Math.toIntExact(getJob().getLevel()));
+    PsychicCharge psychicCharge = new PsychicCharge();
+    PsychicDrain psychicDrain = new PsychicDrain();
+    PsychicDrainTic psychicDrainTic = new PsychicDrainTic();
+    PsychicForce psychicForce = new PsychicForce();
+    PsychicGrab psychicGrab = new PsychicGrab();
+    PsychicGround psychicGround = new PsychicGround();
+    PsychicOver psychicOver = new PsychicOver();
+    PsychicOverTic psychicOverTic = new PsychicOverTic();
+    PsychicSmashing psychicSmashing = new PsychicSmashing();
+    PsychicTornado psychicTornado = new PsychicTornado();
+    PsychicTornadoThrow psychicTornadoThrow = new PsychicTornadoThrow();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    UltimateBPM ultimateBPM = new UltimateBPM();
+    UltimateBPMTic ultimateBPMTic = new UltimateBPMTic();
+    UltimateMaterial ultimateMaterial = new UltimateMaterial();
+    UltimateMovingMatter ultimateMovingMatter = new UltimateMovingMatter();
+    UltimatePsychicBullet ultimatePsychicBullet = new UltimatePsychicBullet();
+    UltimatePsychicShoot ultimatePsychicShoot = new UltimatePsychicShoot();
+    UltimateTrain ultimateTrain = new UltimateTrain();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public KinesisDealCycle(Job job) {
         super(job, new Telekinesis());
@@ -91,39 +117,14 @@ public class KinesisDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AnotherRealm anotherRealm = new AnotherRealm();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EverPsychic everPsychic = new EverPsychic();
-        LawOfGravity lawOfGravity = new LawOfGravity();
-        OtherWorldGoddessBlessing otherWorldGoddessBlessing = new OtherWorldGoddessBlessing();
-        OtherworldlyAfterimage otherworldlyAfterimage = new OtherworldlyAfterimage(Math.toIntExact(getJob().getLevel()));
-        PsychicCharge psychicCharge = new PsychicCharge();
-        PsychicDrain psychicDrain = new PsychicDrain();
-        PsychicForce psychicForce = new PsychicForce();
-        PsychicGrab psychicGrab = new PsychicGrab();
-        PsychicGround psychicGround = new PsychicGround();
-        PsychicOver psychicOver = new PsychicOver();
-        PsychicSmashing psychicSmashing = new PsychicSmashing();
-        PsychicTornado psychicTornado = new PsychicTornado();
-        PsychicTornadoThrow psychicTornadoThrow = new PsychicTornadoThrow();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UltimateBPM ultimateBPM = new UltimateBPM();
-        UltimateMaterial ultimateMaterial = new UltimateMaterial();
-        UltimateMovingMatter ultimateMovingMatter = new UltimateMovingMatter();
-        UltimatePsychicBullet ultimatePsychicBullet = new UltimatePsychicBullet();
-        UltimatePsychicShoot ultimatePsychicShoot = new UltimatePsychicShoot();
-        UltimateTrain ultimateTrain = new UltimateTrain();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         ultimateBPMTic.setActivateTime(new Timestamp(600));
 
         otherWorldGoddessBlessing.setCooldown(120.0);
-
         ringSwitching.setCooldown(90.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         addSkillEvent(ultimateBPM);
         while (getStart().before(getEnd())) {
             if (
@@ -142,7 +143,7 @@ public class KinesisDealCycle extends DealCycle {
             ) {
                 if (
                         cooldownCheck(psychicCharge)
-                        && psychicPoint <= 20
+                                && psychicPoint <= 20
                 ) {
                     addSkillEvent(psychicCharge);
                 }
@@ -157,7 +158,7 @@ public class KinesisDealCycle extends DealCycle {
                 addSkillEvent(otherworldlyAfterimage);
                 if (
                         getStart().after(new Timestamp(2 * 60 * 1000))
-                        && getStart().before(new Timestamp(4 * 60 * 1000))
+                                && getStart().before(new Timestamp(4 * 60 * 1000))
                 ) {
                     otherWorldGoddessBlessing.setCooldown(90.0);
                 } else if (getStart().after(new Timestamp(8 * 60 * 1000))) {
@@ -179,11 +180,11 @@ public class KinesisDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(everPsychic)
-                    && cooldownCheck(ultimateMovingMatter)
-                    //&& cooldownCheck(ultimateTrain)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(ultimateMovingMatter)
+                            //&& cooldownCheck(ultimateTrain)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (cooldownCheck(otherWorldGoddessBlessing)) {
                     addSkillEvent(otherWorldGoddessBlessing);
@@ -195,25 +196,25 @@ public class KinesisDealCycle extends DealCycle {
                 addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(otherworldlyAfterimage)
-                    && cooldownCheck(lawOfGravity)
-                    && getStart().before(new Timestamp(psychicOver.getActivateTime().getTime() - 10000))
+                            && cooldownCheck(lawOfGravity)
+                            && getStart().before(new Timestamp(psychicOver.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(otherworldlyAfterimage);
                 addSkillEvent(lawOfGravity);
             } else if (
                     cooldownCheck(psychicCharge)
-                    && psychicPoint <= 20
+                            && psychicPoint <= 20
             ) {
                 addSkillEvent(psychicCharge);
             } else if (
                     cooldownCheck(psychicGround)
-                    && getStart().before(new Timestamp(psychicOver.getActivateTime().getTime() - 10000))
+                            && getStart().before(new Timestamp(psychicOver.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(psychicGround);
                 addSkillEvent(psychicDrain);
@@ -224,17 +225,17 @@ public class KinesisDealCycle extends DealCycle {
                 addSkillEvent(ultimateTrain);
             }*/ else if (
                     getStart().before(movingMatterEndTime)
-                    && cooldownCheck(psychicForce)
+                            && cooldownCheck(psychicForce)
             ) {
                 addSkillEvent(psychicForce);
             } else if (
                     getStart().before(psychicOverEndTime)
-                    && psychicPoint >= 3
+                            && psychicPoint >= 3
             ) {
                 addSkillEvent(ultimateMaterial);
             } else if (
                     psychicPoint >= 6
-                    && !cooldownCheck(psychicOver)
+                            && !cooldownCheck(psychicOver)
             ){
                 addSkillEvent(ultimateMaterial);
             }/* else if (

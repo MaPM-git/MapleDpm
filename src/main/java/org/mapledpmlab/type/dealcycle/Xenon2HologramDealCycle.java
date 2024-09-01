@@ -66,8 +66,9 @@ public class Xenon2HologramDealCycle extends DealCycle {
         }
     };
 
-    int energyCnt = 20;
     int airFrameCnt = 0;
+    int energyCnt = 20;
+
     List<Timestamp> hologramGraffitiFusionStartTimeList = new ArrayList<>();
     List<Timestamp> hologramGraffitiFusionEndTimeList = new ArrayList<>();
 
@@ -75,12 +76,39 @@ public class Xenon2HologramDealCycle extends DealCycle {
     Timestamp overloadModeEndTime = new Timestamp(-1);
     Timestamp pinpointRocketCooltime = new Timestamp(-1);
 
+    AegisSystem aegisSystem = new AegisSystem();
+    AmaranceGenerator amaranceGenerator = new AmaranceGenerator();
+    ArtificialEvolution artificialEvolution = new ArtificialEvolution();
     ArtificialEvolutionAirFrame artificialEvolutionAirFrame = new ArtificialEvolutionAirFrame();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    ExtraSupply extraSupply = new ExtraSupply();
+    FuzzyRobMasqueradeExecution fuzzyRobMasqueradeExecution = new FuzzyRobMasqueradeExecution();
+    FuzzyRobMasqueradeSnipe fuzzyRobMasqueradeSnipe = new FuzzyRobMasqueradeSnipe();
+    HologramGraffitiForceField hologramGraffitiForceField = new HologramGraffitiForceField();
+    HologramGraffitiFusion hologramGraffitiFusion = new HologramGraffitiFusion();
     InclinePower inclinePower = new InclinePower();
+    LoadedDice loadedDice = new LoadedDice();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MegaSmasherBeforeDelay megaSmasherBeforeDelay = new MegaSmasherBeforeDelay();
+    MegaSmasher megaSmasher = new MegaSmasher();
+    MegaSmasherReinforce megaSmasherReinforce = new MegaSmasherReinforce();
+    MeltdownExplosion meltdownExplosion = new MeltdownExplosion();
+    OopartsCode oopartsCode = new OopartsCode();
+    Overdrive overdrive = new Overdrive(255L);
+    OverloadMode overloadMode = new OverloadMode();
+    PhotonRay photonRay = new PhotonRay();
+    PhotonRayBeforeDelay photonRayBeforeDelay = new PhotonRayBeforeDelay();
     PinpointRocket pinpointRocket = new PinpointRocket();
+    ReadyToDie readyToDie = new ReadyToDie();
+    ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
     SupplySurplus supplySurplus = new SupplySurplus();
     TriangleFormation triangleFormation = new TriangleFormation();
     TriangleFormationPlasma triangleFormationPlasma = new TriangleFormationPlasma();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public Xenon2HologramDealCycle(Job job) {
         super(job, null);
@@ -89,34 +117,6 @@ public class Xenon2HologramDealCycle extends DealCycle {
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AegisSystem aegisSystem = new AegisSystem();
-        AmaranceGenerator amaranceGenerator = new AmaranceGenerator();
-        ArtificialEvolution artificialEvolution = new ArtificialEvolution();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        ExtraSupply extraSupply = new ExtraSupply();
-        FuzzyRobMasqueradeExecution fuzzyRobMasqueradeExecution = new FuzzyRobMasqueradeExecution();
-        FuzzyRobMasqueradeSnipe fuzzyRobMasqueradeSnipe = new FuzzyRobMasqueradeSnipe();
-        HologramGraffitiForceField hologramGraffitiForceField = new HologramGraffitiForceField();
-        HologramGraffitiFusion hologramGraffitiFusion = new HologramGraffitiFusion();
-        LoadedDice loadedDice = new LoadedDice();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MegaSmasherBeforeDelay megaSmasherBeforeDelay = new MegaSmasherBeforeDelay();
-        MegaSmasher megaSmasher = new MegaSmasher();
-        MegaSmasherReinforce megaSmasherReinforce = new MegaSmasherReinforce();
-        MeltdownExplosion meltdownExplosion = new MeltdownExplosion();
-        OopartsCode oopartsCode = new OopartsCode();
-        Overdrive overdrive = new Overdrive(255L);
-        OverloadMode overloadMode = new OverloadMode();
-        PhotonRay photonRay = new PhotonRay();
-        PhotonRayBeforeDelay photonRayBeforeDelay = new PhotonRayBeforeDelay();
-        ReadyToDie readyToDie = new ReadyToDie();
-        ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         /*for (int i = 0; i < 720 * 1000; i += aegisSystem.getInterval()) {
             getSkillEventList().add(new SkillEvent(aegisSystem, new Timestamp(i), new Timestamp(i)));
@@ -136,13 +136,16 @@ public class Xenon2HologramDealCycle extends DealCycle {
         addSkillEvent(megaSmasherBeforeDelay);
         getStart().setTime(0);
         energyCnt = 50;
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(overloadMode)
-                    && cooldownCheck(megaSmasherBeforeDelay)
-                    && cooldownCheck(loadedDice)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(megaSmasherBeforeDelay)
+                            && cooldownCheck(loadedDice)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(overloadMode);
                 addSkillEvent(megaSmasherBeforeDelay);
@@ -152,19 +155,19 @@ public class Xenon2HologramDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(photonRayBeforeDelay)
-                    && cooldownCheck(loadedDice)
-                    && cooldownCheck(oopartsCode)
-                    && cooldownCheck(amaranceGenerator)
-                    && cooldownCheck(hologramGraffitiForceField)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(hologramGraffitiFusion)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(meltdownExplosion)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(restraintRing)
-                    && getStart().before(new Timestamp(600 * 1000))
-                    && energyCnt >= 20
+                            && cooldownCheck(loadedDice)
+                            && cooldownCheck(oopartsCode)
+                            && cooldownCheck(amaranceGenerator)
+                            && cooldownCheck(hologramGraffitiForceField)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(hologramGraffitiFusion)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(meltdownExplosion)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(restraintRing)
+                            && getStart().before(new Timestamp(600 * 1000))
+                            && energyCnt >= 20
             ) {
                 boolean isOrigin = false;
                 addSkillEvent(photonRayBeforeDelay);
@@ -210,17 +213,17 @@ public class Xenon2HologramDealCycle extends DealCycle {
                 addSkillEvent(photonRay);
             } else if (
                     cooldownCheck(photonRayBeforeDelay)
-                    && cooldownCheck(oopartsCode)
-                    && cooldownCheck(amaranceGenerator)
-                    && cooldownCheck(hologramGraffitiFusion)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(meltdownExplosion)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(photonRay)
-                    && getStart().before(new Timestamp(660 * 1000))
-                    && energyCnt == 20
+                            && cooldownCheck(oopartsCode)
+                            && cooldownCheck(amaranceGenerator)
+                            && cooldownCheck(hologramGraffitiFusion)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(meltdownExplosion)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(photonRay)
+                            && getStart().before(new Timestamp(660 * 1000))
+                            && energyCnt == 20
             ) {
                 addSkillEvent(photonRayBeforeDelay);
                 addSkillEvent(oopartsCode);
@@ -234,21 +237,21 @@ public class Xenon2HologramDealCycle extends DealCycle {
                 addSkillEvent(photonRay);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(hologramGraffitiForceField)
-                    && !cooldownCheck(loadedDice)
+                            && !cooldownCheck(loadedDice)
             ) {
                 addSkillEvent(hologramGraffitiForceField);
             } else if (
                     cooldownCheck(photonRayBeforeDelay)
-                    && (
+                            && (
                             (
                                     !cooldownCheck(readyToDie)
-                                    && getStart().before(new Timestamp(loadedDice.getActivateTime().getTime() - 20000))
+                                            && getStart().before(new Timestamp(loadedDice.getActivateTime().getTime() - 20000))
                             ) || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {

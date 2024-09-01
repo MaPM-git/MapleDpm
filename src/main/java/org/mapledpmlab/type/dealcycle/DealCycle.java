@@ -52,6 +52,8 @@ public class DealCycle {
         getJob().addTotal(getJob().getJobType());
     }
 
+    public void setSoloDealCycle() {}
+
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
 

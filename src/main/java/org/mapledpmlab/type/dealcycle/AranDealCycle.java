@@ -70,13 +70,32 @@ public class AranDealCycle extends DealCycle {
 
     AdrenalineBoost adrenalineBoost = new AdrenalineBoost();
     AdrenalineMaximum adrenalineMaximum = new AdrenalineMaximum();
+    AuraWeaponBuff auraWeapon = new AuraWeaponBuff();
+    Beyonder1 beyonder = new Beyonder1();
     BeyonderMaha beyonderMaha = new BeyonderMaha();
+    BlizzardTempest blizzardTempest = new BlizzardTempest();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
     BoostEndAdrenalineSurge boostEndAdrenalineSurge = new BoostEndAdrenalineSurge();
+    BoostEndHuntersTargetingBeforeDelay boostEndHuntersTargeting = new BoostEndHuntersTargetingBeforeDelay();
+    BrandishMaha brandishMaha = new BrandishMaha();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    EndGameWave endGame = new EndGameWave();
+    FrozenGround frozenGround = new FrozenGround();
+    GlacialFrozen glacialFrozen = new GlacialFrozen();
     GoldenFlash goldenFlash = new GoldenFlash();
+    HeroesOath heroesOath = new HeroesOath();
     HyperBoostEndAdrenalineSurge hyperBoostEndAdrenalineSurge = new HyperBoostEndAdrenalineSurge();
+    HyperBoostEndLastStand1 hyperBoostEndLastStand = new HyperBoostEndLastStand1();
     IceBlock iceBlock = new IceBlock();
     IceBlockAfterFirst iceBlock2 = new IceBlockAfterFirst();
     IceWave iceWave = new IceWave();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SmashSwing1 smashSwing = new SmashSwing1();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     Timestamp adrenalineEndTime = new Timestamp(-1);
     Timestamp adrenalineMaximumEndTime = new Timestamp(-1);
@@ -88,46 +107,28 @@ public class AranDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AuraWeaponBuff auraWeapon = new AuraWeaponBuff();
-        Beyonder1 beyonder = new Beyonder1();
-        BlizzardTempest blizzardTempest = new BlizzardTempest();
-        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
-        BoostEndHuntersTargetingBeforeDelay boostEndHuntersTargeting = new BoostEndHuntersTargetingBeforeDelay();
-        BrandishMaha brandishMaha = new BrandishMaha();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EndGameWave endGame = new EndGameWave();
-        FrozenGround frozenGround = new FrozenGround();
-        GlacialFrozen glacialFrozen = new GlacialFrozen();
-        HeroesOath heroesOath = new HeroesOath();
-        HyperBoostEndLastStand1 hyperBoostEndLastStand = new HyperBoostEndLastStand1();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SmashSwing1 smashSwing = new SmashSwing1();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         ringSwitching.setCooldown(88.0);
         ringSwitching.setApplyCooldownReduction(false);
-
         auraWeapon.setCooldown(180.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(frozenGround)) {
                 addSkillEvent(frozenGround);
             }
             if (
                     getStart().before(new Timestamp(600 * 1000))
-                    && cooldownCheck(auraWeapon)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(heroesOath)
-                    && cooldownCheck(blizzardTempest)
-                    && cooldownCheck(bodyOfSteel)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(adrenalineMaximum)
+                            && cooldownCheck(auraWeapon)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(heroesOath)
+                            && cooldownCheck(blizzardTempest)
+                            && cooldownCheck(bodyOfSteel)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(adrenalineMaximum)
             ) {
                 addSkillEvent(auraWeapon);
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -162,9 +163,9 @@ public class AranDealCycle extends DealCycle {
                 }
             } else if (
                     getStart().before(new Timestamp(660 * 1000))
-                    && cooldownCheck(blizzardTempest)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(soulContract)
+                            && cooldownCheck(blizzardTempest)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(soulContract)
             ) {
                 addSkillEvent(blizzardTempest);
                 addSkillEvent(adrenalineBoost);
@@ -174,8 +175,8 @@ public class AranDealCycle extends DealCycle {
                 addSkillEvent(boostEndAdrenalineSurge);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (cooldownCheck(brandishMaha)) {

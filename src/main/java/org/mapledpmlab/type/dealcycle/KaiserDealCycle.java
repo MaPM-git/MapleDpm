@@ -68,17 +68,11 @@ public class KaiserDealCycle extends DealCycle {
         }
     };
 
-    DragonBlazeEnergy dragonBlazeEnergy = new DragonBlazeEnergy();
-    DragonBlazeFireOrb dragonBlazeFireOrb = new DragonBlazeFireOrb();
-    InfernoBreath infernoBreath = new InfernoBreath();
-    MajestyOfKaiser majestyOfKaiser = new MajestyOfKaiser();
-    SoulContract soulContract = new SoulContract();
-    WallOfSword wallOfSword = new WallOfSword();
-    WallOfSwordDragonBlow wallOfSwordDragonBlow = new WallOfSwordDragonBlow();
-
     boolean dragonBlowChk = false;
     boolean isFinalFiguration = false;
 
+
+    int gauge = 700;
     int reuseCnt = 0;
     int strikeCnt = 0;
 
@@ -89,39 +83,43 @@ public class KaiserDealCycle extends DealCycle {
 
     List<Timestamp> wingBeatTime = new ArrayList<>();
 
-    DracoSlasher dracoSlasher = new DracoSlasher();
-    DracoSlasherFF dracoSlasherFF = new DracoSlasherFF();
-    GigaSlasher gigaSlasher = new GigaSlasher();
-    GigaSlasherFF gigaSlasherFF = new GigaSlasherFF();
-
     BuffSkill regainStrength = new BuffSkill();
 
-    int gauge = 700;
+    AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DracoSlasher dracoSlasher = new DracoSlasher();
+    DracoSlasherFF dracoSlasherFF = new DracoSlasherFF();
+    DragonBlaze dragonBlaze = new DragonBlaze();
+    DragonBlazeEnergy dragonBlazeEnergy = new DragonBlazeEnergy();
+    DragonBlazeFireOrb dragonBlazeFireOrb = new DragonBlazeFireOrb();
+    DragonSlash dragonSlash = new DragonSlash();
+    FinalFiguration finalFiguration = new FinalFiguration();
+    FinalTrance finalTrance = new FinalTrance();
+    GigaSlasher gigaSlasher = new GigaSlasher();
+    GigaSlasherFF gigaSlasherFF = new GigaSlasherFF();
+    GrandisGoddessBlessingNova grandisGoddessBlessingNova = new GrandisGoddessBlessingNova();
+    GuardianOfNova guardianOfNova = new GuardianOfNova();
+    InfernoBreath infernoBreath = new InfernoBreath();
+    MajestyOfKaiser majestyOfKaiser = new MajestyOfKaiser();
+    MightOfNova mightOfNova = new MightOfNova();
+    Petrified petrified = new Petrified();
+    Prominence prominence = new Prominence();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    WallOfSword wallOfSword = new WallOfSword();
+    WallOfSwordDragonBlow wallOfSwordDragonBlow = new WallOfSwordDragonBlow();
+    WallOfSwordStrike wallOfSwordStrike = new WallOfSwordStrike();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WingBeat wingBeat = new WingBeat();
 
     public KaiserDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DragonBlaze dragonBlaze = new DragonBlaze();
-        DragonSlash dragonSlash = new DragonSlash();
-        FinalFiguration finalFiguration = new FinalFiguration();
-        FinalTrance finalTrance = new FinalTrance();
-        GrandisGoddessBlessingNova grandisGoddessBlessingNova = new GrandisGoddessBlessingNova();
-        GuardianOfNova guardianOfNova = new GuardianOfNova();
-        MightOfNova mightOfNova = new MightOfNova();
-        Petrified petrified = new Petrified();
-        Prominence prominence = new Prominence();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        WallOfSwordStrike wallOfSwordStrike = new WallOfSwordStrike();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        WingBeat wingBeat = new WingBeat();
 
         ringSwitching.setCooldown(130.0);
         auraWeaponBuff.setCooldown(180.0);
@@ -140,19 +138,22 @@ public class KaiserDealCycle extends DealCycle {
         regainStrength.setBuffFinalDamage(1.15);
         regainStrength.setName("리게인 스트렝스");
         addSkillEvent(regainStrength);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(finalFigurationEndTime)
-                    && cooldownCheck(finalTrance)
+                            && cooldownCheck(finalTrance)
             ) {
                 addSkillEvent(finalTrance);
             }
             if (
                     getStart().after(finalFigurationEndTime)
-                    && cooldownCheck(majestyOfKaiser)
-                    && gauge <= 300
+                            && cooldownCheck(majestyOfKaiser)
+                            && gauge <= 300
             ) {
                 if (cooldownCheck(wallOfSword)) {
                     addSkillEvent(wallOfSword);
@@ -166,28 +167,28 @@ public class KaiserDealCycle extends DealCycle {
             }
             if (
                     getStart().after(finalFigurationEndTime)
-                    && gauge >= 700
+                            && gauge >= 700
             ) {
                 addSkillEvent(finalFiguration);
             }
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
             }
             if (
                     cooldownCheck(petrified)
-                    && cooldownCheck(infernoBreath)
-                    && cooldownCheck(guardianOfNova)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(dragonBlaze)
-                    && cooldownCheck(dracoSlasher)
-                    && cooldownCheck(prominence)
-                    && cooldownCheck(wallOfSwordStrike)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && getStart().before(new Timestamp(finalFigurationEndTime.getTime() - 5000))
-                    && cooldownCheck(bodyOfSteel)
+                            && cooldownCheck(infernoBreath)
+                            && cooldownCheck(guardianOfNova)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(dragonBlaze)
+                            && cooldownCheck(dracoSlasher)
+                            && cooldownCheck(prominence)
+                            && cooldownCheck(wallOfSwordStrike)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().before(new Timestamp(finalFigurationEndTime.getTime() - 5000))
+                            && cooldownCheck(bodyOfSteel)
             ) {
                 //addSkillEvent(petrified);
                 addSkillEvent(bodyOfSteel);
@@ -233,14 +234,14 @@ public class KaiserDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(100 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 50000))
-                    && getStart().after(soulContractEndTime)
+                            && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 50000))
+                            && getStart().after(soulContractEndTime)
             ) {
                 addSkillEvent(soulContract);
             } /*else if (
@@ -250,8 +251,8 @@ public class KaiserDealCycle extends DealCycle {
                 addSkillEvent(petrified);
             }*/ else if (
                     cooldownCheck(prominence)
-                    && cooldownCheck(wallOfSwordStrike)
-                    && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 30000))
+                            && cooldownCheck(wallOfSwordStrike)
+                            && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(prominence);
@@ -262,11 +263,11 @@ public class KaiserDealCycle extends DealCycle {
                 addSkillEvent(dracoSlasher);
             } else if (
                     cooldownCheck(wallOfSwordStrike)
-                    && (
+                            && (
                             getStart().before(new Timestamp(prominence.getActivateTime().getTime() - 20000))
-                            || (
+                                    || (
                                     getStart().after(new Timestamp(660 * 1000))
-                                    && getStart().before(new Timestamp(700 * 1000))
+                                            && getStart().before(new Timestamp(700 * 1000))
                             )
                     )
             ) {
@@ -278,14 +279,14 @@ public class KaiserDealCycle extends DealCycle {
                 addSkillEvent(dracoSlasher);
             } else if (
                     cooldownCheck(infernoBreath)
-                    && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 15000))
-                    && getStart().after(finalFigurationEndTime)
+                            && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 15000))
+                            && getStart().after(finalFigurationEndTime)
             ) {
                 addSkillEvent(infernoBreath);
             } else if (
                     cooldownCheck(dragonSlash)
-                    && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 15000))
-                    && getStart().after(finalFigurationEndTime)
+                            && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 15000))
+                            && getStart().after(finalFigurationEndTime)
             ) {
                 addSkillEvent(dragonSlash);
                 addSkillEvent(wingBeat);

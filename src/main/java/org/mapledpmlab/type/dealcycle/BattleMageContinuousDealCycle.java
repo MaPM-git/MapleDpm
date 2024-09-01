@@ -55,19 +55,13 @@ public class BattleMageContinuousDealCycle extends DealCycle {
         }
     };
 
-    BlackMark blackMark = new BlackMark();
-    ContinuousRing continuousRing = new ContinuousRing();
-    Death death = new Death();
-    DeathReinforce deathReinforce = new DeathReinforce();
-    NetherworldLightning netherworldLightning = new NetherworldLightning();
-
     private final List<Timestamp> abyssalLightningStartTimeList = new ArrayList<>();
     private final List<Timestamp> abyssalLightningEndTimeList = new ArrayList<>();
 
     Timestamp abyssalLightningEndTime = new Timestamp(-1);
-    Timestamp unionAuraEndTime = new Timestamp(-1);
     Timestamp continuousRingEndTime = new Timestamp(-1);
     Timestamp masterOfDeathEndTime = new Timestamp(-1);
+    Timestamp unionAuraEndTime = new Timestamp(-1);
 
     int attackCnt = 0;
     int reaperScytheCnt = 0;
@@ -75,33 +69,41 @@ public class BattleMageContinuousDealCycle extends DealCycle {
 
     boolean isNuke = false;
 
+    AbyssalLightning abyssalLightning = new AbyssalLightning();
+    BattleKingBar1 battleKingBar1 = new BattleKingBar1();
+    BlackMagicAltar blackMagicAltar = new BlackMagicAltar();
+    BlackMark blackMark = new BlackMark();
+    ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CrimsonPactum1 crimsonPactum1 = new CrimsonPactum1();
+    Death death = new Death();
+    DeathReinforce deathReinforce = new DeathReinforce();
+    FinishBlow finishBlow = new FinishBlow();
+    GrimReaper grimReaper = new GrimReaper();
+    GrimReaperMOD grimReaperMOD = new GrimReaperMOD();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MasterOfDeath masterOfDeath = new MasterOfDeath();
+    NetherworldLightning netherworldLightning = new NetherworldLightning();
+    ReaperScythe reaperScythe = new ReaperScythe();
+    ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    UnionAura unionAura = new UnionAura();
+    WillOfLiberty willOfLiberty = new WillOfLiberty();
+
     public BattleMageContinuousDealCycle(Job job) {
         super(job, new FinalAttackBattleMage());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AbyssalLightning abyssalLightning = new AbyssalLightning();
-        BattleKingBar1 battleKingBar1 = new BattleKingBar1();
-        BlackMagicAltar blackMagicAltar = new BlackMagicAltar();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrimsonPactum1 crimsonPactum1 = new CrimsonPactum1();
-        FinishBlow finishBlow = new FinishBlow();
-        GrimReaper grimReaper = new GrimReaper();
-        GrimReaperMOD grimReaperMOD = new GrimReaperMOD();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MasterOfDeath masterOfDeath = new MasterOfDeath();
-        ReaperScythe reaperScythe = new ReaperScythe();
-        ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UnionAura unionAura = new UnionAura();
-        WillOfLiberty willOfLiberty = new WillOfLiberty();
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
         resistanceLineInfantry.addFinalDamage(1.08);            // 오버로드 마나
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         addSkillEvent(resistanceLineInfantry);
         while (getStart().before(getEnd())) {
             if (cooldownCheck(resistanceLineInfantry)) {
@@ -109,14 +111,14 @@ public class BattleMageContinuousDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(willOfLiberty)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(blackMagicAltar)
-                    && cooldownCheck(unionAura)
-                    && cooldownCheck(abyssalLightning)
-                    && cooldownCheck(masterOfDeath)
-                    && cooldownCheck(grimReaperMOD)
-                    && cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(blackMagicAltar)
+                            && cooldownCheck(unionAura)
+                            && cooldownCheck(abyssalLightning)
+                            && cooldownCheck(masterOfDeath)
+                            && cooldownCheck(grimReaperMOD)
+                            && cooldownCheck(soulContract)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 isNuke = true;
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -141,10 +143,10 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(blackMagicAltar)
-                    && cooldownCheck(unionAura)
-                    && cooldownCheck(grimReaper)
-                    && cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(unionAura)
+                            && cooldownCheck(grimReaper)
+                            && cooldownCheck(soulContract)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(blackMagicAltar);
                 addSkillEvent(unionAura);
@@ -152,7 +154,7 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(blackMagicAltar)
-                    && !cooldownCheck(soulContract)
+                            && !cooldownCheck(soulContract)
             ) {
                 addSkillEvent(blackMagicAltar);
             } else if (cooldownCheck(battleKingBar1)) {

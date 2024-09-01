@@ -62,7 +62,22 @@ public class NightWalkerDealCycle extends DealCycle {
 
     int batCount = 4;
     int finalAttackCount = 2;
-    RavenousBatReinforce ravenousBatReinforce = new RavenousBatReinforce();
+
+    Timestamp dominionEndTime = new Timestamp(-1);
+    Timestamp shadowSpearEndTime = new Timestamp(-1);
+    Timestamp shadowIllusionEndTime = new Timestamp(-1);
+    Timestamp shadowServantExtendEndTime = new Timestamp(-1);
+    Timestamp silenceEndTime = new Timestamp(-1);
+
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
+    Dominion dominion = new Dominion();
+    DominionSummonBat dominionSummonBat = new DominionSummonBat();
+    ElementDarkness elementDarkness = new ElementDarkness();
+    GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
+    QuintupleThrow quintupleThrow = new QuintupleThrow();
+    QuintupleThrowBlack quintupleThrowBlack = new QuintupleThrowBlack();
+    RapidThrowBeforeDelay rapidThrow = new RapidThrowBeforeDelay();
     RavenousBat ravenousBat1 = new RavenousBat();
     RavenousBat ravenousBat2 = new RavenousBat();
     RavenousBat ravenousBat3 = new RavenousBat();
@@ -71,43 +86,28 @@ public class NightWalkerDealCycle extends DealCycle {
     RavenousBat ravenousBat6 = new RavenousBat();
     RavenousBat ravenousBat7 = new RavenousBat();
     RavenousBat ravenousBat8 = new RavenousBat();
+    RavenousBatReinforce ravenousBatReinforce = new RavenousBatReinforce();
+    ReadyToDie readyToDie = new ReadyToDie();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    ShadowBiteBuff shadowBiteBuff = new ShadowBiteBuff();
+    ShadowIllusion shadowIllusion = new ShadowIllusion();
+    ShadowServantExtend shadowServantExtend = new ShadowServantExtend();
     ShadowSpear shadowSpear = new ShadowSpear();
+    ShadowSpearBuff shadowSpearBuff = new ShadowSpearBuff();
     ShadowSpearGiant shadowSpearGiant = new ShadowSpearGiant();
+    Silence silence = new Silence();
     SilenceShadowStar silenceShadowStar = new SilenceShadowStar();
-    Timestamp silenceEndTime = new Timestamp(-1);
-    Timestamp shadowSpearEndTime = new Timestamp(-1);
-    Timestamp shadowIllusionEndTime = new Timestamp(-1);
-    Timestamp shadowServantExtendEndTime = new Timestamp(-1);
-    Timestamp dominionEndTime = new Timestamp(-1);
-
-    DominionSummonBat dominionSummonBat = new DominionSummonBat();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public NightWalkerDealCycle(Job job) {
         super(job, new RavenousBat());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
-        Dominion dominion = new Dominion();
-        ElementDarkness elementDarkness = new ElementDarkness();
-        GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
-        QuintupleThrow quintupleThrow = new QuintupleThrow();
-        QuintupleThrowBlack quintupleThrowBlack = new QuintupleThrowBlack();
-        RapidThrowBeforeDelay rapidThrow = new RapidThrowBeforeDelay();
-        ReadyToDie readyToDie = new ReadyToDie();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        ShadowBiteBuff shadowBiteBuff = new ShadowBiteBuff();
-        ShadowIllusion shadowIllusion = new ShadowIllusion();
-        ShadowServantExtend shadowServantExtend = new ShadowServantExtend();
-        ShadowSpearBuff shadowSpearBuff = new ShadowSpearBuff();
-        Silence silence = new Silence();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 엘리멘트 : 다크니스
         for (int i = 0; i < 720 * 1000; i += elementDarkness.getInterval()) {
@@ -124,14 +124,18 @@ public class NightWalkerDealCycle extends DealCycle {
         getStart().setTime(-10000);
         addSkillEvent(transcendentCygnusBlessing);
         getStart().setTime(0);
+    }
+
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(cygnusPhalanx)) {
                 addSkillEvent(cygnusPhalanx);
             }
             if (
                     cooldownCheck(transcendentCygnusBlessing)
-                    && getStart().after(new Timestamp(shadowSpearBuff.getActivateTime().getTime() - 5000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(shadowSpearBuff.getActivateTime().getTime() - 5000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (getStart().before(new Timestamp(10 * 1000))) {
                     transcendentCygnusBlessing.setCooldown(360.0);
@@ -142,16 +146,16 @@ public class NightWalkerDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(shadowSpearBuff)
-                    && cooldownCheck(gloryOfGuardians)
-                    && cooldownCheck(shadowServantExtend)
-                    && cooldownCheck(shadowIllusion)
-                    && cooldownCheck(dominion)
-                    && cooldownCheck(shadowBiteBuff)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(rapidThrow)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(gloryOfGuardians)
+                            && cooldownCheck(shadowServantExtend)
+                            && cooldownCheck(shadowIllusion)
+                            && cooldownCheck(dominion)
+                            && cooldownCheck(shadowBiteBuff)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(rapidThrow)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(shadowSpearBuff);
                 addSkillEvent(gloryOfGuardians);
@@ -180,10 +184,10 @@ public class NightWalkerDealCycle extends DealCycle {
                 addSkillEvent(rapidThrow);
             } else if (
                     cooldownCheck(readyToDie)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(rapidThrow)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(rapidThrow)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(readyToDie);
                 addSkillEvent(soulContract);
@@ -191,20 +195,20 @@ public class NightWalkerDealCycle extends DealCycle {
                 addSkillEvent(rapidThrow);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(shadowServantExtend)
-                    && !cooldownCheck(shadowSpearBuff)
+                            && !cooldownCheck(shadowSpearBuff)
             ) {
                 addSkillEvent(shadowServantExtend);
             } else if (
                     cooldownCheck(shadowBiteBuff)
-                    && (
+                            && (
                             !cooldownCheck(shadowSpearBuff)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(shadowBiteBuff);

@@ -72,36 +72,36 @@ public class CannonShooter3DealCycle extends DealCycle {
         }
     };
 
+    BarrelRoulette barrelRoulette = new BarrelRoulette();
+    BigFuseGiganticCannonball bigFuseGiganticCannonball = new BigFuseGiganticCannonball();
+    CannonBuster cannonBuster = new CannonBuster();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    ICBMAimDelay icbm = new ICBMAimDelay();
+    LuckyDice luckyDice = new LuckyDice();
+    LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
+    MagneticAnchorFinish magneticAnchorFinish = new MagneticAnchorFinish();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MiniCanonBall miniCanonBall = new MiniCanonBall();
+    MonkeyFurious monkeyFurious = new MonkeyFurious();
+    Overdrive overdrive = new Overdrive(348L);
+    PirateFlag pirateFlag = new PirateFlag();
+    PoolmakerBuff poolmakerBuff = new PoolmakerBuff();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    RollingCannonRainbow rollingCannonRainbow = new RollingCannonRainbow();
+    SoulContract soulContract = new SoulContract();
+    SpecialMonkeyEscort specialMonkeyEscort = new SpecialMonkeyEscort();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SuperCannonExplosion1 superCannonExplosion1 = new SuperCannonExplosion1();
+    SupportMonkeyTwins supportMonkeyTwins = new SupportMonkeyTwins();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+
     public CannonShooter3DealCycle(Job job) {
         super(job, new FinalAttackCannonShooter());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        BarrelRoulette barrelRoulette = new BarrelRoulette();
-        BigFuseGiganticCannonball bigFuseGiganticCannonball = new BigFuseGiganticCannonball();
-        CannonBuster cannonBuster = new CannonBuster();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        ICBMAimDelay icbm = new ICBMAimDelay();
-        LuckyDice luckyDice = new LuckyDice();
-        LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
-        MagneticAnchorFinish magneticAnchorFinish = new MagneticAnchorFinish();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MiniCanonBall miniCanonBall = new MiniCanonBall();
-        MonkeyFurious monkeyFurious = new MonkeyFurious();
-        Overdrive overdrive = new Overdrive(348L);
-        PirateFlag pirateFlag = new PirateFlag();
-        PoolmakerBuff poolmakerBuff = new PoolmakerBuff();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        RollingCannonRainbow rollingCannonRainbow = new RollingCannonRainbow();
-        SoulContract soulContract = new SoulContract();
-        SpecialMonkeyEscort specialMonkeyEscort = new SpecialMonkeyEscort();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SuperCannonExplosion1 superCannonExplosion1 = new SuperCannonExplosion1();
-        SupportMonkeyTwins supportMonkeyTwins = new SupportMonkeyTwins();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         ringSwitching.setCooldown(100.0);
 
@@ -118,17 +118,20 @@ public class CannonShooter3DealCycle extends DealCycle {
         addSkillEvent(barrelRoulette);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     luckyDice.getCooldown() == 0
-                    && luckyDice.getBuffAttMagic() == 0
-                    && luckyDice.getBuffDamage() == 20
+                            && luckyDice.getBuffAttMagic() == 0
+                            && luckyDice.getBuffDamage() == 20
             ) {
                 luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
                 if (
                         luckyDiceOneMoreChance.getBuffDamage() >= 30
-                        || luckyDiceOneMoreChance.getBuffAttMagic() >= 15
+                                || luckyDiceOneMoreChance.getBuffAttMagic() >= 15
                 ) {
                     luckyDiceOneMoreChance.setCooldown(180.0);
                 }
@@ -140,7 +143,7 @@ public class CannonShooter3DealCycle extends DealCycle {
                 luckyDice = new LuckyDice();
                 if (
                         luckyDice.getBuffDamage() >= 30
-                        || luckyDice.getBuffAttMagic() >= 15
+                                || luckyDice.getBuffAttMagic() >= 15
                 ) {
                     luckyDice.setCooldown(180.0);
                 }
@@ -161,16 +164,16 @@ public class CannonShooter3DealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(specialMonkeyEscort)
-                    && cooldownCheck(pirateFlag)
-                    && cooldownCheck(poolmakerBuff)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(bigFuseGiganticCannonball)
-                    && cooldownCheck(rollingCannonRainbow)
-                    && cooldownCheck(icbm)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(specialMonkeyEscort)
+                            && cooldownCheck(pirateFlag)
+                            && cooldownCheck(poolmakerBuff)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(bigFuseGiganticCannonball)
+                            && cooldownCheck(rollingCannonRainbow)
+                            && cooldownCheck(icbm)
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
@@ -207,13 +210,13 @@ public class CannonShooter3DealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(specialMonkeyEscort)
-                    && cooldownCheck(pirateFlag)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(bigFuseGiganticCannonball)
-                    && cooldownCheck(rollingCannonRainbow)
-                    && cooldownCheck(icbm)
+                            && cooldownCheck(pirateFlag)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(bigFuseGiganticCannonball)
+                            && cooldownCheck(rollingCannonRainbow)
+                            && cooldownCheck(icbm)
             ) {
                 addSkillEvent(specialMonkeyEscort);
                 addSkillEvent(pirateFlag);
@@ -225,23 +228,23 @@ public class CannonShooter3DealCycle extends DealCycle {
                 addSkillEvent(icbm);
             } else if (
                     cooldownCheck(poolmakerBuff)
-                    && !cooldownCheck(bigFuseGiganticCannonball)
+                            && !cooldownCheck(bigFuseGiganticCannonball)
             ) {
                 addSkillEvent(poolmakerBuff);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(pirateFlag)
-                    && !cooldownCheck(specialMonkeyEscort)
+                            && !cooldownCheck(specialMonkeyEscort)
             ) {
                 addSkillEvent(pirateFlag);
             } else if (
                     cooldownCheck(icbm)
-                    && !cooldownCheck(specialMonkeyEscort)
+                            && !cooldownCheck(specialMonkeyEscort)
             ) {
                 addSkillEvent(icbm);
             } else {

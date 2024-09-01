@@ -92,50 +92,48 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
         }
     };
 
-    boolean bahamutAttack = false;
+    Long holySwordCount = 0L;   // 성검 개수
+
     boolean angelOfLibraRevengeAttack = false;
+    boolean bahamutAttack = false;
+    boolean isNuke = false;
 
-    Timestamp infinityEndTime = new Timestamp(0);
-    Timestamp infinityBurningTime = new Timestamp(0);
     Timestamp continuousRingEndTime = new Timestamp(-1);
+    Timestamp infinityBurningTime = new Timestamp(0);
+    Timestamp infinityEndTime = new Timestamp(0);
 
-    ContinuousRing continuousRing = new ContinuousRing();
     AngelicOfJudgement angelicOfJudgement = new AngelicOfJudgement();
+    AngelOfLibra2 angelOfLibra = new AngelOfLibra2();
+    AngelicRay angelicRay = new AngelicRay();
+    AngelicTouch angelicTouch = new AngelicTouch();
+    BahamutSummon bahamutSummon = new BahamutSummon();
+    ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     DivinePunishmentDelay divinePunishment = new DivinePunishmentDelay();
     DivinePunishmentDelay divinePunishment1 = new DivinePunishmentDelay();
     DivinePunishmentDelay divinePunishment2 = new DivinePunishmentDelay();
     DivinePunishmentDelay divinePunishment3 = new DivinePunishmentDelay();
     DivinePunishmentDelay divinePunishment5 = new DivinePunishmentDelay();
     DivinePunishmentDelay divinePunishment7 = new DivinePunishmentDelay();
+    FountainForAngel fountainForAngel = new FountainForAngel();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    HeavensDoor heavensDoor = new HeavensDoor();
+    HolyAdventBuff holyAdvent = new HolyAdventBuff();
+    HolyBlood holyBlood = new HolyBlood();
+    Infinity infinity = new Infinity(0L);
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    Peacemaker peacemaker = new Peacemaker();
+    Pray2 pray = new Pray2(0L);
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
     TriumphFeather triumphFeather = new TriumphFeather();
-
-    Long holySwordCount = 0L;   // 성검 개수
-
-    boolean isNuke = false;
+    UnstableMemorize unstableMemorize = new UnstableMemorize();
 
     public Bishop2ContinuousDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AngelOfLibra2 angelOfLibra = new AngelOfLibra2();
-        AngelicRay angelicRay = new AngelicRay();
-        AngelicTouch angelicTouch = new AngelicTouch();
-        BahamutSummon bahamutSummon = new BahamutSummon();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        FountainForAngel fountainForAngel = new FountainForAngel();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        HeavensDoor heavensDoor = new HeavensDoor();
-        HolyAdventBuff holyAdvent = new HolyAdventBuff();
-        HolyBlood holyBlood = new HolyBlood();
-        Infinity infinity = new Infinity(0L);
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        Peacemaker peacemaker = new Peacemaker();
-        Pray2 pray = new Pray2(0L);
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UnstableMemorize unstableMemorize = new UnstableMemorize();
 
         divinePunishment1.setRelatedSkill(new DivinePunishment1());
         divinePunishment1.setCooldown(8.5);
@@ -161,20 +159,23 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
         continuousRing.setActivateTime(new Timestamp(5540));
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         addSkillEvent(bahamutSummon);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(infinity)
-                    && getStart().after(infinityEndTime)
+                            && getStart().after(infinityEndTime)
             ) {
                 infinityEndTime = new Timestamp(getStart().getTime() + 121360);
                 addSkillEvent(infinity);
             }
             if (
                     cooldownCheck(unstableMemorize)
-                    && getStart().after(infinityEndTime)
+                            && getStart().after(infinityEndTime)
             ) {
                 infinityEndTime = new Timestamp(getStart().getTime() + unstableMemorize.getDelay() + 121360);
                 Long ran = (long) (Math.random() * 99 + 1);
@@ -219,22 +220,22 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(epicAdventure)
-                    && cooldownCheck(pray)
-                    && cooldownCheck(angelOfLibra)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(holyBlood)
-                    && (
+                            && cooldownCheck(pray)
+                            && cooldownCheck(angelOfLibra)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(holyBlood)
+                            && (
                             getStart().before(new Timestamp(peacemaker.getActivateTime().getTime() - 5000))
-                            || cooldownCheck(peacemaker)
+                                    || cooldownCheck(peacemaker)
                     )
-                    && cooldownCheck(heavensDoor)
-                    //&& cooldownCheck(divinePunishment)
-                    && getStart().after(new Timestamp(infinityBurningTime.getTime() - 3000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(heavensDoor)
+                            //&& cooldownCheck(divinePunishment)
+                            && getStart().after(new Timestamp(infinityBurningTime.getTime() - 3000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (
                         dealCycleOrder == 1
-                        || dealCycleOrder == 3
+                                || dealCycleOrder == 3
                 ) {
                     isNuke = true;
                 }
@@ -312,12 +313,12 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 30000))
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(divinePunishment1)
-                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 73000))
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 73000))
             ) {
                 addSkillEvent(divinePunishment1);
             } else if (cooldownCheck(peacemaker)) {

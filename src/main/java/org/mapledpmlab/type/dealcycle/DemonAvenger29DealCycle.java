@@ -67,22 +67,44 @@ public class DemonAvenger29DealCycle extends DealCycle {
 
     int maxHP = 500000;
     int hp = 150000;
-    DemonFrenzy29 demonFrenzy29 = new DemonFrenzy29();
-    DemonFrenzyBuff tmpDemonFrenzyBuff = new DemonFrenzyBuff();
-
-    //
     int maxExceed = 18;
     int exceed = 18;
-
     int demonFrenzyAttackCnt = 0;
     int demonFrenzyHpReduceCnt = 0;
     int furyStorage = 0;
+
     Double thornOfFuryCooldown = 0.0;
+
     Timestamp revenantEndTime = new Timestamp(-1);
-    ThornOfFury thornOfFury = new ThornOfFury();
     Timestamp releaseOverloadTime = new Timestamp(-1);
 
     List<Timestamp> hpTime = new ArrayList<>();
+
+    ArmorBreak armorBreak = new ArmorBreak();
+    AuraWeaponBuffDA auraWeaponBuff = new AuraWeaponBuffDA();
+    BloodFeast bloodFeast = new BloodFeast();
+    BodyOfSteelDA bodyOfSteel = new BodyOfSteelDA(0L);
+    CallMastemaDA callMastema = new CallMastemaDA();
+    CrestOfTheSolarDA crestOfTheSolar = new CrestOfTheSolarDA();
+    DemonFrenzy29 demonFrenzy29 = new DemonFrenzy29();
+    DemonFrenzyBuff tmpDemonFrenzyBuff = new DemonFrenzyBuff();
+    DemonicFortitudeDA demonicFortitudeDA = new DemonicFortitudeDA();
+    DimensionSwordDelay dimensionSword = new DimensionSwordDelay();
+    ExceedExecution3 exceedExecution3 = new ExceedExecution3();
+    ExceedExecution4 exceedExecution4 = new ExceedExecution4();
+    ExceedExecution5 exceedExecution5 = new ExceedExecution5();
+    OtherWorldGoddessBlessingDA otherWorldGoddessBlessing = new OtherWorldGoddessBlessingDA();
+    ReleaseOverload releaseOverload = new ReleaseOverload();
+    Requiem requiem = new Requiem();
+    Revenant revenant = new Revenant();
+    RoarOfDemonSword roarOfDemonSword = new RoarOfDemonSword();
+    RestraintRingDA restraintRing = new RestraintRingDA();
+    RingSwitching ringSwitching = new RingSwitching();
+    ShieldChasing shieldChasing = new ShieldChasing();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirrorDA spiderInMirror = new SpiderInMirrorDA();
+    ThornOfFury thornOfFury = new ThornOfFury();
+    WeaponJumpRingDA weaponJumpRing = new WeaponJumpRingDA(getJob().getWeaponAttMagic());
 
     public DemonAvenger29DealCycle(Job job) {
         super(job, new FinalAttackDemonAvenger());
@@ -92,31 +114,20 @@ public class DemonAvenger29DealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ArmorBreak armorBreak = new ArmorBreak();
-        AuraWeaponBuffDA auraWeaponBuff = new AuraWeaponBuffDA();
-        BloodFeast bloodFeast = new BloodFeast();
-        BodyOfSteelDA bodyOfSteel = new BodyOfSteelDA(0L);
-        CallMastemaDA callMastema = new CallMastemaDA();
-        CrestOfTheSolarDA crestOfTheSolar = new CrestOfTheSolarDA();
-        DemonicFortitudeDA demonicFortitudeDA = new DemonicFortitudeDA();
-        DimensionSwordDelay dimensionSword = new DimensionSwordDelay();
-        ExceedExecution3 exceedExecution3 = new ExceedExecution3();
-        ExceedExecution4 exceedExecution4 = new ExceedExecution4();
-        ExceedExecution5 exceedExecution5 = new ExceedExecution5();
-        OtherWorldGoddessBlessingDA otherWorldGoddessBlessing = new OtherWorldGoddessBlessingDA();
-        ReleaseOverload releaseOverload = new ReleaseOverload();
-        Requiem requiem = new Requiem();
-        Revenant revenant = new Revenant();
-        RoarOfDemonSword roarOfDemonSword = new RoarOfDemonSword();
-        RestraintRingDA restraintRing = new RestraintRingDA();
-        RingSwitching ringSwitching = new RingSwitching();
-        ShieldChasing shieldChasing = new ShieldChasing();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirrorDA spiderInMirror = new SpiderInMirrorDA();
-        WeaponJumpRingDA weaponJumpRing = new WeaponJumpRingDA(getJob().getWeaponAttMagic());
-
         ringSwitching.setCooldown(120.0);
 
+        addSkillEvent(releaseOverload);
+        addSkillEvent(exceedExecution3);
+        addSkillEvent(exceedExecution4);
+        exceed = 11;
+
+        auraWeaponBuff.setCooldown(180.0);
+        auraWeaponBuff.setApplyCooldownReduction(false);
+        otherWorldGoddessBlessing.setCooldown(120.0);
+    }
+
+    @Override
+    public void setSoloDealCycle() {
         // 펫이 자동으로 사용(딜레이 X)
         // 270초마다 쓸샾(5%), 쓸뻥(5%), 쓸컴뱃(5%), 쓸어블(5%) 사용
         // 180초마다 리프랙트 이블(900), 디아볼릭 리커버리(900) 사용
@@ -125,16 +136,8 @@ public class DemonAvenger29DealCycle extends DealCycle {
         Timestamp buffEndTime2 = new Timestamp(180 * 1000);
         Timestamp diabolicRecoveryTime = new Timestamp(5500);
 
-        addSkillEvent(releaseOverload);
-        addSkillEvent(exceedExecution3);
-        addSkillEvent(exceedExecution4);
-        exceed = 11;
         Timestamp roarOfDemonSwordTime = new Timestamp(-1);
         int roarOfDemonSwordChk = 0;
-
-        auraWeaponBuff.setCooldown(180.0);
-        auraWeaponBuff.setApplyCooldownReduction(false);
-        otherWorldGoddessBlessing.setCooldown(120.0);
 
         while (getStart().before(getEnd())) {
             if (hp < 0) {
@@ -176,19 +179,19 @@ public class DemonAvenger29DealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
             }
             if (
                     cooldownCheck(demonicFortitudeDA)
-                    && cooldownCheck(callMastema)
-                    && cooldownCheck(otherWorldGoddessBlessing)
-                    && cooldownCheck(revenant)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(dimensionSword)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && getStart().after(new Timestamp(spiderInMirror.getActivateTime().getTime() - 110000))
+                            && cooldownCheck(callMastema)
+                            && cooldownCheck(otherWorldGoddessBlessing)
+                            && cooldownCheck(revenant)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(dimensionSword)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(spiderInMirror.getActivateTime().getTime() - 110000))
             ) {
                 addSkillEvent(armorBreak);
                 addSkillEvent(demonicFortitudeDA);
@@ -219,21 +222,21 @@ public class DemonAvenger29DealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     getStart().after(roarOfDemonSwordTime)
-                    && roarOfDemonSwordChk == 1
+                            && roarOfDemonSwordChk == 1
             ) {
                 addSkillEvent(roarOfDemonSword);
                 roarOfDemonSwordChk = 0;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(100 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
                 addSkillEvent(releaseOverload);
                 exceed = 9;
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(demonicFortitudeDA.getActivateTime().getTime() - 50000))
+                            && getStart().before(new Timestamp(demonicFortitudeDA.getActivateTime().getTime() - 50000))
             ) {
                 addSkillEvent(armorBreak);
                 addSkillEvent(soulContract);

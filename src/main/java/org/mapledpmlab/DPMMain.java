@@ -34,7 +34,7 @@ public class DPMMain {
 
     public void init() {
         dealCycleList = new ArrayList<>();
-        dealCycleList.add(new AdeleMarker1DealCycle(new Adele()));
+        dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
         //dealCycleList.add(new AdeleMarker4DealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         dealCycleList.add(new AranDealCycle(new Aran()));
@@ -315,6 +315,7 @@ public class DPMMain {
             }
             xssfSheet = xssfWorkbook.createSheet(dealCycle.getJob().getName());
             xssfSheet.setDefaultColumnWidth(50);
+            dealCycle.setSoloDealCycle();
             dealCycle.applyDoping();
 
             data = new TreeMap<>();
@@ -386,7 +387,7 @@ public class DPMMain {
 
         data = new TreeMap<>();
         data.put("1", new Object[]{
-                "직업이름", "DPM", "DPM 배율", "15초딜", "15초딜 배율", "40초 딜", "40초딜 배율", "오리진X 리레딜", "오리진X 리레딜 배율"
+                "직업이름", "DPM", "DPM 배율", "15초딜", "15초딜 배율", "40초 딜", "40초딜 배율", "오리진X 15초딜", "오리진X 15초딜 배율"
         });
         for (int i = 0; i < dealCycleList.size(); i++) {
             if (

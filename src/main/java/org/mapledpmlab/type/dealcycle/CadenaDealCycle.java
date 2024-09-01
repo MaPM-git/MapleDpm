@@ -77,14 +77,10 @@ public class CadenaDealCycle extends DealCycle {
         }
     };
 
-    ChainArtsFury chainArtsFury = new ChainArtsFury();
-    ProfessionalAgentBomb professionalAgentBomb = new ProfessionalAgentBomb();
-    WeaponVariety weaponVariety = new WeaponVariety();
-    WeaponVarietyFinale weaponVarietyFinale = new WeaponVarietyFinale();
-    WeaponVarietyBuff weaponVarietyBuff = new WeaponVarietyBuff();
-
     int reuseCnt = 0;
     int weaponVarietyCnt = 4;
+
+    boolean isAir = false;
 
     Timestamp chainArtsFuryEndTime = new Timestamp(-1);
     Timestamp grandisGoddessBlessingEndTime = new Timestamp(-1);
@@ -92,68 +88,73 @@ public class CadenaDealCycle extends DealCycle {
     Timestamp soulContractEndTime = new Timestamp(-1);
     Timestamp soulContractLimitEndTime = new Timestamp(-1);
 
+    ADOrdnance adOrdnance = new ADOrdnance();
+    ChainArtsChase chainArtsChase = new ChainArtsChase();
+    ChainArtsCrush chainArtsCrush = new ChainArtsCrush();
+    ChainArtsFury chainArtsFury = new ChainArtsFury();
+    ChainArtsFuryBuff chainArtsFuryBuff = new ChainArtsFuryBuff();
+    ChainArtsMaelstrom chainArtsMaelstrom = new ChainArtsMaelstrom();
+    ChainArtsMassacre1 chainArtsMassacre1 = new ChainArtsMassacre1();
+    ChainArtsStroke1 chainArtsStroke1 = new ChainArtsStroke1();
+    ChainArtsStroke1Cancle chainArtsStroke1Cancle = new ChainArtsStroke1Cancle();
+    ChainArtsStroke2 chainArtsStroke2 = new ChainArtsStroke2();
+    ChainArtsStroke2Reinforce chainArtsStroke2Reinforce = new ChainArtsStroke2Reinforce();
+    ChainArtsTakedown chainArtsTakedown = new ChainArtsTakedown();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    GrandisGoddessBlessingNova grandisGoddessBlessingNova = new GrandisGoddessBlessingNova();
+    ProfessionalAgent professionalAgent = new ProfessionalAgent();
+    ProfessionalAgentBomb professionalAgentBomb = new ProfessionalAgentBomb();
+    ReadyToDie readyToDie = new ReadyToDie();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    ShadowdealerElixir shadowdealerElixir = new ShadowdealerElixir();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SummonBeatingNeedleBat1 summonBeatingNeedleBat1 = new SummonBeatingNeedleBat1();
+    SummonCuttingScimitar summonCuttingScimitar = new SummonCuttingScimitar();
+    SummonReleasingBomb summonReleasingBomb = new SummonReleasingBomb();
+    SummonScratchingClaw summonScratchingClaw = new SummonScratchingClaw();
+    SummonShootingShotgun summonShootingShotgun = new SummonShootingShotgun();
+    SummonSlashingKnife summonSlashingKnife = new SummonSlashingKnife();
+    SummonStrikingBrick summonStrikingBrick = new SummonStrikingBrick();
+    SummonThrowingWingDaggerBomb summonThrowingWingDagger = new SummonThrowingWingDaggerBomb();
+    VenomBurst venomBurst = new VenomBurst();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WeakPointConvergingAttack weakPointConvergingAttack = new WeakPointConvergingAttack();
+    WeaponVariety weaponVariety = new WeaponVariety();
+    WeaponVarietyBuff weaponVarietyBuff = new WeaponVarietyBuff();
+    WeaponVarietyFinale weaponVarietyFinale = new WeaponVarietyFinale();
+
     public CadenaDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ADOrdnance adOrdnance = new ADOrdnance();
-        ChainArtsChase chainArtsChase = new ChainArtsChase();
-        ChainArtsCrush chainArtsCrush = new ChainArtsCrush();
-        ChainArtsFuryBuff chainArtsFuryBuff = new ChainArtsFuryBuff();
-        ChainArtsMaelstrom chainArtsMaelstrom = new ChainArtsMaelstrom();
-        ChainArtsMassacre1 chainArtsMassacre1 = new ChainArtsMassacre1();
-        ChainArtsStroke1 chainArtsStroke1 = new ChainArtsStroke1();
-        ChainArtsStroke1Cancle chainArtsStroke1Cancle = new ChainArtsStroke1Cancle();
-        ChainArtsStroke2 chainArtsStroke2 = new ChainArtsStroke2();
-        ChainArtsStroke2Reinforce chainArtsStroke2Reinforce = new ChainArtsStroke2Reinforce();
-        ChainArtsTakedown chainArtsTakedown = new ChainArtsTakedown();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        GrandisGoddessBlessingNova grandisGoddessBlessingNova = new GrandisGoddessBlessingNova();
-        ProfessionalAgent professionalAgent = new ProfessionalAgent();
-        ReadyToDie readyToDie = new ReadyToDie();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        ShadowdealerElixir shadowdealerElixir = new ShadowdealerElixir();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SummonBeatingNeedleBat1 summonBeatingNeedleBat1 = new SummonBeatingNeedleBat1();
-        SummonCuttingScimitar summonCuttingScimitar = new SummonCuttingScimitar();
-        SummonReleasingBomb summonReleasingBomb = new SummonReleasingBomb();
-        SummonScratchingClaw summonScratchingClaw = new SummonScratchingClaw();
-        SummonShootingShotgun summonShootingShotgun = new SummonShootingShotgun();
-        SummonSlashingKnife summonSlashingKnife = new SummonSlashingKnife();
-        SummonStrikingBrick summonStrikingBrick = new SummonStrikingBrick();
-        SummonThrowingWingDaggerBomb summonThrowingWingDagger = new SummonThrowingWingDaggerBomb();
-        VenomBurst venomBurst = new VenomBurst();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        WeakPointConvergingAttack weakPointConvergingAttack = new WeakPointConvergingAttack();
-
         soulContract.setApplyReuse(true);
 
         ringSwitching.setCooldown(90.0);
-
         grandisGoddessBlessingNova.setCooldown(240.0);
+    }
 
-        boolean isAir = false;
-
+    @Override
+    public void setSoloDealCycle() {
         addSkillEvent(weakPointConvergingAttack);
         addSkillEvent(weaponVarietyBuff);
         addSkillEvent(venomBurst);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(chainArtsFuryBuff)
-                    && cooldownCheck(shadowdealerElixir)
-                    && cooldownCheck(professionalAgent)
-                    && cooldownCheck(adOrdnance)
-                    && cooldownCheck(chainArtsMaelstrom)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(chainArtsTakedown)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(summonThrowingWingDagger)
-                    && cooldownCheck(summonBeatingNeedleBat1)
+                            && cooldownCheck(shadowdealerElixir)
+                            && cooldownCheck(professionalAgent)
+                            && cooldownCheck(adOrdnance)
+                            && cooldownCheck(chainArtsMaelstrom)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(chainArtsTakedown)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(summonThrowingWingDagger)
+                            && cooldownCheck(summonBeatingNeedleBat1)
             ) {
                 addSkillEvent(chainArtsFuryBuff);
                 addSkillEvent(shadowdealerElixir);
@@ -189,11 +190,11 @@ public class CadenaDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(chainArtsTakedown)
-                    && cooldownCheck(adOrdnance)
-                    && cooldownCheck(chainArtsMaelstrom)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(chainArtsTakedown)
+                            && cooldownCheck(adOrdnance)
+                            && cooldownCheck(chainArtsMaelstrom)
             ) {
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
@@ -205,8 +206,8 @@ public class CadenaDealCycle extends DealCycle {
                 addSkillEvent(chainArtsMaelstrom);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(75 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && getStart().after(new Timestamp(75 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 getStart().setTime(getStart().getTime() + 500);
                 addSkillEvent(ringSwitching);
@@ -219,16 +220,16 @@ public class CadenaDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(chainArtsMaelstrom)
-                    && !cooldownCheck(summonThrowingWingDagger)
+                            && !cooldownCheck(summonThrowingWingDagger)
             ) {
                 addSkillEvent(chainArtsStroke1);
                 addSkillEvent(chainArtsStroke2);
                 addSkillEvent(chainArtsMaelstrom);
             } else if (
                     cooldownCheck(adOrdnance)
-                    && (
+                            && (
                             !cooldownCheck(readyToDie)
-                            || getStart().after(new Timestamp(630 * 1000))
+                                    || getStart().after(new Timestamp(630 * 1000))
                     )
             ) {
                 if (isAir) {
@@ -239,7 +240,7 @@ public class CadenaDealCycle extends DealCycle {
                 addSkillEvent(adOrdnance);
             } else if (
                     cooldownCheck(summonThrowingWingDagger)
-                    && !cooldownCheck(adOrdnance)
+                            && !cooldownCheck(adOrdnance)
             ) {
                 if (isAir) {
                     addSkillEvent(chainArtsStroke1);

@@ -57,21 +57,40 @@ public class BattleMageDealCycle extends DealCycle {
         }
     };
 
-    BlackMark blackMark = new BlackMark();
-    Death death = new Death();
-    DeathReinforce deathReinforce = new DeathReinforce();
-    NetherworldLightning netherworldLightning = new NetherworldLightning();
-
     private final List<Timestamp> abyssalLightningStartTimeList = new ArrayList<>();
     private final List<Timestamp> abyssalLightningEndTimeList = new ArrayList<>();
 
     Timestamp abyssalLightningEndTime = new Timestamp(-1);
-    Timestamp unionAuraEndTime = new Timestamp(-1);
     Timestamp masterOfDeathEndTime = new Timestamp(-1);
+    Timestamp unionAuraEndTime = new Timestamp(-1);
 
     int attackCnt = 0;
     int reaperScytheCnt = 0;
     int soulCnt = 0;
+
+    AbyssalLightning abyssalLightning = new AbyssalLightning();
+    BattleKingBar1 battleKingBar1 = new BattleKingBar1();
+    BlackMagicAltar blackMagicAltar = new BlackMagicAltar();
+    BlackMark blackMark = new BlackMark();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CrimsonPactum1 crimsonPactum1 = new CrimsonPactum1();
+    Death death = new Death();
+    DeathReinforce deathReinforce = new DeathReinforce();
+    FinishBlow finishBlow = new FinishBlow();
+    GrimReaper grimReaper = new GrimReaper();
+    GrimReaperMOD grimReaperMOD = new GrimReaperMOD();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MasterOfDeath masterOfDeath = new MasterOfDeath();
+    NetherworldLightning netherworldLightning = new NetherworldLightning();
+    ReaperScythe reaperScythe = new ReaperScythe();
+    ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    UnionAura unionAura = new UnionAura();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WillOfLiberty willOfLiberty = new WillOfLiberty();
 
     public BattleMageDealCycle(Job job) {
         super(job, new FinalAttackBattleMage());
@@ -79,32 +98,14 @@ public class BattleMageDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AbyssalLightning abyssalLightning = new AbyssalLightning();
-        BattleKingBar1 battleKingBar1 = new BattleKingBar1();
-        BlackMagicAltar blackMagicAltar = new BlackMagicAltar();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CrimsonPactum1 crimsonPactum1 = new CrimsonPactum1();
-        FinishBlow finishBlow = new FinishBlow();
-        GrimReaper grimReaper = new GrimReaper();
-        GrimReaperMOD grimReaperMOD = new GrimReaperMOD();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MasterOfDeath masterOfDeath = new MasterOfDeath();
-        ReaperScythe reaperScythe = new ReaperScythe();
-        ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UnionAura unionAura = new UnionAura();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        WillOfLiberty willOfLiberty = new WillOfLiberty();
-
         ringSwitching.setCooldown(95.0);
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
         resistanceLineInfantry.addFinalDamage(1.08);            // 오버로드 마나
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         addSkillEvent(resistanceLineInfantry);
         while (getStart().before(getEnd())) {
             if (cooldownCheck(resistanceLineInfantry)) {
@@ -112,15 +113,15 @@ public class BattleMageDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(willOfLiberty)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(blackMagicAltar)
-                    && cooldownCheck(unionAura)
-                    && cooldownCheck(abyssalLightning)
-                    && cooldownCheck(masterOfDeath)
-                    && cooldownCheck(grimReaperMOD)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(blackMagicAltar)
+                            && cooldownCheck(unionAura)
+                            && cooldownCheck(abyssalLightning)
+                            && cooldownCheck(masterOfDeath)
+                            && cooldownCheck(grimReaperMOD)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(willOfLiberty);
@@ -144,10 +145,10 @@ public class BattleMageDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(blackMagicAltar)
-                    && cooldownCheck(unionAura)
-                    && cooldownCheck(grimReaper)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(unionAura)
+                            && cooldownCheck(grimReaper)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
             ) {
                 addSkillEvent(blackMagicAltar);
                 addSkillEvent(unionAura);
@@ -156,13 +157,13 @@ public class BattleMageDealCycle extends DealCycle {
                 addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(blackMagicAltar)
-                    && !cooldownCheck(soulContract)
+                            && !cooldownCheck(soulContract)
             ) {
                 addSkillEvent(blackMagicAltar);
             } else if (cooldownCheck(battleKingBar1)) {

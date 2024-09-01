@@ -77,22 +77,44 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
         }
     };
 
-    int cylinder = 6;
     int afterImageShockActiveCount = 0;
+    int cylinder = 6;
     int releasePileBunkerCount = 5;
-    Timestamp overheatTime = new Timestamp(-1);
-    Timestamp maximizeCannonEndTime = new Timestamp(-1);
+
     Timestamp afterImageShockEndTime = new Timestamp(-1);
     Timestamp bunkerBusterEndTime = new Timestamp(-1);
     Timestamp continuousRingEndTime = new Timestamp(-1);
+    Timestamp maximizeCannonEndTime = new Timestamp(-1);
+    Timestamp overheatTime = new Timestamp(-1);
 
-    AfterImageShockActive afterImageShockActive = new AfterImageShockActive();
-    RevolvingCannonReinforce revolvingCannonReinforce = new RevolvingCannonReinforce();
-    ContinuousRing continuousRing = new ContinuousRing();
-
-    boolean isPileBunker = false;
-    boolean isNuke = false;
     boolean isMaximizeCannon = false;
+    boolean isNuke = false;
+    boolean isPileBunker = false;
+
+    AfterImageShock afterImageShock = new AfterImageShock();
+    AfterImageShockActive afterImageShockActive = new AfterImageShockActive();
+    AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
+    BunkerBuster bunkerBuster = new BunkerBuster();
+    BurningBreakerDelay burningBreakerDelay = new BurningBreakerDelay();
+    ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DoubleFang200 doubleFang = new DoubleFang200();
+    DuckingCharge duckingCharge = new DuckingCharge();
+    DuckingJump duckingJump = new DuckingJump();
+    FinalDestroyer1 finalDestroyer1 = new FinalDestroyer1();
+    HammerSmashJump hammerSmashJump = new HammerSmashJump();
+    MagnumPunch230 magnumPunch = new MagnumPunch230();
+    MagnumPunch250 magnumPunch250 = new MagnumPunch250();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MaximizeCanon maximizeCanon = new MaximizeCanon();
+    ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
+    ReleasePileBunker releasePileBunker = new ReleasePileBunker();
+    RevolvingCannonReinforce revolvingCannonReinforce = new RevolvingCannonReinforce();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    VulcanPunch vulcanPunch = new VulcanPunch();
+    WillOfLiberty willOfLiberty = new WillOfLiberty();
 
     public Blaster540ContinuousDealCycle(Job job) {
         super(job, new FinalAttackBlaster());
@@ -101,29 +123,6 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        AfterImageShock afterImageShock = new AfterImageShock();
-        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
-        BunkerBuster bunkerBuster = new BunkerBuster();
-        BurningBreakerDelay burningBreakerDelay = new BurningBreakerDelay();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DoubleFang200 doubleFang = new DoubleFang200();
-        DuckingCharge duckingCharge = new DuckingCharge();
-        DuckingJump duckingJump = new DuckingJump();
-        FinalDestroyer1 finalDestroyer1 = new FinalDestroyer1();
-        HammerSmashJump hammerSmashJump = new HammerSmashJump();
-        MagnumPunch230 magnumPunch = new MagnumPunch230();
-        MagnumPunch250 magnumPunch250 = new MagnumPunch250();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MaximizeCanon maximizeCanon = new MaximizeCanon();
-        ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
-        ReleasePileBunker releasePileBunker = new ReleasePileBunker();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        VulcanPunch vulcanPunch = new VulcanPunch();
-        WillOfLiberty willOfLiberty = new WillOfLiberty();
-
 
         // 매그팡
         flatDeal1.add(duckingCharge);
@@ -143,19 +142,22 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(overheatTime)
-                    && isPileBunker
+                            && isPileBunker
             ) {
                 cylinder = 0;
                 isPileBunker = false;
             }
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
             }
@@ -164,12 +166,12 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(afterImageShock)
-                    && cooldownCheck(willOfLiberty)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(vulcanPunch)
-                    && cooldownCheck(maximizeCanon)
-                    && cooldownCheck(burningBreakerDelay)
-                    && cooldownCheck(bunkerBuster)
+                            && cooldownCheck(willOfLiberty)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(vulcanPunch)
+                            && cooldownCheck(maximizeCanon)
+                            && cooldownCheck(burningBreakerDelay)
+                            && cooldownCheck(bunkerBuster)
             ) {
                 isNuke = true;
                 addSkillEvent(bodyOfSteel);
@@ -200,7 +202,7 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
                     while (getStart().before(new Timestamp(continuousRing.getActivateTime().getTime() - 500))) {
                         if (
                                 getStart().after(overheatTime)
-                                && cylinder == 6
+                                        && cylinder == 6
                         ) {
                             addDealCycle(flatDeal2);
                         } else {
@@ -213,14 +215,14 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(vulcanPunch)
-                    && cooldownCheck(soulContract)
-                    && !cooldownCheck(burningBreakerDelay)
+                            && cooldownCheck(soulContract)
+                            && !cooldownCheck(burningBreakerDelay)
             ) {
                 addSkillEvent(soulContract);
                 addSkillEvent(vulcanPunch);
             } else if (
                     getStart().after(overheatTime)
-                    && cylinder == 6
+                            && cylinder == 6
             ) {
                 addDealCycle(flatDeal2);
             } else {

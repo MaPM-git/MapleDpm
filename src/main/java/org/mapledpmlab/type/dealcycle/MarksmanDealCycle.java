@@ -64,36 +64,37 @@ public class MarksmanDealCycle extends DealCycle {
 
     Timestamp splitArrowEndTime = new Timestamp(-1);
 
+    List<AttackSkill> snipeList = new ArrayList<>();
+
+    BullsEye bullsEye = new BullsEye();
+    ChargedArrow chargedArrow = new ChargedArrow();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+    EnhanceSnipe enhanceSnipe = new EnhanceSnipe();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    Evolve evolve = new Evolve();
+    FinalAimWave finalAimWave = new FinalAimWave();
+    Freezer freezer = new Freezer();
+    GuidedArrow guidedArrow = new GuidedArrow();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    RepeatingCrossbowCartridge repeatingCrossbowCartridge = new RepeatingCrossbowCartridge();
+    RepeatingCrossbowCartridgeBuff repeatingCrossbowCartridgeBuff = new RepeatingCrossbowCartridgeBuff();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    Snipe snipe = new Snipe();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
     SplitArrow splitArrow = new SplitArrow();
+    SplitArrowBuff splitArrowBuff = new SplitArrowBuff();
+    TrueSnipe trueSnipe = new TrueSnipe();
+    UltimateSnipe ultimateSnipe = new UltimateSnipe();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public MarksmanDealCycle(Job job) {
         super(job, new FinalAttackMarksman());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        BullsEye bullsEye = new BullsEye();
-        ChargedArrow chargedArrow = new ChargedArrow();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
-        EnhanceSnipe enhanceSnipe = new EnhanceSnipe();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        Evolve evolve = new Evolve();
-        FinalAimWave finalAimWave = new FinalAimWave();
-        Freezer freezer = new Freezer();
-        GuidedArrow guidedArrow = new GuidedArrow();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        RepeatingCrossbowCartridge repeatingCrossbowCartridge = new RepeatingCrossbowCartridge();
-        RepeatingCrossbowCartridgeBuff repeatingCrossbowCartridgeBuff = new RepeatingCrossbowCartridgeBuff();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        Snipe snipe = new Snipe();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SplitArrowBuff splitArrowBuff = new SplitArrowBuff();
-        TrueSnipe trueSnipe = new TrueSnipe();
-        UltimateSnipe ultimateSnipe = new UltimateSnipe();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 가이디드 에로우
         for (int i = 0; i < 720 * 1000; i += guidedArrow.getInterval()) {
@@ -104,11 +105,14 @@ public class MarksmanDealCycle extends DealCycle {
         ringSwitching.setCooldown(130.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
-        List<AttackSkill> snipeList = new ArrayList<>();
         snipeList.add(snipe);
         snipeList.add(enhanceSnipe);
         snipeList.add(snipe);
         snipeList.add(ultimateSnipe);
+    }
+
+    @Override
+    public void setSoloDealCycle() {
         int snipeCount = 1;
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
@@ -117,14 +121,14 @@ public class MarksmanDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(splitArrowBuff)
-                    && cooldownCheck(repeatingCrossbowCartridgeBuff)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(bullsEye)
-                    && cooldownCheck(evolve)
-                    && cooldownCheck(criticalReinforce)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(chargedArrow)
-                    && cooldownCheck(trueSnipe)
+                            && cooldownCheck(repeatingCrossbowCartridgeBuff)
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(bullsEye)
+                            && cooldownCheck(evolve)
+                            && cooldownCheck(criticalReinforce)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(chargedArrow)
+                            && cooldownCheck(trueSnipe)
             ) {
                 addSkillEvent(splitArrowBuff);
                 addSkillEvent(repeatingCrossbowCartridgeBuff);
@@ -167,20 +171,20 @@ public class MarksmanDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(100 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000)))
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000)))
             {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(trueSnipe)
-                    && cooldownCheck(soulContract)
-                    && !cooldownCheck(evolve)
+                            && cooldownCheck(soulContract)
+                            && !cooldownCheck(evolve)
             ) {
                 addSkillEvent(soulContract);
                 addSkillEvent(trueSnipe);
             } else if (
                     cooldownCheck(chargedArrow)
-                    && !cooldownCheck(trueSnipe)
+                            && !cooldownCheck(trueSnipe)
             ) {
                 addSkillEvent(chargedArrow);
             } else {

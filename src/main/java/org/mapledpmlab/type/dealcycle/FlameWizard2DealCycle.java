@@ -61,14 +61,40 @@ public class FlameWizard2DealCycle extends DealCycle {
         }
     };
 
-    int orbitalExplosionCount = 0;
-    int flameCount = 0;
+    int dealCycleOrder = 1;
     int emberCount = 0;
+    int flameCount = 0;
+    int infernoRizeCount = 0;
+    int orbitalCount = 0;
+    int orbitalExplosionCount = 0;
+
     Timestamp finalTime = new Timestamp(-1);
     Timestamp phoenixDriveEndTime = new Timestamp(-1);
+
+    BlazingExtinction blazingExtinction = new BlazingExtinction();
+    BlazingOrbitalFlame blazingOrbitalFlame = new BlazingOrbitalFlame();
+    BurningRegion burningRegion = new BurningRegion();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
+    Eternity eternity = new Eternity();
     FlameDischarge flameDischarge = new FlameDischarge(0L);
+    GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
+    InfernoRize infernoRize = new InfernoRize();
+    InfinityFlameCirclePre infinityFlameCircle = new InfinityFlameCirclePre();
+    OrbitalFlame orbitalFlame = new OrbitalFlame();
+    OrbitalFlameDot orbitalFlameDot = new OrbitalFlameDot();
+    OrbitalFlameReinforce orbitalFlameReinforce = new OrbitalFlameReinforce();
+    PhoenixDrive phoenixDrive = new PhoenixDrive();
+    PhoenixDriveFirst phoenixDriveFirst = new PhoenixDriveFirst();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
     SalamanderMischief salamanderMischief = new SalamanderMischief(0L);
     SalamanderMischiefBuff salamanderMischiefBuff = new SalamanderMischiefBuff();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SpiritOfFlame spiritOfFlame = new SpiritOfFlame();
+    TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public FlameWizard2DealCycle(Job job) {
         super(job, null);
@@ -78,36 +104,10 @@ public class FlameWizard2DealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        BlazingExtinction blazingExtinction = new BlazingExtinction();
-        BlazingOrbitalFlame blazingOrbitalFlame = new BlazingOrbitalFlame();
-        BurningRegion burningRegion = new BurningRegion();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
-        Eternity eternity = new Eternity();
-        GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
-        InfernoRize infernoRize = new InfernoRize();
-        InfinityFlameCirclePre infinityFlameCircle = new InfinityFlameCirclePre();
-        OrbitalFlame orbitalFlame = new OrbitalFlame();
-        OrbitalFlameDot orbitalFlameDot = new OrbitalFlameDot();
-        OrbitalFlameReinforce orbitalFlameReinforce = new OrbitalFlameReinforce();
-        PhoenixDrive phoenixDrive = new PhoenixDrive();
-        PhoenixDriveFirst phoenixDriveFirst = new PhoenixDriveFirst();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiritOfFlame spiritOfFlame = new SpiritOfFlame();
-        TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         infinityFlameCircle.setRelatedSkill(new InfinityFlameCircle());
 
         ringSwitching.setCooldown(120.0);
         ringSwitching.setApplyCooldownReduction(false);
-
-        int infernoRizeCount = 0;
-        int orbitalCount = 0;
-        int dealCycleOrder = 1;
 
         transcendentCygnusBlessing.setCooldown(360.0);
         transcendentCygnusBlessing.setApplyCooldownReduction(false);
@@ -126,11 +126,15 @@ public class FlameWizard2DealCycle extends DealCycle {
         cygnusPhalanx.addFinalDamage(1.08);             // 오버로드 마나
 
         flameCount = 150;
+    }
+
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(transcendentCygnusBlessing)
-                    && getStart().after(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 10000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 10000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (dealCycleOrder == 1) {
                     transcendentCygnusBlessing.setCooldown(360.0);
@@ -149,13 +153,13 @@ public class FlameWizard2DealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(burningRegion)
-                    && cooldownCheck(gloryOfGuardians)
-                    && cooldownCheck(salamanderMischief)
-                    && cooldownCheck(flameDischarge)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(blazingOrbitalFlame)
-                    && cooldownCheck(infinityFlameCircle)
-                    && cooldownCheck(phoenixDrive)
+                            && cooldownCheck(gloryOfGuardians)
+                            && cooldownCheck(salamanderMischief)
+                            && cooldownCheck(flameDischarge)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(blazingOrbitalFlame)
+                            && cooldownCheck(infinityFlameCircle)
+                            && cooldownCheck(phoenixDrive)
             ) {
                 addSkillEvent(burningRegion);
                 addSkillEvent(gloryOfGuardians);
@@ -195,22 +199,22 @@ public class FlameWizard2DealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 50000))
+                            && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 50000))
             ) {
                 addSkillEvent(burningRegion);
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(100 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(flameDischarge)
-                    && flameCount >= 50
-                    && (
+                            && flameCount >= 50
+                            && (
                             !cooldownCheck(gloryOfGuardians)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(flameDischarge);
@@ -237,8 +241,8 @@ public class FlameWizard2DealCycle extends DealCycle {
                 }
                 if (
                         infernoRizeCount >= 0
-                        && cooldownCheck(infernoRize)
-                        && getStart().after(phoenixDriveEndTime)
+                                && cooldownCheck(infernoRize)
+                                && getStart().after(phoenixDriveEndTime)
                 ) {
                     addSkillEvent(infernoRize);
                     infernoRizeCount = 0;

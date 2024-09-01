@@ -56,37 +56,42 @@ public class NightLordDealCycle extends DealCycle {
         }
     };
 
-    private boolean isSpreadThrow = false;
+    Long quadrupleThrowCount = 2L;
+    Long throwBlastingCount = 68L;
+
+    boolean isSpreadThrow = false;
+
+    List<Skill> throwBlastingList;
+
+    BleedingToxinDot bleedingToxinDot = new BleedingToxinDot();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DarkFlare darkFlare = new DarkFlare();
+    DarkLordsSecretScroll darkLordsSecretScroll = new DarkLordsSecretScroll();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    FatalVenom fatalVenom = new FatalVenom();
+    FumaShuriken fumaShuriken = new FumaShuriken();
+    LifeOrDeathSlash lifeOrDeathSlash = new LifeOrDeathSlash();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    PurgeArea purgeArea = new PurgeArea();
+    QuadrupleThrow quadrupleThrow = new QuadrupleThrow();
+    QuadrupleThrowReinforce quadrupleThrowReinforce = new QuadrupleThrowReinforce();
+    ReadyToDie readyToDie = new ReadyToDie();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SpreadThrow spreadThrow = new SpreadThrow();
+    ThrowBlasting throwBlasting = new ThrowBlasting();
+    ThrowBlastingActive throwBlastingActive = new ThrowBlastingActive();
+    ThrowBlastingPassive throwBlastingPassive = new ThrowBlastingPassive();
+    UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public NightLordDealCycle(Job job) {
         super(job, new MarkOfAssassin());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        BleedingToxinDot bleedingToxinDot = new BleedingToxinDot();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DarkFlare darkFlare = new DarkFlare();
-        DarkLordsSecretScroll darkLordsSecretScroll = new DarkLordsSecretScroll();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        FatalVenom fatalVenom = new FatalVenom();
-        FumaShuriken fumaShuriken = new FumaShuriken();
-        LifeOrDeathSlash lifeOrDeathSlash = new LifeOrDeathSlash();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        PurgeArea purgeArea = new PurgeArea();
-        QuadrupleThrow quadrupleThrow = new QuadrupleThrow();
-        QuadrupleThrowReinforce quadrupleThrowReinforce = new QuadrupleThrowReinforce();
-        ReadyToDie readyToDie = new ReadyToDie();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpreadThrow spreadThrow = new SpreadThrow();
-        ThrowBlasting throwBlasting = new ThrowBlasting();
-        ThrowBlastingActive throwBlastingActive = new ThrowBlastingActive();
-        ThrowBlastingPassive throwBlastingPassive = new ThrowBlastingPassive();
-        UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 블리딩 톡신(도트)
         for (int i = 0; i < 720 * 1000; i += bleedingToxinDot.getInterval()) {
@@ -102,13 +107,10 @@ public class NightLordDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(90.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
-        List<Skill> throwBlastingList;
-        List<Skill> dealCycle;
-
-        Long throwBlastingCount = 68L;
-        Long ran = 0L;
-        Long quadrupleThrowCount = 2L;
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(purgeArea)) {
                 addSkillEvent(purgeArea);
@@ -118,16 +120,16 @@ public class NightLordDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(throwBlasting)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(ultimateDarkSight)
-                    && cooldownCheck(darkLordsSecretScroll)
-                    && cooldownCheck(spreadThrow)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(fumaShuriken)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(ultimateDarkSight)
+                            && cooldownCheck(darkLordsSecretScroll)
+                            && cooldownCheck(spreadThrow)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(fumaShuriken)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(throwBlasting);
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -159,7 +161,7 @@ public class NightLordDealCycle extends DealCycle {
                 throwBlastingCount = 68L;
                 throwBlastingList = new ArrayList<>();
                 while (throwBlastingCount != 0) {
-                    ran = (long) (Math.random() * 3 + 2);
+                    long ran = (long) (Math.random() * 3 + 2);
                     if (ran > throwBlastingCount) {
                         ran = throwBlastingCount;
                     }
@@ -178,10 +180,10 @@ public class NightLordDealCycle extends DealCycle {
                 addDealCycle(throwBlastingList);
             } else if (
                     cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(fumaShuriken)
-                    && !cooldownCheck(epicAdventure)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(fumaShuriken)
+                            && !cooldownCheck(epicAdventure)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 //addSkillEvent(darkLordsSecretScroll);
                 addSkillEvent(soulContract);
@@ -193,14 +195,14 @@ public class NightLordDealCycle extends DealCycle {
                 addSkillEvent(throwBlastingPassive);
             } else if (
                     cooldownCheck(darkLordsSecretScroll)
-                    && !cooldownCheck(throwBlasting)
+                            && !cooldownCheck(throwBlasting)
             ) {
                 addSkillEvent(darkLordsSecretScroll);
             } else if (
                     cooldownCheck(fumaShuriken)
-                    && (
+                            && (
                             !cooldownCheck(throwBlasting)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(fumaShuriken);

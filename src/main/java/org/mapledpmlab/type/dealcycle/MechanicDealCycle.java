@@ -75,39 +75,38 @@ public class MechanicDealCycle extends DealCycle {
     List<Timestamp> metarArmorFullBurstStartTime = new ArrayList<>();
     List<Timestamp> metarArmorFullBurstEndTime = new ArrayList<>();
 
+    BomberTime bomberTime = new BomberTime();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DistortionField distortionField = new DistortionField();
+    GroundZeroEarthquake groundZeroEarthquake = new GroundZeroEarthquake();
+    HomingMissile homingMissile = new HomingMissile();
+    LuckyDiceMechanic luckyDice = new LuckyDiceMechanic();
+    MagneticFieldDie magneticFieldDie = new MagneticFieldDie();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MassiveFireIRONBHit massiveFireIRONBHit = new MassiveFireIRONBHit();
+    MechaCarrierSummon mechaCarrierSummon = new MechaCarrierSummon();
+    MetalArmorFullBurstBeforeDelay metalArmorFullBurstBeforeDelay = new MetalArmorFullBurstBeforeDelay();
+    MicroMissileContainer microMissileContainer = new MicroMissileContainer();
     MultipleOptionMFLGatlingGun multipleOptionMFLGatlingGun = new MultipleOptionMFLGatlingGun();
     MultipleOptionMFLMissile multipleOptionMFLMissile = new MultipleOptionMFLMissile();
+    MultipleOptionMFLSummon multipleOptionMFLSummon = new MultipleOptionMFLSummon();
+    Overdrive overdrive = new Overdrive(249L);
+    ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    RobotFactoryRM1Die robotFactoryRM1Die = new RobotFactoryRM1Die();
+    RobotLauncherRM7Die robotLauncherRM7Die = new RobotLauncherRM7Die();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SupportWaverHEXDie supportWaverHEXDie = new SupportWaverHEXDie();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WillOfLiberty willOfLiberty = new WillOfLiberty();
 
     public MechanicDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        BomberTime bomberTime = new BomberTime();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DistortionField distortionField = new DistortionField();
-        GroundZeroEarthquake groundZeroEarthquake = new GroundZeroEarthquake();
-        HomingMissile homingMissile = new HomingMissile();
-        LuckyDiceMechanic luckyDice = new LuckyDiceMechanic();
-        MagneticFieldDie magneticFieldDie = new MagneticFieldDie();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MassiveFireIRONBHit massiveFireIRONBHit = new MassiveFireIRONBHit();
-        MechaCarrierSummon mechaCarrierSummon = new MechaCarrierSummon();
-        MetalArmorFullBurstBeforeDelay metalArmorFullBurstBeforeDelay = new MetalArmorFullBurstBeforeDelay();
-        MicroMissileContainer microMissileContainer = new MicroMissileContainer();
-        MultipleOptionMFLSummon multipleOptionMFLSummon = new MultipleOptionMFLSummon();
-        Overdrive overdrive = new Overdrive(249L);
-        ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        RobotFactoryRM1Die robotFactoryRM1Die = new RobotFactoryRM1Die();
-        RobotLauncherRM7Die robotLauncherRM7Die = new RobotLauncherRM7Die();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SupportWaverHEXDie supportWaverHEXDie = new SupportWaverHEXDie();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        WillOfLiberty willOfLiberty = new WillOfLiberty();
 
         for (int i = 0; i < 720 * 1000; i += homingMissile.getInterval()) {
             getSkillEventList().add(new SkillEvent(homingMissile, new Timestamp(i), new Timestamp(i)));
@@ -122,13 +121,16 @@ public class MechanicDealCycle extends DealCycle {
         addSkillEvent(luckyDice);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDiceMechanic();
                 if (
                         luckyDice.getBuffDamage() >= 30
-                        || luckyDice.getBuffAttMagic() >= 15
+                                || luckyDice.getBuffAttMagic() >= 15
                 ) {
                     luckyDice.setCooldown(180.0);
                 }
@@ -142,8 +144,8 @@ public class MechanicDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(multipleOptionMFLSummon)
-                    && getStart().before(new Timestamp(600 * 1000))
-                    && getStart().after(new Timestamp(microMissileContainer.getActivateTime().getTime() - 5000))
+                            && getStart().before(new Timestamp(600 * 1000))
+                            && getStart().after(new Timestamp(microMissileContainer.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(supportWaverHEXDie);
                 addSkillEvent(robotLauncherRM7Die);
@@ -179,14 +181,14 @@ public class MechanicDealCycle extends DealCycle {
                 addSkillEvent(metalArmorFullBurstBeforeDelay);
             } else if (
                     cooldownCheck(supportWaverHEXDie)
-                    && cooldownCheck(robotLauncherRM7Die)
-                    && cooldownCheck(robotFactoryRM1Die)
-                    && cooldownCheck(magneticFieldDie)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(bomberTime)
-                    && getStart().after(new Timestamp(60 * 1000))
+                            && cooldownCheck(robotLauncherRM7Die)
+                            && cooldownCheck(robotFactoryRM1Die)
+                            && cooldownCheck(magneticFieldDie)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(bomberTime)
+                            && getStart().after(new Timestamp(60 * 1000))
             ) {
                 addSkillEvent(supportWaverHEXDie);
                 addSkillEvent(robotLauncherRM7Die);
@@ -198,13 +200,13 @@ public class MechanicDealCycle extends DealCycle {
                 addSkillEvent(bomberTime);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(supportWaverHEXDie)
-                    && getStart().after(new Timestamp(660 * 1000))
+                            && getStart().after(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(supportWaverHEXDie);
                 addSkillEvent(robotLauncherRM7Die);
@@ -212,10 +214,10 @@ public class MechanicDealCycle extends DealCycle {
                 addSkillEvent(magneticFieldDie);
             } else if (
                     cooldownCheck(microMissileContainer)
-                    && (
+                            && (
                             !cooldownCheck(mapleWorldGoddessBlessing)
-                            || getStart().after(new Timestamp(660 * 1000))
-                            || getStart().before(new Timestamp(1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().before(new Timestamp(1000))
                     )
             ) {
                 addSkillEvent(microMissileContainer);

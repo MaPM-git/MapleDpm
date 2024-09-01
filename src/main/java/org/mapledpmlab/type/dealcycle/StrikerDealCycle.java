@@ -63,22 +63,42 @@ public class StrikerDealCycle extends DealCycle {
         }
     };
 
+    int lightningGodSpearStrikeCount = 0;
+    int linkCount = 0;
+    int seaWaveCount = 0;
+    int sharkWaveCount = 0;
+
+    Timestamp creationOfTheWorldEndTime = new Timestamp(-1);
+    Timestamp lightningUnionEndTime = new Timestamp(-1);
+
+    Annihilation annihilation = new Annihilation();
+    CreateThunderChain createThunderChain = new CreateThunderChain();
     CreateThunderChainHugeLightning createThunderChainHugeLightning = new CreateThunderChainHugeLightning();
     CreateThunderChainLightning createThunderChainLightning = new CreateThunderChainLightning();
-    private final Lightning lightning = new Lightning();
-    private final LightningGodSpearStrike lightningGodSpearStrike = new LightningGodSpearStrike();
-    private final SeaWave seaWave = new SeaWave();
-    private final SharkWave sharkWave = new SharkWave();
+    CreationOfTheWorld creationOfTheWorld = new CreationOfTheWorld();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
+    GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
+    GodOfTheSea godOfTheSea = new GodOfTheSea();
+    Lightning lightning = new Lightning();
+    LightningGodSpearStrike lightningGodSpearStrike = new LightningGodSpearStrike();
+    LightningUnion lightningUnion = new LightningUnion();
+    Overdrive overdrive = new Overdrive(255L);
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SeaWave seaWave = new SeaWave();
+    SharkWave sharkWave = new SharkWave();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    Thunderbolt thunderbolt = new Thunderbolt();
+    ThunderboltFlash thunderboltFlash = new ThunderboltFlash();
     Thunderstroke thunderstroke = new Thunderstroke();
     ThunderstrokeGiant thunderstrokeGiant = new ThunderstrokeGiant();
-
-    private int lightningGodSpearStrikeCount = 0;
-    private int linkCount = 0;
-    private int seaWaveCount = 0;
-    private int sharkWaveCount = 0;
-
-    private Timestamp creationOfTheWorldEndTime = new Timestamp(-1);
-    private Timestamp lightningUnionEndTime = new Timestamp(-1);
+    ThunderBreakTheSea thunderBreakTheSea = new ThunderBreakTheSea();
+    TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
+    Typhoon typhoon = new Typhoon();
+    WaterWave waterWave = new WaterWave();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public StrikerDealCycle(Job job) {
         super(job, null);
@@ -86,30 +106,8 @@ public class StrikerDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        Annihilation annihilation = new Annihilation();
-        CreateThunderChain createThunderChain = new CreateThunderChain();
-        CreationOfTheWorld creationOfTheWorld = new CreationOfTheWorld();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
-        GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
-        GodOfTheSea godOfTheSea = new GodOfTheSea();
-        LightningUnion lightningUnion = new LightningUnion();
-        Overdrive overdrive = new Overdrive(255L);
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        Thunderbolt thunderbolt = new Thunderbolt();
-        ThunderboltFlash thunderboltFlash = new ThunderboltFlash();
-        ThunderBreakTheSea thunderBreakTheSea = new ThunderBreakTheSea();
-        TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
-        Typhoon typhoon = new Typhoon();
-        WaterWave waterWave = new WaterWave();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         ringSwitching.setCooldown(120.0);
         ringSwitching.setApplyCooldownReduction(false);
-        int dealCycleOrder = 1;
 
         transcendentCygnusBlessing.setCooldown(360.0);
         transcendentCygnusBlessing.setApplyCooldownReduction(false);
@@ -118,15 +116,19 @@ public class StrikerDealCycle extends DealCycle {
         getStart().setTime(-10000);
         addSkillEvent(transcendentCygnusBlessing);
         getStart().setTime(0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
+        int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(cygnusPhalanx)) {
                 addSkillEvent(cygnusPhalanx);
             }
             if (
                     cooldownCheck(transcendentCygnusBlessing)
-                    && getStart().after(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 5000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 5000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (dealCycleOrder == 1) {
                     transcendentCygnusBlessing.setCooldown(360.0);
@@ -139,14 +141,14 @@ public class StrikerDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(gloryOfGuardians)
-                    && cooldownCheck(lightningUnion)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(sharkWave)
-                    && cooldownCheck(waterWave)
-                    && cooldownCheck(createThunderChain)
-                    && cooldownCheck(creationOfTheWorld)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(lightningUnion)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(sharkWave)
+                            && cooldownCheck(waterWave)
+                            && cooldownCheck(createThunderChain)
+                            && cooldownCheck(creationOfTheWorld)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(gloryOfGuardians);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -180,14 +182,14 @@ public class StrikerDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(110 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && getStart().after(new Timestamp(110 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && !cooldownCheck(gloryOfGuardians)
+                            && cooldownCheck(soulContract)
+                            && !cooldownCheck(gloryOfGuardians)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
@@ -197,7 +199,7 @@ public class StrikerDealCycle extends DealCycle {
                 addSkillEvent(godOfTheSea);
             } else if (
                     cooldownCheck(sharkWave)
-                    && !cooldownCheck(gloryOfGuardians)
+                            && !cooldownCheck(gloryOfGuardians)
             ) {
                 addSkillEvent(sharkWave);
             } else if (

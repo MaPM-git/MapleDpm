@@ -66,18 +66,6 @@ public class KhaliDealCycle extends DealCycle {
         }
     };
 
-    ArtsAstra artsAstra = new ArtsAstra();
-    DeceivingBlade deceivingBlade = new DeceivingBlade();
-    MagicCircuitFullDrive magicCircuitFullDrive = new MagicCircuitFullDrive();
-    Resonate resonate = new Resonate();
-    ResonateAwakening resonateAwakening = new ResonateAwakening();
-    ResonateUltimatum resonateUltimatum = new ResonateUltimatum();
-    VoidBlitz voidBlitz = new VoidBlitz();
-    VoidRush voidRush = new VoidRush();
-
-    Timestamp magicCircuitFullDriveEndTime = new Timestamp(-1);
-    Timestamp restraintRingTime = new Timestamp(-1);
-
     int chakriCnt = 0;
     int rushCnt = 0;
 
@@ -85,16 +73,40 @@ public class KhaliDealCycle extends DealCycle {
 
     Timestamp deathBlossomEndTime = new Timestamp(-1);
     Timestamp deathBlossomInterval = new Timestamp(-1);
+    Timestamp magicCircuitFullDriveEndTime = new Timestamp(-1);
     Timestamp oblivionEndTime = new Timestamp(-1);
     Timestamp resonateUltimatumEndTime = new Timestamp(-1);
+    Timestamp restraintRingTime = new Timestamp(-1);
     Timestamp soulContractEndTime = new Timestamp(-1);
 
+    ArtsAstra artsAstra = new ArtsAstra();
     ArtsCrescentum artsCrescentum = new ArtsCrescentum();
     ArtsFlurry artsFlurry = new ArtsFlurry();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DeathBlossom deathBlossom = new DeathBlossom();
+    DeceivingBlade deceivingBlade = new DeceivingBlade();
+    GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(477L);
     HexChakramFuryBeforeDelay hexChakramFuryBeforeDelay = new HexChakramFuryBeforeDelay();
     HexChakramSplit hexChakramSplit = new HexChakramSplit();
     HexChakramSweep hexChakramSweep = new HexChakramSweep();
     HexPandemonium hexPandemonium = new HexPandemonium();
+    HexSandStormBeforeDelay hexSandStormBeforeDelay = new HexSandStormBeforeDelay();
+    MagicCircuitFullDrive magicCircuitFullDrive = new MagicCircuitFullDrive();
+    MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
+    Oblivion oblivion = new Oblivion();
+    ReadyToDie readyToDie = new ReadyToDie();
+    Resonate resonate = new Resonate();
+    ResonateAwakening resonateAwakening = new ResonateAwakening();
+    ResonateUltimatum resonateUltimatum = new ResonateUltimatum();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    VoidBlitz voidBlitz = new VoidBlitz();
+    VoidBurstCombo voidBurstCombo = new VoidBurstCombo();
+    VoidRush voidRush = new VoidRush();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WrathOfGod wrathOfGod = new WrathOfGod();
 
     public KhaliDealCycle(Job job) {
         super(job, null);
@@ -102,45 +114,28 @@ public class KhaliDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DeathBlossom deathBlossom = new DeathBlossom();
-        GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(477L);
-        HexSandStormBeforeDelay hexSandStormBeforeDelay = new HexSandStormBeforeDelay();
-        MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
-        Oblivion oblivion = new Oblivion();
-        ReadyToDie readyToDie = new ReadyToDie();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        VoidBurstCombo voidBurstCombo = new VoidBurstCombo();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        WrathOfGod wrathOfGod = new WrathOfGod();
-
         ringSwitching.setCooldown(90.0);
-
         magicCircuitFullDriveBuff.setCooldown(120.0);
-
-        //dealCycle3.add(soulContract);
-
         soulContract.setApplyReuse(true);
+    }
 
-        //addSkillEvent(hexChakramFuryBeforeDelay);
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(magicCircuitFullDriveBuff)
-                    && cooldownCheck(wrathOfGod)
-                    && cooldownCheck(resonateUltimatum)
-                    && cooldownCheck(oblivion)
-                    && cooldownCheck(deathBlossom)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(hexPandemonium)
-                    && cooldownCheck(voidBlitz)
-                    && cooldownCheck(hexChakramSplit)
-                    && cooldownCheck(voidBurstCombo)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(wrathOfGod)
+                            && cooldownCheck(resonateUltimatum)
+                            && cooldownCheck(oblivion)
+                            && cooldownCheck(deathBlossom)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(hexPandemonium)
+                            && cooldownCheck(voidBlitz)
+                            && cooldownCheck(hexChakramSplit)
+                            && cooldownCheck(voidBurstCombo)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(magicCircuitFullDriveBuff);
                 addSkillEvent(wrathOfGod);
@@ -178,41 +173,41 @@ public class KhaliDealCycle extends DealCycle {
                 addSkillEvent(voidBurstCombo);
             } else if (
                     cooldownCheck(deathBlossom)
-                    && !cooldownCheck(wrathOfGod)
+                            && !cooldownCheck(wrathOfGod)
             ) {
                 addSkillEvent(deathBlossom);
                 addSkillEvent(readyToDie);
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().after(soulContractEndTime)
-                    && getStart().before(new Timestamp(wrathOfGod.getActivateTime().getTime() + 10000))
+                            && getStart().after(soulContractEndTime)
+                            && getStart().before(new Timestamp(wrathOfGod.getActivateTime().getTime() + 10000))
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(artsCrescentum)
-                    && afterBlitz
-                    && (
+                            && afterBlitz
+                            && (
                             !cooldownCheck(resonateUltimatum)
-                            || getStart().after(new Timestamp(10 * 60 * 1000))
+                                    || getStart().after(new Timestamp(10 * 60 * 1000))
                     )
             ) {
                 addSkillEvent(artsCrescentum);
             } else if (
                     cooldownCheck(hexPandemonium)
-                    && (
+                            && (
                             !cooldownCheck(resonateUltimatum)
-                            || (
+                                    || (
                                     getStart().after(new Timestamp(10 * 60 * 1000))
-                                    && getStart().before(new Timestamp(700 * 1000))
+                                            && getStart().before(new Timestamp(700 * 1000))
                             )
                     )
             ) {
                 addSkillEvent(hexPandemonium);
             } else if (
                     cooldownCheck(hexChakramSplit)
-                    && (
+                            && (
                             !cooldownCheck(resonateUltimatum)
-                            || getStart().after(new Timestamp(10 * 60 * 1000))
+                                    || getStart().after(new Timestamp(10 * 60 * 1000))
                     )
             ) {
                 addSkillEvent(hexChakramSplit);
@@ -226,9 +221,9 @@ public class KhaliDealCycle extends DealCycle {
                 addSkillEvent(hexChakramSweep);
             } else if (
                     cooldownCheck(artsCrescentum)
-                    && (
+                            && (
                             !cooldownCheck(resonateUltimatum)
-                            || getStart().after(new Timestamp(10 * 60 * 1000))
+                                    || getStart().after(new Timestamp(10 * 60 * 1000))
                     )
             ) {
                 addSkillEvent(artsCrescentum);

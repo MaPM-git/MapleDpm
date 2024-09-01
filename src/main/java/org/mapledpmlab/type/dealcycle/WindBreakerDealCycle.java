@@ -65,19 +65,37 @@ public class WindBreakerDealCycle extends DealCycle {
         }
     };
 
-    private final StormBringer stormBringer = new StormBringer();
-    private final StormWhim stormWhim = new StormWhim();
-    private final TriflingWhim triflingWhim = new TriflingWhim();
-    private final TriflingWhimReinforce triflingWhimReinforce = new TriflingWhimReinforce();
-
-
-    HowlingGale1 howlingGale1 = new HowlingGale1();
-    HowlingGale2 howlingGale2 = new HowlingGale2();
-    HowlingGale3 howlingGale3 = new HowlingGale3();
-
     boolean isCriticalReinforce = false;
 
     Timestamp criticalReinforceEndTime = new Timestamp(-1);
+
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+    CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
+    EmeraldFlower emeraldFlower = new EmeraldFlower();
+    GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
+    GuidedArrow guidedArrow = new GuidedArrow();
+    HowlingGale1 howlingGale1 = new HowlingGale1();
+    HowlingGale2 howlingGale2 = new HowlingGale2();
+    HowlingGale3 howlingGale3 = new HowlingGale3();
+    IdleWhimFirst idleWhimFirst = new IdleWhimFirst();
+    MistralSpring mistralSpring = new MistralSpring();
+    PinpointPierce pinpointPierce = new PinpointPierce();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    RiskTakerRing riskTakerRing = new RiskTakerRing();
+    SongOfHeaven songOfHeaven = new SongOfHeaven();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    StoneWind stoneWind = new StoneWind();
+    StormBringer stormBringer = new StormBringer();
+    StormWhim stormWhim = new StormWhim();
+    StormWhimBuff stormWhimBuff = new StormWhimBuff();
+    TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
+    TriflingWhim triflingWhim = new TriflingWhim();
+    TriflingWhimReinforce triflingWhimReinforce = new TriflingWhimReinforce();
+    VortexSphere vortexSphere = new VortexSphere();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public WindBreakerDealCycle(Job job) {
         super(job, null);
@@ -94,27 +112,6 @@ public class WindBreakerDealCycle extends DealCycle {
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
-        CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
-        EmeraldFlower emeraldFlower = new EmeraldFlower();
-        GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
-        GuidedArrow guidedArrow = new GuidedArrow();
-        IdleWhimFirst idleWhimFirst = new IdleWhimFirst();
-        MistralSpring mistralSpring = new MistralSpring();
-        PinpointPierce pinpointPierce = new PinpointPierce();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        RiskTakerRing riskTakerRing = new RiskTakerRing();
-        SongOfHeaven songOfHeaven = new SongOfHeaven();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        StoneWind stoneWind = new StoneWind();
-        StormWhimBuff stormWhimBuff = new StormWhimBuff();
-        TranscendentCygnusBlessing transcendentCygnusBlessing = new TranscendentCygnusBlessing(0L);
-        VortexSphere vortexSphere = new VortexSphere();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         cygnusPhalanx.setApplyFinalAttack(true);
 
@@ -133,12 +130,15 @@ public class WindBreakerDealCycle extends DealCycle {
         getStart().setTime(-10000);
         addSkillEvent(transcendentCygnusBlessing);
         getStart().setTime(0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(transcendentCygnusBlessing)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (dealCycleOrder == 1) {
                     transcendentCygnusBlessing.setCooldown(360.0);
@@ -151,21 +151,21 @@ public class WindBreakerDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(emeraldFlower)
-                    && cooldownCheck(pinpointPierce)
-                    && cooldownCheck(gloryOfGuardians)
-                    && cooldownCheck(stormWhimBuff)
-                    && cooldownCheck(criticalReinforce)
-                    && cooldownCheck(howlingGale3)
-                    && cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(pinpointPierce)
+                            && cooldownCheck(gloryOfGuardians)
+                            && cooldownCheck(stormWhimBuff)
+                            && cooldownCheck(criticalReinforce)
+                            && cooldownCheck(howlingGale3)
+                            && cooldownCheck(soulContract)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(emeraldFlower);
                 addSkillEvent(pinpointPierce);
                 addSkillEvent(gloryOfGuardians);
                 if (
                         dealCycleOrder == 1
-                        || dealCycleOrder == 3
-                        || dealCycleOrder == 5
+                                || dealCycleOrder == 3
+                                || dealCycleOrder == 5
                 ) {
                     while (!cooldownCheck(crestOfTheSolar)) {
                         addSkillEvent(songOfHeaven);
@@ -177,8 +177,8 @@ public class WindBreakerDealCycle extends DealCycle {
                 }
                 if (
                         dealCycleOrder == 1
-                        || dealCycleOrder == 2
-                        || dealCycleOrder == 5
+                                || dealCycleOrder == 2
+                                || dealCycleOrder == 5
                 ) {
                     addSkillEvent(stoneWind);
                 }
@@ -187,7 +187,7 @@ public class WindBreakerDealCycle extends DealCycle {
                 }
                 if (
                         dealCycleOrder == 1
-                        || dealCycleOrder == 4
+                                || dealCycleOrder == 4
                 ) {
                     addSkillEvent(mistralSpring);
                 }
@@ -205,10 +205,10 @@ public class WindBreakerDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(emeraldFlower)
-                    && cooldownCheck(pinpointPierce)
-                    && cooldownCheck(howlingGale1)
-                    && cooldownCheck(soulContract)
-                    && !cooldownCheck(gloryOfGuardians)
+                            && cooldownCheck(pinpointPierce)
+                            && cooldownCheck(howlingGale1)
+                            && cooldownCheck(soulContract)
+                            && !cooldownCheck(gloryOfGuardians)
             ) {
                 addSkillEvent(emeraldFlower);
                 addSkillEvent(pinpointPierce);
@@ -226,26 +226,26 @@ public class WindBreakerDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(50 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(50 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(stoneWind)
-                    && (
+                            && (
                             dealCycleOrder == 3
-                            || (
+                                    || (
                                     dealCycleOrder == 4
-                                    && getStart().after(new Timestamp(290 * 1000))
+                                            && getStart().after(new Timestamp(290 * 1000))
                             )
-                            || (
+                                    || (
                                     dealCycleOrder == 5
-                                    && getStart().after(new Timestamp(380 * 1000))
-                                    && getStart().before(new Timestamp(400 * 1000))
+                                            && getStart().after(new Timestamp(380 * 1000))
+                                            && getStart().before(new Timestamp(400 * 1000))
                             )
-                            || (
+                                    || (
                                     getStart().after(new Timestamp(600 * 1000))
-                                    && getStart().before(new Timestamp(660 * 1000))
+                                            && getStart().before(new Timestamp(660 * 1000))
                             )
                     )
             ) {
@@ -256,7 +256,7 @@ public class WindBreakerDealCycle extends DealCycle {
                 addSkillEvent(vortexSphere);
             } else if (
                     cooldownCheck(howlingGale1)
-                    && getStart().before(criticalReinforceEndTime)
+                            && getStart().before(criticalReinforceEndTime)
             ) {
                 addSkillEvent(howlingGale1);
             } else if (cooldownCheck(idleWhimFirst)) {

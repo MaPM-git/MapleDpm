@@ -76,26 +76,55 @@ public class MercedesDealCycle extends DealCycle {
         }
     };
 
-    FormOfEurel formOfEurel = new FormOfEurel();
-    LeafTornadoSpiritEnchant leafTornadoSpiritEnchant = new LeafTornadoSpiritEnchant();
-    LegendarySpearSpiritEnchant legendarySpearSpiritEnchant = new LegendarySpearSpiritEnchant();
-    StigmaOfIshtar stigmaOfIshtar = new StigmaOfIshtar();
-    StigmaOfIshtarComplete stigmaOfIshtarComplete = new StigmaOfIshtarComplete();
-    UnfadingGlorySpiritKingAttack unfadingGlorySpiritKingAttack = new UnfadingGlorySpiritKingAttack();
-    UnfadingGlorySpiritKingAttackReinforce unfadingGlorySpiritKingAttackReinforce = new UnfadingGlorySpiritKingAttackReinforce();
-    WrathOfEnlil wrathOfEnlil = new WrathOfEnlil();
-    WrathOfEnlilSpiritEnchant wrathOfEnlilSpiritEnchant = new WrathOfEnlilSpiritEnchant();
-
     Timestamp elementalGhostEndTime = new Timestamp(-1);
     Timestamp sylphidiaEndTime = new Timestamp(-1);
     Timestamp unfadingGloryEndTime = new Timestamp(-1);
     Timestamp unicornSpikeEndTime = new Timestamp(-1);
 
-    Long stigmaCnt = 0L;
     Long accumulateCnt = 0L;
+    Long stigmaCnt = 0L;
 
-    boolean isUnfadingGlory = false;
     boolean isCriticalReinforce = false;
+    boolean isUnfadingGlory = false;
+
+    AdvancedStrikeDualShot advancedStrikeDualShot = new AdvancedStrikeDualShot();
+    ChargeDrive1 chargeDrive1 = new ChargeDrive1();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+    ElementalGhost elementalGhost = new ElementalGhost();
+    ElementalKnightsDark elementalKnightsDark = new ElementalKnightsDark();
+    ElementalKnightsFlame elementalKnightsFlame = new ElementalKnightsFlame();
+    FormOfEurel formOfEurel = new FormOfEurel();
+    GuidedArrow guidedArrow = new GuidedArrow();
+    GustDive gustDive = new GustDive();
+    HeroesOath heroesOath = new HeroesOath();
+    HighkickDemolition highkickDemolition = new HighkickDemolition();
+    IrkallaBreathBeforeDelay irkallaBreathBeforeDelay = new IrkallaBreathBeforeDelay();
+    LeafTornado leafTornado = new LeafTornado();
+    LeafTornadoSpiritEnchant leafTornadoSpiritEnchant = new LeafTornadoSpiritEnchant();
+    LegendarySpear legendarySpear = new LegendarySpear();
+    LegendarySpearSpiritEnchant legendarySpearSpiritEnchant = new LegendarySpearSpiritEnchant();
+    LightningEdge lightningEdge = new LightningEdge();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    RestraintRing restraintRing = new RestraintRing();
+    RingOfIshtar ringOfIshtar = new RingOfIshtar();
+    RingSwitching ringSwitching = new RingSwitching();
+    RoyalKnights royalKnights = new RoyalKnights();
+    RollingMoonsault rollingMoonsault = new RollingMoonsault();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    StigmaOfIshtar stigmaOfIshtar = new StigmaOfIshtar();
+    StigmaOfIshtarComplete stigmaOfIshtarComplete = new StigmaOfIshtarComplete();
+    Sylphidia sylphidia = new Sylphidia();
+    SylphidiaEnd sylphidiaEnd = new SylphidiaEnd();
+    SylphidiaRush sylphidiaRush = new SylphidiaRush();
+    UnfadingGlorySpiritKingAttack unfadingGlorySpiritKingAttack = new UnfadingGlorySpiritKingAttack();
+    UnfadingGlorySpiritKingAttackReinforce unfadingGlorySpiritKingAttackReinforce = new UnfadingGlorySpiritKingAttackReinforce();
+    UnfadingGloryWave unfadingGloryWave = new UnfadingGloryWave();
+    UnicornSpike unicornSpike = new UnicornSpike();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WrathOfEnlil wrathOfEnlil = new WrathOfEnlil();
+    WrathOfEnlilSpiritEnchant wrathOfEnlilSpiritEnchant = new WrathOfEnlilSpiritEnchant();
 
     public MercedesDealCycle(Job job) {
         super(job, new AdvancedFinalAttackMercedes());
@@ -105,6 +134,7 @@ public class MercedesDealCycle extends DealCycle {
                     buffSkill instanceof CriticalReinforce
                     || buffSkill instanceof MapleWorldGoddessBlessing
                     || buffSkill instanceof RoyalKnights
+                    || buffSkill instanceof ElementalGhost
             ) {
                 buffSkill.setDelay(buffSkill.getDelay() / 2);
             }
@@ -112,36 +142,6 @@ public class MercedesDealCycle extends DealCycle {
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AdvancedStrikeDualShot advancedStrikeDualShot = new AdvancedStrikeDualShot();
-        ChargeDrive1 chargeDrive1 = new ChargeDrive1();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
-        ElementalGhost elementalGhost = new ElementalGhost();
-        ElementalKnightsDark elementalKnightsDark = new ElementalKnightsDark();
-        ElementalKnightsFlame elementalKnightsFlame = new ElementalKnightsFlame();
-        GuidedArrow guidedArrow = new GuidedArrow();
-        GustDive gustDive = new GustDive();
-        HeroesOath heroesOath = new HeroesOath();
-        HighkickDemolition highkickDemolition = new HighkickDemolition();
-        IrkallaBreathBeforeDelay irkallaBreathBeforeDelay = new IrkallaBreathBeforeDelay();
-        LeafTornado leafTornado = new LeafTornado();
-        LegendarySpear legendarySpear = new LegendarySpear();
-        LightningEdge lightningEdge = new LightningEdge();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        RestraintRing restraintRing = new RestraintRing();
-        RingOfIshtar ringOfIshtar = new RingOfIshtar();
-        RingSwitching ringSwitching = new RingSwitching();
-        RoyalKnights royalKnights = new RoyalKnights();
-        RollingMoonsault rollingMoonsault = new RollingMoonsault();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        Sylphidia sylphidia = new Sylphidia();
-        SylphidiaEnd sylphidiaEnd = new SylphidiaEnd();
-        SylphidiaRush sylphidiaRush = new SylphidiaRush();
-        UnfadingGloryWave unfadingGloryWave = new UnfadingGloryWave();
-        UnicornSpike unicornSpike = new UnicornSpike();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         ringSwitching.setCooldown(180.0);
 
@@ -157,7 +157,10 @@ public class MercedesDealCycle extends DealCycle {
         leafTornado.setDelayByAttackSpeed(480L);
         leafTornadoSpiritEnchant.setDelayByAttackSpeed(480L);
         unicornSpike.setDelayByAttackSpeed(600L);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         addSkillEvent(elementalKnightsDark);
         addSkillEvent(elementalKnightsFlame);
         addSkillEvent(guidedArrow);
@@ -170,15 +173,15 @@ public class MercedesDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(elementalGhost)
-                    && cooldownCheck(sylphidia)
-                    && cooldownCheck(heroesOath)
-                    && cooldownCheck(criticalReinforce)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(royalKnights)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(irkallaBreathBeforeDelay)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(sylphidia)
+                            && cooldownCheck(heroesOath)
+                            && cooldownCheck(criticalReinforce)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(royalKnights)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(irkallaBreathBeforeDelay)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -203,7 +206,7 @@ public class MercedesDealCycle extends DealCycle {
                 addSkillEvent(sylphidiaEnd);
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 30000))
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 30000))
             ) {
                 addSkillEvent(soulContract);
             } else if (getStart().before(elementalGhostEndTime)) {

@@ -59,8 +59,6 @@ public class ShadowerContinuousDealCycle extends DealCycle {
         }
     };
 
-    ContinuousRing continuousRing = new ContinuousRing();
-
     Long coinCount = 0L;
 
     Timestamp continuousRingEndTime = new Timestamp(-1);
@@ -69,37 +67,38 @@ public class ShadowerContinuousDealCycle extends DealCycle {
 
     boolean isNuke = false;
 
+    Assassination assassination = new Assassination();
+    AssassinationCancle assassinationCancle = new AssassinationCancle();
+    AssassinationFinish assassinationFinish = new AssassinationFinish();
+    AssassinationFinishCancle assassinationFinishCancle = new AssassinationFinishCancle();
+    ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DarkFlare darkFlare = new DarkFlare();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    Eviscerate eviscerate = new Eviscerate();
+    FatalVenom fatalVenom = new FatalVenom();
+    Heartbreaker heartbreaker = new Heartbreaker();
+    HeartbreakerCancle heartbreakerCancle = new HeartbreakerCancle();
+    HeartbreakerCancleStack heartbreakerCancleStack = new HeartbreakerCancleStack();
+    HeartbreakerFinish heartbreakerFinish = new HeartbreakerFinish();
+    HeartbreakerFinishCancle heartbreakerFinishCancle = new HeartbreakerFinishCancle();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MesoExplosion mesoExplosion = new MesoExplosion();
+    ReadyToDie readyToDie = new ReadyToDie();
+    SavageAssault1 savageAssault1 = new SavageAssault1();
+    SlashShadowFormation slashShadowFormation = new SlashShadowFormation();
+    SmokeBomb smokeBomb = new SmokeBomb();
+    SonicBlowBeforeDelay sonicBlow = new SonicBlowBeforeDelay();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
+    VeilOfShadow veilOfShadow = new VeilOfShadow();
+
     public ShadowerContinuousDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        Assassination assassination = new Assassination();
-        AssassinationCancle assassinationCancle = new AssassinationCancle();
-        AssassinationFinish assassinationFinish = new AssassinationFinish();
-        AssassinationFinishCancle assassinationFinishCancle = new AssassinationFinishCancle();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DarkFlare darkFlare = new DarkFlare();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        Eviscerate eviscerate = new Eviscerate();
-        FatalVenom fatalVenom = new FatalVenom();
-        Heartbreaker heartbreaker = new Heartbreaker();
-        HeartbreakerCancle heartbreakerCancle = new HeartbreakerCancle();
-        HeartbreakerCancleStack heartbreakerCancleStack = new HeartbreakerCancleStack();
-        HeartbreakerFinish heartbreakerFinish = new HeartbreakerFinish();
-        HeartbreakerFinishCancle heartbreakerFinishCancle = new HeartbreakerFinishCancle();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MesoExplosion mesoExplosion = new MesoExplosion();
-        ReadyToDie readyToDie = new ReadyToDie();
-        SavageAssault1 savageAssault1 = new SavageAssault1();
-        SlashShadowFormation slashShadowFormation = new SlashShadowFormation();
-        SmokeBomb smokeBomb = new SmokeBomb();
-        SonicBlowBeforeDelay sonicBlow = new SonicBlowBeforeDelay();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
-        VeilOfShadow veilOfShadow = new VeilOfShadow();
 
         // 페이탈 베놈
         for (int i = 0; i < 720 * 1000; i += fatalVenom.getInterval()) {
@@ -110,22 +109,25 @@ public class ShadowerContinuousDealCycle extends DealCycle {
         ultimateDarkSight.setBuffFinalDamage(1.29);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(darkFlare)) {
                 addSkillEvent(darkFlare);
             }
             if (
                     cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(ultimateDarkSight)
-                    && cooldownCheck(smokeBomb)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(slashShadowFormation)
-                    && cooldownCheck(smokeBomb)
-                    && cooldownCheck(eviscerate)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(ultimateDarkSight)
+                            && cooldownCheck(smokeBomb)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(slashShadowFormation)
+                            && cooldownCheck(smokeBomb)
+                            && cooldownCheck(eviscerate)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 isNuke = true;
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -160,12 +162,12 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(veilOfShadow)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(slashShadowFormation)
-                    && cooldownCheck(sonicBlow)
-                    && cooldownCheck(eviscerate)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(slashShadowFormation)
+                            && cooldownCheck(sonicBlow)
+                            && cooldownCheck(eviscerate)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(veilOfShadow);
                 addSkillEvent(readyToDie);
@@ -182,14 +184,14 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 }
             } else if (
                     getStart().after(smokeBombEndTime)
-                    && cooldownCheck(veilOfShadow)
-                    && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 5000))
+                            && cooldownCheck(veilOfShadow)
+                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(veilOfShadow);
             } else if (
                     cooldownCheck(sonicBlow)
-                    && cooldownCheck(eviscerate)
-                    && getStart().before(new Timestamp(700 * 1000))
+                            && cooldownCheck(eviscerate)
+                            && getStart().before(new Timestamp(700 * 1000))
             ) {
                 addSkillEvent(sonicBlow);
                 addSkillEvent(eviscerate);
@@ -201,7 +203,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(eviscerate)
-                    && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 3000))
+                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 3000))
             ) {
                 addSkillEvent(eviscerate);
             } else if (cooldownCheck(heartbreakerCancle)) {

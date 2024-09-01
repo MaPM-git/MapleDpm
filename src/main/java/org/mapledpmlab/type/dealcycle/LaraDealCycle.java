@@ -71,9 +71,6 @@ public class LaraDealCycle extends DealCycle {
         }
     };
 
-    MountainKid mountainKid = new MountainKid();
-    MountainSeed mountainSeed = new MountainSeed();
-
     Timestamp mountainSeedEndTime1 = new Timestamp(-1);
     Timestamp mountainSeedEndTime2 = new Timestamp(-1);
     Timestamp mountainSeedEndTime3 = new Timestamp(-1);
@@ -81,43 +78,47 @@ public class LaraDealCycle extends DealCycle {
 
     int eruptionCnt = 0;
 
+    ArmfulTree armfulTree = new ArmfulTree();
+    BigStretch bigStretch = new BigStretch();
+    BloomingFlowerWorld bloomingFlowerWorld = new BloomingFlowerWorld();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DragonVeinAbsorption dragonVeinAbsorption = new DragonVeinAbsorption();
+    DragonVeinFree dragonVeinFree = new DragonVeinFree();
+    DragonVeinEcho dragonVeinEcho = new DragonVeinEcho();
+    DragonVeinJump dragonVeinJump = new DragonVeinJump();
+    DragonVeinSwitch dragonVeinSwitch = new DragonVeinSwitch();
+    DragonVeinTrace dragonVeinTrace = new DragonVeinTrace();
+    EruptionRipplingRiver eruptionRipplingRiver = new EruptionRipplingRiver();
+    EruptionSunriseWell eruptionSunriseWell = new EruptionSunriseWell();
+    EruptionWhirlwind eruptionWhirlwind = new EruptionWhirlwind();
+    EssenceSprinkle essenceSprinkle = new EssenceSprinkle();
+    GrandisGoddessBlessingAnima grandisGoddessBlessingAnima = new GrandisGoddessBlessingAnima();
+    ManifestationSunlightFilledGround manifestationSunlightFilledGround = new ManifestationSunlightFilledGround();
+    MountainKid mountainKid = new MountainKid();
+    MountainSeed mountainSeed = new MountainSeed();
+    RestraintRing restraintRing = new RestraintRing();
+    RidgeWinding ridgeWinding = new RidgeWinding();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoaringSpirit soaringSpirit = new SoaringSpirit();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SunRiverMountainWindWave1 sunRiverMountainWindWave1 = new SunRiverMountainWindWave1();
+    VineSkein vineSkein = new VineSkein();
+    Wakeup wakeup = new Wakeup();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+
     public LaraDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ArmfulTree armfulTree = new ArmfulTree();
-        BigStretch bigStretch = new BigStretch();
-        BloomingFlowerWorld bloomingFlowerWorld = new BloomingFlowerWorld();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DragonVeinAbsorption dragonVeinAbsorption = new DragonVeinAbsorption();
-        DragonVeinFree dragonVeinFree = new DragonVeinFree();
-        DragonVeinEcho dragonVeinEcho = new DragonVeinEcho();
-        DragonVeinJump dragonVeinJump = new DragonVeinJump();
-        DragonVeinSwitch dragonVeinSwitch = new DragonVeinSwitch();
-        DragonVeinTrace dragonVeinTrace = new DragonVeinTrace();
-        EruptionRipplingRiver eruptionRipplingRiver = new EruptionRipplingRiver();
-        EruptionSunriseWell eruptionSunriseWell = new EruptionSunriseWell();
-        EruptionWhirlwind eruptionWhirlwind = new EruptionWhirlwind();
-        EssenceSprinkle essenceSprinkle = new EssenceSprinkle();
-        GrandisGoddessBlessingAnima grandisGoddessBlessingAnima = new GrandisGoddessBlessingAnima();
-        ManifestationSunlightFilledGround manifestationSunlightFilledGround = new ManifestationSunlightFilledGround();
-        RestraintRing restraintRing = new RestraintRing();
-        RidgeWinding ridgeWinding = new RidgeWinding();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoaringSpirit soaringSpirit = new SoaringSpirit();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SunRiverMountainWindWave1 sunRiverMountainWindWave1 = new SunRiverMountainWindWave1();
-        VineSkein vineSkein = new VineSkein();
-        Wakeup wakeup = new Wakeup();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         ringSwitching.setCooldown(180.0);
-
         grandisGoddessBlessingAnima.setCooldown(240.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         addSkillEvent(dragonVeinEcho);
         while (getStart().before(getEnd())) {
             if (cooldownCheck(manifestationSunlightFilledGround)) {
@@ -125,19 +126,19 @@ public class LaraDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(armfulTree)
-                    && cooldownCheck(dragonVeinTrace)
-                    && cooldownCheck(eruptionWhirlwind)
-                    && cooldownCheck(dragonVeinSwitch)
-                    && cooldownCheck(eruptionRipplingRiver)
-                    && cooldownCheck(dragonVeinFree)
-                    && cooldownCheck(eruptionSunriseWell)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(ridgeWinding)
-                    && cooldownCheck(soaringSpirit)
-                    && cooldownCheck(bigStretch)
-                    && cooldownCheck(sunRiverMountainWindWave1)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(dragonVeinTrace)
+                            && cooldownCheck(eruptionWhirlwind)
+                            && cooldownCheck(dragonVeinSwitch)
+                            && cooldownCheck(eruptionRipplingRiver)
+                            && cooldownCheck(dragonVeinFree)
+                            && cooldownCheck(eruptionSunriseWell)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(ridgeWinding)
+                            && cooldownCheck(soaringSpirit)
+                            && cooldownCheck(bigStretch)
+                            && cooldownCheck(sunRiverMountainWindWave1)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -175,30 +176,30 @@ public class LaraDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(soulContract)
-                    && !cooldownCheck(armfulTree)
+                            && !cooldownCheck(armfulTree)
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(bigStretch)
-                    && !cooldownCheck(armfulTree)
+                            && !cooldownCheck(armfulTree)
             ) {
                 addSkillEvent(dragonVeinFree);
                 addSkillEvent(bigStretch);
             } else if (
                     cooldownCheck(ridgeWinding)
-                    && !cooldownCheck(armfulTree)
+                            && !cooldownCheck(armfulTree)
             ) {
                 addSkillEvent(ridgeWinding);
             } else if (
                     cooldownCheck(soaringSpirit)
-                    && !cooldownCheck(armfulTree)
+                            && !cooldownCheck(armfulTree)
             ) {
                 addSkillEvent(soaringSpirit);
             } else if (
                     cooldownCheck(eruptionSunriseWell)
-                    && (
+                            && (
                             !cooldownCheck(armfulTree)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 if (eruptionCnt % 3 == 0) {
@@ -213,9 +214,9 @@ public class LaraDealCycle extends DealCycle {
                 addSkillEvent(eruptionSunriseWell);
             } else if (
                     cooldownCheck(eruptionWhirlwind)
-                    && (
+                            && (
                             !cooldownCheck(armfulTree)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 if (eruptionCnt % 3 == 0) {
@@ -230,9 +231,9 @@ public class LaraDealCycle extends DealCycle {
                 addSkillEvent(eruptionWhirlwind);
             } else if (
                     cooldownCheck(eruptionRipplingRiver)
-                    && (
+                            && (
                             !cooldownCheck(armfulTree)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 if (eruptionCnt % 3 == 0) {

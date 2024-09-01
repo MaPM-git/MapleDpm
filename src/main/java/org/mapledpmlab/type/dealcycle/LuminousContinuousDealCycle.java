@@ -59,26 +59,41 @@ public class LuminousContinuousDealCycle extends DealCycle {
         }
     };
 
+    boolean isNuke = false;
+
     Larkness larkness = Larkness.ECLIPSE;
     Larkness next = Larkness.SUNFIRE;
-    Long sunFireCnt = 0L;       // 라이트리플렉션 25회
+
     Long eclipseCnt = 22L;       // 아포칼립스 22회
+    Long sunFireCnt = 0L;       // 라이트리플렉션 25회
     Long liberationOrbCnt = 0L;
 
     Timestamp continuousRingEndTime = new Timestamp(-1);
     Timestamp equilibriumEndTime = new Timestamp(-1);
     Timestamp liberationOrbEndTime = new Timestamp(-1);
 
+    AbsoluteKill absoluteKill = new AbsoluteKill();
+    Apocalypse apocalypse = new Apocalypse();
     BaptismOfLightAndDarkness baptismOfLightAndDarkness = new BaptismOfLightAndDarkness();
     ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DoorOfTruth doorOfTruth = new DoorOfTruth();
     EndlessDarkness endlessDarkness = new EndlessDarkness();
+    Equilibrium equilibrium = new Equilibrium();
+    HarmonicParadoxBeforeDelay harmonicParadox = new HarmonicParadoxBeforeDelay();
+    HeroesOath heroesOath = new HeroesOath();
+    LiberationOrb liberationOrb = new LiberationOrb();
+    LightReflection lightReflection = new LightReflection();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    Memorize memorize = new Memorize();
+    PunishingResonator punishingResonator = new PunishingResonator();
     PunishingResonatorEclipse punishingResonatorEclipse = new PunishingResonatorEclipse();
-    PunishingResonatorSunfire punishingResonatorSunfire = new PunishingResonatorSunfire();
     PunishingResonatorEquilibrium punishingResonatorEquilibrium = new PunishingResonatorEquilibrium();
+    PunishingResonatorSunfire punishingResonatorSunfire = new PunishingResonatorSunfire();
     LiberationOrbActive liberationOrbActive = new LiberationOrbActive();
     LiberationOrbPassive liberationOrbPassive = new LiberationOrbPassive();
-
-    boolean isNuke = false;
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
 
     public LuminousContinuousDealCycle(Job job) {
         super(job, null);
@@ -86,41 +101,29 @@ public class LuminousContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AbsoluteKill absoluteKill = new AbsoluteKill();
-        Apocalypse apocalypse = new Apocalypse();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DoorOfTruth doorOfTruth = new DoorOfTruth();
-        Equilibrium equilibrium = new Equilibrium();
-        HarmonicParadoxBeforeDelay harmonicParadox = new HarmonicParadoxBeforeDelay();
-        HeroesOath heroesOath = new HeroesOath();
-        LiberationOrb liberationOrb = new LiberationOrb();
-        LightReflection lightReflection = new LightReflection();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        Memorize memorize = new Memorize();
-        PunishingResonator punishingResonator = new PunishingResonator();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(equilibriumEndTime)
-                    && larkness == Larkness.EQUILIBRIUM
+                            && larkness == Larkness.EQUILIBRIUM
             ) {
                 larkness = next;
             }
             if (
                     cooldownCheck(heroesOath)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(liberationOrb)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(baptismOfLightAndDarkness)
-                    && cooldownCheck(punishingResonator)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && (
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(liberationOrb)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(baptismOfLightAndDarkness)
+                            && cooldownCheck(punishingResonator)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && (
                             sunFireCnt >= 23
-                            || eclipseCnt >= 19
+                                    || eclipseCnt >= 19
                     )
             ) {
                 isNuke = true;
@@ -154,37 +157,37 @@ public class LuminousContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     getStart().after(equilibriumEndTime)
-                    && cooldownCheck(memorize)
-                    && !cooldownCheck(heroesOath)
+                            && cooldownCheck(memorize)
+                            && !cooldownCheck(heroesOath)
             ) {
                 addSkillEvent(memorize);
                 addSkillEvent(doorOfTruth);
             } else if (
                     getStart().after(equilibriumEndTime)
-                    && (
+                            && (
                             sunFireCnt >= 23
-                            || eclipseCnt >= 19
+                                    || eclipseCnt >= 19
                     )
-                    && (
+                            && (
                             getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 35000))
-                            || getStart().after(new Timestamp(600 * 1000))
+                                    || getStart().after(new Timestamp(600 * 1000))
                     )
             ) {
                 addSkillEvent(equilibrium);
                 addSkillEvent(doorOfTruth);
             } else if (
                     cooldownCheck(punishingResonator)
-                    && (
+                            && (
                             !cooldownCheck(liberationOrb)
-                            || getStart().after(new Timestamp(600 * 1000))
+                                    || getStart().after(new Timestamp(600 * 1000))
                     )
             ) {
                 addSkillEvent(punishingResonator);
             } else if (
                     cooldownCheck(baptismOfLightAndDarkness)
-                    && (
+                            && (
                             getStart().before(new Timestamp(liberationOrb.getActivateTime().getTime() - 10000))
-                            || getStart().after(new Timestamp(600 * 1000))
+                                    || getStart().after(new Timestamp(600 * 1000))
                     )
             ) {
                 addSkillEvent(baptismOfLightAndDarkness);

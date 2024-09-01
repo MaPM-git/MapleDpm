@@ -85,21 +85,42 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
         }
     };
 
-    Timestamp poisonZoneExplosionTime = new Timestamp(-1);
     Timestamp cancelRestraintRingEndTime = new Timestamp(-1);
     Timestamp continuousRingEndTime = new Timestamp(-1);
+    Timestamp infernalVenomEndTime = new Timestamp(0);
+    Timestamp infinityEndTime = new Timestamp(0);
+    Timestamp poisonZoneExplosionTime = new Timestamp(-1);
 
     BuffSkill fervantDrain = new BuffSkill();
 
-    PoisonZoneExplosion poisonZoneExplosion = new PoisonZoneExplosion();
-
-    Timestamp infernalVenomEndTime = new Timestamp(0);
-    Timestamp infinityEndTime = new Timestamp(0);
     ContinuousRing continuousRing = new ContinuousRing();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     DotPunisherFirst dotPunisherFirst = new DotPunisherFirst();
     DotPunisherOriginFirst dotPunisherOriginFirst = new DotPunisherOriginFirst();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    FireAura fireAura = new FireAura();
+    FireAuraDot fireAuraDot = new FireAuraDot();
+    FlameHaze flameHaze = new FlameHaze();
+    FlameSweep flameSweep = new FlameSweep();
     FuryOfIfrit furyOfIfrit = new FuryOfIfrit();
     FuryOfIfritOrigin furyOfIfritOrigin = new FuryOfIfritOrigin();
+    Ifrit ifrit = new Ifrit();
+    IfritDot ifritDot = new IfritDot();
+    IfritSummon ifritSummon = new IfritSummon();
+    InfernalVenomBuff infernalVenomBuff = new InfernalVenomBuff();
+    Infinity infinity = new Infinity(0L);
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MegidoFlame megidoFlame = new MegidoFlame();
+    MistEruption mistEruption = new MistEruption();
+    PoisonChainExplosion0 poisonChainExplosion0 = new PoisonChainExplosion0();
+    PoisonNovaDot poisonNovaDot = new PoisonNovaDot();
+    PoisonNovaExplosion poisonNovaExplosion = new PoisonNovaExplosion();
+    PoisonZone poisonZone = new PoisonZone();
+    PoisonZoneExplosion poisonZoneExplosion = new PoisonZoneExplosion();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    TeleportMastery teleportMastery = new TeleportMastery();
+    UnstableMemorize unstableMemorize = new UnstableMemorize();
 
     boolean isNuke = false;
 
@@ -108,29 +129,6 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        FireAura fireAura = new FireAura();
-        FireAuraDot fireAuraDot = new FireAuraDot();
-        FlameHaze flameHaze = new FlameHaze();
-        FlameSweep flameSweep = new FlameSweep();
-        Ifrit ifrit = new Ifrit();
-        IfritDot ifritDot = new IfritDot();
-        IfritSummon ifritSummon = new IfritSummon();
-        InfernalVenomBuff infernalVenomBuff = new InfernalVenomBuff();
-        Infinity infinity = new Infinity(0L);
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MegidoFlame megidoFlame = new MegidoFlame();
-        MistEruption mistEruption = new MistEruption();
-        PoisonChainExplosion0 poisonChainExplosion0 = new PoisonChainExplosion0();
-        PoisonNovaDot poisonNovaDot = new PoisonNovaDot();
-        PoisonNovaExplosion poisonNovaExplosion = new PoisonNovaExplosion();
-        PoisonZone poisonZone = new PoisonZone();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        TeleportMastery teleportMastery = new TeleportMastery();
-        UnstableMemorize unstableMemorize = new UnstableMemorize();
 
         // 파이어 오라
         for (int i = 0; i < 720 * 1000; i += fireAura.getInterval()) {
@@ -173,17 +171,20 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
         getStart().setTime(-3300);
         addSkillEvent(continuousRing);
         getStart().setTime(0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(infinity)
-                    && getStart().after(infinityEndTime)
+                            && getStart().after(infinityEndTime)
             ) {
                 addSkillEvent(infinity);
             }
             if (
                     cooldownCheck(unstableMemorize)
-                    && getStart().after(infinityEndTime)
+                            && getStart().after(infinityEndTime)
             ) {
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (ran <= 1) {
@@ -227,17 +228,17 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(megidoFlame)
-                    && cooldownCheck(furyOfIfrit)
-                    && cooldownCheck(poisonNovaDot)
-                    && cooldownCheck(dotPunisherFirst)
-                    && cooldownCheck(poisonChainExplosion0)
-                    && cooldownCheck(mistEruption)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && cooldownCheck(infernalVenomBuff)
-                    && getStart().after(new Timestamp(infinityEndTime.getTime() - 45000))
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(megidoFlame)
+                            && cooldownCheck(furyOfIfrit)
+                            && cooldownCheck(poisonNovaDot)
+                            && cooldownCheck(dotPunisherFirst)
+                            && cooldownCheck(poisonChainExplosion0)
+                            && cooldownCheck(mistEruption)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(infernalVenomBuff)
+                            && getStart().after(new Timestamp(infinityEndTime.getTime() - 45000))
             ) {
                 isNuke = true;
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -269,40 +270,40 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(spiderInMirror)
-                    && cooldownCheck(crestOfTheSolar)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(crestOfTheSolar)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(crestOfTheSolar);
                 addSkillEvent(spiderInMirror);
             } else if (
                     cooldownCheck(mapleWorldGoddessBlessing)
-                    && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() - 20000))
+                            && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() - 20000))
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
             } else if (
                     cooldownCheck(epicAdventure)
-                    && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() - 20000))
+                            && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() - 20000))
             ) {
                 addSkillEvent(epicAdventure);
             } else if (
                     cooldownCheck(furyOfIfrit)
-                    && !cooldownCheck(infernalVenomBuff)
+                            && !cooldownCheck(infernalVenomBuff)
             ) {
                 addSkillEvent(furyOfIfrit);
             } else if (
                     cooldownCheck(soulContract)
-                    && !cooldownCheck(infernalVenomBuff)
-                    && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() - 20000))
+                            && !cooldownCheck(infernalVenomBuff)
+                            && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() - 20000))
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(megidoFlame)
-                    && !cooldownCheck(infernalVenomBuff)
+                            && !cooldownCheck(infernalVenomBuff)
             ) {
                 addSkillEvent(megidoFlame);
             } else if (
                     cooldownCheck(poisonNovaDot)
-                    && !cooldownCheck(infernalVenomBuff)
+                            && !cooldownCheck(infernalVenomBuff)
             ) {
                 if (cooldownCheck(mistEruption)) {
                     addSkillEvent(flameHaze);
@@ -320,8 +321,8 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                 addSkillEvent(poisonNovaExplosion);
             } else if (
                     cooldownCheck(flameHaze)
-                    && cooldownCheck(mistEruption)
-                    && getStart().before(new Timestamp(poisonNovaDot.getActivateTime().getTime() - 1000))
+                            && cooldownCheck(mistEruption)
+                            && getStart().before(new Timestamp(poisonNovaDot.getActivateTime().getTime() - 1000))
             ) {
                 addSkillEvent(flameHaze);
                 addSkillEvent(mistEruption);

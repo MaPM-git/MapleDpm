@@ -66,18 +66,40 @@ public class PathFinderDealCycle extends DealCycle {
     boolean isCriticalReinforce = false;
     boolean isRelicEvolution = false;
     boolean isRelicLiberation = false;
+
+    Timestamp relicLiberationEndTime = new Timestamp(-1);
+    Timestamp relicEvolutionEndTime = new Timestamp(-1);
+    Timestamp soulContractEndTime = new Timestamp(-1);
+
     AncientWrath ancientWrath = new AncientWrath();
     AdditionalBlastFirst additionalBlastFirst = new AdditionalBlastFirst();
     AdditionalBlastREFirst additionalBlastREFirst = new AdditionalBlastREFirst();
     AdditionalDischargeFirst additionalDischargeFirst = new AdditionalDischargeFirst();
     AdditionalDischargeREFirst additionalDischargeREFirst = new AdditionalDischargeREFirst();
+    CardinalBlast cardinalBlast = new CardinalBlast();
+    CardinalDischarge cardinalDischarge = new CardinalDischarge();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
+    CurseArrow curseArrow = new CurseArrow();
     EdgeOfResonance edgeOfResonance = new EdgeOfResonance();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    Evolve evolve = new Evolve();
     ForsakenRelicMagicArrow forsakenRelicMagicArrow = new ForsakenRelicMagicArrow();
+    GuidedArrow guidedArrow = new GuidedArrow();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    ObsidianBarrier obsidianBarrier = new ObsidianBarrier();
+    Raven raven = new Raven();
+    RavenTempest ravenTempest = new RavenTempest();
+    RelicEvolution relicEvolution = new RelicEvolution();
+    RelicLiberation relicLiberation = new RelicLiberation();
+    RelicUnbound relicUnbound = new RelicUnbound();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
     SoulContract soulContract = new SoulContract();
-
-    Timestamp relicLiberationEndTime = new Timestamp(-1);
-    Timestamp relicEvolutionEndTime = new Timestamp(-1);
-    Timestamp soulContractEndTime = new Timestamp(-1);
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    TripleImpact tripleImpact = new TripleImpact();
+    UltimateBlast ultimateBlast = new UltimateBlast();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public PathFinderDealCycle(Job job) {
         super(job, null);
@@ -90,28 +112,6 @@ public class PathFinderDealCycle extends DealCycle {
                 buffSkill.setApplyReuse(true);
             }
         }
-
-        CardinalBlast cardinalBlast = new CardinalBlast();
-        CardinalDischarge cardinalDischarge = new CardinalDischarge();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
-        CurseArrow curseArrow = new CurseArrow();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        Evolve evolve = new Evolve();
-        GuidedArrow guidedArrow = new GuidedArrow();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        ObsidianBarrier obsidianBarrier = new ObsidianBarrier();
-        Raven raven = new Raven();
-        RavenTempest ravenTempest = new RavenTempest();
-        RelicEvolution relicEvolution = new RelicEvolution();
-        RelicLiberation relicLiberation = new RelicLiberation();
-        RelicUnbound relicUnbound = new RelicUnbound();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        TripleImpact tripleImpact = new TripleImpact();
-        UltimateBlast ultimateBlast = new UltimateBlast();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 가이디드 에로우
         for (int i = 0; i < 720 * 1000; i += guidedArrow.getInterval()) {
@@ -131,22 +131,25 @@ public class PathFinderDealCycle extends DealCycle {
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
         soulContract.setApplyReuse(true);
+    }
 
-        addSkillEvent(raven);
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
+        addSkillEvent(raven);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(evolve)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(obsidianBarrier)
-                    && cooldownCheck(criticalReinforce)
-                    && cooldownCheck(ravenTempest)
-                    && cooldownCheck(soulContract)
-                    //&& cooldownCheck(edgeOfResonance)
-                    && cooldownCheck(ultimateBlast)
-                    && cooldownCheck(relicEvolution)
-                    && cooldownCheck(relicUnbound)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(obsidianBarrier)
+                            && cooldownCheck(criticalReinforce)
+                            && cooldownCheck(ravenTempest)
+                            && cooldownCheck(soulContract)
+                            //&& cooldownCheck(edgeOfResonance)
+                            && cooldownCheck(ultimateBlast)
+                            && cooldownCheck(relicEvolution)
+                            && cooldownCheck(relicUnbound)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(evolve);
@@ -195,16 +198,16 @@ public class PathFinderDealCycle extends DealCycle {
                 applyCooldown(tripleImpact);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(100 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000)))
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000)))
             {
                 getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(ringSwitching);
                 applyCooldown(tripleImpact);
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().after(soulContractEndTime)
-                    && getStart().before(new Timestamp(evolve.getActivateTime().getTime() - 35000))
+                            && getStart().after(soulContractEndTime)
+                            && getStart().before(new Timestamp(evolve.getActivateTime().getTime() - 35000))
             ) {
                 getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(soulContract);

@@ -66,41 +66,43 @@ public class CaptainDealCycle extends DealCycle {
         }
     };
 
-    DeadEye deadEye = new DeadEye();
-    HeadShot headShot = new HeadShot();
-
-    DeathTrigger deathTrigger = new DeathTrigger();
-
     boolean isQuickDraw = false;
+
+    Long clipCount = 48L;
+
+    Timestamp spreeEndTime = new Timestamp(-1);
+
+    AssembleCrewDelay assembleCrewDelay = new AssembleCrewDelay();
+    BattleShipBomber battleShipBomber = new BattleShipBomber();
+    BulletPartyBeforeDelay bulletParty = new BulletPartyBeforeDelay();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DeadEye deadEye = new DeadEye();
+    DeathTrigger deathTrigger = new DeathTrigger();
+    DeathTriggerBeforeDelay deathTriggerStart = new DeathTriggerBeforeDelay();
+    Dreadnought dreadnought = new Dreadnought();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    HeadShot headShot = new HeadShot();
+    LuckyDice luckyDice = new LuckyDice();
+    LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    NautilusAssaultHull nautilusAssaultHull = new NautilusAssaultHull();
+    Overdrive overdrive = new Overdrive(249L);
+    PirateFlag pirateFlag = new PirateFlag();
+    RapidFire rapidFire = new RapidFire();
+    RapidFireSpree rapidFireSpree = new RapidFireSpree();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SiegeBomber siegeBomber = new SiegeBomber();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    UntiringNectar untiringNectar = new UntiringNectar();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public CaptainDealCycle(Job job) {
         super(job, new FinalAttackCaptain());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AssembleCrewDelay assembleCrewDelay = new AssembleCrewDelay();
-        BattleShipBomber battleShipBomber = new BattleShipBomber();
-        BulletPartyBeforeDelay bulletParty = new BulletPartyBeforeDelay();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DeathTriggerBeforeDelay deathTrigger = new DeathTriggerBeforeDelay();
-        Dreadnought dreadnought = new Dreadnought();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        LuckyDice luckyDice = new LuckyDice();
-        LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        NautilusAssaultHull nautilusAssaultHull = new NautilusAssaultHull();
-        Overdrive overdrive = new Overdrive(249L);
-        PirateFlag pirateFlag = new PirateFlag();
-        RapidFire rapidFire = new RapidFire();
-        RapidFireSpree rapidFireSpree = new RapidFireSpree();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SiegeBomber siegeBomber = new SiegeBomber();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UntiringNectar untiringNectar = new UntiringNectar();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         ringSwitching.setCooldown(100.0);
 
@@ -110,11 +112,11 @@ public class CaptainDealCycle extends DealCycle {
         addSkillEvent(luckyDice);
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
 
-        Long clipCount = 48L;
-        Timestamp spreeEndTime = new Timestamp(-1);
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDice();
@@ -131,17 +133,17 @@ public class CaptainDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(pirateFlag)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(untiringNectar)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(headShot)
-                    && cooldownCheck(deathTrigger)
-                    && cooldownCheck(nautilusAssaultHull)
-                    && cooldownCheck(deadEye)
-                    && cooldownCheck(bulletParty)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(pirateFlag)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(untiringNectar)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(headShot)
+                            && cooldownCheck(deathTriggerStart)
+                            && cooldownCheck(nautilusAssaultHull)
+                            && cooldownCheck(deadEye)
+                            && cooldownCheck(bulletParty)
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
@@ -168,7 +170,7 @@ public class CaptainDealCycle extends DealCycle {
                 if (cooldownCheck(dreadnought)) {
                     addSkillEvent(dreadnought);
                 }
-                addSkillEvent(deathTrigger);
+                addSkillEvent(deathTriggerStart);
                 if (cooldownCheck(headShot)) {
                     addSkillEvent(headShot);
                 }
@@ -176,14 +178,14 @@ public class CaptainDealCycle extends DealCycle {
                 addSkillEvent(bulletParty);
             } else if (
                     cooldownCheck(pirateFlag)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(untiringNectar)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(headShot)
-                    && cooldownCheck(deathTrigger)
-                    && cooldownCheck(deadEye)
-                    && cooldownCheck(bulletParty)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(untiringNectar)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(headShot)
+                            && cooldownCheck(deathTriggerStart)
+                            && cooldownCheck(deadEye)
+                            && cooldownCheck(bulletParty)
             ) {
                 addSkillEvent(pirateFlag);
                 addSkillEvent(overdrive);
@@ -191,33 +193,33 @@ public class CaptainDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
                 addSkillEvent(weaponJumpRing);
                 addSkillEvent(headShot);
-                addSkillEvent(deathTrigger);
+                addSkillEvent(deathTriggerStart);
                 addSkillEvent(deadEye);
                 addSkillEvent(bulletParty);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(pirateFlag)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime()))
+                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime()))
             ) {
                 addSkillEvent(pirateFlag);
             } else if (
-                    cooldownCheck(deathTrigger)
-                    && !cooldownCheck(soulContract)
+                    cooldownCheck(deathTriggerStart)
+                            && !cooldownCheck(soulContract)
             ) {
-                addSkillEvent(deathTrigger);
+                addSkillEvent(deathTriggerStart);
             } else if (
                     cooldownCheck(deadEye)
-                    && getStart().before(new Timestamp(untiringNectar.getActivateTime().getTime() - 25000))
+                            && getStart().before(new Timestamp(untiringNectar.getActivateTime().getTime() - 25000))
             ) {
                 addSkillEvent(deadEye);
             } else if (
                     cooldownCheck(headShot)
-                    && !cooldownCheck(untiringNectar)
+                            && !cooldownCheck(untiringNectar)
             ) {
                 addSkillEvent(headShot);
             } else if (

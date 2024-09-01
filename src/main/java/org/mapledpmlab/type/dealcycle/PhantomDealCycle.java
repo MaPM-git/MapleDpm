@@ -61,14 +61,34 @@ public class PhantomDealCycle extends DealCycle {
         }
     };
 
-    BlackJackFinal blackJackFinal = new BlackJackFinal();
-    Judgement judgement = new Judgement();
-    MarkOfPhantomFinal markOfPhantomFinal = new MarkOfPhantomFinal();
-    RiftBreak riftBreak = new RiftBreak();
-
     Long cardStack = 0L;
 
     Timestamp twilightEndTime = new Timestamp(-1);
+
+    BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
+    BlackJackFinal blackJackFinal = new BlackJackFinal();
+    BullsEyePhantom bullsEye = new BullsEyePhantom();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DefyingFate defyingFate = new DefyingFate();
+    FinalCutBuff finalCutBuff = new FinalCutBuff();
+    HeroesOath heroesOath = new HeroesOath();
+    JokerBeforeDelay jokerBeforeDelay = new JokerBeforeDelay();
+    Judgement judgement = new Judgement();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MarkOfPhantom markOfPhantom = new MarkOfPhantom();
+    MarkOfPhantomFinal markOfPhantomFinal = new MarkOfPhantomFinal();
+    PreparationPhantom preparationPhantom = new PreparationPhantom();
+    ReadyToDie readyToDie = new ReadyToDie();
+    RestraintRing restraintRing = new RestraintRing();
+    RiftBreak riftBreak = new RiftBreak();
+    RingSwitching ringSwitching = new RingSwitching();
+    RoseCarteFinale roseCarteFinale = new RoseCarteFinale();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    TempestOfCardBeforeDelay tempestOfCardBeforeDelay = new TempestOfCardBeforeDelay();
+    TwilightDebuff twilightDebuff = new TwilightDebuff();
+    UltimateDrive ultimateDrive = new UltimateDrive();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public PhantomDealCycle(Job job) {
         super(job, new NoireCarte());
@@ -76,51 +96,33 @@ public class PhantomDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
-        BullsEyePhantom bullsEye = new BullsEyePhantom();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DefyingFate defyingFate = new DefyingFate();
-        FinalCutBuff finalCutBuff = new FinalCutBuff();
-        HeroesOath heroesOath = new HeroesOath();
-        JokerBeforeDelay jokerBeforeDelay = new JokerBeforeDelay();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MarkOfPhantom markOfPhantom = new MarkOfPhantom();
-        PreparationPhantom preparationPhantom = new PreparationPhantom();
-        ReadyToDie readyToDie = new ReadyToDie();
-        RestraintRing restraintRing = new RestraintRing();
-        RiftBreak riftBreak = new RiftBreak();
-        RingSwitching ringSwitching = new RingSwitching();
-        RoseCarteFinale roseCarteFinale = new RoseCarteFinale();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        TempestOfCardBeforeDelay tempestOfCardBeforeDelay = new TempestOfCardBeforeDelay();
-        TwilightDebuff twilightDebuff = new TwilightDebuff();
-        UltimateDrive ultimateDrive = new UltimateDrive();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         ringSwitching.setCooldown(85.0);
         ringSwitching.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(180.0);
         //readyToDie.setCooldown(90.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (getStart().after(twilightEndTime)) {
                 addSkillEvent(twilightDebuff);
             }
             if (
                     cooldownCheck(finalCutBuff)
-                    && cooldownCheck(heroesOath)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(bullsEye)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(blackJackBeforeDelay)
-                    && cooldownCheck(markOfPhantom)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(riftBreak)
-                    && cooldownCheck(jokerBeforeDelay)
-                    && cooldownCheck(roseCarteFinale)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(heroesOath)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(bullsEye)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(blackJackBeforeDelay)
+                            && cooldownCheck(markOfPhantom)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(riftBreak)
+                            && cooldownCheck(jokerBeforeDelay)
+                            && cooldownCheck(roseCarteFinale)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(finalCutBuff);
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -148,14 +150,14 @@ public class PhantomDealCycle extends DealCycle {
                 addSkillEvent(roseCarteFinale);
             } else if (
                     cooldownCheck(finalCutBuff)
-                    && cooldownCheck(preparationPhantom)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(blackJackBeforeDelay)
-                    && cooldownCheck(markOfPhantom)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(riftBreak)
-                    && cooldownCheck(roseCarteFinale)
+                            && cooldownCheck(preparationPhantom)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(blackJackBeforeDelay)
+                            && cooldownCheck(markOfPhantom)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(riftBreak)
+                            && cooldownCheck(roseCarteFinale)
             ) {
                 addSkillEvent(finalCutBuff);
                 addSkillEvent(preparationPhantom);
@@ -168,39 +170,39 @@ public class PhantomDealCycle extends DealCycle {
                 addSkillEvent(roseCarteFinale);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(markOfPhantom)
-                    && (
+                            && (
                             !cooldownCheck(readyToDie)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(markOfPhantom);
             } else if (
                     cooldownCheck(riftBreak)
-                    && (
+                            && (
                             !cooldownCheck(readyToDie)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(riftBreak);
             } else if (
                     cooldownCheck(roseCarteFinale)
-                    && (
+                            && (
                             !cooldownCheck(readyToDie)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(roseCarteFinale);
             } else if (
                     cooldownCheck(blackJackBeforeDelay)
-                    && (
+                            && (
                             getStart().before(new Timestamp(readyToDie.getActivateTime().getTime() + 10000))
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(blackJackBeforeDelay);

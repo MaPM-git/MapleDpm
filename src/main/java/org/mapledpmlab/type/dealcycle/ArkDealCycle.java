@@ -80,15 +80,6 @@ public class ArkDealCycle extends DealCycle {
         }
     };
 
-    ApproachingDeath approachingDeath = new ApproachingDeath();
-    AwakenedAbyss awakenedAbyss = new AwakenedAbyss();
-    DeviousNightmare deviousNightmare = new DeviousNightmare();
-    DeviousOminousDream deviousOminousDream = new DeviousOminousDream();
-    GustSpell gustSpell = new GustSpell();
-    MagicCircuitFullDrive magicCircuitFullDrive = new MagicCircuitFullDrive();
-    PlainSpell plainSpell = new PlainSpell();
-    ReturningHatred returningHatred = new ReturningHatred();
-
     boolean isSpecter = false;
     boolean isAbyss = false;
     boolean isGust = false;
@@ -99,10 +90,10 @@ public class ArkDealCycle extends DealCycle {
     boolean isInstinct = false;
     boolean isScar = false;
 
+    Timestamp ancientAbyssEndTime = new Timestamp(-1);
+    Timestamp infinitySpellEndTime = new Timestamp(-1);
     Timestamp magicCircuitFullDriveEndTime = new Timestamp(-1);
     Timestamp memoryOfRootEndTime = new Timestamp(-1);
-    Timestamp infinitySpellEndTime = new Timestamp(-1);
-    Timestamp ancientAbyssEndTime = new Timestamp(-1);
 
     int hatredCnt = 0;
     int specterAura = 300;
@@ -112,50 +103,61 @@ public class ArkDealCycle extends DealCycle {
     LefGauge lefGauge = new LefGauge();
     SpecterGauge specterGauge = new SpecterGauge();
 
+    AbyssChargeDriveMagic abyssChargeDriveMagic = new AbyssChargeDriveMagic();
+    AncientAbyssDot ancientAbyssDot = new AncientAbyssDot();
+    ApproachingDeath approachingDeath = new ApproachingDeath();
+    AwakenedAbyss awakenedAbyss = new AwakenedAbyss();
+    BlissfulRestraintDot blissfulRestraintDot = new BlissfulRestraintDot();
+    ChargeSpellAmplification chargeSpellAmplification = new ChargeSpellAmplification();
+    ContactCaravan contactCaravan = new ContactCaravan();
+    CrawlingFearBeforeDelay crawlingFearBeforeDelay = new CrawlingFearBeforeDelay();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DeviousNightmare deviousNightmare = new DeviousNightmare();
+    DeviousOminousDream deviousOminousDream = new DeviousOminousDream();
+    EndlessAgonyBeforeDelay endlessAgonyBeforeDelay = new EndlessAgonyBeforeDelay();
+    EndlessHunger endlessHunger = new EndlessHunger();
+    EndlesslyStarvingBeast endlesslyStarvingBeast = new EndlesslyStarvingBeast();
+    EndlessNightmare endlessNightmare = new EndlessNightmare();
+    EndlessOminousDream endlessOminousDream = new EndlessOminousDream();
+    GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(382L);
+    GustChargeDrive gustChargeDrive = new GustChargeDrive();
+    GustSpell gustSpell = new GustSpell();
+    InfinitySpell infinitySpell = new InfinitySpell();
+    LoadedDice loadedDice = new LoadedDice();
+    MagicCircuitFullDrive magicCircuitFullDrive = new MagicCircuitFullDrive();
+    MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
+    MemoryOfRootBeforeDelay memoryOfRootBeforeDelay = new MemoryOfRootBeforeDelay();
+    Overdrive overdrive = new Overdrive(255L);
+    PlainChargeDrive plainChargeDrive = new PlainChargeDrive();
+    PlainSpell plainSpell = new PlainSpell();
+    RestraintRing restraintRing = new RestraintRing();
+    ReturningHatred returningHatred = new ReturningHatred();
+    RingSwitching ringSwitching = new RingSwitching();
+    ScarletChargeDriveFlame scarletChargeDriveFlame = new ScarletChargeDriveFlame();
+    SoulContract soulContract = new SoulContract();
+    SpecterForm specterForm = new SpecterForm();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    UncontrollableChaos uncontrollableChaos = new UncontrollableChaos();
+    UnfadingScar unfadingScar = new UnfadingScar();
+    UnstoppableImpulse unstoppableImpulse = new UnstoppableImpulse();
+    UnstoppableInstinct unstoppableInstinct = new UnstoppableInstinct();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    WrathOfGod wrathOfGod = new WrathOfGod();
+
     public ArkDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AbyssChargeDriveMagic abyssChargeDriveMagic = new AbyssChargeDriveMagic();
-        AncientAbyssDot ancientAbyssDot = new AncientAbyssDot();
-        BlissfulRestraintDot blissfulRestraintDot = new BlissfulRestraintDot();
-        ChargeSpellAmplification chargeSpellAmplification = new ChargeSpellAmplification();
-        ContactCaravan contactCaravan = new ContactCaravan();
-        CrawlingFearBeforeDelay crawlingFearBeforeDelay = new CrawlingFearBeforeDelay();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EndlessAgonyBeforeDelay endlessAgonyBeforeDelay = new EndlessAgonyBeforeDelay();
-        EndlessHunger endlessHunger = new EndlessHunger();
-        EndlesslyStarvingBeast endlesslyStarvingBeast = new EndlesslyStarvingBeast();
-        EndlessNightmare endlessNightmare = new EndlessNightmare();
-        EndlessOminousDream endlessOminousDream = new EndlessOminousDream();
-        GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(382L);
-        GustChargeDrive gustChargeDrive = new GustChargeDrive();
-        InfinitySpell infinitySpell = new InfinitySpell();
-        LoadedDice loadedDice = new LoadedDice();
-        MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
-        MemoryOfRootBeforeDelay memoryOfRootBeforeDelay = new MemoryOfRootBeforeDelay();
-        Overdrive overdrive = new Overdrive(255L);
-        PlainChargeDrive plainChargeDrive = new PlainChargeDrive();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        ScarletChargeDriveFlame scarletChargeDriveFlame = new ScarletChargeDriveFlame();
-        SoulContract soulContract = new SoulContract();
-        SpecterForm specterForm = new SpecterForm();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UncontrollableChaos uncontrollableChaos = new UncontrollableChaos();
-        UnfadingScar unfadingScar = new UnfadingScar();
-        UnstoppableImpulse unstoppableImpulse = new UnstoppableImpulse();
-        UnstoppableInstinct unstoppableInstinct = new UnstoppableInstinct();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        WrathOfGod wrathOfGod = new WrathOfGod();
-
         ringSwitching.setCooldown(130.0);
 
         magicCircuitFullDriveBuff.setCooldown(180.0);
         grandisGoddessBlessingLef.setCooldown(240.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         addSkillEvent(contactCaravan);
         while (getStart().before(getEnd())) {
@@ -164,16 +166,16 @@ public class ArkDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(wrathOfGod)
-                    && cooldownCheck(chargeSpellAmplification)
-                    && cooldownCheck(infinitySpell)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(blissfulRestraintDot)
-                    && cooldownCheck(endlesslyStarvingBeast)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(crawlingFearBeforeDelay)
-                    && cooldownCheck(endlessAgonyBeforeDelay)
-                    && cooldownCheck(memoryOfRootBeforeDelay)
-                    && cooldownCheck(returningHatred)
+                            && cooldownCheck(chargeSpellAmplification)
+                            && cooldownCheck(infinitySpell)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(blissfulRestraintDot)
+                            && cooldownCheck(endlesslyStarvingBeast)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(crawlingFearBeforeDelay)
+                            && cooldownCheck(endlessAgonyBeforeDelay)
+                            && cooldownCheck(memoryOfRootBeforeDelay)
+                            && cooldownCheck(returningHatred)
             ) {
                 if (cooldownCheck(magicCircuitFullDriveBuff)) {
                     if (dealCycleOrder == 3) {
@@ -225,10 +227,10 @@ public class ArkDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(crawlingFearBeforeDelay)
-                    && cooldownCheck(endlessAgonyBeforeDelay)
-                    && !cooldownCheck(wrathOfGod)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(crawlingFearBeforeDelay)
+                            && cooldownCheck(endlessAgonyBeforeDelay)
+                            && !cooldownCheck(wrathOfGod)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
@@ -236,20 +238,20 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(endlessAgonyBeforeDelay);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && !isSpecter
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && !isSpecter
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(returningHatred)
-                    && hatredCnt > 0
+                            && hatredCnt > 0
             ) {
                 addSkillEvent(returningHatred);
             } else if (
                     cooldownCheck(magicCircuitFullDriveBuff)
-                    && getStart().after(new Timestamp(8 * 60 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && getStart().after(new Timestamp(8 * 60 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(magicCircuitFullDriveBuff);
             } else if (isSpecter) {
@@ -310,7 +312,7 @@ public class ArkDealCycle extends DealCycle {
                     addSkillEvent(plainChargeDrive);
                     if (
                             cooldownCheck(endlessNightmare)
-                            && cooldownCheck(deviousNightmare)
+                                    && cooldownCheck(deviousNightmare)
                     ) {
                         addSkillEvent(endlessNightmare);
                     } else if (cooldownCheck(abyssChargeDriveMagic)) {
@@ -341,7 +343,7 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(scarletChargeDriveFlame);*/
                 if (
                         getStart().before(new Timestamp(infinitySpell.getActivateTime().getTime() - 5000))
-                        && gauge > 800
+                                && gauge > 800
                 ) {
                     addSkillEvent(specterForm);
                     applyCooldown(specterGauge);

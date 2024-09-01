@@ -66,18 +66,38 @@ public class ViperDealCycle extends DealCycle {
         }
     };
 
-    private Long serpentStoneCount = 3L;
-    private Timestamp superEndTime = new Timestamp(0);
-    private Timestamp stimulateEndTime = new Timestamp(0);
+    Long serpentStoneCount = 3L;
 
-    Timestamp superFistEnrageEndTime = new Timestamp(-1);
     Timestamp liberateNeptunusEndTime = new Timestamp(-1);
+    Timestamp stimulateEndTime = new Timestamp(0);
+    Timestamp superEndTime = new Timestamp(0);
+    Timestamp superFistEnrageEndTime = new Timestamp(-1);
+
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    EnergyOrb energyOrb = new EnergyOrb();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    FistEnrage fistEnrage = new FistEnrage();
+    FuriosCharge furiosCharge = new FuriosCharge();
+    HowlingFist howlingFist = new HowlingFist();
+    LiberateNeptunus liberateNeptunus = new LiberateNeptunus();
     LiberateNeptunusEnrage1 liberateNeptunusEnrage1 = new LiberateNeptunusEnrage1();
-    ScrewPunch screwPunch = new ScrewPunch();
+    LightningForm lightningForm = new LightningForm();
+    LuckyDice luckyDice = new LuckyDice();
+    LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    Overdrive overdrive = new Overdrive(255L);
     PirateFlag pirateFlag = new PirateFlag();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    ScrewPunch screwPunch = new ScrewPunch();
     SeaSerpentEnrage seaSerpentEnrage = new SeaSerpentEnrage();
     SerpentAssaultEnrage serpentAssaultEnrage = new SerpentAssaultEnrage();
+    SerpentScrew serpentScrew = new SerpentScrew();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    Stimulate stimulate = new Stimulate();
     SuperFistEnrage superFistEnrage = new SuperFistEnrage();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public ViperDealCycle(Job job) {
         super(job, new FinalAttackViper());
@@ -85,28 +105,7 @@ public class ViperDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EnergyOrb energyOrb = new EnergyOrb();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        FistEnrage fistEnrage = new FistEnrage();
-        FuriosCharge furiosCharge = new FuriosCharge();
-        HowlingFist howlingFist = new HowlingFist();
-        LiberateNeptunus liberateNeptunus = new LiberateNeptunus();
-        LightningForm lightningForm = new LightningForm();
-        LuckyDice luckyDice = new LuckyDice();
-        LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        Overdrive overdrive = new Overdrive(255L);
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SerpentScrew serpentScrew = new SerpentScrew();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        Stimulate stimulate = new Stimulate();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         ringSwitching.setCooldown(100.0);
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
         luckyDice.setCooldown(180.0);
@@ -114,12 +113,15 @@ public class ViperDealCycle extends DealCycle {
         luckyDice.setBuffDamage(40L);
         addSkillEvent(luckyDice);
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     luckyDice.getCooldown() == 0
-                    && luckyDice.getBuffAttMagic() == 0
-                    && luckyDice.getBuffDamage() == 20
+                            && luckyDice.getBuffAttMagic() == 0
+                            && luckyDice.getBuffDamage() == 20
             ) {
                 luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
                 luckyDice.setCooldown(luckyDiceOneMoreChance.getCooldown());
@@ -138,19 +140,19 @@ public class ViperDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(stimulate)
-                    && cooldownCheck(lightningForm)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(howlingFist)
-                    && cooldownCheck(furiosCharge)
-                    && (
+                            && cooldownCheck(lightningForm)
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(howlingFist)
+                            && cooldownCheck(furiosCharge)
+                            && (
                             serpentStoneCount == 2
-                            || serpentStoneCount == 3
+                                    || serpentStoneCount == 3
                     )
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(stimulate);
                 addSkillEvent(lightningForm);
@@ -187,10 +189,10 @@ public class ViperDealCycle extends DealCycle {
                 furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 44000));
             } else if (
                     cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(howlingFist)
-                    && cooldownCheck(furiosCharge)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(howlingFist)
+                            && cooldownCheck(furiosCharge)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
@@ -208,13 +210,13 @@ public class ViperDealCycle extends DealCycle {
                 furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 44000));
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(furiosCharge)
-                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() + 10000))
+                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() + 10000))
             ) {
                 addSkillEvent(furiosCharge);
                 addSkillEvent(furiosCharge);

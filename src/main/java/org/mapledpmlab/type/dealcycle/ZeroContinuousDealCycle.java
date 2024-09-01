@@ -184,41 +184,43 @@ public class ZeroContinuousDealCycle extends DealCycle {
 
         transcendentRhinneBless.setCooldown(240.0);
         auraWeaponBuff.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
-
         boolean isOrigin = false;
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
             }
             if (
                     getStart().before(new Timestamp(660 * 1000))
-                    && (
+                            && (
                             (
                                     zero == 1
-                                    && (
+                                            && (
                                             dealCycleOrder == 1
-                                            || dealCycleOrder == 4
+                                                    || dealCycleOrder == 4
                                     )
                             ) || (
                                     zero == 0
-                                    && (
+                                            && (
                                             dealCycleOrder == 2
-                                            || dealCycleOrder == 3
-                                            || dealCycleOrder == 5
-                                            || dealCycleOrder == 6
+                                                    || dealCycleOrder == 3
+                                                    || dealCycleOrder == 5
+                                                    || dealCycleOrder == 6
                                     )
                             )
                     )
-                    && getStart().after(new Timestamp(transcendentLife.getActivateTime().getTime() - 10000))
-                    && getStart().after(new Timestamp(limitBreak.getActivateTime().getTime() - 12000))
-                    && getStart().after(new Timestamp(jointAttack1.getActivateTime().getTime() - 15000))
-                    && getStart().after(new Timestamp(shadowFlashAlpha.getActivateTime().getTime() - 2000))
-                    && getStart().after(new Timestamp(shadowFlashBeta.getActivateTime().getTime() - 2000))
+                            && getStart().after(new Timestamp(transcendentLife.getActivateTime().getTime() - 10000))
+                            && getStart().after(new Timestamp(limitBreak.getActivateTime().getTime() - 12000))
+                            && getStart().after(new Timestamp(jointAttack1.getActivateTime().getTime() - 15000))
+                            && getStart().after(new Timestamp(shadowFlashAlpha.getActivateTime().getTime() - 2000))
+                            && getStart().after(new Timestamp(shadowFlashBeta.getActivateTime().getTime() - 2000))
             ) {
                 isNuke = true;
                 if (zero == 1) {
@@ -240,7 +242,7 @@ public class ZeroContinuousDealCycle extends DealCycle {
                 addSkillEvent(bodyOfSteel);
                 if (
                         cooldownCheck(shadowRainBeta)
-                        && zero == 1
+                                && zero == 1
                 ) {
                     betaCancelCycle(shadowRainBeta);
                 }
@@ -275,7 +277,7 @@ public class ZeroContinuousDealCycle extends DealCycle {
                 alphaCancelCycle(shadowFlashAlphaFinish);
                 if (
                         cooldownCheck(soulContract)
-                        && cooldownCheck(shadowRainBeta)
+                                && cooldownCheck(shadowRainBeta)
                 ) {
                     addSkillEvent(soulContract);
                     shadowRainBeta = new ShadowRainBeta();
@@ -303,32 +305,32 @@ public class ZeroContinuousDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 50000))
+                            && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 50000))
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     getStart().after(new Timestamp(shadowFlashAlpha.getActivateTime().getTime() - 2000))
-                    && zero == 0
-                    && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 30000))
+                            && zero == 0
+                            && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 30000))
             ) {
                 alphaCancelCycle(shadowFlashAlpha);
                 isShadowFlashAlpha = true;
             } else if (
                     getStart().after(new Timestamp(shadowFlashBeta.getActivateTime().getTime() - 2000))
-                    && zero == 1
-                    && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 30000))
+                            && zero == 1
+                            && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 30000))
             ) {
                 betaCancelCycle(shadowFlashBeta);
                 isShadowFlashBeta = true;
             } else if (
                     zero == 0
-                    && isShadowFlashAlpha
+                            && isShadowFlashAlpha
             ) {
                 alphaCancelCycle(shadowFlashAlphaFinish);
                 isShadowFlashAlpha = false;
             } else if (
                     zero == 1
-                    && isShadowFlashBeta
+                            && isShadowFlashBeta
             ) {
                 betaCancelCycle(shadowFlashBetaFinish);
                 isShadowFlashBeta = false;

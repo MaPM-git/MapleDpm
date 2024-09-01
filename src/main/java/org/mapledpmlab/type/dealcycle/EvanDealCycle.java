@@ -73,49 +73,50 @@ public class EvanDealCycle extends DealCycle {
     };
 
     Long debrisCnt = 0L;
+
     Timestamp zodiacBurstEndTime = new Timestamp(-1);
+
+    BreakComeBack breakComeBack = new BreakComeBack();
+    BreathComeBack breathComeBack = new BreathComeBack();
+    BreathOfEarth breathOfEarth = new BreathOfEarth();
+    BreathOfWind breathOfWind = new BreathOfWind();
+    CircleOfEarth circleOfEarth = new CircleOfEarth();
+    CircleOfMana1 circleOfMana = new CircleOfMana1();
+    CircleOfMana1 circleOfManaCancel = new CircleOfMana1();
+    CircleOfThunder circleOfThunder = new CircleOfThunder();
+    CircleOfWind circleOfWind = new CircleOfWind();
+    ComeBack comeBack = new ComeBack();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DarkFog darkFog = new DarkFog();
+    DiveOfEarth diveOfEarth = new DiveOfEarth();
+    DragonBreak dragonBreak = new DragonBreak();
+    DragonBreath dragonBreath = new DragonBreath();
+    DragonDive dragonDive = new DragonDive();
+    DragonSwift dragonSwift = new DragonSwift();
+    ElementalBlast elementalBlast = new ElementalBlast();
+    HeroesOath heroesOath = new HeroesOath();
+    ImperialBreath imperialBreath = new ImperialBreath();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SpiralOfMana spiralOfMana = new SpiralOfMana();
+    SummonOnyxDragon summonOnyxDragon = new SummonOnyxDragon();
+    SwiftComeBack swiftComeBack = new SwiftComeBack();
+    SwiftOfThunder swiftOfThunder = new SwiftOfThunder();
+    SwiftOfWind swiftOfWind = new SwiftOfWind();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
+    ZodiacBurst zodiacBurst = new ZodiacBurst();
     ZodiacBurstMeteor zodiacBurstMeteor = new ZodiacBurstMeteor();
+    ZodiacRay zodiacRay = new ZodiacRay();
+    ZodiacRayDelay zodiacRayDelay = new ZodiacRayDelay();
 
     public EvanDealCycle(Job job) {
         super(job, new AdvancedDragonSpark());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        BreakComeBack breakComeBack = new BreakComeBack();
-        BreathComeBack breathComeBack = new BreathComeBack();
-        BreathOfEarth breathOfEarth = new BreathOfEarth();
-        BreathOfWind breathOfWind = new BreathOfWind();
-        CircleOfEarth circleOfEarth = new CircleOfEarth();
-        CircleOfMana1 circleOfMana = new CircleOfMana1();
-        CircleOfMana1 circleOfManaCancel = new CircleOfMana1();
-        CircleOfThunder circleOfThunder = new CircleOfThunder();
-        CircleOfWind circleOfWind = new CircleOfWind();
-        ComeBack comeBack = new ComeBack();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DarkFog darkFog = new DarkFog();
-        DiveOfEarth diveOfEarth = new DiveOfEarth();
-        DragonBreak dragonBreak = new DragonBreak();
-        DragonBreath dragonBreath = new DragonBreath();
-        DragonDive dragonDive = new DragonDive();
-        DragonSwift dragonSwift = new DragonSwift();
-        ElementalBlast elementalBlast = new ElementalBlast();
-        HeroesOath heroesOath = new HeroesOath();
-        ImperialBreath imperialBreath = new ImperialBreath();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiralOfMana spiralOfMana = new SpiralOfMana();
-        SummonOnyxDragon summonOnyxDragon = new SummonOnyxDragon();
-        SwiftComeBack swiftComeBack = new SwiftComeBack();
-        SwiftOfThunder swiftOfThunder = new SwiftOfThunder();
-        SwiftOfWind swiftOfWind = new SwiftOfWind();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-        ZodiacBurst zodiacBurst = new ZodiacBurst();
-        ZodiacRay zodiacRay = new ZodiacRay();
-        ZodiacRayDelay zodiacRayDelay = new ZodiacRayDelay();
 
         ringSwitching.setCooldown(95.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
@@ -148,22 +149,25 @@ public class EvanDealCycle extends DealCycle {
         breathOfEarthCycle.add(circleOfMana);
         breathOfEarthCycle.add(circleOfMana);
         breathOfEarthCycle.add(breathComeBack);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(heroesOath)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(summonOnyxDragon)
-                    && cooldownCheck(zodiacRayDelay)
-                    && cooldownCheck(dragonBreath)
-                    && cooldownCheck(dragonSwift)
-                    && cooldownCheck(dragonDive)
-                    && cooldownCheck(dragonBreak)
-                    && cooldownCheck(elementalBlast)
-                    && cooldownCheck(imperialBreath)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(summonOnyxDragon)
+                            && cooldownCheck(zodiacRayDelay)
+                            && cooldownCheck(dragonBreath)
+                            && cooldownCheck(dragonSwift)
+                            && cooldownCheck(dragonDive)
+                            && cooldownCheck(dragonBreak)
+                            && cooldownCheck(elementalBlast)
+                            && cooldownCheck(imperialBreath)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 //getStart().setTime(getStart().getTime() + 210);
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -233,18 +237,18 @@ public class EvanDealCycle extends DealCycle {
                 addSkillEvent(spiralOfMana);
             } else if (
                     cooldownCheck(summonOnyxDragon)
-                    && !cooldownCheck(heroesOath)
+                            && !cooldownCheck(heroesOath)
             ) {
                 addSkillEvent(summonOnyxDragon);
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 10000))
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 10000))
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(dragonBreak)
-                    && cooldownCheck(elementalBlast)
-                    && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 10000))
+                            && cooldownCheck(elementalBlast)
+                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(dragonBreak);
                 boolean som = false;
@@ -272,7 +276,7 @@ public class EvanDealCycle extends DealCycle {
                 addSkillEvent(breakComeBack);
             } else if (
                     cooldownCheck(dragonBreak)
-                    && getStart().before(new Timestamp(elementalBlast.getActivateTime().getTime() - 5000))
+                            && getStart().before(new Timestamp(elementalBlast.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(dragonBreak);
                 boolean som = false;
@@ -290,7 +294,7 @@ public class EvanDealCycle extends DealCycle {
                 addSkillEvent(breakComeBack);
             } else if (
                     cooldownCheck(dragonSwift)
-                    && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
+                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
             ) {
                 addSkillEvent(dragonSwift);
                 addSkillEvent(circleOfThunder);
@@ -308,7 +312,7 @@ public class EvanDealCycle extends DealCycle {
                 addSkillEvent(swiftComeBack);
             } else if (
                     cooldownCheck(dragonDive)
-                    && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
+                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
             ) {
                 addSkillEvent(dragonDive);
                 addSkillEvent(circleOfEarth);
@@ -318,7 +322,7 @@ public class EvanDealCycle extends DealCycle {
                 addSkillEvent(comeBack);
             } else if (
                     cooldownCheck(dragonBreath)
-                    && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
+                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
             ) {
                 addSkillEvent(dragonBreath);
                 addSkillEvent(circleOfWind);
@@ -329,8 +333,8 @@ public class EvanDealCycle extends DealCycle {
                         addSkillEvent(circleOfMana);
                     } else if (
                             cooldownCheck(dragonSwift)
-                            || cooldownCheck(dragonDive)
-                            || cooldownCheck(dragonBreak)
+                                    || cooldownCheck(dragonDive)
+                                    || cooldownCheck(dragonBreak)
                     ) {
                         break;
                     } else {

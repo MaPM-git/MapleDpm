@@ -56,37 +56,39 @@ public class HeroDealCycle extends DealCycle {
         }
     };
 
+    int dealCycleOrder = 1;
+
     BuffSkill advancedComboAttack = new BuffSkill();
 
     Timestamp comboInstinctEndTime = new Timestamp(-1);
+
+    AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    ComboDeathFault comboDeathFault = new ComboDeathFault();
+    ComboInstinctsAttack comboInstinctsAttack = new ComboInstinctsAttack();
+    ComboInstinctsBuff comboInstinctsBuff = new ComboInstinctsBuff();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    IncisingAttack incisingAttack = new IncisingAttack();
+    IncisingDot incisingDot = new IncisingDot();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    RageUprising rageUprising = new RageUprising();
+    RagingBlow ragingBlow = new RagingBlow();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SpiritCaliberSlash spiritCaliberSlash = new SpiritCaliberSlash();
+    SwordIllusionBuff swordIllusionBuff = new SwordIllusionBuff();
+    SwordOfBurningSoulBuff swordOfBurningSoulBuff = new SwordOfBurningSoulBuff();
+    ValhallaBuff valhallaBuff = new ValhallaBuff();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public HeroDealCycle(Job job) {
         super(job, new AdvancedFinalAttackHero());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        ComboDeathFault comboDeathFault = new ComboDeathFault();
-        ComboInstinctsAttack comboInstinctsAttack = new ComboInstinctsAttack();
-        ComboInstinctsBuff comboInstinctsBuff = new ComboInstinctsBuff();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        IncisingAttack incisingAttack = new IncisingAttack();
-        IncisingDot incisingDot = new IncisingDot();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        RageUprising rageUprising = new RageUprising();
-        RagingBlow ragingBlow = new RagingBlow();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiritCaliberSlash spiritCaliberSlash = new SpiritCaliberSlash();
-        SwordIllusionBuff swordIllusionBuff = new SwordIllusionBuff();
-        SwordOfBurningSoulBuff swordOfBurningSoulBuff = new SwordOfBurningSoulBuff();
-        ValhallaBuff valhallaBuff = new ValhallaBuff();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         for (int i = 0; i < 720 * 1000; i += incisingDot.getInterval()) {
             getSkillEventList().add(new SkillEvent(incisingDot, new Timestamp(i), new Timestamp(i)));
@@ -103,24 +105,26 @@ public class HeroDealCycle extends DealCycle {
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
-        int dealCycleOrder = 1;
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(auraWeaponBuff);
             }
             if (
                     cooldownCheck(swordOfBurningSoulBuff)
-                    && cooldownCheck(incisingAttack)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(valhallaBuff)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(swordIllusionBuff)
-                    && cooldownCheck(comboInstinctsBuff)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(incisingAttack)
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(valhallaBuff)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(swordIllusionBuff)
+                            && cooldownCheck(comboInstinctsBuff)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(swordOfBurningSoulBuff);
                 addSkillEvent(incisingAttack);
@@ -157,18 +161,18 @@ public class HeroDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(swordIllusionBuff)
-                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 20000))
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 20000))
             ) {
                 addSkillEvent(swordIllusionBuff);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(100 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 50000))
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 50000))
             ) {
                 addSkillEvent(incisingAttack);
                 addSkillEvent(soulContract);

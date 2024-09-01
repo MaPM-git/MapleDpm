@@ -55,7 +55,25 @@ public class AngelicBusterDealCycle extends DealCycle {
         }
     };
 
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    EnergyBurst energyBurst = new EnergyBurst();
+    FinalContract finalContract = new FinalContract();
+    GrandisGoddessBlessingNova grandisGoddessBlessingNova = new GrandisGoddessBlessingNova();
+    GrandFinale grandFinale = new GrandFinale();
+    LoadedDice loadedDice = new LoadedDice();
+    MascotFamiliarBeforeDelay mascotFamiliarBeforeDelay = new MascotFamiliarBeforeDelay();
+    Overdrive overdrive = new Overdrive(255L);
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContractAB soulContractAB = new SoulContractAB();
+    SoulExaltation soulExaltation = new SoulExaltation();
     SoulSeeker soulSeeker = new SoulSeeker();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SpotlightBuff spotlight = new SpotlightBuff();
+    SuperNova superNova = new SuperNova();
+    Trinity trinity = new Trinity();
+    TrinityFusion trinityFusion = new TrinityFusion();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     Timestamp grandFinaleBuffEndTime = new Timestamp(-1);
     Timestamp soulExaltationEndTime = new Timestamp(-1);
@@ -66,44 +84,26 @@ public class AngelicBusterDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EnergyBurst energyBurst = new EnergyBurst();
-        FinalContract finalContract = new FinalContract();
-        GrandisGoddessBlessingNova grandisGoddessBlessingNova = new GrandisGoddessBlessingNova();
-        GrandFinale grandFinale = new GrandFinale();
-        LoadedDice loadedDice = new LoadedDice();
-        MascotFamiliarBeforeDelay mascotFamiliarBeforeDelay = new MascotFamiliarBeforeDelay();
-        Overdrive overdrive = new Overdrive(255L);
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContractAB soulContractAB = new SoulContractAB();
-        SoulExaltation soulExaltation = new SoulExaltation();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpotlightBuff spotlight = new SpotlightBuff();
-        SuperNova superNova = new SuperNova();
-        Trinity trinity = new Trinity();
-        TrinityFusion trinityFusion = new TrinityFusion();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         ringSwitching.setCooldown(130.0);
-
         grandisGoddessBlessingNova.setCooldown(240.0);
+    }
 
-        int dealCycleOrder = 1;
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(loadedDice)) {
                 addSkillEvent(loadedDice);
             }
             if (
                     cooldownCheck(finalContract)
-                    && cooldownCheck(spotlight)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(soulExaltation)
-                    && cooldownCheck(soulContractAB)
-                    && cooldownCheck(superNova)
-                    && cooldownCheck(energyBurst)
-                    && cooldownCheck(mascotFamiliarBeforeDelay)
-                    && getStart().after(new Timestamp(trinityFusion.getActivateTime().getTime() - 2500))
+                            && cooldownCheck(spotlight)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(soulExaltation)
+                            && cooldownCheck(soulContractAB)
+                            && cooldownCheck(superNova)
+                            && cooldownCheck(energyBurst)
+                            && cooldownCheck(mascotFamiliarBeforeDelay)
+                            && getStart().after(new Timestamp(trinityFusion.getActivateTime().getTime() - 2500))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -143,11 +143,11 @@ public class AngelicBusterDealCycle extends DealCycle {
                 addSkillEvent(mascotFamiliarBeforeDelay);
             } else if (
                     cooldownCheck(overdrive)
-                    && cooldownCheck(soulExaltation)
-                    && cooldownCheck(soulContractAB)
-                    && cooldownCheck(superNova)
-                    && cooldownCheck(mascotFamiliarBeforeDelay)
-                    && !cooldownCheck(finalContract)
+                            && cooldownCheck(soulExaltation)
+                            && cooldownCheck(soulContractAB)
+                            && cooldownCheck(superNova)
+                            && cooldownCheck(mascotFamiliarBeforeDelay)
+                            && !cooldownCheck(finalContract)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulExaltation);
@@ -156,8 +156,8 @@ public class AngelicBusterDealCycle extends DealCycle {
                 addSkillEvent(mascotFamiliarBeforeDelay);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else {

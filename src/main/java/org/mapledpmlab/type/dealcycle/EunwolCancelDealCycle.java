@@ -60,14 +60,32 @@ public class EunwolCancelDealCycle extends DealCycle {
         }
     };
 
-    BackStep backStep = new BackStep();
-    FoxSoul foxSoul = new FoxSoul();
-    FoxSoulOrb foxSoulOrb = new FoxSoulOrb();
-    SoulContract soulContract = new SoulContract();
-    SpiritClawTrue spiritClawTrue = new SpiritClawTrue();
-
     Timestamp cancelRestraintRingEndTime = new Timestamp(-1);
     Timestamp eunwolHyperEndTime = new Timestamp(-1);
+
+    AdventOfTheFox1 adventOfTheFox = new AdventOfTheFox1();
+    BackStep backStep = new BackStep();
+    BladeImpBuff bladeImp = new BladeImpBuff();
+    ChainBombPunchPre chainBombPunch = new ChainBombPunchPre();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    DivisionSoulBuff divisionSoul = new DivisionSoulBuff();
+    EunwolHyper eunwolHyper = new EunwolHyper();
+    FoxSoul foxSoul = new FoxSoul();
+    FoxSoulOrb foxSoulOrb = new FoxSoulOrb();
+    GhostDispositionBuff ghostDisposition = new GhostDispositionBuff();
+    HeroesOath heroesOath = new HeroesOath();
+    LightOfTheFoxGoddess lightOfTheFoxGoddess = new LightOfTheFoxGoddess();
+    LoadedDice loadedDice = new LoadedDice();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    Overdrive overdrive = new Overdrive(255L);
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SoulTent soulTent = new SoulTent();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    SpiritClaw spiritClaw = new SpiritClaw();
+    SpiritClawTrue spiritClawTrue = new SpiritClawTrue();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public EunwolCancelDealCycle(Job job) {
         super(job, null);
@@ -77,30 +95,13 @@ public class EunwolCancelDealCycle extends DealCycle {
 
         this.getJob().setName("은월(캔슬)");
 
-        AdventOfTheFox1 adventOfTheFox = new AdventOfTheFox1();
-        BladeImpBuff bladeImp = new BladeImpBuff();
-        ChainBombPunchPre chainBombPunch = new ChainBombPunchPre();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        DivisionSoulBuff divisionSoul = new DivisionSoulBuff();
-        EunwolHyper eunwolHyper = new EunwolHyper();
-        GhostDispositionBuff ghostDisposition = new GhostDispositionBuff();
-        HeroesOath heroesOath = new HeroesOath();
-        LightOfTheFoxGoddess lightOfTheFoxGoddess = new LightOfTheFoxGoddess();
-        LoadedDice loadedDice = new LoadedDice();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
-        Overdrive overdrive = new Overdrive(255L);
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulTent soulTent = new SoulTent();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        SpiritClaw spiritClaw = new SpiritClaw();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
-
         ringSwitching.setCooldown(120.0);
-        int dealCycleOrder = 1;
+    }
 
+    @Override
+    public void setSoloDealCycle() {
+        int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(loadedDice)) {
                 addSkillEvent(loadedDice);
@@ -110,10 +111,10 @@ public class EunwolCancelDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(heroesOath)
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(lightOfTheFoxGoddess)
-                    && cooldownCheck(eunwolHyper)
-                    && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(lightOfTheFoxGoddess)
+                            && cooldownCheck(eunwolHyper)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(bladeImp);
                 if (cooldownCheck(mapleWorldGoddessBlessing)) {
@@ -159,12 +160,12 @@ public class EunwolCancelDealCycle extends DealCycle {
                 dealCycleOrder ++;
             } else if (
                     getStart().before(new Timestamp(690 * 1000))
-                    && cooldownCheck(overdrive)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(divisionSoul)
-                    && cooldownCheck(ghostDisposition)
-                    && cooldownCheck(chainBombPunch)
-                    && !cooldownCheck(heroesOath)
+                            && cooldownCheck(overdrive)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(divisionSoul)
+                            && cooldownCheck(ghostDisposition)
+                            && cooldownCheck(chainBombPunch)
+                            && !cooldownCheck(heroesOath)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
@@ -173,8 +174,8 @@ public class EunwolCancelDealCycle extends DealCycle {
                 addSkillEvent(chainBombPunch);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(110 * 1000))
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && getStart().after(new Timestamp(110 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (cooldownCheck(spiritClawTrue)) {

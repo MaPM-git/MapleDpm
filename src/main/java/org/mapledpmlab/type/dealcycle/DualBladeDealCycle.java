@@ -64,39 +64,38 @@ public class DualBladeDealCycle extends DealCycle {
         }
     };
 
-    HauntedEdge hauntedEdge = new HauntedEdge();
-    KarmaBlade3 karmaBlade3 = new KarmaBlade3();
-    KarmaBladeFinish karmaBladeFinish = new KarmaBladeFinish();
-
     Timestamp karmaBladeEndTime = new Timestamp(-1);
 
     int karmaBladeCnt= 0;
+
+    AsuraBeforeDelay asura = new AsuraBeforeDelay();
+    BladeStormFirst bladeStormFirst = new BladeStormFirst();
+    BladeTornado bladeTornado = new BladeTornado();
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    EpicAdventure epicAdventure = new EpicAdventure();
+    FatalVenom fatalVenom = new FatalVenom();
+    FinalCutBuff finalCutBuff = new FinalCutBuff();
+    FlashbangBuff flashbangBuff = new FlashbangBuff();
+    HauntedEdge hauntedEdge = new HauntedEdge();
+    KarmaBlade1 karmaBlade1 = new KarmaBlade1();
+    KarmaBlade3 karmaBlade3 = new KarmaBlade3();
+    KarmaBladeFinish karmaBladeFinish = new KarmaBladeFinish();
+    KarmaFury karmaFury = new KarmaFury();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    PhantomBlow phantomBlow = new PhantomBlow();
+    ReadyToDie readyToDie = new ReadyToDie();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public DualBladeDealCycle(Job job) {
         super(job, new HiddenBlade());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        AsuraBeforeDelay asura = new AsuraBeforeDelay();
-        BladeStormFirst bladeStormFirst = new BladeStormFirst();
-        BladeTornado bladeTornado = new BladeTornado();
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        FatalVenom fatalVenom = new FatalVenom();
-        FinalCutBuff finalCutBuff = new FinalCutBuff();
-        FlashbangBuff flashbangBuff = new FlashbangBuff();
-        KarmaBlade1 karmaBlade1 = new KarmaBlade1();
-        KarmaFury karmaFury = new KarmaFury();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        PhantomBlow phantomBlow = new PhantomBlow();
-        ReadyToDie readyToDie = new ReadyToDie();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        UltimateDarkSight ultimateDarkSight = new UltimateDarkSight();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
         // 페이탈 베놈
         for (int i = 0; i < 720 * 1000; i += fatalVenom.getInterval()) {
@@ -107,28 +106,29 @@ public class DualBladeDealCycle extends DealCycle {
         ultimateDarkSight.setBuffFinalDamage(1.34);
 
         ringSwitching.setCooldown(95.0);
-
         mapleWorldGoddessBlessing.setCooldown(180.0);
-
         karmaBlade3.setCooldown(0.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(flashbangBuff)) {
                 addSkillEvent(flashbangBuff);
             }
             if (
                     cooldownCheck(finalCutBuff)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(ultimateDarkSight)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(bladeTornado)
-                    && cooldownCheck(karmaFury)
-                    && cooldownCheck(bladeStormFirst)
-                    && cooldownCheck(asura)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(ultimateDarkSight)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(bladeTornado)
+                            && cooldownCheck(karmaFury)
+                            && cooldownCheck(bladeStormFirst)
+                            && cooldownCheck(asura)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 boolean isOrigin = false;
                 addSkillEvent(finalCutBuff);
@@ -180,11 +180,11 @@ public class DualBladeDealCycle extends DealCycle {
                 addSkillEvent(asura);
             } else if (
                     cooldownCheck(finalCutBuff)
-                    && cooldownCheck(readyToDie)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-                    && cooldownCheck(bladeStormFirst)
-                    && cooldownCheck(asura)
+                            && cooldownCheck(readyToDie)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(weaponJumpRing)
+                            && cooldownCheck(bladeStormFirst)
+                            && cooldownCheck(asura)
             ) {
                 addSkillEvent(finalCutBuff);
                 addSkillEvent(readyToDie);
@@ -212,24 +212,24 @@ public class DualBladeDealCycle extends DealCycle {
                 addSkillEvent(asura);
             } else if (
                     cooldownCheck(bladeTornado)
-                    && (
+                            && (
                             !cooldownCheck(finalCutBuff)
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(bladeTornado);
             } else if (
                     cooldownCheck(karmaFury)
-                    && (
+                            && (
                             getStart().before(new Timestamp(finalCutBuff.getActivateTime().getTime() + 3000))
-                            || getStart().after(new Timestamp(660 * 1000))
+                                    || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(karmaFury);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else {

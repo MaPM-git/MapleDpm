@@ -62,17 +62,34 @@ public class PaladinDealCycle extends DealCycle {
         }
     };
 
-    private Timestamp sacredBastionEndTime = new Timestamp(0);
+    Timestamp nobleDemandEndTime = new Timestamp(-1);
+    Timestamp sacredBastionEndTime = new Timestamp(0);
 
     Double divineBrandCount = 0.0;      // 신성 낙인 개수
 
-    FallingJustice fallingJustice = new FallingJustice();
-    SacredBastionLight sacredBastionLight = new SacredBastionLight();
-    MightyMjolnir mightyMjolnir = new MightyMjolnir();
-    MightyMjolnirImpact mightyMjolnirImpact = new MightyMjolnirImpact();
+    AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
+    Blast blast = new Blast();
+    BlessedHammerBuff blessedHammerBuff = new BlessedHammerBuff();
+    BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
+    CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     DivineJudgement divineJudgement = new DivineJudgement();
-
-    Timestamp nobleDemandEndTime = new Timestamp(-1);
+    EpicAdventure epicAdventure = new EpicAdventure();
+    FallingJustice fallingJustice = new FallingJustice();
+    GrandCrossFirstDelay grandCrossFirstDelay = new GrandCrossFirstDelay();
+    HolyUnity holyUnity = new HolyUnity();
+    MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MightyMjolnir mightyMjolnir = new MightyMjolnir();
+    MightyMjolnirDelay mightyMjolnirDelay = new MightyMjolnirDelay();
+    MightyMjolnirImpact mightyMjolnirImpact = new MightyMjolnirImpact();
+    NobleDemand nobleDemand = new NobleDemand();
+    RestraintRing restraintRing = new RestraintRing();
+    RingSwitching ringSwitching = new RingSwitching();
+    SacredBastion1 sacredBastion1 = new SacredBastion1();
+    SacredBastionLight sacredBastionLight = new SacredBastionLight();
+    Sanctuary sanctuary = new Sanctuary();
+    SoulContract soulContract = new SoulContract();
+    SpiderInMirror spiderInMirror = new SpiderInMirror();
+    WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public PaladinDealCycle(Job job) {
         super(job, new FinalAttackPaladin());
@@ -80,44 +97,28 @@ public class PaladinDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
-        Blast blast = new Blast();
-        BlessedHammerBuff blessedHammerBuff = new BlessedHammerBuff();
-        BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
-        CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-        EpicAdventure epicAdventure = new EpicAdventure();
-        GrandCrossFirstDelay grandCrossFirstDelay = new GrandCrossFirstDelay();
-        HolyUnity holyUnity = new HolyUnity();
-        MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(job.getLevel());
-        MightyMjolnirDelay mightyMjolnirDelay = new MightyMjolnirDelay();
-        NobleDemand nobleDemand = new NobleDemand();
-        RestraintRing restraintRing = new RestraintRing();
-        RingSwitching ringSwitching = new RingSwitching();
-        SacredBastion1 sacredBastion1 = new SacredBastion1();
-        Sanctuary sanctuary = new Sanctuary();
-        SoulContract soulContract = new SoulContract();
-        SpiderInMirror spiderInMirror = new SpiderInMirror();
-        WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-
         mightyMjolnirDelay.setActivateTime(new Timestamp(-24000));
         ringSwitching.setCooldown(90.0);
         auraWeaponBuff.setCooldown(180.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (getStart().after(nobleDemandEndTime)) {
                 addSkillEvent(nobleDemand);
             }
             if (
                     cooldownCheck(auraWeaponBuff)
-                    && cooldownCheck(epicAdventure)
-                    && cooldownCheck(mapleWorldGoddessBlessing)
-                    && cooldownCheck(holyUnity)
-                    && cooldownCheck(blessedHammerBuff)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(restraintRing)
-                    && cooldownCheck(grandCrossFirstDelay)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(epicAdventure)
+                            && cooldownCheck(mapleWorldGoddessBlessing)
+                            && cooldownCheck(holyUnity)
+                            && cooldownCheck(blessedHammerBuff)
+                            && cooldownCheck(soulContract)
+                            && cooldownCheck(restraintRing)
+                            && cooldownCheck(grandCrossFirstDelay)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 //addSkillEvent(nobleDemand);
                 addSkillEvent(bodyOfSteel);
@@ -142,15 +143,15 @@ public class PaladinDealCycle extends DealCycle {
                 addSkillEvent(grandCrossFirstDelay);
             } else if (
                     cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(holyUnity)
                             && cooldownCheck(weaponJumpRing)
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-                    && !cooldownCheck(epicAdventure)
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && !cooldownCheck(epicAdventure)
             ) {
                 //addSkillEvent(nobleDemand);
                 addSkillEvent(holyUnity);
