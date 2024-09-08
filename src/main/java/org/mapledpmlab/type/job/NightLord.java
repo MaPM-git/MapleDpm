@@ -60,7 +60,7 @@ public class NightLord extends Job {
 
         // 4차
         this.addBossDamage(11L);        // 퍼지 에어리어
-        this.addFinalDamage(1.08);      // 다크 세레니티
+        this.addFinalDamage(1.14);      // 다크 세레니티
         this.addIgnoreDefenseList(31L);
         this.addAtt(31L);               // 자벨린 엑스퍼트
         this.addCriticalDamage(10.0);

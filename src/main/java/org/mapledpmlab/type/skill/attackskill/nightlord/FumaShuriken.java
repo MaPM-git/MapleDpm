@@ -6,9 +6,9 @@ public class FumaShuriken extends AttackSkill {
     public FumaShuriken() {
         this.setName("풍마 수리검");
         this.setApplyFinalAttack(true);
-        this.setAttackCount(5L * 2);
+        this.setAttackCount(7L * 2);
         this.setCooldown(25.0);
-        this.setDamage(660.0);
+        this.setDamage(615.0);
         this.setDelay(480L);
         this.setDotDuration(3000L);
         this.setInterval(180L);

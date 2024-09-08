@@ -12,7 +12,7 @@ public class AbsorptionRiverPuddleDouse extends AttackSkill {
         this.setCooldown(2.5);
         this.addIgnoreDefenseList(15L); // 분출/흡수 - 이그노어 가드
         this.setAddDamage(10L + 15);    // 분출/흡수 - 리인포스, 보스 킬러
-        this.addFinalDamage(1.2);       // 용맥 분출 VI
+        this.addFinalDamage(1.21);      // 용맥 분출 VI
         this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

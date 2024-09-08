@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DeathTrigger extends AttackSkill {
     public DeathTrigger() {
         this.setName("데스 트리거");
-        this.setDamage(715.0);
+        this.setDamage(780.0);
         this.setAttackCount(7L);
         this.setApplyFinalAttack(true);
         this.setDotDuration(600L * 4);

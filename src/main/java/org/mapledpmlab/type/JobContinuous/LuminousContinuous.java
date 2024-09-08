@@ -57,7 +57,7 @@ public class LuminousContinuous extends Job {
         this.addMagic(40L);             // 포틱 메디테이션
 
         // 4차
-        this.addFinalDamage(1.37);      // 모닝 스타폴
+        this.addFinalDamage(1.41);      // 모닝 스타폴
         this.addBossDamage(15L);
         this.addProperty(10L);          // 다크니스 소서리
         this.addFinalDamage(1.41);

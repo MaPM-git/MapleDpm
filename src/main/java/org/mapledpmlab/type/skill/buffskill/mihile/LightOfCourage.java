@@ -2,6 +2,7 @@ package org.mapledpmlab.type.skill.buffskill.mihile;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.mapledpmlab.type.skill.attackskill.mihile.LightOfCourageAttack;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 
 @Getter
@@ -13,5 +14,6 @@ public class LightOfCourage extends BuffSkill {
         this.setCooldown(90.0);
         this.setDelay(750L);
         this.setDuration(35L);
+        this.setRelatedSkill(new LightOfCourageAttack());
     }
 }

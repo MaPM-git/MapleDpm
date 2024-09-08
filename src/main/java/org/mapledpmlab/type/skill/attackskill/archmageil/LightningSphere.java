@@ -5,7 +5,7 @@ public class LightningSphere extends ThunderAttack {
         this.setName("라이트닝 스피어");
         this.setDamage(150.0 + 26);
         this.setAttackCount(15L);
-        this.setDelay(1680L + 1080);
+        this.setDelay(1680L);
         this.setDotDuration(1680L);
         this.setInterval(120L);
         this.setLimitAttackCount(14L);

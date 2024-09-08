@@ -86,7 +86,7 @@ public class AngelicBusterDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         ringSwitching.setCooldown(130.0);
-        grandisGoddessBlessingNova.setCooldown(240.0);
+        grandisGoddessBlessingNova.setCooldown(120.0);
     }
 
     @Override
@@ -112,18 +112,7 @@ public class AngelicBusterDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
-                if (
-                        cooldownCheck(grandisGoddessBlessingNova)
-                ) {
-                    if (getStart().before(new Timestamp(60 * 1000))) {
-                        grandisGoddessBlessingNova.setCooldown(360.0);
-                    } else if (getStart().after(new Timestamp(470 * 1000))) {
-                        grandisGoddessBlessingNova.setCooldown(240.0);
-                    } else if (getStart().after(new Timestamp(350 * 1000))) {
-                        grandisGoddessBlessingNova.setCooldown(120.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingNova);
-                }
+                addSkillEvent(grandisGoddessBlessingNova);
                 addSkillEvent(finalContract);
                 addSkillEvent(spotlight);
                 addSkillEvent(overdrive);
@@ -176,6 +165,7 @@ public class AngelicBusterDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

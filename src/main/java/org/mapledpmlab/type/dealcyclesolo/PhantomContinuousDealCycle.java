@@ -42,7 +42,6 @@ public class PhantomContinuousDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new TempestOfCardBeforeDelay());
             add(new TempestOfCard());
-            add(new Twilight());
             add(new UltimateDrive());
         }
     };
@@ -59,13 +58,10 @@ public class PhantomContinuousDealCycle extends DealCycle {
             add(new PreparationPhantom());
             add(new ReadyToDie());
             add(new SoulContract());
-            add(new TwilightDebuff());
         }
     };
 
     Long cardStack = 0L;
-
-    Timestamp twilightEndTime = new Timestamp(-1);
 
     boolean isNuke = false;
 
@@ -89,7 +85,6 @@ public class PhantomContinuousDealCycle extends DealCycle {
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     TempestOfCardBeforeDelay tempestOfCardBeforeDelay = new TempestOfCardBeforeDelay();
-    TwilightDebuff twilightDebuff = new TwilightDebuff();
     UltimateDrive ultimateDrive = new UltimateDrive();
 
     public PhantomContinuousDealCycle(Job job) {
@@ -105,9 +100,6 @@ public class PhantomContinuousDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
-            if (getStart().after(twilightEndTime)) {
-                addSkillEvent(twilightDebuff);
-            }
             if (
                     cooldownCheck(finalCutBuff)
                             && cooldownCheck(heroesOath)
@@ -144,7 +136,9 @@ public class PhantomContinuousDealCycle extends DealCycle {
                 }
                 addSkillEvent(riftBreak);
                 addSkillEvent(jokerBeforeDelay);
-                addSkillEvent(blackJackBeforeDelay);
+                if (cooldownCheck(blackJackBeforeDelay)) {
+                    addSkillEvent(blackJackBeforeDelay);
+                }
                 addSkillEvent(roseCarteFinale);
                 isNuke = false;
             } else if (
@@ -211,12 +205,10 @@ public class PhantomContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
-            if (skill instanceof TwilightDebuff) {
-                twilightEndTime = new Timestamp(getStart().getTime() + 60000);
-            }
             if (
                     skill instanceof SoulContract
                     && restraintRingStartTime == null
@@ -256,7 +248,6 @@ public class PhantomContinuousDealCycle extends DealCycle {
                             || skill instanceof MarkOfPhantomFinal
                             || skill instanceof RiftBreak
                             || skill instanceof RoseCarteFinale
-                            || skill instanceof Twilight
                             || skill instanceof UltimateDrive
                             || skill instanceof CrestOfTheSolar
                             || skill instanceof SpiderInMirror

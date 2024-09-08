@@ -180,26 +180,34 @@ public class NightLordDealCycle extends DealCycle {
                 }
                 addDealCycle(throwBlastingList);
             } else if (
+                    cooldownCheck(ringSwitching)
+                    && getStart().after(new Timestamp(80 * 1000))
+                    && getStart().before(new Timestamp(660 * 1000))
+            ) {
+                addSkillEvent(ringSwitching);
+            } else if (
                     cooldownCheck(soulContract)
                             && cooldownCheck(readyToDie)
-                            && cooldownCheck(fumaShuriken)
+                            //&& cooldownCheck(fumaShuriken)
+                            && cooldownCheck(darkLordsSecretScroll)
                             && !cooldownCheck(epicAdventure)
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
-                //addSkillEvent(darkLordsSecretScroll);
+                addSkillEvent(darkLordsSecretScroll);
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
-                addSkillEvent(fumaShuriken);
+                addSkillEvent(weaponJumpRing);
+                //addSkillEvent(fumaShuriken);
             } else if (
                     cooldownCheck(throwBlastingPassive)
             ) {
                 addSkillEvent(throwBlastingPassive);
-            } else if (
+            } /*else if (
                     cooldownCheck(darkLordsSecretScroll)
                             && !cooldownCheck(throwBlasting)
             ) {
                 addSkillEvent(darkLordsSecretScroll);
-            } else if (
+            }*/ else if (
                     cooldownCheck(fumaShuriken)
                             && (
                             !cooldownCheck(throwBlasting)
@@ -225,6 +233,7 @@ public class NightLordDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

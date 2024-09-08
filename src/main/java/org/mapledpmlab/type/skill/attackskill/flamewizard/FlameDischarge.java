@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class FlameDischarge extends AttackSkill {
     public FlameDischarge(Long flameCount) {
         this.setName("플레임 디스차지");
-        this.setDamage(550.0);
+        this.setDamage(800.0);
         this.setDelay(840L);
         this.setAttackCount(1L);
         this.setCooldown(20.0);

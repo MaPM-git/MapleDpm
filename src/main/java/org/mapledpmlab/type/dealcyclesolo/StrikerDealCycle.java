@@ -110,7 +110,7 @@ public class StrikerDealCycle extends DealCycle {
         ringSwitching.setCooldown(120.0);
         ringSwitching.setApplyCooldownReduction(false);
 
-        transcendentCygnusBlessing.setCooldown(360.0);
+        transcendentCygnusBlessing.setCooldown(120.0);
         transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
@@ -131,13 +131,6 @@ public class StrikerDealCycle extends DealCycle {
                             && getStart().after(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 5000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                if (dealCycleOrder == 1) {
-                    transcendentCygnusBlessing.setCooldown(360.0);
-                } else if (dealCycleOrder == 4) {
-                    transcendentCygnusBlessing.setCooldown(120.0);
-                } else {
-                    transcendentCygnusBlessing.setCooldown(240.0);
-                }
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (
@@ -256,6 +249,7 @@ public class StrikerDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime()) && getStart().after(new Timestamp(0))) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

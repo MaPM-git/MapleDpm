@@ -56,15 +56,16 @@ public class Adele extends Job {
 
         // 3차
         this.addAtt(30L);               // 어센트
-        this.addFinalDamage(1.16);
+        this.addFinalDamage(1.17);
         this.addCriticalP(20.0);
 
         // 4차
         this.addAtt(31L);               // 엑스퍼트
+        this.addDamage(20L);
         this.addFinalDamage(1.31);      // 데몰리션
         this.addIgnoreDefenseList(21L);
         this.addAtt(31L);               // 어테인
-        this.addBossDamage(11L);
+        this.addDamage(11L);
         this.addCriticalP(21.0);
 
         // 5차
@@ -96,7 +97,6 @@ public class Adele extends Job {
         this.addFinalDamage(1.1);       // 레조넌스
         this.addIgnoreDefenseList(10L);
         this.addIgnoreDefenseList(10L); // 게더링
-        this.addDamage(20L);            // 그레이브
-        this.addIgnoreDefenseList(10L);
+        this.addIgnoreDefenseList(10L); // 그레이브
     }
 }

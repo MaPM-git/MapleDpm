@@ -124,7 +124,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
         impale.setCooldown(58.0);       // 스택 유지만
 
         auraWeaponBuff.setCooldown(180.0);
-        grandisGoddessBlessingLef.setCooldown(240.0);
+        grandisGoddessBlessingLef.setCooldown(120.0);
         etherSword = 3L;
     }
 
@@ -175,14 +175,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
                     }
                 }
                 addSkillEvent(bodyOfSteel);
-                if (cooldownCheck(grandisGoddessBlessingLef)) {
-                    if (getStart().before(new Timestamp(10 * 1000))) {
-                        grandisGoddessBlessingLef.setCooldown(360.0);
-                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
-                        grandisGoddessBlessingLef.setCooldown(180.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingLef);
-                }
+                addSkillEvent(grandisGoddessBlessingLef);
                 if (cooldownCheck(shard)) {
                     addSkillEvent(shard);
                 }
@@ -247,7 +240,6 @@ public class AdeleMarkerDealCycle extends DealCycle {
             ) {
                 addSkillEvent(storm);
                 stormRestore.setActivateTime(new Timestamp(storm.getActivateTime().getTime()));
-                addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(soulContract)
                             && cooldownCheck(ruin)
@@ -255,6 +247,9 @@ public class AdeleMarkerDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(auraWeaponBuff.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(soulContract);
+                if (cooldownCheck(grandisGoddessBlessingLef)) {
+                    addSkillEvent(weaponJumpRing);
+                }
                 addSkillEvent(ruin);
                 addSkillEvent(marker1);
             } else if (cooldownCheck(territory)) {
@@ -313,7 +308,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
         }
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + getJob().getName() + "\t" + skill.getName() + "\t" + skill.getActivateTime());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

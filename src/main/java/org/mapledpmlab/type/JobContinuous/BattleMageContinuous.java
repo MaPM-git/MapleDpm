@@ -54,7 +54,7 @@ public class BattleMageContinuous extends Job {
         this.addMainStat(40L);          // 하이 위즈덤
 
         // 3차
-        this.addFinalDamage(1.25);      // 배틀 마스터리
+        this.addFinalDamage(1.3);       // 배틀 마스터리
         this.addCriticalDamage(15.0);
 
         // 4차
@@ -66,9 +66,9 @@ public class BattleMageContinuous extends Job {
         this.addCriticalDamage(10.0);
         this.addMagic(31L);             // 스태프 엑스퍼트
         this.addCriticalDamage(21.0);
-        this.addFinalDamage(1.05);      // 스펠 부스트
+        this.addFinalDamage(1.22);      // 스펠 부스트
         this.addMagicP(10L);
-        this.addDamage(11L);
+        this.addDamage(16L);
         this.addIgnoreDefenseList(31L);
 
         // 환산 보정
@@ -94,8 +94,7 @@ public class BattleMageContinuous extends Job {
     public void Doping() {
         super.Doping();
         this.addIgnoreDefenseList(20L);     // 디버프 오라
-        this.addProperty(10L);
-        this.addFinalDamage(1.08);
+        this.addFinalDamage(1.05);
     }
 
     public Long getStatDamage() {

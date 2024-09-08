@@ -6,7 +6,7 @@ public class CreateThunderChain extends AttackSkill {
     public CreateThunderChain() {
         this.setName("창뇌연격");
         this.setAttackCount(5L * 2);
-        this.setDamage(1100.0);
+        this.setDamage(1430.0);
         this.setDelay(240L * 11);
         this.setCooldown(120.0);
         this.setDotDuration(240L * 11);

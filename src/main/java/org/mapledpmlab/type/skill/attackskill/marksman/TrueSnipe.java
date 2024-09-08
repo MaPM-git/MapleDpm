@@ -7,7 +7,7 @@ public class TrueSnipe extends AttackSkill {
         this.setName("트루 스나이핑");
         this.setAttackCount(15L);       // 어디셔널 볼트
         this.setCooldown(60.0);
-        this.setDamage(1850.0);
+        this.setDamage(2090.0);
         this.setDelay(120L);
         this.setDotDuration(120L);
         this.setLimitAttackCount(4L);

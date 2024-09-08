@@ -119,6 +119,7 @@ public class PaladinDealCycle extends DealCycle {
                             && cooldownCheck(soulContract)
                             && cooldownCheck(restraintRing)
                             && cooldownCheck(grandCrossFirstDelay)
+                            && cooldownCheck(mightyMjolnirDelay)
                             && getStart().before(new Timestamp(600 * 1000))
             ) {
                 //addSkillEvent(nobleDemand);
@@ -138,6 +139,7 @@ public class PaladinDealCycle extends DealCycle {
                 addSkillEvent(blessedHammerBuff);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
+                addSkillEvent(mightyMjolnirDelay);
                 if (cooldownCheck(sacredBastion1)) {
                     addSkillEvent(sacredBastion1);
                 }
@@ -166,7 +168,10 @@ public class PaladinDealCycle extends DealCycle {
             ) {
                 addSkillEvent(blessedHammerBuff);
                 addSkillEvent(soulContract);
-            }*/ else if (cooldownCheck(mightyMjolnirDelay)) {
+            }*/ else if (
+                    cooldownCheck(mightyMjolnirDelay)
+                    && !cooldownCheck(soulContract)
+            ) {
                 addSkillEvent(mightyMjolnirDelay);
             } else {
                 addSkillEvent(blast);
@@ -180,6 +185,7 @@ public class PaladinDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -307,7 +313,11 @@ public class PaladinDealCycle extends DealCycle {
                 if (skill instanceof MightyMjolnirDelay) {
                     for (int i = 840; i < 840 + 210 * 4; i += 210) {
                         getSkillEventList().add(new SkillEvent(mightyMjolnir, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getSkillEventList().add(new SkillEvent(mightyMjolnir, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getSkillEventList().add(new SkillEvent(mightyMjolnir, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        getSkillEventList().add(new SkillEvent(mightyMjolnirImpact, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        getSkillEventList().add(new SkillEvent(mightyMjolnirImpact, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getSkillEventList().add(new SkillEvent(mightyMjolnirImpact, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -330,7 +340,7 @@ public class PaladinDealCycle extends DealCycle {
 
     @Override
     public void applyCooldown(Skill skill) {
-        if (skill instanceof MightyMjolnirDelay) {
+        /*if (skill instanceof MightyMjolnirDelay) {
             long remainTime = getStart().getTime() - skill.getActivateTime().getTime();
             if (remainTime >= 24000) {
                 skill.setActivateTime(new Timestamp(getStart().getTime() - 12000));
@@ -340,7 +350,7 @@ public class PaladinDealCycle extends DealCycle {
                 skill.setActivateTime(new Timestamp(getStart().getTime() + 12000 - remainTime));
             }
             return;
-        }
+        }*/
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
                 Long ran = (long) (Math.random() * 99 + 1);

@@ -12,6 +12,9 @@ public class PsychicTornadoBomb extends AttackSkill {
         this.getMultiAttackInfo().add(20000L + 1560L);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
+        this.getMultiAttackInfo().add(120L);
         this.setApplyFinalAttack(true);
         this.addFinalDamage(1.08);          // 오버로드 마나
     }

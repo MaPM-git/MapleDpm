@@ -117,6 +117,8 @@ public class KhaliDealCycle extends DealCycle {
         ringSwitching.setCooldown(90.0);
         magicCircuitFullDriveBuff.setCooldown(120.0);
         soulContract.setApplyReuse(true);
+
+        grandisGoddessBlessingLef.setCooldown(120.0);
     }
 
     @Override
@@ -147,14 +149,7 @@ public class KhaliDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(artsFlurry);
                 }
-                if (cooldownCheck(grandisGoddessBlessingLef)) {
-                    if (getStart().before(new Timestamp(10 * 1000))) {
-                        grandisGoddessBlessingLef.setCooldown(360.0);
-                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
-                        grandisGoddessBlessingLef.setCooldown(180.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingLef);
-                }
+                addSkillEvent(grandisGoddessBlessingLef);
                 addSkillEvent(resonateUltimatum);
                 addSkillEvent(oblivion);
                 addSkillEvent(deathBlossom);
@@ -162,14 +157,12 @@ public class KhaliDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
                 addSkillEvent(hexPandemonium);
-                addSkillEvent(voidBlitz);
                 if (cooldownCheck(hexSandStormBeforeDelay)) {
                     addSkillEvent(hexSandStormBeforeDelay);
                 } else {
                     addSkillEvent(artsCrescentum);
                 }
                 addSkillEvent(hexChakramSplit);
-                addSkillEvent(voidBlitz);
                 addSkillEvent(voidBurstCombo);
             } else if (
                     cooldownCheck(deathBlossom)
@@ -245,6 +238,7 @@ public class KhaliDealCycle extends DealCycle {
             ) {
                 rushCnt--;
             } else {
+                System.out.println(getStart() + "\t" + skill.getName() + "\t" + skill.getActivateTime() + "\t" + getJob().getName());
                 return;
             }
         }
@@ -441,7 +435,11 @@ public class KhaliDealCycle extends DealCycle {
                     //)
             ) {
                 Timestamp tmp = new Timestamp(getStart().getTime());
-                getStart().setTime(getStart().getTime() + 150);
+                if (skill instanceof HexChakramSweep) {
+                    getStart().setTime(getStart().getTime() + 90);
+                } else {
+                    getStart().setTime(getStart().getTime() + 150);
+                }
                 if (cooldownCheck(voidBlitz)) {
                     if (skill instanceof HexChakramFuryBeforeDelay) {
                         hexChakramFuryBeforeDelay = new HexChakramFuryBeforeDelay();

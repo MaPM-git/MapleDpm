@@ -13,5 +13,6 @@ public class TranscendentCygnusBlessing extends BuffSkill {
         this.addBuffDamage(30 + burningTime / 4000 * 8);
         this.setDelay(630L);
         this.setDuration(45L);
+        this.setCooldown(120.0);
     }
 }

@@ -67,7 +67,7 @@ public class Mercedes extends Job {
 
         // 하이퍼
         this.addAtt(80L);               // 엘비쉬 블레싱
-        this.addFinalDamage(1.1);
+        this.addFinalDamage(1.05);
 
         // 환산 보정
         this.addMainStatP(-69L);

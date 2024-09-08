@@ -7,7 +7,7 @@ public class PsychicTornadoThrow extends AttackSkill {
         this.setName("싸이킥 토네이도(이동)");
         this.setDamage(433.0);
         this.setDelay(720L);
-        this.setAttackCount(2L);
+        this.setAttackCount(4L);
         this.addFinalDamage(3.0);
         this.addFinalDamage(1.6);   // 코어강화
         this.getMultiAttackInfo().add(20000L + 180L + 540);

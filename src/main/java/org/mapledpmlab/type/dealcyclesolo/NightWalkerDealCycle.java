@@ -117,7 +117,7 @@ public class NightWalkerDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(90.0);
 
-        transcendentCygnusBlessing.setCooldown(240.0);
+        transcendentCygnusBlessing.setCooldown(178.0);
         transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
@@ -137,11 +137,6 @@ public class NightWalkerDealCycle extends DealCycle {
                             && getStart().after(new Timestamp(shadowSpearBuff.getActivateTime().getTime() - 5000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                if (getStart().before(new Timestamp(10 * 1000))) {
-                    transcendentCygnusBlessing.setCooldown(360.0);
-                } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
-                    transcendentCygnusBlessing.setCooldown(180.0);
-                }
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (
@@ -412,6 +407,7 @@ public class NightWalkerDealCycle extends DealCycle {
             dominionSummonBat.setActivateTime(new Timestamp(getStart().getTime() + 700));
         }
         if (getStart().before(skill.getActivateTime()) && getStart().after(new Timestamp(0))) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

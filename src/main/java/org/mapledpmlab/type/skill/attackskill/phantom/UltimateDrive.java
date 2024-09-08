@@ -6,7 +6,7 @@ public class UltimateDrive extends AttackSkill {
     public UltimateDrive() {
         this.setName("얼티밋 드라이브");
         this.setAttackCount(3L);
-        this.setDamage(450.0);
+        this.setDamage(485.0);
         this.setDelay(150L);
         this.setAddDamage(20L);         // 얼티밋 드라이브-리인포스
         this.addIgnoreDefenseList(20L); // 얼티밋 드라이브-이그노어 가드

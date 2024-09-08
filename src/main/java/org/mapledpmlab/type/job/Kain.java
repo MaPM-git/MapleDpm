@@ -57,7 +57,7 @@ public class Kain extends Job {
 
         // 4차
         this.addAtt(32L);               // 그라인딩 II
-        this.addFinalDamage(1.21);      // 도그마
+        this.addFinalDamage(1.26);      // 도그마
         this.addCriticalDamage(22.0);
         this.addIgnoreDefenseList(32L);
         this.addFinalDamage(1.31);      // 브레스 슈터 엑스퍼트

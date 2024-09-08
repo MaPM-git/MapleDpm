@@ -255,6 +255,7 @@ public class DemonSlayerDealCycle extends DealCycle {
             demonForce = 150;
         }
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

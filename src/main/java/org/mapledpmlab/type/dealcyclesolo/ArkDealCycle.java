@@ -153,8 +153,8 @@ public class ArkDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(130.0);
 
-        magicCircuitFullDriveBuff.setCooldown(180.0);
-        grandisGoddessBlessingLef.setCooldown(240.0);
+        magicCircuitFullDriveBuff.setCooldown(120.0);
+        grandisGoddessBlessingLef.setCooldown(120.0);
     }
 
     @Override
@@ -177,15 +177,9 @@ public class ArkDealCycle extends DealCycle {
                             && cooldownCheck(endlessAgonyBeforeDelay)
                             && cooldownCheck(memoryOfRootBeforeDelay)
                             && cooldownCheck(returningHatred)
+                            && cooldownCheck(magicCircuitFullDriveBuff)
             ) {
-                if (cooldownCheck(magicCircuitFullDriveBuff)) {
-                    if (dealCycleOrder == 3) {
-                        magicCircuitFullDriveBuff.setCooldown(120.0);
-                    } else if (dealCycleOrder == 4) {
-                        magicCircuitFullDriveBuff.setCooldown(180.0);
-                    }
-                    addSkillEvent(magicCircuitFullDriveBuff);
-                }
+                addSkillEvent(magicCircuitFullDriveBuff);
                 addSkillEvent(wrathOfGod);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -199,16 +193,7 @@ public class ArkDealCycle extends DealCycle {
                 }
                 addSkillEvent(chargeSpellAmplification);
                 addSkillEvent(infinitySpell);
-                if (cooldownCheck(grandisGoddessBlessingLef)) {
-                    if (dealCycleOrder == 1) {
-                        grandisGoddessBlessingLef.setCooldown(360.0);
-                    } else if (dealCycleOrder == 4) {
-                        grandisGoddessBlessingLef.setCooldown(120.0);
-                    } else {
-                        grandisGoddessBlessingLef.setCooldown(240.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingLef);
-                }
+                addSkillEvent(grandisGoddessBlessingLef);
                 addSkillEvent(overdrive);
                 addSkillEvent(blissfulRestraintDot);
                 addSkillEvent(endlesslyStarvingBeast);
@@ -249,13 +234,13 @@ public class ArkDealCycle extends DealCycle {
                             && hatredCnt > 0
             ) {
                 addSkillEvent(returningHatred);
-            } else if (
+            }/* else if (
                     cooldownCheck(magicCircuitFullDriveBuff)
                             && getStart().after(new Timestamp(8 * 60 * 1000))
                             && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(magicCircuitFullDriveBuff);
-            } else if (isSpecter) {
+            }*/ else if (isSpecter) {
                 endlessOminousDream = new EndlessOminousDream();
                 //endlessOminousDream.setDelay(180L);
                 endlessOminousDream.setDelay(210L);
@@ -373,7 +358,7 @@ public class ArkDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (

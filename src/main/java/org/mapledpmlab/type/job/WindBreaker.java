@@ -65,6 +65,7 @@ public class WindBreaker extends Job {
         // 3차
         this.addAtt(20L);               // 알바트로스
         this.addCriticalP(10.0);
+        this.addFinalDamage(1.09);
 
         // 4차
         this.addCriticalP(21.0 - 20 - 10);   // 샤프 아이즈

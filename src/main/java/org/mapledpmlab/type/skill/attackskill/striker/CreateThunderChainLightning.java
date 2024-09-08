@@ -6,7 +6,7 @@ public class CreateThunderChainLightning extends AttackSkill {
     public CreateThunderChainLightning() {
         this.setName("창뇌연격(번개)");
         this.setAttackCount(4L * 2);
-        this.setDamage(1210.0);
+        this.setDamage(1555.0);
         this.setDotDuration(3L);
         this.setInterval(1L);
         this.getMultiAttackInfo().add(0L);

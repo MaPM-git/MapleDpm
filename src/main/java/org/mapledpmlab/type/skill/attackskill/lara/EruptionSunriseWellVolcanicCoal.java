@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class EruptionSunriseWellVolcanicCoal extends AttackSkill {
     public EruptionSunriseWellVolcanicCoal() {
         this.setName("분출 : 해돋이 우물(화산탄)");
-        this.setDamage(668.0);
+        this.setDamage(675.0);
         this.setAttackCount(3L);
         this.setRelatedSkill(new EruptionSunriseWellDot());
         this.addFinalDamage(2.2);   // 코어강화

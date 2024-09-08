@@ -5,13 +5,13 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Asura extends AttackSkill {
     public Asura() {
         this.setName("아수라");
-        this.setDamage(1386.0);
-        this.setAttackCount(10L);
+        this.setDamage(1110.0);
+        this.setAttackCount(12L);
         this.setCooldown(60.0);
-        this.setDelay(4500L);
-        this.setDotDuration(4500L);
-        this.setInterval(300L);
-        this.setLimitAttackCount(15L);
+        this.setDelay(2340L);
+        this.setDotDuration(2340L);
+        this.setInterval(180L);
+        this.setLimitAttackCount(13L);
         this.addIgnoreDefenseList(100L);
         this.addFinalDamage(2.2);           // 코어강화
         this.setRelatedSkill(new AsuraAfterDelay());

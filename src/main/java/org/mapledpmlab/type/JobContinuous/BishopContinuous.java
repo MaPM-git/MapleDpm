@@ -63,6 +63,7 @@ public class BishopContinuous extends Job {
         this.addIgnoreDefenseList(21L); // 아케인 에임
         this.addMagic(33L);             // 마스터 매직
         this.addPlusBuffDuration(55L);
+        this.addFinalDamage(1.1);
 
         // 하이퍼
         this.addMagic(50L);             // 벤전스 오브 엔젤
@@ -95,7 +96,6 @@ public class BishopContinuous extends Job {
     public void Doping() {
         super.Doping();
         addFinalDamage(1.01);           // 브레싱 앙상블
-        addFinalDamage(1.1);            // 엔젤레이 5중첩
         addDamage(40L);                 // 아케인 에임
         addIgnoreDefenseList(44L);      // 엔젤릭 터치 상시 유지
         this.addAtt(-51L);              // 어드밴스드 블레스

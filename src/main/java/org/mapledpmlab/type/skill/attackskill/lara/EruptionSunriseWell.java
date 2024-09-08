@@ -6,7 +6,7 @@ public class EruptionSunriseWell extends AttackSkill {
     public EruptionSunriseWell() {
         this.setName("분출 : 해돋이 우물(거인)");
         this.setDelayByAttackSpeed(450L);
-        this.setDamage(1048.0);
+        this.setDamage(1060.0);
         this.setAttackCount(6L);
         this.setCooldown(13.0);
         this.setApplyCooldownReduction(false);

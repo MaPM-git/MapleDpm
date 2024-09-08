@@ -6,7 +6,7 @@ public class BlackJackFinal extends AttackSkill {
     public BlackJackFinal() {
         this.setName("블랙잭(막타)");
         this.setAttackCount(6L);
-        this.setDamage(1760.0);
+        this.setDamage(1925.0);
         this.addFinalDamage(1.6);           // 코어 강화
         this.setApplyFinalAttack(true);
         this.getMultiAttackInfo().add(440L + 180 * 6);

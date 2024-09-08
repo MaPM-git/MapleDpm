@@ -7,7 +7,7 @@ public class ChainBombPunchEnd extends AttackSkill {
         this.setName("파쇄 연권(막타)");
         this.setDelay(1080L);
         this.setAttackCount(14L);
-        this.setDamage(770.0);
+        this.setDamage(880.0);
         this.addFinalDamage(1.6);           // 코어 강화
         this.getMultiAttackInfo().add(0L);
         this.getMultiAttackInfo().add(30L);

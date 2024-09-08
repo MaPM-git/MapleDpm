@@ -10,7 +10,7 @@ public class DarknessAuraDot extends AttackSkill {
         this.setAttackCount(5L);
         this.setCooldown(180.0);
         this.setDotDuration(40000L);
-        this.setInterval(1666L);
+        this.setInterval(1500L);
         this.setCooldown(180.0);
         this.addFinalDamage(1.6);   // 코어 강화
         this.setRelatedSkill(new DarknessAura());

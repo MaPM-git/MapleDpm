@@ -6,7 +6,7 @@ public class RiftBreak extends AttackSkill {
     public RiftBreak() {
         this.setName("리프트 브레이크");
         this.setAttackCount(7L);
-        this.setDamage(880.0);
+        this.setDamage(990.0);
         this.setDelayByAttackSpeed(990L);
         this.setCooldown(30.0);
         this.addFinalDamage(1.6);           // 코어 강화

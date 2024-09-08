@@ -67,9 +67,9 @@ public class Aran extends Job {
 
         // 4차
         this.addAtt(31L);               // 하이 마스터리
-        this.addCriticalDamage(8.0);
-        this.addFinalDamage(1.16);
-        this.addDamage(31L);            // 클리빙 어택
+        this.addCriticalDamage(10.0);
+        this.addFinalDamage(1.22);
+        this.addDamage(36L);            // 클리빙 어택
         this.addIgnoreDefenseList(41L);
         this.addAtt(31L);               // 어드밴스드 파이널 어택
 
@@ -97,6 +97,6 @@ public class Aran extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addDamage(10L);            // 스노우 차지
+        this.addDamage(15L);            // 스노우 차지
     }
 }

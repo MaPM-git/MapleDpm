@@ -110,7 +110,7 @@ public class FlameWizard2DealCycle extends DealCycle {
         ringSwitching.setCooldown(120.0);
         ringSwitching.setApplyCooldownReduction(false);
 
-        transcendentCygnusBlessing.setCooldown(360.0);
+        transcendentCygnusBlessing.setCooldown(123.0);
         transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
@@ -137,13 +137,6 @@ public class FlameWizard2DealCycle extends DealCycle {
                             && getStart().after(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 10000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                if (dealCycleOrder == 1) {
-                    transcendentCygnusBlessing.setCooldown(360.0);
-                } else if (dealCycleOrder == 4) {
-                    transcendentCygnusBlessing.setCooldown(120.0);
-                } else {
-                    transcendentCygnusBlessing.setCooldown(240.0);
-                }
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (cooldownCheck(spiritOfFlame)) {
@@ -160,6 +153,7 @@ public class FlameWizard2DealCycle extends DealCycle {
                             && cooldownCheck(soulContract)
                             && cooldownCheck(blazingOrbitalFlame)
                             && cooldownCheck(infinityFlameCircle)
+                            && cooldownCheck(blazingExtinction)
                             && cooldownCheck(phoenixDrive)
             ) {
                 addSkillEvent(burningRegion);
@@ -176,11 +170,18 @@ public class FlameWizard2DealCycle extends DealCycle {
                         addSkillEvent(orbitalFlame);
                     }
                     orbitalCount++;
-                    if (infernoRizeCount != 50) {
-                        infernoRizeCount++;
-                    }
                     if (cooldownCheck(orbitalFlameDot)) {
                         addSkillEvent(orbitalFlameDot);
+                    }
+                    if (infernoRizeCount < 50) {
+                        infernoRizeCount++;
+                    }
+                    if (
+                            infernoRizeCount >= 50
+                                    && cooldownCheck(infernoRize)
+                    ) {
+                        addSkillEvent(infernoRize);
+                        infernoRizeCount = 0;
                     }
                 }
                 addSkillEvent(salamanderMischief);
@@ -194,6 +195,7 @@ public class FlameWizard2DealCycle extends DealCycle {
                 if (cooldownCheck(eternity)) {
                     addSkillEvent(eternity);
                 }
+                addSkillEvent(blazingExtinction);
                 addSkillEvent(blazingOrbitalFlame);
                 addSkillEvent(infinityFlameCircle);
                 addSkillEvent(phoenixDrive);
@@ -219,7 +221,10 @@ public class FlameWizard2DealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(flameDischarge);
-            } else if (cooldownCheck(blazingExtinction)) {
+            } else if (
+                    cooldownCheck(blazingExtinction)
+                    && !cooldownCheck(gloryOfGuardians)
+            ) {
                 addSkillEvent(blazingExtinction);
             } else if (cooldownCheck(blazingOrbitalFlame)) {
                 addSkillEvent(blazingOrbitalFlame);
@@ -237,13 +242,12 @@ public class FlameWizard2DealCycle extends DealCycle {
                 if (cooldownCheck(orbitalFlameDot)) {
                     addSkillEvent(orbitalFlameDot);
                 }
-                if (infernoRizeCount != 50) {
+                if (infernoRizeCount < 50) {
                     infernoRizeCount++;
                 }
                 if (
-                        infernoRizeCount >= 0
+                        infernoRizeCount >= 50
                                 && cooldownCheck(infernoRize)
-                                && getStart().after(phoenixDriveEndTime)
                 ) {
                     addSkillEvent(infernoRize);
                     infernoRizeCount = 0;
@@ -258,6 +262,7 @@ public class FlameWizard2DealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -298,6 +303,16 @@ public class FlameWizard2DealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    skill instanceof PhoenixDriveFirst
+                            || skill instanceof OrbitalFlame
+                            || skill instanceof OrbitalFlameReinforce
+            ) {
+                infernoRize.setActivateTime(new Timestamp(infernoRize.getActivateTime().getTime() - 600));
+                if (skill instanceof PhoenixDriveFirst) {
+                    infernoRize.setActivateTime(new Timestamp(infernoRize.getActivateTime().getTime() - 1800));
+                }
+            }
             if (skill instanceof SalamanderMischief) {
                 this.getSkillEventList().add(
                         new SkillEvent(
@@ -437,7 +452,7 @@ public class FlameWizard2DealCycle extends DealCycle {
                             * this.getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

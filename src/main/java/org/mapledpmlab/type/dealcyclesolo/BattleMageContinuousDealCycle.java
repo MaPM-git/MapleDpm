@@ -98,7 +98,7 @@ public class BattleMageContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         resistanceLineInfantry.addFinalDamage(1.08);            // 오버로드 마나
     }
@@ -258,6 +258,7 @@ public class BattleMageContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -300,20 +301,6 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
-            if (
-                    getStart().before(masterOfDeathEndTime)
-                    && (
-                            skill instanceof ReaperScythe
-                            || skill instanceof FinishBlow
-                            || skill instanceof DarkLightning
-                            || skill instanceof BlackMark
-                            || skill instanceof NetherworldLightning
-                            || skill instanceof FinalAttackBattleMage
-                    )
-            ) {
-                death.setActivateTime(new Timestamp(death.getActivateTime().getTime() - 500));
-                deathReinforce.setActivateTime(new Timestamp(deathReinforce.getActivateTime().getTime() - 500));
-            }
             if (
                     cooldownCheck(continuousRing)
                     && (
@@ -431,7 +418,17 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                 }
             }
         }
-        applyCooldown(skill);
+        if (
+                getStart().before(masterOfDeathEndTime)
+                && (
+                        skill instanceof Death
+                        || skill instanceof DeathReinforce
+                )
+        ) {
+            skill.setActivateTime(new Timestamp(getStart().getTime() + 2040));
+        } else {
+            applyCooldown(skill);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -563,7 +560,7 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                             * this.getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

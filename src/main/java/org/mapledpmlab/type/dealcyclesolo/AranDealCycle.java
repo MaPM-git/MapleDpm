@@ -111,7 +111,7 @@ public class AranDealCycle extends DealCycle {
         ringSwitching.setCooldown(88.0);
         ringSwitching.setApplyCooldownReduction(false);
         auraWeapon.setCooldown(180.0);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
     @Override
@@ -194,6 +194,7 @@ public class AranDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

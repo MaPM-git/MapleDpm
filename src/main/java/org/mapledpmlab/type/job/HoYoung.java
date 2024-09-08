@@ -50,6 +50,7 @@ public class HoYoung extends Job {
         this.addCriticalP(30.0);        // 심안
         this.addCriticalDamage(10.0);
         this.addMainStat(60L);          // 신체 단련
+        this.addFinalDamage(1.05);
 
         // 3차
         this.addAtt(50L);               // 수라
@@ -57,6 +58,7 @@ public class HoYoung extends Job {
         this.addCriticalDamage(20.0);
         this.addBossDamage(20L);
         this.addIgnoreDefenseList(10L);
+        this.addFinalDamage(1.09);
 
         // 4차
         this.addAtt(42L);               // 고급 부채 숙련

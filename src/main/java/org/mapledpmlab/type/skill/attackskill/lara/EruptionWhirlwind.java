@@ -6,7 +6,7 @@ public class EruptionWhirlwind extends AttackSkill {
     public EruptionWhirlwind() {
         this.setName("분출 : 돌개바람");
         this.setDelayByAttackSpeed(450L);
-        this.setDamage(628.0);
+        this.setDamage(690.0);
         this.setAttackCount(5L);
         this.setCooldown(13.0);
         this.setApplyCooldownReduction(false);

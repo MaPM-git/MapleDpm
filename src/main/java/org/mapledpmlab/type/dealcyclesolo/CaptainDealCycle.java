@@ -113,7 +113,7 @@ public class CaptainDealCycle extends DealCycle {
         addSkillEvent(luckyDice);
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
 
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
     @Override
@@ -375,6 +375,7 @@ public class CaptainDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

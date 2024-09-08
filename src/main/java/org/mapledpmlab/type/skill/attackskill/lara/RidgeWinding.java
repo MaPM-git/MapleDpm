@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class RidgeWinding extends AttackSkill {
     public RidgeWinding() {
         this.setName("산등성이 굽이굽이");
-        this.setDamage(660.0);
+        this.setDamage(1100.0);
         this.setAttackCount(4L);
         this.setDelay(960L);
         this.setCooldown(60.0);

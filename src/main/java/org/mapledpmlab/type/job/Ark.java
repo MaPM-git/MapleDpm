@@ -52,7 +52,7 @@ public class Ark extends Job {
         this.addCriticalP(20.0);        // 스칼렛 버프
 
         // 3차
-        this.addFinalDamage(1.1);       // 융합 진행
+        this.addFinalDamage(1.12);      // 융합 진행
         this.addCriticalP(20.0);
 
         // 4차

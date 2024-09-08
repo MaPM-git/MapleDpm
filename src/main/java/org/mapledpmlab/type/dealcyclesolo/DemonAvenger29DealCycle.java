@@ -56,6 +56,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
             add(new BodyOfSteelDA(0L));
             add(new CallMastemaDA());
             add(new DemonicFortitudeDA());
+            add(new ForbiddenContract());
             add(new OtherWorldGoddessBlessingDA());
             add(new ReleaseOverload());
             add(new RestraintRingDA());
@@ -94,6 +95,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
     ExceedExecution3 exceedExecution3 = new ExceedExecution3();
     ExceedExecution4 exceedExecution4 = new ExceedExecution4();
     ExceedExecution5 exceedExecution5 = new ExceedExecution5();
+    ForbiddenContract forbiddenContract = new ForbiddenContract();
     OtherWorldGoddessBlessingDA otherWorldGoddessBlessing = new OtherWorldGoddessBlessingDA();
     ReleaseOverload releaseOverload = new ReleaseOverload();
     Requiem requiem = new Requiem();
@@ -145,7 +147,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
                 hp = 1;
             }
             if (getStart().after(buffEndTime1)) {
-                hp -= maxHP * 0.2;
+                hp -= maxHP * 0.15;
                 buffEndTime1 = new Timestamp(getStart().getTime() + 270 * 1000);
                 if (getStart().before(revenantEndTime)) {
                     furyStorage += maxHP * 0.2;
@@ -206,6 +208,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
                 }
                 addSkillEvent(callMastema);
                 addSkillEvent(bodyOfSteel);
+                addSkillEvent(forbiddenContract);
                 addSkillEvent(otherWorldGoddessBlessing);
                 addSkillEvent(revenant);
                 addSkillEvent(soulContract);
@@ -270,6 +273,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         int j = 0;
@@ -356,7 +360,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
             hp = 500000;
         }
         if (hp < 1) {
-            hp = 1;
+            hp = 150000;
         }
         if (getStart().before(skill.getActivateTime())) {
             return;
@@ -570,7 +574,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
                                 + buffSkill.getBuffDamage()
                                 + attackSkill.getAddDamage()
                                 - 310
-                                - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01)
+                                - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01)
                 ) * 0.01)
                 * getJob().getMastery()
                 * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
@@ -607,7 +611,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
                             * getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

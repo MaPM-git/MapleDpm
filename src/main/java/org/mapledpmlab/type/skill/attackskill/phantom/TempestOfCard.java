@@ -6,7 +6,7 @@ public class TempestOfCard extends AttackSkill {
     public TempestOfCard() {
         this.setName("템페스트 오브 카드");
         this.setAttackCount(4L);
-        this.setDamage(840.0);
+        this.setDamage(850.0);
         this.setDelay(2550L);
         this.setDotDuration(2550L);
         this.setInterval(150L);

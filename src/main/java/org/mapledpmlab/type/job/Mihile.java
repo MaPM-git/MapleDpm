@@ -52,7 +52,7 @@ public class Mihile extends Job {
         this.addAtt(30L);               // 인커리지
         this.addMainStat(20L);          // 소드 액셀레이션
         this.addAtt(20L);               // 소드 마스터리
-        this.addFinalDamage(1.15);
+        this.addFinalDamage(1.2);
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
 

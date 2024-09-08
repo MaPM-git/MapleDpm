@@ -167,7 +167,7 @@ public class IlliumDealCycle extends DealCycle {
 
         soulContract.setApplyReuse(true);
 
-        grandisGoddessBlessingLef.setCooldown(240.0);
+        grandisGoddessBlessingLef.setCooldown(120.0);
         magicCircuitFullDriveBuff.setCooldown(180.0);
 
         magicCircuitFullDrive.setApplyFinalAttack(true);
@@ -228,14 +228,7 @@ public class IlliumDealCycle extends DealCycle {
                         crystalFragment = 30;
                     }
                 }
-                if (cooldownCheck(grandisGoddessBlessingLef)) {
-                    if (getStart().before(new Timestamp(10 * 1000))) {
-                        grandisGoddessBlessingLef.setCooldown(360.0);
-                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
-                        grandisGoddessBlessingLef.setCooldown(180.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingLef);
-                }
+                addSkillEvent(grandisGoddessBlessingLef);
                 addSkillEvent(gramholder);
                 addSkillEvent(crystalSkillDeus);
                 addSkillEvent(crystalSkillMortalSwing);
@@ -378,6 +371,7 @@ public class IlliumDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -821,7 +815,7 @@ public class IlliumDealCycle extends DealCycle {
                             * this.getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

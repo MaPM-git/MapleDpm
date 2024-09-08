@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 public class RelicUnbound extends GaugeAttackSkill {
     public RelicUnbound() {
         this.setName("렐릭 언바운드(블래스트)");
-        this.setAttackCount(8L * 4);
+        this.setAttackCount(8L * 6);
         this.setDamage(1375.0);
         this.setCooldown(120.0);
         this.setDelay(720L);

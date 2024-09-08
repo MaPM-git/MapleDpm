@@ -66,6 +66,7 @@ public class FlameWizard extends Job {
         this.addMagic(22L);             // 마법의 진리
         this.addFinalDamage(1.56);
         this.addIgnoreDefenseList(31L); // 스피릿 오브 플레임
+        this.addMagicP(3L);             // 엘리멘트 : 플레임 IV
 
         // 환산 보정
         this.addMainStatP(3L);
@@ -91,7 +92,6 @@ public class FlameWizard extends Job {
     public void Doping() {
         super.Doping();
         this.addMagic(41L);             // 엘리멘트 : 플레임 IV
-        this.addProperty(10L);          // 오비탈 플레임 VI
     }
 
     public Long getStatDamage() {

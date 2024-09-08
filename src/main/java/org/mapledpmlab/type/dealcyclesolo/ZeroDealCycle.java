@@ -187,7 +187,7 @@ public class ZeroDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         ringSwitching.setCooldown(120.0);
-        transcendentRhinneBless.setCooldown(240.0);
+        transcendentRhinneBless.setCooldown(120.0);
         auraWeaponBuff.setCooldown(180.0);
     }
 
@@ -252,16 +252,7 @@ public class ZeroDealCycle extends DealCycle {
                 }
                 alphaCancelCycle(transcendentLife);
                 addSkillEvent(soulContract);
-                if (cooldownCheck(transcendentRhinneBless)) {
-                    if (dealCycleOrder == 1) {
-                        transcendentRhinneBless.setCooldown(360.0);
-                    } else if (dealCycleOrder == 4) {
-                        transcendentRhinneBless.setCooldown(120.0);
-                    } else {
-                        transcendentRhinneBless.setCooldown(240.0);
-                    }
-                    addSkillEvent(transcendentRhinneBless);
-                }
+                addSkillEvent(transcendentRhinneBless);
                 if (!cooldownCheck(limitBreak)) {
                     addSkillEvent(new UpperSlash());
                 }
@@ -955,6 +946,7 @@ public class ZeroDealCycle extends DealCycle {
             }
         }
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

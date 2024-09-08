@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class BattleKingBar2 extends AttackSkill {
     public BattleKingBar2() {
         this.setName("배틀킹 바2");
-        this.setDamage(325.0);
+        this.setDamage(555.0);
         this.setDelayByAttackSpeed(300L);
         this.setAttackCount(5L);
         this.addFinalDamage(2.2);           // 코어 강화

@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class BurningRegion extends BuffSkill {
     public BurningRegion() {
         this.setName("버닝 리젼");
-        this.setDelay(1080L);
+        this.setDelay(860L);
         this.setBuffDamage(61L);
         this.setDuration(30L);
         this.setCooldown(45.0);

@@ -105,7 +105,7 @@ public class HeroDealCycle extends DealCycle {
 
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
     @Override
@@ -130,14 +130,7 @@ public class HeroDealCycle extends DealCycle {
                 addSkillEvent(swordOfBurningSoulBuff);
                 addSkillEvent(incisingAttack);
                 addSkillEvent(bodyOfSteel);
-                if (cooldownCheck(mapleWorldGoddessBlessing)) {
-                    if (dealCycleOrder == 3) {
-                        mapleWorldGoddessBlessing.setCooldown(0.0);
-                    } else {
-                        mapleWorldGoddessBlessing.setCooldown(180.0);
-                    }
-                    addSkillEvent(mapleWorldGoddessBlessing);
-                }
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -292,6 +285,7 @@ public class HeroDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

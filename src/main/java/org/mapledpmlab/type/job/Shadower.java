@@ -53,6 +53,7 @@ public class Shadower extends Job {
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
         this.addAtt(15L);               // 실드 마스터리
+        this.addFinalDamage(1.1);       // 대거 마스터리
 
         // 3차
         this.addAtt(25L);               // 그리드

@@ -39,7 +39,6 @@ public class PhantomDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new TempestOfCardBeforeDelay());
             add(new TempestOfCard());
-            add(new Twilight());
             add(new UltimateDrive());
         }
     };
@@ -57,14 +56,11 @@ public class PhantomDealCycle extends DealCycle {
             add(new RestraintRing());
             add(new RingSwitching());
             add(new SoulContract());
-            add(new TwilightDebuff());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
 
     Long cardStack = 0L;
-
-    Timestamp twilightEndTime = new Timestamp(-1);
 
     BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
     BlackJackFinal blackJackFinal = new BlackJackFinal();
@@ -87,7 +83,6 @@ public class PhantomDealCycle extends DealCycle {
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     TempestOfCardBeforeDelay tempestOfCardBeforeDelay = new TempestOfCardBeforeDelay();
-    TwilightDebuff twilightDebuff = new TwilightDebuff();
     UltimateDrive ultimateDrive = new UltimateDrive();
     WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
@@ -107,9 +102,6 @@ public class PhantomDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
-            if (getStart().after(twilightEndTime)) {
-                addSkillEvent(twilightDebuff);
-            }
             if (
                     cooldownCheck(finalCutBuff)
                             && cooldownCheck(heroesOath)
@@ -147,7 +139,9 @@ public class PhantomDealCycle extends DealCycle {
                 }
                 addSkillEvent(riftBreak);
                 addSkillEvent(jokerBeforeDelay);
-                addSkillEvent(blackJackBeforeDelay);
+                if (cooldownCheck(blackJackBeforeDelay)) {
+                    addSkillEvent(blackJackBeforeDelay);
+                }
                 addSkillEvent(roseCarteFinale);
             } else if (
                     cooldownCheck(finalCutBuff)
@@ -221,12 +215,10 @@ public class PhantomDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
-            if (skill instanceof TwilightDebuff) {
-                twilightEndTime = new Timestamp(getStart().getTime() + 60000);
-            }
             if (
                     skill instanceof RestraintRing
                     && restraintRingStartTime == null

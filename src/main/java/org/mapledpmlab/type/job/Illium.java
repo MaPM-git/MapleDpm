@@ -47,7 +47,7 @@ public class Illium extends Job {
         this.addDamage(10L);            // 블레스 마크
 
         // 3차
-        this.addDamage(10L);            // 레프 마스터리
+        this.addDamage(15L);            // 레프 마스터리
         this.addMainStat(40L);          // 운명 개척
         this.addMagicP(10L);
         this.addMagic(50L);             // 끊임없는 연구
@@ -57,7 +57,7 @@ public class Illium extends Job {
         // 4차
         this.addBossDamage(30L);        // 크리스탈의 비밀
         this.addIgnoreDefenseList(25L);
-        this.addFinalDamage(1.4);
+        this.addFinalDamage(1.47);
 
         // 5차
         this.addMagic(65L);             // 소울 오브 크리스탈

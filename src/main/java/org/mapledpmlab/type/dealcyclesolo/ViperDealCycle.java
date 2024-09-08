@@ -26,6 +26,7 @@ public class ViperDealCycle extends DealCycle {
             add(new FinalAttackViper());
             add(new FistEnrage());
             add(new FuriosCharge());
+            add(new FuriosCharge4());
             add(new HowlingFistBeforeDelay());
             add(new HowlingFist());
             add(new HowlingFistShock());
@@ -79,6 +80,7 @@ public class ViperDealCycle extends DealCycle {
     EpicAdventure epicAdventure = new EpicAdventure();
     FistEnrage fistEnrage = new FistEnrage();
     FuriosCharge furiosCharge = new FuriosCharge();
+    FuriosCharge4 furiosCharge4 = new FuriosCharge4();
     HowlingFist howlingFist = new HowlingFist();
     LiberateNeptunus liberateNeptunus = new LiberateNeptunus();
     LiberateNeptunusEnrage1 liberateNeptunusEnrage1 = new LiberateNeptunusEnrage1();
@@ -181,13 +183,6 @@ public class ViperDealCycle extends DealCycle {
                 addSkillEvent(fistEnrage);
                 addSkillEvent(howlingFist);
                 addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(fistEnrage);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 44000));
             } else if (
                     cooldownCheck(overdrive)
                             && cooldownCheck(soulContract)
@@ -202,13 +197,6 @@ public class ViperDealCycle extends DealCycle {
                 addSkillEvent(howlingFist);
                 addSkillEvent(fistEnrage);
                 addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(fistEnrage);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 44000));
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(80 * 1000))
@@ -216,13 +204,10 @@ public class ViperDealCycle extends DealCycle {
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
-                    cooldownCheck(furiosCharge)
+                    cooldownCheck(furiosCharge4)
                             && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() + 10000))
             ) {
-                addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                addSkillEvent(furiosCharge);
-                furiosCharge.setActivateTime(new Timestamp(getStart().getTime() + 23000));
+                addSkillEvent(furiosCharge4);
             } else {
                 addSkillEvent(fistEnrage);
             }
@@ -319,6 +304,7 @@ public class ViperDealCycle extends DealCycle {
             addSkillEvent(liberateNeptunusEnrage1);
         }
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -419,6 +405,11 @@ public class ViperDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof FuriosCharge) {
+            applyCooldown(furiosCharge4);
+        } else if (skill instanceof FuriosCharge4) {
+            applyCooldown(furiosCharge);
+        }
         getEventTimeList().add(new Timestamp(getStart().getTime()));
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {

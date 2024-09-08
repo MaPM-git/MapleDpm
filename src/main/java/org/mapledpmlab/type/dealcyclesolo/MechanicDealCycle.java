@@ -234,7 +234,7 @@ public class MechanicDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println("--------------------------------" + skill.getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -289,7 +289,18 @@ public class MechanicDealCycle extends DealCycle {
             }
             if (skill instanceof MetalArmorFullBurstBeforeDelay) {
                 metarArmorFullBurstStartTime.add(new Timestamp(getStart().getTime()));
-                metarArmorFullBurstEndTime.add(new Timestamp(getStart().getTime() + 13120));
+                metarArmorFullBurstEndTime.add(new Timestamp(getStart().getTime() + 9870));
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(new Timestamp(getStart().getTime() + 9870))
+                            && skillEvent.getStart().before(new Timestamp(getStart().getTime() + 9870 + 2000))
+                            && skillEvent.getSkill() instanceof HomingMissile
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                this.getSkillEventList().removeAll(remove);
             }
             if (skill instanceof MechaCarrier) {
                 long j = 9;
@@ -460,7 +471,7 @@ public class MechanicDealCycle extends DealCycle {
                             * getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

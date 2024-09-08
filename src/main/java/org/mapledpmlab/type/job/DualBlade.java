@@ -51,6 +51,12 @@ public class DualBlade extends Job {
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
 
+        // 2.5차
+        this.addFinalDamage(1.1);       // 베놈
+        
+        // 3차
+        this.addFinalDamage(1.06);      // 섀도우 이베이젼
+
         // 4차
         this.addAtt(31L);               // 쏜즈 이펙트
         this.addCriticalP(38.0);        // 샤프니스

@@ -6,7 +6,7 @@ public class SlashShadowFormationBoss extends AttackSkill {
     public SlashShadowFormationBoss() {
         this.setName("멸귀참영진(우두머리)");
         this.setAttackCount(15L);
-        this.setDamage(1375.0);
+        this.setDamage(1870.0);
         this.addIgnoreDefenseList(100L);
         this.setFinalDamage(1.6);       // 코어강화
         this.getMultiAttackInfo().add(5370 - 600 + 900L);

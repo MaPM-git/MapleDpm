@@ -8,6 +8,6 @@ public class TeleportMasteryDot extends DotAttackSkill {
         this.setDamage(98.0);
         this.setAttackCount(1L);
         this.setInterval(2000L);
-        this.setDotDuration(4000L * 2); // 익스트림 매직
+        this.setDotDuration(40000L * 2); // 익스트림 매직
     }
 }

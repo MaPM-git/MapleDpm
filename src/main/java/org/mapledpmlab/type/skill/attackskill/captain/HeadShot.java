@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class HeadShot extends AttackSkill {
     public HeadShot() {
         this.setName("헤드 샷");
-        this.setDamage(892.0);
+        this.setDamage(999.0);
         this.setDelayByAttackSpeed(570L);
         this.setAttackCount(13L + 1);   // 헤드 샷-보너스 어택
         this.setCooldown(5.0);

@@ -65,6 +65,7 @@ public class Bowmaster extends Job {
         this.addMainStat(82L);          // 일루전 스탭
         this.addAtt(21L);               // 어드밴스드 파이널 어택
         this.addIgnoreDefenseList(40L); // 아머 피어싱
+        this.addFinalDamage(1.07);
 
         // 환산 보정
         this.addMainStatP(-69L);

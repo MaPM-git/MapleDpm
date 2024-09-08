@@ -96,7 +96,7 @@ public class EunwolCancelDealCycle extends DealCycle {
 
         this.getJob().setName("은월(캔슬)");
 
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
         ringSwitching.setCooldown(120.0);
     }
 
@@ -118,14 +118,7 @@ public class EunwolCancelDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(bladeImp);
-                if (cooldownCheck(mapleWorldGoddessBlessing)) {
-                    if (dealCycleOrder == 3) {
-                        mapleWorldGoddessBlessing.setCooldown(0.0);
-                    } else {
-                        mapleWorldGoddessBlessing.setCooldown(180.0);
-                    }
-                    addSkillEvent(mapleWorldGoddessBlessing);
-                }
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -193,6 +186,7 @@ public class EunwolCancelDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

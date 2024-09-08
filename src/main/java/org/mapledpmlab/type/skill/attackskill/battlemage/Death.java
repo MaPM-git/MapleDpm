@@ -12,5 +12,6 @@ public class Death extends AttackSkill {
         this.addFinalDamage(1.08);          // 오버로드 마나
         this.setCooldown(4.0);
         this.setApplyCooldownReduction(false);
+        this.getMultiAttackInfo().add(2040L);
     }
 }

@@ -101,7 +101,7 @@ public class DarkKnightDealCycle extends DealCycle {
         getStart().setTime(0);
 
         ringSwitching.setCooldown(180.0);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
         auraWeaponBuff.setCooldown(180.0);
     }
 
@@ -195,6 +195,7 @@ public class DarkKnightDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -266,6 +267,12 @@ public class DarkKnightDealCycle extends DealCycle {
                     getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30));
                     getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30)));
                     getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30));
+                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30)));
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30));
+                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30)));
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30));
+                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30 + 30)));
+                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30 + 30));
                 }
                 if (cooldownCheck(beholderRevenge)) {
                     getSkillEventList().add(new SkillEvent(beholderRevenge, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));

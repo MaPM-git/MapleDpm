@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SalamanderMischief extends AttackSkill {
     public SalamanderMischief(Long embers) {
         this.setName("샐리맨더 미스칩");
-        this.setDamage(330.0);
+        this.setDamage(360.0);
         this.setDelay(750L);
         this.setAttackCount(7L);
         this.setCooldown(90.0);

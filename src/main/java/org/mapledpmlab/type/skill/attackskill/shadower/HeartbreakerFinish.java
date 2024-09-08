@@ -6,7 +6,7 @@ import org.mapledpmlab.type.skill.buffskill.shadower.HeartbreakerDarksight;
 public class HeartbreakerFinish extends AttackSkill {
     public HeartbreakerFinish() {
         this.setName("분쇄(마무리 일격)");
-        this.setAttackCount(6L);
+        this.setAttackCount(6L * 2);
         this.setDamage(835.0);
         this.setDelayByAttackSpeed(540L);
         this.setCooldown(10.0);
@@ -14,7 +14,7 @@ public class HeartbreakerFinish extends AttackSkill {
         this.setAddDamage(20L);         // 블래스트-리인포스
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.addFinalDamage(1.7);       // 쉐도우 파트너
+        this.addFinalDamage(0.85);      // 쉐도우 파트너
         //this.setRelatedSkill(new HeartbreakerDarksight());
     }
 }

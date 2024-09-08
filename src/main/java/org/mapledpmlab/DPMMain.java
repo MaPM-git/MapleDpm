@@ -380,10 +380,10 @@ public class DPMMain {
             }
 
             // 이미지 삽입
-            //insertImg(xssfWorkbook, xssfSheet, colNum, dealCycle);
+            insertImg(xssfWorkbook, xssfSheet, colNum, dealCycle);
         }
 
-        xssfSheet = xssfWorkbook.createSheet("DPM");
+        xssfSheet = xssfWorkbook.createSheet("DPM(솔로)");
         xssfSheet.setDefaultColumnWidth(20);
 
         data = new TreeMap<>();

@@ -12,6 +12,6 @@ public class ReadyToDie extends BuffSkill {
         this.setCooldown(75.0);
         this.setDelay(780L);
         this.setDuration(15L);
-        this.addBuffFinalDamage(1.36);
+        this.addBuffFinalDamage(1.3);
     }
 }

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 public class ObsidianBarrier extends GaugeAttackSkill {
     public ObsidianBarrier() {
         this.setName("옵시디언 배리어(블래스트)");
-        this.setAttackCount(4L);
+        this.setAttackCount(5L);
         this.setDamage(1040.0);
         this.setCooldown(120.0);
         this.setDelay(60L);

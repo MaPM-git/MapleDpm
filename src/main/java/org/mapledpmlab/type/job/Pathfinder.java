@@ -61,7 +61,7 @@ public class Pathfinder extends Job {
         this.addCriticalDamage(16.0 - 8);
         this.addAttP(21L);              // 에디셔널 트랜지션
         this.addAtt(62L);               // 에이션트 보우 엑스퍼트
-        this.addCriticalDamage(11.0);
+        this.addFinalDamage(1.1);
         this.addMainStat(82L);          // 일루전 스탭
 
         // 환산 보정
@@ -94,7 +94,7 @@ public class Pathfinder extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addCriticalDamage(20.0);   // 고대의 저주 디버프 5중첩
+        this.addCriticalDamage(10.0);   // 고대의 저주 디버프 5중첩
         this.addFinalDamage(1.08);      // 에인션트 가이던스
         this.addCriticalP(-1.0);        // 샤프 아이즈
         this.addCriticalDamage(-16.0);

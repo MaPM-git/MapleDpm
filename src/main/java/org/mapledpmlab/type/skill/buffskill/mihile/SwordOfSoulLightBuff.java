@@ -12,7 +12,7 @@ public class SwordOfSoulLightBuff extends BuffSkill {
         this.setCooldown(180.0);
         this.setDelay(1050L);
         this.setDuration(35L);
-        this.setBuffAttMagicPer(30L);
+        this.addBuffFinalDamage(1.1);
         this.addBuffIgnoreDefense(100L);
     }
 }

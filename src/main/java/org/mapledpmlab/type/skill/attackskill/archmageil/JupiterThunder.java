@@ -3,7 +3,7 @@ package org.mapledpmlab.type.skill.attackskill.archmageil;
 public class JupiterThunder extends ThunderAttack {
     public JupiterThunder() {
         this.setName("주피터 썬더");
-        this.setDamage(660.0);
+        this.setDamage(880.0);
         this.setAttackCount(8L);
         this.setCooldown(120.0);
         this.setDelay(810L);

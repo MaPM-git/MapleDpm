@@ -12,6 +12,6 @@ public class SupportWaverHEX extends BuffSkill {
         this.setDelay(630L);
         this.setDuration((long) (80L * 1.42));
         this.addBuffIgnoreDefense(10L);
-        this.addBuffFinalDamage(1.08 + 0.04);   // 서포트 웨이버:H-EX-파티 리인포스
+        this.addBuffFinalDamage(1.08 + 0.02);   // 서포트 웨이버:H-EX-파티 리인포스
     }
 }

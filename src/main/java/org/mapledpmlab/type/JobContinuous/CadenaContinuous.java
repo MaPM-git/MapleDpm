@@ -56,15 +56,17 @@ public class CadenaContinuous extends Job {
 
         // 3차
         this.addIgnoreDefenseList(20L);  // 베이직 디텍션
+        this.addDamage(20L);
         this.addCriticalP(12.0);        // 위크포인트 컨버징 어택 6중첩
 
         // 4차
-        this.addAtt(31L);               // 웨폰 엑스퍼트
+        this.addAtt(50L);               // 웨폰 엑스퍼트
         this.addCriticalP(31.0);
-        this.addCriticalDamage(16.0);
+        this.addCriticalDamage(19.0);
         this.addAtt(31L);               // 퀵서비스 마인드 II
         this.addCriticalDamage(11.0);
         this.addCriticalP(11.0);
+        this.addBossDamage(20L);
 
         // 5차
         this.addAtt(30L);               // 레디 투 다이

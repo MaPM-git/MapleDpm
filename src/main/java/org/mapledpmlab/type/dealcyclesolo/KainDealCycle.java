@@ -167,6 +167,8 @@ public class KainDealCycle extends DealCycle {
         fallingDust.setActivateTime(new Timestamp(-10000));
         scatteringShot.setActivateTime(new Timestamp(-12000));
         shaftBreak.setActivateTime(new Timestamp(-16000));
+
+        grandisGoddessBlessingNova.setCooldown(120.0);
     }
 
     @Override
@@ -199,14 +201,7 @@ public class KainDealCycle extends DealCycle {
                     addSkillEvent(strikeArrowList.get(i % 3));
                     i++;
                 }
-                if (cooldownCheck(grandisGoddessBlessingNova)) {
-                    if (getStart().before(new Timestamp(10 * 1000))) {
-                        grandisGoddessBlessingNova.setCooldown(360.0);
-                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
-                        grandisGoddessBlessingNova.setCooldown(180.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingNova);
-                }
+                addSkillEvent(grandisGoddessBlessingNova);
                 addSkillEvent(incarnation);
                 addSkillEvent(thanatosDescentBuff);
                 addSkillEvent(criticalReinforce);
@@ -509,7 +504,7 @@ public class KainDealCycle extends DealCycle {
                             * getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }
@@ -573,6 +568,7 @@ public class KainDealCycle extends DealCycle {
             deathBlessingCnt ++;
         }
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -774,9 +770,15 @@ public class KainDealCycle extends DealCycle {
                         || cooldownCheck(dragonFang2)
                         || cooldownCheck(dragonFang3)
                 ) {
-                    addSkillEvent(dragonFang1);
-                    addSkillEvent(dragonFang2);
-                    addSkillEvent(dragonFang3);
+                    if (cooldownCheck(dragonFang1)) {
+                        addSkillEvent(dragonFang1);
+                    }
+                    if (cooldownCheck(dragonFang2)) {
+                        addSkillEvent(dragonFang2);
+                    }
+                    if (cooldownCheck(dragonFang3)) {
+                        addSkillEvent(dragonFang3);
+                    }
                 }
                 if (cooldownCheck(remainIncense)) {
                     remainIncense = new RemainIncense();

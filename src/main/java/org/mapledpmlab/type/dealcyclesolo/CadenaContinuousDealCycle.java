@@ -132,7 +132,7 @@ public class CadenaContinuousDealCycle extends DealCycle {
 
         soulContract.setApplyReuse(true);
 
-        grandisGoddessBlessingNova.setCooldown(240.0);
+        grandisGoddessBlessingNova.setCooldown(120.0);
     }
 
     @Override
@@ -162,14 +162,7 @@ public class CadenaContinuousDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
-                if (cooldownCheck(grandisGoddessBlessingNova)) {
-                    if (getStart().before(new Timestamp(10 * 1000))) {
-                        grandisGoddessBlessingNova.setCooldown(360.0);
-                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
-                        grandisGoddessBlessingNova.setCooldown(180.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingNova);
-                }
+                addSkillEvent(grandisGoddessBlessingNova);
                 addSkillEvent(professionalAgent);
                 addSkillEvent(adOrdnance);
                 addSkillEvent(chainArtsStroke1);
@@ -290,6 +283,7 @@ public class CadenaContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -649,7 +643,7 @@ public class CadenaContinuousDealCycle extends DealCycle {
                                 + buffSkill.getBuffDamage()
                                 + attackSkill.getAddDamage()
                                 - 310
-                                - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01)
+                                - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01)
                 ) * 0.01)
                 * getJob().getMastery()
                 * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
@@ -684,7 +678,7 @@ public class CadenaContinuousDealCycle extends DealCycle {
                             * getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

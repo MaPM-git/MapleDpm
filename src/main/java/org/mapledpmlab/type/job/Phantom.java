@@ -54,7 +54,7 @@ public class Phantom extends Job {
         this.addFinalDamage(1.3);
 
         // 4차
-        this.addDamage(31L);            // 프레이 오브 아리아
+        this.addDamage(46L);            // 프레이 오브 아리아
         this.addIgnoreDefenseList(31L);
         this.addAtt(41L);               // 케인 엑스퍼트
         this.addCriticalDamage(15.0);
@@ -90,5 +90,6 @@ public class Phantom extends Job {
         super.Doping();
         this.addAtt(30L);           // 스피릿 블레이드
         this.addFinalDamage(1.2);   // 크로스 오버 체인
+        this.addIgnoreDefenseList(20L); // 템페스트 오브 카드 디버프
     }
 }

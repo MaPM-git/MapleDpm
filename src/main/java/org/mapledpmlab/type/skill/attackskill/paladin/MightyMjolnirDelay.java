@@ -6,7 +6,7 @@ public class MightyMjolnirDelay extends AttackSkill {
     public MightyMjolnirDelay() {
         this.setName("마이티 묠니르");
         this.setDelay(840L);
-        this.setCooldown(12.0);
+        this.setCooldown(36.0);
         this.setApplyCooldownReduction(false);
     }
 }

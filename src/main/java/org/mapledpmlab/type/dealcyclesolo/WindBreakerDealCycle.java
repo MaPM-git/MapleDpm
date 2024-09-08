@@ -124,7 +124,7 @@ public class WindBreakerDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(66.0);
 
-        transcendentCygnusBlessing.setCooldown(370.0);
+        transcendentCygnusBlessing.setCooldown(125.0);
         //transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
@@ -141,13 +141,6 @@ public class WindBreakerDealCycle extends DealCycle {
                     cooldownCheck(transcendentCygnusBlessing)
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                if (dealCycleOrder == 1) {
-                    transcendentCygnusBlessing.setCooldown(360.0);
-                } else if (dealCycleOrder == 4) {
-                    transcendentCygnusBlessing.setCooldown(130.0);
-                } else {
-                    transcendentCygnusBlessing.setCooldown(244440.0);
-                }
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (
@@ -274,6 +267,7 @@ public class WindBreakerDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime()) && getStart().after(new Timestamp(0))) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -513,7 +507,7 @@ public class WindBreakerDealCycle extends DealCycle {
                             * getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

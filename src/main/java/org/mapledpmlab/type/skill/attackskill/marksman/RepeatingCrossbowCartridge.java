@@ -6,7 +6,7 @@ public class RepeatingCrossbowCartridge extends AttackSkill {
     public RepeatingCrossbowCartridge() {
         this.setName("리피팅 크로스보우 카트리지");
         this.setAttackCount(10L);       // 어디셔널 볼트
-        this.setDamage(825.0);
+        this.setDamage(1100.0);
         this.setDelayByAttackSpeed(1080L);
         this.addIgnoreDefenseList(25L);
         this.addCriticalP(100.0);

@@ -103,6 +103,7 @@ public class HoYoungDealCycle extends DealCycle {
     Timestamp grandisEndTime = new Timestamp(-1);
     Timestamp illusionEndTime = new Timestamp(-1);
     Timestamp medicineEndTime = new Timestamp(-1);
+    Timestamp medicineEndTime2 = new Timestamp(-1);
     Timestamp mountainEndTime = new Timestamp(-1);
 
     List<Boolean> property = new ArrayList<>(){
@@ -166,6 +167,8 @@ public class HoYoungDealCycle extends DealCycle {
         ringSwitching.setApplyCooldownReduction(false);
 
         conflagrationChainHeavenReinforce.setCooldown(15.0);
+
+        grandisGoddessBlessingAnima.setCooldown(120.0);
     }
 
     @Override
@@ -196,14 +199,7 @@ public class HoYoungDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(flyingFanHuman);
                 }
-                if (cooldownCheck(grandisGoddessBlessingAnima)) {
-                    if (getStart().before(new Timestamp(10 * 1000))) {
-                        grandisGoddessBlessingAnima.setCooldown(360.0);
-                    } else if (getStart().after(new Timestamp(5 * 60 * 1000))) {
-                        grandisGoddessBlessingAnima.setCooldown(180.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingAnima);
-                }
+                addSkillEvent(grandisGoddessBlessingAnima);
                 addSkillEvent(mysticEnergyTaeulDivineMedicine);
                 addSkillEvent(fistMethodMountainSpiritSummon);
                 addSkillEvent(chasingGhostTalisman);
@@ -248,13 +244,13 @@ public class HoYoungDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
+            } /*else if (
                     cooldownCheck(chasingGhostTalisman)
                             && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
                             && talisman >= 100
             ) {
                 addSkillEvent(chasingGhostTalisman);
-            } else if (
+            }*/ else if (
                     cooldownCheck(fistMethodInhalingVortex)
                             && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
                             && scroll == 900
@@ -306,6 +302,7 @@ public class HoYoungDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (
@@ -313,7 +310,9 @@ public class HoYoungDealCycle extends DealCycle {
                 || skill instanceof PhantasmalCloneTalisman
                 || skill instanceof ChasingGhostTalisman
         ) {
-            talisman = 0;
+            if (getStart().after(medicineEndTime2)) {
+                talisman = 0;
+            }
             if (getStart().before(grandisEndTime)) {
                 scroll += 350;
             } else {
@@ -324,10 +323,13 @@ public class HoYoungDealCycle extends DealCycle {
             }
         }
         if (
-                skill instanceof FistMethodDoomingLight
-                || skill instanceof FistMethodInhalingVortex
-                || skill instanceof FistMethodButterflyDreamBuff
-                || skill instanceof FistMethodMountainSpiritSummon
+                getStart().after(medicineEndTime2)
+                && (
+                        skill instanceof FistMethodDoomingLight
+                        || skill instanceof FistMethodInhalingVortex
+                        || skill instanceof FistMethodButterflyDreamBuff
+                        || skill instanceof FistMethodMountainSpiritSummon
+                )
         ) {
             scroll = 0;
         }
@@ -346,6 +348,7 @@ public class HoYoungDealCycle extends DealCycle {
             }
             if (skill instanceof MysticEnergyTaeulDivineMedicine) {
                 medicineEndTime = new Timestamp(getStart().getTime() + 12000);
+                medicineEndTime2 = new Timestamp(getStart().getTime() + 3000);
             }
             if (skill instanceof GrandisGoddessBlessingAnima) {
                 grandisEndTime = new Timestamp(getStart().getTime() + 40000);

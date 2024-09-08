@@ -132,6 +132,7 @@ public class XenonDealCycle extends DealCycle {
         overloadMode.setActivateTime(new Timestamp(-5555555));
         overloadMode.getRelatedSkill().setActivateTime(new Timestamp(-5555555));
         megaSmasherBeforeDelay.setActivateTime(new Timestamp(-5555555));
+        triangleFormation.setActivateTime(new Timestamp(-5555555));
         addSkillEvent(overloadMode);
         addSkillEvent(megaSmasherBeforeDelay);
         getStart().setTime(0);
@@ -336,6 +337,7 @@ public class XenonDealCycle extends DealCycle {
             energyCnt = 20;
         }
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {
@@ -678,7 +680,7 @@ public class XenonDealCycle extends DealCycle {
                                 + buffSkill.getBuffDamage()
                                 + attackSkill.getAddDamage()
                                 - 310
-                                - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01)
+                                - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01)
                 ) * 0.01)
                         * getJob().getMastery()
                         * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
@@ -717,7 +719,7 @@ public class XenonDealCycle extends DealCycle {
                                     * getJob().getMastery()
                                     * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                                     * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                                    * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                                    * (1 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                                     * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

@@ -8,7 +8,7 @@ public class GrimReaper extends AttackSkill {
         this.setInterval(4000L);
         this.setDelay(720L);
         this.setDotDuration(62000L);
-        this.setDamage(1760.0);
+        this.setDamage(1870.0);
         this.setAttackCount(12L);
         this.setCooldown(90.0);
         this.addFinalDamage(1.6);       // 코어 강화

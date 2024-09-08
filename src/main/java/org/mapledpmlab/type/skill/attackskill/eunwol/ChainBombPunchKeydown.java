@@ -10,7 +10,7 @@ public class ChainBombPunchKeydown extends AttackSkill {
         this.setInterval(120L);
         this.setLimitAttackCount(12L);
         this.setAttackCount(10L);
-        this.setDamage(550.0);
+        this.setDamage(450.0);
         this.addFinalDamage(1.6);           // 코어 강화
         this.setRelatedSkill(new ChainBombPunchEnd());
     }

@@ -6,7 +6,7 @@ public class EruptionRipplingRiver extends AttackSkill {
     public EruptionRipplingRiver() {
         this.setName("분출 : 너울이는 강");
         this.setDelayByAttackSpeed(450L);
-        this.setDamage(1050.0);
+        this.setDamage(1110.0);
         this.setAttackCount(5L);
         this.setCooldown(13.0);
         this.setApplyCooldownReduction(false);

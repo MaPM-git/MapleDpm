@@ -6,7 +6,7 @@ public class FinalAttackBattleMage extends AttackSkill {
     public FinalAttackBattleMage() {
         this.setName("파이널 어택(다크 제네시스)");
         this.setAttackCount(1L);
-        this.setDamage(224.0);      // 쓸컴뱃 기준
+        this.setDamage(254.0);      // 쓸컴뱃 기준
         this.setProp(62L);
         this.setFinalAttack(true);
         this.addFinalDamage(2.2);           // 코어 강화

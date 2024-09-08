@@ -91,6 +91,10 @@ public class Job extends Common {
         this.addOtherStat2(6L);
         this.addAtt(20L);               // 쓸만한 어드밴스드 블레스
         this.addMagic(20L);
+        this.addMainStat(6L);
+        this.addSubStat(6L);
+        this.addOtherStat1(6L);
+        this.addOtherStat2(6L);
         this.addAtt(30L);               // 블링크
         this.addMagic(30L);
         this.addCriticalP(20.0);        // 세이람의 영약

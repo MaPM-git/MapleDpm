@@ -6,7 +6,7 @@ public class RapidFire extends AttackSkill {
     public RapidFire() {
         this.setName("래피드 파이어");
         this.setAttackCount(1L);
-        this.setDamage(555.0);
+        this.setDamage(610.0);
         this.setDelay(120L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(30L + 20);    // 래피트 파이어-리인포스, 보스 킬러

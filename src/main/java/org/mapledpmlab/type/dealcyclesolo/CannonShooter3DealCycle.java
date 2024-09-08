@@ -118,7 +118,7 @@ public class CannonShooter3DealCycle extends DealCycle {
         barrelRoulette.setCooldown(220.0);
         addSkillEvent(barrelRoulette);
 
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
     @Override
@@ -372,7 +372,7 @@ public class CannonShooter3DealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof BuffSkill) {

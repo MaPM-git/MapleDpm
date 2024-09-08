@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DragonFang extends AttackSkill {
     public DragonFang() {
         this.setName("드래곤 팡");
-        this.setDamage(100.0 + 60 + 95);
+        this.setDamage(110.0 + 60 + 95);
         this.setAttackCount(4L);
         //this.setDotDuration(9450L);
         //this.setInterval(1350L);

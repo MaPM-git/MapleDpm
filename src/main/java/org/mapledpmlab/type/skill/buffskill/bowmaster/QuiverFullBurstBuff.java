@@ -13,5 +13,6 @@ public class QuiverFullBurstBuff extends BuffSkill {
         this.setDelay(630L);
         this.setDuration(40L);
         this.setBuffAttMagicPer(20L);
+        this.addBuffFinalDamage(1.15);
     }
 }

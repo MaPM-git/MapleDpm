@@ -125,7 +125,7 @@ public class KaiserDealCycle extends DealCycle {
         ringSwitching.setCooldown(130.0);
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
-        grandisGoddessBlessingNova.setCooldown(240.0);
+        grandisGoddessBlessingNova.setCooldown(120.0);
 
         soulContract.setApplyReuse(true);
         for (Skill skill : buffSkillList) {
@@ -204,16 +204,7 @@ public class KaiserDealCycle extends DealCycle {
                 addSkillEvent(wingBeat);
                 addSkillEvent(wingBeat);*/
                 addSkillEvent(guardianOfNova);
-                if (cooldownCheck(grandisGoddessBlessingNova)) {
-                    if (dealCycleOrder == 1) {
-                        grandisGoddessBlessingNova.setCooldown(360.0);
-                    } else if (dealCycleOrder == 4) {
-                        grandisGoddessBlessingNova.setCooldown(120.0);
-                    } else {
-                        grandisGoddessBlessingNova.setCooldown(240.0);
-                    }
-                    addSkillEvent(grandisGoddessBlessingNova);
-                }
+                addSkillEvent(grandisGoddessBlessingNova);
                 addSkillEvent(soulContract);
                 addSkillEvent(dragonBlaze);
                 if (cooldownCheck(restraintRing)) {
@@ -255,10 +246,11 @@ public class KaiserDealCycle extends DealCycle {
                             && cooldownCheck(wallOfSwordStrike)
                             && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 30000))
             ) {
-                addSkillEvent(dracoSlasher);
+                if (cooldownCheck(dracoSlasher)) {
+                    addSkillEvent(dracoSlasher);
+                }
                 addSkillEvent(prominence);
                 addSkillEvent(wallOfSwordStrike);
-                addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
@@ -272,9 +264,10 @@ public class KaiserDealCycle extends DealCycle {
                             )
                     )
             ) {
-                addSkillEvent(dracoSlasher);
+                if (cooldownCheck(dracoSlasher)) {
+                    addSkillEvent(dracoSlasher);
+                }
                 addSkillEvent(wallOfSwordStrike);
-                addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
@@ -310,6 +303,7 @@ public class KaiserDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + skill.getActivateTime() + "\t" + getJob().getName());
             return;
         }
         if (wingBeatTime.size() > 0) {
@@ -574,6 +568,8 @@ public class KaiserDealCycle extends DealCycle {
                         )
                 ) {
                     strikeCnt--;
+                    dracoSlasher.setActivateTime(new Timestamp(-1));
+                    dracoSlasherFF.setActivateTime(new Timestamp(-1));
                 } else {
                     skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
                 }
@@ -790,7 +786,7 @@ public class KaiserDealCycle extends DealCycle {
                             * getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }

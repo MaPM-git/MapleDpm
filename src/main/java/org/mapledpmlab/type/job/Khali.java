@@ -52,14 +52,14 @@ public class Khali extends Job {
         this.addMainStat(60L);          // 피지컬 트레이닝
 
         // 3차
-        this.addFinalDamage(1.25);      // 인투이션
+        this.addFinalDamage(1.3);       // 인투이션
         this.addIgnoreDefenseList(20L);
         this.addAtt(30L);
 
         // 4차
         this.addAtt(31L);               // 차크람 엑스퍼트
-        this.addCriticalDamage(8.0);
-        this.addFinalDamage(1.31);      // 리뎀션
+        this.addCriticalDamage(20.0);
+        this.addFinalDamage(1.42);      // 리뎀션
         this.addIgnoreDefenseList(21L);
         this.addBossDamage(31L);
 

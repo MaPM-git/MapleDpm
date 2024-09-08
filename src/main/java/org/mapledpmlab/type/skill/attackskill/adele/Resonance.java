@@ -7,7 +7,7 @@ public class Resonance extends AttackSkill {
         this.setName("레조넌스");
         this.setDamage(502.0 + 125 + 268);
         this.setAttackCount(6L);
-        this.setDelayByAttackSpeed(900L);
+        this.setDelayByAttackSpeed(810L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
     }

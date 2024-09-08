@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class FoxSoulOrb extends AttackSkill {
     public FoxSoulOrb() {
         this.setName("환여우령");
-        this.setDamage(110.0 + 85);
+        this.setDamage(140.0 + 93);
         this.setAttackCount(2L);
         this.setProp(25L + 10);
         this.getMultiAttackInfo().add(1350L);

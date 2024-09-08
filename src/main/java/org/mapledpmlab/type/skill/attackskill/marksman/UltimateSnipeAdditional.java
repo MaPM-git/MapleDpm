@@ -6,7 +6,7 @@ public class UltimateSnipeAdditional extends AttackSkill {
     public UltimateSnipeAdditional() {
         this.setName("얼티밋 스나이핑(추가타)");
         this.setAttackCount(7L);        // 어디셔널 볼트, 스나이핑-보너스 어택
-        this.setDamage(380.0 + 60);
+        this.setDamage(410.0 + 60);
         this.addIgnoreDefenseList(40L);
         this.addCriticalP(100.0);
         this.setDotDuration(180L);

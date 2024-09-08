@@ -56,7 +56,7 @@ public class Mechanic extends Job {
 
         // 3차
         this.addCriticalP(30.0);        // 메탈아머 : 탱크
-        this.addFinalDamage(1.39);      // 오버 튜닝
+        this.addFinalDamage(1.42);      // 오버 튜닝
         this.addCriticalP(20.0);
         this.addIgnoreDefenseList(30L);
 

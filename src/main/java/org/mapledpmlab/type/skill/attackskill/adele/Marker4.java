@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Marker4 extends AttackSkill {
     public Marker4() {
         this.setName("마커(4)");
-        this.setDamage(2000.0);
+        this.setDamage(2500.0);
         this.setAttackCount(6L * 8);
         this.setCooldown(60.0);
         this.setDelayByAttackSpeed(900L);

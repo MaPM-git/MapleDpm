@@ -142,7 +142,7 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
 
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
     @Override
@@ -177,14 +177,7 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                 isNuke = true;
                 addSkillEvent(bodyOfSteel);
                 addSkillEvent(afterImageShock);
-                if (cooldownCheck(mapleWorldGoddessBlessing)) {
-                    if (dealCycleOrder == 3) {
-                        mapleWorldGoddessBlessing.setCooldown(0.0);
-                    } else {
-                        mapleWorldGoddessBlessing.setCooldown(180.0);
-                    }
-                    addSkillEvent(mapleWorldGoddessBlessing);
-                }
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(willOfLiberty);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -237,6 +230,7 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (
@@ -365,7 +359,6 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                             Long ran = (long) (Math.random() * 99 + 1);
                             if (ran <= getFinalAttack().getProp()) {
                                 FinalAttackBlaster finalAttackBlaster = new FinalAttackBlaster();
-                                finalAttackBlaster.applyGauge(cylinder);
                                 getSkillEventList().add(new SkillEvent(finalAttackBlaster, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                             }
                         }
@@ -384,7 +377,6 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                             Long ran = (long) (Math.random() * 99 + 1);
                             if (ran <= getFinalAttack().getProp()) {
                                 FinalAttackBlaster finalAttackBlaster = new FinalAttackBlaster();
-                                finalAttackBlaster.applyGauge(cylinder);
                                 getSkillEventList().add(new SkillEvent(finalAttackBlaster, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                             }
                         }
@@ -424,7 +416,6 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                     Long ran = (long) (Math.random() * 99 + 1);
                     if (ran <= getFinalAttack().getProp()) {
                         FinalAttackBlaster finalAttackBlaster = new FinalAttackBlaster();
-                        finalAttackBlaster.applyGauge(cylinder);
                         getSkillEventList().add(new SkillEvent(finalAttackBlaster, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
                     }
                 }
@@ -601,7 +592,7 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                             * getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - getJob().getIgnoreDefense()) * (1 - getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }
@@ -649,7 +640,6 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (ran <= getFinalAttack().getProp()) {
                     FinalAttackBlaster finalAttackBlaster = new FinalAttackBlaster();
-                    finalAttackBlaster.applyGauge(cylinder);
                     getSkillEventList().add(new SkillEvent(finalAttackBlaster, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
                 }
             }

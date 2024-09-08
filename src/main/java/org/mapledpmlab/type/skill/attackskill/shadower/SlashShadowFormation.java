@@ -6,7 +6,7 @@ public class SlashShadowFormation extends AttackSkill {
     public SlashShadowFormation() {
         this.setName("멸귀참영진");
         this.setAttackCount(8L);
-        this.setDamage(935.0);
+        this.setDamage(1265.0);
         this.setCooldown(90.0);
         this.addIgnoreDefenseList(100L);
         this.setFinalDamage(1.6);       // 코어강화

@@ -113,11 +113,12 @@ public class ArchMageILDealCycle extends DealCycle {
         // 인피니티 달구기
         getStart().setTime(-75000);
         infinity.setActivateTime(new Timestamp(-80000));
+        thunderSpear.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
         addSkillEvent(thunderSpear);
         getStart().setTime(0);
 
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         for (int i = 0; i < 720 * 1000; i += iceAura.getInterval()) {
             getSkillEventList().add(new SkillEvent(iceAura, new Timestamp(i), new Timestamp(i)));
@@ -196,14 +197,7 @@ public class ArchMageILDealCycle extends DealCycle {
                             && cooldownCheck(lightningSphere)
                             && getStart().after(infinityFinalTime)
             ) {
-                if (cooldownCheck(mapleWorldGoddessBlessing)) {
-                    if (dealCycleOrder == 3) {
-                        mapleWorldGoddessBlessing.setCooldown(0.0);
-                    } else {
-                        mapleWorldGoddessBlessing.setCooldown(180.0);
-                    }
-                    addSkillEvent(mapleWorldGoddessBlessing);
-                }
+                addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -331,7 +325,7 @@ public class ArchMageILDealCycle extends DealCycle {
                             * this.getJob().getMastery()
                             * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
                             * (1 + 0.35 + (this.getJob().getCriticalDamage() + buffSkill.getBuffCriticalDamage()) * 0.01)
-                            * (1 - 0.5 * (1 - (this.getJob().getProperty() - buffSkill.getBuffProperty()) * 0.01))
+                            * (1 - 0.5 * (1 - (this.getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
                             * (1 - 3.8 * (1 - buffSkill.getIgnoreDefense()) * (1 - this.getJob().getIgnoreDefense()) * (1 - this.getJob().getStatXIgnoreDefense()) * (1 - attackSkill.getIgnoreDefense()))
                     );
                 }
@@ -364,6 +358,7 @@ public class ArchMageILDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
         if (skill instanceof JupiterThunder) {

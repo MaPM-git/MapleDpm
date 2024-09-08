@@ -6,7 +6,7 @@ public class ValhallaDot extends AttackSkill {
     public ValhallaDot() {
         this.setName("발할라(검격)");
         this.setAttackCount(6L);
-        this.setDamage(370.0);
+        this.setDamage(520.0);
         this.setDotDuration(30000L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
