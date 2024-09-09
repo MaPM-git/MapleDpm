@@ -64,8 +64,8 @@ public class ReuseFarm extends Farm {
         this.addIgnoreDefenseList(5L);   // 라피스
         this.addIgnoreDefenseList(5L);   // 쁘띠매그너스
         this.addIgnoreDefenseList(6L);   // 양철나무꾼
-        this.addReuse(4L);          // 쁘띠은월
-        this.addReuse(2L);          // 큰운영자의벌룬
+        this.addReuse(4.0);          // 쁘띠은월
+        this.addReuse(2.0);          // 큰운영자의벌룬
         this.addAtt(5L);            // 쁘띠루미너스(어둠)
         this.addMagic(5L);
         this.addAtt(5L);            // 미르

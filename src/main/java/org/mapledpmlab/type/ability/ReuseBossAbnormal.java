@@ -8,7 +8,7 @@ public class ReuseBossAbnormal extends Ability {
                 "\n2.보스 공격 시 데미지 10%" +
                 "\n3.상태 이상에 걸린 대상 공격 시 데미지 8%\n"
         );
-        this.addReuse(20L);
+        this.addReuse(20.0);
         this.addBossDamage(10L);
         this.addStatXDamage(8L);
     }

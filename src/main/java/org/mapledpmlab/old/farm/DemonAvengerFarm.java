@@ -53,7 +53,7 @@ public class DemonAvengerFarm extends Farm {
         this.addIgnoreDefenseList(5L);   // 라피스
         this.addIgnoreDefenseList(5L);   // 쁘띠매그너스
         this.addIgnoreDefenseList(6L);   // 양철나무꾼
-        this.addReuse(4L);          // 쁘띠은월
+        this.addReuse(4.0);          // 쁘띠은월
         this.addAtt(3L);            // 무공의분신
         this.addAtt(5L);            // 쁘띠루미너스(어둠)
         this.addMagic(5L);

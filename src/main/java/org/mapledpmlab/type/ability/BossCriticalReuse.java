@@ -10,6 +10,6 @@ public class BossCriticalReuse extends Ability {
         );
         this.addBossDamage(20L);
         this.addCriticalP(20.0);
-        this.addReuse(10L);
+        this.addReuse(10.0);
     }
 }

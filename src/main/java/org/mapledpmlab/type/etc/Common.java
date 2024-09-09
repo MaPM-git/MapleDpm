@@ -36,7 +36,7 @@ public class Common {
     private Long perXSubStat = 0L;
     private Long plusBuffDuration = 0L;
     private Long property = 0L;
-    private Long reuse = 0L;
+    private Double reuse = 0.0;
     private Long statXDamage = 0L;
     private Double statXFinalDamage = 1.0;
     private List<Long> statXIgnoreDefenseList = new ArrayList<>();
@@ -158,7 +158,7 @@ public class Common {
         this.property += property;
     }
 
-    public void addReuse(Long reuse) {
+    public void addReuse(Double reuse) {
         this.reuse += reuse;
     }
 
@@ -333,7 +333,7 @@ public class Common {
         if (getProperty() != 0) {
             str += "\n속성 내성 무시 : " + getProperty();
         }
-        if (getReuse() != 0) {
+        if (getReuse() != 0.0) {
             str += "\n재사용 : " + getReuse();
         }
         if (getStatXFinalDamage() != 1) {
