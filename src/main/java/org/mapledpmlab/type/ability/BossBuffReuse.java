@@ -10,6 +10,6 @@ public class BossBuffReuse extends Ability {
         );
         this.addBossDamage(20L);
         this.addPlusBuffDuration(38L);
-        this.addReuse(10L);
+        this.addReuse(10.0);
     }
 }

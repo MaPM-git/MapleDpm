@@ -10,6 +10,6 @@ public class BossAbnormalReuse extends Ability {
         );
         this.addBossDamage(20L);
         this.addStatXDamage(8L);
-        this.addReuse(10L);
+        this.addReuse(10.0);
     }
 }

@@ -26,7 +26,7 @@ public class DemonAvengerArtifact extends Farm {
         this.addDamage(15L);
         this.addIgnoreDefenseList(20L);
         this.addPlusBuffDuration(20L);
-        this.addReuse(7L);
+        this.addReuse(7.0);
         this.addCriticalP(20.0);
         this.addCriticalDamage(4.0);
         this.addDamage(15L);

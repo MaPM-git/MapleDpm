@@ -8,7 +8,7 @@ public class ReuseBossCritical extends Ability {
                 "\n2.보스 공격 시 데미지 10%" +
                 "\n3.크리티컬 확률 20%\n"
         );
-        this.addReuse(20L);
+        this.addReuse(20.0);
         this.addBossDamage(10L);
         this.addCriticalP(20.0);
     }
