@@ -128,7 +128,7 @@ public class PathFinderDealCycle extends DealCycle {
             }
         }
 
-        ringSwitching.setCooldown(130.0);
+        ringSwitching.setCooldown(120.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
 
         soulContract.setApplyReuse(true);
@@ -140,17 +140,8 @@ public class PathFinderDealCycle extends DealCycle {
         addSkillEvent(raven);
         while (getStart().before(getEnd())) {
             if (
-                    cooldownCheck(evolve)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(obsidianBarrier)
-                            && cooldownCheck(criticalReinforce)
-                            && cooldownCheck(ravenTempest)
-                            && cooldownCheck(soulContract)
-                            //&& cooldownCheck(edgeOfResonance)
-                            && cooldownCheck(ultimateBlast)
-                            && cooldownCheck(relicEvolution)
-                            && cooldownCheck(relicUnbound)
-                            && getStart().before(new Timestamp(660 * 1000))
+                    cooldownCheck(epicAdventure)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
                 getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(evolve);
@@ -181,7 +172,7 @@ public class PathFinderDealCycle extends DealCycle {
                 if (cooldownCheck(relicLiberation)) {
                     addSkillEvent(relicLiberation);
                 } else {
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < 14; i++) {
                         addSkillEvent(cardinalBlast);
                         addSkillEvent(cardinalDischarge);
                     }
@@ -227,6 +218,11 @@ public class PathFinderDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof SoulContract) {

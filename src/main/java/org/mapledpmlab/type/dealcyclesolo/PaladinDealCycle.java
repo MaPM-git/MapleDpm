@@ -188,6 +188,11 @@ public class PaladinDealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (skill instanceof BuffSkill) {
             if (skill instanceof NobleDemand) {
                 nobleDemandEndTime = new Timestamp(getStart().getTime() + 80000);
@@ -340,20 +345,9 @@ public class PaladinDealCycle extends DealCycle {
 
     @Override
     public void applyCooldown(Skill skill) {
-        /*if (skill instanceof MightyMjolnirDelay) {
-            long remainTime = getStart().getTime() - skill.getActivateTime().getTime();
-            if (remainTime >= 24000) {
-                skill.setActivateTime(new Timestamp(getStart().getTime() - 12000));
-            } else if (remainTime >= 12000) {
-                skill.setActivateTime(new Timestamp(getStart().getTime()));
-            } else {
-                skill.setActivateTime(new Timestamp(getStart().getTime() + 12000 - remainTime));
-            }
-            return;
-        }*/
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
-                Long ran = (long) (Math.random() * 99 + 1);
+                Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
                 } else  {
                     skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));

@@ -9,6 +9,7 @@ import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.xddf.usermodel.chart.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.mapledpmlab.type.JobContinuous.*;
 import org.mapledpmlab.type.dealcyclesolo.*;
@@ -22,6 +23,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -35,8 +37,16 @@ public class DPMMain {
 
     public void init() {
         dealCycleList = new ArrayList<>();
-        dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
-        //dealCycleList.add(new AdeleMarker4DealCycle(new Adele()));
+        /*for (int i = 0; i < 1; i++) {
+            BishopContinuous bishopContinuous = new BishopContinuous();
+            bishopContinuous.setName(String.valueOf(i));
+            dealCycleList.add(new Bishop2ContinuousDealCycle(bishopContinuous));
+        }*/
+        dealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
+        dealCycleList.add(new MarksmanDealCycle(new Marksman()));
+
+
+        /*dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
@@ -116,7 +126,7 @@ public class DPMMain {
         dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         dealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
         dealCycleList.add(new ZeroContinuousDealCycle(new ZeroAlphaContinuous()));
-        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
+        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));*/
         /*for (DealCycle dealCycle : dealCycleList) {
             if (dealCycle instanceof ZeroContinuousDealCycle) {
                 dealCycle.getJobInfo();
@@ -262,7 +272,7 @@ public class DPMMain {
         xssfSheet.createFreezePane(1, 1);
 
         CellStyle cellStyle = xssfWorkbook.createCellStyle();
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setAlignment(HorizontalAlignment.LEFT);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         cellStyle.setBorderBottom(BorderStyle.THIN);
         cellStyle.setBorderLeft(BorderStyle.THIN);
@@ -327,7 +337,7 @@ public class DPMMain {
                     dealCycle.getJob().getUnion().getDescription() + dealCycle.getJob().getUnion(),
                     dealCycle.getJob().getLinkListStr(),
                     dealCycle.getJob().getHyper().getDescription() + dealCycle.getJob().getHyper(),
-                    dealCycle.getJob().getArtifact().getDescription() + dealCycle.getJob().getArtifact(),
+                    dealCycle.getJob().getArtifactNormal().getDescription() + dealCycle.getJob().getArtifactNormal(),
                     dealCycle.getJob().getAbility().getDescription() + dealCycle.getJob().getAbility()
             });
 
@@ -359,6 +369,42 @@ public class DPMMain {
                 data.put(String.valueOf(i), dealCycle.getBuffSkillList().get(i - colNum).getObject());
             }
 
+            colNum = colNum + dealCycle.getBuffSkillList().size();
+            data.put(String.valueOf(colNum), new Object[]{});
+            colNum = colNum + 1;
+
+            data.put(String.valueOf(colNum), new Object[]{
+                    "스킬 로그"
+            });
+            colNum = colNum + 1;
+            String[] skillLogList = dealCycle.skillLog.split("\n");
+
+            int groupSize = 500;
+            int newSize = (skillLogList.length + groupSize - 1) / groupSize;
+            String[] mergedList = new String[newSize];
+
+            for (int i = 0; i < newSize; i++) {
+                StringBuilder sb = new StringBuilder();
+                int start = i * groupSize;
+                int end = Math.min(start + groupSize, skillLogList.length);
+                for (int j = start; j < end; j++) {
+                    sb.append(skillLogList[j]);
+                    if (j < end - 1) {
+                        sb.append("\n");
+                    }
+                }
+                mergedList[i] = sb.toString();
+            }
+
+            for (int i = colNum; i < mergedList.length + colNum; i++) {
+                data.put(String.valueOf(i), new Object[]{
+                        mergedList[i - colNum]
+                });
+            }
+
+            colNum = colNum + dealCycle.getBuffSkillList().size();
+            data.put(String.valueOf(colNum), new Object[]{});
+
             keyset = data.keySet();
             rownum = 0;
 
@@ -378,9 +424,78 @@ public class DPMMain {
                     }
                 }
             }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss.SSS");
+
+            dealCycle.calcDps();
+            Object[][] damageLine = new Object[681][2];
+            damageLine[0] = new Object[]{"초", "데미지", "15초", simpleDateFormat.format(dealCycle.getRestraintRingStartTime()) + " ~ " + simpleDateFormat.format(dealCycle.getRestraintRingEndTime())};
+            for (int i = 0; i < dealCycle.getDpsList().size(); i++) {
+                if (i == 0) {
+                    damageLine[i + 1] = new Object[]{i + 1, dealCycle.getDpsList().get(i), "40초", simpleDateFormat.format(dealCycle.getRestraintRingStartTime()) + " ~ " + simpleDateFormat.format(dealCycle.getFortyEndTime())};
+                } else if (i == 1) {
+                    damageLine[i + 1] = new Object[]{i + 1, dealCycle.getDpsList().get(i), "오리진X 15초", simpleDateFormat.format(dealCycle.getOriginXRestraintRingStartTime()) + " ~ " + simpleDateFormat.format(dealCycle.getOriginXRestraintRingEndTime())};
+                } else {
+                    damageLine[i + 1] = new Object[]{i + 1, dealCycle.getDpsList().get(i)};
+                }
+            }
+
+            DataFormat format = xssfWorkbook.createDataFormat();
+            CellStyle numberStyle = xssfWorkbook.createCellStyle();
+            numberStyle.setDataFormat(format.getFormat("#,##0"));
+            numberStyle.setAlignment(HorizontalAlignment.LEFT);
+            numberStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            numberStyle.setBorderBottom(BorderStyle.THIN);
+            numberStyle.setBorderLeft(BorderStyle.THIN);
+            numberStyle.setBorderRight(BorderStyle.THIN);
+            numberStyle.setBorderTop(BorderStyle.THIN);
+            numberStyle.setWrapText(true);
+
+            for (Object[] damage : damageLine) {
+                Row row = xssfSheet.createRow(rownum++);
+                int cellnum = 0;
+                for (Object field : damage) {
+                    Cell cell = row.createCell(cellnum++);
+                    cell.setCellStyle(cellStyle);
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                    } else if (field instanceof Integer) {
+                        cell.setCellValue((Integer) field);
+                    } else if (field instanceof Double) {
+                        cell.setCellValue((Double) field);
+                    } else if (field instanceof Long) {
+                        cell.setCellValue((Long) field);
+                        cell.setCellStyle(numberStyle);
+                    }
+                }
+            }
+
+            int skillCnt = dealCycle.getBuffSkillList().size() + dealCycle.getAttackSkillList().size();
+            XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
+            XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 2, skillCnt + 7, 5, skillCnt + 9);
+
+            XSSFChart chart = drawing.createChart(anchor);
+            chart.setTitleText("데미지 그래프");
+            chart.setTitleOverlay(false);
+
+            XDDFDataSource<String> xAxis = XDDFDataSourcesFactory.fromStringCellRange(xssfSheet, new CellRangeAddress(skillCnt + mergedList.length + 10, skillCnt + mergedList.length + 689, 0, 0));
+            XDDFNumericalDataSource<Double> yAxis = XDDFDataSourcesFactory.fromNumericCellRange(xssfSheet, new CellRangeAddress(skillCnt + mergedList.length + 10, skillCnt + mergedList.length + 689, 1, 1));
+
+            XDDFCategoryAxis bottomAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
+            bottomAxis.setTitle("초");
+            XDDFValueAxis leftAxis = chart.createValueAxis(AxisPosition.LEFT);
+            leftAxis.setTitle("데미지");
+            leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+
+            XDDFLineChartData lineChartData = (XDDFLineChartData) chart.createData(ChartTypes.LINE, bottomAxis, leftAxis);
+            XDDFLineChartData.Series series = (XDDFLineChartData.Series) lineChartData.addSeries(xAxis, yAxis);
+            series.setTitle("데미지 그래프", null);
+            series.setSmooth(false);
+            series.setMarkerStyle(MarkerStyle.CIRCLE);
+
+            chart.plot(lineChartData);
 
             // 이미지 삽입
-            insertImg(xssfWorkbook, xssfSheet, colNum, dealCycle);
+            //insertImg(xssfWorkbook, xssfSheet, colNum, dealCycle);
         }
 
         xssfSheet = xssfWorkbook.createSheet("DPM(솔로)");
@@ -494,56 +609,6 @@ public class DPMMain {
             e.printStackTrace();
         }
 
-        // SVG 파일 생성
-        try {
-            dealCycle.calcDps();
-            FileWriter writer = new FileWriter("딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg");
-
-            // SVG 헤더 작성
-            writer.write("<svg xmlns='http://www.w3.org/2000/svg' width='720' height='500'>");
-
-            // 선 그래프 그리기
-            drawLineGraph(writer, dealCycle.getDpsList());
-
-            // SVG 푸터 작성
-            writer.write("</svg>");
-
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            String svgPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.svg";
-            String pngPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프.png";
-
-            SVGDocument svgDocument = new SVGDocument(svgPath);
-            ImageSaveOptions options = new ImageSaveOptions(ImageFormat.Png);
-            Converter.convertSVG(svgDocument, options, pngPath);
-            svgDocument.dispose();
-
-            pngPath = "딜그래프/" + dealCycle.getJob().getName() + " 딜그래프_1.png";
-            InputStream is = new FileInputStream(pngPath);
-            byte[] bytes = IOUtils.toByteArray(is);
-
-            xssfWorkbook.addPicture(is, XSSFWorkbook.PICTURE_TYPE_PNG);
-            int picIdx = xssfWorkbook.addPicture(bytes, XSSFWorkbook.PICTURE_TYPE_PNG);
-            is.close();
-
-            XSSFCreationHelper helper = xssfWorkbook.getCreationHelper();
-            XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
-            XSSFClientAnchor anchor = helper.createClientAnchor();
-
-            // 이미지 출력할 cell 위치
-            anchor.setRow1(colNum + 10);
-            anchor.setCol1(3);
-            // 이미지 그리기
-            XSSFPicture pic = drawing.createPicture(anchor, picIdx);
-            pic.resize();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         try {
             String svgPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg";
             String pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.png";
@@ -566,8 +631,8 @@ public class DPMMain {
             XSSFClientAnchor anchor = helper.createClientAnchor();
 
             // 이미지 출력할 cell 위치
-            anchor.setRow1(colNum + 10);
-            anchor.setCol1(0);
+            anchor.setRow1(colNum);
+            anchor.setCol1(2);
             // 이미지 그리기
             XSSFPicture pic = drawing.createPicture(anchor, picIdx);
             pic.resize();

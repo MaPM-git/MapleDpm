@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.JobContinuous;
 
 import org.mapledpmlab.type.ability.BuffBossAbnormal;
-import org.mapledpmlab.type.artifact.Artifact;
+import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
@@ -78,14 +78,14 @@ public class BishopContinuous extends Job {
         this.addMainStat(90L);          // 프레이 강화
 
         this.setAbility(new BuffBossAbnormal());
-        this.setArtifact(new Artifact());
+        this.setArtifactNormal(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifact());
+        this.addObject(this.getArtifactNormal());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

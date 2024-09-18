@@ -10,6 +10,7 @@ public class GripOfAgony extends AttackSkill {
         this.setDelay(660L);
         this.setDotDuration(9000L);
         this.setInterval(330L);
+        this.setCooldown(90.0);
         this.setLimitAttackCount(27L);
         this.addFinalDamage(1.6);   // 코어강화
     }

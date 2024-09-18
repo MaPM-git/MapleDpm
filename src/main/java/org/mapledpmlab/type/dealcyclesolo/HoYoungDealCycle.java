@@ -164,7 +164,7 @@ public class HoYoungDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         ringSwitching.setCooldown(90.0);
-        ringSwitching.setApplyCooldownReduction(false);
+        //ringSwitching.setApplyCooldownReduction(false);
 
         conflagrationChainHeavenReinforce.setCooldown(15.0);
 
@@ -174,21 +174,8 @@ public class HoYoungDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
-            if (
-                    cooldownCheck(mysticEnergyTaeulDivineMedicine)
-                            && cooldownCheck(fistMethodMountainSpiritSummon)
-                            && cooldownCheck(chasingGhostTalisman)
-                            && cooldownCheck(fistMethodInhalingVortex)
-                            && cooldownCheck(mysticEnergyIllusionOfHeavenEarthAndHuman)
-                            && cooldownCheck(fistMethodDoomingLight)
-                            && cooldownCheck(mysticEnergyExtremeCloneRampage)
-                            && cooldownCheck(mysticEnergyAdventOfRebelliousPower)
-                            && cooldownCheck(mysticEnergyCloneSageTaeul)
-                            && cooldownCheck(readyToDie)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
+            if (cooldownCheck(mysticEnergyExtremeCloneRampage)) {
+                System.out.println(getStart() + "\t극딜");
                 addSkillEvent(phantasmalCloneTalisman);
                 addSkillEvent(fistMethodButterflyDreamBuff);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -207,7 +194,6 @@ public class HoYoungDealCycle extends DealCycle {
                 addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHuman);
                 addSkillEvent(fistMethodDoomingLight);
                 addSkillEvent(mysticEnergyExtremeCloneRampage);
-                addSkillEvent(flyingFanHuman);
                 addSkillEvent(mysticEnergyAdventOfRebelliousPower);
                 addSkillEvent(mysticEnergyCloneSageTaeul);
                 addSkillEvent(readyToDie);
@@ -217,15 +203,10 @@ public class HoYoungDealCycle extends DealCycle {
                     addSkillEvent(mysticEnergyApotheosisKeydown1);
                 }
             } else if (
-                    cooldownCheck(mysticEnergyTaeulDivineMedicine)
-                            && cooldownCheck(chasingGhostTalisman)
-                            && cooldownCheck(fistMethodInhalingVortex)
-                            && cooldownCheck(mysticEnergyIllusionOfHeavenEarthAndHuman)
-                            && cooldownCheck(fistMethodDoomingLight)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(readyToDie)
-                            && cooldownCheck(weaponJumpRing)
+                    cooldownCheck(chasingGhostTalisman)
+                    && getStart().before(new Timestamp(mysticEnergyExtremeCloneRampage.getActivateTime().getTime() - 5000))
             ) {
+                System.out.println(getStart() + "\t준극딜");
                 addSkillEvent(fistMethodButterflyDreamBuff);
                 addSkillEvent(mysticEnergyTaeulDivineMedicine);
                 addSkillEvent(chasingGhostTalisman);
@@ -236,6 +217,7 @@ public class HoYoungDealCycle extends DealCycle {
                 addSkillEvent(readyToDie);
                 addSkillEvent(weaponJumpRing);
             } else if (getStart().after(finalTime)) {
+                System.out.println(getStart() + "\t막타");
                 addSkillEvent(adventOfGods);
                 finalTime = new Timestamp(720 * 1000);
             } else if (
@@ -243,14 +225,9 @@ public class HoYoungDealCycle extends DealCycle {
                             && getStart().after(new Timestamp(80 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println(getStart() + "\t시드링");
                 addSkillEvent(ringSwitching);
-            } /*else if (
-                    cooldownCheck(chasingGhostTalisman)
-                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
-                            && talisman >= 100
-            ) {
-                addSkillEvent(chasingGhostTalisman);
-            }*/ else if (
+            } else if (
                     cooldownCheck(fistMethodInhalingVortex)
                             && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 15000))
                             && scroll == 900
@@ -304,6 +281,11 @@ public class HoYoungDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t두루마리 : " + scroll + "\t부적 : " + talisman + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t두루마리 : " +scroll + "\t부적 : " + talisman + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (
                 skill instanceof MagicCalabash1
@@ -412,7 +394,10 @@ public class HoYoungDealCycle extends DealCycle {
                 ) {
                     addSkillEvent(mysticEnergyExtremeRampageAttack);
                 }
-                if (cooldownCheck(phantasmalCloneTalismanAttack)) {
+                if (
+                        getStart().after(extremeEndTime)
+                        && cooldownCheck(phantasmalCloneTalismanAttack)
+                ) {
                     addSkillEvent(phantasmalCloneTalismanAttack);
                 }
             }
@@ -751,7 +736,10 @@ public class HoYoungDealCycle extends DealCycle {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
-                        if (skill instanceof MysticEnergyApotheosisFinish) {
+                        if (
+                                skill instanceof MysticEnergyApotheosisKeydown1
+                                || skill instanceof MysticEnergyApotheosisKeydown2
+                        ) {
                             Timestamp temp = new Timestamp(getStart().getTime());
                             getStart().setTime(getStart().getTime() + i);
                             if (
@@ -760,7 +748,10 @@ public class HoYoungDealCycle extends DealCycle {
                             ) {
                                 addSkillEvent(mysticEnergyExtremeRampageAttack);
                             }
-                            if (cooldownCheck(phantasmalCloneTalismanAttack)) {
+                            if (
+                                    getStart().after(extremeEndTime)
+                                    && cooldownCheck(phantasmalCloneTalismanAttack)
+                            ) {
                                 addSkillEvent(phantasmalCloneTalismanAttack);
                             }
                             getStart().setTime(temp.getTime());
@@ -973,7 +964,10 @@ public class HoYoungDealCycle extends DealCycle {
                 ) {
                     addSkillEvent(mysticEnergyExtremeRampageAttack);
                 }
-                if (cooldownCheck(phantasmalCloneTalismanAttack)) {
+                if (
+                        getStart().after(extremeEndTime)
+                        && cooldownCheck(phantasmalCloneTalismanAttack)
+                ) {
                     addSkillEvent(phantasmalCloneTalismanAttack);
                 }
                 getStart().setTime(tmp.getTime());

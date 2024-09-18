@@ -299,6 +299,11 @@ public class KaiserContinuousDealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (wingBeatTime.size() > 0) {
             for (int i = 0; i < wingBeatTime.size(); i++) {
                 if (wingBeatTime.get(i).before(getStart())) {
@@ -551,7 +556,7 @@ public class KaiserContinuousDealCycle extends DealCycle {
     public void applyCooldown(Skill skill) {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
-                Long ran = (long) (Math.random() * 99 + 1);
+                Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
                     if (skill instanceof WallOfSword) {
                         skill.setActivateTime(new Timestamp(getStart().getTime() + 3000));
@@ -567,7 +572,7 @@ public class KaiserContinuousDealCycle extends DealCycle {
                     && getStart().before(grandisGoddessBlessingEndTime)
                     && reuseCnt > 0
             ) {
-                Long ran = (long) (Math.random() * 99 + 1);
+                Double ran = Math.random() * 99;
                 if (ran <= 55) {
                     if (skill instanceof WallOfSword) {
                         skill.setActivateTime(new Timestamp(getStart().getTime() + 3000));

@@ -286,6 +286,11 @@ public class CadenaContinuousDealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (skill instanceof BuffSkill) {
             if (skill instanceof ContinuousRing) {
                 continuousRingEndTime = new Timestamp(getStart().getTime() + 8000);
@@ -519,16 +524,22 @@ public class CadenaContinuousDealCycle extends DealCycle {
     public void applyCooldown(Skill skill) {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
-                Long ran = (long) (Math.random() * 99 + 1);
-                if (
-                        getStart().before(grandisGoddessBlessingEndTime)
-                        && reuseCnt > 0
-                ) {
-                    ran -= 55;
-                }
+                Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
-                    reuseCnt--;
-                } else  {
+                    return;
+                } else {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
+                }
+            }
+            if (
+                    skill.isApplyReuse()
+                            && getStart().before(grandisGoddessBlessingEndTime)
+                            && reuseCnt > 0
+            ) {
+                Double ran = Math.random() * 99;
+                if (ran <= getJob().getReuse()) {
+                    return;
+                } else {
                     skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
                 }
             } else {

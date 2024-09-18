@@ -5,9 +5,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DivinePunishment3 extends AttackSkill {
     public DivinePunishment3() {
         this.setName("디바인 퍼니시먼트(3스택)");
-        this.setDamage(535.0);
+        this.setDamage(715.0);
         this.setAttackCount(10L);
-        this.setDelay(1200L * 3 + 120);
+        this.setDelay(3600L + 120);
         this.setDotDuration(3600L);
         this.setInterval(240L);
         this.setLimitAttackCount(15L);

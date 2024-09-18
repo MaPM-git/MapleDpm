@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
-import org.mapledpmlab.type.artifact.Artifact;
+import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
@@ -74,7 +74,7 @@ public class Marksman extends Job {
         this.addSubStat(-5L);
 
         this.setAbility(new BossCriticalAbnormal());
-        this.setArtifact(new Artifact());
+        this.setArtifactNormal(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new AdventurerCuriosity());
         for (Link link : this.getLinkList()) {
@@ -87,7 +87,7 @@ public class Marksman extends Job {
         this.setUnion(new DexUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifact());
+        this.addObject(this.getArtifactNormal());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));

@@ -3,7 +3,7 @@ package org.mapledpmlab.type.job;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapledpmlab.type.ability.Ability;
-import org.mapledpmlab.type.artifact.Artifact;
+import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.Hyper;
@@ -22,7 +22,7 @@ public class Job extends Common {
     private JobType jobType;
     private Long weaponAttMagic;
     private Ability ability;
-    private Artifact artifact;
+    private ArtifactNormal artifactNormal;
     private Hyper hyper;
     private List<Link> linkList = new ArrayList<>();
     private Union union;
@@ -213,6 +213,20 @@ public class Job extends Common {
                 this.getSubStat()
                 * (1 + this.getAllStatP() * 0.01))
                 + this.getPerXSubStat();
+    }
+
+    public Long getFinalOtherStat1() {
+        return (long) Math.floor(
+                this.getOtherStat1()
+                * (1 + this.getAllStatP() * 0.01))
+                + this.getPerXOtherStat();
+    }
+
+    public Long getFinalOtherStat2() {
+        return (long) Math.floor(
+                this.getOtherStat2()
+                * (1 + this.getAllStatP() * 0.01))
+                + this.getPerXOtherStat();
     }
 
     public Long getAp() {

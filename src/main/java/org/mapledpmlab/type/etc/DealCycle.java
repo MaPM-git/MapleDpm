@@ -11,8 +11,10 @@ import org.mapledpmlab.type.skill.attackskill.common.CrestOfTheSolarDot;
 import org.mapledpmlab.type.skill.attackskill.common.SpiderInMirrorDot;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.RestraintRing;
+import org.mapledpmlab.type.skill.buffskill.common.RingOfSum;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -25,7 +27,7 @@ public class DealCycle {
     private AttackSkill finalAttack = null;
     private Job job = null;
     private Timestamp start = new Timestamp(0);
-    private Timestamp end = new Timestamp(12 * 60 * 1000);
+    private Timestamp end = new Timestamp(680 * 1000);
     private List<AttackSkill> attackSkillList;
     private List<AttackSkill> delaySkillList;
     private List<BuffSkill> buffSkillList;
@@ -43,6 +45,9 @@ public class DealCycle {
     Long fortyDeal;
     Long originXRestraintRingDeal;
     public int i=0;
+    boolean isRingOfSum = false;
+    public String skillLog = "";
+    public SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss.SSS");
 
     public DealCycle() {}
 
@@ -68,6 +73,11 @@ public class DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
             if (
@@ -155,7 +165,7 @@ public class DealCycle {
     public void applyCooldown(Skill skill) {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
-                Long ran = (long) (Math.random() * 99 + 1);
+                Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
                 } else  {
                     skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
@@ -224,6 +234,15 @@ public class DealCycle {
     public void applyDoping() {
         getJob().Doping();
         setTotalDamage(calcTotalDamage(getEventTimeList()));
+        for (AttackSkill attackSkill : attackSkillList) {
+            attackSkill.setUseCountStr(attackSkill.getUseCountStr() + "전체 : " + attackSkill.getUseCount());
+            attackSkill.setCumulativeAttackCountStr(attackSkill.getCumulativeAttackCountStr() + "전체 : " + attackSkill.getCumulativeAttackCount());
+            attackSkill.setShareStr(attackSkill.getShareStr() + "전체 : " + attackSkill.getShare());
+        }
+        setDPM(getTotalDamage() / 12);
+        setRestraintRingDeal(calcRestraintRingDeal());
+        setFortyDeal(calcFortyDeal());
+        setOriginXRestraintRingDeal(calcOriginXRestraintDeal());
     }
 
     public void print() {
@@ -243,10 +262,6 @@ public class DealCycle {
     }
 
     public Object[] getObject() {
-        setDPM(getTotalDamage() / 12);
-        setRestraintRingDeal(calcRestraintRingDeal());
-        setFortyDeal(calcFortyDeal());
-        setOriginXRestraintRingDeal(calcOriginXRestraintDeal());
         Object[] result = new Object[]{
                 this.getJob().getName(), String.valueOf(this.getDPM()),
                 "=TEXT(" + getDPM() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(B2:B100),0)),\"0.0%\")", String.valueOf(this.getRestraintRingDeal()),
@@ -302,6 +317,12 @@ public class DealCycle {
             }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             for (SkillEvent skillEvent : useBuffSkillList) {
+                if (
+                        !isRingOfSum
+                        && skillEvent.getSkill() instanceof RingOfSum
+                ) {
+                    isRingOfSum = true;
+                }
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
                 buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
@@ -336,6 +357,7 @@ public class DealCycle {
                     }
                 }
             }
+            isRingOfSum = false;
         }
         for (AttackSkill as : getAttackSkillList()) {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
@@ -366,8 +388,20 @@ public class DealCycle {
         return attackDamage;
     }
 
+    public Long getRingOfSumStat() {
+        return (long) Math.floor(
+                (
+                        this.getJob().getFinalMainStat()
+                        + this.getJob().getFinalSubstat()
+                        + this.getJob().getFinalOtherStat1()
+                        + this.getJob().getFinalOtherStat2()
+                ) * 0.02
+        );
+    }
+
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
+        Long ringOfSumStat = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         for (AttackSkill as : getAttackSkillList()) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
@@ -375,6 +409,10 @@ public class DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                if (isRingOfSum) {
+                    ringOfSumStat = getRingOfSumStat();
+                    this.getJob().addMainStat(ringOfSumStat);
+                }
                 if (attackSkill instanceof DotAttackSkill) {
                     attackDamage = getDotDamage(attackSkill, buffSkill);
                 } else {
@@ -400,6 +438,9 @@ public class DealCycle {
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
+                if (isRingOfSum) {
+                    this.getJob().addMainStat(-ringOfSumStat);
+                }
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                     as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());
@@ -420,6 +461,7 @@ public class DealCycle {
             as.setShare(0.0);
             as.setUseCount(0L);
             as.setCumulativeDamage(0L);
+            as.setCumulativeAttackCount(0L);
         }
         List<Timestamp> tmp = new ArrayList<>();
         for (Timestamp ts : getEventTimeList()) {
@@ -430,7 +472,13 @@ public class DealCycle {
                 tmp.add(ts);
             }
         }
-        return calcTotalDamage(tmp);
+        Long restraintRingDeal = calcTotalDamage(tmp);
+        for (AttackSkill attackSkill : attackSkillList) {
+            attackSkill.setUseCountStr(attackSkill.getUseCountStr() + "\n15초 : " + attackSkill.getUseCount());
+            attackSkill.setCumulativeAttackCountStr(attackSkill.getCumulativeAttackCountStr() + "\n15초 : " + attackSkill.getCumulativeAttackCount());
+            attackSkill.setShareStr(attackSkill.getShareStr() + "\n15초 : " + attackSkill.getShare());
+        }
+        return restraintRingDeal;
     }
 
     public Long calcFortyDeal() {
@@ -438,6 +486,7 @@ public class DealCycle {
             as.setShare(0.0);
             as.setUseCount(0L);
             as.setCumulativeDamage(0L);
+            as.setCumulativeAttackCount(0L);
         }
         List<Timestamp> tmp = new ArrayList<>();
         for (Timestamp ts : getEventTimeList()) {
@@ -448,7 +497,13 @@ public class DealCycle {
                 tmp.add(ts);
             }
         }
-        return calcTotalDamage(tmp);
+        Long fortyDeal = calcTotalDamage(tmp);
+        for (AttackSkill attackSkill : attackSkillList) {
+            attackSkill.setUseCountStr(attackSkill.getUseCountStr() + "\n40초 : " + attackSkill.getUseCount());
+            attackSkill.setCumulativeAttackCountStr(attackSkill.getCumulativeAttackCountStr() + "\n40초 : " + attackSkill.getCumulativeAttackCount());
+            attackSkill.setShareStr(attackSkill.getShareStr() + "\n40초 : " + attackSkill.getShare());
+        }
+        return fortyDeal;
     }
 
     public Long calcOriginXRestraintDeal() {
@@ -456,6 +511,7 @@ public class DealCycle {
             as.setShare(0.0);
             as.setUseCount(0L);
             as.setCumulativeDamage(0L);
+            as.setCumulativeAttackCount(0L);
         }
         List<Timestamp> tmp = new ArrayList<>();
         for (Timestamp ts : getEventTimeList()) {
@@ -466,7 +522,13 @@ public class DealCycle {
                 tmp.add(ts);
             }
         }
-        return calcTotalDamage(tmp);
+        Long originXRestraintRingDeal = calcTotalDamage(tmp);
+        for (AttackSkill attackSkill : attackSkillList) {
+            attackSkill.setUseCountStr(attackSkill.getUseCountStr() + "\n오리진X 15초 : " + attackSkill.getUseCount());
+            attackSkill.setCumulativeAttackCountStr(attackSkill.getCumulativeAttackCountStr() + "\n오리진X 15초 : " + attackSkill.getCumulativeAttackCount());
+            attackSkill.setShareStr(attackSkill.getShareStr() + "\n오리진X 15초 : " + attackSkill.getShare());
+        }
+        return originXRestraintRingDeal;
     }
 
     public void calcDps() {
@@ -474,14 +536,15 @@ public class DealCycle {
             as.setShare(0.0);
             as.setUseCount(0L);
             as.setCumulativeDamage(0L);
+            as.setCumulativeAttackCount(0L);
         }
-        for (int i = 0; i < 720; i = i + 5) {
+        for (int i = 0; i < 680; i = i + 1) {
             List<Timestamp> tmp = new ArrayList<>();
             Long dps = 0L;
             for (Timestamp ts : getEventTimeList()) {
                 if (
                         (ts.equals(new Timestamp(i * 1000L)) || ts.after(new Timestamp(i * 1000L)))
-                        && (ts.equals(new Timestamp((i + 5) * 1000L)) || ts.before(new Timestamp((i + 5) * 1000L)))
+                        && (ts.equals(new Timestamp((i + 1) * 1000L)) || ts.before(new Timestamp((i + 1) * 1000L)))
                 ) {
                     tmp.add(ts);
                 }

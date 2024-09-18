@@ -219,7 +219,7 @@ public class ViperDealCycle extends DealCycle {
     public void applyCooldown(Skill skill) {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
-                Long ran = (long) (Math.random() * 99 + 1);
+                Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
                 } else  {
                     if (skill instanceof SeaSerpentEnrage && getStart().before(stimulateEndTime)) {
@@ -306,6 +306,11 @@ public class ViperDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof Stimulate) {

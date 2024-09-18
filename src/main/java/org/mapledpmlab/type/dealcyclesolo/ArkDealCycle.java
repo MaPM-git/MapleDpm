@@ -361,6 +361,11 @@ public class ArkDealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t게이지 : " + gauge + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t게이지 : " + gauge + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (
                 isSpecter
                 && cooldownCheck(specterGauge)

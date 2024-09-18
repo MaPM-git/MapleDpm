@@ -1,10 +1,12 @@
 package org.mapledpmlab.type.artifact;
 
-public class DemonAvengerArtifact extends Artifact {
+import org.mapledpmlab.type.etc.Common;
 
-    public DemonAvengerArtifact() {
+public class ArtifactNormal extends Common {
+
+    public ArtifactNormal() {
         this.setDescription("아티팩트" +
-                "\n1.부스탯 150" +
+                "\n1.올스탯 150" +
                 "\n2.최대 HP 7500" +
                 "\n3.공격력/마력 30" +
                 "\n4.보스 공격 시 데미지 15%" +
@@ -17,7 +19,10 @@ public class DemonAvengerArtifact extends Artifact {
                 "\n11.다수 공격 스킬의 최대 공격 가능 대상 수 1 증가" +
                 "\n12.데미지 15%"
         );
+        this.addMainStat(150L);
         this.addSubStat(150L);
+        this.addOtherStat1(150L);
+        this.addOtherStat2(150L);
         this.addHp(7500L);
         this.addAtt(30L);
         this.addMagic(30L);

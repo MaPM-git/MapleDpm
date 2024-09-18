@@ -240,6 +240,11 @@ public class KinesisDealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\tPP : " + psychicPoint + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\tPP : " + psychicPoint + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (drainTime.size() > 0) {
             for (int i = 0; i < drainTime.size(); i++) {
                 if (drainTime.get(i).before(getStart())) {

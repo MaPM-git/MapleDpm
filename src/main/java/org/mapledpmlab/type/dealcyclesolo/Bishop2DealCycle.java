@@ -57,7 +57,6 @@ public class Bishop2DealCycle extends DealCycle {
             add(new CrestOfTheSolarDot());
             add(new DivinePunishmentDelay());
             add(new DivinePunishment());
-            add(new DivinePunishment4());
             /*add(new DivinePunishment9());
             add(new DivinePunishment2());*/
             add(new FountainForAngel());
@@ -143,8 +142,6 @@ public class Bishop2DealCycle extends DealCycle {
         divinePunishment2.setRelatedSkill(new DivinePunishment2());
         divinePunishment2.setCooldown(8.5 * 2);*/
 
-        divinePunishment4.setRelatedSkill(new DivinePunishment4());
-        divinePunishment4.setCooldown(48.0);
     }
 
     @Override
@@ -546,6 +543,11 @@ public class Bishop2DealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (skill instanceof BuffSkill) {
             if (
                     skill instanceof RestraintRing
@@ -632,11 +634,9 @@ public class Bishop2DealCycle extends DealCycle {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         if (
-                                skill instanceof DivinePunishment9
-                                || skill instanceof DivinePunishment1
-                                || skill instanceof DivinePunishment3
-                                || skill instanceof DivinePunishment
-                                || skill instanceof DivinePunishment4
+                                skill instanceof DivinePunishment2
+                                        || skill instanceof DivinePunishment3
+                                        || skill instanceof DivinePunishment
                         ) {
                             Timestamp t = new Timestamp(getStart().getTime());
                             getStart().setTime(getStart().getTime() + i);

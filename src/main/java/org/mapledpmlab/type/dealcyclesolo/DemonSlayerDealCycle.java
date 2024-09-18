@@ -258,6 +258,11 @@ public class DemonSlayerDealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\tDF : " + demonForce + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\tDF : " + demonForce + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (skill instanceof BuffSkill) {
             if (
                     skill instanceof RestraintRing

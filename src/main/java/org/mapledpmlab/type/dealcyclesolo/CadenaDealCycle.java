@@ -297,6 +297,11 @@ public class CadenaDealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (skill instanceof BuffSkill) {
             if (skill instanceof SoulContract) {
                 soulContractEndTime = new Timestamp(getStart().getTime() + 20000);
@@ -493,7 +498,7 @@ public class CadenaDealCycle extends DealCycle {
     public void applyCooldown(Skill skill) {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
-                Long ran = (long) (Math.random() * 99 + 1);
+                Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
                     return;
                 } else {
@@ -505,7 +510,7 @@ public class CadenaDealCycle extends DealCycle {
                             && getStart().before(grandisGoddessBlessingEndTime)
                             && reuseCnt > 0
             ) {
-                Long ran = (long) (Math.random() * 99 + 1);
+                Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
                     return;
                 } else {

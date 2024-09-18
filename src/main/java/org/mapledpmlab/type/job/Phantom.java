@@ -1,8 +1,7 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossAbnormalReuse;
-import org.mapledpmlab.type.ability.BossCriticalAbnormal;
-import org.mapledpmlab.type.artifact.Artifact;
+import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
@@ -72,13 +71,13 @@ public class Phantom extends Job {
         this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalReuse());
-        this.setArtifact(new Artifact());
+        this.setArtifactNormal(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new LukUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifact());
+        this.addObject(this.getArtifactNormal());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

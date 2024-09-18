@@ -11,5 +11,6 @@ public class UnstableMemorize extends BuffSkill {
         this.setName("언스테이블 메모라이즈");
         this.setDelay(870L);
         this.setRelatedSkill(new Infinity(0L));
+        this.setCooldown(340.0);
     }
 }

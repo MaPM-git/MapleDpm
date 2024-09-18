@@ -111,7 +111,7 @@ public class ArchMageILDealCycle extends DealCycle {
 
 
         // 인피니티 달구기
-        getStart().setTime(-75000);
+        getStart().setTime(-75000 - 4500);
         infinity.setActivateTime(new Timestamp(-80000));
         thunderSpear.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
@@ -135,7 +135,7 @@ public class ArchMageILDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(infinity)
-                            && getStart().after(infinityEndTime)
+                            && getStart().after(new Timestamp(infinityEndTime.getTime() - 5000))
             ) {
                 addSkillEvent(thunderSpear);
                 addSkillEvent(infinity);
@@ -145,8 +145,9 @@ public class ArchMageILDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(unstableMemorize)
-                            && getStart().after(infinityEndTime)
+                    && getStart().after(new Timestamp(infinityEndTime.getTime() - 5000))
             ) {
+                unstableMemorize = new UnstableMemorize();
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (ran <= 1) {
                     unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.8);
@@ -186,16 +187,8 @@ public class ArchMageILDealCycle extends DealCycle {
                 }
             }
             if (
-                    cooldownCheck(epicAdventure)
-                            && cooldownCheck(iceAuraInstall)
-                            && cooldownCheck(spiritOfSnow)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(iceAgeDot)
-                            && cooldownCheck(jupiterThunder)
-                            && cooldownCheck(frozenOrb)
-                            && cooldownCheck(thunderBreak)
-                            && cooldownCheck(lightningSphere)
-                            && getStart().after(infinityFinalTime)
+                    cooldownCheck(jupiterThunder)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
@@ -207,12 +200,13 @@ public class ArchMageILDealCycle extends DealCycle {
                 } else {
                     addSkillEvent(chainLightning);
                 }
+                while (!cooldownCheck(iceAuraInstall)) {
+                    addSkillEvent(chainLightning);
+                }
                 addSkillEvent(iceAuraInstall);
                 addSkillEvent(spiritOfSnow);
                 addSkillEvent(soulContract);
-                if (cooldownCheck(freezingBreathBuff)) {
-                    addSkillEvent(freezingBreathBuff);
-                }
+                addSkillEvent(freezingBreathBuff);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else {
@@ -224,24 +218,27 @@ public class ArchMageILDealCycle extends DealCycle {
                     addSkillEvent(frozenLightning1);
                 }
                 addSkillEvent(frozenOrb);
+                while (!cooldownCheck(thunderBreak)) {
+                    addSkillEvent(chainLightning);
+                }
                 addSkillEvent(thunderBreak);
                 addSkillEvent(lightningSphere);
                 dealCycleOrder ++;
             } else if (
-                    cooldownCheck(iceAuraInstall)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(iceAgeDot)
-                            && cooldownCheck(lightningSphere)
-                            && !cooldownCheck(epicAdventure)
+                    cooldownCheck(iceAgeDot)
+                    && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(iceAuraInstall);
                 addSkillEvent(soulContract);
                 addSkillEvent(iceAgeDot);
                 addSkillEvent(lightningSphere);
             } else if (
-                    cooldownCheck(thunderBreak)
+                    getStart().after(new Timestamp(thunderBreak.getActivateTime().getTime() - 1000))
                             && !cooldownCheck(epicAdventure)
             ) {
+                while (!cooldownCheck(thunderBreak)) {
+                    addSkillEvent(chainLightning);
+                }
                 addSkillEvent(thunderBreak);
             } else if (
                     cooldownCheck(frozenOrb)
@@ -360,6 +357,11 @@ public class ArchMageILDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof JupiterThunder) {
             jupiterThunderStartList.add(new Timestamp(getStart().getTime()));

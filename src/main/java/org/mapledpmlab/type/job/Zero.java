@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
-import org.mapledpmlab.type.artifact.Artifact;
+import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperZero;
@@ -52,13 +52,13 @@ public class Zero extends Job {
         this.addSubStat(10L);
 
         this.setAbility(new ReuseBossAbnormal());
-        this.setArtifact(new Artifact());
+        this.setArtifactNormal(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Confidence());
         this.setUnion(new StrUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifact());
+        this.addObject(this.getArtifactNormal());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperZero(this.getLevel(), this.getCriticalP()));

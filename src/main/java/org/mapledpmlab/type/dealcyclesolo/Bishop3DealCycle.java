@@ -545,6 +545,11 @@ public class Bishop3DealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         if (skill instanceof BuffSkill) {
             if (
                     skill instanceof RestraintRing
@@ -626,10 +631,9 @@ public class Bishop3DealCycle extends DealCycle {
                     Long attackCount = 0L;
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         if (
-                                skill instanceof DivinePunishment9
-                                || skill instanceof DivinePunishment1
-                                || skill instanceof DivinePunishment3
-                                || skill instanceof DivinePunishment
+                                skill instanceof DivinePunishment2
+                                        || skill instanceof DivinePunishment3
+                                        || skill instanceof DivinePunishment
                         ) {
                             Timestamp t = new Timestamp(getStart().getTime());
                             getStart().setTime(getStart().getTime() + i);

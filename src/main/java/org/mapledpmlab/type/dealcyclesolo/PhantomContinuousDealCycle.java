@@ -101,18 +101,9 @@ public class PhantomContinuousDealCycle extends DealCycle {
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
-                    cooldownCheck(finalCutBuff)
-                            && cooldownCheck(heroesOath)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(bullsEye)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(readyToDie)
-                            && cooldownCheck(blackJackBeforeDelay)
-                            && cooldownCheck(markOfPhantom)
-                            && cooldownCheck(riftBreak)
-                            && cooldownCheck(jokerBeforeDelay)
-                            && cooldownCheck(roseCarteFinale)
-                            && getStart().before(new Timestamp(600 * 1000))
+                    cooldownCheck(bullsEye)
+                    && getStart().before(new Timestamp(660 * 1000))
+                    && getStart().after(new Timestamp(blackJackBeforeDelay.getActivateTime().getTime() - 2670))
             ) {
                 isNuke = true;
                 addSkillEvent(finalCutBuff);
@@ -135,6 +126,16 @@ public class PhantomContinuousDealCycle extends DealCycle {
                     addSkillEvent(defyingFate);
                 }
                 addSkillEvent(riftBreak);
+                while (!cooldownCheck(jokerBeforeDelay)) {
+                    if (cooldownCheck(blackJackBeforeDelay)) {
+                        addSkillEvent(blackJackBeforeDelay);
+                    } else if (cooldownCheck(tempestOfCardBeforeDelay)) {
+                        addSkillEvent(tempestOfCardBeforeDelay);
+                        applyCooldown(tempestOfCardBeforeDelay);
+                    } else {
+                        addSkillEvent(ultimateDrive);
+                    }
+                }
                 addSkillEvent(jokerBeforeDelay);
                 if (cooldownCheck(blackJackBeforeDelay)) {
                     addSkillEvent(blackJackBeforeDelay);
@@ -148,8 +149,6 @@ public class PhantomContinuousDealCycle extends DealCycle {
                             && cooldownCheck(readyToDie)
                             && cooldownCheck(blackJackBeforeDelay)
                             && cooldownCheck(markOfPhantom)
-                            && cooldownCheck(riftBreak)
-                            && cooldownCheck(roseCarteFinale)
             ) {
                 addSkillEvent(finalCutBuff);
                 addSkillEvent(preparationPhantom);
@@ -158,7 +157,6 @@ public class PhantomContinuousDealCycle extends DealCycle {
                 addSkillEvent(blackJackBeforeDelay);
                 addSkillEvent(markOfPhantom);
                 addSkillEvent(riftBreak);
-                addSkillEvent(roseCarteFinale);
             } else if (
                     cooldownCheck(markOfPhantom)
                             && (
@@ -183,16 +181,11 @@ public class PhantomContinuousDealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(roseCarteFinale);
-            } else if (
-                    cooldownCheck(blackJackBeforeDelay)
-                            && (
-                            getStart().before(new Timestamp(readyToDie.getActivateTime().getTime() + 10000))
-                                    || getStart().after(new Timestamp(660 * 1000))
-                    )
-            ) {
+            } else if (cooldownCheck(blackJackBeforeDelay)) {
                 addSkillEvent(blackJackBeforeDelay);
             } else if (cooldownCheck(tempestOfCardBeforeDelay)) {
                 addSkillEvent(tempestOfCardBeforeDelay);
+                applyCooldown(tempestOfCardBeforeDelay);
             } else {
                 addSkillEvent(ultimateDrive);
             }
@@ -207,6 +200,11 @@ public class PhantomContinuousDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
             if (

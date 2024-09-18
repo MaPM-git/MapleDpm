@@ -9,6 +9,6 @@ public class PassiveBossReuse extends Ability {
                 "\n3.재사용 대기시간 미적용 10%\n"
         );
         this.addBossDamage(10L);
-        this.addReuse(10L);
+        this.addReuse(10.0);
     }
 }

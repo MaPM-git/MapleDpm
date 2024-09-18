@@ -1,13 +1,12 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
-import org.mapledpmlab.type.artifact.Artifact;
+import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PirateBlessing;
-import org.mapledpmlab.type.union.DexUnion;
 import org.mapledpmlab.type.union.DexUnion2;
 
 import java.util.stream.Collectors;
@@ -75,13 +74,13 @@ public class Captain extends Job {
         this.addSubStat(-5L);
 
         this.setAbility(new ReuseBossAbnormal());
-        this.setArtifact(new Artifact());
+        this.setArtifactNormal(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PirateBlessing());
         this.setUnion(new DexUnion2());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifact());
+        this.addObject(this.getArtifactNormal());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

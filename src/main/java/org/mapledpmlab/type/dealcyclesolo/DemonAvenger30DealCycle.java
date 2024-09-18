@@ -277,6 +277,11 @@ public class DemonAvenger30DealCycle extends DealCycle {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
         }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\tHP : " + hp + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\tHP : " + hp + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         int j = 0;
         if (hpTime.size() > 0) {
             for (int i = 0; i < hpTime.size(); i++) {

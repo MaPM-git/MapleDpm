@@ -103,7 +103,7 @@ public class MarksmanDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(130.0);
+        ringSwitching.setCooldown(120.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
 
         snipeList.add(snipe);
@@ -114,22 +114,14 @@ public class MarksmanDealCycle extends DealCycle {
 
     @Override
     public void setSoloDealCycle() {
-        int snipeCount = 1;
+        int snipeCount = 3;
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(freezer)) {
                 addSkillEvent(freezer);
             }
             if (
-                    cooldownCheck(splitArrowBuff)
-                            && cooldownCheck(repeatingCrossbowCartridgeBuff)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(bullsEye)
-                            && cooldownCheck(evolve)
-                            && cooldownCheck(criticalReinforce)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(chargedArrow)
-                            && cooldownCheck(trueSnipe)
+                    cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(splitArrowBuff);
                 addSkillEvent(repeatingCrossbowCartridgeBuff);
@@ -153,7 +145,10 @@ public class MarksmanDealCycle extends DealCycle {
                 } else if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
                 }
-                addSkillEvent(chargedArrow);
+                if (cooldownCheck(chargedArrow)) {
+                    addSkillEvent(snipeList.get(snipeCount % 4));
+                    snipeCount++;
+                }
                 addSkillEvent(trueSnipe);
                 if (cooldownCheck(finalAimWave)) {
                     splitArrow6th = 13;
@@ -176,11 +171,6 @@ public class MarksmanDealCycle extends DealCycle {
             ) {
                 addSkillEvent(soulContract);
                 addSkillEvent(trueSnipe);
-            } else if (
-                    cooldownCheck(chargedArrow)
-                            && !cooldownCheck(trueSnipe)
-            ) {
-                addSkillEvent(chargedArrow);
             } else {
                 addSkillEvent(snipeList.get(snipeCount % 4));
                 snipeCount++;
@@ -196,6 +186,11 @@ public class MarksmanDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof SplitArrowBuff) {
@@ -229,6 +224,16 @@ public class MarksmanDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    cooldownCheck(chargedArrow)
+                    && (
+                            skill instanceof Snipe
+                            || skill instanceof EnhanceSnipe
+                            || skill instanceof UltimateSnipe
+                    )
+            ) {
+                addSkillEvent(chargedArrow);
+            }
             if (
                     getStart().before(splitArrowEndTime)
                     && (

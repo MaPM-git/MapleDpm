@@ -63,6 +63,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
             add(new MagicCircuitFullDriveBuff());
             add(new RestoreBuff());
             add(new RestraintRing());
+            add(new RingOfSum());
             add(new RingSwitching());
             add(new SoulContract());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
@@ -93,6 +94,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
     OrderRestore orderRestore = new OrderRestore();
     RestoreBuff restoreBuff = new RestoreBuff();
     RestraintRing restraintRing = new RestraintRing();
+    RingOfSum ringOfSum = new RingOfSum();
     RingSwitching ringSwitching = new RingSwitching();
     Ruin ruin = new Ruin();
     Shard shard = new Shard();
@@ -114,12 +116,12 @@ public class AdeleMarkerDealCycle extends DealCycle {
 
     public AdeleMarkerDealCycle(Job job) {
         super(job, null);
-        getJob().setName("아델");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(90.0);
+        ringSwitching.setCooldown(57.0);
+        ringSwitching.setApplyCooldownReduction(false);
 
         impale.setCooldown(58.0);       // 스택 유지만
 
@@ -141,21 +143,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
             if (cooldownCheck(order3)) {
                 addSkillEvent(order3);
             }
-            if (
-                    cooldownCheck(auraWeaponBuff)
-                            //&& cooldownCheck(impale)
-                            && cooldownCheck(wrathOfGod)
-                            && cooldownCheck(restoreBuff)
-                            && cooldownCheck(infinite)
-                            && cooldownCheck(gathering)
-                            && cooldownCheck(squall)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(storm)
-                            && cooldownCheck(ruin)
-                            && cooldownCheck(marker1)
-                            && getStart().before(new Timestamp(600 * 1000))
-            ) {
+            if (cooldownCheck(restraintRing)) {
                 addSkillEvent(auraWeaponBuff);
                 if (cooldownCheck(impale)) {
                     addSkillEvent(impale);
@@ -228,14 +216,13 @@ public class AdeleMarkerDealCycle extends DealCycle {
                 storm.setActivateTime(new Timestamp(stormRestore.getActivateTime().getTime()));
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().after(new Timestamp(50 * 1000))
                             && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(storm)
                             && !cooldownCheck(wrathOfGod)
-                            && cooldownCheck(weaponJumpRing)
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(storm);
@@ -247,8 +234,10 @@ public class AdeleMarkerDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(auraWeaponBuff.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(soulContract);
-                if (cooldownCheck(grandisGoddessBlessingLef)) {
+                if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
+                } else {
+                    addSkillEvent(ringOfSum);
                 }
                 addSkillEvent(ruin);
                 addSkillEvent(marker1);
@@ -310,6 +299,11 @@ public class AdeleMarkerDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
             return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof MagicCircuitFullDriveBuff) {
@@ -482,7 +476,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
     public void applyCooldown(Skill skill) {
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
-                Long ran = (long) (Math.random() * 99 + 1);
+                Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
                     if (skill instanceof Territory) {
                         skill.setActivateTime(new Timestamp(getStart().getTime() + 7200));

@@ -1,14 +1,13 @@
 package org.mapledpmlab.type.JobContinuous;
 
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
-import org.mapledpmlab.type.artifact.Artifact;
+import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperDemonAvenger;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.link.CygnusBlessing;
 import org.mapledpmlab.type.link.IronWill;
-import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.DemonAvengerUnion;
 
 import java.util.stream.Collectors;
@@ -99,13 +98,13 @@ public class DemonAvengerContinuous extends Job {
         this.addMainStat(-50L);
 
         this.setAbility(new ReuseBossAbnormal());
-        this.setArtifact(new Artifact());
+        this.setArtifactNormal(new ArtifactNormal());
         this.getLinkList().add(new IronWill());
         this.getLinkList().add(new CygnusBlessing());
         this.setUnion(new DemonAvengerUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifact());
+        this.addObject(this.getArtifactNormal());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperDemonAvenger(this.getLevel(), this.getCriticalP()));
