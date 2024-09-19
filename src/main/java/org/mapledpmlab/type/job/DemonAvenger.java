@@ -5,7 +5,8 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperDemonAvenger;
-import org.mapledpmlab.type.link.*;
+import org.mapledpmlab.type.link.IronWill;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.DemonAvengerUnion;
 
 import java.util.stream.Collectors;
@@ -94,13 +95,13 @@ public class DemonAvenger extends Job {
         this.addMainStat(-20L);
 
         this.setAbility(new ReuseBossAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new IronWill());
-        this.getLinkList().add(new CygnusBlessing());
+        this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new DemonAvengerUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperDemonAvenger(this.getLevel(), this.getCriticalP()));

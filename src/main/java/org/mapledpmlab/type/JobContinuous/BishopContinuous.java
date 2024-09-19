@@ -78,14 +78,14 @@ public class BishopContinuous extends Job {
         this.addMainStat(90L);          // 프레이 강화
 
         this.setAbility(new BuffBossAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

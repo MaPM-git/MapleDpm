@@ -6,7 +6,7 @@ import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.Confidence;
-import org.mapledpmlab.type.link.HybridLogic;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
 
 import java.util.stream.Collectors;
@@ -80,14 +80,14 @@ public class Striker extends Job {
         this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
-        this.setArtifactNormal(new ArtifactNormal());
-        this.getLinkList().add(new HybridLogic());
+        this.setArtifact(new ArtifactNormal());
+        this.getLinkList().add(new PhantomInstinct());
         this.getLinkList().add(new Confidence());
         this.setUnion(new StrUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));

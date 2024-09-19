@@ -81,14 +81,14 @@ public class Bishop extends Job {
         this.addMagic(-7L);
 
         this.setAbility(new BuffBossAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
@@ -101,8 +101,8 @@ public class Bishop extends Job {
         addFinalDamage(1.01);           // 브레싱 앙상블
         addDamage(40L);                 // 아케인 에임
         addIgnoreDefenseList(44L);      // 엔젤릭 터치 상시 유지
-        this.addAtt(-51L);              // 어드밴스드 블레스
-        this.addMagic(-51L);
+        this.addAtt(-50L);              // 세이람의 영약
+        this.addMagic(-50L);
         this.addBossDamage(-10L);
     }
 

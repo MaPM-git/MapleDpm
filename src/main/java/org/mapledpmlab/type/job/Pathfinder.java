@@ -56,7 +56,7 @@ public class Pathfinder extends Job {
         this.addIgnoreDefenseList(30L);
 
         // 4차
-        this.addCriticalP(21.0 - 20 - 10);   // 샤프 아이즈
+        this.addCriticalP(21.0 - 10);   // 샤프 아이즈
         this.addCriticalDamage(16.0 - 8);
         this.addAttP(21L);              // 에디셔널 트랜지션
         this.addAtt(62L);               // 에이션트 보우 엑스퍼트
@@ -69,7 +69,7 @@ public class Pathfinder extends Job {
         this.addSubStat(-2L);
 
         this.setAbility(new BossCriticalReuse());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new AdventurerCuriosity());
         for (Link link : this.getLinkList()) {
@@ -83,7 +83,7 @@ public class Pathfinder extends Job {
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
@@ -95,7 +95,7 @@ public class Pathfinder extends Job {
         super.Doping();
         this.addCriticalDamage(10.0);   // 고대의 저주 디버프 5중첩
         this.addFinalDamage(1.08);      // 에인션트 가이던스
-        this.addCriticalP(-1.0);        // 샤프 아이즈
+        this.addCriticalP(-20.0);       // 세이람의 영약
         this.addCriticalDamage(-16.0);
     }
 }

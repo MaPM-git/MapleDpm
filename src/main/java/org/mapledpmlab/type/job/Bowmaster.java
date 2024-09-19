@@ -57,7 +57,7 @@ public class Bowmaster extends Job {
 
         // 4차
         this.addFinalDamage(1.06);      // 어드밴스드 퀴버
-        this.addCriticalP(26.0 - 20 - 10);   // 샤프 아이즈
+        this.addCriticalP(26.0 - 10);   // 샤프 아이즈
         this.addCriticalDamage(16.0 - 8);
         this.addIgnoreDefenseList(5L);
         this.addAtt(62L);               // 보우 엑스퍼트
@@ -73,7 +73,7 @@ public class Bowmaster extends Job {
         this.addSubStat(-5L);
 
         this.setAbility(new BossCriticalAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new AdventurerCuriosity());
         for (Link link : this.getLinkList()) {
@@ -87,7 +87,7 @@ public class Bowmaster extends Job {
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
@@ -98,7 +98,7 @@ public class Bowmaster extends Job {
     public void Doping() {
         super.Doping();
         this.addDamage(35L);            // 모탈 블로우
-        this.addCriticalP(-6.0);        // 샤프 아이즈
+        this.addCriticalP(-20.0);       // 세이람의 영약
         this.addCriticalDamage(-16.0);
     }
 }

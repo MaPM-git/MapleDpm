@@ -72,14 +72,14 @@ public class Kain extends Job {
         this.addSubStat(-5L);
 
         this.setAbility(new PassiveBossCritical());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PhantomInstinct());
         this.setUnion(new DexUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));

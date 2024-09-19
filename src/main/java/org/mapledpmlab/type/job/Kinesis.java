@@ -5,8 +5,8 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperKinesis;
-import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
 
 import java.util.stream.Collectors;
@@ -78,14 +78,14 @@ public class Kinesis extends Job {
         this.addSubStat(5L);
 
         this.setAbility(new PassiveBossAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
-        this.getLinkList().add(new HybridLogic());
+        this.setArtifact(new ArtifactNormal());
+        this.getLinkList().add(new PhantomInstinct());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
         this.addPerXMainStat(20L);
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperKinesis(this.getLevel(), this.getCriticalP()));

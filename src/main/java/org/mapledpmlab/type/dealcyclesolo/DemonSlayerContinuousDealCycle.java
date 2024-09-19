@@ -111,7 +111,7 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
         super(job, null);
 
         if (getJob() instanceof DemonSlayerNormalContinuous) {
-            getJob().setName("데몬슬레이어\n(극포실, 환산 84318, 컨티)");
+            getJob().setName("데몬슬레이어(극포실, 환산 84318, 컨티)");
         }
 
         this.setAttackSkillList(attackSkillList);

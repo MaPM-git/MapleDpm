@@ -1,8 +1,6 @@
 package org.mapledpmlab.type.artifact;
 
-import org.mapledpmlab.type.etc.Common;
-
-public class ArtifactNormal extends Common {
+public class ArtifactNormal extends Artifact {
 
     public ArtifactNormal() {
         this.setDescription("아티팩트" +

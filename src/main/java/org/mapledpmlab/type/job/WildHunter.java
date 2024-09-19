@@ -69,7 +69,7 @@ public class WildHunter extends Job {
         this.addAtt(10L);
 
         // 4차
-        this.addCriticalP(21.0 - 20 - 10);   // 샤프 아이즈
+        this.addCriticalP(21.0 - 10);   // 샤프 아이즈
         this.addCriticalDamage(16.0 - 8);
         this.addFinalDamage(1.2);       // 익스텐드 매거진
         this.addMainStat(62L);
@@ -87,7 +87,7 @@ public class WildHunter extends Job {
         //this.addSubStat(-10L);
 
         this.setAbility(new BossCriticalAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         for (Link link : this.getLinkList()) {
             if (link instanceof CygnusBlessing) {
@@ -99,7 +99,7 @@ public class WildHunter extends Job {
         this.setUnion(new DexUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
@@ -110,7 +110,7 @@ public class WildHunter extends Job {
     public void Doping() {
         super.Doping();
         this.addAttP(-10L);             // 하울링
-        this.addCriticalP(-1.0);        // 샤프 아이즈
+        this.addCriticalP(-20.0);       // 세이람의 영약
         this.addCriticalDamage(-16.0);
     }
 }

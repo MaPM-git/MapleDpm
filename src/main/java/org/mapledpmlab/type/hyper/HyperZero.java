@@ -16,7 +16,7 @@ public class HyperZero extends Hyper {
 
         point -= 60;        // TF 7레벨
 
-        criticalP = 100.0;
+        criticalP = 95.0;
         if (criticalP <= 70) {
         } else if (criticalP < 100) {
             Long reqCriticalP = (long) (100 - criticalP);

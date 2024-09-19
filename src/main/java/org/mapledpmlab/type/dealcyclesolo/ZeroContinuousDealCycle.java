@@ -340,6 +340,15 @@ public class ZeroContinuousDealCycle extends DealCycle {
         getJob().Doping();
         job2.Doping();
         setTotalDamage(calcTotalDamage(getEventTimeList()));
+        for (AttackSkill attackSkill : attackSkillList) {
+            attackSkill.setUseCountStr(attackSkill.getUseCountStr() + "전체 : " + attackSkill.getUseCount());
+            attackSkill.setCumulativeAttackCountStr(attackSkill.getCumulativeAttackCountStr() + "전체 : " + attackSkill.getCumulativeAttackCount());
+            attackSkill.setShareStr(attackSkill.getShareStr() + "전체 : " + attackSkill.getShare());
+        }
+        setDPM(getTotalDamage() / 12);
+        setRestraintRingDeal(calcRestraintRingDeal());
+        setFortyDeal(calcFortyDeal());
+        setOriginXRestraintRingDeal(calcOriginXRestraintDeal());
     }
 
     public void alphaCycle() {

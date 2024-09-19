@@ -3,7 +3,7 @@ package org.mapledpmlab.type.job;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapledpmlab.type.ability.Ability;
-import org.mapledpmlab.type.artifact.ArtifactNormal;
+import org.mapledpmlab.type.artifact.Artifact;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.Hyper;
@@ -22,7 +22,7 @@ public class Job extends Common {
     private JobType jobType;
     private Long weaponAttMagic;
     private Ability ability;
-    private ArtifactNormal artifactNormal;
+    private Artifact artifact;
     private Hyper hyper;
     private List<Link> linkList = new ArrayList<>();
     private Union union;
@@ -97,7 +97,6 @@ public class Job extends Common {
         this.addOtherStat2(6L);
         this.addAtt(30L);               // 블링크
         this.addMagic(30L);
-        this.addCriticalP(20.0);        // 세이람의 영약
 
         this.addCriticalDamage(4.55);   // 헥사스탯1(크공보 866)
         this.addAtt(30L);
@@ -152,12 +151,13 @@ public class Job extends Common {
         this.addMainStat(30L);          // 향상된 10단계 물약
         this.addAtt(50L);               // 275 인기도
         this.addMagic(50L);
-        this.addAttP(10L);              // 세이람의 영약
+        this.addCriticalP(20.0);        // 세이람의 영약
+        this.addCriticalDamage(16.0);
+        this.addAttP(10L);
         this.addMagicP(10L);
         this.addAtt(50L);
         this.addMagic(50L);
         this.addBossDamage(10L);
-        this.addCriticalDamage(16.0);
         this.addMainStat(15L);          // VIP 버프
         this.addSubStat(15L);
         this.addOtherStat1(15L);

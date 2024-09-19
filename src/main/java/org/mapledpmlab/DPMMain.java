@@ -42,11 +42,10 @@ public class DPMMain {
             bishopContinuous.setName(String.valueOf(i));
             dealCycleList.add(new Bishop2ContinuousDealCycle(bishopContinuous));
         }*/
-        dealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
-        dealCycleList.add(new MarksmanDealCycle(new Marksman()));
+        /*dealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
+        dealCycleList.add(new MarksmanDealCycle(new Marksman()));*/
 
-
-        /*dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
+        dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
@@ -126,7 +125,7 @@ public class DPMMain {
         dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         dealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
         dealCycleList.add(new ZeroContinuousDealCycle(new ZeroAlphaContinuous()));
-        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));*/
+        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
         /*for (DealCycle dealCycle : dealCycleList) {
             if (dealCycle instanceof ZeroContinuousDealCycle) {
                 dealCycle.getJobInfo();
@@ -157,7 +156,7 @@ public class DPMMain {
 
             // Save the SVG to a file
             try {
-                OutputStream outputStream = new FileOutputStream(new File("버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
+                OutputStream outputStream = new FileOutputStream(new File("../버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
                 Writer out = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
                 svgGenerator.stream(out, true);
             } catch (IOException e) {
@@ -337,7 +336,7 @@ public class DPMMain {
                     dealCycle.getJob().getUnion().getDescription() + dealCycle.getJob().getUnion(),
                     dealCycle.getJob().getLinkListStr(),
                     dealCycle.getJob().getHyper().getDescription() + dealCycle.getJob().getHyper(),
-                    dealCycle.getJob().getArtifactNormal().getDescription() + dealCycle.getJob().getArtifactNormal(),
+                    dealCycle.getJob().getArtifact().getDescription() + dealCycle.getJob().getArtifact(),
                     dealCycle.getJob().getAbility().getDescription() + dealCycle.getJob().getAbility()
             });
 
@@ -602,7 +601,7 @@ public class DPMMain {
 
         // Save the SVG to a file
         try {
-            OutputStream outputStream = new FileOutputStream(new File("버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
+            OutputStream outputStream = new FileOutputStream(new File("../버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg"));
             Writer out = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
             svgGenerator.stream(out, true);
         } catch (IOException e) {
@@ -610,15 +609,15 @@ public class DPMMain {
         }
 
         try {
-            String svgPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg";
-            String pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.png";
+            String svgPath = "../버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.svg";
+            String pngPath = "../버프 시간/" + dealCycle.getJob().getName() + " 버프 시간.png";
 
             SVGDocument svgDocument = new SVGDocument(svgPath);
             ImageSaveOptions options = new ImageSaveOptions(ImageFormat.Png);
             Converter.convertSVG(svgDocument, options, pngPath);
             svgDocument.dispose();
 
-            pngPath = "버프 시간/" + dealCycle.getJob().getName() + " 버프 시간_1.png";
+            pngPath = "../버프 시간/" + dealCycle.getJob().getName() + " 버프 시간_1.png";
             InputStream is = new FileInputStream(pngPath);
             byte[] bytes = IOUtils.toByteArray(is);
 

@@ -78,7 +78,7 @@ public class MercedesContinuous extends Job {
         this.addSubStat(10L);
 
         this.setAbility(new BossCriticalAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         for (Link link : this.getLinkList()) {
             if (link instanceof CygnusBlessing) {
@@ -90,7 +90,7 @@ public class MercedesContinuous extends Job {
         this.setUnion(new DexUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));

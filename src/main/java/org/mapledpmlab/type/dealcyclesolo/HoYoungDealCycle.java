@@ -175,7 +175,6 @@ public class HoYoungDealCycle extends DealCycle {
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(mysticEnergyExtremeCloneRampage)) {
-                System.out.println(getStart() + "\t극딜");
                 addSkillEvent(phantasmalCloneTalisman);
                 addSkillEvent(fistMethodButterflyDreamBuff);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -206,7 +205,6 @@ public class HoYoungDealCycle extends DealCycle {
                     cooldownCheck(chasingGhostTalisman)
                     && getStart().before(new Timestamp(mysticEnergyExtremeCloneRampage.getActivateTime().getTime() - 5000))
             ) {
-                System.out.println(getStart() + "\t준극딜");
                 addSkillEvent(fistMethodButterflyDreamBuff);
                 addSkillEvent(mysticEnergyTaeulDivineMedicine);
                 addSkillEvent(chasingGhostTalisman);
@@ -217,7 +215,6 @@ public class HoYoungDealCycle extends DealCycle {
                 addSkillEvent(readyToDie);
                 addSkillEvent(weaponJumpRing);
             } else if (getStart().after(finalTime)) {
-                System.out.println(getStart() + "\t막타");
                 addSkillEvent(adventOfGods);
                 finalTime = new Timestamp(720 * 1000);
             } else if (
@@ -225,7 +222,6 @@ public class HoYoungDealCycle extends DealCycle {
                             && getStart().after(new Timestamp(80 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                System.out.println(getStart() + "\t시드링");
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(fistMethodInhalingVortex)

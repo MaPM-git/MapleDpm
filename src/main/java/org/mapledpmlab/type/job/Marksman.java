@@ -59,7 +59,7 @@ public class Marksman extends Job {
         this.addFinalDamage(1.08);      // 어드밴스드 인핸스 애로우
         this.addIgnoreDefenseList(20L);
         this.addIgnoreDefenseList(31L); // 애로우 일루전
-        this.addCriticalP(26.0 - 20 - 10);   // 샤프 아이즈
+        this.addCriticalP(26.0 - 10);   // 샤프 아이즈
         this.addCriticalDamage(16.0 - 8);
         this.addIgnoreDefenseList(5L);
         this.addAtt(31L);               // 크로스보우 엑스퍼트
@@ -74,7 +74,7 @@ public class Marksman extends Job {
         this.addSubStat(-5L);
 
         this.setAbility(new BossCriticalAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
+        this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new AdventurerCuriosity());
         for (Link link : this.getLinkList()) {
@@ -87,7 +87,7 @@ public class Marksman extends Job {
         this.setUnion(new DexUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
@@ -100,7 +100,7 @@ public class Marksman extends Job {
         this.addDamage(2L);             // 모탈 블로우
         this.addFinalDamage(1.04);      // 포커스 온
         this.addIgnoreDefenseList(13L);
-        this.addCriticalP(-6.0);        // 샤프 아이즈
+        this.addCriticalP(-20.0);       // 세이람의 영약
         this.addCriticalDamage(-16.0);
     }
 }

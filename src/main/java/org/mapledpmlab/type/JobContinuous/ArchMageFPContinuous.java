@@ -6,8 +6,8 @@ import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.job.Job;
-import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
 
 import java.util.stream.Collectors;
@@ -72,13 +72,13 @@ public class ArchMageFPContinuous extends Job {
         //this.addSubStat(-5L);
 
         this.setAbility(new BuffBossAbnormal());
-        this.setArtifactNormal(new ArtifactNormal());
-        this.getLinkList().add(new HybridLogic());
+        this.setArtifact(new ArtifactNormal());
+        this.getLinkList().add(new PhantomInstinct());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new IntUnion());
 
         this.addObject(this.getAbility());
-        this.addObject(this.getArtifactNormal());
+        this.addObject(this.getArtifact());
         this.addObject(this.getLinkList().stream().map(s -> (Common) s).collect(Collectors.toList()));
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
