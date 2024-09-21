@@ -106,6 +106,8 @@ public class NightLordDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
+        ((AttackSkill) lifeOrDeathSlash.getRelatedSkill()).setDotDuration(((AttackSkill) lifeOrDeathSlash.getRelatedSkill()).getDotDuration() + 3000);
+
         ringSwitching.setCooldown(90.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
     }

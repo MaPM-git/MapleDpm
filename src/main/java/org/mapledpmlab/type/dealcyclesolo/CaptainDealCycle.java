@@ -105,6 +105,9 @@ public class CaptainDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
+        bulletParty.getRelatedSkill().setDelay(bulletParty.getDelay() + 3000);
+        ((AttackSkill) bulletParty.getRelatedSkill()).setDotDuration(((AttackSkill) bulletParty.getRelatedSkill()).getDotDuration() + 3000);
+
         ringSwitching.setCooldown(100.0);
 
         luckyDice.setCooldown(180.0);

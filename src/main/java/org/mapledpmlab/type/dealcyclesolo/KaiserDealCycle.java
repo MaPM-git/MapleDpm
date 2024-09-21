@@ -127,6 +127,8 @@ public class KaiserDealCycle extends DealCycle {
         auraWeaponBuff.setApplyCooldownReduction(false);
         grandisGoddessBlessingNova.setCooldown(120.0);
 
+        dragonBlaze.setDotDuration(dragonBlaze.getDotDuration() + 3000);
+
         soulContract.setApplyReuse(true);
         for (Skill skill : buffSkillList) {
             if (skill instanceof SoulContract) {

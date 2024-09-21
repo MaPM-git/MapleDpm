@@ -151,6 +151,8 @@ public class MercedesDealCycle extends DealCycle {
         criticalReinforce.setDelay(criticalReinforce.getDelay() / 2);
         elementalGhost.setDelay(elementalGhost.getDelay() / 2);
 
+        ((AttackSkill) royalKnights.getRelatedSkill()).setDotDuration(((AttackSkill) royalKnights.getRelatedSkill()).getDotDuration() + 3000);
+
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
         wrathOfEnlil.setDelayByAttackSpeed(270L);

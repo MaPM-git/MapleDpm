@@ -114,6 +114,8 @@ public class MechanicDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
+        ((AttackSkill) groundZeroEarthquake.getRelatedSkill().getRelatedSkill()).setDotDuration(((AttackSkill) groundZeroEarthquake.getRelatedSkill().getRelatedSkill()).getDotDuration() + 3000);
+
         ringSwitching.setCooldown(95.0);
 
         luckyDice.setCooldown(180.0);

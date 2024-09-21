@@ -89,6 +89,8 @@ public class DarkKnightDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
+        darknessAuraDot.setDotDuration(darknessAuraDot.getDotDuration() + 3000);
+
         for (int i = 0; i < 720 * 1000; i += beholderDominant.getInterval()) {
             getSkillEventList().add(new SkillEvent(beholderDominant, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));

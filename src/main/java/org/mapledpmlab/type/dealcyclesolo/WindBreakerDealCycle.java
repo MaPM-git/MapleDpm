@@ -108,6 +108,8 @@ public class WindBreakerDealCycle extends DealCycle {
             }
         }
 
+        stoneWind.setDotDuration(stoneWind.getDotDuration() + 3000);
+
         getJob().addCooldownReductionSec(-1L);
         getJob().addMainStatP(8L);
 

@@ -119,6 +119,8 @@ public class KaiserContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
+        dragonBlaze.setDotDuration(dragonBlaze.getDotDuration() + 3000);
+
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         grandisGoddessBlessingNova.setCooldown(120.0);
