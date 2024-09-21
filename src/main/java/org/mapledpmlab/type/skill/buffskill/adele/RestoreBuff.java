@@ -16,5 +16,6 @@ public class RestoreBuff extends BuffSkill {
         this.setBuffDamage(45L);
         this.setBuffFinalDamage(1.1);
         this.setRelatedSkill(new Restore());
+        this.setApplyServerLag(true);
     }
 }

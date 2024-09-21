@@ -12,5 +12,6 @@ public class SpreadThrow extends BuffSkill {
         this.setCooldown(180.0);
         this.setDelay(540L);
         this.setDuration(50L);
+        this.setApplyServerLag(true);
     }
 }

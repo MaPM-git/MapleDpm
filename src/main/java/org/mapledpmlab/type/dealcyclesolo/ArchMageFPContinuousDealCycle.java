@@ -382,19 +382,25 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 if (skill instanceof Infinity) {
-                    infinityEndTime = new Timestamp(getStart().getTime() + 120000);
+                    infinityEndTime = new Timestamp(getStart().getTime() + 123000);
                     for (long i = 0; i < 75000; i += 5000) {
                         getSkillEventList().add(new SkillEvent(new Infinity(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 5000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 5000));
                     }
-                    getSkillEventList().add(new SkillEvent(new Infinity(75000L), new Timestamp(getStart().getTime() + 75000), new Timestamp(getStart().getTime() + 120000)));
-                    endTime = new Timestamp(getStart().getTime() + 120000);
+                    getSkillEventList().add(new SkillEvent(new Infinity(75000L), new Timestamp(getStart().getTime() + 75000), new Timestamp(getStart().getTime() + 123000)));
+                    endTime = new Timestamp(getStart().getTime() + 123000);
                 } else {
                     endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                    if (skill.isApplyServerLag()) {
+                        endTime = new Timestamp(endTime.getTime() + 3000);
+                    }
                     getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 }
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
@@ -590,6 +596,18 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isInfernalVenomBuff = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
@@ -614,16 +632,6 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                for (BuffSkill bs : buffSkillList) {
-                    if (
-                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                            && start.equals(skillEvent.getStart())
-                    ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
-                    }
-                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);

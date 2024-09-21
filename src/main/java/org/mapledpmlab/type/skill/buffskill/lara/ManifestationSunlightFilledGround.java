@@ -15,5 +15,6 @@ public class ManifestationSunlightFilledGround extends BuffSkill {
         this.addBuffDamage(25L);
         this.setApplyPlusBuffDuration(true);
         this.setApplyCooldownReduction(false);
+        this.setApplyServerLag(true);
     }
 }

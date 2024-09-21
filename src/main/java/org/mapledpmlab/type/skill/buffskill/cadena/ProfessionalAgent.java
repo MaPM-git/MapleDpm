@@ -12,5 +12,6 @@ public class ProfessionalAgent extends BuffSkill {
         this.setDelay(720L);
         this.setDuration(30L);
         this.setCooldown(180.0);
+        this.setApplyServerLag(true);
     }
 }

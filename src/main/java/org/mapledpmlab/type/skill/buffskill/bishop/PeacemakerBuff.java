@@ -11,5 +11,6 @@ public class PeacemakerBuff extends BuffSkill {
         this.setName("피스메이커(신성한 빛)");
         this.setBuffDamage(11L);
         this.setDuration(8L);
+        this.setApplyServerLag(true);
     }
 }

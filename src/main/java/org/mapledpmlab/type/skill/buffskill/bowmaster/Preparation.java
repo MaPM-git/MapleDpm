@@ -14,5 +14,6 @@ public class Preparation extends BuffSkill {
         this.setDuration(40L);
         this.setBuffDamage(20L);
         this.setBuffAttMagic(50L);
+        this.setApplyServerLag(true);
     }
 }

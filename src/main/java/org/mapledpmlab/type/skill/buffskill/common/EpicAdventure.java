@@ -13,5 +13,6 @@ public class EpicAdventure extends BuffSkill {
         this.setCooldown(120.0);
         this.setDuration(60L);
         this.setBuffDamage(10L);
+        this.setApplyServerLag(true);
     }
 }

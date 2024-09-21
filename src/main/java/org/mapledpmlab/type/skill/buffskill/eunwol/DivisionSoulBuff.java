@@ -14,5 +14,6 @@ public class DivisionSoulBuff extends BuffSkill {
         this.setDuration(30L);
         this.addBuffFinalDamage(1.2);
         this.setRelatedSkill(new DivisionSoul());
+        this.setApplyServerLag(true);
     }
 }

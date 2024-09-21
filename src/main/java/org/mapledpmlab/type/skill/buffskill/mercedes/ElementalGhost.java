@@ -12,5 +12,6 @@ public class ElementalGhost extends BuffSkill {
         this.setDelay(720L);
         this.setCooldown(180.0);
         this.setDuration(90L);
+        this.setApplyServerLag(true);
     }
 }

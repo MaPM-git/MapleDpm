@@ -11,5 +11,6 @@ public class GroundZeroBombardment extends AttackSkill {
         this.setInterval(1200L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
+        this.setApplyServerLag(true);
     }
 }

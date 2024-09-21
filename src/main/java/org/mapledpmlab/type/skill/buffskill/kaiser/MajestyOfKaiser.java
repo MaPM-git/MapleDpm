@@ -13,5 +13,6 @@ public class MajestyOfKaiser extends BuffSkill {
         this.addBuffAttMagic(30L);
         this.setDelay(900L);
         this.setCooldown(90.0);
+        this.setApplyServerLag(true);
     }
 }

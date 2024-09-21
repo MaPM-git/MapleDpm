@@ -12,5 +12,6 @@ public class MysticEnergyExtremeCloneRampage extends BuffSkill {
         this.setDelay(900L);
         this.setDuration(30L);
         this.setCooldown(180.0);
+        this.setApplyServerLag(true);
     }
 }

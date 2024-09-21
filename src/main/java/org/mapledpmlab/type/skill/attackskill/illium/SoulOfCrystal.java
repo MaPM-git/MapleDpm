@@ -8,5 +8,6 @@ public class SoulOfCrystal extends AttackSkill {
         this.setDelay(660L);
         this.setCooldown(40.0);
         this.setApplyCooldownReduction(false);
+        this.setApplyServerLag(true);
     }
 }

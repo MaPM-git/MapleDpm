@@ -13,5 +13,6 @@ public class FistMethodButterflyDreamBuff extends BuffSkill {
         this.setDuration(100L);
         this.addBuffFinalDamage(1.1);
         this.setDelay(600L);
+        this.setApplyServerLag(true);
     }
 }

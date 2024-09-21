@@ -14,5 +14,6 @@ public class PreparationPhantom extends BuffSkill {
         this.setDuration(30L);
         this.setBuffDamage(20L);
         this.setBuffAttMagic(50L);
+        this.setApplyServerLag(true);
     }
 }

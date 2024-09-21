@@ -13,5 +13,6 @@ public class LightningForm extends BuffSkill {
         this.setDuration(80L);
         this.setCooldown(180.0);
         this.addBuffFinalDamage(1.26);
+        this.setApplyServerLag(true);
     }
 }

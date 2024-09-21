@@ -307,10 +307,10 @@ public class AdeleMarkerDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof MagicCircuitFullDriveBuff) {
-                magicCircuitFullDriveEndTime = new Timestamp(getStart().getTime() + 60000);
+                magicCircuitFullDriveEndTime = new Timestamp(getStart().getTime() + 63000);
             }
             if (skill instanceof RestoreBuff) {
-                restoreEndTime = new Timestamp(getStart().getTime() + 30000);
+                restoreEndTime = new Timestamp(getStart().getTime() + 33000);
             }
             if (
                     skill instanceof RestraintRing
@@ -334,15 +334,20 @@ public class AdeleMarkerDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof BodyOfSteel) {
-                    for (long i = 0; i < 18000; i += 1000) {
+                    for (long i = 0; i < 21000; i += 1000) {
                         getSkillEventList().add(new SkillEvent(new BodyOfSteel(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
-                        getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
                     }
                 }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {

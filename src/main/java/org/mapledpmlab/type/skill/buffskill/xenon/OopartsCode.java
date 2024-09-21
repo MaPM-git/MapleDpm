@@ -14,5 +14,6 @@ public class OopartsCode extends BuffSkill {
         this.addBuffFinalDamage(1.3);
         this.addBuffDamage(31L);
         this.setApplyPlusBuffDuration(true);
+        this.setApplyServerLag(true);
     }
 }

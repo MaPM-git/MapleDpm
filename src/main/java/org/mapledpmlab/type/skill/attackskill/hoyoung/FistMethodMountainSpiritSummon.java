@@ -10,6 +10,7 @@ public class FistMethodMountainSpiritSummon extends AttackSkill {
         this.setCooldown(180.0);
         this.setAttackCount(8L);
         this.setDotDuration(60000L);
+        this.setApplyServerLag(true);
         this.setInterval(3000L);
         this.addFinalDamage(1.6);   // 코어강화
     }

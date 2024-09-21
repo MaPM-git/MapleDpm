@@ -270,6 +270,18 @@ public class CaptainDealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isUntiringNectar = false;
             for (int j = 0; i < useBuffSkillList.size(); i++) {
@@ -291,34 +303,20 @@ public class CaptainDealCycle extends DealCycle {
                 }
             }
             for (SkillEvent skillEvent : useBuffSkillList) {
-                if (skillEvent.getSkill() instanceof BuffSkill) {
-                    buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
-                    buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
-                    buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
-                    buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
-                    buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
-                    buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
-                    buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
-                    buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
-                    buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
-                    buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
-                    buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
-                    buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
-                    buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
-                    buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                    for (BuffSkill bs : buffSkillList) {
-                        if (
-                                bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                                        && start.equals(skillEvent.getStart())
-                        ) {
-                            bs.setUseCount(bs.getUseCount() + 1);
-                            bs.getStartTimeList().add(skillEvent.getStart());
-                            bs.getEndTimeList().add(skillEvent.getEnd());
-                        }
-                    }
-                } else {
-                    useAttackSkillList.add(skillEvent);
-                }
+                buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
+                buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
+                buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
+                buffSkill.addBuffCriticalDamage(((BuffSkill) skillEvent.getSkill()).getBuffCriticalDamage());
+                buffSkill.addBuffCriticalP(((BuffSkill) skillEvent.getSkill()).getBuffCriticalP());
+                buffSkill.addBuffDamage(((BuffSkill) skillEvent.getSkill()).getBuffDamage());
+                buffSkill.addBuffFinalDamage(((BuffSkill) skillEvent.getSkill()).getBuffFinalDamage());
+                buffSkill.addBuffIgnoreDefense(((BuffSkill) skillEvent.getSkill()).getBuffIgnoreDefense());
+                buffSkill.addBuffMainStat(((BuffSkill) skillEvent.getSkill()).getBuffMainStat());
+                buffSkill.addBuffMainStatP(((BuffSkill) skillEvent.getSkill()).getBuffMainStatP());
+                buffSkill.addBuffOtherStat1(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat1());
+                buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
+                buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
+                buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (
@@ -420,12 +418,18 @@ public class CaptainDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof OverdriveDebuff) {
-                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 28000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 31000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
                 } else {
                     endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                    if (skill.isApplyServerLag()) {
+                        endTime = new Timestamp(endTime.getTime() + 3000);
+                    }
                     getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 }
             }

@@ -11,6 +11,7 @@ public class AngelOfLibraCharity extends BuffSkill {
         this.setName("엔젤 오브 리브라(자애의 천사)");
         this.setDuration(4L);
         this.setCooldown(5.0);
+        this.setApplyServerLag(true);
         if (mainStat >= 118750) {
             this.setBuffDamage(5 + 95L);
         } else if (mainStat == 0) {

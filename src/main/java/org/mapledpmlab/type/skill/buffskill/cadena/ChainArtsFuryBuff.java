@@ -12,5 +12,6 @@ public class ChainArtsFuryBuff extends BuffSkill {
         this.setDelay(540L);
         this.setDuration(80L);
         this.setCooldown(180.0);
+        this.setApplyServerLag(true);
     }
 }

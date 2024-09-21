@@ -14,5 +14,6 @@ public class InfinityForce extends GaugeBuffSkill {
         this.setDuration(35L);
         this.setApplyPlusBuffDuration(true);
         this.setGaugeCharge(-100.0);
+        this.setApplyServerLag(true);
     }
 }

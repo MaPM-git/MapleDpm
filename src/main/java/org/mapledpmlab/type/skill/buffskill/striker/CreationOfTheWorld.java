@@ -14,5 +14,6 @@ public class CreationOfTheWorld extends BuffSkill {
         this.setDelay(930L);
         this.addBuffDamage(5L);
         this.addBuffIgnoreDefense(10L);
+        this.setApplyServerLag(true);
     }
 }

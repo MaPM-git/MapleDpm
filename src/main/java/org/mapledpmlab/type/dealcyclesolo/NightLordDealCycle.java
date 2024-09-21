@@ -264,9 +264,15 @@ public class NightLordDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
@@ -351,6 +357,18 @@ public class NightLordDealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof SpreadThrow) {
@@ -373,16 +391,6 @@ public class NightLordDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                for (BuffSkill bs : buffSkillList) {
-                    if (
-                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                                    && start.equals(skillEvent.getStart())
-                    ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
-                    }
-                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);

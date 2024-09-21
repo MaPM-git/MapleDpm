@@ -10,5 +10,6 @@ public class AnnihilationBuff extends BuffSkill {
     public AnnihilationBuff() {
         this.setName("악의의 영지");
         this.setDuration(30L);
+        this.setApplyServerLag(true);
     }
 }

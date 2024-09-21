@@ -12,5 +12,6 @@ public class SoulExaltation extends BuffSkill {
         this.setDuration(20L);
         this.setCooldown(60.0);
         this.addBuffFinalDamage(1.05);
+        this.setApplyServerLag(true);
     }
 }

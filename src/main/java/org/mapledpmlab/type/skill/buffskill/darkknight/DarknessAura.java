@@ -11,5 +11,6 @@ public class DarknessAura extends BuffSkill {
         this.setName("다크니스 오라");
         this.setDelay(600L);
         this.setDuration(40L);
+        this.setApplyServerLag(true);
     }
 }

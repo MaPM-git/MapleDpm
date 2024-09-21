@@ -331,7 +331,7 @@ public class KaiserDealCycle extends DealCycle {
             }
             if (skill instanceof GrandisGoddessBlessingNova) {
                 reuseCnt = 6;
-                grandisGoddessBlessingEndTime = new Timestamp(getStart().getTime() + 40000);
+                grandisGoddessBlessingEndTime = new Timestamp(getStart().getTime() + 43000);
             }
             if (
                     skill instanceof RestraintRing
@@ -355,6 +355,9 @@ public class KaiserDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 if (skill instanceof SoulContract) {
                     soulContractEndTime = new Timestamp(endTime.getTime());
@@ -364,12 +367,15 @@ public class KaiserDealCycle extends DealCycle {
                 }
             } else {
                 if (skill instanceof BodyOfSteel) {
-                    for (long i = 0; i < 18000; i += 1000) {
+                    for (long i = 0; i < 21000; i += 1000) {
                         getSkillEventList().add(new SkillEvent(new BodyOfSteel(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
                     }
                 }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 if (skill instanceof FinalTrance) {
                     finalFigurationEndTime = new Timestamp(endTime.getTime());
@@ -626,6 +632,18 @@ public class KaiserDealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isGradisGoddessBlessing = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
@@ -664,16 +682,6 @@ public class KaiserDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                for (BuffSkill bs : buffSkillList) {
-                    if (
-                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                                    && start.equals(skillEvent.getStart())
-                    ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
-                    }
-                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (isFinalFiguration) {

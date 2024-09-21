@@ -12,5 +12,6 @@ public class SplitArrowBuff extends BuffSkill {
         this.setCooldown(120.0);
         this.setDelay(810L);
         this.setDuration(72L);
+        this.setApplyServerLag(true);
     }
 }

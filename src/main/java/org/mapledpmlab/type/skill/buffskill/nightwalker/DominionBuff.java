@@ -12,5 +12,6 @@ public class DominionBuff extends BuffSkill {
         this.setDelay(360L);
         this.setDuration(30L);
         this.addBuffFinalDamage(1.2);
+        this.setApplyServerLag(true);
     }
 }

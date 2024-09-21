@@ -11,5 +11,6 @@ public class ElementalBlastBuff extends BuffSkill {
         this.setName("엘리멘탈 블래스트");
         this.setDuration(10L);
         this.addBuffFinalDamage(1.2);
+        this.setApplyServerLag(true);
     }
 }

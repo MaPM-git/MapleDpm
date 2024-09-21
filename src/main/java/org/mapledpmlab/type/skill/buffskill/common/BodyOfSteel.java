@@ -14,5 +14,6 @@ public class BodyOfSteel extends BuffSkill {
         this.setDelay(720L);
         this.setDuration(18L);
         this.setCooldown(120.0);
+        this.setApplyServerLag(true);
     }
 }

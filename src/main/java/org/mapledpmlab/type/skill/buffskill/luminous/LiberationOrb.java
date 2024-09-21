@@ -12,5 +12,6 @@ public class LiberationOrb extends BuffSkill {
         this.setDelay(660L);
         this.setCooldown(180.0);
         this.setDuration(45L);
+        this.setApplyServerLag(true);
     }
 }

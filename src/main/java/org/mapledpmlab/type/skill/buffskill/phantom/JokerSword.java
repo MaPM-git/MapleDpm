@@ -11,5 +11,6 @@ public class JokerSword extends BuffSkill {
         this.setName("조커(날카로운 검)");
         this.setDuration(30L);
         this.addBuffFinalDamage(1.06);
+        this.setApplyServerLag(true);
     }
 }

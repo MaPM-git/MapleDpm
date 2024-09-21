@@ -204,7 +204,7 @@ public class AranDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof AdrenalineBoost) {
-                adrenalineEndTime = new Timestamp(getStart().getTime() + 20000);
+                adrenalineEndTime = new Timestamp(getStart().getTime() + 23000);
             }
             if (skill instanceof AdrenalineMaximum) {
                 adrenalineMaximumEndTime = new Timestamp(getStart().getTime() + 10000);
@@ -234,15 +234,21 @@ public class AranDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof BodyOfSteel) {
-                    for (long i = 0; i < 18000; i += 1000) {
+                    for (long i = 0; i < 21000; i += 1000) {
                         getSkillEventList().add(new SkillEvent(new BodyOfSteel(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
                     }
                 }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {

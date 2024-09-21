@@ -21,5 +21,6 @@ public class AuraWeaponBuff extends BuffSkill {
         this.setBuffFinalDamage(1.06);
         this.setBuffIgnoreDefense(16L);
         this.setRelatedSkill(new AuraWeaponDot());
+        this.setApplyServerLag(true);
     }
 }

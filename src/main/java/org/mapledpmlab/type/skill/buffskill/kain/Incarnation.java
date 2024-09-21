@@ -14,5 +14,6 @@ public class Incarnation extends BuffSkill {
         this.addBuffDamage(15L);
         this.addBuffAttMagicPer(15L);
         this.setDuration(40L);
+        this.setApplyServerLag(true);
     }
 }

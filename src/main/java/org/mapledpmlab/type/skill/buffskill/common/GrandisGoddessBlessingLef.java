@@ -13,5 +13,6 @@ public class GrandisGoddessBlessingLef extends BuffSkill {
         this.setDuration(40L);
         this.addBuffAttMagic(100L + att);
         this.setCooldown(120.0);
+        this.setApplyServerLag(true);
     }
 }

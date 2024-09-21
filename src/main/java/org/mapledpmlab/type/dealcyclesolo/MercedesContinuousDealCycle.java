@@ -262,9 +262,9 @@ public class MercedesContinuousDealCycle extends DealCycle {
                 }
             }
             if (skill instanceof ElementalGhost) {
-                elementalGhostEndTime = new Timestamp(getStart().getTime() + 90 * 1000);
+                elementalGhostEndTime = new Timestamp(getStart().getTime() + 93 * 1000);
             } else if (skill instanceof Sylphidia) {
-                sylphidiaEndTime = new Timestamp(getStart().getTime() + 25 * 1000);
+                sylphidiaEndTime = new Timestamp(getStart().getTime() + 28 * 1000);
             } else if (skill instanceof UnfadingGlorySpiritKing) {
                 unfadingGloryEndTime = new Timestamp(getStart().getTime() + 60 * 1000);
             }
@@ -292,9 +292,15 @@ public class MercedesContinuousDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
@@ -945,6 +951,18 @@ public class MercedesContinuousDealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof CriticalReinforce) {
@@ -967,16 +985,6 @@ public class MercedesContinuousDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                for (BuffSkill bs : buffSkillList) {
-                    if (
-                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                                    && start.equals(skillEvent.getStart())
-                    ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
-                    }
-                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);

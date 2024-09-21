@@ -12,5 +12,6 @@ public class AfterImageShock extends BuffSkill {
         this.setDuration(100L);
         this.setDelay(780L);
         this.setCooldown(120.0);
+        this.setApplyServerLag(true);
     }
 }

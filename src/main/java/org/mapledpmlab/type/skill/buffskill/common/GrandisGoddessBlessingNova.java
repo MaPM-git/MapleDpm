@@ -13,5 +13,6 @@ public class GrandisGoddessBlessingNova extends BuffSkill {
         this.setDuration(40L);
         this.setBuffDamage(35L);
         this.setCooldown(120.0);
+        this.setApplyServerLag(true);
     }
 }

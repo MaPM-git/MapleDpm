@@ -13,5 +13,6 @@ public class ShadowSpearBuff extends BuffSkill {
         this.setDelay(360L);
         //this.setDelay(600L);
         this.setDuration(87L);
+        this.setApplyServerLag(true);
     }
 }

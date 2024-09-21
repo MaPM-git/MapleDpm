@@ -9,9 +9,11 @@ public class StormRestore extends AttackSkill {
         this.setAttackCount(8L);
         this.setDelay(780L);
         this.setCooldown(90.0);
-        this.setDotDuration(14700L);
+        //this.setDotDuration(14700L);
+        this.setDotDuration(17700L);
         this.setInterval(300L);
-        this.setLimitAttackCount(49L);
+        //this.setLimitAttackCount(49L);
         this.addFinalDamage(1.6);   // 코어강화
+        this.setApplyServerLag(true);
     }
 }

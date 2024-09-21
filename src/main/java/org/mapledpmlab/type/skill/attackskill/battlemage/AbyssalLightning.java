@@ -7,5 +7,6 @@ public class AbyssalLightning extends AttackSkill {
         this.setName("어비셜 라이트닝");
         this.setDelay(720L);
         this.setCooldown(180.0);
+        this.setApplyServerLag(true);
     }
 }

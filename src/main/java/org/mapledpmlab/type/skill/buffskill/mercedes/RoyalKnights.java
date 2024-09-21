@@ -14,5 +14,6 @@ public class RoyalKnights extends BuffSkill {
         this.setCooldown(180.0);
         this.setDuration(30L);
         this.setRelatedSkill(new RoyalKnightsAttack());
+        this.setApplyServerLag(true);
     }
 }

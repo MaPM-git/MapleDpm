@@ -13,5 +13,6 @@ public class Stimulate extends BuffSkill {
         this.setDuration(90L);
         this.setCooldown(180.0);
         this.addBuffDamage(20L);
+        this.setApplyServerLag(true);
     }
 }

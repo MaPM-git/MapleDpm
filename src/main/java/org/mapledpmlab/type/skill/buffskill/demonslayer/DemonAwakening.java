@@ -13,5 +13,6 @@ public class DemonAwakening extends GaugeBuffSkill {
         this.setDelay(870L);
         this.setDuration(65L);
         this.setGaugeCharge(-100.0);
+        this.setApplyServerLag(true);
     }
 }

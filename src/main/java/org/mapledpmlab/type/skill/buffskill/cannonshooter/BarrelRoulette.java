@@ -13,6 +13,7 @@ public class BarrelRoulette extends BuffSkill {
     public BarrelRoulette() {
         this.setName("오크통 룰렛");
         this.setDelay(840L);
+        this.setApplyServerLag(true);
         ran = (long) (Math.random() * 3 + 1);
         if (ran == 2) {         // 얼음
             this.setBuffCriticalDamage(5.0);

@@ -314,7 +314,7 @@ public class ViperDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof Stimulate) {
-                stimulateEndTime = new Timestamp(getStart().getTime() + 90000);
+                stimulateEndTime = new Timestamp(getStart().getTime() + 3000 + 90000);
             }
             if (skill instanceof LiberateNeptunusBuff) {
                 liberateNeptunusEndTime = new Timestamp(getStart().getTime() + 30000);
@@ -341,12 +341,18 @@ public class ViperDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof OverdriveDebuff) {
-                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 28000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 31000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
                 } else {
                     endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                    if (skill.isApplyServerLag()) {
+                        endTime = new Timestamp(endTime.getTime() + 3000);
+                    }
                     getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 }
             }

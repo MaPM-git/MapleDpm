@@ -260,7 +260,7 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                 continuousRingEndTime = new Timestamp(getStart().getTime() + 8000);
             }
             if (skill instanceof BunkerBuster) {
-                bunkerBusterEndTime = new Timestamp(getStart().getTime() + 45000);
+                bunkerBusterEndTime = new Timestamp(getStart().getTime() + 48000);
             }
             if (
                     skill instanceof SoulContract
@@ -287,6 +287,9 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof BodyOfSteel) {
@@ -296,6 +299,9 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                     }
                 }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
@@ -432,10 +438,10 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
         if (endTime != null) {
             getEventTimeList().add(endTime);
             if (skill instanceof MaximizeCanon) {
-                maximizeCannonEndTime = new Timestamp(getStart().getTime() + 35000);
+                maximizeCannonEndTime = new Timestamp(getStart().getTime() + 38000);
             }
             if (skill instanceof AfterImageShock) {
-                afterImageShockEndTime = new Timestamp(getStart().getTime() + 100000);
+                afterImageShockEndTime = new Timestamp(getStart().getTime() + 103000);
                 afterImageShockActiveCount = 0;
             }
         }
@@ -486,6 +492,18 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isBunkerBuster = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
@@ -515,16 +533,6 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                for (BuffSkill bs : buffSkillList) {
-                    if (
-                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                                    && start.equals(skillEvent.getStart())
-                    ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
-                    }
-                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (

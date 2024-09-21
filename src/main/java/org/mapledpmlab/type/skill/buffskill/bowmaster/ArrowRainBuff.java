@@ -13,5 +13,6 @@ public class ArrowRainBuff extends BuffSkill {
         this.setDelay(510L);
         this.setDuration(70L);
         this.setBuffDamage(30L);
+        this.setApplyServerLag(true);
     }
 }

@@ -13,5 +13,6 @@ public class CriticalReinforce extends BuffSkill {
         this.setDuration(30L);
         this.setDelay(780L);
         this.addBuffCriticalDamage(criticalP / 2);
+        this.setApplyServerLag(true);
     }
 }

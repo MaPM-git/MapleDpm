@@ -10,6 +10,8 @@ public class MeltdownExplosionDebuff extends BuffSkill {
     public MeltdownExplosionDebuff() {
         this.setName("멜트다운 익스플로전");
         this.setDuration(10L);
+        this.addBuffIgnoreDefense(30L);
+        this.setApplyServerLag(true);
         this.setRelatedSkill(new MeltdownExplosionBuff());
     }
 }

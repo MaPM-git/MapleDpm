@@ -12,5 +12,6 @@ public class DragonBlaze extends AttackSkill {
         this.setDotDuration(20000L);
         this.setInterval(240L);
         this.addFinalDamage(1.6);       // 코어 강화
+        this.setApplyServerLag(true);
     }
 }

@@ -10,5 +10,6 @@ public class RoyalKnightsAttack extends AttackSkill {
         this.setDotDuration(30000L);
         this.setInterval(1400L);
         this.addFinalDamage(1.6);           // 코어 강화
+        this.setApplyServerLag(true);
     }
 }

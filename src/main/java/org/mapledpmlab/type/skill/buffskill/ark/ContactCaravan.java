@@ -13,5 +13,6 @@ public class ContactCaravan extends BuffSkill {
         this.setCooldown(600.0);
         this.setDuration(300L);
         this.addBuffDamage(8L);
+        this.setApplyServerLag(true);
     }
 }

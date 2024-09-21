@@ -16,6 +16,7 @@ public class Skill {
     private boolean isApplyReuse = false;
     private String name = "";
     private Skill relatedSkill = null;
+    private boolean isApplyServerLag = false;
 
     public void setDelayByAttackSpeed(Long delay) {
         Double tmp = delay * 0.75;

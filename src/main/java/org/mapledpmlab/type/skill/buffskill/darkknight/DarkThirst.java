@@ -13,5 +13,6 @@ public class DarkThirst extends BuffSkill {
         this.setDelay(900L);
         this.setDuration(25L);
         this.addBuffAttMagic(50L);
+        this.setApplyServerLag(true);
     }
 }

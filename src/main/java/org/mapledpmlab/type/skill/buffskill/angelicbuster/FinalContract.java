@@ -15,5 +15,6 @@ public class FinalContract extends BuffSkill {
         this.setDuration(30L);
         this.addBuffAttMagic(50L);
         this.addBuffIgnoreDefense(30L);
+        this.setApplyServerLag(true);
     }
 }

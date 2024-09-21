@@ -12,5 +12,6 @@ public class AdrenalineBoost extends BuffSkill {
         this.setName("아드레날린 부스트");
         this.setDuration(15L + 5);      // 아드레날린 부스트-퍼시스트
         this.setRelatedSkill(new IceWave());
+        this.setApplyServerLag(true);
     }
 }

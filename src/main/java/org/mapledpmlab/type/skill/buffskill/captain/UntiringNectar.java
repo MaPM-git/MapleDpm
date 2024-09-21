@@ -12,5 +12,6 @@ public class UntiringNectar extends BuffSkill {
         this.setDelay(390L);
         this.setDuration(20L);
         this.setCooldown(90.0);
+        this.setApplyServerLag(true);
     }
 }

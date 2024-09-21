@@ -12,5 +12,6 @@ public class Elysion extends BuffSkill {
         this.setDelay(750L);
         this.setDuration(40L);
         this.setCooldown(180.0);
+        this.setApplyServerLag(true);
     }
 }

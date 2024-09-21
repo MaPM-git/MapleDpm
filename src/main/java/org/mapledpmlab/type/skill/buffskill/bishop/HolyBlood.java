@@ -14,5 +14,6 @@ public class HolyBlood extends BuffSkill {
         this.setDuration(10L);
         this.addBuffFinalDamage(1.15);
         this.setDelay(270L);
+        this.setApplyServerLag(true);
     }
 }

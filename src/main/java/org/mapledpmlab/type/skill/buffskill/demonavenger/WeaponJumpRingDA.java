@@ -14,5 +14,6 @@ public class WeaponJumpRingDA extends GaugeBuffSkill {
         this.setDelay(30L);
         this.setBuffMainStat((long) (weaponAttMagic * 5 * 1.75));
         this.setGaugeCharge(-600.0);
+        this.setApplyServerLag(true);
     }
 }

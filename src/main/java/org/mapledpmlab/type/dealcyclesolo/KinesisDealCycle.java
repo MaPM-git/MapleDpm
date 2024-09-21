@@ -280,10 +280,10 @@ public class KinesisDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof OtherWorldGoddessBlessing) {
-                blessEndTime = new Timestamp(getStart().getTime() + 40000);
+                blessEndTime = new Timestamp(getStart().getTime() + 43000);
             }
             if (skill instanceof PsychicOver) {
-                psychicOverEndTime = new Timestamp(getStart().getTime() + 26000);
+                psychicOverEndTime = new Timestamp(getStart().getTime() + 29000);
                 psychicOverTic.setActivateTime(new Timestamp(getStart().getTime() + 750));
             }
             if (skill instanceof PsychicCharge) {
@@ -314,9 +314,15 @@ public class KinesisDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {

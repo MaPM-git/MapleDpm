@@ -138,6 +138,10 @@ public class BuffSkill extends Skill {
             str = str + "\n쿨타임감소옵션미적용";
             colNum ++;
         }
+        if (isApplyServerLag()) {
+            str = str + "\n서버렉적용";
+            colNum ++;
+        }
         return str;
     }
 

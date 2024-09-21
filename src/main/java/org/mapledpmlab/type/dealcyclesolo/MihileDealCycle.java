@@ -233,7 +233,7 @@ public class MihileDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof SwordOfSoulLightBuff) {
-                swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 35000);
+                swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 38000);
             }
             if (skill instanceof SoulMajesty) {
                 soulMajestyEndTime = new Timestamp(getStart().getTime() + 25000);
@@ -260,21 +260,27 @@ public class MihileDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof TranscendentCygnusBlessing) {
-                    for (long i = 0; i < 45000; i += 4000) {
+                    for (long i = 0; i < 48000; i += 4000) {
                         getSkillEventList().add(new SkillEvent(new TranscendentCygnusBlessing(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 4000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 4000));
                     }
                 }
                 if (skill instanceof BodyOfSteel) {
-                    for (long i = 0; i < 18000; i += 1000) {
+                    for (long i = 0; i < 21000; i += 1000) {
                         getSkillEventList().add(new SkillEvent(new BodyOfSteel(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
                     }
                 }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {

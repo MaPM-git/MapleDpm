@@ -14,5 +14,6 @@ public class Sylphidia extends BuffSkill {
         this.setDuration(25L);
         this.addBuffAttMagicPer(20L);
         this.addBuffFinalDamage(1.05);      // 코어 강화
+        this.setApplyServerLag(true);
     }
 }

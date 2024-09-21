@@ -13,6 +13,7 @@ public class LuckyDiceMechanic extends BuffSkill {
         this.addBuffDamage(20L);                    // 로디드 다이스 5번
         this.setCooldown(180.0);
         this.setDuration(180L);
+        this.setApplyServerLag(true);
         Long ran = (long) (Math.random() * 99 + 1);
         if (ran <= 50) {                            // 더블 럭키 다이스
             ran = (long) (Math.random() * 5 + 1);

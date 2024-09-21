@@ -15,5 +15,6 @@ public class SpotlightBuff extends BuffSkill {
         this.setDuration(30L);
         this.addBuffFinalDamage(1.18);
         this.setRelatedSkill(new Spotlight());
+        this.setApplyServerLag(true);
     }
 }

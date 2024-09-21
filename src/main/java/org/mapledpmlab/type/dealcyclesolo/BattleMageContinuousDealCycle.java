@@ -268,13 +268,13 @@ public class BattleMageContinuousDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof MasterOfDeath) {
-                masterOfDeathEndTime = new Timestamp(getStart().getTime() + 30000);
+                masterOfDeathEndTime = new Timestamp(getStart().getTime() + 33000);
             }
             if (skill instanceof ContinuousRing) {
                 continuousRingEndTime = new Timestamp(getStart().getTime() + 8000);
             }
             if (skill instanceof UnionAura) {
-                unionAuraEndTime = new Timestamp(getStart().getTime() + 40000);
+                unionAuraEndTime = new Timestamp(getStart().getTime() + 43000);
             }
             if (
                     skill instanceof SoulContract
@@ -300,9 +300,15 @@ public class BattleMageContinuousDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
@@ -354,8 +360,8 @@ public class BattleMageContinuousDealCycle extends DealCycle {
             }
             if (skill instanceof AbyssalLightning) {
                 this.abyssalLightningStartTimeList.add(new Timestamp(getStart().getTime()));
-                this.abyssalLightningEndTimeList.add(new Timestamp(getStart().getTime() + 40000));
-                abyssalLightningEndTime = new Timestamp(getStart().getTime() + 40000);
+                this.abyssalLightningEndTimeList.add(new Timestamp(getStart().getTime() + 43000));
+                abyssalLightningEndTime = new Timestamp(getStart().getTime() + 43000);
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -476,6 +482,18 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isMasterOfDeath = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
@@ -499,16 +517,6 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                for (BuffSkill bs : buffSkillList) {
-                    if (
-                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                                    && start.equals(skillEvent.getStart())
-                    ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
-                    }
-                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (

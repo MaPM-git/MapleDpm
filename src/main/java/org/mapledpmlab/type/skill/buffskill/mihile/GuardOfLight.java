@@ -14,5 +14,6 @@ public class GuardOfLight extends BuffSkill {
         this.setDelay(900L);
         this.setDuration(30L);
         this.setApplyPlusBuffDuration(true);
+        this.setApplyServerLag(true);
     }
 }

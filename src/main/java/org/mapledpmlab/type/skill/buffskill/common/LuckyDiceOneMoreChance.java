@@ -13,6 +13,7 @@ public class LuckyDiceOneMoreChance extends BuffSkill {
         this.addBuffDamage(20L);                    // 로디드 다이스 5번
         this.setCooldown(180.0);
         this.setDuration(180L);
+        this.setApplyServerLag(true);
         Long ran = (long) (Math.random() * 3 + 1);
         if (ran == 5) {                             // 5번
             this.addBuffDamage(10L);

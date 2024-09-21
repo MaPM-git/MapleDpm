@@ -13,5 +13,6 @@ public class ShadowdealerElixir extends BuffSkill {
         this.setDuration(60L);
         this.setCooldown(120.0);
         this.addBuffDamage(10L);
+        this.setApplyServerLag(true);
     }
 }

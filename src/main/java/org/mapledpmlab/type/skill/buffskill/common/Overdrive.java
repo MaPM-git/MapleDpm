@@ -13,5 +13,6 @@ public class Overdrive extends BuffSkill {
         this.setDuration(28L);
         this.addBuffAttMagic((long) (att * 0.8));
         this.setRelatedSkill(new OverdriveDebuff(att));
+        this.setApplyServerLag(true);
     }
 }

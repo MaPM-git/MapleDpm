@@ -14,6 +14,7 @@ public class StoneWind extends AttackSkill {
         this.setLimitAttackCount(90L);
         this.setInterval(666L);
         this.setRelatedSkill(new WindWall());
+        this.setApplyServerLag(true);
         this.setCooldown(90.0);
     }
 }

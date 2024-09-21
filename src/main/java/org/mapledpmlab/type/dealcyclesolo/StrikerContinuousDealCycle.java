@@ -252,7 +252,7 @@ public class StrikerContinuousDealCycle extends DealCycle {
                 lightningUnionEndTime = new Timestamp(getStart().getTime() + 62000);
             }
             if (skill instanceof CreationOfTheWorld) {
-                creationOfTheWorldEndTime = new Timestamp(getStart().getTime() + 30000);
+                creationOfTheWorldEndTime = new Timestamp(getStart().getTime() + 3000 + 30000);
                 sharkWaveCount = 0;
                 seaWaveCount = 0;
                 lightningGodSpearStrikeCount = 0;
@@ -281,18 +281,24 @@ public class StrikerContinuousDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof TranscendentCygnusBlessing) {
-                    for (long i = 0; i < 45000; i += 4000) {
+                    for (long i = 0; i < 48000; i += 4000) {
                         getSkillEventList().add(new SkillEvent(new TranscendentCygnusBlessing(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 4000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 4000));
                     }
                 }
                 if (skill instanceof OverdriveDebuff) {
-                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 28000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 31000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
                 } else {
                     endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                    if (skill.isApplyServerLag()) {
+                        endTime = new Timestamp(endTime.getTime() + 3000);
+                    }
                     getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 }
             }

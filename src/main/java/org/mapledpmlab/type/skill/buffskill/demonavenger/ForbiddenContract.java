@@ -14,5 +14,6 @@ public class ForbiddenContract extends GaugeBuffSkill {
         this.setDuration(30L);
         this.setGaugeCharge(-5000.0);
         this.setBuffDamage(10L);
+        this.setApplyServerLag(true);
     }
 }

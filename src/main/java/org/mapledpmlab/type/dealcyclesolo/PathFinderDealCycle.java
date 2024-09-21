@@ -226,13 +226,13 @@ public class PathFinderDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof SoulContract) {
-                soulContractEndTime.setTime((long) (getStart().getTime() + soulContract.getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                soulContractEndTime.setTime((long) (getStart().getTime() + 3000 + soulContract.getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
             }
             if (skill instanceof RelicLiberation) {
-                relicLiberationEndTime = new Timestamp(getStart().getTime() + 30 * 1000);
+                relicLiberationEndTime = new Timestamp(getStart().getTime() + 3000 + 30 * 1000);
             }
             if (skill instanceof RelicEvolution) {
-                relicEvolutionEndTime = new Timestamp(getStart().getTime() + 30 * 1000);
+                relicEvolutionEndTime = new Timestamp(getStart().getTime() + 3000 + 30 * 1000);
             }
             if (
                     skill instanceof RestraintRing
@@ -256,9 +256,15 @@ public class PathFinderDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
@@ -405,6 +411,18 @@ public class PathFinderDealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             boolean isEvolve = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
@@ -453,16 +471,6 @@ public class PathFinderDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                for (BuffSkill bs : buffSkillList) {
-                    if (
-                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                                    && start.equals(skillEvent.getStart())
-                    ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
-                    }
-                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 if (isRelicLiberation) {

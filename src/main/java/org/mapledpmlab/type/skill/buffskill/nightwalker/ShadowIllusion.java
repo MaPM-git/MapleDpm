@@ -13,5 +13,6 @@ public class ShadowIllusion extends BuffSkill {
         this.setDelay(360L);
         //this.setDelay(690L);
         this.setDuration(30L);
+        this.setApplyServerLag(true);
     }
 }

@@ -13,5 +13,6 @@ public class FinalFiguration extends BuffSkill {
         this.setBuffFinalDamage(1.15);
         this.setBuffDamage(10L);        // 공격모드 3차 강화
         this.setApplyPlusBuffDuration(true);
+        this.setApplyServerLag(true);
     }
 }

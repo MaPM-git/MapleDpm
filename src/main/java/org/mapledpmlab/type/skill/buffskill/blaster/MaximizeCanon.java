@@ -12,5 +12,6 @@ public class MaximizeCanon extends BuffSkill {
         this.setDuration(35L);
         this.setDelay(870L);
         this.setCooldown(120.0);
+        this.setApplyServerLag(true);
     }
 }

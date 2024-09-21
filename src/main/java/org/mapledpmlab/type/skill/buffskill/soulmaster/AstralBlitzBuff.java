@@ -14,5 +14,6 @@ public class AstralBlitzBuff extends BuffSkill {
         this.setDuration(20L);
         this.setCooldown(360.0);
         this.setRelatedSkill(new AstralBlitz1());
+        this.setApplyServerLag(true);
     }
 }

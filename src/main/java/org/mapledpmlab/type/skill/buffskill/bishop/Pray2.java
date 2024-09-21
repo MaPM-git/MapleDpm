@@ -12,6 +12,7 @@ public class Pray2 extends BuffSkill {
         this.setCooldown(120.0);
         this.setDuration(40L);
         this.setDelay(360L);
+        this.setApplyServerLag(true);
         if (mainStat >= 81000) {
             this.setBuffFinalDamage(1.23 + 0.27);
         } else if (mainStat == 0) {

@@ -11,5 +11,6 @@ public class SalamanderMischiefBuff extends BuffSkill {
         this.setName("샐리맨더 미스칩(버프)");
         this.setDuration(30L);
         this.addBuffAttMagic(105L);
+        this.setApplyServerLag(true);
     }
 }

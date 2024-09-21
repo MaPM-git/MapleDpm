@@ -178,7 +178,7 @@ public class AngelicBusterDealCycle extends DealCycle {
                 grandFinaleBuffEndTime = new Timestamp(getStart().getTime() + 30000);
             }
             if (skill instanceof SoulExaltation) {
-                soulExaltationEndTime = new Timestamp(getStart().getTime() + 20000);
+                soulExaltationEndTime = new Timestamp(getStart().getTime() + 23000);
             }
             if (
                     skill instanceof RestraintRing
@@ -202,12 +202,18 @@ public class AngelicBusterDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof OverdriveDebuff) {
-                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 28000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + 31000), new Timestamp(getStart().getTime() + (long) (applyCooldownReduction(skill) * 1000))));
                 } else {
                     endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                    if (skill.isApplyServerLag()) {
+                        endTime = new Timestamp(endTime.getTime() + 3000);
+                    }
                     getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 }
             }

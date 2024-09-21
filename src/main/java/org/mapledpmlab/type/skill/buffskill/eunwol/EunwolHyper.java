@@ -11,5 +11,6 @@ public class EunwolHyper extends BuffSkill {
         this.setName("호주개시");
         this.setCooldown(120.0);
         this.setDuration(30L);
+        this.setApplyServerLag(true);
     }
 }

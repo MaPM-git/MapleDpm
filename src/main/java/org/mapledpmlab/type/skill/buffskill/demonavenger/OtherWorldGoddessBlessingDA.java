@@ -16,5 +16,6 @@ public class OtherWorldGoddessBlessingDA extends GaugeBuffSkill {
         this.addBuffFinalDamage(1.11);
         this.setGaugePer(-5L);
         this.setRelatedSkill(new OtherWorldVoid());
+        this.setApplyServerLag(true);
     }
 }

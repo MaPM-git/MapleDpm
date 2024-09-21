@@ -18,5 +18,6 @@ public class MapleWorldGoddessBlessing extends BuffSkill {
         this.setBuffDamage(20L);
         this.setBuffMainStat((long) ((level + 2) * 5 * 0.16 * 4));
         this.setCooldown(120.0);
+        this.setApplyServerLag(true);
     }
 }

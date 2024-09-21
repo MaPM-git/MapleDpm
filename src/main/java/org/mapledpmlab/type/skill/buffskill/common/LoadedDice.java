@@ -13,5 +13,6 @@ public class LoadedDice extends BuffSkill {
         this.addBuffDamage(20L);                    // 로디드 다이스 5번
         this.setCooldown(180.0);
         this.setDuration(180L);
+        this.setApplyServerLag(true);
     }
 }

@@ -137,7 +137,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
         // 180초마다 리프랙트 이블(900), 디아볼릭 리커버리(900) 사용
         int dealCycleOrder = 1;
         Timestamp buffEndTime1 = new Timestamp(270 * 1000);
-        Timestamp buffEndTime2 = new Timestamp(180 * 1000);
+        Timestamp buffEndTime2 = new Timestamp(183 * 1000);
         Timestamp diabolicRecoveryTime = new Timestamp(5500);
 
         Timestamp roarOfDemonSwordTime = new Timestamp(-1);
@@ -164,7 +164,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
             }
             if (getStart().after(buffEndTime2)) {
                 hp -= 1800;
-                buffEndTime2 = new Timestamp(getStart().getTime() + 180 * 1000);
+                buffEndTime2 = new Timestamp(getStart().getTime() + 183 * 1000);
                 if (getStart().before(revenantEndTime)) {
                     furyStorage += 1800;
                     if (furyStorage >= 300000) {
@@ -373,7 +373,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof ReleaseOverload) {
-                releaseOverloadTime = new Timestamp(getStart().getTime() + 175500);
+                releaseOverloadTime = new Timestamp(getStart().getTime() + 178500);
             }
             if (
                     skill instanceof RestraintRingDA
@@ -397,15 +397,21 @@ public class DemonAvenger30DealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
             } else {
                 if (skill instanceof BodyOfSteelDA) {
-                    for (long i = 0; i < 18000; i += 1000) {
+                    for (long i = 0; i < 21000; i += 1000) {
                         getSkillEventList().add(new SkillEvent(new BodyOfSteelDA(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 1000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 1000));
                     }
                 }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
             }
         } else {
@@ -521,6 +527,18 @@ public class DemonAvenger30DealCycle extends DealCycle {
                     useAttackSkillList.add(skillEvent);
                 }
             }
+            for (SkillEvent skillEvent : useBuffSkillList) {
+                for (BuffSkill bs : buffSkillList) {
+                    if (
+                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
+                                    && start.equals(skillEvent.getStart())
+                    ) {
+                        bs.setUseCount(bs.getUseCount() + 1);
+                        bs.getStartTimeList().add(skillEvent.getStart());
+                        bs.getEndTimeList().add(skillEvent.getEnd());
+                    }
+                }
+            }
             useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
@@ -537,16 +555,6 @@ public class DemonAvenger30DealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
-                for (BuffSkill bs : buffSkillList) {
-                    if (
-                            bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
-                                    && start.equals(skillEvent.getStart())
-                    ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
-                    }
-                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);

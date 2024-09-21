@@ -10,6 +10,7 @@ public class LifeOrDeathJavelin extends AttackSkill {
         this.setDotDuration(60000L);
         this.setInterval(1900L);
         this.setApplyFinalAttack(true);
+        this.setApplyServerLag(true);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
         this.addFinalDamage(0.85);      // 쉐도우 파트너

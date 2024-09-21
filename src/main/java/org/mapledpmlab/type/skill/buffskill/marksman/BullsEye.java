@@ -16,5 +16,6 @@ public class BullsEye extends BuffSkill {
         this.setBuffCriticalDamage(10.0);
         this.setBuffIgnoreDefense(20L);
         this.setBuffDamage(20L);
+        this.setApplyServerLag(true);
     }
 }

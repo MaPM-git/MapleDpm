@@ -296,15 +296,21 @@ public class FlameWizard2DealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 if (skill instanceof TranscendentCygnusBlessing) {
-                    for (long i = 0; i < 45000; i += 4000) {
+                    for (long i = 0; i < 48000; i += 4000) {
                         getSkillEventList().add(new SkillEvent(new TranscendentCygnusBlessing(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 4000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 4000));
                     }
                 }
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
@@ -364,6 +370,20 @@ public class FlameWizard2DealCycle extends DealCycle {
                                 emberCount++;
                             }
                         }
+                        if (
+                                skill instanceof BlazingOrbitalFlame
+                                        || skill instanceof InfinityFlameCircle
+                                        || skill instanceof InfinityFlameCircle5
+                        ) {
+                            orbitalExplosionCount++;
+                            if (orbitalExplosionCount % 11 == 0) {
+                                Timestamp now = new Timestamp(getStart().getTime());
+                                getStart().setTime(getStart().getTime() + i);
+                                addSkillEvent(new OrbitalExplosion());
+                                getStart().setTime(now.getTime());
+                                orbitalExplosionCount = orbitalExplosionCount - 11;
+                            }
+                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
@@ -378,21 +398,12 @@ public class FlameWizard2DealCycle extends DealCycle {
             }
             if (
                     skill instanceof OrbitalFlame
-                    || skill instanceof OrbitalFlameDot
-                    || skill instanceof OrbitalFlameReinforce
-                    || skill instanceof PhoenixDriveFirst
-                    || skill instanceof PhoenixDriveAfterSecond
-                    || skill instanceof BlazingOrbitalFlame
-                    || skill instanceof InfinityFlameCircle
+                            || skill instanceof OrbitalFlameReinforce
             ) {
-                if (((AttackSkill) skill).getLimitAttackCount() != 0) {
-                    orbitalExplosionCount = orbitalExplosionCount + ((AttackSkill) skill).getLimitAttackCount().intValue();
-                } else {
-                    orbitalExplosionCount++;
-                }
-                if (orbitalExplosionCount % 10 == 0) {
+                orbitalExplosionCount++;
+                if (orbitalExplosionCount % 11 == 0) {
                     addSkillEvent(new OrbitalExplosion());
-                    orbitalExplosionCount = orbitalExplosionCount - 10;
+                    orbitalExplosionCount = orbitalExplosionCount - 11;
                 }
             }
             if (
@@ -478,5 +489,29 @@ public class FlameWizard2DealCycle extends DealCycle {
             }
         }
         return attackDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            if (
+                    skill instanceof PhoenixDriveFirst
+                            || skill instanceof PhoenixDriveAfterSecond
+                            || skill instanceof OrbitalFlameDot
+            ) {
+                orbitalExplosionCount++;
+                if (orbitalExplosionCount % 11 == 0) {
+                    Timestamp now = new Timestamp(getStart().getTime());
+                    getStart().setTime(getStart().getTime() + sum);
+                    addSkillEvent(new OrbitalExplosion());
+                    getStart().setTime(now.getTime());
+                    orbitalExplosionCount = orbitalExplosionCount - 11;
+                }
+            }
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
     }
 }

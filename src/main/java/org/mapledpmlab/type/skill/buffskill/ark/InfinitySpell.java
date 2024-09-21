@@ -12,5 +12,6 @@ public class InfinitySpell extends BuffSkill {
         this.setDelay(720L);
         this.setCooldown(120.0);
         this.setDuration(50L);
+        this.setApplyServerLag(true);
     }
 }

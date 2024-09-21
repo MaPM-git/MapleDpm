@@ -15,5 +15,6 @@ public class LightOfCourage extends BuffSkill {
         this.setDelay(750L);
         this.setDuration(35L);
         this.setRelatedSkill(new LightOfCourageAttack());
+        this.setApplyServerLag(true);
     }
 }

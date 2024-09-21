@@ -237,12 +237,12 @@ public class LuminousContinuousDealCycle extends DealCycle {
                 eclipseCnt = 0L;
             }
             if (skill instanceof Equilibrium) {
-                equilibriumEndTime = new Timestamp((long) (getStart().getTime() + ((Equilibrium) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                equilibriumEndTime = new Timestamp((long) (getStart().getTime() + 3000 + ((Equilibrium) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
             } else if (skill instanceof EquilibriumMemorize) {
-                equilibriumEndTime = new Timestamp(getStart().getTime() + ((EquilibriumMemorize) skill).getDuration() * 1000);
+                equilibriumEndTime = new Timestamp(getStart().getTime() + 3000 + ((EquilibriumMemorize) skill).getDuration() * 1000);
             }
             if (skill instanceof LiberationOrb) {
-                liberationOrbEndTime = new Timestamp(getStart().getTime() + ((LiberationOrb) skill).getDuration() * 1000);
+                liberationOrbEndTime = new Timestamp(getStart().getTime() + 3000 + ((LiberationOrb) skill).getDuration() * 1000);
             }
             if (
                     skill instanceof SoulContract
@@ -268,9 +268,15 @@ public class LuminousContinuousDealCycle extends DealCycle {
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             } else {
                 endTime = new Timestamp(getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000);
+                if (skill.isApplyServerLag()) {
+                    endTime = new Timestamp(endTime.getTime() + 3000);
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {

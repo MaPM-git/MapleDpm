@@ -12,5 +12,6 @@ public class RepeatingCrossbowCartridgeBuff extends BuffSkill {
         this.setCooldown(120.0);
         this.setDelay(660L);
         this.setDuration(60L);
+        this.setApplyServerLag(true);
     }
 }

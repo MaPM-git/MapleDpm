@@ -21,5 +21,6 @@ public class Infinity extends BuffSkill {
         this.setDuration(41L);
         this.setApplyPlusBuffDuration(true);
         this.setApplyReuse(true);
+        this.setApplyServerLag(true);
     }
 }

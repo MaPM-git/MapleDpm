@@ -12,5 +12,6 @@ public class BunkerBuster extends BuffSkill {
         this.setDuration(45L);
         this.setDelay(720L);
         this.setCooldown(120.0);
+        this.setApplyServerLag(true);
     }
 }

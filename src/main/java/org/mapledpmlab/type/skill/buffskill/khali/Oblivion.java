@@ -12,5 +12,6 @@ public class Oblivion extends BuffSkill {
         this.setDelay(810L);
         this.setCooldown(180.0);
         this.setDuration(30L);
+        this.setApplyServerLag(true);
     }
 }

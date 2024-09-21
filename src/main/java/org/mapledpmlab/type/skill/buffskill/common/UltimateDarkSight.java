@@ -13,5 +13,6 @@ public class UltimateDarkSight extends BuffSkill {
         this.setDelay(750L);
         this.setDuration(30L);
         this.addBuffFinalDamage(1.14);
+        this.setApplyServerLag(true);
     }
 }

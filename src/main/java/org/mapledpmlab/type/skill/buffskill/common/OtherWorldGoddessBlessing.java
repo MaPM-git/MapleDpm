@@ -15,5 +15,6 @@ public class OtherWorldGoddessBlessing extends BuffSkill {
         this.setDuration(40L);
         this.addBuffFinalDamage(1.11);
         this.setRelatedSkill(new OtherWorldVoid());
+        this.setApplyServerLag(true);
     }
 }

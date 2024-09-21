@@ -21,6 +21,7 @@ public class AuraWeaponBuffDA extends GaugeBuffSkill {
         this.setBuffFinalDamage(1.06);
         this.setBuffIgnoreDefense(16L);
         this.setGaugePer(-10L);
+        this.setApplyServerLag(true);
         this.setRelatedSkill(new AuraWeaponDot());
     }
 }

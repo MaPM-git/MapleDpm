@@ -16,5 +16,6 @@ public class BodyOfSteelDA extends GaugeBuffSkill {
         this.setDuration(18L);
         this.setCooldown(120.0);
         this.setGaugePer(-3L);
+        this.setApplyServerLag(true);
     }
 }

@@ -11,5 +11,6 @@ public class PsychicOver extends BuffSkill {
         this.setName("싸이킥 오버");
         this.setCooldown(180.0);
         this.setDuration(26L);
+        this.setApplyServerLag(true);
     }
 }

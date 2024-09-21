@@ -42,10 +42,10 @@ public class DPMMain {
             bishopContinuous.setName(String.valueOf(i));
             dealCycleList.add(new Bishop2ContinuousDealCycle(bishopContinuous));
         }*/
-        /*dealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
-        dealCycleList.add(new MarksmanDealCycle(new Marksman()));*/
+        dealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
+        dealCycleList.add(new FlameWizard3DealCycle(new FlameWizard()));
 
-        dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
+        /*dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
@@ -125,7 +125,7 @@ public class DPMMain {
         dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         dealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
         dealCycleList.add(new ZeroContinuousDealCycle(new ZeroAlphaContinuous()));
-        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
+        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));*/
         /*for (DealCycle dealCycle : dealCycleList) {
             if (dealCycle instanceof ZeroContinuousDealCycle) {
                 dealCycle.getJobInfo();
@@ -494,7 +494,7 @@ public class DPMMain {
             chart.plot(lineChartData);
 
             // 이미지 삽입
-            //insertImg(xssfWorkbook, xssfSheet, colNum, dealCycle);
+            insertImg(xssfWorkbook, xssfSheet, colNum, dealCycle);
         }
 
         xssfSheet = xssfWorkbook.createSheet("DPM(솔로)");

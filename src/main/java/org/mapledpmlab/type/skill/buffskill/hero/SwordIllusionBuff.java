@@ -13,5 +13,6 @@ public class SwordIllusionBuff extends BuffSkill {
         this.setCooldown(30.0);
         this.setDuration(8L);
         this.setRelatedSkill(new SwordIllusionSlash());
+        this.setApplyServerLag(true);
     }
 }

@@ -12,5 +12,6 @@ public class LimitBreakBuff extends BuffSkill {
         this.setName("리미트 브레이크");
         this.setDuration(30L);
         this.addBuffFinalDamage(1.46);
+        this.setApplyServerLag(true);
     }
 }

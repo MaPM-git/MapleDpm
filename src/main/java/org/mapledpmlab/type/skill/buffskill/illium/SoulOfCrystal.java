@@ -12,6 +12,7 @@ public class SoulOfCrystal extends BuffSkill {
         this.setDuration(30L);
         this.setCooldown(40.0);
         this.setDelay(660L);
+        this.setApplyServerLag(true);
         this.setApplyCooldownReduction(false);
     }
 }

@@ -13,5 +13,6 @@ public class RelicLiberation extends GaugeBuffSkill {
         this.setCooldown(360.0);
         this.setDuration(30L);
         this.setRelatedSkill(new ForsakenRelicWave());
+        this.setApplyServerLag(true);
     }
 }

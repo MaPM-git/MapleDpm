@@ -12,5 +12,6 @@ public class BomberTime extends BuffSkill {
         this.setDelay(900L);
         this.setDuration(10L);
         this.setCooldown(90.0);
+        this.setApplyServerLag(true);
     }
 }

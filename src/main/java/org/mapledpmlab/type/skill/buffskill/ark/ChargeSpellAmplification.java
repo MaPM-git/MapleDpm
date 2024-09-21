@@ -16,5 +16,6 @@ public class ChargeSpellAmplification extends BuffSkill {
         this.addBuffDamage(20L);            // 어비스 버프
         this.addBuffDamage(35L);
         this.addBuffIgnoreDefense(20L);
+        this.setApplyServerLag(true);
     }
 }

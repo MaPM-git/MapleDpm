@@ -9,5 +9,6 @@ public class SilentRampage extends BuffSkill {
         this.setDuration(40L);
         this.setCooldown(120.0);
         this.addBuffDamage(40L);
+        this.setApplyServerLag(true);
     }
 }

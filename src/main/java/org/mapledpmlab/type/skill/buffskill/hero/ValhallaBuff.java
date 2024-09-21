@@ -16,5 +16,6 @@ public class ValhallaBuff extends BuffSkill {
         this.setDuration(30L);
         this.setBuffAttMagic(50L);
         this.setBuffCriticalP(30.0);
+        this.setApplyServerLag(true);
     }
 }

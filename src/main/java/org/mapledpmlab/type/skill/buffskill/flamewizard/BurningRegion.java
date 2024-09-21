@@ -14,5 +14,6 @@ public class BurningRegion extends BuffSkill {
         this.setDuration(30L);
         this.setCooldown(45.0);
         this.setApplyPlusBuffDuration(true);
+        this.setApplyServerLag(true);
     }
 }

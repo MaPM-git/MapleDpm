@@ -13,5 +13,6 @@ public class UnionAura extends BuffSkill {
         this.setCooldown(90.0);
         this.addBuffAttMagic(60L);
         this.setDelay(810L);
+        this.setApplyServerLag(true);
     }
 }

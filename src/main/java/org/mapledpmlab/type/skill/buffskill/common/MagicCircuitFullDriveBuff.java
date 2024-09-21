@@ -13,5 +13,6 @@ public class MagicCircuitFullDriveBuff extends BuffSkill {
         this.setBuffDamage(45L);
         this.setDuration(60L);
         this.setCooldown(120.0);
+        this.setApplyServerLag(true);
     }
 }
