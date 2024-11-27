@@ -11,5 +11,6 @@ public class SolunarSlash extends AttackSkill {
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.setCooldown(5.0);
     }
 }
