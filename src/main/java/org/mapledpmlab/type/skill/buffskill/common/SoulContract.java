@@ -14,5 +14,6 @@ public class SoulContract extends BuffSkill {
         this.setDuration(10L);
         this.setApplyPlusBuffDuration(true);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

@@ -11,7 +11,6 @@ public class TeleportMastery extends AttackSkill {
         this.addFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);
         //this.setDelay(600L);
-        this.setApplyFinalAttack(true);
         this.setRelatedSkill(new TeleportMasteryDot());
     }
 }

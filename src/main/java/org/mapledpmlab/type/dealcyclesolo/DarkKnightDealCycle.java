@@ -96,12 +96,6 @@ public class DarkKnightDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        getStart().setTime(-27610);
-        darknessAuraDot.setActivateTime(new Timestamp(-30000));
-        darknessAuraDot.getRelatedSkill().setActivateTime(new Timestamp(-30000));
-        addSkillEvent(darknessAuraDot);
-        getStart().setTime(0);
-
         ringSwitching.setCooldown(180.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
         auraWeaponBuff.setCooldown(180.0);
@@ -110,22 +104,11 @@ public class DarkKnightDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
-            if (cooldownCheck(darknessAuraDot)) {
-                addSkillEvent(darknessAuraDot);
-            }
             if (
-                    cooldownCheck(auraWeaponBuff)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(darkThirst)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(beholderShock)
-                            && cooldownCheck(darkSpear)
-                            && cooldownCheck(beholderImpact)
-                            && cooldownCheck(piercingCycloneFirstDelay)
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                    cooldownCheck(restraintRing)
+                    && getStart().before(new Timestamp(660 * 1000))
             ) {
+                addSkillEvent(darknessAuraDot);
                 addSkillEvent(auraWeaponBuff);
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
@@ -136,12 +119,15 @@ public class DarkKnightDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 } else {
                     addSkillEvent(gungnirDescent);
+                    addSkillEvent(gungnirDescent);
                 }
                 addSkillEvent(bodyOfSteel);
                 addSkillEvent(darkThirst);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
-                addSkillEvent(beholderShock);
+                if (cooldownCheck(beholderShock)) {
+                    addSkillEvent(beholderShock);
+                }
                 addSkillEvent(darkSpear);
                 addSkillEvent(beholderImpact);
                 if (cooldownCheck(deadSpaceSlash)) {
@@ -162,28 +148,11 @@ public class DarkKnightDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(beholderShock)
                             && getStart().after(beholderImpactEndTime)
-                            && (
-                            getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 5000))
-                                    || getStart().after(new Timestamp(10 * 60 * 1000))
-                    )
             ) {
                 addSkillEvent(beholderShock);
-            } else if (
-                    cooldownCheck(beholderImpact)
-                            && (
-                            getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 5000))
-                                    || getStart().after(new Timestamp(10 * 60 * 1000))
-                    )
-            ) {
-                beholderImpactEndTime = new Timestamp(getStart().getTime() + beholderImpact.getDotDuration());
+            } else if (cooldownCheck(beholderImpact)) {
                 addSkillEvent(beholderImpact);
-            } else if (
-                    cooldownCheck(darkSpear)
-                            && (
-                            getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 5000))
-                                    || getStart().after(new Timestamp(10 * 60 * 1000))
-                    )
-            ) {
+            } else if (cooldownCheck(darkSpear)) {
                 addSkillEvent(darkSpear);
             } else {
                 addSkillEvent(gungnirDescent);
@@ -245,6 +214,9 @@ public class DarkKnightDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof BeholderImpact) {
+                beholderImpactEndTime = new Timestamp(getStart().getTime() + beholderImpact.getDotDuration());
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
@@ -268,6 +240,17 @@ public class DarkKnightDealCycle extends DealCycle {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
+                        if (skill instanceof PiercingCycloneKeydown) {
+                            Timestamp now = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
+                            if (
+                                    cooldownCheck(beholderShock)
+                                    && getStart().after(beholderImpactEndTime)
+                            ) {
+                                addSkillEvent(beholderShock);
+                            }
+                            getStart().setTime(now.getTime());
+                        }
                     }
                 }
                 this.setStart(tmp);

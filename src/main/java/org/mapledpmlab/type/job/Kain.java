@@ -16,7 +16,7 @@ public class Kain extends Job {
     public Kain() {
         // 기본
         super();
-        this.setName("카인");
+        this.setName("카인(리웨)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -57,7 +57,7 @@ public class Kain extends Job {
 
         // 4차
         this.addAtt(32L);               // 그라인딩 II
-        this.addFinalDamage(1.26);      // 도그마
+        this.addFinalDamage(1.27);      // 도그마
         this.addCriticalDamage(22.0);
         this.addIgnoreDefenseList(32L);
         this.addFinalDamage(1.31);      // 브레스 슈터 엑스퍼트
@@ -67,8 +67,8 @@ public class Kain extends Job {
         this.addBossDamage(10L);
 
         // 환산 보정
-        this.addMainStatP(-69L);
-        this.addMainStat(3L);
+        this.addMainStatP(-63L);
+        this.addMainStat(-1L);
         this.addSubStat(-5L);
 
         this.setAbility(new PassiveBossCritical());
@@ -84,13 +84,10 @@ public class Kain extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
         this.addObject(this.getHyper());
-
-        this.addCriticalP(-20.0);       // 세이람의 영약
     }
 
     @Override
     public void Doping() {
         super.Doping();
-        this.addCriticalP(20.0);        // 세이람의 영약
     }
 }

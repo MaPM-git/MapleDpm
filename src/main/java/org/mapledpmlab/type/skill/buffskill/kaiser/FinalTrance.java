@@ -14,5 +14,6 @@ public class FinalTrance extends BuffSkill {
         this.setBuffDamage(10L);        // 공격모드 3차 강화
         this.setCooldown(240.0);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

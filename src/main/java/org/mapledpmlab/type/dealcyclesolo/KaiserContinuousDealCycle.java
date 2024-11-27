@@ -185,20 +185,10 @@ public class KaiserContinuousDealCycle extends DealCycle {
                 addSkillEvent(auraWeaponBuff);
             }
             if (
-                    cooldownCheck(petrified)
-                            && cooldownCheck(infernoBreath)
-                            && cooldownCheck(guardianOfNova)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(dragonBlaze)
-                            && cooldownCheck(dracoSlasher)
-                            && cooldownCheck(prominence)
-                            && cooldownCheck(wallOfSwordStrike)
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-                            && getStart().before(new Timestamp(finalFigurationEndTime.getTime() - 5000))
-                            && cooldownCheck(bodyOfSteel)
+                    cooldownCheck(dragonBlaze)
+                    && getStart().before(new Timestamp(600 * 1000))
             ) {
                 isNuke = true;
-                //addSkillEvent(petrified);
                 addSkillEvent(bodyOfSteel);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -206,15 +196,27 @@ public class KaiserContinuousDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
-                /*addSkillEvent(infernoBreath);
-                addSkillEvent(dragonSlash);
-                addSkillEvent(wingBeat);
-                addSkillEvent(wingBeat);*/
                 addSkillEvent(guardianOfNova);
                 addSkillEvent(grandisGoddessBlessingNova);
+                while (!cooldownCheck(soulContract)) {
+                    if (cooldownCheck(dracoSlasher)) {
+                        addSkillEvent(dracoSlasher);
+                    } else {
+                        addSkillEvent(gigaSlasher);
+                    }
+                }
                 addSkillEvent(soulContract);
                 addSkillEvent(dragonBlaze);
-                addSkillEvent(dracoSlasher);
+                if (cooldownCheck(dracoSlasher)) {
+                    addSkillEvent(dracoSlasher);
+                }
+                while (!cooldownCheck(wallOfSwordStrike)) {
+                    if (cooldownCheck(dracoSlasher)) {
+                        addSkillEvent(dracoSlasher);
+                    } else {
+                        addSkillEvent(gigaSlasher);
+                    }
+                }
                 addSkillEvent(prominence);
                 addSkillEvent(wallOfSwordStrike);
                 addSkillEvent(dracoSlasher);
@@ -233,15 +235,11 @@ public class KaiserContinuousDealCycle extends DealCycle {
                             && getStart().after(soulContractEndTime)
             ) {
                 addSkillEvent(soulContract);
-            } /*else if (
-                    cooldownCheck(petrified)
-                    && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 30000))
-            ) {
-                addSkillEvent(petrified);
-            }*/ else if (
+            } else if (
                     cooldownCheck(prominence)
                             && cooldownCheck(wallOfSwordStrike)
                             && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 30000))
+                            && !getJob().getName().equals("카이저(5초, 컨티)")
             ) {
                 if (cooldownCheck(dracoSlasher)) {
                     addSkillEvent(dracoSlasher);
@@ -254,17 +252,26 @@ public class KaiserContinuousDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(wallOfSwordStrike)
                             && (
-                            getStart().before(new Timestamp(prominence.getActivateTime().getTime() - 20000))
-                                    || (
-                                    getStart().after(new Timestamp(660 * 1000))
-                                            && getStart().before(new Timestamp(700 * 1000))
+                            (
+                                    getStart().before(new Timestamp(prominence.getActivateTime().getTime() - 20000))
+                                            || (
+                                            getStart().after(new Timestamp(660 * 1000))
+                                                    && getStart().before(new Timestamp(700 * 1000))
+                                    )
                             )
+                                    ||
+                                    (
+                                            getJob().getName().equals("카이저(5초, 컨티)")
+                                                    && getStart().before(new Timestamp(bodyOfSteel.getActivateTime().getTime() - 5000))
+                                    )
                     )
+                            && getStart().before(new Timestamp(670 * 1000))
             ) {
                 if (cooldownCheck(dracoSlasher)) {
                     addSkillEvent(dracoSlasher);
                 }
                 addSkillEvent(wallOfSwordStrike);
+                addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
@@ -675,7 +682,7 @@ public class KaiserContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isGradisGoddessBlessing = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof GrandisGoddessBlessingNova) {

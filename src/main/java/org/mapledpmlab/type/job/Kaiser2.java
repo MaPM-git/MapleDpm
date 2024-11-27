@@ -15,7 +15,7 @@ public class Kaiser2 extends Job {
     public Kaiser2() {
         // 기본
         super();
-        this.setName("카이저(2초)");
+        this.setName("카이저(2초, 리웨)");
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
@@ -77,8 +77,8 @@ public class Kaiser2 extends Job {
 
         // 환산 보정
         this.addMainStatP(-78L);
-        this.addMainStat(-10L);
-        this.addSubStat(5L);
+        this.addMainStat(-4L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossBuffReuse());
         this.setArtifact(new ArtifactNormal());

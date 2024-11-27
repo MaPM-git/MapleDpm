@@ -62,6 +62,7 @@ public class MarksmanDealCycle extends DealCycle {
     private boolean isCriticalReinforce = false;
 
     int splitArrow6th = 0;
+    int snipeCount = 2;
 
     Timestamp splitArrowEndTime = new Timestamp(-1);
 
@@ -110,21 +111,21 @@ public class MarksmanDealCycle extends DealCycle {
         snipeList.add(enhanceSnipe);
         snipeList.add(snipe);
         snipeList.add(ultimateSnipe);
+
+        addSkillEvent(snipeList.get(snipeCount % 4));
+        snipeCount++;
     }
 
     @Override
     public void setSoloDealCycle() {
-        int snipeCount = 3;
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
             if (cooldownCheck(freezer)) {
                 addSkillEvent(freezer);
             }
-            if (
-                    cooldownCheck(epicAdventure)
-            ) {
-                addSkillEvent(splitArrowBuff);
+            if (cooldownCheck(epicAdventure)) {
                 addSkillEvent(repeatingCrossbowCartridgeBuff);
+                addSkillEvent(splitArrowBuff);
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -231,16 +232,6 @@ public class MarksmanDealCycle extends DealCycle {
             }
         } else {
             if (
-                    cooldownCheck(chargedArrow)
-                    && (
-                            skill instanceof Snipe
-                            || skill instanceof EnhanceSnipe
-                            || skill instanceof UltimateSnipe
-                    )
-            ) {
-                addSkillEvent(chargedArrow);
-            }
-            if (
                     getStart().before(splitArrowEndTime)
                     && (
                             skill instanceof Snipe
@@ -296,7 +287,19 @@ public class MarksmanDealCycle extends DealCycle {
         if (endTime != null) {
             getEventTimeList().add(endTime);
         }
-        getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (
+                cooldownCheck(chargedArrow)
+                && (
+                        skill instanceof Snipe
+                        || skill instanceof EnhanceSnipe
+                        || skill instanceof UltimateSnipe
+                        || skill instanceof RepeatingCrossbowCartridge
+                )
+        ) {
+            addSkillEvent(chargedArrow);
+        } else {
+            getStart().setTime(getStart().getTime() + skill.getDelay());
+        }
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
         }
@@ -371,7 +374,7 @@ public class MarksmanDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isEvolve = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof EvolveBuff) {

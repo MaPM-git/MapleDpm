@@ -16,7 +16,7 @@ public class Kinesis extends Job {
     public Kinesis() {
         // 기본
         super();
-        this.setName("키네시스");
+        this.setName("키네시스(4시드링)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.94 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -73,9 +73,9 @@ public class Kinesis extends Job {
         this.addCriticalDamage(12.0);   // 숙달
 
         // 환산 보정
-        this.addMainStatP(24L);
-        this.addMainStat(-9L);
-        this.addSubStat(5L);
+        this.addMainStatP(27L);
+        this.addMainStat(11L);
+        this.addSubStat(-5L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

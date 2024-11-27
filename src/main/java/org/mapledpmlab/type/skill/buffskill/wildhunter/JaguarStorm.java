@@ -8,5 +8,6 @@ public class JaguarStorm extends BuffSkill {
         this.setDelay(840L);
         this.setDuration(40L);
         this.setApplyServerLag(true);
+        this.setCooldown(120.0);
     }
 }

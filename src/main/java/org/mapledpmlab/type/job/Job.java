@@ -121,6 +121,8 @@ public class Job extends Common {
     }
 
     public void Doping() {
+        this.addFinalDamage(1.2);       // 렙뻥
+
         this.addCriticalP(-10.0);       // 쓸샵, 쓸어블
         this.addCriticalDamage(-8.0);
         this.addAtt(-20L);

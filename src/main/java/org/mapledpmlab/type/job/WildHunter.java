@@ -82,9 +82,9 @@ public class WildHunter extends Job {
         this.addAtt(65L);               // 재규어 스톰
 
         // 환산 보정
-        this.addMainStatP(-30L);
-        this.addMainStat(-2L);
-        //this.addSubStat(-10L);
+        this.addMainStatP(-24L);
+        this.addMainStat(-15L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

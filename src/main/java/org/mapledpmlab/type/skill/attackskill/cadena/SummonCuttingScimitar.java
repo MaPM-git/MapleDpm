@@ -7,8 +7,7 @@ public class SummonCuttingScimitar extends AttackSkill {
         this.setName("서먼 커팅 시미터");
         this.setDamage(125.0 + 80 + 100 + 177);
         this.setAttackCount(5L);
-        this.setDelay(150L);
-        //this.setDelayByAttackSpeed(780L);
+        this.setDelay(150L + 30);
         this.setCooldown(4.0);
         this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화

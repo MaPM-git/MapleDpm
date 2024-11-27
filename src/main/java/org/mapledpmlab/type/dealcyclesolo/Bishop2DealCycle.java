@@ -108,9 +108,6 @@ public class Bishop2DealCycle extends DealCycle {
     BahamutSummon bahamutSummon = new BahamutSummon();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     DivinePunishmentDelay divinePunishment = new DivinePunishmentDelay();
-    DivinePunishmentDelay divinePunishment4 = new DivinePunishmentDelay();
-    /*DivinePunishmentDelay divinePunishment1 = new DivinePunishmentDelay();
-    DivinePunishmentDelay divinePunishment2 = new DivinePunishmentDelay();*/
     EpicAdventure epicAdventure = new EpicAdventure();
     FountainForAngel fountainForAngel = new FountainForAngel();
     HeavensDoor heavensDoor = new HeavensDoor();
@@ -131,36 +128,28 @@ public class Bishop2DealCycle extends DealCycle {
     public Bishop2DealCycle(Job job) {
         super(job, null);
 
-        getJob().setName("비숍(2분)");
+        getJob().setName("비숍(리웨, 2분)");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        /*divinePunishment1.setRelatedSkill(new DivinePunishment1());
-        divinePunishment1.setCooldown(8.5);
-
-        divinePunishment2.setRelatedSkill(new DivinePunishment2());
-        divinePunishment2.setCooldown(8.5 * 2);*/
-
-    }
-
-    @Override
-    public void setSoloDealCycle() {
         // 인피니티 달구기
         getStart().setTime(-75000);
         infinity.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
         getStart().setTime(0);
 
-        //ringSwitching.setCooldown(130.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
+    }
 
+    @Override
+    public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         addSkillEvent(bahamutSummon);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(infinity)
-                            && getStart().after(infinityEndTime)
+                            && getStart().after(new Timestamp(infinityEndTime.getTime() - 5000))
             ) {
                 infinityEndTime = new Timestamp(getStart().getTime() + 121360);
                 addSkillEvent(infinity);
@@ -170,7 +159,7 @@ public class Bishop2DealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(unstableMemorize)
-                            && getStart().after(infinityEndTime)
+                            && getStart().after(new Timestamp(infinityEndTime.getTime() - 5000))
             ) {
                 infinityEndTime = new Timestamp(getStart().getTime() + unstableMemorize.getDelay() + 121360);
                 Long ran = (long) (Math.random() * 99 + 1);
@@ -216,18 +205,16 @@ public class Bishop2DealCycle extends DealCycle {
             if (cooldownCheck(angelicTouch)) {
                 addSkillEvent(angelicTouch);
             }
-            if (
-                    cooldownCheck(epicAdventure)
-                            && cooldownCheck(pray)
-                            && cooldownCheck(angelOfLibra)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(holyBlood)
-                            && cooldownCheck(peacemaker)
-                            && cooldownCheck(heavensDoor)
-                            && cooldownCheck(divinePunishment)
-                            && getStart().after(infinityBurningTime)
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
+            if (cooldownCheck(angelOfLibra)) {
+                if (getStart().after(new Timestamp(9 * 60 * 1000))) {
+                    for (int i = 0; i < 3; i++) {
+                        addSkillEvent(angelicRay);
+                        if (holySwordCount >= 24) {
+                            addSkillEvent(angelicOfJudgement);
+                            holySwordCount -= 24;
+                        }
+                    }
+                }
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -269,12 +256,15 @@ public class Bishop2DealCycle extends DealCycle {
             ) {
                 addSkillEvent(soulContract);
             } else if (
-                    cooldownCheck(divinePunishment4)
+                    cooldownCheck(divinePunishment)
                     && !cooldownCheck(epicAdventure)
                     && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 40000))
             ) {
-                addSkillEvent(divinePunishment4);
-            } else if (cooldownCheck(peacemaker)) {
+                addSkillEvent(divinePunishment);
+            } else if (
+                    cooldownCheck(peacemaker)
+                            && getStart().before(new Timestamp(holyBlood.getActivateTime().getTime() - 5000))
+            ) {
                 addSkillEvent(peacemaker);
             } else {
                 addSkillEvent(angelicRay);
@@ -350,7 +340,7 @@ public class Bishop2DealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isLibra = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof AngelOfLibra2) {
@@ -657,14 +647,6 @@ public class Bishop2DealCycle extends DealCycle {
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
-            }
-        }
-        /*if (!(skill instanceof DivinePunishmentDelay)) {
-            applyCooldown(skill);
-        }*/
-        if (skill instanceof DivinePunishmentDelay) {
-            if (skill.getRelatedSkill() instanceof DivinePunishment) {
-                applyCooldown(divinePunishment4);
             }
         }
         applyCooldown(skill);

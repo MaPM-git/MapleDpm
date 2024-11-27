@@ -64,9 +64,10 @@ public class SoulMasterDealCycle extends DealCycle {
 
     int cosmicOrbCount = 0;
     int mainAttackChk = 0;
+    int shatterCount = 0;
 
     Timestamp cosmicForgeEndTime = null;
-    Timestamp elysionEndTime = null;
+    Timestamp elysionEndTime = new Timestamp(-1);
     Timestamp restraintRingEndTimestamp = new Timestamp(-1);
     Timestamp soulEclipseEndTime = null;
     Timestamp trueSightEndTime = new Timestamp(-1);
@@ -116,13 +117,15 @@ public class SoulMasterDealCycle extends DealCycle {
         ((AttackSkill) auraWeaponBuff.getRelatedSkill()).addFinalDamage(0.9);
         ((AttackSkill) auraWeaponBuff.getRelatedSkill()).setAttackCount(((AttackSkill) auraWeaponBuff.getRelatedSkill()).getAttackCount() * 2);
 
-        ringSwitching.setCooldown(95.0);
+        ringSwitching.setCooldown(90.0);
         auraWeaponBuff.setCooldown(180.0);
         transcendentCygnusBlessing.setCooldown(120.0);
         transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
+        soulEclipse.setActivateTime(new Timestamp(-55555555));
 
         getStart().setTime(-10000);
+        addSkillEvent(soulEclipse);
         addSkillEvent(transcendentCygnusBlessing);
         getStart().setTime(0);
     }
@@ -135,36 +138,26 @@ public class SoulMasterDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(cygnusPhalanx)
+                    && getStart().after(elysionEndTime)
             ) {
                 addSkillEvent(cygnusPhalanx);
             }
             if (
                     cooldownCheck(transcendentCygnusBlessing)
-                            && getStart().after(new Timestamp(cosmicForge.getActivateTime().getTime() - 5000))
+                            && getStart().after(new Timestamp(cosmicForge.getActivateTime().getTime() - 10000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                addSkillEvent(soulEclipse);
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (
-                    cooldownCheck(gloryOfGuardians)
-                            && cooldownCheck(auraWeaponBuff)
-                            && cooldownCheck(cosmicForge)
-                            && cooldownCheck(soulEclipse)
-                            && cooldownCheck(elysion)
-                            && cooldownCheck(cosmos10)
+                    cooldownCheck(cosmicForge)
                             && getStart().before(new Timestamp(600 * 1000))
             ) {
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
+                trueSight.setActivateTime(new Timestamp(-1));
+                addSkillEvent(trueSight);
                 cosmicShower10.setActivateTime(new Timestamp(-1));
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
                 addSkillEvent(auraWeaponBuff);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
                 addSkillEvent(gloryOfGuardians);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -177,63 +170,28 @@ public class SoulMasterDealCycle extends DealCycle {
                     flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 800));
                     mainAttackChk ++;
                 }
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
                 addSkillEvent(cosmicForge);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
                 addSkillEvent(bodyOfSteel);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
-                addSkillEvent(soulEclipse);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
                 addSkillEvent(elysion);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
                 addSkillEvent(crossTheStyx);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
+                addSkillEvent(crossTheStyx);
                 addSkillEvent(cosmicShower10);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
                 addSkillEvent(crossTheStyx);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
+                while (!cooldownCheck(cosmos10)) {
+                    addSkillEvent(crossTheStyx);
                 }
                 addSkillEvent(cosmos10);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
-                if (getStart().after(trueSightEndTime)) {
-                    addSkillEvent(trueSight);
-                }
+                addSkillEvent(crossTheStyx);
                 if (cooldownCheck(astralBlitzBuff)) {
                     addSkillEvent(astralBlitzBuff);
-                    if (getStart().after(trueSightEndTime)) {
-                        addSkillEvent(trueSight);
-                    }
-                    for (int i = 0; i < 11; i++) {
+                    for (int i = 0; i < 10; i++) {
                         addSkillEvent(crossTheStyx);
-                        if (getStart().after(trueSightEndTime)) {
-                            addSkillEvent(trueSight);
-                        }
                     }
                 } else {
-                    for (int i = 0; i < 22; i++) {
+                    for (int i = 0; i < 21; i++) {
                         addSkillEvent(crossTheStyx);
-                        if (getStart().after(trueSightEndTime)) {
-                            addSkillEvent(trueSight);
-                        }
                     }
                 }
                 addSkillEvent(solunarDivide);
@@ -243,7 +201,7 @@ public class SoulMasterDealCycle extends DealCycle {
                     cooldownCheck(cosmos5)
                             && cooldownCheck(soulContract)
                             && cooldownCheck(weaponJumpRing)
-                            && cosmicOrbCount == 5
+                            && cosmicOrbCount >= 5
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(cosmos5);
@@ -252,7 +210,7 @@ public class SoulMasterDealCycle extends DealCycle {
                 cosmos10.setActivateTime(cosmos5.getActivateTime());
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().after(new Timestamp(70 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -266,13 +224,9 @@ public class SoulMasterDealCycle extends DealCycle {
             } else if (
                     getStart().before(elysionEndTime)
             ) {
-                cosmicOrbCount = 10;
                 addSkillEvent(crossTheStyx);
-                flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 1200));
             } else {
-                cosmicOrbCount ++;
                 addSkillEvent(mainAttack.get(mainAttackChk % 2));
-                flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 800));
                 mainAttackChk ++;
             }
         }
@@ -358,6 +312,40 @@ public class SoulMasterDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof SolunarDivide) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getSkill() instanceof SoulEclipse
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                this.getSkillEventList().removeAll(remove);
+            }
+            if (skill instanceof CrossTheStyx) {
+                cosmicOrbCount = 10;
+                flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 1200));
+            }
+            if (
+                    skill instanceof SolarSlash
+                    || skill instanceof LunarDivide
+            ) {
+                cosmicOrbCount ++;
+                flareSlash.setActivateTime(new Timestamp(flareSlash.getActivateTime().getTime() - 800));
+            }
+            if (
+                    getStart().before(elysionEndTime)
+                    && cooldownCheck(shatter)
+                    && skill instanceof CrossTheStyx
+            ) {
+                shatterCount ++;
+                if (shatterCount == 6) {
+                    addSkillEvent(shatter);
+                    shatterCount = 0;
+                }
+            }
             if (
                     skill instanceof CrossTheStyx
                     || skill instanceof SolarSlash
@@ -386,9 +374,6 @@ public class SoulMasterDealCycle extends DealCycle {
             if (skill instanceof SoulEclipse) {
                 soulEclipseEndTime = new Timestamp(getStart().getTime() + 24000);
             }
-            if (skill instanceof CrossTheStyx && cooldownCheck(shatter)) {
-                addSkillEvent(shatter);
-            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
@@ -402,7 +387,11 @@ public class SoulMasterDealCycle extends DealCycle {
                 this.getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof SoulEclipse) {
+                        i = 1080;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -447,22 +436,17 @@ public class SoulMasterDealCycle extends DealCycle {
         if (
                 cooldownCheck(solunarSlash)
                 && (
-                        skill instanceof TrueSight
-                        || skill instanceof CygnusPhalanxDelay
-                        || skill instanceof LunarDivide
-                        || skill instanceof SolarSlash
-                        || skill instanceof CosmicShower
-                        || skill instanceof Elysion
-                        || skill instanceof SoulEclipse
-                        || skill instanceof SolunarDivide
-                        || skill instanceof CosmicForge
-                        || skill instanceof Cosmos
-                        || skill instanceof AuraWeaponBuff
-                        || skill instanceof TranscendentCygnusBlessing
-                        || skill instanceof CrossTheStyx
+                        skill instanceof TrueSight                      //600
+                        || skill instanceof CygnusPhalanxDelay          //780
+                        || skill instanceof Elysion                     //750
+                        || skill instanceof CosmicForge                 //810
+                        || skill instanceof AuraWeaponBuff              //720
+                        || skill instanceof TranscendentCygnusBlessing  //630
+                        || skill instanceof BodyOfSteel                 //720
                 )
-                && getStart().before(restraintRingEndTimestamp)
+                && getStart().after(restraintRingEndTimestamp)
         ) {
+            getStart().setTime(getStart().getTime() + 30);
             addSkillEvent(solunarSlash);
         } else {
             getStart().setTime(getStart().getTime() + skill.getDelay());

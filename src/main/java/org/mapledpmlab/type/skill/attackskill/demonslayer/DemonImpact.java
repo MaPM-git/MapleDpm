@@ -14,6 +14,6 @@ public class DemonImpact extends GaugeAttackSkill {
         this.setAddDamage(45L + 20);    // 데몬 임팩트-리인포스
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
-        this.setGaugeCharge(-8.0);
+        this.setGaugeCharge(-4.0);
     }
 }

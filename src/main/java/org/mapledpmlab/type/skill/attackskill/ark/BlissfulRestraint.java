@@ -8,7 +8,6 @@ public class BlissfulRestraint extends AttackSkill {
         this.setDamage(610.0);
         this.setAttackCount(6L);
         this.setDelayByAttackSpeed(900L);
-        this.setCooldown(120.0);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(20L + 20);    // 배틀 아츠-리인포스

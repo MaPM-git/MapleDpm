@@ -18,7 +18,7 @@ public class Mercedes extends Job {
     public Mercedes() {
         // 기본
         super();
-        this.setName("메르세데스");
+        this.setName("메르세데스(리레)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION1);
@@ -70,9 +70,9 @@ public class Mercedes extends Job {
         this.addFinalDamage(1.05);
 
         // 환산 보정
-        this.addMainStatP(-69L);
-        this.addMainStat(3L);
-        this.addSubStat(5L);
+        this.addMainStatP(-66L);
+        this.addMainStat(-11L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -92,14 +92,11 @@ public class Mercedes extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
         this.addObject(this.getHyper());
-
-        this.addCriticalP(-20.0);       // 세이람의 영약
     }
 
     @Override
     public void Doping() {
         super.Doping();
         this.addFinalDamage(1.2);           // 이그니스 로어 10중첩
-        this.addCriticalP(20.0);        // 세이람의 영약
     }
 }

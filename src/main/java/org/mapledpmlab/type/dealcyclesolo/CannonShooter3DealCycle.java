@@ -101,10 +101,12 @@ public class CannonShooter3DealCycle extends DealCycle {
     public CannonShooter3DealCycle(Job job) {
         super(job, new FinalAttackCannonShooter());
 
+        getJob().setName("캐논슈터(리웨, 3분)");
+
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(100.0);
+        ringSwitching.setCooldown(90.0);
 
         luckyDice.setCooldown(180.0);
         luckyDice.setBuffAttMagic(0L);
@@ -234,7 +236,7 @@ public class CannonShooter3DealCycle extends DealCycle {
                 addSkillEvent(poolmakerBuff);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().after(new Timestamp(85 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -300,7 +302,7 @@ public class CannonShooter3DealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
@@ -473,6 +475,55 @@ public class CannonShooter3DealCycle extends DealCycle {
         getStart().setTime(getStart().getTime() + skill.getDelay());
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
+        }
+    }
+
+    public void applyCooldown(Skill skill) {
+        if (skill instanceof MiniCanonBall) {
+            long remainTime = getStart().getTime() - skill.getActivateTime().getTime();
+            if (remainTime >= 20000) {
+                skill.setActivateTime(new Timestamp(getStart().getTime() - 16000));
+            } else if (remainTime >= 16000) {
+                skill.setActivateTime(new Timestamp(getStart().getTime() - 12000));
+            } else if (remainTime >= 12000) {
+                skill.setActivateTime(new Timestamp(getStart().getTime() - 8000));
+            } else if (remainTime >= 8000) {
+                skill.setActivateTime(new Timestamp(getStart().getTime() - 4000));
+            } else if (remainTime >= 4000) {
+                skill.setActivateTime(new Timestamp(getStart().getTime()));
+            } else {
+                skill.setActivateTime(new Timestamp(getStart().getTime() + 4000 - remainTime));
+            }
+            return;
+        }
+        /*
+        *
+        if (skill instanceof ScatteringShot) {
+            long remainTime = getStart().getTime() - skill.getActivateTime().getTime();
+            if (remainTime >= 12000) {
+                skill.setActivateTime(new Timestamp(getStart().getTime() - 6000));
+            } else if (remainTime >= 6000) {
+                skill.setActivateTime(new Timestamp(getStart().getTime()));
+            } else {
+                skill.setActivateTime(new Timestamp(getStart().getTime() + 6000 - remainTime));
+            }
+            return;
+        }
+        *
+        * */
+        if (skill.getCooldown() != 0) {
+            if (skill.isApplyReuse()) {
+                Double ran = Math.random() * 99;
+                if (ran <= getJob().getReuse()) {
+                } else  {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
+                }
+            } else {
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
+            }
+            if (!skill.isApplyCooldownReduction()) {
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + skill.getCooldown() * 1000)));
+            }
         }
     }
 }

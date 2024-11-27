@@ -15,7 +15,7 @@ public class KaiserStat extends Job {
     public KaiserStat() {
         // 기본
         super();
-        this.setName("카이저(스탯)");
+        this.setName("카이저(스탯, 리웨)");
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -77,7 +77,7 @@ public class KaiserStat extends Job {
 
         // 환산 보정
         this.addMainStatP(-51L);
-        this.addMainStat(-11L);
+        this.addMainStat(-5L);
         this.addSubStat(-5L);
 
         this.setAbility(new BossBuffReuse());

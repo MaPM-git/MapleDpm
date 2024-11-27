@@ -7,6 +7,7 @@ public class DragonBreath extends AttackSkill {
         this.setName("드래곤 브레스");
         this.setDamage(241.0);
         this.setAttackCount(5L);
+        this.setDelay(30L);
         this.setDotDuration(3120L);
         this.setInterval(390L);
         this.setLimitAttackCount(8L);

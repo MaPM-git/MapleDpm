@@ -79,9 +79,9 @@ public class ShadowerContinuous extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-48L);
-        this.addMainStat(15L);
-        this.addSubStat(4L);
+        this.addMainStatP(-51L);
+        this.addMainStat(2L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new ArtifactNormal());

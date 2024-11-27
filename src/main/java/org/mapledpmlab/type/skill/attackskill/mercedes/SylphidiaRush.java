@@ -7,7 +7,7 @@ public class SylphidiaRush extends AttackSkill {
         this.setName("실피디아(돌진)");
         this.setAttackCount(9L);
         this.setDamage(1430.0);
-        this.setDelay(690L);
+        this.setDelay(150L);
         this.setCooldown(0.95);
         this.addFinalDamage(1.6);           // 코어 강화
         this.setApplyFinalAttack(true);

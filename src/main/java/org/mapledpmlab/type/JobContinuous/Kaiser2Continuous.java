@@ -80,8 +80,8 @@ public class Kaiser2Continuous extends Job {
 
         // 환산 보정
         this.addMainStatP(-78L);
-        this.addMainStat(5L);
-        this.addSubStat(-5L);
+        this.addMainStat(8L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossBuffReuse());
         this.setArtifact(new ArtifactNormal());

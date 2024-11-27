@@ -151,7 +151,7 @@ public class ArkDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(130.0);
+        ringSwitching.setCooldown(120.0);
 
         magicCircuitFullDriveBuff.setCooldown(120.0);
         grandisGoddessBlessingLef.setCooldown(120.0);
@@ -166,18 +166,7 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(loadedDice);
             }
             if (
-                    cooldownCheck(wrathOfGod)
-                            && cooldownCheck(chargeSpellAmplification)
-                            && cooldownCheck(infinitySpell)
-                            && cooldownCheck(overdrive)
-                            && cooldownCheck(blissfulRestraintDot)
-                            && cooldownCheck(endlesslyStarvingBeast)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(crawlingFearBeforeDelay)
-                            && cooldownCheck(endlessAgonyBeforeDelay)
-                            && cooldownCheck(memoryOfRootBeforeDelay)
-                            && cooldownCheck(returningHatred)
-                            && cooldownCheck(magicCircuitFullDriveBuff)
+                    cooldownCheck(chargeSpellAmplification)
             ) {
                 addSkillEvent(magicCircuitFullDriveBuff);
                 addSkillEvent(wrathOfGod);
@@ -194,6 +183,9 @@ public class ArkDealCycle extends DealCycle {
                 addSkillEvent(chargeSpellAmplification);
                 addSkillEvent(infinitySpell);
                 addSkillEvent(grandisGoddessBlessingLef);
+                while (!cooldownCheck(overdrive)) {
+                    addSkillEvent(plainChargeDrive);
+                }
                 addSkillEvent(overdrive);
                 addSkillEvent(blissfulRestraintDot);
                 addSkillEvent(endlesslyStarvingBeast);
@@ -212,19 +204,17 @@ public class ArkDealCycle extends DealCycle {
                 }
                 dealCycleOrder ++;
             } else if (
-                    cooldownCheck(overdrive)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(crawlingFearBeforeDelay)
-                            && cooldownCheck(endlessAgonyBeforeDelay)
-                            && !cooldownCheck(wrathOfGod)
+                    cooldownCheck(soulContract)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
-                addSkillEvent(crawlingFearBeforeDelay);
+                if (gauge > 300) {
+                    addSkillEvent(crawlingFearBeforeDelay);
+                }
                 addSkillEvent(endlessAgonyBeforeDelay);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().after(new Timestamp(100 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
                             && !isSpecter
             ) {
@@ -234,21 +224,12 @@ public class ArkDealCycle extends DealCycle {
                             && hatredCnt > 0
             ) {
                 addSkillEvent(returningHatred);
-            }/* else if (
-                    cooldownCheck(magicCircuitFullDriveBuff)
-                            && getStart().after(new Timestamp(8 * 60 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addSkillEvent(magicCircuitFullDriveBuff);
-            }*/ else if (isSpecter) {
+            } else if (isSpecter) {
                 endlessOminousDream = new EndlessOminousDream();
-                //endlessOminousDream.setDelay(180L);
                 endlessOminousDream.setDelay(210L);
                 endlessHunger = new EndlessHunger();
-                //endlessHunger.setDelay(660L);
                 endlessHunger.setDelay(690L);
                 uncontrollableChaos = new UncontrollableChaos();
-                //uncontrollableChaos.setDelay(720L);
                 uncontrollableChaos.setDelay(750L);
                 Timestamp specterTime = new Timestamp(getStart().getTime() + 3000);
                 while (getStart().before(specterTime)) {
@@ -263,35 +244,16 @@ public class ArkDealCycle extends DealCycle {
                         addSkillEvent(unstoppableInstinct);
                     }
                 }
-                /*addSkillEvent(endlessOminousDream);
-                addSkillEvent(unfadingScar);
-                addSkillEvent(endlessOminousDream);
-                addSkillEvent(endlessHunger);
-                addSkillEvent(endlessOminousDream);
-                addSkillEvent(uncontrollableChaos);
-                addSkillEvent(endlessOminousDream);
-                addSkillEvent(unstoppableInstinct);
-                addSkillEvent(endlessOminousDream);
-                addSkillEvent(unfadingScar);
-                addSkillEvent(endlessOminousDream);
-                addSkillEvent(unstoppableInstinct);*/
                 if (getStart().after(infinitySpellEndTime)) {
                     addSkillEvent(specterForm);
                     applyCooldown(lefGauge);
                 }
             } else if (!isSpecter) {
                 plainChargeDrive = new PlainChargeDrive();
-                //plainChargeDrive.setDelay(180L);
                 plainChargeDrive.setDelay(240L);
-                //scarletChargeDriveFlame = new ScarletChargeDriveFlame();
-                //scarletChargeDriveFlame.getRelatedSkill().setDelay(470L);
-                //gustChargeDrive = new GustChargeDrive();
-                //gustChargeDrive.setDelay(410L);
                 abyssChargeDriveMagic = new AbyssChargeDriveMagic();
-                //abyssChargeDriveMagic.getRelatedSkill().setDelay(530L);
                 abyssChargeDriveMagic.getRelatedSkill().setDelay(590L);
                 unstoppableImpulse = new UnstoppableImpulse();
-                //unstoppableImpulse.setDelay(530L);
                 unstoppableImpulse.setDelay(560L);
                 Timestamp specterTime = new Timestamp(getStart().getTime() + 3000);
                 while (getStart().before(specterTime)) {
@@ -313,22 +275,8 @@ public class ArkDealCycle extends DealCycle {
                         addSkillEvent(endlessNightmare);
                     }
                 }
-                /*addSkillEvent(plainChargeDrive);
-                addSkillEvent(endlessNightmare);
-                addSkillEvent(plainChargeDrive);
-                addSkillEvent(scarletChargeDriveFlame);
-                addSkillEvent(plainChargeDrive);
-                addSkillEvent(gustChargeDrive);
-                addSkillEvent(plainChargeDrive);
-                addSkillEvent(abyssChargeDriveMagic);
-                addSkillEvent(plainChargeDrive);
-                addSkillEvent(endlessNightmare);
-                addSkillEvent(plainChargeDrive);
-                scarletChargeDriveFlame = new ScarletChargeDriveFlame();
-                scarletChargeDriveFlame.getRelatedSkill().setDelay(690L);
-                addSkillEvent(scarletChargeDriveFlame);*/
                 if (
-                        getStart().before(new Timestamp(infinitySpell.getActivateTime().getTime() - 5000))
+                        getStart().before(new Timestamp(infinitySpell.getActivateTime().getTime() - 45000))
                                 && gauge > 800
                 ) {
                     addSkillEvent(specterForm);
@@ -564,10 +512,6 @@ public class ArkDealCycle extends DealCycle {
                         i = 2000;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
-                        if (isSpecter && specterAura > 0) {
-                            getSkillEventList().add(new ArkSkillEvent(awakenedAbyss, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), isSpecter));
-                            specterAura --;
-                        }
                         getSkillEventList().add(new ArkSkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), isSpecter));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -591,7 +535,16 @@ public class ArkDealCycle extends DealCycle {
                                 }
                             }
                         }
-                        if (isSpecter && specterAura > 0) {
+                        if (
+                                isSpecter
+                                        && specterAura > 0
+                                        && (
+                                        skill instanceof BlissfulRestraintDot
+                                                || skill instanceof EndlessAgony
+                                                || skill instanceof MemoryOfRoot
+                                                || skill instanceof MemoryOfRootFinish
+                                )
+                        ) {
                             getSkillEventList().add(new ArkSkillEvent(awakenedAbyss, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), isSpecter));
                             specterAura --;
                         }
@@ -622,7 +575,20 @@ public class ArkDealCycle extends DealCycle {
                         }
                     }
                 }
-                if (isSpecter && specterAura > 0) {
+                if (
+                        isSpecter
+                                && specterAura > 0
+                                && (
+                                skill instanceof UnfadingScar
+                                        || skill instanceof UnstoppableInstinct
+                                        || skill instanceof EndlessHunger
+                                        || skill instanceof EndlessOminousDream
+                                        || skill instanceof UncontrollableChaos
+                                        || skill instanceof CrawlingFear
+                                        || skill instanceof BlissfulRestraint
+                                        || skill instanceof DeviousOminousDream
+                        )
+                ) {
                     getSkillEventList().add(new ArkSkillEvent(awakenedAbyss, endTime, endTime, isSpecter));
                     specterAura --;
                 }
@@ -702,7 +668,7 @@ public class ArkDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isInfinitySpell = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof InfinitySpell) {
@@ -814,7 +780,15 @@ public class ArkDealCycle extends DealCycle {
                     }
                 }
             }
-            if (isSpecter && specterAura > 0) {
+            if (
+                    isSpecter
+                            && specterAura > 0
+                            && (
+                            skill instanceof BlissfulRestraintFinish
+                                    || skill instanceof EndlessAgonyFinish
+                                    || skill instanceof EndlesslyStarvingBeast
+                    )
+            ) {
                 getSkillEventList().add(new ArkSkillEvent(awakenedAbyss, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum), isSpecter));
                 specterAura --;
             }

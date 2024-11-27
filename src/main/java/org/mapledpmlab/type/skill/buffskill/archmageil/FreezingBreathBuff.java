@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 @Setter
 public class FreezingBreathBuff extends BuffSkill {
     public FreezingBreathBuff() {
-        this.setName("브리징 브레스(버프)");
+        this.setName("프리징 브레스(버프)");
         this.setCooldown(120.0);
         this.setDuration(13L);
         this.addBuffIgnoreDefense(30L);

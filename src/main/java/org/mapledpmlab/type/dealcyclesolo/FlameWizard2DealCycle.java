@@ -107,11 +107,10 @@ public class FlameWizard2DealCycle extends DealCycle {
 
         infinityFlameCircle.setRelatedSkill(new InfinityFlameCircle());
 
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(115.0);
         ringSwitching.setApplyCooldownReduction(false);
 
-        transcendentCygnusBlessing.setCooldown(123.0);
-        transcendentCygnusBlessing.setApplyCooldownReduction(false);
+        transcendentCygnusBlessing.setCooldown(120.0);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
         getStart().setTime(-10000);
@@ -146,15 +145,8 @@ public class FlameWizard2DealCycle extends DealCycle {
                 addSkillEvent(cygnusPhalanx);
             }
             if (
-                    cooldownCheck(burningRegion)
-                            && cooldownCheck(gloryOfGuardians)
-                            && cooldownCheck(salamanderMischief)
-                            && cooldownCheck(flameDischarge)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(blazingOrbitalFlame)
-                            && cooldownCheck(infinityFlameCircle)
-                            && cooldownCheck(blazingExtinction)
-                            && cooldownCheck(phoenixDrive)
+                    cooldownCheck(gloryOfGuardians)
+                    && getStart().after(new Timestamp(flameDischarge.getActivateTime().getTime() - 800))
             ) {
                 addSkillEvent(burningRegion);
                 addSkillEvent(gloryOfGuardians);
@@ -170,22 +162,30 @@ public class FlameWizard2DealCycle extends DealCycle {
                         addSkillEvent(orbitalFlame);
                     }
                     orbitalCount++;
+                    if (infernoRizeCount != 50) {
+                        infernoRizeCount++;
+                    }
                     if (cooldownCheck(orbitalFlameDot)) {
                         addSkillEvent(orbitalFlameDot);
                     }
-                    if (infernoRizeCount < 50) {
+                }
+                while (!cooldownCheck(soulContract)) {
+                    if (orbitalCount % 4 == 0) {
+                        addSkillEvent(orbitalFlameReinforce);
+                    } else {
+                        addSkillEvent(orbitalFlame);
+                    }
+                    orbitalCount++;
+                    if (infernoRizeCount != 50) {
                         infernoRizeCount++;
                     }
-                    if (
-                            infernoRizeCount >= 50
-                                    && cooldownCheck(infernoRize)
-                    ) {
-                        addSkillEvent(infernoRize);
-                        infernoRizeCount = 0;
+                    if (cooldownCheck(orbitalFlameDot)) {
+                        addSkillEvent(orbitalFlameDot);
                     }
                 }
                 addSkillEvent(salamanderMischief);
                 addSkillEvent(flameDischarge);
+                addSkillEvent(blazingExtinction);
                 addSkillEvent(soulContract);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
@@ -195,7 +195,6 @@ public class FlameWizard2DealCycle extends DealCycle {
                 if (cooldownCheck(eternity)) {
                     addSkillEvent(eternity);
                 }
-                addSkillEvent(blazingExtinction);
                 addSkillEvent(blazingOrbitalFlame);
                 addSkillEvent(infinityFlameCircle);
                 addSkillEvent(phoenixDrive);
@@ -212,49 +211,67 @@ public class FlameWizard2DealCycle extends DealCycle {
                             && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(flameDischarge)
-                            && flameCount >= 50
-                            && (
-                            !cooldownCheck(gloryOfGuardians)
-                                    || getStart().after(new Timestamp(660 * 1000))
-                    )
-            ) {
-                addSkillEvent(flameDischarge);
-            } else if (
-                    cooldownCheck(blazingExtinction)
-                    && !cooldownCheck(gloryOfGuardians)
-            ) {
-                addSkillEvent(blazingExtinction);
-            } else if (cooldownCheck(blazingOrbitalFlame)) {
-                addSkillEvent(blazingOrbitalFlame);
             } else {
-                if (getStart().before(phoenixDriveEndTime)) {
-                    addSkillEvent(phoenixDriveFirst);
-                } else {
-                    if (orbitalCount % 4 == 0) {
-                        addSkillEvent(orbitalFlameReinforce);
-                    } else {
-                        addSkillEvent(orbitalFlame);
-                    }
-                    orbitalCount++;
-                }
-                if (cooldownCheck(orbitalFlameDot)) {
-                    addSkillEvent(orbitalFlameDot);
-                }
-                if (infernoRizeCount < 50) {
-                    infernoRizeCount++;
-                }
-                if (
-                        infernoRizeCount >= 50
-                                && cooldownCheck(infernoRize)
-                ) {
-                    addSkillEvent(infernoRize);
-                    infernoRizeCount = 0;
-                }
+                addPlatDeal();
             }
         }
         sortEventTimeList();
+    }
+
+    public void addPlatDeal() {
+        if (cooldownCheck(cygnusPhalanx)) {
+            addSkillEvent(cygnusPhalanx);
+        } else if (
+                cooldownCheck(flameDischarge)
+                        && flameCount >= 50
+                        && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 5000))
+                        && getStart().before(new Timestamp(665 * 1000))
+        ) {
+            addSkillEvent(flameDischarge);
+        } else if (
+                cooldownCheck(blazingExtinction)
+                        && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 5000))
+        ) {
+            addSkillEvent(blazingExtinction);
+        } else if (cooldownCheck(blazingOrbitalFlame)) {
+            addSkillEvent(blazingOrbitalFlame);
+        } else {
+            if (getStart().before(phoenixDriveEndTime)) {
+                addSkillEvent(phoenixDriveFirst);
+            } else {
+                if (orbitalCount % 4 == 0) {
+                    addSkillEvent(orbitalFlameReinforce);
+                } else {
+                    addSkillEvent(orbitalFlame);
+                }
+                orbitalCount++;
+                if (cooldownCheck(orbitalFlameDot)) {
+                    addSkillEvent(orbitalFlameDot);
+                }
+            }
+            if (infernoRizeCount < 50) {
+                infernoRizeCount++;
+            }
+            if (
+                    getStart().before(phoenixDriveEndTime)
+                            && cooldownCheck(infernoRize)
+            ) {
+                if (infernoRizeCount < 50) {
+                    infernoRize.setRelatedSkill(null);
+                    addSkillEvent(infernoRize);
+                    infernoRize.setRelatedSkill(new InfernoRizeFoxPrank());
+                } else {
+                    addSkillEvent(infernoRize);
+                }
+            }
+            if (
+                    infernoRizeCount >= 50
+                            && cooldownCheck(infernoRize)
+            ) {
+                addSkillEvent(infernoRize);
+                infernoRizeCount = 0;
+            }
+        }
     }
 
     @Override
@@ -262,7 +279,7 @@ public class FlameWizard2DealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -272,7 +289,7 @@ public class FlameWizard2DealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof PhoenixDrive) {
-                phoenixDriveEndTime = new Timestamp(getStart().getTime() + 15000);
+                phoenixDriveEndTime = new Timestamp(getStart().getTime() + 18000);
             }
             if (
                     skill instanceof RestraintRing
@@ -410,9 +427,10 @@ public class FlameWizard2DealCycle extends DealCycle {
                     skill instanceof OrbitalFlame
                     || skill instanceof OrbitalFlameReinforce
                     || skill instanceof PhoenixDriveFirst
-                    //|| skill instanceof PhoenixDriveAfterSecond
+                    || skill instanceof PhoenixDriveAfterSecond
                     || skill instanceof BlazingOrbitalFlame
                     || skill instanceof InfinityFlameCircle
+                    || skill instanceof BlazingExtinction
             ) {
                 if (((AttackSkill) skill).getLimitAttackCount() != 0) {
                     flameCount = flameCount + ((AttackSkill) skill).getLimitAttackCount().intValue();

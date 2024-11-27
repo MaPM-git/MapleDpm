@@ -7,7 +7,7 @@ public class SuperFistEnrageShockWave extends AttackSkill {
         this.setName("슈퍼 피스트 인레이지(충격파)");
         this.setAttackCount(10L + 1);
         this.setDamage(455.0);
-        this.setApplyFinalAttack(true);
+        //this.setApplyFinalAttack(true);
         this.setAddDamage(20 + 20L);    // 암살-리인포스, 보스
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

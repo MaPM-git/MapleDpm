@@ -106,7 +106,7 @@ public class DualBladeDealCycle extends DealCycle {
 
         ultimateDarkSight.setBuffFinalDamage(1.34);
 
-        ringSwitching.setCooldown(95.0);
+        ringSwitching.setCooldown(93.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
         karmaBlade3.setCooldown(0.0);
     }
@@ -118,18 +118,8 @@ public class DualBladeDealCycle extends DealCycle {
                 addSkillEvent(flashbangBuff);
             }
             if (
-                    cooldownCheck(finalCutBuff)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(ultimateDarkSight)
-                            && cooldownCheck(readyToDie)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(bladeTornado)
-                            && cooldownCheck(karmaFury)
-                            && cooldownCheck(bladeStormFirst)
-                            && cooldownCheck(asura)
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                    cooldownCheck(restraintRing)
+                    && cooldownCheck(bladeStormFirst)
             ) {
                 boolean isOrigin = false;
                 addSkillEvent(finalCutBuff);
@@ -180,12 +170,8 @@ public class DualBladeDealCycle extends DealCycle {
                 }
                 addSkillEvent(asura);
             } else if (
-                    cooldownCheck(finalCutBuff)
-                            && cooldownCheck(readyToDie)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(weaponJumpRing)
-                            && cooldownCheck(bladeStormFirst)
-                            && cooldownCheck(asura)
+                    cooldownCheck(bladeStormFirst)
+                    && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(finalCutBuff);
                 addSkillEvent(readyToDie);
@@ -230,7 +216,7 @@ public class DualBladeDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(80 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else {
@@ -295,7 +281,7 @@ public class DualBladeDealCycle extends DealCycle {
             if (
                     getStart().before(karmaBladeEndTime)
                     && cooldownCheck(karmaBlade3)
-                    && karmaBladeCnt < 50
+                    && karmaBladeCnt < 35
                     && (
                             skill instanceof Flashbang
                             || skill instanceof FinalCut
@@ -332,7 +318,7 @@ public class DualBladeDealCycle extends DealCycle {
                         if (
                                 getStart().before(karmaBladeEndTime)
                                 && cooldownCheck(karmaBlade3)
-                                && karmaBladeCnt < 50
+                                && karmaBladeCnt < 35
                                 && (
                                         skill instanceof Asura
                                         || skill instanceof BladeStormKeydown
@@ -415,7 +401,7 @@ public class DualBladeDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
@@ -457,17 +443,9 @@ public class DualBladeDealCycle extends DealCycle {
                 * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                 + getJob().getPerXAtt())
                 * getJob().getConstant()
-                        * (1 + (
-                        getJob().getDamage()
-                                + getJob().getBossDamage()
-                                + getJob().getStatXDamage()
-                                + buffSkill.getBuffDamage()
-                                + attackSkill.getAddDamage()
-                                - 310
-                                - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01)
-                ) * 0.01)
                 * getJob().getMastery()
                 * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                * (1 + (getJob().getBossDamage() - 320) * 0.01 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
         );
         return attackDamage;
     }
@@ -532,7 +510,7 @@ public class DualBladeDealCycle extends DealCycle {
             if (
                     getStart().before(karmaBladeEndTime)
                     && cooldownCheck(karmaBlade3)
-                    && karmaBladeCnt < 50
+                    && karmaBladeCnt < 35
                     && skill instanceof HauntedEdge
             ) {
                 addSkillEvent(karmaBlade3);

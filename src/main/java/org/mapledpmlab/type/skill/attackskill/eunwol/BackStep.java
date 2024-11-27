@@ -6,6 +6,6 @@ public class BackStep extends AttackSkill {
     public BackStep() {
         this.setName("후방 이동");
         this.setCooldown(1.0);
-        this.setDelay(420L);
+        this.setDelay(450L);
     }
 }

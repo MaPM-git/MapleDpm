@@ -119,6 +119,8 @@ public class KhaliDealCycle extends DealCycle {
         soulContract.setApplyReuse(true);
 
         grandisGoddessBlessingLef.setCooldown(120.0);
+
+        addSkillEvent(artsFlurry);
     }
 
     @Override
@@ -145,17 +147,21 @@ public class KhaliDealCycle extends DealCycle {
                 addSkillEvent(readyToDie);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
+                while (!cooldownCheck(hexPandemonium)) {
+                    addPlatDealCycle();
+                }
                 addSkillEvent(hexPandemonium);
                 if (cooldownCheck(hexSandStormBeforeDelay)) {
                     addSkillEvent(hexSandStormBeforeDelay);
-                } else {
-                    addSkillEvent(artsCrescentum);
                 }
                 while (!cooldownCheck(voidBurstCombo)) {
                     addPlatDealCycle();
                 }
                 if (cooldownCheck(hexChakramSplit)) {
                     addSkillEvent(hexChakramSplit);
+                }
+                if (cooldownCheck(artsAstra)) {
+                    addSkillEvent(artsFlurry);
                 }
                 addSkillEvent(voidBurstCombo);
             } else if (
@@ -539,7 +545,7 @@ public class KhaliDealCycle extends DealCycle {
                         }
                         if (
                                 skill instanceof ArtsSkill
-                                || skill instanceof HexSkill
+                                        || skill instanceof HexSkill
                         ) {
                             Timestamp temp = new Timestamp(getStart().getTime());
                             getStart().setTime(getStart().getTime() + i);
@@ -616,7 +622,7 @@ public class KhaliDealCycle extends DealCycle {
             sum += info;
             if (
                     skill instanceof ArtsSkill
-                    || skill instanceof HexSkill
+                            || skill instanceof HexSkill
             ) {
                 Timestamp temp = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);
@@ -707,7 +713,7 @@ public class KhaliDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isOblivion = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof Oblivion) {

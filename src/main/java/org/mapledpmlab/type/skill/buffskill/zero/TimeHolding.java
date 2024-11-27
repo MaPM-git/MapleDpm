@@ -13,5 +13,6 @@ public class TimeHolding extends BuffSkill {
         this.setCooldown(180.0);
         this.addBuffDamage(10L);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

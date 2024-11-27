@@ -73,9 +73,9 @@ public class MercedesContinuous extends Job {
         this.addFinalDamage(1.05);
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(-10L);
-        this.addSubStat(10L);
+        this.addMainStatP(-72L);
+        this.addMainStat(3L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -95,14 +95,11 @@ public class MercedesContinuous extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperArcher(this.getLevel()));
         this.addObject(this.getHyper());
-
-        this.addCriticalP(-20.0);       // 세이람의 영약
     }
 
     @Override
     public void Doping() {
         super.Doping();
         this.addFinalDamage(1.2);           // 이그니스 로어 10중첩
-        this.addCriticalP(-20.0);       // 세이람의 영약
     }
 }

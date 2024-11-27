@@ -7,8 +7,7 @@ public class SummonShootingShotgun extends AttackSkill {
         this.setName("서먼 슈팅 샷건");
         this.setDamage(390.0 + 177);
         this.setAttackCount(7L);
-        this.setDelay(150L);
-        //this.setDelayByAttackSpeed(840L);
+        this.setDelay(150L + 30);
         this.setCooldown(5.0);
         this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화

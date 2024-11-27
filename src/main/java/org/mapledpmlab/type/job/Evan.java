@@ -16,7 +16,7 @@ public class Evan extends Job {
     public Evan() {
         // 기본
         super();
-        this.setName("에반");
+        this.setName("에반(리레)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -75,8 +75,8 @@ public class Evan extends Job {
         this.addMagic(35L);             // 스파이럴 오브 마나
 
         // 환산 보정
-        this.addMainStatP(24L);
-        //this.addMainStat(2L);
+        this.addMainStatP(30L);
+        this.addMainStat(-5L);
         this.addSubStat(-5L);
 
         this.setAbility(new ReuseBossAbnormal());

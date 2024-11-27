@@ -25,12 +25,12 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
         {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
+            add(new DotPunisherFirst());
             add(new DotPunisherAfterSecond());
             add(new DotPunisherDot());
-            add(new DotPunisherFirst());
+            add(new DotPunisherOriginFirst());
             add(new DotPunisherOriginAfterSecond());
             add(new DotPunisherOriginDot());
-            add(new DotPunisherOriginFirst());
             add(new FinalAttackArchMageFP());
             add(new FireAura());
             add(new FireAuraDot());
@@ -45,13 +45,14 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
             add(new IfritSummon());
             add(new Ignite());
             add(new InfernalVenomExplosion1());
-            add(new InfernalVenomExplosionError());
+            add(new InfernalVenomExplosion3());
             add(new InfernalVenomExplosion2());
             add(new MegidoFlame());
             add(new MegidoFlameAfterSecond());
             add(new MegidoFlameDot());
             add(new MistEruption());
             add(new PoisonMist());
+            add(new PoisonMistDot());
             add(new PoisonChain());
             add(new PoisonChainExplosion0());
             add(new PoisonChainExplosion1());
@@ -156,7 +157,7 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
         }
 
         // 인피니티 달구기
-        getStart().setTime(-75000);
+        getStart().setTime(-62000);
         infinity.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
         getStart().setTime(0);
@@ -172,6 +173,45 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
         getStart().setTime(-3300);
         addSkillEvent(continuousRing);
         getStart().setTime(0);
+
+        if (cooldownCheck(ifrit)) {
+            addSkillEvent(ifrit);
+            addSkillEvent(teleportMastery);
+        }
+        if (cooldownCheck(poisonZone)) {
+            addSkillEvent(poisonZone);
+            addSkillEvent(teleportMastery);
+        }
+        if (cooldownCheck(mistEruption)) {
+            if (cooldownCheck(flameHaze)) {
+                addSkillEvent(flameHaze);
+                addSkillEvent(teleportMastery);
+            }
+            addSkillEvent(mistEruption);
+            addSkillEvent(teleportMastery);
+            addSkillEvent(flameHaze);
+            addSkillEvent(teleportMastery);
+        }
+        addSkillEvent(poisonNovaDot);
+        if (getStart().before(infernalVenomEndTime)) {
+            addSkillEvent(dotPunisherOriginFirst);
+            addSkillEvent(teleportMastery);
+        } else {
+            addSkillEvent(dotPunisherFirst);
+            addSkillEvent(teleportMastery);
+        }
+        addSkillEvent(poisonChainExplosion0);
+        addSkillEvent(teleportMastery);
+        if (cooldownCheck(flameHaze)) {
+            addSkillEvent(flameHaze);
+            addSkillEvent(teleportMastery);
+        }
+        addSkillEvent(mistEruption);
+        addSkillEvent(teleportMastery);
+        addSkillEvent(flameHaze);
+        addSkillEvent(teleportMastery);
+        addSkillEvent(poisonNovaExplosion);
+        addSkillEvent(teleportMastery);
     }
 
     @Override
@@ -182,6 +222,7 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                             && getStart().after(infinityEndTime)
             ) {
                 addSkillEvent(infinity);
+                addSkillEvent(teleportMastery);
             }
             if (
                     cooldownCheck(unstableMemorize)
@@ -220,65 +261,103 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                     unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.35);
                 }
                 addSkillEvent(unstableMemorize);
+                addSkillEvent(teleportMastery);
             }
             if (cooldownCheck(ifrit)) {
                 addSkillEvent(ifrit);
+                addSkillEvent(teleportMastery);
             }
             if (cooldownCheck(poisonZone)) {
                 addSkillEvent(poisonZone);
+                addSkillEvent(teleportMastery);
             }
             if (
-                    cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(megidoFlame)
-                            && cooldownCheck(furyOfIfrit)
-                            && cooldownCheck(poisonNovaDot)
-                            && cooldownCheck(dotPunisherFirst)
-                            && cooldownCheck(poisonChainExplosion0)
-                            && cooldownCheck(mistEruption)
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-                            && cooldownCheck(infernalVenomBuff)
-                            && getStart().after(new Timestamp(infinityEndTime.getTime() - 45000))
+                    cooldownCheck(infernalVenomBuff)
+                    && getStart().after(new Timestamp(infinityEndTime.getTime() - 45000))
             ) {
                 isNuke = true;
+                if (getStart().after(new Timestamp(60 * 1000))) {
+                    for (int i = 0; i < 5; i ++) {
+                        if (
+                                cooldownCheck(mistEruption)
+                                        && getStart().before(new Timestamp(poisonNovaDot.getActivateTime().getTime() - 1000))
+                        ) {
+                            if (cooldownCheck(flameHaze)) {
+                                addSkillEvent(flameHaze);
+                                addSkillEvent(teleportMastery);
+                            }
+                            addSkillEvent(mistEruption);
+                            addSkillEvent(teleportMastery);
+                            addSkillEvent(flameHaze);
+                            addSkillEvent(teleportMastery);
+                        } else {
+                            addSkillEvent(flameSweep);
+                            addSkillEvent(teleportMastery);
+                        }
+                    }
+                }
                 addSkillEvent(mapleWorldGoddessBlessing);
+                addSkillEvent(teleportMastery);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
+                    addSkillEvent(teleportMastery);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
+                    addSkillEvent(teleportMastery);
                 } else {
                     if (cooldownCheck(mistEruption)) {
-                        addSkillEvent(flameHaze);
+                        if (cooldownCheck(flameHaze)) {
+                            addSkillEvent(flameHaze);
+                            addSkillEvent(teleportMastery);
+                        }
                         addSkillEvent(mistEruption);
+                        addSkillEvent(teleportMastery);
+                        addSkillEvent(flameHaze);
+                        addSkillEvent(teleportMastery);
                     }
                     addSkillEvent(flameSweep);
+                    addSkillEvent(teleportMastery);
                 }
                 addSkillEvent(soulContract);
                 addSkillEvent(megidoFlame);
+                addSkillEvent(teleportMastery);
                 addSkillEvent(infernalVenomBuff);
                 addSkillEvent(furyOfIfritOrigin);
+                addSkillEvent(teleportMastery);
                 addSkillEvent(poisonNovaDot);
+                addSkillEvent(teleportMastery);
                 addSkillEvent(dotPunisherOriginFirst);
+                addSkillEvent(teleportMastery);
                 addSkillEvent(poisonChainExplosion0);
-                addSkillEvent(flameHaze);
+                addSkillEvent(teleportMastery);
+                if (cooldownCheck(flameHaze)) {
+                    addSkillEvent(flameHaze);
+                    addSkillEvent(teleportMastery);
+                }
                 addSkillEvent(mistEruption);
+                addSkillEvent(teleportMastery);
                 addSkillEvent(poisonNovaExplosion);
+                addSkillEvent(flameHaze);
+                addSkillEvent(teleportMastery);
                 isNuke = false;
             } else if (
                     cooldownCheck(spiderInMirror)
                             && cooldownCheck(crestOfTheSolar)
                             && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().after(new Timestamp(60 * 1000))
             ) {
                 addSkillEvent(crestOfTheSolar);
+                addSkillEvent(teleportMastery);
                 addSkillEvent(spiderInMirror);
+                addSkillEvent(teleportMastery);
             } else if (
                     cooldownCheck(mapleWorldGoddessBlessing)
                             && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() - 20000))
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
+                addSkillEvent(teleportMastery);
             } else if (
                     cooldownCheck(epicAdventure)
                             && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() - 20000))
@@ -287,8 +366,18 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(furyOfIfrit)
                             && !cooldownCheck(infernalVenomBuff)
+                            && getStart().after(new Timestamp(60 * 1000))
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(furyOfIfrit);
+                addSkillEvent(teleportMastery);
+                if (
+                        getStart().after(new Timestamp(8 * 60 * 1000))
+                        && getStart().before(new Timestamp(9 * 60 * 1000))
+                ) {
+                    furyOfIfrit.setActivateTime(new Timestamp(9 * 60 * 1000 + 54 * 1000));
+                    furyOfIfritOrigin.setActivateTime(new Timestamp(9 * 60 * 1000 + 54 * 1000));
+                }
             } else if (
                     cooldownCheck(soulContract)
                             && !cooldownCheck(infernalVenomBuff)
@@ -300,36 +389,62 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                             && !cooldownCheck(infernalVenomBuff)
             ) {
                 addSkillEvent(megidoFlame);
+                addSkillEvent(teleportMastery);
             } else if (
                     cooldownCheck(poisonNovaDot)
-                            && !cooldownCheck(infernalVenomBuff)
+                    && getStart().before(new Timestamp(infernalVenomBuff.getActivateTime().getTime() + 30000))
             ) {
                 if (cooldownCheck(mistEruption)) {
-                    addSkillEvent(flameHaze);
+                    if (cooldownCheck(flameHaze)) {
+                        addSkillEvent(flameHaze);
+                        addSkillEvent(teleportMastery);
+                    }
                     addSkillEvent(mistEruption);
+                    addSkillEvent(teleportMastery);
+                    addSkillEvent(flameHaze);
+                    addSkillEvent(teleportMastery);
                 }
                 addSkillEvent(poisonNovaDot);
                 if (getStart().before(infernalVenomEndTime)) {
                     addSkillEvent(dotPunisherOriginFirst);
+                    addSkillEvent(teleportMastery);
                 } else {
                     addSkillEvent(dotPunisherFirst);
-                }
-                addSkillEvent(poisonChainExplosion0);
-                addSkillEvent(flameHaze);
-                addSkillEvent(mistEruption);
-                addSkillEvent(poisonNovaExplosion);
-            } else if (
-                    cooldownCheck(flameHaze)
-                            && cooldownCheck(mistEruption)
-                            && getStart().before(new Timestamp(poisonNovaDot.getActivateTime().getTime() - 1000))
-            ) {
-                addSkillEvent(flameHaze);
-                addSkillEvent(mistEruption);
-            } else {
-                addSkillEvent(flameSweep);
-                if (getStart().after(cancelRestraintRingEndTime)) {
                     addSkillEvent(teleportMastery);
                 }
+                addSkillEvent(poisonChainExplosion0);
+                addSkillEvent(teleportMastery);
+                if (cooldownCheck(flameHaze)) {
+                    addSkillEvent(flameHaze);
+                    addSkillEvent(teleportMastery);
+                }
+                addSkillEvent(mistEruption);
+                addSkillEvent(teleportMastery);
+                addSkillEvent(flameHaze);
+                addSkillEvent(teleportMastery);
+                addSkillEvent(poisonNovaExplosion);
+                addSkillEvent(teleportMastery);
+                if (
+                        getStart().after(new Timestamp(9 * 60 * 1000 + 20 * 1000))
+                        && getStart().before(new Timestamp(9 * 60 * 1000 + 40 * 1000))
+                ) {
+                    poisonNovaDot.setActivateTime(new Timestamp(9 * 60 * 1000 + 54 * 1000));
+                }
+            } else if (
+                    cooldownCheck(mistEruption)
+                            && getStart().before(new Timestamp(poisonNovaDot.getActivateTime().getTime() - 1000))
+            ) {
+                if (cooldownCheck(flameHaze)) {
+                    addSkillEvent(flameHaze);
+                    addSkillEvent(teleportMastery);
+                }
+                addSkillEvent(mistEruption);
+                addSkillEvent(teleportMastery);
+                addSkillEvent(flameHaze);
+                addSkillEvent(teleportMastery);
+            } else {
+                addSkillEvent(flameSweep);
+                addSkillEvent(teleportMastery);
             }
         }
         sortEventTimeList();
@@ -340,7 +455,7 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + skill.getActivateTime() + "\t" + getJob().getName());
             return;
         }
         if (skillLog.equals("")) {
@@ -369,26 +484,26 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             } else if (
-                    skill instanceof MapleWorldGoddessBlessing
+                    skill instanceof EpicAdventure
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
                             && fortyEndTime != null
                             && originXRestraintRingStartTime == null
                             && originXRestraintRingEndTime == null
-                            //&& isNuke
+                            && getStart().after(new Timestamp(9 * 60 * 1000))
             ) {
                 originXRestraintRingStartTime = new Timestamp(getStart().getTime());
                 originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 if (skill instanceof Infinity) {
-                    infinityEndTime = new Timestamp(getStart().getTime() + 123000);
+                    infinityEndTime = new Timestamp(getStart().getTime() + 120000);
                     for (long i = 0; i < 75000; i += 5000) {
                         getSkillEventList().add(new SkillEvent(new Infinity(i), new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i + 5000)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i + 5000));
                     }
-                    getSkillEventList().add(new SkillEvent(new Infinity(75000L), new Timestamp(getStart().getTime() + 75000), new Timestamp(getStart().getTime() + 123000)));
-                    endTime = new Timestamp(getStart().getTime() + 123000);
+                    getSkillEventList().add(new SkillEvent(new Infinity(75000L), new Timestamp(getStart().getTime() + 75000), new Timestamp(getStart().getTime() + 120000)));
+                    endTime = new Timestamp(getStart().getTime() + 120000);
                 } else {
                     endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
                     if (skill.isApplyServerLag()) {
@@ -404,6 +519,35 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof FuryOfIfrit) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getStart().before(new Timestamp(getStart().getTime() + 6000))
+                                    && skillEvent.getSkill() instanceof IfritSummon
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                this.getSkillEventList().removeAll(remove);
+            }
+            if (skill instanceof FuryOfIfritOrigin) {
+                List<SkillEvent> remove = new ArrayList<>();
+                for (SkillEvent skillEvent : this.getSkillEventList()) {
+                    if (
+                            skillEvent.getStart().after(getStart())
+                                    && skillEvent.getStart().before(new Timestamp(getStart().getTime() + 9000))
+                                    && skillEvent.getSkill() instanceof IfritSummon
+                    ) {
+                        remove.add(skillEvent);
+                    }
+                }
+                this.getSkillEventList().removeAll(remove);
+            }
+            if (skill instanceof MistEruption) {
+                flameHaze.setActivateTime(new Timestamp(-1));
+            }
             if (
                     cooldownCheck(continuousRing)
                     && (
@@ -426,75 +570,35 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(continuousRing);
             }
-            Long ran = (long) (Math.random() * 99 + 1);
-            if (
-                    (
-                            skill instanceof DotPunisherAfterSecond
-                            || skill instanceof DotPunisherFirst
-                            || skill instanceof DotPunisherOriginAfterSecond
-                            || skill instanceof DotPunisherOriginFirst
-                            || skill instanceof FlameHaze
-                            || skill instanceof FlameSweep
-                            || skill instanceof FlameSweepExplosion
-                            || skill instanceof FuryOfIfrit
-                            || skill instanceof FuryOfIfritOrigin
-                            || skill instanceof IfritSummon
-                            || skill instanceof MegidoFlame
-                    )
-                    && ran <= 50
-            ) {
-                addSkillEvent(new Ignite());
-            }
             if (skill instanceof PoisonZone) {
                 poisonZoneExplosionTime = new Timestamp(getStart().getTime() + 1500);
             }
             if (
-                    cooldownCheck(poisonZoneExplosion)
-                    && getStart().after(poisonZoneExplosionTime)
-                    && (
-                            skill instanceof DotPunisherAfterSecond
-                            || skill instanceof DotPunisherFirst
-                            || skill instanceof DotPunisherOriginAfterSecond
+                    skill instanceof DotPunisherFirst
                             || skill instanceof DotPunisherOriginFirst
                             || skill instanceof FlameHaze
                             || skill instanceof FlameSweep
-                            || skill instanceof FlameSweepExplosion
-                            || skill instanceof FuryOfIfrit
-                            || skill instanceof FuryOfIfritOrigin
-                            || skill instanceof IfritSummon
-                            || skill instanceof InfernalVenomExplosion1
-                            || skill instanceof InfernalVenomExplosion2
                             || skill instanceof MegidoFlame
-                    )
             ) {
-                addSkillEvent(poisonZoneExplosion);
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 50) {
+                    addSkillEvent(new Ignite());
+                }
+                if (
+                        cooldownCheck(poisonZoneExplosion)
+                        && getStart().after(poisonZoneExplosionTime)
+                ) {
+                    addSkillEvent(poisonZoneExplosion);
+                }
             }
             if (((AttackSkill) skill).isApplyFinalAttack()) {
-                ran = (long) (Math.random() * 99 + 1);
+                Long ran = (long) (Math.random() * 99 + 1);
                 if (ran <= getFinalAttack().getProp()) {
                     ran = (long) (Math.random() * 99 + 1);
                     if (ran <= 50) {
                         addSkillEvent(new Ignite());
                     }
-                    if (
-                            cooldownCheck(poisonZoneExplosion)
-                            && getStart().before(poisonZoneExplosionTime)
-                    ) {
-                        addSkillEvent(poisonZoneExplosion);
-                    }
                 }
-            }
-            if (skill instanceof MistEruption) {
-                List<SkillEvent> remove = new ArrayList<>();
-                for (SkillEvent skillEvent : this.getSkillEventList()) {
-                    if (
-                            skillEvent.getStart().after(getStart())
-                            && skillEvent.getSkill() instanceof PoisonMist
-                    ) {
-                        remove.add(skillEvent);
-                    }
-                }
-                this.getSkillEventList().removeAll(remove);
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -513,16 +617,13 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     long i = ((AttackSkill) skill).getInterval();
                     if (
-                            skill instanceof FuryOfIfrit
-                            || skill instanceof FuryOfIfritOrigin
-                    ) {
-                        i = 1000;//480 + 960 + 180;
-                    }
-                    if (
                             skill instanceof FlameSweepDot
                             || skill instanceof TeleportMasteryDot
                     ) {
                         i = 0;
+                    }
+                    if (skill instanceof Ignite) {
+                        i = 2000;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -530,9 +631,40 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                     }
                 } else {
                     Long attackCount = 0L;
+                    if (
+                            skill instanceof FuryOfIfrit
+                                    || skill instanceof FuryOfIfritOrigin
+                    ) {
+                        i = 1620;//480 + 960 + 180;
+                    }
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
+                        Timestamp now = new Timestamp(getStart().getTime());
+                        getStart().setTime(getStart().getTime() + i);
+                        if (
+                                skill instanceof DotPunisherAfterSecond
+                                        || skill instanceof DotPunisherOriginAfterSecond
+                                        || skill instanceof FuryOfIfrit
+                                        || skill instanceof FuryOfIfritOrigin
+                                        || skill instanceof IfritSummon
+                                        || skill instanceof MegidoFlameAfterSecond
+                        ) {
+                            Long ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= 50) {
+                                addSkillEvent(new Ignite());
+                            }
+                        }
+                        if (((AttackSkill) skill).isApplyFinalAttack()) {
+                            Long ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= getFinalAttack().getProp()) {
+                                ran = (long) (Math.random() * 99 + 1);
+                                if (ran <= 50) {
+                                    addSkillEvent(new Ignite());
+                                }
+                            }
+                        }
+                        getStart().setTime(now.getTime());
                         attackCount += 1;
                     }
                 }
@@ -608,7 +740,7 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isInfernalVenomBuff = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof InfernalVenomBuff) {
@@ -716,10 +848,36 @@ public class ArchMageFPContinuousDealCycle extends DealCycle {
                     && (
                             skill instanceof InfernalVenomExplosion1
                             || skill instanceof InfernalVenomExplosion2
-                            || skill instanceof InfernalVenomExplosionError
+                            || skill instanceof InfernalVenomExplosion3
                     )
             ) {
                 addSkillEvent(continuousRing);
+            }
+            if (
+                    skill instanceof InfernalVenomExplosion1
+                    || skill instanceof InfernalVenomExplosion2
+            ) {
+                if (
+                        cooldownCheck(poisonZoneExplosion)
+                                && getStart().after(poisonZoneExplosionTime)
+                ) {
+                    addSkillEvent(poisonZoneExplosion);
+                }
+            }
+            if (((AttackSkill) skill).isApplyFinalAttack()) {
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= getFinalAttack().getProp()) {
+                    ran = (long) (Math.random() * 99 + 1);
+                    if (ran <= 50) {
+                        addSkillEvent(new Ignite());
+                    }
+                    if (
+                            cooldownCheck(poisonZoneExplosion)
+                                    && getStart().before(poisonZoneExplosionTime)
+                    ) {
+                        addSkillEvent(poisonZoneExplosion);
+                    }
+                }
             }
             getStart().setTime(now.getTime());
         }

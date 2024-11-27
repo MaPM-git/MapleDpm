@@ -159,13 +159,13 @@ public class PathFinderDealCycle extends DealCycle {
                 }
                 addSkillEvent(obsidianBarrier);
                 addSkillEvent(criticalReinforce);
+                addSkillEvent(soulContract);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
                 }
                 addSkillEvent(ravenTempest);
-                addSkillEvent(soulContract);
                 if (cooldownCheck(edgeOfResonance)) {
                     addSkillEvent(edgeOfResonance);
                 }
@@ -207,7 +207,6 @@ public class PathFinderDealCycle extends DealCycle {
                 addSkillEvent(cardinalDischarge);
             }
         }
-        getStart().setTime(-1);
         sortEventTimeList();
     }
 
@@ -216,7 +215,7 @@ public class PathFinderDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -277,7 +276,6 @@ public class PathFinderDealCycle extends DealCycle {
             }
             if (
                     skill instanceof CardinalForce
-                    && cooldownCheck(forsakenRelicMagicArrow)
                     && getStart().before(relicLiberationEndTime)
             ) {
                 addSkillEvent(forsakenRelicMagicArrow);
@@ -423,7 +421,7 @@ public class PathFinderDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isEvolve = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof EvolveBuff) {

@@ -47,7 +47,7 @@ public class Zero extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-3L);
+        this.addMainStatP(6L);
         this.addMainStat(1L);
         this.addSubStat(10L);
 

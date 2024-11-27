@@ -14,8 +14,8 @@ public class Union extends Common {
                 "\n6.주스탯 25" +              // 5칸
                 "\n7.부스탯 5" +               // 1칸 = 171칸
                 "\n\n유니온 공격대원 효과" +
-                "\n1.블래스터 250 : 몬스터 방어율 무시 5%" +
-                "\n2.데몬 어벤져 250 : 보스 공격 시 데미지 5%" +
+                "\n1.블래스터 250 : 몬스터 방어율 무시 6%" +
+                "\n2.데몬 어벤져 250 : 보스 공격 시 데미지 6%" +
                 "\n3.신궁 250 : 크리티컬 확률 5%" +
                 "\n4.메르세데스 250 : 스킬 재사용 대기시간 감소 6%" +
                 "\n5.와일드헌터 250 : 데미지 4%(공격시 20% 확률로 데미지 20% 증가)" +
@@ -26,7 +26,7 @@ public class Union extends Common {
                 "\n10.소울마스터 200 : HP 2000" +
                 "\n11.미하일 200 : HP 2000"
         );
-        this.addIgnoreDefenseList(5L);  // 블래스터
+        this.addIgnoreDefenseList(6L);  // 블래스터
         this.addBossDamage(6L);         // 데몬어벤져
         this.addCriticalP(5.0);         // 신궁
         this.addCooldownReductionP(6L); // 메르세데스

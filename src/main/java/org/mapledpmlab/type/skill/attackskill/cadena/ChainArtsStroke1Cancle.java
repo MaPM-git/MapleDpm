@@ -7,8 +7,7 @@ public class ChainArtsStroke1Cancle extends AttackSkill {
         this.setName("체인아츠:스트로크(1타, 캔슬)");
         this.setDamage(300.0);
         this.setAttackCount(2L);
-        this.setDelay(90L);
-        //this.setDelayByAttackSpeed(330L);
+        this.setDelay(90L + 30);
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(20L);             // 체인아츠:스트로크-리인포스

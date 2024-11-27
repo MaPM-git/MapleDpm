@@ -18,7 +18,7 @@ public class Pathfinder extends Job {
         this.setName("패스파인더");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
-        this.setJobType(JobType.COOLDOWN_REDUCTION2);
+        this.setJobType(JobType.ETC);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -64,8 +64,8 @@ public class Pathfinder extends Job {
         this.addMainStat(82L);          // 일루전 스탭
 
         // 환산 보정
-        this.addMainStatP(-78L);
-        this.addMainStat(-3L);
+        this.addMainStatP(-48L);
+        this.addMainStat(-6L);
         this.addSubStat(-2L);
 
         this.setAbility(new BossCriticalReuse());

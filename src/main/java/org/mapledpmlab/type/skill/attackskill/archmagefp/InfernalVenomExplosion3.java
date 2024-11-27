@@ -2,9 +2,9 @@ package org.mapledpmlab.type.skill.attackskill.archmagefp;
 
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
-public class InfernalVenomExplosionError extends AttackSkill {
-    public InfernalVenomExplosionError() {
-        this.setName("인페르날 베놈(오류)");
+public class InfernalVenomExplosion3 extends AttackSkill {
+    public InfernalVenomExplosion3() {
+        this.setName("인페르날 베놈(폭발 독)");
         this.setAttackCount(12L);
         this.setDamage(540.0);
         this.setApplyFinalAttack(true);

@@ -100,6 +100,7 @@ public class Bishop3DealCycle extends DealCycle {
             add(new PeacemakerBuff());
             add(new Pray(0L));
             add(new RestraintRing());
+            add(new RingOfSum());
             add(new RingSwitching());
             add(new SoulContract());
             add(new UnstableMemorize());
@@ -110,6 +111,7 @@ public class Bishop3DealCycle extends DealCycle {
     Long holySwordCount = 0L;   // 성검 개수
 
     boolean angelOfLibraRevengeAttack = false;
+    boolean isRingOfSum = false;
     //boolean bahamutAttack = false;
     Timestamp infinityBurningTime = new Timestamp(0);
     Timestamp infinityEndTime = new Timestamp(0);
@@ -131,6 +133,7 @@ public class Bishop3DealCycle extends DealCycle {
     Peacemaker peacemaker = new Peacemaker();
     Pray pray = new Pray(0L);
     RestraintRing restraintRing = new RestraintRing();
+    RingOfSum ringOfSum = new RingOfSum();
     RingSwitching ringSwitching = new RingSwitching();
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
@@ -141,7 +144,7 @@ public class Bishop3DealCycle extends DealCycle {
     public Bishop3DealCycle(Job job) {
         super(job, null);
 
-        getJob().setName("비숍(3분)");
+        getJob().setName("비숍(리웨썸, 3분)");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
@@ -152,7 +155,7 @@ public class Bishop3DealCycle extends DealCycle {
         addSkillEvent(infinity);
         getStart().setTime(0);
 
-        ringSwitching.setCooldown(90.0);
+        ringSwitching.setCooldown(60.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
@@ -212,18 +215,7 @@ public class Bishop3DealCycle extends DealCycle {
             if (cooldownCheck(angelicTouch)) {
                 addSkillEvent(angelicTouch);
             }
-            if (
-                    cooldownCheck(epicAdventure)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(pray)
-                            && cooldownCheck(angelOfLibra)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(holyBlood)
-                            && cooldownCheck(peacemaker)
-                            && cooldownCheck(heavensDoor)
-                            && cooldownCheck(divinePunishment)
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
+            if (cooldownCheck(pray)) {
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -258,25 +250,54 @@ public class Bishop3DealCycle extends DealCycle {
                     addSkillEvent(holyAdvent);
                 }
                 addSkillEvent(divinePunishment);
-            } else if (
-                    cooldownCheck(soulContract)
-                            && cooldownCheck(weaponJumpRing)
-                            && cooldownCheck(peacemaker)
-                            && cooldownCheck(heavensDoor)
-                            && cooldownCheck(divinePunishment)
-            ) {
+            } else if (cooldownCheck(soulContract)) {
                 addSkillEvent(soulContract);
-                addSkillEvent(weaponJumpRing);
+                if (cooldownCheck(weaponJumpRing)) {
+                    addSkillEvent(weaponJumpRing);
+                } else {
+                    addSkillEvent(ringOfSum);
+                }
                 addSkillEvent(peacemaker);
+                while (!cooldownCheck(heavensDoor)) {
+                    if (
+                            cooldownCheck(peacemaker)
+                                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 7000))
+                    ) {
+                        addSkillEvent(peacemaker);
+                    } else {
+                        addSkillEvent(angelicRay);
+                        if (holySwordCount >= 24) {
+                            addSkillEvent(angelicOfJudgement);
+                            holySwordCount -= 24;
+                        }
+                    }
+                }
                 addSkillEvent(heavensDoor);
+                while (!cooldownCheck(divinePunishment)) {
+                    if (
+                            cooldownCheck(peacemaker)
+                                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 7000))
+                    ) {
+                        addSkillEvent(peacemaker);
+                    } else {
+                        addSkillEvent(angelicRay);
+                        if (holySwordCount >= 24) {
+                            addSkillEvent(angelicOfJudgement);
+                            holySwordCount -= 24;
+                        }
+                    }
+                }
                 addSkillEvent(divinePunishment);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(70 * 1000))
+                            && getStart().after(new Timestamp(50 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (cooldownCheck(peacemaker)) {
+            } else if (
+                    cooldownCheck(peacemaker)
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 8000))
+            ) {
                 addSkillEvent(peacemaker);
             } else {
                 addSkillEvent(angelicRay);
@@ -352,7 +373,7 @@ public class Bishop3DealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isLibra = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof AngelOfLibra) {
@@ -387,6 +408,12 @@ public class Bishop3DealCycle extends DealCycle {
                 }
             }
             for (SkillEvent skillEvent : useBuffSkillList) {
+                if (
+                        !isRingOfSum
+                                && skillEvent.getSkill() instanceof RingOfSum
+                ) {
+                    isRingOfSum = true;
+                }
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
                 buffSkill.addBuffAllStatP(((BuffSkill) skillEvent.getSkill()).getBuffAllStatP());
@@ -430,6 +457,7 @@ public class Bishop3DealCycle extends DealCycle {
             }
             isAngelOfLibraCharity = false;
             isPray = false;
+            isRingOfSum = false;
         }
         for (AttackSkill as : attackSkillList) {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
@@ -440,6 +468,7 @@ public class Bishop3DealCycle extends DealCycle {
     @Override
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
+        Long ringOfSumStat = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         Long mainStat;
         if (isAngelOfLibraCharity) {
@@ -464,6 +493,10 @@ public class Bishop3DealCycle extends DealCycle {
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(buffSkill.getBuffOtherStat2());
+                if (isRingOfSum) {
+                    ringOfSumStat = getRingOfSumStat();
+                    this.getJob().addMainStat(ringOfSumStat);
+                }
                 if (attackSkill instanceof DotAttackSkill) {
                     attackDamage = getDotDamage(attackSkill, buffSkill);
                 } else {
@@ -489,6 +522,9 @@ public class Bishop3DealCycle extends DealCycle {
                 this.getJob().addSubStat(-buffSkill.getBuffSubStat());
                 this.getJob().addOtherStat1(-buffSkill.getBuffOtherStat1());
                 this.getJob().addOtherStat2(-buffSkill.getBuffOtherStat2());
+                if (isRingOfSum) {
+                    this.getJob().addMainStat(-ringOfSumStat);
+                }
                 if (skillEvent.getStart().equals(start)) {
                     as.setUseCount(as.getUseCount() + 1);
                     as.setCumulativeAttackCount(as.getCumulativeAttackCount() + attackSkill.getAttackCount());

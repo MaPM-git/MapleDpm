@@ -16,7 +16,7 @@ public class DemonSlayerRuin extends Job {
     public DemonSlayerRuin() {
         // 기본
         super();
-        this.setName("데몬슬레이어");
+        this.setName("데몬슬레이어(리웨, 루포실)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -64,9 +64,9 @@ public class DemonSlayerRuin extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(24L);
-        this.addMainStat(8L);
-        this.addSubStat(-5L);
+        this.addMainStatP(21L);
+        this.addMainStat(6L);
+        //this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

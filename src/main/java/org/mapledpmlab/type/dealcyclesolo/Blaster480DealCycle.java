@@ -144,7 +144,7 @@ public class Blaster480DealCycle extends DealCycle {
         //flatDeal2.add(doubleFang150);
         flatDeal2.add(duckingJump);
 
-        ringSwitching.setCooldown(130.0);
+        ringSwitching.setCooldown(120.0);
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(120.0);
@@ -170,14 +170,7 @@ public class Blaster480DealCycle extends DealCycle {
             if (cooldownCheck(resistanceLineInfantry)) {
                 addSkillEvent(resistanceLineInfantry);
             }
-            if (
-                    cooldownCheck(afterImageShock)
-                            && cooldownCheck(willOfLiberty)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(vulcanPunch)
-                            && cooldownCheck(maximizeCanon)
-                            && cooldownCheck(burningBreakerDelay)
-                            && cooldownCheck(bunkerBuster)
+            if (cooldownCheck(willOfLiberty)
             ) {
                 addSkillEvent(bodyOfSteel);
                 addSkillEvent(afterImageShock);
@@ -214,14 +207,10 @@ public class Blaster480DealCycle extends DealCycle {
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(100 * 1000))
-                            && getStart().before(new Timestamp(9 * 60 * 1000)))
+                            && getStart().before(new Timestamp(10 * 60 * 1000)))
             {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(vulcanPunch)
-                            && cooldownCheck(soulContract)
-                            && !cooldownCheck(burningBreakerDelay)
-            ) {
+            } else if (cooldownCheck(vulcanPunch)) {
                 addSkillEvent(soulContract);
                 addSkillEvent(vulcanPunch);
             } else if (
@@ -473,7 +462,7 @@ public class Blaster480DealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isBunkerBuster = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof MaximizeCanon) {

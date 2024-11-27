@@ -15,7 +15,7 @@ public class Marksman extends Job {
     public Marksman() {
         // 기본
         super();
-        this.setName("신궁");
+        this.setName("신궁(리웨)");
         this.setConstant(1.35);         // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -69,9 +69,9 @@ public class Marksman extends Job {
         this.addFinalDamage(1.11);      // 라스트맨 스탠딩
 
         // 환산 보정
-        this.addMainStatP(-60L);
-        //this.addMainStat(3L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-57L);
+        this.addMainStat(4L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

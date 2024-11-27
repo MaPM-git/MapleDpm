@@ -10,7 +10,7 @@ import org.mapledpmlab.type.union.StrUnion;
 
 import java.util.stream.Collectors;
 
-public class Hero extends Job {
+public class  Hero extends Job {
 
     public Hero() {
         // 기본
@@ -71,9 +71,9 @@ public class Hero extends Job {
         //this.addMainStat(8L);
 
         // 환산 보정, 스탯뚝
-        this.addMainStatP(12L);
-        this.addMainStat(3L);
-        this.addSubStat(-5L);
+        //this.addMainStatP(12L);
+        this.addMainStat(-15L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

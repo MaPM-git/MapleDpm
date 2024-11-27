@@ -130,7 +130,8 @@ public class WildHunterDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(130.0);
+        ringSwitching.setCooldown(120.0);
+        ringSwitching.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
@@ -142,7 +143,7 @@ public class WildHunterDealCycle extends DealCycle {
             if (
                     cooldownCheck(rampageAsOne)
                             && getStart().after(jaguarSkillDelay)
-                            && !cooldownCheck(soulContract)
+                            && !cooldownCheck(willOfLiberty)
             ) {
                 if (biteCnt < 3) {
                     biteCnt ++;
@@ -189,30 +190,10 @@ public class WildHunterDealCycle extends DealCycle {
                 addSkillEvent(crossroad);
                 jaguarSkillDelay = new Timestamp(getStart().getTime() + crossroad.getJaguarDelay());
             }
-            if (
-                    cooldownCheck(resistanceLineInfantry)
-                            && getStart().after(new Timestamp(10000))
-                            && !cooldownCheck(willOfLiberty)
-                            && getStart().before(new Timestamp(700 * 1000))
-            ) {
+            if (cooldownCheck(resistanceLineInfantry)) {
                 addSkillEvent(resistanceLineInfantry);
             }
-            if (
-                    cooldownCheck(willOfLiberty)
-                            && cooldownCheck(assistantHuntingUnitDelay)
-                            && cooldownCheck(silentRampage)
-                            && cooldownCheck(criticalReinforce)
-                            && cooldownCheck(drillContainer)
-                            && cooldownCheck(resistanceLineInfantry)
-                            && cooldownCheck(jaguarSoul)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(jaguarStorm)
-                            && cooldownCheck(rampageAsOne)
-                            && cooldownCheck(jaguarMaximum)
-                            && cooldownCheck(wildGrenade)
-                            && cooldownCheck(wildVulcanTypeXBeforeDelay)
-                            && getStart().before(new Timestamp(660 * 1000))
-            ) {
+            if (cooldownCheck(jaguarMaximum)) {
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(willOfLiberty);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -224,10 +205,16 @@ public class WildHunterDealCycle extends DealCycle {
                     addSkillEvent(wildVulcanReinforce);
                 }
                 addSkillEvent(assistantHuntingUnitDelay);
+                drillContainer.setActivateTime(new Timestamp(-1));
                 addSkillEvent(drillContainer);
                 addSkillEvent(silentRampage);
                 addSkillEvent(criticalReinforce);
-                addSkillEvent(resistanceLineInfantry);
+                if (resistanceLineInfantry.getActivateTime().getTime() - getStart().getTime() < 3000) {
+                    while (!cooldownCheck(resistanceLineInfantry)) {
+                        addSkillEvent(wildVulcanReinforce);
+                    }
+                    addSkillEvent(resistanceLineInfantry);
+                }
                 addSkillEvent(jaguarStorm);
                 addSkillEvent(soulContract);
                 if (cooldownCheck(restraintRing)) {
@@ -240,21 +227,28 @@ public class WildHunterDealCycle extends DealCycle {
                 if (cooldownCheck(naturesBeliefWave)) {
                     addSkillEvent(naturesBeliefWave);
                 }
+                if (cooldownCheck(rampageAsOne)) {
+                    addSkillEvent(rampageAsOne);
+                }
                 addSkillEvent(jaguarMaximum);
                 addSkillEvent(getOffJaguar);
+                if (cooldownCheck(rampageAsOne)) {
+                    addSkillEvent(rampageAsOne);
+                }
                 addSkillEvent(wildGrenade);
+                if (cooldownCheck(rampageAsOne)) {
+                    addSkillEvent(rampageAsOne);
+                }
                 addSkillEvent(wildVulcanTypeXBeforeDelay);
-
                 dealCycleOrder++;
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(110 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000)))
-            {
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
+            ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(soulContract)
-                            && cooldownCheck(drillContainer)
                             && !cooldownCheck(willOfLiberty)
             ) {
                 addSkillEvent(assistantHuntingUnitDelay);
@@ -552,7 +546,7 @@ public class WildHunterDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof CriticalReinforce) {
                     isCriticalReinforce = true;

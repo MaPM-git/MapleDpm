@@ -8,8 +8,7 @@ public class SummonSlashingKnife extends AttackSkill {
         this.setName("서먼 슬래싱 나이프");
         this.setDamage(315.0 + 177);
         this.setAttackCount(8L);
-        this.setDelay(150L);
-        //this.setDelayByAttackSpeed(750L);
+        this.setDelay(150L + 30);
         this.setCooldown(10.0);
         this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화

@@ -8,7 +8,7 @@ public class ThornOfFury extends GaugeAttackSkill {
     public ThornOfFury() {
         this.setName("분노의 가시");
         this.setAttackCount(12L);
-        this.setDamage(1485.0);
+        this.setDamage(1320.0);
         this.addIgnoreDefenseList(30L);
         this.setCooldown(4.0);
         this.addFinalDamage(1.6);       // 코어 강화

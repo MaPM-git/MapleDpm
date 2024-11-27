@@ -13,5 +13,6 @@ public class RelicEvolution extends GaugeBuffSkill {
         this.setDuration(30L);
         this.setGaugeCharge(1000.0);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

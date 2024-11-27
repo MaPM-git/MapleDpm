@@ -127,21 +127,7 @@ public class MihileDealCycle extends DealCycle {
             ) {
                 addSkillEvent(transcendentCygnusBlessing);
             }
-            if (
-                    cooldownCheck(auraWeaponBuff)
-                            && cooldownCheck(rhoAias)
-                            && cooldownCheck(queenOfTomorrow)
-                            //&& cooldownCheck(royalGuard)
-                            && cooldownCheck(guardOfLight)
-                            && cooldownCheck(lightOfCourage)
-                            && cooldownCheck(swordOfSoulLight)
-                            && cooldownCheck(soulMajesty)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(deadlyCharge)
-                            && cooldownCheck(claimhSolais)
-                            && getStart().before(new Timestamp(600 * 1000))
-            ) {
+            if (cooldownCheck(guardOfLight)) {
                 addSkillEvent(auraWeaponBuff);
                 addSkillEvent(queenOfTomorrow);
                 addSkillEvent(bodyOfSteel);
@@ -155,12 +141,11 @@ public class MihileDealCycle extends DealCycle {
                     addSkillEvent(shiningCrossAssault);
                 }
                 addSkillEvent(guardOfLight);
-                addSkillEvent(lightOfCourage);
                 addSkillEvent(swordOfSoulLight);
                 addSkillEvent(soulMajesty);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
-                //addSkillEvent(royalGuard);
+                addSkillEvent(lightOfCourage);
                 addSkillEvent(deadlyCharge);
                 addSkillEvent(claimhSolais);
                 addSkillEvent(lightForceRei);
@@ -168,16 +153,6 @@ public class MihileDealCycle extends DealCycle {
                     addSkillEvent(durandal1);
                 }
             } else if (
-                    cooldownCheck(lightOfCourage)
-                            && !cooldownCheck(queenOfTomorrow)
-            ) {
-                addSkillEvent(lightOfCourage);
-            } else if (
-                    cooldownCheck(soulContract)
-                            && !cooldownCheck(lightOfCourage)
-            ) {
-                addSkillEvent(soulContract);
-            } /*else if (
                     cooldownCheck(lightOfCourage)
                     && cooldownCheck(soulContract)
                     && cooldownCheck(weaponJumpRing)
@@ -191,7 +166,7 @@ public class MihileDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            }*/ else if (
+            } else if (
                     cooldownCheck(deadlyCharge)
                             && (
                             getStart().before(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
@@ -207,9 +182,7 @@ public class MihileDealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(claimhSolais);
-            } /*else if (cooldownCheck(royalGuard)) {
-                addSkillEvent(royalGuard);
-            }*/ else if (getStart().before(swordOfSoulLightEndTime)) {
+            } else if (getStart().before(swordOfSoulLightEndTime)) {
                 addSkillEvent(soulLightSlash);
             } else {
                 addSkillEvent(shiningCrossAssault);

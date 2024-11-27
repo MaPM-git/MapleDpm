@@ -245,7 +245,7 @@ public class DealCycle {
             attackSkill.setCumulativeAttackCountStr(attackSkill.getCumulativeAttackCountStr() + "전체 : " + attackSkill.getCumulativeAttackCount());
             attackSkill.setShareStr(attackSkill.getShareStr() + "전체 : " + attackSkill.getShare());
         }
-        setDPM(getTotalDamage() / 12);
+        setDPM(getTotalDamage()/* / 680 * 660*/);
         setRestraintRingDeal(calcRestraintRingDeal());
         setFortyDeal(calcFortyDeal());
         setOriginXRestraintRingDeal(calcOriginXRestraintDeal());
@@ -262,7 +262,7 @@ public class DealCycle {
         }
         System.out.println("검증용 : " + verifyDamage);
         System.out.println("총데미지 : " + getTotalDamage());
-        System.out.println("DPM : " + getTotalDamage()/12);
+        System.out.println("DPM : " + getTotalDamage() / 680 * 660);
         System.out.println("리스트레인트링 : " + calcRestraintRingDeal());
         System.out.println("40초 : " + calcFortyDeal());
     }
@@ -333,7 +333,7 @@ public class DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (
                         !isRingOfSum
@@ -375,24 +375,43 @@ public class DealCycle {
 
     public Long getDotDamage(AttackSkill attackSkill, BuffSkill buffSkill) {
         Long attackDamage;
-        attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                + getJob().getFinalSubstat()) * 0.01
-                * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
-                * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
-                + getJob().getPerXAtt())
-                * getJob().getConstant()
-                * (1 + (
-                        getJob().getDamage()
-                                + getJob().getBossDamage()
-                                + getJob().getStatXDamage()
-                                + buffSkill.getBuffDamage()
-                                + attackSkill.getAddDamage()
-                                - 310
-                                - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01)
-                ) * 0.01)
-                * getJob().getMastery()
-                * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
-        );
+        if (
+                buffSkill.getBuffDamage() >= 140
+                && this.getClass().getName().contains("Continuous")
+        ) {
+            attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                    + getJob().getFinalSubstat()) * 0.01
+                    * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                    * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                    + getJob().getPerXAtt())
+                    * getJob().getConstant()
+                    * getJob().getMastery()
+                    * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                    * (1 + (getJob().getBossDamage() + 140 - 280) * 0.01 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
+            );
+        } else if (this.getClass().getName().contains("Continuous")) {
+            attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                    + getJob().getFinalSubstat()) * 0.01
+                    * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                    * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                    + getJob().getPerXAtt())
+                    * getJob().getConstant()
+                    * getJob().getMastery()
+                    * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                    * (1 + (getJob().getBossDamage() - 280) * 0.01 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
+            );
+        } else {
+            attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
+                    + getJob().getFinalSubstat()) * 0.01
+                    * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
+                    * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
+                    + getJob().getPerXAtt())
+                    * getJob().getConstant()
+                    * getJob().getMastery()
+                    * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                    * (1 + (getJob().getBossDamage() - 320) * 0.01 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
+            );
+        }
         return attackDamage;
     }
 

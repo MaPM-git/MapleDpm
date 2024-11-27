@@ -150,6 +150,8 @@ public class EvanDealCycle extends DealCycle {
         breathOfEarthCycle.add(circleOfMana);
         breathOfEarthCycle.add(circleOfMana);
         breathOfEarthCycle.add(breathComeBack);
+
+        addSkillEvent(spiralOfMana);
     }
 
     @Override
@@ -170,7 +172,6 @@ public class EvanDealCycle extends DealCycle {
                             && cooldownCheck(restraintRing)
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
-                //getStart().setTime(getStart().getTime() + 210);
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -214,7 +215,6 @@ public class EvanDealCycle extends DealCycle {
                     addSkillEvent(zodiacBurst);
                     if (cooldownCheck(spiralOfMana)) {
                         addSkillEvent(spiralOfMana);
-                        addSkillEvent(spiralOfMana);
                         addSkillEvent(breakComeBack);
                     } else {
                         addSkillEvent(circleOfMana);
@@ -249,7 +249,7 @@ public class EvanDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(dragonBreak)
                             && cooldownCheck(elementalBlast)
-                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 10000))
+                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(dragonBreak);
                 boolean som = false;
@@ -562,16 +562,6 @@ public class EvanDealCycle extends DealCycle {
             } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
                 this.multiAttackProcess(skill);
             } else {
-                if (skill instanceof CircleOfMana1) {
-                    List<SkillEvent> skillEventList = getOverlappingSkillEvents(getStart(), new Timestamp(getStart().getTime() + 1000));
-                    for (int i = 0; i < skillEventList.size(); i++) {
-                        if (skillEventList.get(i).getSkill() instanceof SpiralOfMana) {
-                            SpiralOfMana spiralOfMana = new SpiralOfMana();
-                            spiralOfMana.setAttackCount(3L);
-                            skillEventList.get(i).setSkill(spiralOfMana);
-                        }
-                    }
-                }
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }

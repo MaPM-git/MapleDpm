@@ -16,7 +16,7 @@ public class NightLord extends Job {
     public NightLord() {
         // 기본
         super();
-        this.setName("나이트로드");
+        this.setName("나이트로드(리웨)");
         this.setConstant(1.75);         // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -71,9 +71,9 @@ public class NightLord extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-27L);
-        this.addMainStat(7L);
-        this.addSubStat(10L);
+        this.addMainStatP(-30L);
+        this.addMainStat(-4L);
+        this.addSubStat(2L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

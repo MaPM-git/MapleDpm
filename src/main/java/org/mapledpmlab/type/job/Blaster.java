@@ -15,7 +15,7 @@ public class Blaster extends Job {
     public Blaster() {
         // 기본
         super();
-        this.setName("블래스터");
+        this.setName("블래스터(리웨)");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -46,14 +46,14 @@ public class Blaster extends Job {
         this.addFinalDamage(1.05);
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
-        this.addDamage(20L);            // 차지 마스터리
+        this.addDamage(15L);            // 차지 마스터리
 
         // 3차
         this.addAttP(15L);              // 콤비네이션 트레이닝
 
         // 4차
-        this.addCriticalDamage(21.0);   // 건틀렛 엑스퍼트
-        this.addBossDamage(21L);
+        this.addCriticalDamage(16.0);   // 건틀렛 엑스퍼트
+        this.addBossDamage(16L);
         this.addIgnoreDefenseList(38L); // 어드밴스드 차지 마스터리
         this.addAtt(42L);               // 콤비네이션 트레이닝 II
         this.addCriticalP(40.0);
@@ -62,9 +62,9 @@ public class Blaster extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-54L);
-        this.addMainStat(5L);
-        this.addSubStat(10L);
+        this.addMainStatP(-57L);
+        this.addMainStat(2L);
+        //this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

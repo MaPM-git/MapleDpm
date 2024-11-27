@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SpiralOfMana extends AttackSkill {
     public SpiralOfMana() {
         this.setName("스파이럴 오브 마나");
-        this.setDamage(505.0);
+        this.setDamage(220.0);
         this.setAttackCount(6L);
         this.setDelay(360L);
         this.setDotDuration(7000L);

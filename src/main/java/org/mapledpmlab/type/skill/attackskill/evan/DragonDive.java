@@ -7,6 +7,7 @@ public class DragonDive extends AttackSkill {
         this.setName("드래곤 다이브");
         this.setDamage(130.0 + 196);
         this.setAttackCount(3L);
+        this.setDelay(30L);
         this.setDotDuration(3500L);
         this.setInterval(390L);
         this.setLimitAttackCount(9L);

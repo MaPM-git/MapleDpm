@@ -16,7 +16,7 @@ public class Luminous extends Job {
     public Luminous() {
         // 기본
         super();
-        this.setName("루미너스");
+        this.setName("루미너스(리레)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -64,8 +64,8 @@ public class Luminous extends Job {
 
         // 환산 보정
         this.addMainStatP(6L);
-        this.addMainStat(3L);
-        this.addSubStat(-5L);
+        this.addMainStat(-7L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalBuff());
         this.setArtifact(new ArtifactNormal());

@@ -15,7 +15,7 @@ public class Aran extends Job {
     public Aran() {
         // 기본
         super();
-        this.setName("아란");
+        this.setName("아란(리웨)");
         this.setConstant(1.49);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -77,9 +77,9 @@ public class Aran extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-72L);
-        this.addMainStat(21L);
-        //this.addSubStat(5L);
+        this.addMainStatP(-54L);
+        this.addMainStat(-23L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

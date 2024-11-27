@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SolunarDivide extends AttackSkill {
     public SolunarDivide() {
         this.setName("솔루나 디바이드");
-        this.setDelay(750L);
+        //this.setDelay(750L);
         this.setAttackCount(15L);
         this.setDamage(2750.0);
         this.setDotDuration(750L);

@@ -15,7 +15,7 @@ public class BattleMage extends Job {
     public BattleMage() {
         // 기본
         super();
-        this.setName("배틀메이지");
+        this.setName("배틀메이지(리웨)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -69,8 +69,8 @@ public class BattleMage extends Job {
         this.addIgnoreDefenseList(31L);
 
         // 환산 보정
-        this.addMainStatP(6L);
-        this.addMainStat(13L);
+        this.addMainStatP(3L);
+        this.addMainStat(5L);
         this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());

@@ -61,6 +61,7 @@ public class PhantomDealCycle extends DealCycle {
     };
 
     Long cardStack = 0L;
+    Long chk30 = 0L;
 
     BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
     BlackJackFinal blackJackFinal = new BlackJackFinal();
@@ -93,10 +94,8 @@ public class PhantomDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
 
-        ringSwitching.setCooldown(85.0);
-        ringSwitching.setApplyCooldownReduction(false);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
-        //readyToDie.setCooldown(90.0);
+        ringSwitching.setCooldown(90.0);
+        mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
     @Override
@@ -104,9 +103,11 @@ public class PhantomDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(bullsEye)
+                            && cooldownCheck(markOfPhantom)
                             && getStart().before(new Timestamp(660 * 1000))
                             && getStart().after(new Timestamp(blackJackBeforeDelay.getActivateTime().getTime() - 2670))
             ) {
+                chk30 = 2L;
                 addSkillEvent(finalCutBuff);
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(heroesOath);
@@ -148,46 +149,53 @@ public class PhantomDealCycle extends DealCycle {
                             && cooldownCheck(preparationPhantom)
                             && cooldownCheck(soulContract)
                             && cooldownCheck(readyToDie)
-                            && cooldownCheck(blackJackBeforeDelay)
-                            && cooldownCheck(markOfPhantom)
+                            && !cooldownCheck(heroesOath)
             ) {
+                chk30 = 4L;
                 addSkillEvent(finalCutBuff);
                 addSkillEvent(preparationPhantom);
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
-                addSkillEvent(blackJackBeforeDelay);
-                addSkillEvent(markOfPhantom);
                 addSkillEvent(weaponJumpRing);
-                addSkillEvent(riftBreak);
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(70 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                if (ringSwitching.getCooldown() == 90) {
+                    ringSwitching.setCooldown(100.0);
+                } else {
+                    ringSwitching.setCooldown(90.0);
+                }
                 addSkillEvent(ringSwitching);
             } else if (
-                    cooldownCheck(markOfPhantom)
-                            && (
-                            !cooldownCheck(readyToDie)
-                                    || getStart().after(new Timestamp(660 * 1000))
-                    )
+                    chk30 > 0
+                            && cooldownCheck(markOfPhantom)
+                            && getStart().before(new Timestamp(670 * 1000))
             ) {
+                chk30 --;
                 addSkillEvent(markOfPhantom);
-            } else if (
-                    cooldownCheck(riftBreak)
-                            && (
-                            !cooldownCheck(readyToDie)
-                                    || getStart().after(new Timestamp(660 * 1000))
-                    )
-            ) {
+                while (!cooldownCheck(riftBreak)) {
+                    if (cooldownCheck(blackJackBeforeDelay)) {
+                        addSkillEvent(blackJackBeforeDelay);
+                    } else if (cooldownCheck(tempestOfCardBeforeDelay)) {
+                        addSkillEvent(tempestOfCardBeforeDelay);
+                        applyCooldown(tempestOfCardBeforeDelay);
+                    } else {
+                        addSkillEvent(ultimateDrive);
+                    }
+                }
                 addSkillEvent(riftBreak);
-            } else if (
-                    cooldownCheck(roseCarteFinale)
-                            && (
-                            !cooldownCheck(readyToDie)
-                                    || getStart().after(new Timestamp(660 * 1000))
-                    )
-            ) {
+                while (!cooldownCheck(roseCarteFinale)) {
+                    if (cooldownCheck(blackJackBeforeDelay)) {
+                        addSkillEvent(blackJackBeforeDelay);
+                    } else if (cooldownCheck(tempestOfCardBeforeDelay)) {
+                        addSkillEvent(tempestOfCardBeforeDelay);
+                        applyCooldown(tempestOfCardBeforeDelay);
+                    } else {
+                        addSkillEvent(ultimateDrive);
+                    }
+                }
                 addSkillEvent(roseCarteFinale);
             } else if (cooldownCheck(blackJackBeforeDelay)) {
                 addSkillEvent(blackJackBeforeDelay);
@@ -263,6 +271,12 @@ public class PhantomDealCycle extends DealCycle {
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        if (skill instanceof RoseCarteFinaleDot) {
+                            Long ran = (long) (Math.random() * 2 + 1);
+                            for (int cnt = 0; cnt < ran; cnt ++) {
+                                getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                            }
+                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -349,7 +363,7 @@ public class PhantomDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());

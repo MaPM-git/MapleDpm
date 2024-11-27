@@ -15,6 +15,6 @@ public class DemonImpactChain extends GaugeAttackSkill {
         this.setCooldown(15.0);
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
-        this.setGaugeCharge(50.0);
+        this.setGaugeCharge(46.0);
     }
 }

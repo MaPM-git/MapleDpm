@@ -4,7 +4,10 @@ import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
-import org.mapledpmlab.type.skill.attackskill.common.*;
+import org.mapledpmlab.type.skill.attackskill.common.CrestOfTheSolar;
+import org.mapledpmlab.type.skill.attackskill.common.CrestOfTheSolarDot;
+import org.mapledpmlab.type.skill.attackskill.common.SpiderInMirror;
+import org.mapledpmlab.type.skill.attackskill.common.SpiderInMirrorDot;
 import org.mapledpmlab.type.skill.attackskill.viper.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
@@ -73,7 +76,6 @@ public class ViperDealCycle extends DealCycle {
     Timestamp liberateNeptunusEndTime = new Timestamp(-1);
     Timestamp stimulateEndTime = new Timestamp(0);
     Timestamp superEndTime = new Timestamp(0);
-    Timestamp superFistEnrageEndTime = new Timestamp(-1);
 
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     EnergyOrb energyOrb = new EnergyOrb();
@@ -108,7 +110,7 @@ public class ViperDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(100.0);
+        ringSwitching.setCooldown(90.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
 
         luckyDice.setCooldown(180.0);
@@ -121,6 +123,9 @@ public class ViperDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
+            if (cooldownCheck(serpentScrew)) {
+                addSkillEvent(serpentScrew);
+            }
             if (
                     luckyDice.getCooldown() == 0
                             && luckyDice.getBuffAttMagic() == 0
@@ -135,27 +140,15 @@ public class ViperDealCycle extends DealCycle {
                 luckyDice = new LuckyDice();
                 addSkillEvent(luckyDice);
             }
-            if (cooldownCheck(serpentScrew)) {
-                addSkillEvent(serpentScrew);
-            }
             if (cooldownCheck(pirateFlag)) {
                 addSkillEvent(pirateFlag);
             }
             if (
-                    cooldownCheck(stimulate)
-                            && cooldownCheck(lightningForm)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(overdrive)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(howlingFist)
-                            && cooldownCheck(furiosCharge)
-                            && (
+                    cooldownCheck(restraintRing)
+                    && (
                             serpentStoneCount == 2
-                                    || serpentStoneCount == 3
+                            || serpentStoneCount == 3
                     )
-                            && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(stimulate);
                 addSkillEvent(lightningForm);
@@ -181,14 +174,14 @@ public class ViperDealCycle extends DealCycle {
                 addSkillEvent(energyOrb);
                 addSkillEvent(energyOrb);
                 addSkillEvent(fistEnrage);
+                while (!cooldownCheck(howlingFist)) {
+                    addSkillEvent(fistEnrage);
+                }
                 addSkillEvent(howlingFist);
                 addSkillEvent(furiosCharge);
             } else if (
-                    cooldownCheck(overdrive)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(weaponJumpRing)
-                            && cooldownCheck(howlingFist)
-                            && cooldownCheck(furiosCharge)
+                    cooldownCheck(howlingFist)
+                    && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
@@ -369,7 +362,7 @@ public class ViperDealCycle extends DealCycle {
             ) {
                 if (serpentStoneCount == 5) {
                     addSkillEvent(serpentAssaultEnrage);
-                    superEndTime = new Timestamp(getStart().getTime() + 10000);
+                    superEndTime = new Timestamp(getStart().getTime() + 13000);
                     serpentStoneCount = 0L;
                 } else if (cooldownCheck(seaSerpentEnrage)) {
                     addSkillEvent(seaSerpentEnrage);
@@ -408,9 +401,6 @@ public class ViperDealCycle extends DealCycle {
             } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
                 this.multiAttackProcess(skill);
             } else {
-                if (skill instanceof SerpentAssaultEnrage) {
-                    superFistEnrageEndTime = new Timestamp(getStart().getTime() + 10000);
-                }
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
@@ -430,21 +420,15 @@ public class ViperDealCycle extends DealCycle {
                 cooldownCheck(screwPunch)
                 && skill.getDelay() != 0
                 && (
-                        skill instanceof FistEnrage
-                        || skill instanceof SuperFistEnrage
-                        || skill instanceof LightningForm
-                        || skill instanceof EnergyOrb
+                        skill instanceof LightningForm
                         || skill instanceof SerpentScrew
                         || skill instanceof HowlingFistShock
-                        || skill instanceof FuriosCharge
                         || skill instanceof Stimulate
                         || skill instanceof MapleWorldGoddessBlessing
                         || skill instanceof SpiderInMirror
                         || skill instanceof PirateFlag
                         || skill instanceof CrestOfTheSolar
-                        || skill instanceof OverdriveDebuff
                 )
-                && getStart().after(new Timestamp(1000))
         ) {
             endTime = new Timestamp(getStart().getTime() + screwPunch.getDelay());
             getSkillEventList().add(new SkillEvent(screwPunch, new Timestamp(getStart().getTime()), endTime));

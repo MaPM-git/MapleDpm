@@ -66,9 +66,9 @@ public class LuminousContinuous extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(15L);
-        this.addMainStat(10L);
-        this.addSubStat(5L);
+        this.addMainStatP(12L);
+        this.addMainStat(6L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalBuff());
         this.setArtifact(new ArtifactNormal());

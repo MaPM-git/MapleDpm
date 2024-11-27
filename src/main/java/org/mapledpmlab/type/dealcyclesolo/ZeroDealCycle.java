@@ -187,6 +187,7 @@ public class ZeroDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         ringSwitching.setCooldown(120.0);
+        ringSwitching.setApplyCooldownReduction(false);
         transcendentRhinneBless.setCooldown(120.0);
         auraWeaponBuff.setCooldown(180.0);
     }
@@ -209,28 +210,28 @@ public class ZeroDealCycle extends DealCycle {
                                     zero == 1
                                             && (
                                             dealCycleOrder == 1
-                                                    || dealCycleOrder == 4
                                     )
                             ) || (
                                     zero == 0
                                             && (
                                             dealCycleOrder == 2
                                                     || dealCycleOrder == 3
+                                                    || dealCycleOrder == 4
                                                     || dealCycleOrder == 5
                                                     || dealCycleOrder == 6
                                     )
                             )
                     )
-                            && getStart().after(new Timestamp(transcendentLife.getActivateTime().getTime() - 10000))
-                            && getStart().after(new Timestamp(limitBreak.getActivateTime().getTime() - 12000))
-                            && getStart().after(new Timestamp(jointAttack1.getActivateTime().getTime() - 15000))
-                            && getStart().after(new Timestamp(shadowFlashAlpha.getActivateTime().getTime() - 2000))
-                            && getStart().after(new Timestamp(shadowFlashBeta.getActivateTime().getTime() - 2000))
+                    && getStart().after(new Timestamp(bodyOfSteel.getActivateTime().getTime() - 3000))
             ) {
                 if (zero == 1) {
                     betaCancelCycle(shadowFlashBeta);
                     alphaCancelCycle(shadowFlashAlpha);
                 } else {
+                    if (dealCycleOrder == 4) {
+                        alphaCycle();
+                        betaCycle();
+                    }
                     alphaCancelCycle(shadowFlashAlpha);
                     betaCancelCycle(shadowFlashBeta);
                 }
@@ -358,7 +359,7 @@ public class ZeroDealCycle extends DealCycle {
             attackSkill.setCumulativeAttackCountStr(attackSkill.getCumulativeAttackCountStr() + "전체 : " + attackSkill.getCumulativeAttackCount());
             attackSkill.setShareStr(attackSkill.getShareStr() + "전체 : " + attackSkill.getShare());
         }
-        setDPM(getTotalDamage() / 12);
+        setDPM(getTotalDamage() / 680 * 660);
         setRestraintRingDeal(calcRestraintRingDeal());
         setFortyDeal(calcFortyDeal());
         setOriginXRestraintRingDeal(calcOriginXRestraintDeal());
@@ -955,7 +956,7 @@ public class ZeroDealCycle extends DealCycle {
             }
         }
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -1222,7 +1223,7 @@ public class ZeroDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isCriticalBind = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof CriticalBind) {

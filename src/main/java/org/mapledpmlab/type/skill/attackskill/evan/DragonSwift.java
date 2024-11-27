@@ -7,6 +7,7 @@ public class DragonSwift extends AttackSkill {
         this.setName("드래곤 스위프트");
         this.setDamage(790.0);
         this.setAttackCount(4L);
+        this.setDelay(30L);
         this.setDotDuration(3500L);
         this.setInterval(540L);
         this.setLimitAttackCount(6L);

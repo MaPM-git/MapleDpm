@@ -118,13 +118,8 @@ public class LuminousDealCycle extends DealCycle {
                 larkness = next;
             }
             if (
-                    cooldownCheck(heroesOath)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(liberationOrb)
-                            && cooldownCheck(soulContract)
+                    cooldownCheck(liberationOrb)
                             && cooldownCheck(baptismOfLightAndDarkness)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(punishingResonator)
                             && getStart().before(new Timestamp(11 * 60 * 1000))
                             && (
                             sunFireCnt >= 23

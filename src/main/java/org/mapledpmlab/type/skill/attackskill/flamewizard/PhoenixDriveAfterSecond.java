@@ -5,8 +5,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class PhoenixDriveAfterSecond extends AttackSkill {
     public PhoenixDriveAfterSecond() {
         this.setName("피닉스 드라이브(2, 3, 4타)");
-        this.setDamage(450.0);
-        this.setAttackCount(2L);
+        this.setDamage(450.0 - 90);     // 오비탈 플레임-스플릿 어택
+        this.setAttackCount(2L + 1);    // 오비탈 플레임-스플릿 어택
+        this.addIgnoreDefenseList(20L); // 오비탈 플레임-이그노어 가드
         this.addFinalDamage(0.5);
         this.addFinalDamage(2.2);
         this.addIgnoreDefenseList(20L);

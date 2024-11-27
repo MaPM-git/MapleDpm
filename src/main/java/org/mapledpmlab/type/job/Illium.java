@@ -16,7 +16,7 @@ public class Illium extends Job {
     public Illium() {
         // 기본
         super();
-        this.setName("일리움");
+        this.setName("일리움(리웨)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.90 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -62,9 +62,9 @@ public class Illium extends Job {
         this.addMagic(65L);             // 소울 오브 크리스탈
 
         // 환산 보정
-        this.addMainStatP(45L);
-        this.addMainStat(7L);
-        this.addSubStat(-5L);
+        this.addMainStatP(51L);
+        this.addMainStat(6L);
+        this.addSubStat(-15L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

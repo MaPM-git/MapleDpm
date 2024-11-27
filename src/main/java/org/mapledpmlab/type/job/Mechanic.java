@@ -16,7 +16,7 @@ public class Mechanic extends Job {
     public Mechanic() {
         // 기본
         super();
-        this.setName("메카닉");
+        this.setName("메카닉(리웨)");
         this.setConstant(1.5);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
@@ -66,9 +66,9 @@ public class Mechanic extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-75L);
-        this.addMainStat(2L);
-        this.addSubStat(10L);
+        this.addMainStatP(-78L);
+        this.addMainStat(-10L);
+        this.addSubStat(15L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

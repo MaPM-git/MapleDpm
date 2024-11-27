@@ -16,7 +16,7 @@ public class Cadena extends Job {
     public Cadena() {
         // 기본
         super();
-        this.setName("카데나");
+        this.setName("카데나(리웨)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
@@ -69,9 +69,9 @@ public class Cadena extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-36L);
-        this.addMainStat(-19L);
-        //this.addSubStat(10L);
+        this.addMainStatP(-45L);
+        this.addMainStat(3L);
+        this.addSubStat(5L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

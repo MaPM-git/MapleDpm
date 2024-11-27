@@ -117,8 +117,8 @@ public class NightWalkerDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(90.0);
 
-        transcendentCygnusBlessing.setCooldown(178.0);
-        transcendentCygnusBlessing.setApplyCooldownReduction(false);
+        transcendentCygnusBlessing.setCooldown(180.0);
+        //transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
         getStart().setTime(-10000);
@@ -139,19 +139,7 @@ public class NightWalkerDealCycle extends DealCycle {
             ) {
                 addSkillEvent(transcendentCygnusBlessing);
             }
-            if (
-                    cooldownCheck(shadowSpearBuff)
-                            && cooldownCheck(gloryOfGuardians)
-                            && cooldownCheck(shadowServantExtend)
-                            && cooldownCheck(shadowIllusion)
-                            && cooldownCheck(dominion)
-                            && cooldownCheck(shadowBiteBuff)
-                            && cooldownCheck(readyToDie)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(rapidThrow)
-                            && getStart().before(new Timestamp(600 * 1000))
-            ) {
+            if (cooldownCheck(shadowIllusion)) {
                 addSkillEvent(shadowSpearBuff);
                 addSkillEvent(gloryOfGuardians);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -652,7 +640,7 @@ public class NightWalkerDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isShadowSpear = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof ShadowSpearBuff) {

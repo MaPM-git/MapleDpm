@@ -710,9 +710,25 @@ public class HoYoungDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(mountainEndTime)
-                                && cooldownCheck(fistMethodMountainSpiritSummonRoar)
+                                //&& cooldownCheck(fistMethodMountainSpiritSummonRoar)
                 ) {
-                    addSkillEvent(fistMethodMountainSpiritSummonRoar);
+                    for (SkillEvent skillEvent : this.getSkillEventList()) {
+                        if (
+                                skillEvent.getStart().after(getStart())
+                                        && skillEvent.getSkill() instanceof FistMethodMountainSpiritSummon
+                                        && (skillEvent.getStart().getTime() - getStart().getTime()) <= 3000
+                        ) {
+                            this.getSkillEventList().add(new SkillEvent(fistMethodMountainSpiritSummonRoar, new Timestamp(skillEvent.getStart().getTime()), new Timestamp(skillEvent.getEnd().getTime())));
+                            this.getSkillEventList().add(new SkillEvent(fistMethodMountainSpiritSummonRoar, new Timestamp(skillEvent.getStart().getTime()), new Timestamp(skillEvent.getEnd().getTime())));
+                            this.getSkillEventList().add(new SkillEvent(fistMethodMountainSpiritSummonRoar, new Timestamp(skillEvent.getStart().getTime()), new Timestamp(skillEvent.getEnd().getTime())));
+                            this.getSkillEventList().add(new SkillEvent(fistMethodMountainSpiritSummonRoar, new Timestamp(skillEvent.getStart().getTime()), new Timestamp(skillEvent.getEnd().getTime())));
+                            this.getSkillEventList().add(new SkillEvent(fistMethodMountainSpiritSummonRoar, new Timestamp(skillEvent.getStart().getTime()), new Timestamp(skillEvent.getEnd().getTime())));
+                            this.getSkillEventList().add(new SkillEvent(fistMethodMountainSpiritSummonRoar, new Timestamp(skillEvent.getStart().getTime()), new Timestamp(skillEvent.getEnd().getTime())));
+                            this.getSkillEventList().add(new SkillEvent(fistMethodMountainSpiritSummonRoar, new Timestamp(skillEvent.getStart().getTime()), new Timestamp(skillEvent.getEnd().getTime())));
+                            this.getSkillEventList().remove(skillEvent);
+                            break;
+                        }
+                    }
                 }
             }
             if (((AttackSkill) skill).getInterval() != 0) {
@@ -856,7 +872,7 @@ public class HoYoungDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isAdventOfGods = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof AdventOfGodsBuff) {

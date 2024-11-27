@@ -121,19 +121,7 @@ public class NightLordDealCycle extends DealCycle {
             if (cooldownCheck(darkFlare)) {
                 addSkillEvent(darkFlare);
             }
-            if (
-                    cooldownCheck(throwBlasting)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(ultimateDarkSight)
-                            && cooldownCheck(darkLordsSecretScroll)
-                            && cooldownCheck(spreadThrow)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(readyToDie)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(fumaShuriken)
-                            && getStart().before(new Timestamp(600 * 1000))
-            ) {
+            if (cooldownCheck(spreadThrow)) {
                 addSkillEvent(throwBlasting);
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
@@ -190,7 +178,6 @@ public class NightLordDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(soulContract)
                             && cooldownCheck(readyToDie)
-                            //&& cooldownCheck(fumaShuriken)
                             && cooldownCheck(darkLordsSecretScroll)
                             && !cooldownCheck(epicAdventure)
                             && getStart().before(new Timestamp(660 * 1000))
@@ -199,17 +186,11 @@ public class NightLordDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
                 addSkillEvent(weaponJumpRing);
-                //addSkillEvent(fumaShuriken);
             } else if (
                     cooldownCheck(throwBlastingPassive)
             ) {
                 addSkillEvent(throwBlastingPassive);
-            } /*else if (
-                    cooldownCheck(darkLordsSecretScroll)
-                            && !cooldownCheck(throwBlasting)
-            ) {
-                addSkillEvent(darkLordsSecretScroll);
-            }*/ else if (
+            } else if (
                     cooldownCheck(fumaShuriken)
                             && (
                             !cooldownCheck(throwBlasting)
@@ -291,7 +272,11 @@ public class NightLordDealCycle extends DealCycle {
                 getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof DarkLordsSecretScroll) {
+                        i = 1530;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         if (skill instanceof LifeOrDeathJavelin) {
                             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -371,7 +356,7 @@ public class NightLordDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof SpreadThrow) {
                     isSpreadThrow = true;

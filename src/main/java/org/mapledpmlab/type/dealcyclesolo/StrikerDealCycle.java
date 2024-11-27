@@ -356,6 +356,7 @@ public class StrikerDealCycle extends DealCycle {
                     || skill instanceof ThunderboltFlash
                     || skill instanceof Typhoon
                     || skill instanceof WaterWave
+                    || skill instanceof CreateThunderChainFinal
             ) {
                 linkCount ++;
                 if (linkCount > 8 && cooldownCheck(lightningGodSpearStrike)) {

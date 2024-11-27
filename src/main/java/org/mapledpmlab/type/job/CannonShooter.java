@@ -72,9 +72,9 @@ public class CannonShooter extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-60L);
-        this.addMainStat(6L);
-        this.addSubStat(8L);
+        this.addMainStatP(-48L);
+        this.addMainStat(-10L);
+        this.addSubStat(-8L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

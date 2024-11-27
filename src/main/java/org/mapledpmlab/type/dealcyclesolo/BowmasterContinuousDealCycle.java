@@ -140,17 +140,7 @@ public class BowmasterContinuousDealCycle extends DealCycle {
             if (specialArrow == 75) {
                 isSpree = true;
             }
-            if (
-                    cooldownCheck(arrawRain)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(quiverFullBurst)
-                            && cooldownCheck(preparation)
-                            && cooldownCheck(evolve)
-                            && cooldownCheck(afterimageShotActive)
-                            && cooldownCheck(criticalReinforce)
-                            && cooldownCheck(soulContract)
-                            && specialArrow >= 70
-            ) {
+            if (cooldownCheck(quiverFullBurst)) {
                 isNuke = true;
                 addSkillEvent(arrawRain);
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -162,6 +152,7 @@ public class BowmasterContinuousDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 } else {
                     addSkillEvent(hurricane);
+                    specialArrow ++;
                 }
                 addSkillEvent(quiverFullBurst);
                 addSkillEvent(preparation);
@@ -236,7 +227,7 @@ public class BowmasterContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isEvolve = false;
             boolean isAfterimageShot = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {

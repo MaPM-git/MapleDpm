@@ -108,8 +108,9 @@ public class AranDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(88.0);
-        ringSwitching.setApplyCooldownReduction(false);
+        ((AttackSkill) adrenalineBoost.getRelatedSkill()).setDotDuration(((AttackSkill) adrenalineBoost.getRelatedSkill()).getDotDuration() + 3000);
+
+        ringSwitching.setCooldown(90.0);
         auraWeapon.setCooldown(180.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
     }
@@ -122,14 +123,7 @@ public class AranDealCycle extends DealCycle {
             }
             if (
                     getStart().before(new Timestamp(600 * 1000))
-                            && cooldownCheck(auraWeapon)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(heroesOath)
-                            && cooldownCheck(blizzardTempest)
-                            && cooldownCheck(bodyOfSteel)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(adrenalineMaximum)
+                    && getStart().after(new Timestamp(restraintRing.getActivateTime().getTime() - 1000))
             ) {
                 addSkillEvent(auraWeapon);
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -141,6 +135,9 @@ public class AranDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 } else {
                     addSkillEvent(new Beyonder1());
+                }
+                while (!cooldownCheck(brandishMaha)) {
+                    addSkillEvent(beyonder);
                 }
                 addSkillEvent(blizzardTempest);
                 addSkillEvent(bodyOfSteel);
@@ -166,7 +163,6 @@ public class AranDealCycle extends DealCycle {
                     getStart().before(new Timestamp(660 * 1000))
                             && cooldownCheck(blizzardTempest)
                             && cooldownCheck(weaponJumpRing)
-                            && cooldownCheck(soulContract)
             ) {
                 addSkillEvent(blizzardTempest);
                 addSkillEvent(adrenalineBoost);
@@ -270,6 +266,7 @@ public class AranDealCycle extends DealCycle {
                     && !(skill instanceof BeyonderMaha)
                     && !(skill instanceof GoldenFlash)
                     && ((AttackSkill) skill).isApplyFinalAttack()
+                    && ((AttackSkill) skill).getMultiAttackInfo().size() == 0
             ) {
                 addSkillEvent(iceBlock2);
             }

@@ -94,7 +94,7 @@ public class EunwolCancelDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        this.getJob().setName("은월(캔슬)");
+        this.getJob().setName("은월(리웨, 캔슬)");
 
         mapleWorldGoddessBlessing.setCooldown(120.0);
         ringSwitching.setCooldown(120.0);

@@ -15,7 +15,7 @@ public class ArchMageFP extends Job {
     public ArchMageFP() {
         // 기본
         super();
-        this.setName("아크메이지(불,독)");
+        this.setName("아크메이지(불,독)(리웨)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
@@ -63,9 +63,9 @@ public class ArchMageFP extends Job {
         this.addMainStat(30L);          // 언스태이블 메모라이즈
 
         // 환산 보정
-        this.addMainStatP(66L);
-        this.addMainStat(10L);
-        this.addSubStat(15L);
+        this.addMainStatP(75L);
+        this.addMainStat(-5L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new ArtifactNormal());

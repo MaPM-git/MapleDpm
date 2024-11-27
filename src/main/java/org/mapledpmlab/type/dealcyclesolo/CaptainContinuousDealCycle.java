@@ -103,8 +103,8 @@ public class CaptainContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        bulletParty.getRelatedSkill().setDelay(bulletParty.getDelay() + 3000);
-        ((AttackSkill) bulletParty.getRelatedSkill()).setDotDuration(((AttackSkill) bulletParty.getRelatedSkill()).getDotDuration() + 3000);
+        bulletParty.getRelatedSkill().setDelay(bulletParty.getDelay() + 2000);
+        ((AttackSkill) bulletParty.getRelatedSkill()).setDotDuration(((AttackSkill) bulletParty.getRelatedSkill()).getDotDuration() + 2000);
 
         luckyDice.setCooldown(180.0);
         luckyDice.setBuffAttMagic(0L);
@@ -118,32 +118,32 @@ public class CaptainContinuousDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
-            if (cooldownCheck(luckyDice)) {
+            if (
+                    cooldownCheck(luckyDice)
+                            && getStart().before(new Timestamp(660 * 1000))
+            ) {
                 luckyDice = new LuckyDice();
                 addSkillEvent(luckyDice);
             }
-            if (cooldownCheck(assembleCrewDelay)) {
+            if (
+                    cooldownCheck(assembleCrewDelay)
+                            && getStart().before(new Timestamp(660 * 1000))
+            ) {
                 addSkillEvent(assembleCrewDelay);
             }
-            if (cooldownCheck(battleShipBomber)) {
+            if (
+                    cooldownCheck(battleShipBomber)
+                            && getStart().before(new Timestamp(660 * 1000))
+            ) {
                 addSkillEvent(battleShipBomber);
             }
-            if (cooldownCheck(siegeBomber)) {
+            if (
+                    cooldownCheck(siegeBomber)
+                            && getStart().before(new Timestamp(660 * 1000))
+            ) {
                 addSkillEvent(siegeBomber);
             }
-            if (
-                    cooldownCheck(epicAdventure)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(pirateFlag)
-                            && cooldownCheck(overdrive)
-                            && cooldownCheck(untiringNectar)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(headShot)
-                            && cooldownCheck(deathTriggerStart)
-                            && cooldownCheck(nautilusAssaultHull)
-                            && cooldownCheck(deadEye)
-                            && cooldownCheck(bulletParty)
-            ) {
+            if (cooldownCheck(nautilusAssaultHull)) {
                 isNuke = true;
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
@@ -153,46 +153,54 @@ public class CaptainContinuousDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 } else {
-                    addSkillEvent(rapidFire);
-                    clipCount ++;
-                    if (clipCount >= 50) {
-                        spreeEndTime = new Timestamp(getStart().getTime() + 6000);
-                        clipCount = 0L;
-                    }
+                    addPlatDeal();
                 }
                 addSkillEvent(pirateFlag);
                 addSkillEvent(overdrive);
                 addSkillEvent(untiringNectar);
                 addSkillEvent(soulContract);
-                addSkillEvent(headShot);
+                if (cooldownCheck(headShot)) {
+                    addSkillEvent(headShot);
+                }
                 addSkillEvent(nautilusAssaultHull);
                 if (cooldownCheck(dreadnought)) {
                     addSkillEvent(dreadnought);
+                }
+                if (cooldownCheck(headShot)) {
+                    addSkillEvent(headShot);
+                }
+                while (!cooldownCheck(deathTriggerStart)) {
+                    addPlatDeal();
                 }
                 addSkillEvent(deathTriggerStart);
                 if (cooldownCheck(headShot)) {
                     addSkillEvent(headShot);
                 }
                 addSkillEvent(deadEye);
+                if (cooldownCheck(headShot)) {
+                    addSkillEvent(headShot);
+                }
+                while (!cooldownCheck(bulletParty)) {
+                    addPlatDeal();
+                }
                 addSkillEvent(bulletParty);
                 isNuke = false;
-            } else if (
-                    cooldownCheck(pirateFlag)
-                            && cooldownCheck(overdrive)
-                            && cooldownCheck(untiringNectar)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(headShot)
-                            && cooldownCheck(deathTriggerStart)
-                            && cooldownCheck(deadEye)
-                            && cooldownCheck(bulletParty)
-            ) {
+            } else if (cooldownCheck(untiringNectar)) {
                 addSkillEvent(pirateFlag);
                 addSkillEvent(overdrive);
                 addSkillEvent(untiringNectar);
                 addSkillEvent(soulContract);
-                addSkillEvent(headShot);
+                if (cooldownCheck(headShot)) {
+                    addSkillEvent(headShot);
+                }
+                while (!cooldownCheck(deathTriggerStart)) {
+                    addPlatDeal();
+                }
                 addSkillEvent(deathTriggerStart);
                 addSkillEvent(deadEye);
+                while (!cooldownCheck(bulletParty)) {
+                    addPlatDeal();
+                }
                 addSkillEvent(bulletParty);
             } else if (
                     cooldownCheck(pirateFlag)
@@ -209,25 +217,31 @@ public class CaptainContinuousDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(untiringNectar.getActivateTime().getTime() - 25000))
             ) {
                 addSkillEvent(deadEye);
-            } else if (
-                    cooldownCheck(headShot)
-                            && !cooldownCheck(untiringNectar)
-            ) {
-                addSkillEvent(headShot);
-            } else if (
-                    getStart().before(spreeEndTime)
-            ) {
-                addSkillEvent(rapidFireSpree);
             } else {
-                addSkillEvent(rapidFire);
-                clipCount ++;
-                if (clipCount >= 50) {
-                    spreeEndTime = new Timestamp(getStart().getTime() + 6000);
-                    clipCount = 0L;
-                }
+                addPlatDeal();
             }
         }
         sortEventTimeList();
+    }
+
+    public void addPlatDeal() {
+        if (
+                cooldownCheck(headShot)
+                        && !cooldownCheck(untiringNectar)
+        ) {
+            addSkillEvent(headShot);
+        } else if (
+                getStart().before(spreeEndTime)
+        ) {
+            addSkillEvent(rapidFireSpree);
+        } else {
+            addSkillEvent(rapidFire);
+            clipCount ++;
+            if (clipCount >= 50) {
+                spreeEndTime = new Timestamp(getStart().getTime() + 6000);
+                clipCount = 0L;
+            }
+        }
     }
 
     @Override
@@ -273,7 +287,7 @@ public class CaptainContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isUntiringNectar = false;
             for (int j = 0; i < useBuffSkillList.size(); i++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof UntiringNectar) {

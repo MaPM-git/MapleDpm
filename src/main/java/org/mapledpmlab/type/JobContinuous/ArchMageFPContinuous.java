@@ -67,9 +67,9 @@ public class ArchMageFPContinuous extends Job {
         this.addMainStat(30L);          // 언스태이블 메모라이즈
 
         // 환산 보정
-        this.addMainStatP(69L);
-        this.addMainStat(13L);
-        //this.addSubStat(-5L);
+        this.addMainStatP(75L);
+        this.addMainStat(2L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new ArtifactNormal());

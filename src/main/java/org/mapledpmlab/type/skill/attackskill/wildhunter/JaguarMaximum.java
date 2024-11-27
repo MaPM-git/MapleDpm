@@ -8,6 +8,7 @@ public class JaguarMaximum extends AttackSkill {
         this.setDelay(2160L);
         this.setDamage(740.0);
         this.setAttackCount(12L);
+        this.setCooldown(120.0);
         this.addCriticalP(100.0);
         this.addIgnoreDefenseList(100L);
         this.setRelatedSkill(new JaguarMaximumEnd());

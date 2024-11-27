@@ -71,9 +71,9 @@ public class BowmasterContinuous extends Job {
         this.addFinalDamage(1.07);
 
         // 환산 보정
-        this.addMainStatP(-69L);
-        this.addMainStat(4L);
-        //this.addSubStat(3L);
+        this.addMainStatP(-63L);
+        this.addMainStat(-5L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

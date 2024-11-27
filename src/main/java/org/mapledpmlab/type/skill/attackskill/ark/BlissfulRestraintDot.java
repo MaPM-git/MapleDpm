@@ -7,6 +7,7 @@ public class BlissfulRestraintDot extends AttackSkill {
         this.setName("황홀한 구속(도트)");
         this.setDamage(410.0);
         this.setAttackCount(3L);
+        this.setCooldown(120.0);
         this.setDotDuration(9000L);
         this.setInterval(450L);
         this.setLimitAttackCount(20L);

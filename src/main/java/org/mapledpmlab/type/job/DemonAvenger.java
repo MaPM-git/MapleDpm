@@ -17,7 +17,7 @@ public class DemonAvenger extends Job {
     public DemonAvenger() {
         // 기본
         super();
-        this.setName("데몬어벤져");
+        this.setName("데몬어벤져(리웨)");
         this.setConstant(1.3);          // 무기상수
         this.setMainStat((long) (4 + 40 + 5 + 30 + 6 + 6 + 6 + 6));
         this.setMastery(1.91 / 2);      // 숙련도
@@ -90,9 +90,9 @@ public class DemonAvenger extends Job {
         this.addHp(475L);               // 쓸만한 어드밴스드 블레스
 
         // 환산 보정
-        this.addMainStatP(33L);
-        this.addAtt(-2L);
-        this.addMainStat(-20L);
+        this.addMainStatP(48L);
+        this.addAtt(1L);
+        this.addMainStat(10L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

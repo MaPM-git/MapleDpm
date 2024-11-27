@@ -125,21 +125,10 @@ public class LaraContinuousDealCycle extends DealCycle {
             if (cooldownCheck(manifestationSunlightFilledGround)) {
                 addSkillEvent(manifestationSunlightFilledGround);
             }
-            if (
-                    cooldownCheck(armfulTree)
-                            && cooldownCheck(dragonVeinTrace)
-                            && cooldownCheck(eruptionWhirlwind)
-                            && cooldownCheck(dragonVeinSwitch)
-                            && cooldownCheck(eruptionRipplingRiver)
-                            && cooldownCheck(dragonVeinFree)
-                            && cooldownCheck(eruptionSunriseWell)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(ridgeWinding)
-                            && cooldownCheck(soaringSpirit)
-                            && cooldownCheck(bigStretch)
-                            && cooldownCheck(sunRiverMountainWindWave1)
-                            && getStart().before(new Timestamp(660 * 1000))
-            ) {
+            if (cooldownCheck(sunRiverMountainWindWave1)) {
+                eruptionSunriseWell.setActivateTime(new Timestamp(-1));
+                eruptionRipplingRiver.setActivateTime(new Timestamp(-1));
+                eruptionWhirlwind.setActivateTime(new Timestamp(-1));
                 isNuke = true;
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -446,7 +435,7 @@ public class LaraContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isGrandisBless = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof GrandisGoddessBlessingAnima) {

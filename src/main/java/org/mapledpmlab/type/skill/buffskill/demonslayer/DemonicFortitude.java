@@ -14,5 +14,6 @@ public class DemonicFortitude extends GaugeBuffSkill {
         this.setBuffDamage(10L);
         this.setGaugeCharge(-10.0);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

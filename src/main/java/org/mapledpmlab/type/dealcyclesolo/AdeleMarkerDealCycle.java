@@ -217,7 +217,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(50 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (

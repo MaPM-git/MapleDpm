@@ -16,7 +16,7 @@ public class ArchMageIL extends Job {
     public ArchMageIL() {
         // 기본
         super();
-        this.setName("아크메이지(썬,콜)");
+        this.setName("아크메이지(썬,콜)(리웨)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -64,9 +64,9 @@ public class ArchMageIL extends Job {
         this.addMainStat(30L);          // 언스태이블 메모라이즈
 
         // 환산 보정
-        this.addMainStatP(90L);
-        this.addMainStat(9L);
-        this.addSubStat(-5L);
+        this.addMainStatP(96L);
+        this.addMainStat(-4L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new ArtifactNormal());

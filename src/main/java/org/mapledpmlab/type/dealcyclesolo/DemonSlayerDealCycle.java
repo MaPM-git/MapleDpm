@@ -112,7 +112,7 @@ public class DemonSlayerDealCycle extends DealCycle {
         super(job, null);
 
         if (getJob() instanceof DemonSlayerNormal) {
-            getJob().setName("데몬슬레이어(극포실, 환산 84352)");
+            getJob().setName("데몬슬레이어(극포실, 환산 84265)");
         }
 
         this.setAttackSkillList(attackSkillList);
@@ -123,12 +123,8 @@ public class DemonSlayerDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        for (int i = 0; i < 720 * 1000; i += maxForce.getInterval()) {
-            getSkillEventList().add(new SkillEvent(maxForce, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
-
-        ringSwitching.setCooldown(130.0);
+        ringSwitching.setCooldown(120.0);
+        //ringSwitching.setApplyCooldownReduction(false);
 
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
@@ -149,16 +145,7 @@ public class DemonSlayerDealCycle extends DealCycle {
                 addSkillEvent(auraWeaponBuff);
             }
             if (
-                    cooldownCheck(infinityForce)
-                            && cooldownCheck(demonicFortitude)
-                            && cooldownCheck(demonAwakening)
-                            && cooldownCheck(orthrus)
-                            && cooldownCheck(callMastema)
-                            && cooldownCheck(otherWorldGoddessBlessing)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(jormungand)
-                            && cooldownCheck(demonBaneStartDelay)
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                    cooldownCheck(orthrus)
                             && demonForce >= 100
             ) {
                 addSkillEvent(infinityForce);
@@ -169,7 +156,11 @@ public class DemonSlayerDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 } else {
-                    addSkillEvent(demonSlashReinforce1);
+                    if (cooldownCheck(demonImpactChain)) {
+                        addSkillEvent(demonImpactChain);
+                    } else {
+                        addSkillEvent(demonImpact);
+                    }
                 }
                 addSkillEvent(callMastema);
                 addSkillEvent(bodyOfSteel);
@@ -193,9 +184,7 @@ public class DemonSlayerDealCycle extends DealCycle {
                 addSkillEvent(demonBaneStartDelay);
                 if (isOrigin) {
                     addSkillEvent(demonSlashReinforce1);
-                    //addSkillEvent(demonSlashReinforce1);
-                    //addSkillEvent(demonSlashReinforce1);
-                    //addSkillEvent(demonSlashReinforce1);
+                    addSkillEvent(demonSlashReinforce1);
                     addSkillEvent(nightmareJudgement);
                     isOrigin = false;
                 }
@@ -207,7 +196,7 @@ public class DemonSlayerDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().after(new Timestamp(110 * 1000))
                             && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -215,10 +204,10 @@ public class DemonSlayerDealCycle extends DealCycle {
                 addSkillEvent(demonSlashReinforce1);
             } else if (
                     cooldownCheck(demonImpactChain)
-                            && demonForce >= 8
+                            && demonForce >= 4
             ) {
                 addSkillEvent(demonImpactChain);
-            } else if (demonForce >= 100) {
+            } else if (demonForce >= 4) {
                 addSkillEvent(demonImpact);
             } else {
                 addSkillEvent(demonSlash1);
@@ -229,7 +218,20 @@ public class DemonSlayerDealCycle extends DealCycle {
 
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
+        if (getStart().before(skill.getActivateTime())) {
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            return;
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "\tDF : " + demonForce + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "\tDF : " + demonForce + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
         double gaugeTmp = 0;
+        if (getStart().after(maxForce.getActivateTime())) {
+            demonForce += 10;
+            maxForce.setActivateTime(new Timestamp(maxForce.getActivateTime().getTime() + 4000));
+        }
         if (skill instanceof GaugeAttackSkill) {
             gaugeTmp = ((GaugeAttackSkill) skill).getGaugeCharge();
             if (gaugeTmp < 0) {
@@ -253,15 +255,6 @@ public class DemonSlayerDealCycle extends DealCycle {
         }
         if (demonForce > 150) {
             demonForce = 150;
-        }
-        if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
-            return;
-        }
-        if (skillLog.equals("")) {
-            skillLog += getJob().getName() + "\tDF : " + demonForce + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
-        } else {
-            skillLog += "\n" + getJob().getName() + "\tDF : " + demonForce + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
             if (
@@ -494,7 +487,7 @@ public class DemonSlayerDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());

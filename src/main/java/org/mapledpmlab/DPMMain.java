@@ -37,15 +37,11 @@ public class DPMMain {
 
     public void init() {
         dealCycleList = new ArrayList<>();
-        /*for (int i = 0; i < 1; i++) {
-            BishopContinuous bishopContinuous = new BishopContinuous();
-            bishopContinuous.setName(String.valueOf(i));
-            dealCycleList.add(new Bishop2ContinuousDealCycle(bishopContinuous));
-        }*/
-        dealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
-        dealCycleList.add(new FlameWizard3DealCycle(new FlameWizard()));
-
-        /*dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
+        /*
+        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
+        dealCycleList.get(0).getJobInfo();
+         */
+        dealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
         dealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         dealCycleList.add(new AranDealCycle(new Aran()));
         dealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
@@ -67,6 +63,7 @@ public class DPMMain {
         dealCycleList.add(new BowmasterContinuousDealCycle(new BowmasterContinuous()));
         dealCycleList.add(new CadenaDealCycle(new Cadena()));
         dealCycleList.add(new CadenaContinuousDealCycle(new CadenaContinuous()));
+        dealCycleList.add(new CannonShooter2DealCycle(new CannonShooter()));
         dealCycleList.add(new CannonShooter3DealCycle(new CannonShooter()));
         dealCycleList.add(new CaptainDealCycle(new Captain()));
         dealCycleList.add(new CaptainContinuousDealCycle(new CaptainContinuous()));
@@ -82,50 +79,67 @@ public class DPMMain {
         dealCycleList.add(new DualBladeDealCycle(new DualBlade()));
         dealCycleList.add(new EunwolCancelDealCycle(new Eunwol()));
         dealCycleList.add(new EunwolDealCycle(new Eunwol()));
+        dealCycleList.add(new Eunwol4RingCancelDealCycle(new Eunwol()));
+        dealCycleList.add(new Eunwol4RingDealCycle(new Eunwol()));
+        dealCycleList.add(new EunwolContinuousCancelDealCycle(new EunwolContinuous()));
+        dealCycleList.add(new EunwolContinuousDealCycle(new EunwolContinuous()));
         dealCycleList.add(new EvanDealCycle(new Evan()));
         dealCycleList.add(new EvanContinuousDealCycle(new EvanContinuous()));
+        dealCycleList.add(new Evan5ContinuousDealCycle(new Evan5Continuous()));
         dealCycleList.add(new FlameWizard2DealCycle(new FlameWizard()));
         dealCycleList.add(new FlameWizard3DealCycle(new FlameWizard()));
+        dealCycleList.add(new FlameWizard3ContinuousDealCycle(new FlameWizardContinuous()));
         dealCycleList.add(new HeroDealCycle(new Hero()));
+        dealCycleList.add(new Hero5DealCycle(new Hero5()));
         dealCycleList.add(new HoYoungDealCycle(new HoYoung()));
         dealCycleList.add(new IlliumDealCycle(new Illium()));
         dealCycleList.add(new KainDealCycle(new Kain()));
         dealCycleList.add(new KaiserDealCycle(new KaiserStat()));
         dealCycleList.add(new KaiserDealCycle(new Kaiser2()));
+        dealCycleList.add(new KaiserDealCycle(new Kaiser5()));
         dealCycleList.add(new KaiserContinuousDealCycle(new KaiserStatContinuous()));
         dealCycleList.add(new KaiserContinuousDealCycle(new Kaiser2Continuous()));
+        dealCycleList.add(new KaiserContinuousDealCycle(new Kaiser5Continuous()));
         dealCycleList.add(new KhaliDealCycle(new Khali()));
         dealCycleList.add(new KinesisDealCycle(new Kinesis()));
+        dealCycleList.add(new KinesisContinuousDealCycle(new KinesisContinuous()));
         dealCycleList.add(new LaraDealCycle(new Lara()));
         dealCycleList.add(new LaraContinuousDealCycle(new LaraContinuous()));
         dealCycleList.add(new LuminousDealCycle(new Luminous()));
         dealCycleList.add(new LuminousContinuousDealCycle(new LuminousContinuous()));
         dealCycleList.add(new MarksmanDealCycle(new Marksman()));
+        dealCycleList.add(new MarksmanContinuousDealCycle(new MarksmanContinuous()));
         dealCycleList.add(new MechanicDealCycle(new Mechanic()));
         dealCycleList.add(new MercedesDealCycle(new Mercedes()));
         dealCycleList.add(new MercedesContinuousDealCycle(new MercedesContinuous()));
+        dealCycleList.add(new MercedesContinuousSylphidiaDealCycle(new MercedesContinuous()));
         dealCycleList.add(new MihileDealCycle(new Mihile()));
         dealCycleList.add(new MihileContinuousDealCycle(new MihileContinuous()));
         dealCycleList.add(new NightLordDealCycle(new NightLord()));
         dealCycleList.add(new NightWalkerDealCycle(new NightWalker()));
         dealCycleList.add(new PaladinDealCycle(new Paladin()));
+        dealCycleList.add(new PaladinUnityDealCycle(new Paladin()));
         dealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
+        dealCycleList.add(new PathFinderDealCycle(new Pathfinder2()));
         dealCycleList.add(new PhantomDealCycle(new Phantom()));
         dealCycleList.add(new PhantomContinuousDealCycle(new PhantomContinuous()));
         dealCycleList.add(new ShadowerDealCycle(new Shadower()));
         dealCycleList.add(new ShadowerContinuousDealCycle(new ShadowerContinuous()));
         dealCycleList.add(new SoulMasterDealCycle(new SoulMaster()));
+        dealCycleList.add(new SoulMasterCancelDealCycle(new SoulMaster()));
         dealCycleList.add(new StrikerDealCycle(new Striker()));
         dealCycleList.add(new StrikerContinuousDealCycle(new StrikerContinuous()));
         dealCycleList.add(new ViperDealCycle(new Viper()));
         dealCycleList.add(new WildHunterDealCycle(new WildHunter()));
+        dealCycleList.add(new WildHunter5DealCycle(new WildHunter5()));
         dealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
+        dealCycleList.add(new WindBreakerContinuousDealCycle(new WindBreakerContinuous()));
         dealCycleList.add(new XenonDealCycle(new Xenon()));
         dealCycleList.add(new Xenon2HologramDealCycle(new Xenon()));
         dealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         dealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
         dealCycleList.add(new ZeroContinuousDealCycle(new ZeroAlphaContinuous()));
-        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));*/
+        dealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
         /*for (DealCycle dealCycle : dealCycleList) {
             if (dealCycle instanceof ZeroContinuousDealCycle) {
                 dealCycle.getJobInfo();
@@ -551,7 +565,7 @@ public class DPMMain {
         xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 8));
         Cell cell = row.createCell(0);
         cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 한줄 이탈 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성, 주흔작 / 펫장비 프펫공, 프펫마 / " +
-                "\n예티X핑크빈 칭호 / 유니온 9000 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / 헥사 풀강 / 동일 환산(87791) / " +
+                "\n예티X핑크빈 칭호 / 유니온 9000 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / 헥사 풀강 / 동일 환산(87721) / " +
                 "\n캐릭터레벨 285 / 아케인포스 1350, 어센틱포스 660 / 유니온 아티팩트 54렙 / 길드스킬 60포인트 / 대형몹 / " +
                 "\n영메, 반빨별, 장비 명장, 익스트림 레드 및 블루, 길축, 우뿌, 유힘, 슈퍼파워, 붕뿌, 향산된 10단계 물약, VIP 버프, 세이람의 영약 / 어빌 레유유 최대옵션 / " +
                 "\n리레 4렙, 웨퍼 4렙(스위칭) 혹은 컨티 4렙 / 15초딜은 6차 포함하여 측정 / 히어로, 팔라딘 - 두손검 착용 / 마법사 및 섀도어 20성 방패 착용 / " +

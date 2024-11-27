@@ -165,15 +165,7 @@ public class Blaster480ContinuousDealCycle extends DealCycle {
             if (cooldownCheck(resistanceLineInfantry)) {
                 addSkillEvent(resistanceLineInfantry);
             }
-            if (
-                    cooldownCheck(afterImageShock)
-                            && cooldownCheck(willOfLiberty)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(vulcanPunch)
-                            && cooldownCheck(maximizeCanon)
-                            && cooldownCheck(burningBreakerDelay)
-                            && cooldownCheck(bunkerBuster)
-            ) {
+            if (cooldownCheck(willOfLiberty)) {
                 isNuke = true;
                 addSkillEvent(bodyOfSteel);
                 addSkillEvent(afterImageShock);
@@ -207,11 +199,7 @@ public class Blaster480ContinuousDealCycle extends DealCycle {
                 }
                 dealCycleOrder ++;
                 isNuke = false;
-            } else if (
-                    cooldownCheck(vulcanPunch)
-                            && cooldownCheck(soulContract)
-                            && !cooldownCheck(burningBreakerDelay)
-            ) {
+            } else if (cooldownCheck(vulcanPunch)) {
                 addSkillEvent(soulContract);
                 addSkillEvent(vulcanPunch);
             } else if (
@@ -504,7 +492,7 @@ public class Blaster480ContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isBunkerBuster = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof MaximizeCanon) {

@@ -85,8 +85,13 @@ public class AngelicBusterDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(130.0);
+        ringSwitching.setCooldown(120.0);
         grandisGoddessBlessingNova.setCooldown(120.0);
+
+        //trinityFusion.setActivateTime(new Timestamp(2000));
+        loadedDice.setActivateTime(new Timestamp(-55555));
+        getStart().setTime(-990L);
+        addSkillEvent(loadedDice);
     }
 
     @Override
@@ -95,17 +100,13 @@ public class AngelicBusterDealCycle extends DealCycle {
             if (cooldownCheck(loadedDice)) {
                 addSkillEvent(loadedDice);
             }
-            if (
-                    cooldownCheck(finalContract)
-                            && cooldownCheck(spotlight)
-                            && cooldownCheck(overdrive)
-                            && cooldownCheck(soulExaltation)
-                            && cooldownCheck(soulContractAB)
-                            && cooldownCheck(superNova)
-                            && cooldownCheck(energyBurst)
-                            && cooldownCheck(mascotFamiliarBeforeDelay)
-                            && getStart().after(new Timestamp(trinityFusion.getActivateTime().getTime() - 2500))
-            ) {
+            if (getStart().after(new Timestamp(energyBurst.getActivateTime().getTime() - 4000))) {
+                while (getStart().before(new Timestamp(trinityFusion.getActivateTime().getTime() - 3500))) {
+                    addSkillEvent(trinity);
+                    if (cooldownCheck(trinityFusion)) {
+                        addSkillEvent(trinityFusion);
+                    }
+                }
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -133,21 +134,23 @@ public class AngelicBusterDealCycle extends DealCycle {
                 addSkillEvent(mascotFamiliarBeforeDelay);
             } else if (
                     cooldownCheck(overdrive)
-                            && cooldownCheck(soulExaltation)
-                            && cooldownCheck(soulContractAB)
-                            && cooldownCheck(superNova)
-                            && cooldownCheck(mascotFamiliarBeforeDelay)
-                            && !cooldownCheck(finalContract)
+                    && getStart().before(new Timestamp(finalContract.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulExaltation);
                 addSkillEvent(soulContractAB);
                 addSkillEvent(superNova);
+                while (!cooldownCheck(mascotFamiliarBeforeDelay)) {
+                    addSkillEvent(trinity);
+                    if (cooldownCheck(trinityFusion)) {
+                        addSkillEvent(trinityFusion);
+                    }
+                }
                 addSkillEvent(mascotFamiliarBeforeDelay);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else {

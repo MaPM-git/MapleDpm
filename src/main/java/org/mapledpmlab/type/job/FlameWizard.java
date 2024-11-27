@@ -67,9 +67,9 @@ public class FlameWizard extends Job {
         this.addMagicP(3L);             // 엘리멘트 : 플레임 IV
 
         // 환산 보정
-        this.addMainStatP(3L);
-        this.addMainStat(21L);
-        this.addSubStat(5L);
+        this.addMainStatP(15L);
+        this.addMainStat(-1L);
+        this.addSubStat(-5L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

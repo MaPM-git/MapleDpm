@@ -148,8 +148,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         int dealCycleOrder = 1;
-        boolean isOrigin = false;
-        boolean isAfterDP3 = false;
         addSkillEvent(bahamutSummon);
         while (getStart().before(getEnd())) {
             if (
@@ -239,7 +237,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                 addSkillEvent(peacemaker);
                 addSkillEvent(heavensDoor);
                 if (cooldownCheck(holyAdvent)) {
-                    isOrigin = true;
                     addSkillEvent(angelicRay);
                     if (holySwordCount >= 24) {
                         addSkillEvent(angelicOfJudgement);
@@ -278,28 +275,17 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(divinePunishment2)
-                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 40000))
-                    && isOrigin
+                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 70000))
             ) {
-                applyCooldown(divinePunishment3);
                 applyCooldown(divinePunishment);
                 addSkillEvent(divinePunishment2);
-                isOrigin = false;
-            } else if (
-                    cooldownCheck(divinePunishment3)
-                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 40000))
-            ) {
-                applyCooldown(divinePunishment2);
-                applyCooldown(divinePunishment);
-                addSkillEvent(divinePunishment3);
-                if (getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 60000))) {
-                    isOrigin = true;
-                }
             } else if (
                     cooldownCheck(soulContract)
                             && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(soulContract);
+                applyCooldown(divinePunishment);
+                addSkillEvent(divinePunishment2);
             } else if (
                     cooldownCheck(peacemaker)
                     && getStart().before(new Timestamp(holyBlood.getActivateTime().getTime() - 5000))
@@ -382,7 +368,7 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isLibra = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof AngelOfLibra2) {

@@ -16,7 +16,7 @@ public class Mihile extends Job {
     public Mihile() {
         // 기본
         super();
-        this.setName("미하일");
+        this.setName("미하일(리웨)");
         this.setConstant(1.24);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
@@ -74,9 +74,9 @@ public class Mihile extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-75L);
-        this.addMainStat(1L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-78L);
+        this.addMainStat(-9L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new ArtifactNormal());

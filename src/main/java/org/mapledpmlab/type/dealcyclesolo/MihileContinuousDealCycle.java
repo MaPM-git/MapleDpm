@@ -122,20 +122,7 @@ public class MihileContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(transcendentCygnusBlessing);
             }
-            if (
-                    cooldownCheck(auraWeaponBuff)
-                            && cooldownCheck(rhoAias)
-                            && cooldownCheck(queenOfTomorrow)
-                            //&& cooldownCheck(royalGuard)
-                            && cooldownCheck(guardOfLight)
-                            && cooldownCheck(lightOfCourage)
-                            && cooldownCheck(swordOfSoulLight)
-                            && cooldownCheck(soulMajesty)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(deadlyCharge)
-                            && cooldownCheck(claimhSolais)
-                            && getStart().before(new Timestamp(600 * 1000))
-            ) {
+            if (cooldownCheck(guardOfLight)) {
                 isNuke = true;
                 addSkillEvent(auraWeaponBuff);
                 addSkillEvent(rhoAias);
@@ -150,11 +137,10 @@ public class MihileContinuousDealCycle extends DealCycle {
                     addSkillEvent(shiningCrossAssault);
                 }
                 addSkillEvent(guardOfLight);
-                addSkillEvent(lightOfCourage);
                 addSkillEvent(swordOfSoulLight);
                 addSkillEvent(soulMajesty);
                 addSkillEvent(soulContract);
-                //addSkillEvent(royalGuard);
+                addSkillEvent(lightOfCourage);
                 addSkillEvent(deadlyCharge);
                 addSkillEvent(claimhSolais);
                 addSkillEvent(lightForceRei);
@@ -167,25 +153,12 @@ public class MihileContinuousDealCycle extends DealCycle {
                             && !cooldownCheck(queenOfTomorrow)
             ) {
                 addSkillEvent(lightOfCourage);
-            } else if (
+                addSkillEvent(soulContract);
+            }/* else if (
                     cooldownCheck(soulContract)
-                            && !cooldownCheck(lightOfCourage)
+                            && getStart().before(new Timestamp(queenOfTomorrow.getActivateTime().getTime() + 10000))
             ) {
                 addSkillEvent(soulContract);
-            } /*else if (
-                    cooldownCheck(lightOfCourage)
-                    && cooldownCheck(soulContract)
-                    && cooldownCheck(weaponJumpRing)
-            ) {
-                addSkillEvent(lightOfCourage);
-                addSkillEvent(soulContract);
-                addSkillEvent(weaponJumpRing);
-            } else if (
-                    cooldownCheck(ringSwitching)
-                    && getStart().after(new Timestamp(80 * 1000))
-                    && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
             }*/ else if (
                     cooldownCheck(deadlyCharge)
                             && (
@@ -202,9 +175,7 @@ public class MihileContinuousDealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(claimhSolais);
-            } /*else if (cooldownCheck(royalGuard)) {
-                addSkillEvent(royalGuard);
-            }*/ else if (getStart().before(swordOfSoulLightEndTime)) {
+            } else if (getStart().before(swordOfSoulLightEndTime)) {
                 addSkillEvent(soulLightSlash);
             } else {
                 addSkillEvent(shiningCrossAssault);

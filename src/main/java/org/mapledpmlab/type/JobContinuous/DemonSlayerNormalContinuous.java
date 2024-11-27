@@ -65,9 +65,9 @@ public class DemonSlayerNormalContinuous extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(33L);
-        this.addMainStat(-2L);
-        this.addSubStat(-5L);
+        this.addMainStatP(30L);
+        this.addMainStat(-12L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

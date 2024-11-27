@@ -16,7 +16,7 @@ public class Adele extends Job {
     public Adele() {
         // 기본
         super();
-        this.setName("아델");
+        this.setName("아델(리웨썸)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
@@ -72,9 +72,9 @@ public class Adele extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-78L);
-        this.addMainStat(8L);
-        //this.addSubStat(-10L);
+        this.addMainStatP(-69L);
+        this.addMainStat(-11L);
+        this.addSubStat(-5L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import org.mapledpmlab.type.JobContinuous.ShadowerContinuous;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.job.Shadower;
@@ -110,8 +111,7 @@ public class ShadowerDealCycle extends DealCycle {
 
         ultimateDarkSight.setBuffFinalDamage(1.29);
 
-        ringSwitching.setCooldown(90.0);
-        ringSwitching.setApplyCooldownReduction(false);
+        ringSwitching.setCooldown(95.0);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
     }
@@ -123,16 +123,9 @@ public class ShadowerDealCycle extends DealCycle {
                 addSkillEvent(darkFlare);
             }
             if (
-                    cooldownCheck(epicAdventure)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(ultimateDarkSight)
-                            && cooldownCheck(smokeBomb)
-                            && cooldownCheck(readyToDie)
+                    cooldownCheck(ultimateDarkSight)
                             && cooldownCheck(soulContract)
-                            && cooldownCheck(slashShadowFormation)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(smokeBomb)
-                            && cooldownCheck(eviscerate)
+                            && cooldownCheck(sonicBlow)
                             && getStart().before(new Timestamp(600 * 1000))
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
@@ -153,12 +146,14 @@ public class ShadowerDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
                 addSkillEvent(assassination);
                 addSkillEvent(slashShadowFormation);
+                addSkillEvent(assassinationFinishCancle);
+                addSkillEvent(mesoExplosion);
                 addSkillEvent(restraintRing);
                 addSkillEvent(sonicBlow);
+                addSkillEvent(eviscerate);
                 if (cooldownCheck(savageAssault1)) {
                     addSkillEvent(savageAssault1);
                 }
-                addSkillEvent(eviscerate);
                 addSkillEvent(mesoExplosion);
                 for (int i = 0; i < 5; i++) {
                     addSkillEvent(heartbreakerCancleStack);
@@ -166,13 +161,10 @@ public class ShadowerDealCycle extends DealCycle {
                     addSkillEvent(mesoExplosion);
                 }
             } else if (
-                    cooldownCheck(veilOfShadow)
-                            && cooldownCheck(readyToDie)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(slashShadowFormation)
+                    cooldownCheck(slashShadowFormation)
                             && cooldownCheck(sonicBlow)
-                            && cooldownCheck(eviscerate)
-                            && getStart().before(new Timestamp(660 * 1000))
+                            && cooldownCheck(veilOfShadow)
+                            && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(veilOfShadow);
                 addSkillEvent(readyToDie);
@@ -180,6 +172,13 @@ public class ShadowerDealCycle extends DealCycle {
                 addSkillEvent(weaponJumpRing);
                 addSkillEvent(assassination);
                 addSkillEvent(slashShadowFormation);
+                addSkillEvent(assassinationFinishCancle);
+                addSkillEvent(mesoExplosion);
+                while (getStart().before(new Timestamp(eviscerate.getActivateTime().getTime() - 1800))) {
+                    addSkillEvent(assassination);
+                    addSkillEvent(assassinationFinishCancle);
+                    addSkillEvent(mesoExplosion);
+                }
                 addSkillEvent(sonicBlow);
                 addSkillEvent(eviscerate);
                 addSkillEvent(mesoExplosion);
@@ -197,12 +196,13 @@ public class ShadowerDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(80 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(sonicBlow)
                             && cooldownCheck(eviscerate)
+                            && !cooldownCheck(readyToDie)
                             && getStart().before(new Timestamp(700 * 1000))
             ) {
                 addSkillEvent(sonicBlow);
@@ -215,7 +215,7 @@ public class ShadowerDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(eviscerate)
-                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 3000))
+                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(eviscerate);
             } else if (cooldownCheck(heartbreakerCancle)) {
@@ -236,7 +236,7 @@ public class ShadowerDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -385,7 +385,7 @@ public class ShadowerDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isSmokeBomb = false;
             boolean isVeilOfShadow = false;
             boolean isUltimateDarkSight = false;
@@ -474,7 +474,7 @@ public class ShadowerDealCycle extends DealCycle {
                                 || se.getSkill() instanceof VeilOfShadow
                         )
                 ) {
-                    for (int j = 0; j < ((AttackSkill) se.getSkill()).getAttackCount() * 2; j++) {
+                    for (int j = 0; j < ((AttackSkill) se.getSkill()).getAttackCount(); j++) {
                         Long ran = (long) (Math.random() * 99 + 1);
                         if (ran <= 40) {
                             coinCount++;
@@ -509,22 +509,14 @@ public class ShadowerDealCycle extends DealCycle {
     public Long getDotDamage(AttackSkill attackSkill, BuffSkill buffSkill) {
         Long attackDamage;
         attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                + getJob().getFinalSubstat() + ((Shadower) getJob()).getFinalSubStat2()) * 0.01
+                + getJob().getFinalSubstat() + ((ShadowerContinuous) getJob()).getFinalSubStat2()) * 0.01
                 * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                 * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                 + getJob().getPerXAtt())
                 * getJob().getConstant()
-                        * (1 + (
-                        getJob().getDamage()
-                                + getJob().getBossDamage()
-                                + getJob().getStatXDamage()
-                                + buffSkill.getBuffDamage()
-                                + attackSkill.getAddDamage()
-                                - 310
-                                - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01)
-                ) * 0.01)
                 * getJob().getMastery()
                 * attackSkill.getDamage() * 0.01 * attackSkill.getAttackCount()
+                * (1 + (getJob().getBossDamage() - 320) * 0.01 - 0.5 * (1 - (getJob().getProperty() + buffSkill.getBuffProperty()) * 0.01))
         );
         return attackDamage;
     }

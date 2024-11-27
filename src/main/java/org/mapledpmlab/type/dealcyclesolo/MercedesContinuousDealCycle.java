@@ -167,8 +167,6 @@ public class MercedesContinuousDealCycle extends DealCycle {
         addSkillEvent(legendarySpear);
         legendarySpear = new LegendarySpear();
         legendarySpearSpiritEnchant = new LegendarySpearSpiritEnchant();
-        legendarySpear.setDelayByAttackSpeed(870L);
-        legendarySpearSpiritEnchant.setDelayByAttackSpeed(870L);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(elementalGhost)
@@ -965,7 +963,7 @@ public class MercedesContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof CriticalReinforce) {
                     isCriticalReinforce = true;

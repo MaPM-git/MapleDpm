@@ -15,7 +15,7 @@ public class Paladin extends Job {
     public Paladin() {
         // 기본
         super();
-        this.setName("팔라딘");
+        this.setName("팔라딘(리웨)");
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -60,8 +60,8 @@ public class Paladin extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-42L);
-        this.addMainStat(3L);
+        this.addMainStatP(-36L);
+        this.addMainStat(-15L);
         //this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());

@@ -78,9 +78,9 @@ public class StrikerContinuous extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-48L);
-        this.addMainStat(4L);
-        this.addSubStat(7L);
+        this.addMainStatP(-36L);
+        this.addMainStat(-8L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

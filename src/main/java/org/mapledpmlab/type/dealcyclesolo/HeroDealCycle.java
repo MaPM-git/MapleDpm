@@ -104,7 +104,7 @@ public class HeroDealCycle extends DealCycle {
         addSkillEvent(advancedComboAttack);
 
         auraWeaponBuff.setCooldown(180.0);
-        auraWeaponBuff.setApplyCooldownReduction(false);
+        //auraWeaponBuff.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(120.0);
     }
 
@@ -117,16 +117,7 @@ public class HeroDealCycle extends DealCycle {
             ) {
                 addSkillEvent(auraWeaponBuff);
             }
-            if (
-                    cooldownCheck(swordOfBurningSoulBuff)
-                            && cooldownCheck(incisingAttack)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(valhallaBuff)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(swordIllusionBuff)
-                            && cooldownCheck(comboInstinctsBuff)
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
+            if (cooldownCheck(valhallaBuff)) {
                 addSkillEvent(swordOfBurningSoulBuff);
                 addSkillEvent(incisingAttack);
                 addSkillEvent(bodyOfSteel);
@@ -153,10 +144,7 @@ public class HeroDealCycle extends DealCycle {
                     addSkillEvent(spiritCaliberSlash);
                 }
                 dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(swordIllusionBuff)
-                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 20000))
-            ) {
+            } else if (cooldownCheck(swordIllusionBuff)) {
                 addSkillEvent(swordIllusionBuff);
             } else if (
                     cooldownCheck(ringSwitching)
@@ -170,7 +158,9 @@ public class HeroDealCycle extends DealCycle {
             ) {
                 addSkillEvent(incisingAttack);
                 addSkillEvent(soulContract);
-            } else if (cooldownCheck(rageUprising)
+            } else if (
+                    cooldownCheck(rageUprising)
+                            && getStart().before(new Timestamp(swordIllusionBuff.getActivateTime().getTime() - 1000))
             ) {
                 addSkillEvent(rageUprising);
             } else {
@@ -226,7 +216,7 @@ public class HeroDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isComboInstincts = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof ComboInstinctsBuff) {
@@ -287,7 +277,7 @@ public class HeroDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {

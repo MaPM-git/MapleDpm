@@ -13,5 +13,6 @@ public class GloryOfGuardians extends BuffSkill {
         this.setDuration(60L);
         this.setCooldown(120.0);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

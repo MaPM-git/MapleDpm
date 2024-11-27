@@ -126,7 +126,7 @@ public class WindBreakerDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(66.0);
 
-        transcendentCygnusBlessing.setCooldown(125.0);
+        transcendentCygnusBlessing.setCooldown(127.0);
         //transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
@@ -145,16 +145,7 @@ public class WindBreakerDealCycle extends DealCycle {
             ) {
                 addSkillEvent(transcendentCygnusBlessing);
             }
-            if (
-                    cooldownCheck(emeraldFlower)
-                            && cooldownCheck(pinpointPierce)
-                            && cooldownCheck(gloryOfGuardians)
-                            && cooldownCheck(stormWhimBuff)
-                            && cooldownCheck(criticalReinforce)
-                            && cooldownCheck(howlingGale3)
-                            && cooldownCheck(soulContract)
-                            && getStart().before(new Timestamp(660 * 1000))
-            ) {
+            if (cooldownCheck(stormWhimBuff)) {
                 addSkillEvent(emeraldFlower);
                 addSkillEvent(pinpointPierce);
                 addSkillEvent(gloryOfGuardians);
@@ -200,11 +191,8 @@ public class WindBreakerDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
                 dealCycleOrder ++;
             } else if (
-                    cooldownCheck(emeraldFlower)
-                            && cooldownCheck(pinpointPierce)
-                            && cooldownCheck(howlingGale1)
-                            && cooldownCheck(soulContract)
-                            && !cooldownCheck(gloryOfGuardians)
+                    getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 1000))
+                    && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(emeraldFlower);
                 addSkillEvent(pinpointPierce);
@@ -248,7 +236,10 @@ public class WindBreakerDealCycle extends DealCycle {
                 addSkillEvent(stoneWind);
             } else if (cooldownCheck(cygnusPhalanx)) {
                 addSkillEvent(cygnusPhalanx);
-            } else if (cooldownCheck(vortexSphere)) {
+            } else if (
+                    cooldownCheck(vortexSphere)
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
+            ) {
                 addSkillEvent(vortexSphere);
             } else if (
                     cooldownCheck(howlingGale1)
@@ -269,7 +260,7 @@ public class WindBreakerDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime()) && getStart().after(new Timestamp(0))) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -427,7 +418,7 @@ public class WindBreakerDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isStormWhim = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof StormWhimBuff) {

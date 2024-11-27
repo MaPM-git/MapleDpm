@@ -110,18 +110,7 @@ public class PaladinDealCycle extends DealCycle {
             if (getStart().after(nobleDemandEndTime)) {
                 addSkillEvent(nobleDemand);
             }
-            if (
-                    cooldownCheck(auraWeaponBuff)
-                            && cooldownCheck(epicAdventure)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(holyUnity)
-                            && cooldownCheck(blessedHammerBuff)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(grandCrossFirstDelay)
-                            && cooldownCheck(mightyMjolnirDelay)
-                            && getStart().before(new Timestamp(600 * 1000))
-            ) {
+            if (cooldownCheck(restraintRing)) {
                 //addSkillEvent(nobleDemand);
                 addSkillEvent(bodyOfSteel);
                 addSkillEvent(auraWeaponBuff);
@@ -142,6 +131,9 @@ public class PaladinDealCycle extends DealCycle {
                 addSkillEvent(mightyMjolnirDelay);
                 if (cooldownCheck(sacredBastion1)) {
                     addSkillEvent(sacredBastion1);
+                }
+                while (!cooldownCheck(grandCrossFirstDelay)) {
+                    addSkillEvent(blast);
                 }
                 addSkillEvent(grandCrossFirstDelay);
             } else if (
@@ -185,7 +177,7 @@ public class PaladinDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -258,7 +250,7 @@ public class PaladinDealCycle extends DealCycle {
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     long i = ((AttackSkill) skill).getInterval();
                     if (skill instanceof BlessedHammerDot) {
-                        i = 1800 - 360;
+                        i = 0;
                     }
                     if (skill instanceof FallingJustice) {
                         i = 270;

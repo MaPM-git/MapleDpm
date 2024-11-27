@@ -10,7 +10,6 @@ public class PoisonChainExplosion0 extends AttackSkill {
         this.setAttackCount(5L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new PoisonChainExplosion1());
-        this.setApplyFinalAttack(true);
         this.addFinalDamage(1.08);      // 오버로드 마나
     }
 }

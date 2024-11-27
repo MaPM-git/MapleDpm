@@ -12,5 +12,6 @@ public class Equilibrium extends BuffSkill {
         this.setDuration(10L + 7);      // 다크라이트 마스터리
         this.setApplyPlusBuffDuration(true);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

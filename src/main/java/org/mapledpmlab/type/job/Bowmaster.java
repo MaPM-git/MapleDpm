@@ -15,7 +15,7 @@ public class Bowmaster extends Job {
     public Bowmaster() {
         // 기본
         super();
-        this.setName("보우마스터");
+        this.setName("보우마스터(리웨)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -68,9 +68,9 @@ public class Bowmaster extends Job {
         this.addFinalDamage(1.07);
 
         // 환산 보정
-        this.addMainStatP(-69L);
-        this.addMainStat(-2L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-63L);
+        this.addMainStat(-10L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

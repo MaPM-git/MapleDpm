@@ -181,9 +181,7 @@ public class KainDealCycle extends DealCycle {
         addSkillEvent(possession);
         addSkillEvent(shaftBreakEnchant);
         while (getStart().before(getEnd())) {
-            if (
-                    cooldownCheck(incarnation)
-            ) {
+            if (cooldownCheck(incarnation)) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -245,78 +243,57 @@ public class KainDealCycle extends DealCycle {
     }
 
     public void kainPlatDealCycle() {
-        if (
+        if (cooldownCheck(poisonNeedle)) {
+            addSkillEvent(poisonNeedle);
+        } else if (
                 cooldownCheck(fallingDustEnchant)
-                        && malice >= 100
+                && malice >= 100
         ) {
             addSkillEvent(possession);
             addSkillEvent(fallingDustEnchant);
-            if (cooldownCheck(poisonNeedle)) {
-                addSkillEvent(poisonNeedle);
-            } else if (cooldownCheck(chainSickle)) {
-                addSkillEvent(chainSickle);
-            } else if (cooldownCheck(tearingKnife)) {
-                addSkillEvent(tearingKnife);
-            } else {
-                addSkillEvent(phantomBlade);
-            }
+        } else if (
+                cooldownCheck(chainSickle)
+                && deathBlessingCnt > 0
+        ) {
+            addSkillEvent(chainSickle);
         } else if (
                 cooldownCheck(scatteringShotEnchant)
-                        && malice >= 100
+                && malice >= 100
         ) {
             addSkillEvent(possession);
             addSkillEvent(scatteringShotEnchant);
-            if (cooldownCheck(poisonNeedle)) {
-                addSkillEvent(poisonNeedle);
-            } else if (cooldownCheck(chainSickle)) {
-                addSkillEvent(chainSickle);
-            } else if (cooldownCheck(tearingKnife)) {
-                addSkillEvent(tearingKnife);
-            } else {
-                addSkillEvent(phantomBlade);
-            }
+        } else if (cooldownCheck(fallingDust)) {
+            addSkillEvent(fallingDust);
+        } else if (cooldownCheck(chainSickle)) {
+            addSkillEvent(chainSickle);
+        } else if (
+                cooldownCheck(tearingKnife)
+                && deathBlessingCnt > 0
+        ) {
+            addSkillEvent(tearingKnife);
+        } else if (
+                cooldownCheck(strikeArrowEnchant)
+                && malice >= 100
+        ) {
+           addSkillEvent(possession);
+           addSkillEvent(strikeArrowEnchant);
+        } else if (cooldownCheck(chasingShot)) {
+            addSkillEvent(chasingShot);
+        } else if (cooldownCheck(scatteringShot)) {
+            addSkillEvent(scatteringShot);
         } else if (
                 cooldownCheck(shaftBreakEnchant)
-                        && malice >= 100
+                && malice >= 100
         ) {
             addSkillEvent(possession);
             addSkillEvent(shaftBreakEnchant);
-            if (cooldownCheck(poisonNeedle)) {
-                addSkillEvent(poisonNeedle);
-            } else if (cooldownCheck(chainSickle)) {
-                addSkillEvent(chainSickle);
-            } else if (cooldownCheck(tearingKnife)) {
-                addSkillEvent(tearingKnife);
-            } else {
-                addSkillEvent(phantomBlade);
-            }
+        } else if (cooldownCheck(tearingKnife)) {
+            addSkillEvent(tearingKnife);
         } else if (
-                cooldownCheck(strikeArrowEnchant)
-                        && malice >= 100
+                cooldownCheck(phantomBlade)
+                && deathBlessingCnt > 0
         ) {
-            addSkillEvent(possession);
-            addSkillEvent(strikeArrowEnchant);
-            if (cooldownCheck(poisonNeedle)) {
-                addSkillEvent(poisonNeedle);
-            } else if (cooldownCheck(chainSickle)) {
-                addSkillEvent(chainSickle);
-            } else if (cooldownCheck(tearingKnife)) {
-                addSkillEvent(tearingKnife);
-            } else {
-                addSkillEvent(phantomBlade);
-            }
-        } else if (
-                cooldownCheck(scatteringShot)
-        ) {
-            addSkillEvent(scatteringShot);
-        } else if (
-                cooldownCheck(fallingDust)
-        ) {
-            addSkillEvent(fallingDust);
-        } else if (
-                cooldownCheck(chasingShot)
-        ) {
-            addSkillEvent(chasingShot);
+            addSkillEvent(phantomBlade);
         } else {
             addSkillEvent(strikeArrowList.get(i % 3));
             i++;
@@ -366,7 +343,7 @@ public class KainDealCycle extends DealCycle {
                     }
                 }
             }
-            useBuffSkillList = deduplication(useBuffSkillList, SkillEvent::getSkill);
+            useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof CriticalReinforce) {
                     isCriticalReinforce = true;
@@ -563,10 +540,11 @@ public class KainDealCycle extends DealCycle {
                 && !(skill instanceof AnnihilationDeathBlessing)
                 && !(skill instanceof PossessionMalice)
         ) {
-            addSkillEvent(annihilationDeathBlessing);
-        }
-        if (skill instanceof AnnihilationDeathBlessing) {
             deathBlessingCnt ++;
+            if (deathBlessingCnt > 20) {
+                deathBlessingCnt = 20;
+            }
+            annihilationDeathBlessing.setActivateTime(new Timestamp(annihilationDeathBlessing.getActivateTime().getTime() + 2500));
         }
         if (getStart().before(skill.getActivateTime())) {
             if (!(skill instanceof PossessionMalice)) {
@@ -657,26 +635,16 @@ public class KainDealCycle extends DealCycle {
                             || skill instanceof ChainSickle
                             || skill instanceof ChainSickleFinish
                             || skill instanceof PoisonNeedle
-                            || skill instanceof PoisonNeedleLoop
                             || skill instanceof PoisonNeedleFinish
-                            || skill instanceof SneakySnipingEnchant
                     )
             ) {
-                int cnt = 1;
-                if (skill instanceof PoisonNeedleLoop) {
-                    cnt = 4;
-                } else if (skill instanceof SneakySnipingEnchant) {
-                    cnt = 5;
-                }
-                for (int k = 0; k < cnt; k++) {
-                    deathBlessingCnt--;
-                    addSkillEvent(deathBlessing);
-                    if (
-                            getStart().before(annihilationBuffEndTime)
-                                    && cooldownCheck(annihilationDragonBreath)
-                    ) {
-                        addSkillEvent(annihilationDragonBreath);
-                    }
+                deathBlessingCnt--;
+                addSkillEvent(deathBlessing);
+                if (
+                        getStart().before(annihilationBuffEndTime)
+                                && cooldownCheck(annihilationDragonBreath)
+                ) {
+                    addSkillEvent(annihilationDragonBreath);
                 }
             }
             if (skill instanceof StrikeArrowEnchant) {
@@ -844,12 +812,23 @@ public class KainDealCycle extends DealCycle {
                                 }
                             }
                         }
-                        if (skill instanceof FatalBlitzLoop && deathBlessingCnt > 0) {
+                        if (
+                                (
+                                        skill instanceof FatalBlitzLoop
+                                        || skill instanceof PoisonNeedleLoop
+                                ) && deathBlessingCnt > 0
+                        ) {
                             deathBlessingCnt--;
-                            getSkillEventList().add(new SkillEvent(deathBlessing, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
-                            if (attackCount % 4 == 0) {
-                                getSkillEventList().add(new SkillEvent(annihilationDragonBreath, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                            Timestamp now = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
+                            addSkillEvent(deathBlessing);
+                            if (
+                                    getStart().before(annihilationBuffEndTime)
+                                    && cooldownCheck(annihilationDragonBreath)
+                            ) {
+                                addSkillEvent(annihilationDragonBreath);
                             }
+                            getStart().setTime(now.getTime());
                         }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
@@ -865,17 +844,6 @@ public class KainDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
-        if (
-                getStart().before(annihilationBuffEndTime)
-                && skill instanceof FatalBlitzLoop
-        ) {
-            applyCooldown(annihilationDragonBreath);
-            chainSickle.setActivateTime(new Timestamp(chainSickle.getActivateTime().getTime() - 3000));
-            fatalBlitzBeforeDelay.setActivateTime(new Timestamp(fatalBlitzBeforeDelay.getActivateTime().getTime() - 3000));
-            phantomBlade.setActivateTime(new Timestamp(phantomBlade.getActivateTime().getTime() - 3000));
-            poisonNeedle.setActivateTime(new Timestamp(poisonNeedle.getActivateTime().getTime() - 3000));
-            tearingKnife.setActivateTime(new Timestamp(tearingKnife.getActivateTime().getTime() - 3000));
-        }
         if (
                 getStart().before(annihilationBuffEndTime)
                 && skill instanceof AnnihilationDragonBreath
@@ -915,6 +883,22 @@ public class KainDealCycle extends DealCycle {
             sum += info;
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (
+                    skill instanceof SneakySnipingEnchant
+                            && deathBlessingCnt > 0
+            ) {
+                deathBlessingCnt--;
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                addSkillEvent(deathBlessing);
+                if (
+                        getStart().before(annihilationBuffEndTime)
+                        && cooldownCheck(annihilationDragonBreath)
+                ) {
+                    addSkillEvent(annihilationDragonBreath);
+                }
+                getStart().setTime(now.getTime());
+            }
         }
     }
 

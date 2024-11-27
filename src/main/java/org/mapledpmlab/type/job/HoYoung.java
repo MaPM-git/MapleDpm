@@ -16,7 +16,7 @@ public class HoYoung extends Job {
     public HoYoung() {
         // 기본
         super();
-        this.setName("호영");
+        this.setName("호영(리웨)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -74,8 +74,8 @@ public class HoYoung extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-54L);
-        this.addMainStat(-1L);
+        this.addMainStatP(-57L);
+        this.addMainStat(6L);
         this.addSubStat(-10L);
 
         this.setAbility(new PassiveBossAbnormal());

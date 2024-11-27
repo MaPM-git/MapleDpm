@@ -5,8 +5,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DragonBreak extends AttackSkill {
     public DragonBreak() {
         this.setName("드래곤 브레이크");
-        this.setDamage(1265.0);
-        this.setAttackCount(7L);
+        this.setDamage(1540.0);
+        this.setAttackCount(8L);
+        this.setDelay(30L);
         this.setDotDuration(2500L);
         this.setInterval(360L);
         this.setLimitAttackCount(6L);

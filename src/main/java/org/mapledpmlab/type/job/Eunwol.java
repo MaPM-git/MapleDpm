@@ -15,7 +15,7 @@ public class Eunwol extends Job {
     public Eunwol() {
         // 기본
         super();
-        this.setName("은월");
+        this.setName("은월(리웨)");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.90 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
@@ -70,9 +70,9 @@ public class Eunwol extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(11L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-54L);
+        //this.addMainStat(11L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

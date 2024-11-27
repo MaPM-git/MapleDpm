@@ -9,7 +9,7 @@ public class DotPunisherAfterSecond extends AttackSkill {
         this.setAttackCount(5L);
         this.setDotDuration(2400L);
         this.setInterval(100L);
-        this.setLimitAttackCount(23L);
+        this.setLimitAttackCount(24L);
         this.addFinalDamage(1.6);       // 코어강화
         this.addFinalDamage(0.55);
         this.setApplyFinalAttack(true);

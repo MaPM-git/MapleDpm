@@ -13,5 +13,6 @@ public class WillOfLiberty extends BuffSkill {
         this.setDuration(60L);
         this.setBuffDamage(10L);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

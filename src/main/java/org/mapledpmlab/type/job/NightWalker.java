@@ -16,7 +16,7 @@ public class NightWalker extends Job {
     public NightWalker() {
         // 기본
         super();
-        this.setName("나이트워커");
+        this.setName("나이트워커(리웨)");
         this.setConstant(1.75);         // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -74,8 +74,8 @@ public class NightWalker extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-42L);
-        this.addMainStat(16L);
+        this.addMainStatP(-21L);
+        this.addMainStat(9L);
         this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());

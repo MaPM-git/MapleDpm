@@ -9,6 +9,6 @@ public class FlameHazeDot extends DotAttackSkill {
         this.setAttackCount(1L);
         this.setInterval(1000L);
         this.setDotDuration(10000L * 2);    // 익스트림 매직
-        this.setRelatedSkill(new PoisonMist());
+        this.setRelatedSkill(new PoisonMistDot());
     }
 }

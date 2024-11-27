@@ -7,8 +7,7 @@ public class ChainArtsStroke2Reinforce extends AttackSkill {
         this.setName("체인아츠:스트로크(강화 2타)");
         this.setDamage(560.0);
         this.setAttackCount(5L);
-        this.setDelay(150L);
-        //this.setDelayByAttackSpeed(510L);
+        this.setDelay(150L + 30);
         this.setCooldown(10.0);
         this.setApplyCooldownReduction(false);
         this.addFinalDamage(2.2);           // 코어강화

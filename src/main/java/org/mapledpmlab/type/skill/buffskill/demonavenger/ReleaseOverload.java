@@ -14,5 +14,6 @@ public class ReleaseOverload extends GaugeBuffSkill {
         this.setGaugePer(1L);
         this.setApplyPlusBuffDuration(true);
         this.setApplyServerLag(true);
+        this.setDelay(30L);
     }
 }

@@ -12,6 +12,6 @@ public class Revenant extends GaugeBuffSkill {
         this.setCooldown(120.0);
         this.setDelay(900L);
         this.setDuration(15L + 3);      // 코어 강화
-        this.setGaugePer(-50L);
+        //this.setGaugePer(-50L);
     }
 }

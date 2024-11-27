@@ -16,7 +16,7 @@ public class AngelicBuster extends Job {
     public AngelicBuster() {
         // 기본
         super();
-        this.setName("엔젤릭버스터");
+        this.setName("엔젤릭버스터(리웨)");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
@@ -74,9 +74,9 @@ public class AngelicBuster extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-51L);
-        this.addMainStat(-1L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-39L);
+        this.addMainStat(-12L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

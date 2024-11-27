@@ -11,5 +11,6 @@ public class Possession extends BuffSkill {
         this.setName("포제션");
         this.setDelay(270L);
         this.setCooldown(0.3);
+        this.setDelay(30L);
     }
 }
