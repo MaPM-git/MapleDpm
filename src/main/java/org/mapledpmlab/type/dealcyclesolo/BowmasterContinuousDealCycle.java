@@ -431,7 +431,7 @@ public class BowmasterContinuousDealCycle extends DealCycle {
                 restraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
                 fortyEndTime = new Timestamp(getStart().getTime() + 40000);
             } else if (
-                    skill instanceof ContinuousRing
+                    skill instanceof SoulContract
                             && restraintRingStartTime != null
                             && restraintRingEndTime != null
                             && fortyEndTime != null

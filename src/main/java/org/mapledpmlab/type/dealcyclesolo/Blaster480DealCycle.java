@@ -123,7 +123,7 @@ public class Blaster480DealCycle extends DealCycle {
     public Blaster480DealCycle(Job job) {
         super(job, new FinalAttackBlaster());
 
-        this.getJob().setName("블래스터(480)");
+        this.getJob().setName("블래스터(480, 리웨)");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);

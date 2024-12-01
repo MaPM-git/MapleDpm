@@ -4,7 +4,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
 public class HowlingGale2 extends AttackSkill {
     public HowlingGale2() {
-        this.setName("하울링 게일(2중첩)");
+        this.setName("하울링 게일(퍼뎀 1715)");
         this.setAttackCount(3L);
         this.setDamage(1715.0);
         this.setDelay(840L);

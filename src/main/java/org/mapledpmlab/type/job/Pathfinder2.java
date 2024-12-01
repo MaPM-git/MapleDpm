@@ -15,7 +15,7 @@ public class Pathfinder2 extends Job {
     public Pathfinder2() {
         // 기본
         super();
-        this.setName("패스파인더(2초)");
+        this.setName("패스파인더(리웨, 2초)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);

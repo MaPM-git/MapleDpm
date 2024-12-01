@@ -177,6 +177,7 @@ public class WindBreakerContinuousDealCycle extends DealCycle {
                 addSkillEvent(howlingGale3);
                 addSkillEvent(soulContract);
                 dealCycleOrder ++;
+                isNuke = false;
             } else if (
                     getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 1000))
                     && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 30000))

@@ -115,7 +115,6 @@ public class EunwolContinuousDealCycle extends DealCycle {
                             && cooldownCheck(eunwolHyper)
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
-                isNuke = true;
                 addSkillEvent(bladeImp);
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(heroesOath);
@@ -135,6 +134,7 @@ public class EunwolContinuousDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
                 addSkillEvent(divisionSoul);
                 addSkillEvent(lightOfTheFoxGoddess);
+                isNuke = true;
                 addSkillEvent(soulContract);
                 addSkillEvent(eunwolHyper);
                 addSkillEvent(ghostDisposition);

@@ -148,6 +148,7 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         int dealCycleOrder = 1;
+        addDealCycle(flatDeal1);
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(overheatTime)
@@ -186,16 +187,6 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                 addSkillEvent(burningBreakerDelay);
                 addSkillEvent(bunkerBuster);
                 if (cooldownCheck(finalDestroyer1)) {
-                    while (getStart().before(new Timestamp(continuousRing.getActivateTime().getTime() - 500))) {
-                        if (
-                                getStart().after(overheatTime)
-                                        && cylinder == 6
-                        ) {
-                            addDealCycle(flatDeal2);
-                        } else {
-                            addDealCycle(flatDeal1);
-                        }
-                    }
                     addSkillEvent(finalDestroyer1);
                 }
                 dealCycleOrder ++;

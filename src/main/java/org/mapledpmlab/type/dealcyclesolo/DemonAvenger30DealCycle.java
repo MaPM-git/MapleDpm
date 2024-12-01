@@ -117,7 +117,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
     public DemonAvenger30DealCycle(Job job) {
         super(job, new FinalAttackDemonAvenger());
 
-        getJob().setName("데몬 어벤져(30)");
+        getJob().setName("데몬 어벤져(30, 리웨)");
         //demonFrenzy30.setCooldown(0.21);
 
         this.setAttackSkillList(attackSkillList);

@@ -15,7 +15,7 @@ public class Pathfinder extends Job {
     public Pathfinder() {
         // 기본
         super();
-        this.setName("패스파인더");
+        this.setName("패스파인더(리웨)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

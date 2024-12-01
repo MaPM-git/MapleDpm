@@ -101,7 +101,7 @@ public class FlameWizard3DealCycle extends DealCycle {
     public FlameWizard3DealCycle(Job job) {
         super(job, null);
 
-        getJob().setName("플레임위자드(3분)");
+        getJob().setName("플레임위자드(리웨, 3분)");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);

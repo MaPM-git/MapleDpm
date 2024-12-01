@@ -446,7 +446,6 @@ public class SoulMasterDealCycle extends DealCycle {
                 )
                 && getStart().after(restraintRingEndTimestamp)
         ) {
-            getStart().setTime(getStart().getTime() + 30);
             addSkillEvent(solunarSlash);
         } else {
             getStart().setTime(getStart().getTime() + skill.getDelay());

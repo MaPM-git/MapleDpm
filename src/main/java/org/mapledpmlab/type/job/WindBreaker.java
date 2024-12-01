@@ -16,7 +16,7 @@ public class WindBreaker extends Job {
     public WindBreaker() {
         // 기본
         super();
-        this.setName("윈드브레이커");
+        this.setName("윈드브레이커(리웨)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

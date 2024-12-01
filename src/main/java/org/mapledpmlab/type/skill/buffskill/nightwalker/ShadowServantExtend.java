@@ -13,6 +13,5 @@ public class ShadowServantExtend extends BuffSkill {
         this.setDelay(360L);
         //this.setDelay(570L);
         this.setDuration(55L);      // 코어강화
-        this.setApplyServerLag(true);
     }
 }

@@ -414,10 +414,10 @@ public class NightWalkerDealCycle extends DealCycle {
                 shadowSpearEndTime = new Timestamp(getStart().getTime() + 90000);
             }
             if (skill instanceof ShadowIllusion) {
-                shadowIllusionEndTime = new Timestamp(getStart().getTime() + 33000);
+                shadowIllusionEndTime = new Timestamp(getStart().getTime() + 30000);
             }
             if (skill instanceof ShadowServantExtend) {
-                shadowServantExtendEndTime = new Timestamp(getStart().getTime() + 58000);
+                shadowServantExtendEndTime = new Timestamp(getStart().getTime() + 55000);
             }
             if (
                     skill instanceof RestraintRing

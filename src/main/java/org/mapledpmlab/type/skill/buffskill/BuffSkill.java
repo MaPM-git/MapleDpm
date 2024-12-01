@@ -27,9 +27,9 @@ public class BuffSkill extends Skill {
     private Long buffOtherStat1;
     private Long buffOtherStat2;
     private Long buffProperty;
-    //private Double buffPlusFinalDamage;
     private Long buffSubStat;
     private boolean isApplyPlusBuffDuration = false;
+    private boolean isPartyBuff = false;
     private Long colNum = 0L;
     private Long useCount = 0L;
     private List<Timestamp> startTimeList = new ArrayList<>();
@@ -50,7 +50,6 @@ public class BuffSkill extends Skill {
         this.buffOtherStat1 = 0L;
         this.buffOtherStat2 = 0L;
         this.buffProperty = 0L;
-        //this.buffPlusFinalDamage = 1.0;
         this.buffSubStat = 0L;
     }
     public String getInfo() {
@@ -128,6 +127,10 @@ public class BuffSkill extends Skill {
         }
         if (isApplyReuse()) {
             str = str + "\n재사용적용";
+            colNum ++;
+        }
+        if (isPartyBuff()) {
+            str = str + "\n파티 버프";
             colNum ++;
         }
         if (isApplyPlusBuffDuration()) {

@@ -18,7 +18,7 @@ public class WildHunter5 extends Job {
     public WildHunter5() {
         // 기본
         super();
-        this.setName("와일드헌터(5초)");
+        this.setName("와일드헌터(리웨, 5초)");
         this.setConstant(1.35);         // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);

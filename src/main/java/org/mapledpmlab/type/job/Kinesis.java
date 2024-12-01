@@ -16,7 +16,7 @@ public class Kinesis extends Job {
     public Kinesis() {
         // 기본
         super();
-        this.setName("키네시스(4시드링)");
+        this.setName("키네시스(리웨썸)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.94 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

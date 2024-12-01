@@ -16,7 +16,7 @@ public class Striker extends Job {
     public Striker() {
         // 기본
         super();
-        this.setName("스트라이커");
+        this.setName("스트라이커(리웨)");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);

@@ -114,7 +114,7 @@ public class Xenon2HologramDealCycle extends DealCycle {
     public Xenon2HologramDealCycle(Job job) {
         super(job, null);
 
-        this.getJob().setName("제논(2홀로그램)");
+        this.getJob().setName("제논(리웨, 2홀로그램)");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);

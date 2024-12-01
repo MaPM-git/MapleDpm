@@ -111,7 +111,7 @@ public class SoulMasterCancelDealCycle extends DealCycle {
     public SoulMasterCancelDealCycle(Job job) {
         super(job, null);
 
-        getJob().setName("소울마스터(캔슬)");
+        getJob().setName("소울마스터(리웨, 캔슬)");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
@@ -450,9 +450,8 @@ public class SoulMasterCancelDealCycle extends DealCycle {
                         || skill instanceof TranscendentCygnusBlessing
                         || skill instanceof CrossTheStyx
                 )
-                && getStart().before(restraintRingEndTimestamp)
+                && getStart().after(restraintRingEndTimestamp)
         ) {
-            getStart().setTime(getStart().getTime() + 30);
             addSkillEvent(solunarSlash);
         } else {
             getStart().setTime(getStart().getTime() + skill.getDelay());

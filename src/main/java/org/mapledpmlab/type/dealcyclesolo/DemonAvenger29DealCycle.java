@@ -117,7 +117,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
     public DemonAvenger29DealCycle(Job job) {
         super(job, new FinalAttackDemonAvenger());
 
-        getJob().setName("데몬 어벤져(29)");
+        getJob().setName("데몬 어벤져(29, 리웨)");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
