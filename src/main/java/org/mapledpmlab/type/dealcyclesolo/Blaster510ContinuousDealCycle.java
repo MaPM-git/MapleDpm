@@ -166,8 +166,8 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
             if (cooldownCheck(resistanceLineInfantry)) {
                 addSkillEvent(resistanceLineInfantry);
             }
-            if (cooldownCheck(willOfLiberty)
-            ) {
+            if (cooldownCheck(willOfLiberty)) {
+                getNukeTimeList().add(new Timestamp(getStart().getTime()));
                 isNuke = true;
                 addSkillEvent(bodyOfSteel);
                 addSkillEvent(afterImageShock);

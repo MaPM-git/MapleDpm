@@ -663,6 +663,157 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
     }
 
     @Override
+    public void setDuoDealCycle3() {
+        int dealCycleOrder = 1;
+
+        // 인피니티 달구기
+        getStart().setTime(-75000);
+        infinity.setActivateTime(new Timestamp(-80000));
+        addSkillEvent(infinity);
+        getStart().setTime(0);
+
+        mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        divinePunishment2.setRelatedSkill(new DivinePunishment2());
+        divinePunishment2.setCooldown(22.0);
+
+        divinePunishment3.setRelatedSkill(new DivinePunishment3());
+        divinePunishment3.setCooldown(33.0);
+
+        addSkillEvent(bahamutSummon);
+        while (getStart().before(getEnd())) {
+            if (
+                    cooldownCheck(infinity)
+                            && getStart().after(new Timestamp(infinityEndTime.getTime() - 5000))
+            ) {
+                infinityEndTime = new Timestamp(getStart().getTime() + 121360);
+                addSkillEvent(infinity);
+            }
+            if (
+                    cooldownCheck(unstableMemorize)
+                            && getStart().after(new Timestamp(infinityEndTime.getTime() - 5000))
+            ) {
+                infinityEndTime = new Timestamp(getStart().getTime() + unstableMemorize.getDelay() + 121360);
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 1) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.8);
+                } else if (ran <= 7) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.77);
+                } else if (ran <= 13) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.76);
+                } else if (ran <= 19) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.75);
+                } else if (ran <= 29) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.73);
+                } else if (ran <= 40) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.7);
+                } else if (ran <= 52) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.67);
+                } else if (ran <= 64) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.65);
+                } else if (ran <= 76) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.62);
+                } else if (ran <= 84) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.60);
+                } else if (ran <= 90) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.55);
+                } else if (ran <= 95) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.5);
+                } else if (ran <= 97) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.45);
+                } else if (ran <= 99) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.4);
+                } else if (ran <= 100) {
+                    unstableMemorize.setCooldown(unstableMemorize.getCooldown() * 0.35);
+                }
+                addSkillEvent(unstableMemorize);
+            }
+            if (cooldownCheck(fountainForAngel)) {
+                addSkillEvent(fountainForAngel);
+            }
+            if (cooldownCheck(angelicTouch)) {
+                addSkillEvent(angelicTouch);
+            }
+            if (
+                    cooldownCheck(angelOfLibra)
+                    && getStart().after(getNukeTimeList().get(dealCycleOrder - 1))
+            ) {
+                if (
+                        dealCycleOrder == 1
+                                || dealCycleOrder == 3
+                ) {
+                    isNuke = true;
+                }
+                addSkillEvent(mapleWorldGoddessBlessing);
+                addSkillEvent(epicAdventure);
+                if (cooldownCheck(crestOfTheSolar)) {
+                    addSkillEvent(crestOfTheSolar);
+                }
+                if (cooldownCheck(spiderInMirror)) {
+                    addSkillEvent(spiderInMirror);
+                } else {
+                    addSkillEvent(angelicRay);
+                    if (holySwordCount >= 24) {
+                        addSkillEvent(angelicOfJudgement);
+                        holySwordCount -= 24;
+                    }
+                }
+                addSkillEvent(pray);
+                addSkillEvent(angelOfLibra);
+                addSkillEvent(soulContract);
+                addSkillEvent(holyBlood);
+                while (!cooldownCheck(peacemaker)) {
+                    addSkillEvent(angelicRay);
+                    if (holySwordCount >= 24) {
+                        addSkillEvent(angelicOfJudgement);
+                        holySwordCount -= 24;
+                    }
+                }
+                addSkillEvent(peacemaker);
+                addSkillEvent(heavensDoor);
+                if (cooldownCheck(holyAdvent)) {
+                    addSkillEvent(angelicRay);
+                    if (holySwordCount >= 24) {
+                        addSkillEvent(angelicOfJudgement);
+                        holySwordCount -= 24;
+                    }
+                    addSkillEvent(holyAdvent);
+                    addSkillEvent(divinePunishment);
+                } else {
+                    addSkillEvent(divinePunishment);
+                }
+                dealCycleOrder ++;
+                isNuke = false;
+            } else if (
+                    cooldownCheck(divinePunishment2)
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 70000))
+            ) {
+                applyCooldown(divinePunishment);
+                addSkillEvent(divinePunishment2);
+            } else if (
+                    cooldownCheck(soulContract)
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 30000))
+            ) {
+                addSkillEvent(soulContract);
+                applyCooldown(divinePunishment);
+                addSkillEvent(divinePunishment2);
+            } else if (
+                    cooldownCheck(peacemaker)
+                            && getStart().before(new Timestamp(holyBlood.getActivateTime().getTime() - 5000))
+            ) {
+                addSkillEvent(peacemaker);
+            } else {
+                addSkillEvent(angelicRay);
+                if (holySwordCount >= 24) {
+                    addSkillEvent(angelicOfJudgement);
+                    holySwordCount -= 24;
+                }
+            }
+        }
+        sortEventTimeList();
+    }
+
+    @Override
     public void multiAttackProcess(Skill skill) {
         Long sum = 0L;
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
@@ -759,12 +910,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof Pray2) {
                     isPray = true;
-                    break;
-                }
-            }
-            for (int j = 0; j < useBuffSkillList.size(); j++) {
-                if (useBuffSkillList.get(j).getSkill() instanceof Pray2Party2) {
-                    System.out.println(((Pray2Party2) useBuffSkillList.get(j).getSkill()).getInfo());
                     break;
                 }
             }

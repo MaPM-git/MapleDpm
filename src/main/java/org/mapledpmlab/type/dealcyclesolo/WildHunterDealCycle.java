@@ -313,7 +313,7 @@ public class WildHunterDealCycle extends DealCycle {
                 soulResonationEndTime = new Timestamp(getStart().getTime() + 30000);
             }
             if (skill instanceof JaguarStorm) {
-                jaguarStormEndTime = new Timestamp(getStart().getTime() + 3000 + 40000);
+                jaguarStormEndTime = new Timestamp(getStart().getTime() + 40000);
             }
             if (
                     skill instanceof RestraintRing

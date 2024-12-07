@@ -17,5 +17,6 @@ public class ChargeSpellAmplification extends BuffSkill {
         this.addBuffDamage(35L);
         this.addBuffIgnoreDefense(20L);
         this.setApplyServerLag(true);
+        this.setPartyBuff(true);
     }
 }

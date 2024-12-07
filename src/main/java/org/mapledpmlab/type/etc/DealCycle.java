@@ -35,6 +35,7 @@ public class DealCycle {
     private List<Timestamp> eventTimeList = new ArrayList<>();
     private List<Long> dpsList = new ArrayList<>();
     private List<DealCycle> partyDealCycle = new ArrayList<>();
+    private List<Timestamp> nukeTimeList = new ArrayList<>();
     public Timestamp restraintRingStartTime = null;
     public Timestamp restraintRingEndTime = null;
     public Timestamp fortyEndTime = null;
@@ -63,6 +64,8 @@ public class DealCycle {
     public void setDuoDealCycle() {}
 
     public void setDuoDealCycle2() {}
+
+    public void setDuoDealCycle3() {}
 
     public void addPartyBuffSkillEvent(SkillEvent skillEvent) {
         getSkillEventList().add(skillEvent);

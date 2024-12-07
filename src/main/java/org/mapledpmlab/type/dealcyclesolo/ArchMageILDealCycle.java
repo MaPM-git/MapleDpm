@@ -190,6 +190,7 @@ public class ArchMageILDealCycle extends DealCycle {
                     cooldownCheck(jupiterThunder)
                     && getStart().before(new Timestamp(660 * 1000))
             ) {
+                getNukeTimeList().add(new Timestamp(getStart().getTime()));
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {

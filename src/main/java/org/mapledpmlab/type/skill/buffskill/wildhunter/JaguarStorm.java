@@ -7,7 +7,6 @@ public class JaguarStorm extends BuffSkill {
         this.setName("재규어 스톰");
         this.setDelay(840L);
         this.setDuration(40L);
-        this.setApplyServerLag(true);
         this.setCooldown(120.0);
     }
 }

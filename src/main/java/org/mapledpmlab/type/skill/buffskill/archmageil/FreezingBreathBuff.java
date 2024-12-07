@@ -14,5 +14,6 @@ public class FreezingBreathBuff extends BuffSkill {
         this.setDuration(13L);
         this.addBuffIgnoreDefense(30L);
         this.setRelatedSkill(new FreezingBreath());
+        this.setPartyBuff(true);
     }
 }

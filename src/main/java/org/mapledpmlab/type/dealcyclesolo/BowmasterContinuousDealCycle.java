@@ -141,6 +141,7 @@ public class BowmasterContinuousDealCycle extends DealCycle {
                 isSpree = true;
             }
             if (cooldownCheck(quiverFullBurst)) {
+                getNukeTimeList().add(new Timestamp(getStart().getTime()));
                 isNuke = true;
                 addSkillEvent(arrawRain);
                 addSkillEvent(mapleWorldGoddessBlessing);

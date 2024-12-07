@@ -12,8 +12,7 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.xddf.usermodel.chart.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.mapledpmlab.type.JobContinuous.*;
-import org.mapledpmlab.type.dealcycleduo.TwoBishopDealCycle;
-import org.mapledpmlab.type.dealcycleduo.TwoBishopDealCycle2;
+import org.mapledpmlab.type.dealcycleduo.*;
 import org.mapledpmlab.type.dealcyclesolo.*;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.DuoDealCycle;
@@ -41,6 +40,7 @@ public class DPMMain {
 
     public void init() {
         soloDealCycleList = new ArrayList<>();
+        /*
         soloDealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
         soloDealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
         soloDealCycleList.add(new AranDealCycle(new Aran()));
@@ -141,9 +141,17 @@ public class DPMMain {
         soloDealCycleList.add(new ZeroContinuousDealCycle(new ZeroAlphaContinuous()));
         soloDealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
 
+         */
+
+        /*
         duoDealCycleList = new ArrayList<>();
         duoDealCycleList.add(new TwoBishopDealCycle());
         duoDealCycleList.add(new TwoBishopDealCycle2());
+        duoDealCycleList.add(new BishopArchMageILDealCycle());
+        duoDealCycleList.add(new BishopArkDealCycle());
+        duoDealCycleList.add(new BishopBlasterDealCycle());
+        duoDealCycleList.add(new BishopBowmasterDealCycle());
+         */
 
         /*for (DealCycle dealCycle : dealCycleList) {
             if (dealCycle instanceof ZeroContinuousDealCycle) {
@@ -225,6 +233,17 @@ public class DPMMain {
         cellStyle.setBorderRight(BorderStyle.THIN);
         cellStyle.setBorderTop(BorderStyle.THIN);
         cellStyle.setWrapText(true);
+
+        DataFormat format = xssfWorkbook.createDataFormat();
+        CellStyle numberStyle = xssfWorkbook.createCellStyle();
+        numberStyle.setDataFormat(format.getFormat("#,##0"));
+        numberStyle.setAlignment(HorizontalAlignment.LEFT);
+        numberStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        numberStyle.setBorderBottom(BorderStyle.THIN);
+        numberStyle.setBorderLeft(BorderStyle.THIN);
+        numberStyle.setBorderRight(BorderStyle.THIN);
+        numberStyle.setBorderTop(BorderStyle.THIN);
+        numberStyle.setWrapText(true);
 
         Map<String, Object[]> data = new TreeMap<>();
         data.put("1", new Object[]{
@@ -385,17 +404,6 @@ public class DPMMain {
                 }
             }
 
-            DataFormat format = xssfWorkbook.createDataFormat();
-            CellStyle numberStyle = xssfWorkbook.createCellStyle();
-            numberStyle.setDataFormat(format.getFormat("#,##0"));
-            numberStyle.setAlignment(HorizontalAlignment.LEFT);
-            numberStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            numberStyle.setBorderBottom(BorderStyle.THIN);
-            numberStyle.setBorderLeft(BorderStyle.THIN);
-            numberStyle.setBorderRight(BorderStyle.THIN);
-            numberStyle.setBorderTop(BorderStyle.THIN);
-            numberStyle.setWrapText(true);
-
             for (Object[] damage : damageLine) {
                 Row row = xssfSheet.createRow(rownum++);
                 int cellnum = 0;
@@ -441,16 +449,164 @@ public class DPMMain {
             chart.plot(lineChartData);
 
             // 이미지 삽입
-            insertImg(xssfWorkbook, xssfSheet, colNum, dealCycle);
+            insertImg(xssfWorkbook, xssfSheet, colNum, 3, dealCycle);
         }
 
         if (duoDealCycleList != null) {
+            xssfSheet = xssfWorkbook.createSheet("2인팟");
+            xssfSheet.setDefaultColumnWidth(30);
+            Object[][] objects = new Object[1][duoDealCycleList.size() * 4 + 1];
+
+            objects[0][0] = "파티 조합";
+            for (int i = 0; i < duoDealCycleList.size(); i++) {
+                xssfSheet.addMergedRegion(new CellRangeAddress(0, 0, i * 4 + 1, i * 4 + 4));
+                objects[0][i * 4 + 1] = duoDealCycleList.get(i).getName();
+            }
+            rownum = 0;
+            for (Object[] object : objects) {
+                Row row = xssfSheet.createRow(rownum++);
+                int cellnum = 0;
+                for (Object field : object) {
+                    Cell cell = row.createCell(cellnum++);
+                    cell.setCellStyle(cellStyle);
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                    } else if (field instanceof Integer) {
+                        cell.setCellValue((Integer) field);
+                    } else if (field instanceof Double) {
+                        cell.setCellValue((Double) field);
+                    } else if (field instanceof Long) {
+                        cell.setCellValue((Long) field);
+                        cell.setCellStyle(numberStyle);
+                    }
+                }
+            }
             for (DuoDealCycle duoDealCycle : duoDealCycleList) {
-                xssfSheet = xssfWorkbook.createSheet(duoDealCycle.getName());
-                int colNum = 0;
-                insertImg(xssfWorkbook, xssfSheet, colNum, duoDealCycle.getDealCycle1());
-                colNum = 40;
-                insertImg(xssfWorkbook, xssfSheet, colNum, duoDealCycle.getDealCycle2());
+                int colNum = 1;
+                insertImg(xssfWorkbook, xssfSheet, colNum, duoDealCycleList.indexOf(duoDealCycle) * 4 + 1, duoDealCycle.getDealCycle1());
+                colNum = 50;
+                insertImg(xssfWorkbook, xssfSheet, colNum, duoDealCycleList.indexOf(duoDealCycle) * 4 + 1, duoDealCycle.getDealCycle2());
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss.SSS");
+
+                duoDealCycle.getDealCycle1().calcDps();
+                duoDealCycle.getDealCycle2().calcDps();
+                Object[][] damageLine = new Object[681][duoDealCycleList.size() * 4 + 1];
+                damageLine[0][0] = "초";
+                for (int i = 0; i < duoDealCycleList.size(); i++) {
+                    damageLine[0][i * 4 + 1] = duoDealCycle.getDealCycle1().getJob().getName() + "데미지";
+                    damageLine[0][i * 4 + 2] = duoDealCycle.getDealCycle2().getJob().getName() + "데미지";
+                    damageLine[0][i * 4 + 3] = "파티 데미지";
+                    damageLine[0][i * 4 + 4] = "15초 : " + simpleDateFormat.format(duoDealCycle.getDealCycle1().getRestraintRingStartTime()) + " ~ " + simpleDateFormat.format(duoDealCycle.getDealCycle1().getRestraintRingEndTime());
+                }
+                for (int i = 0; i < 680; i++) {
+                    damageLine[i + 1][0] = i + 1;
+                    for (int j = 0; j < duoDealCycleList.size(); j++) {
+                        damageLine[i + 1][j * 4 + 1] = duoDealCycle.getDealCycle1().getDpsList().get(i);
+                        damageLine[i + 1][j * 4 + 2] = duoDealCycle.getDealCycle2().getDpsList().get(i);
+                        damageLine[i + 1][j * 4 + 3] = duoDealCycle.getDealCycle1().getDpsList().get(i) + duoDealCycle.getDealCycle2().getDpsList().get(i);
+                        if (i == 0) {
+                            damageLine[i + 1][j * 4 + 4] = "40초 : " + simpleDateFormat.format(duoDealCycle.getDealCycle1().getRestraintRingStartTime()) + " ~ " + simpleDateFormat.format(duoDealCycle.getDealCycle1().getFortyEndTime());
+                        } else if (i == 1) {
+                            damageLine[i + 1][j * 4 + 4] = "오리진X 15초 : " + simpleDateFormat.format(duoDealCycle.getDealCycle1().getOriginXRestraintRingStartTime()) + " ~ " + simpleDateFormat.format(duoDealCycle.getDealCycle1().getOriginXRestraintRingEndTime());
+                        }
+                    }
+                }
+                rownum = 165;
+                for (Object[] damage : damageLine) {
+                    Row row = xssfSheet.createRow(rownum++);
+                    int cellnum = 0;
+                    for (Object field : damage) {
+                        Cell cell = row.createCell(cellnum++);
+                        cell.setCellStyle(cellStyle);
+                        if (field instanceof String) {
+                            cell.setCellValue((String) field);
+                        } else if (field instanceof Integer) {
+                            cell.setCellValue((Integer) field);
+                        } else if (field instanceof Double) {
+                            cell.setCellValue((Double) field);
+                        } else if (field instanceof Long) {
+                            cell.setCellValue((Long) field);
+                            cell.setCellStyle(numberStyle);
+                        }
+                    }
+                }
+
+                // 파티원 1
+                XSSFDrawing drawing = xssfSheet.createDrawingPatriarch();
+                XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, duoDealCycleList.indexOf(duoDealCycle) * 4 + 1, 100, duoDealCycleList.indexOf(duoDealCycle) * 4 + 5, 120);
+
+                XSSFChart chart = drawing.createChart(anchor);
+                chart.setTitleText(duoDealCycle.getDealCycle1().getJob().getName() + " 데미지 그래프");
+                chart.setTitleOverlay(false);
+
+                XDDFDataSource<String> xAxis = XDDFDataSourcesFactory.fromStringCellRange(xssfSheet, new CellRangeAddress(166, 845, 0, 0));
+                XDDFNumericalDataSource<Double> yAxis =
+                        yAxis = XDDFDataSourcesFactory.fromNumericCellRange(xssfSheet, new CellRangeAddress(166, 845, duoDealCycleList.indexOf(duoDealCycle) * 4 + 1, duoDealCycleList.indexOf(duoDealCycle) * 4 + 1));
+
+                XDDFCategoryAxis bottomAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
+                bottomAxis.setTitle("초");
+                XDDFValueAxis leftAxis = chart.createValueAxis(AxisPosition.LEFT);
+                leftAxis.setTitle("데미지");
+                leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+
+                XDDFLineChartData lineChartData = (XDDFLineChartData) chart.createData(ChartTypes.LINE, bottomAxis, leftAxis);
+                XDDFLineChartData.Series series = (XDDFLineChartData.Series) lineChartData.addSeries(xAxis, yAxis);
+                series.setTitle("데미지 그래프", null);
+                series.setSmooth(false);
+                series.setMarkerStyle(MarkerStyle.CIRCLE);
+
+                chart.plot(lineChartData);
+
+                // 파티원 2
+                drawing = xssfSheet.createDrawingPatriarch();
+                anchor = drawing.createAnchor(0, 0, 0, 0, duoDealCycleList.indexOf(duoDealCycle) * 4 + 1, 121, duoDealCycleList.indexOf(duoDealCycle) * 4 + 5, 141);
+
+                chart = drawing.createChart(anchor);
+                chart.setTitleText(duoDealCycle.getDealCycle2().getJob().getName() + " 데미지 그래프");
+                chart.setTitleOverlay(false);
+
+                xAxis = XDDFDataSourcesFactory.fromStringCellRange(xssfSheet, new CellRangeAddress(166, 845, 0, 0));
+                yAxis = XDDFDataSourcesFactory.fromNumericCellRange(xssfSheet, new CellRangeAddress(166, 845, duoDealCycleList.indexOf(duoDealCycle) * 4 + 2, duoDealCycleList.indexOf(duoDealCycle) * 4 + 2));
+
+                bottomAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
+                bottomAxis.setTitle("초");
+                leftAxis = chart.createValueAxis(AxisPosition.LEFT);
+                leftAxis.setTitle("데미지");
+                leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+
+                lineChartData = (XDDFLineChartData) chart.createData(ChartTypes.LINE, bottomAxis, leftAxis);
+                series = (XDDFLineChartData.Series) lineChartData.addSeries(xAxis, yAxis);
+                series.setTitle("데미지 그래프", null);
+                series.setSmooth(false);
+                series.setMarkerStyle(MarkerStyle.CIRCLE);
+
+                chart.plot(lineChartData);
+
+                // 파티원 합계
+                drawing = xssfSheet.createDrawingPatriarch();
+                anchor = drawing.createAnchor(0, 0, 0, 0, duoDealCycleList.indexOf(duoDealCycle) * 4 + 1, 142, duoDealCycleList.indexOf(duoDealCycle) * 4 + 5, 162);
+
+                chart = drawing.createChart(anchor);
+                chart.setTitleText("파티 데미지 그래프");
+                chart.setTitleOverlay(false);
+
+                xAxis = XDDFDataSourcesFactory.fromStringCellRange(xssfSheet, new CellRangeAddress(166, 845, 0, 0));
+                yAxis = XDDFDataSourcesFactory.fromNumericCellRange(xssfSheet, new CellRangeAddress(166, 845, duoDealCycleList.indexOf(duoDealCycle) * 4 + 3, duoDealCycleList.indexOf(duoDealCycle) * 4 + 3));
+
+                bottomAxis = chart.createCategoryAxis(AxisPosition.BOTTOM);
+                bottomAxis.setTitle("초");
+                leftAxis = chart.createValueAxis(AxisPosition.LEFT);
+                leftAxis.setTitle("데미지");
+                leftAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+
+                lineChartData = (XDDFLineChartData) chart.createData(ChartTypes.LINE, bottomAxis, leftAxis);
+                series = (XDDFLineChartData.Series) lineChartData.addSeries(xAxis, yAxis);
+                series.setTitle("데미지 그래프", null);
+                series.setSmooth(false);
+                series.setMarkerStyle(MarkerStyle.CIRCLE);
+
+                chart.plot(lineChartData);
             }
         }
 
@@ -578,7 +734,7 @@ public class DPMMain {
         }
     }
 
-    public void insertImg(XSSFWorkbook xssfWorkbook, XSSFSheet xssfSheet, int colNum, DealCycle dealCycle) {
+    public void insertImg(XSSFWorkbook xssfWorkbook, XSSFSheet xssfSheet, int colNum, int rowNum, DealCycle dealCycle) {
         if (dealCycle.getJob().getName().equals("데몬슬레이어\n(극포실, 환산 84352)")) {
             dealCycle.getJob().setName("데몬슬레이어 (극포실, 환산 84352)");
         }
@@ -627,7 +783,7 @@ public class DPMMain {
 
             // 이미지 출력할 cell 위치
             anchor.setRow1(colNum);
-            anchor.setCol1(2);
+            anchor.setCol1(rowNum);
             // 이미지 그리기
             XSSFPicture pic = drawing.createPicture(anchor, picIdx);
             pic.resize();

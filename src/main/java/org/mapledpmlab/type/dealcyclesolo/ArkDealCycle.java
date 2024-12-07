@@ -165,9 +165,8 @@ public class ArkDealCycle extends DealCycle {
             if (cooldownCheck(loadedDice)) {
                 addSkillEvent(loadedDice);
             }
-            if (
-                    cooldownCheck(chargeSpellAmplification)
-            ) {
+            if (cooldownCheck(chargeSpellAmplification)) {
+                getNukeTimeList().add(new Timestamp(getStart().getTime()));
                 addSkillEvent(magicCircuitFullDriveBuff);
                 addSkillEvent(wrathOfGod);
                 if (cooldownCheck(crestOfTheSolar)) {
