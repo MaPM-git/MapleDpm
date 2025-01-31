@@ -31,6 +31,7 @@ public class ArchMageILDealCycle extends DealCycle {
             add(new ChainLightningElectric());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
+            add(new CryoShock());
             add(new ElquinesSummon());
             add(new FinalAttackArchMageIL());
             add(new FreezingBreath());
@@ -71,6 +72,7 @@ public class ArchMageILDealCycle extends DealCycle {
     };
 
     int frostEffect = 5;
+    int cryoShockCount = 0;
     ChainLightningElectric chainLightningElectric1 = new ChainLightningElectric();
     ChainLightningElectric chainLightningElectric2 = new ChainLightningElectric();
     ChainLightningElectric chainLightningElectric3 = new ChainLightningElectric();
@@ -78,6 +80,7 @@ public class ArchMageILDealCycle extends DealCycle {
 
     ChainLightning chainLightning = new ChainLightning();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
+    CryoShock cryoShock = new CryoShock();
     ElquinesSummon elquinesSummon = new ElquinesSummon();
     EpicAdventure epicAdventure = new EpicAdventure();
     FreezingBreathBuff freezingBreathBuff = new FreezingBreathBuff();
@@ -124,6 +127,8 @@ public class ArchMageILDealCycle extends DealCycle {
             getSkillEventList().add(new SkillEvent(iceAura, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
+
+        unstableMemorize.setDelay(60L);
     }
 
     @Override
@@ -274,22 +279,41 @@ public class ArchMageILDealCycle extends DealCycle {
             }
         }
         if (skillEvent.getSkill() instanceof ThunderAttack) {
-            buffSkill.addBuffDamage(12L * frostEffect);
-            if (frostEffect > 0) {
+            if (
+                    frostEffect > 0
+                    && skillEvent.getStart().equals(start)
+                    && (
+                            !(skillEvent.getSkill() instanceof FrozenLightning1)
+                            && !(skillEvent.getSkill() instanceof FrozenLightning2)
+                            && !(skillEvent.getSkill() instanceof FrozenLightningEnlightenmentOfMana)
+                            && !(skillEvent.getSkill() instanceof ChainLightningElectric)
+                            && !(skillEvent.getSkill() instanceof ThunderSpear)
+                    )
+            ) {
                 frostEffect --;
+                cryoShockCount ++;
             }
+            if (
+                    cryoShockCount >= 13
+                            && !(skillEvent.getSkill() instanceof CryoShock)
+            ) {
+                getAttackDamage(new SkillEvent(cryoShock, start, end), buffSkill, start, end);
+                cryoShockCount -= 13;
+            }
+            buffSkill.addBuffDamage(12L * frostEffect);
         }
-        buffSkill.addBuffCriticalDamage(3.0 * frostEffect);
-        buffSkill.addBuffIgnoreDefense(2L * frostEffect);
         if (
-                skillEvent.getSkill() instanceof FreezingBreath
-                || skillEvent.getSkill() instanceof FinalAttackArchMageIL
-                || skillEvent.getSkill() instanceof FrozenOrb
-                || skillEvent.getSkill() instanceof ElquinesSummon
-                || skillEvent.getSkill() instanceof IceAura
-                || skillEvent.getSkill() instanceof IceAuraInstall
-                || skillEvent.getSkill() instanceof IceAge
-                || skillEvent.getSkill() instanceof IceAgeDot
+                skillEvent.getStart().equals(start)
+                && (
+                    skillEvent.getSkill() instanceof FreezingBreath
+                    || skillEvent.getSkill() instanceof FinalAttackArchMageIL
+                    || skillEvent.getSkill() instanceof FrozenOrb
+                    || skillEvent.getSkill() instanceof ElquinesSummon
+                    || skillEvent.getSkill() instanceof IceAura
+                    || skillEvent.getSkill() instanceof IceAuraInstall
+                    || skillEvent.getSkill() instanceof IceAge
+                    || skillEvent.getSkill() instanceof IceAgeDot
+                )
         ) {
             frostEffect ++;
         }
@@ -299,6 +323,8 @@ public class ArchMageILDealCycle extends DealCycle {
         if (frostEffect > 5) {
             frostEffect = 5;
         }
+        buffSkill.addBuffCriticalDamage(3.0 * frostEffect);
+        buffSkill.addBuffIgnoreDefense(2L * frostEffect);
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
@@ -342,6 +368,9 @@ public class ArchMageILDealCycle extends DealCycle {
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
+        }
+        if (skillEvent.getSkill() instanceof ThunderAttack) {
+            buffSkill.addBuffDamage(-12L * frostEffect);
         }
         buffSkill.addBuffCriticalDamage(-3.0 * frostEffect);
         buffSkill.addBuffIgnoreDefense(-2L * frostEffect);

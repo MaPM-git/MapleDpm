@@ -73,9 +73,9 @@ public class Kinesis extends Job {
         this.addCriticalDamage(12.0);   // 숙달
 
         // 환산 보정
-        this.addMainStatP(27L);
-        this.addMainStat(11L);
-        this.addSubStat(-5L);
+        this.addMainStatP(36L);
+        this.addMainStat(-3L);
+        //this.addSubStat(-5L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

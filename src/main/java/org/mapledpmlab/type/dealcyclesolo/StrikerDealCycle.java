@@ -53,6 +53,7 @@ public class StrikerDealCycle extends DealCycle {
             add(new CreationOfTheWorld());
             add(new GloryOfGuardians());
             add(new LightningUnion());
+            add(new LoadedDice());
             add(new Overdrive(255L));
             add(new OverdriveDebuff(255L));
             add(new RestraintRing());
@@ -84,6 +85,7 @@ public class StrikerDealCycle extends DealCycle {
     Lightning lightning = new Lightning();
     LightningGodSpearStrike lightningGodSpearStrike = new LightningGodSpearStrike();
     LightningUnion lightningUnion = new LightningUnion();
+    LoadedDice loadedDice = new LoadedDice();
     Overdrive overdrive = new Overdrive(255L);
     RestraintRing restraintRing = new RestraintRing();
     RingSwitching ringSwitching = new RingSwitching();
@@ -108,7 +110,6 @@ public class StrikerDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         ringSwitching.setCooldown(120.0);
-        ringSwitching.setApplyCooldownReduction(false);
 
         transcendentCygnusBlessing.setCooldown(120.0);
         transcendentCygnusBlessing.setApplyCooldownReduction(false);
@@ -117,12 +118,33 @@ public class StrikerDealCycle extends DealCycle {
         getStart().setTime(-10000);
         addSkillEvent(transcendentCygnusBlessing);
         getStart().setTime(0);
+
+        getSkillSequence1().add(gloryOfGuardians);              // 30
+        getSkillSequence1().add(lightningUnion);                // 180
+        getSkillSequence1().add(overdrive);                     // 420
+        getSkillSequence1().add(soulContract);                  // 30
+
+        getSkillSequence2().add(overdrive);
+        getSkillSequence2().add(soulContract);
+
+        getSkillSequence3().add(loadedDice);
+
+        getSkillSequence4().add(creationOfTheWorld);
+
+        loadedDice.setDelay(660L);
+
+        creationOfTheWorld.setDelay(660L);
+
+        lightningUnion.setDelay(180L);
     }
 
     @Override
     public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         while (getStart().before(getEnd())) {
+            if (cooldownCheck(loadedDice)) {
+                addSkillEvent(loadedDice);
+            }
             if (cooldownCheck(cygnusPhalanx)) {
                 addSkillEvent(cygnusPhalanx);
             }
@@ -134,33 +156,16 @@ public class StrikerDealCycle extends DealCycle {
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (
-                    cooldownCheck(gloryOfGuardians)
-                            && cooldownCheck(lightningUnion)
-                            && cooldownCheck(overdrive)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(sharkWave)
-                            && cooldownCheck(waterWave)
-                            && cooldownCheck(createThunderChain)
-                            && cooldownCheck(creationOfTheWorld)
+                    cooldownCheck(createThunderChain)
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
-                addSkillEvent(gloryOfGuardians);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (cooldownCheck(thunderboltFlash)) {
-                        addSkillEvent(thunderboltFlash);
-                    } else {
-                        addSkillEvent(thunderbolt);
-                    }
-                    addSkillEvent(annihilation);
                 }
-                addSkillEvent(lightningUnion);
-                addSkillEvent(overdrive);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
@@ -168,10 +173,23 @@ public class StrikerDealCycle extends DealCycle {
                 }
                 addSkillEvent(sharkWave);
                 addSkillEvent(waterWave);
+                addSkillEvent(createThunderChain);
                 if (cooldownCheck(thunderBreakTheSea)) {
                     addSkillEvent(thunderBreakTheSea);
                 }
-                addSkillEvent(createThunderChain);
+                while (!cooldownCheck(creationOfTheWorld)) {
+                    if (cooldownCheck(typhoon)) {
+                        addSkillEvent(typhoon);
+                        addSkillEvent(annihilation);
+                    } else {
+                        if (cooldownCheck(thunderboltFlash)) {
+                            addSkillEvent(thunderboltFlash);
+                        } else {
+                            addSkillEvent(thunderbolt);
+                        }
+                        addSkillEvent(annihilation);
+                    }
+                }
                 addSkillEvent(creationOfTheWorld);
                 dealCycleOrder ++;
             } else if (
@@ -193,12 +211,13 @@ public class StrikerDealCycle extends DealCycle {
                 addSkillEvent(godOfTheSea);
             } else if (
                     cooldownCheck(sharkWave)
-                            && !cooldownCheck(gloryOfGuardians)
+                            && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 6000))
             ) {
                 addSkillEvent(sharkWave);
             } else if (
                     getStart().before(creationOfTheWorldEndTime)
             ) {
+                typhoon.setActivateTime(new Timestamp(-1));
                 if (cooldownCheck(thunderboltFlash)) {
                     addSkillEvent(thunderboltFlash);
                 } else {
@@ -206,12 +225,12 @@ public class StrikerDealCycle extends DealCycle {
                 }
                 typhoon.setActivateTime(new Timestamp(-1));
                 addSkillEvent(annihilation);
-            } /*else if (
+            } else if (
                     cooldownCheck(typhoon)
             ) {
                 addSkillEvent(typhoon);
                 addSkillEvent(annihilation);
-            }*/ else {
+            } else {
                 if (cooldownCheck(thunderboltFlash)) {
                     addSkillEvent(thunderboltFlash);
                 } else {
@@ -249,7 +268,7 @@ public class StrikerDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime()) && getStart().after(new Timestamp(0))) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {

@@ -39,6 +39,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
             add(new FinalAttackDemonAvenger());
             add(new MastemaClaw());
             add(new OtherWorldVoid());
+            add(new OvermaximizingExceed());
             add(new Requiem());
             add(new RequiemDemonSword());
             add(new RoarOfDemonSword());
@@ -101,6 +102,7 @@ public class DemonAvenger29DealCycle extends DealCycle {
     ExceedExecution5 exceedExecution5 = new ExceedExecution5();
     ForbiddenContract forbiddenContract = new ForbiddenContract();
     OtherWorldGoddessBlessingDA otherWorldGoddessBlessing = new OtherWorldGoddessBlessingDA();
+    OvermaximizingExceed overmaximizingExceed = new OvermaximizingExceed();
     ReleaseOverload releaseOverload = new ReleaseOverload();
     Requiem requiem = new Requiem();
     Revenant revenant = new Revenant();
@@ -132,6 +134,20 @@ public class DemonAvenger29DealCycle extends DealCycle {
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         otherWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(demonicFortitudeDA);        // 30
+        getSkillSequence1().add(callMastema);
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(forbiddenContract);
+        getSkillSequence1().add(otherWorldGoddessBlessing);
+        getSkillSequence1().add(revenant);
+        getSkillSequence1().add(soulContract);              // 30
+
+        callMastema.setDelay(180L);
+        bodyOfSteel.setDelay(180L);
+        forbiddenContract.setDelay(180L);
+        otherWorldGoddessBlessing.setDelay(180L);
+        revenant.setDelay(120L);
     }
 
     @Override
@@ -197,21 +213,13 @@ public class DemonAvenger29DealCycle extends DealCycle {
             ) {
                 armorBreak.setActivateTime(new Timestamp(-1));
                 addSkillEvent(armorBreak);
-                addSkillEvent(demonicFortitudeDA);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(exceedExecution5);
                 }
-                addSkillEvent(callMastema);
-                addSkillEvent(bodyOfSteel);
-                addSkillEvent(forbiddenContract);
-                addSkillEvent(otherWorldGoddessBlessing);
-                addSkillEvent(revenant);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
@@ -530,18 +538,28 @@ public class DemonAvenger29DealCycle extends DealCycle {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new DemonAvengerSkillEvent(skill, new Timestamp(getStart().getTime()), endTime, (long) this.hp));
                 if (
-                        (
-                                skill instanceof ExceedExecution1
+                        skill instanceof ExceedExecution1
                                 || skill instanceof ExceedExecution2
                                 || skill instanceof ExceedExecution3
                                 || skill instanceof ExceedExecution4
                                 || skill instanceof ExceedExecution5
-                        )
-                        && getStart().before(revenantEndTime)
-                        && cooldownCheck(thornOfFury)
                 ) {
-                    getSkillEventList().add(new DemonAvengerSkillEvent(thornOfFury, endTime, endTime, (long) this.hp));
-                    applyCooldown(thornOfFury);
+                    if (
+                            getStart().before(revenantEndTime)
+                                    && cooldownCheck(thornOfFury)
+                    ) {
+                        getSkillEventList().add(new DemonAvengerSkillEvent(thornOfFury, endTime, endTime, (long) this.hp));
+                        applyCooldown(thornOfFury);
+                    }
+                    if (cooldownCheck(overmaximizingExceed)) {
+                        if (hp < 50000) {
+                            overmaximizingExceed.setCooldown(2.0);
+                        } else if (hp < 305000) {
+                            overmaximizingExceed.setCooldown(5.7);
+                        }
+                        addSkillEvent(overmaximizingExceed);
+                        overmaximizingExceed.setCooldown(6.0);
+                    }
                 }
                 if (getStart().after(absorbLifeExceptionEndTime)) {
                     hp += 500000 * 0.01;
@@ -599,9 +617,15 @@ public class DemonAvenger29DealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

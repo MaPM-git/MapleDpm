@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class CrystalGateBuff extends BuffSkill {
     public CrystalGateBuff() {
         this.setName("크리스탈 게이트");
-        this.setDelay(540L);
+        this.setDelayByAttackSpeed(540L);
         this.addBuffAttMagic(95L);
     }
 }

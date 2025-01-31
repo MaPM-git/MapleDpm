@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class WindWall extends BuffSkill {
     public WindWall() {
         this.setName("윈드 월");
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setDuration(60L);
         this.setCooldown(90.0);
         this.setApplyServerLag(true);

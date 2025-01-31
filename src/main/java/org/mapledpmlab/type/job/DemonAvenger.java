@@ -90,9 +90,9 @@ public class DemonAvenger extends Job {
         this.addHp(475L);               // 쓸만한 어드밴스드 블레스
 
         // 환산 보정
-        this.addMainStatP(48L);
-        this.addAtt(1L);
-        this.addMainStat(10L);
+        this.addMainStatP(33L);
+        //this.addAtt(1L);
+        this.addMainStat(-20L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

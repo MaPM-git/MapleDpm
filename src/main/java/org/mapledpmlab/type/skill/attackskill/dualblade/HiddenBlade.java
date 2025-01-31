@@ -6,7 +6,7 @@ public class HiddenBlade extends AttackSkill {
     public HiddenBlade() {
         this.setName("히든 블레이드");
         this.setAttackCount(2L);
-        this.setDamage(240.0);
+        this.setDamage(480.0);
         this.setProp(100L);
         this.setFinalAttack(true);
         this.addFinalDamage(2.2);   // 코어강화

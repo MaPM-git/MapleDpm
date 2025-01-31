@@ -8,7 +8,7 @@ public class HexPandemonium extends AttackSkill implements HexSkill {
         this.setDamage(715.0);
         this.setAttackCount(4L);
         this.setCooldown(30.0);
-        this.setDelay(600L);
+        this.setDelayByAttackSpeed(600L);
         this.setRelatedSkill(new HexPandemoniumFinish());
         this.addFinalDamage(1.6);   // 코어강화
         this.setAddDamage(20L + 20);    // 헥스-보스 킬러, 리인포스

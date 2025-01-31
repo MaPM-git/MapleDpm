@@ -93,9 +93,9 @@ public class DemonAvengerContinuous extends Job {
         this.addHp(475L);               // 쓸만한 어드밴스드 블레스
 
         // 환산 보정
-        this.addMainStatP(51L);
-        this.addAtt(2L);
-        this.addMainStat(25L);
+        this.addMainStatP(39L);
+        this.addAtt(-2L);
+        this.addMainStat(70L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

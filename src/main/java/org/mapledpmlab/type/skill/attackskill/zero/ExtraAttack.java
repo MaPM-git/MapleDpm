@@ -7,6 +7,6 @@ public class ExtraAttack extends AttackSkill {
         this.setName("초월자 륀느의 기원(추가 타격)");
         this.setAttackCount(5L);
         this.setDamage(365.0);
-        this.getMultiAttackInfo().add(660L);
+        this.getMultiAttackInfo().add(120L);
     }
 }

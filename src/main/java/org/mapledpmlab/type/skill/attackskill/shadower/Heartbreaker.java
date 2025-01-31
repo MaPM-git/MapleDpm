@@ -7,7 +7,7 @@ public class Heartbreaker extends AttackSkill {
     public Heartbreaker() {
         this.setName("분쇄");
         this.setAttackCount(6L * 2);
-        this.setDamage(480.0);
+        this.setDamage(480.0 + 100);
         this.setDelayByAttackSpeed(690L);
         this.setCooldown(10.0);
         this.setAddDamage(20L);         // 블래스트-리인포스

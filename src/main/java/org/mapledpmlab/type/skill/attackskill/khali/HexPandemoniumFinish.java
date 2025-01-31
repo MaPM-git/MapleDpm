@@ -9,7 +9,7 @@ public class HexPandemoniumFinish extends AttackSkill implements HexSkill {
         this.setAttackCount(10L);
         this.addFinalDamage(1.6);   // 코어강화
         this.setAddDamage(20L + 20);    // 헥스-보스 킬러, 리인포스
-        this.getMultiAttackInfo().add(3420L + 720);
+        this.getMultiAttackInfo().add(3420L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

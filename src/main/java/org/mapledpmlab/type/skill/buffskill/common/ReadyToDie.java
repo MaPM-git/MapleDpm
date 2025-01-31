@@ -10,7 +10,7 @@ public class ReadyToDie extends BuffSkill {
     public ReadyToDie() {
         this.setName("레디 투 다이");
         this.setCooldown(75.0);
-        this.setDelay(780L);
+        this.setDelayByAttackSpeed(780L);
         this.setDuration(15L);
         this.addBuffFinalDamage(1.3);
         this.setApplyServerLag(true);

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class HyperBoostEndLastStand1 extends AttackSkill {
     public HyperBoostEndLastStand1() {
         this.setName("하이퍼 부스트 엔드-라스트 스탠드(1타)");
-        this.setDamage(1600.0);
+        this.setDamage(3360.0);
         this.setAttackCount(10L);
         this.setDelayByAttackSpeed(420L);
         this.setApplyFinalAttack(true);

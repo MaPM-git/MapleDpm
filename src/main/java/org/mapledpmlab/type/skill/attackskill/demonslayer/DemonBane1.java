@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DemonBane1 extends AttackSkill {
     public DemonBane1() {
         this.setName("데몬베인(키다운)");
-        this.setDelay(2640L + 1500);
+        this.setDelay(2640L + 360);
         this.setDotDuration(2640L);
         this.setInterval(240L);
         this.setLimitAttackCount(11L);

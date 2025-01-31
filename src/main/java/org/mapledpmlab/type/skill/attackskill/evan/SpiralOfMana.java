@@ -7,7 +7,7 @@ public class SpiralOfMana extends AttackSkill {
         this.setName("스파이럴 오브 마나");
         this.setDamage(220.0);
         this.setAttackCount(6L);
-        this.setDelay(360L);
+        this.setDelay(0L);
         this.setDotDuration(7000L);
         this.setInterval(360L);
         this.setLimitAttackCount(16L);

@@ -6,7 +6,7 @@ public class InstallShield extends AttackSkill {
     public InstallShield() {
         this.setName("인스톨 실드");
         this.setAttackCount(4L);
-        this.setDamage(228.0);
+        this.setDamage(483.0);
         this.setCooldown(60.0);
         this.setDelayByAttackSpeed(450L);
         this.setDotDuration(60000L);

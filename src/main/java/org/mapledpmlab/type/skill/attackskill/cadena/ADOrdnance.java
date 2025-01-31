@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ADOrdnance extends AttackSkill {
     public ADOrdnance() {
         this.setName("A.D 오드넌스");
-        this.setDelay(450L);
+        this.setDelayByAttackSpeed(450L);
         this.setDamage(495.0);
         this.setAttackCount(5L);
         this.setCooldown(25.0);

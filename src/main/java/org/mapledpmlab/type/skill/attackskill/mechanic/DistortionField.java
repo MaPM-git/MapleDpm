@@ -11,7 +11,7 @@ public class DistortionField extends AttackSkill {
         this.setInterval(250L);
         this.setLimitAttackCount(15L);
         this.setAttackCount(2L);
-        this.setDamage(350.0);
+        this.setDamage(720.0);
         this.addFinalDamage(2.2);               // 코어 강화
         this.addIgnoreDefenseList(20L);
     }

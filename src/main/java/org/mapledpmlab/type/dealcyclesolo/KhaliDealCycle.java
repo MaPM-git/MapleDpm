@@ -68,6 +68,7 @@ public class KhaliDealCycle extends DealCycle {
 
     int chakriCnt = 0;
     int rushCnt = 0;
+    int resonateCnt = 14;
 
     boolean afterBlitz = false;
 
@@ -121,47 +122,47 @@ public class KhaliDealCycle extends DealCycle {
         grandisGoddessBlessingLef.setCooldown(120.0);
 
         addSkillEvent(artsFlurry);
+
+        getSkillSequence1().add(wrathOfGod);                // 30
+        getSkillSequence1().add(magicCircuitFullDriveBuff);
+        getSkillSequence1().add(grandisGoddessBlessingLef);
+        getSkillSequence1().add(oblivion);
+        getSkillSequence1().add(resonateUltimatum);
+        getSkillSequence1().add(soulContract);              // 30
+        getSkillSequence1().add(readyToDie);                // 600
+        getSkillSequence1().add(restraintRing);             // 30
+
+        magicCircuitFullDriveBuff.setDelay(75L);
+        grandisGoddessBlessingLef.setDelay(75L);
+        oblivion.setDelay(75L);
+        resonateUltimatum.setDelay(75L);
     }
 
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
-                    cooldownCheck(resonateUltimatum)
+                    cooldownCheck(restraintRing)
                     && getStart().before(new Timestamp(660 * 1000))
             ) {
-                addSkillEvent(magicCircuitFullDriveBuff);
-                addSkillEvent(wrathOfGod);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(artsFlurry);
                 }
-                addSkillEvent(grandisGoddessBlessingLef);
-                addSkillEvent(resonateUltimatum);
-                addSkillEvent(oblivion);
                 addSkillEvent(deathBlossom);
-                addSkillEvent(readyToDie);
-                addSkillEvent(soulContract);
-                addSkillEvent(restraintRing);
-                while (!cooldownCheck(hexPandemonium)) {
-                    addPlatDealCycle();
-                }
                 addSkillEvent(hexPandemonium);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(hexSandStormBeforeDelay)) {
                     addSkillEvent(hexSandStormBeforeDelay);
                 }
-                while (!cooldownCheck(voidBurstCombo)) {
+                while (!cooldownCheck(hexChakramSplit)) {
                     addPlatDealCycle();
                 }
-                if (cooldownCheck(hexChakramSplit)) {
-                    addSkillEvent(hexChakramSplit);
-                }
-                if (cooldownCheck(artsAstra)) {
-                    addSkillEvent(artsFlurry);
+                addSkillEvent(hexChakramSplit);
+                while (!cooldownCheck(voidBurstCombo)) {
+                    addPlatDealCycle();
                 }
                 addSkillEvent(voidBurstCombo);
             } else if (
@@ -186,7 +187,13 @@ public class KhaliDealCycle extends DealCycle {
     public void addPlatDealCycle() {
         if (cooldownCheck(artsCrescentum)) {
             addSkillEvent(artsCrescentum);
-        } else if (cooldownCheck(hexPandemonium)) {
+        } else if (
+                cooldownCheck(hexPandemonium)
+                && (
+                        getStart().before(new Timestamp(oblivion.getActivateTime().getTime() - 15000))
+                        || getStart().after(new Timestamp(11 * 60 * 1000))
+                )
+        ) {
             addSkillEvent(hexPandemonium);
         } else if (cooldownCheck(hexChakramSplit)) {
             addSkillEvent(hexChakramSplit);
@@ -355,6 +362,17 @@ public class KhaliDealCycle extends DealCycle {
                     skill instanceof HexSkill
                     && chakriCnt > 0
             ) {
+                resonateCnt ++;
+                if (resonateCnt == 15) {
+                    for (int i = 0; i < 10; i++) {
+                        if (getStart().before(resonateUltimatumEndTime)) {
+                            addSkillEvent(resonateAwakening);
+                        } else {
+                            addSkillEvent(resonate);
+                        }
+                    }
+                    resonateCnt = 0;
+                }
                 for (int i = 0; i < chakriCnt; i++) {
                     if (getStart().before(resonateUltimatumEndTime)) {
                         addSkillEvent(resonateAwakening);
@@ -371,8 +389,10 @@ public class KhaliDealCycle extends DealCycle {
                 int i = 0;
                 if (skill instanceof VoidRush) {
                     i = 1;
+                    chakriCnt ++;
                 } else if (skill instanceof VoidBlitz) {
                     i = 4;
+                    chakriCnt ++;
                 }
                 for (; i > 0; i--) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -408,7 +428,7 @@ public class KhaliDealCycle extends DealCycle {
                     if (skill instanceof HexChakramFuryBeforeDelay) {
                         hexChakramFuryBeforeDelay = new HexChakramFuryBeforeDelay();
                         skill = hexChakramFuryBeforeDelay;
-                        skill.setDelay(240L + 30);
+                        skill.getRelatedSkill().setDelay(120L + 30);
                         skill.getRelatedSkill().setRelatedSkill(voidBlitz);
                     } else if (skill instanceof HexPandemonium) {
                         hexPandemonium = new HexPandemonium();
@@ -443,7 +463,7 @@ public class KhaliDealCycle extends DealCycle {
                     if (skill instanceof HexChakramFuryBeforeDelay) {
                         hexChakramFuryBeforeDelay = new HexChakramFuryBeforeDelay();
                         skill = hexChakramFuryBeforeDelay;
-                        skill.setDelay(240L + 30);
+                        skill.getRelatedSkill().setDelay(120L + 30);
                         skill.getRelatedSkill().setRelatedSkill(voidRush);
                     } else if (skill instanceof HexPandemonium) {
                         hexPandemonium = new HexPandemonium();
@@ -707,9 +727,15 @@ public class KhaliDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

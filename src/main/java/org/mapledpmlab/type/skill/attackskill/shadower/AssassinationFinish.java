@@ -6,7 +6,7 @@ public class AssassinationFinish extends AttackSkill {
     public AssassinationFinish() {
         this.setName("암살(마무리 일격)");
         this.setAttackCount(6L * 2);
-        this.setDamage(690.0);
+        this.setDamage(690.0 + 100);
         this.setDelayByAttackSpeed(540L);
         this.addFinalDamage(1.5);
         this.setAddDamage(20 + 20L);    // 암살-리인포스, 보스 킬러

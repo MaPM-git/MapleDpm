@@ -71,9 +71,9 @@ public class Hero5 extends Job {
         //this.addMainStat(8L);
 
         // 환산 보정, 스탯뚝
-        this.addMainStatP(-60L);
-        this.addMainStat(7L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-57L);
+        //this.addMainStat(7L);
+        //this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

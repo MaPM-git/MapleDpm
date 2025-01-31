@@ -23,11 +23,13 @@ public class DemonSlayerDealCycle extends DealCycle {
         {
             add(new AuraWeaponDot());
             add(new Cerburus());
+            add(new CerburusTarterian());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DemonBaneStartDelay());
             add(new DemonBane1());
             add(new DemonBane2());
+            add(new DemonicDescent());
             add(new DemonicSphere());
             add(new DemonicSphereReinforce());
             add(new DemonImpact());
@@ -83,6 +85,7 @@ public class DemonSlayerDealCycle extends DealCycle {
     BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
     CallMastema callMastema = new CallMastema();
     Cerburus cerburus = new Cerburus();
+    CerburusTarterian cerburusTarterian = new CerburusTarterian();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     DemonAwakening demonAwakening = new DemonAwakening();
     DemonBaneStartDelay demonBaneStartDelay = new DemonBaneStartDelay();
@@ -90,6 +93,7 @@ public class DemonSlayerDealCycle extends DealCycle {
     DemonImpactChain demonImpactChain = new DemonImpactChain();
     DemonSlash1 demonSlash1 = new DemonSlash1();
     DemonSlashReinforce1 demonSlashReinforce1 = new DemonSlashReinforce1();
+    DemonicDescent demonicDescent = new DemonicDescent();
     DemonicFortitude demonicFortitude = new DemonicFortitude();
     DemonicSphere demonicSphere = new DemonicSphere();
     DemonicSphereReinforce demonicSphereReinforce = new DemonicSphereReinforce();
@@ -112,16 +116,11 @@ public class DemonSlayerDealCycle extends DealCycle {
         super(job, null);
 
         if (getJob() instanceof DemonSlayerNormal) {
-            getJob().setName("데몬슬레이어(리웨, 극포실, 환산 84265)");
+            getJob().setName("데몬슬레이어(리웨, 극포실, 환산 84549)");
         }
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        for (int i = 0; i < 720 * 1000; i += metamorphosis.getInterval()) {
-            getSkillEventList().add(new SkillEvent(metamorphosis, new Timestamp(i), new Timestamp(i)));
-            getEventTimeList().add(new Timestamp(i));
-        }
 
         ringSwitching.setCooldown(120.0);
         //ringSwitching.setApplyCooldownReduction(false);
@@ -129,6 +128,21 @@ public class DemonSlayerDealCycle extends DealCycle {
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         otherWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(infinityForce);
+        getSkillSequence1().add(demonicFortitude);          // 30
+        getSkillSequence1().add(callMastema);
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(demonAwakening);
+        getSkillSequence1().add(orthrus);
+        getSkillSequence1().add(otherWorldGoddessBlessing);
+
+        infinityForce.setDelay(150L);
+        callMastema.setDelay(150L);
+        bodyOfSteel.setDelay(150L);
+        demonAwakening.setDelay(150L);
+        orthrus.setDelay(150L);
+        otherWorldGoddessBlessing.setDelay(120L);
     }
 
     @Override
@@ -145,28 +159,17 @@ public class DemonSlayerDealCycle extends DealCycle {
                 addSkillEvent(auraWeaponBuff);
             }
             if (
-                    cooldownCheck(orthrus)
+                    cooldownCheck(otherWorldGoddessBlessing)
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 2000))
                             && demonForce >= 100
             ) {
-                addSkillEvent(infinityForce);
-                addSkillEvent(demonicFortitude);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (cooldownCheck(demonImpactChain)) {
-                        addSkillEvent(demonImpactChain);
-                    } else {
-                        addSkillEvent(demonImpact);
-                    }
                 }
-                addSkillEvent(callMastema);
-                addSkillEvent(bodyOfSteel);
-                addSkillEvent(demonAwakening);
-                addSkillEvent(orthrus);
-                addSkillEvent(otherWorldGoddessBlessing);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(nightmareWave)) {
                     addSkillEvent(nightmareWave);
                     isOrigin = true;
@@ -202,12 +205,17 @@ public class DemonSlayerDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (getStart().before(demonAwakeningEndTime)) {
                 addSkillEvent(demonSlashReinforce1);
+            } else if (cooldownCheck(cerburusTarterian)) {
+                addSkillEvent(cerburusTarterian);
             } else if (
                     cooldownCheck(demonImpactChain)
-                            && demonForce >= 4
+                            && demonForce >= 8
             ) {
                 addSkillEvent(demonImpactChain);
-            } else if (demonForce >= 4) {
+            } else if (
+                    demonForce >= 8
+                    && !cooldownCheck(infinityForce)
+            ) {
                 addSkillEvent(demonImpact);
             } else {
                 addSkillEvent(demonSlash1);
@@ -219,7 +227,7 @@ public class DemonSlayerDealCycle extends DealCycle {
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -285,6 +293,7 @@ public class DemonSlayerDealCycle extends DealCycle {
             }
             if (skill instanceof NightmareTerritory) {
                 nightmareTerritoryEndTime = new Timestamp(getStart().getTime() + 20000);
+                demonicDescent.setActivateTime(new Timestamp(-1));
             }
             if (((BuffSkill) skill).isApplyPlusBuffDuration()) {
                 endTime = new Timestamp((long) (getStart().getTime() + ((BuffSkill) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -322,15 +331,29 @@ public class DemonSlayerDealCycle extends DealCycle {
                     || skill instanceof NightmareJudgement
                     || skill instanceof NightmareWave
                     || skill instanceof Cerburus
+                    || skill instanceof CerburusTarterian
                     || skill instanceof DemonicSphere
                     || skill instanceof DemonicSphereReinforce
             ) {
+                if (cooldownCheck(demonicDescent)) {
+                    if (getStart().before(nightmareTerritoryEndTime)) {
+                        demonicDescent.setCooldown(5.0);
+                    }
+                    addSkillEvent(demonicDescent);
+                    demonicDescent.setCooldown(20.0);
+                }
+                if (cooldownCheck(metamorphosis)) {
+                    addSkillEvent(metamorphosis);
+                }
                 if (
                         getStart().before(demonAwakeningEndTime)
-                        && !(skill instanceof Cerburus)
+                        && !(skill instanceof CerburusTarterian)
                         && cooldownCheck(cerburus)
                 ) {
-                    addSkillEvent(cerburus);
+                    CerburusTarterian ct = new CerburusTarterian();
+                    ct.setDelay(0L);
+                    addSkillEvent(ct);
+                    applyCooldown(cerburus);
                 }
                 if (
                         getStart().before(nightmareTerritoryEndTime)
@@ -414,11 +437,24 @@ public class DemonSlayerDealCycle extends DealCycle {
                             ) {
                                 addSkillEvent(nightmareFlame);
                             }
+                            if (cooldownCheck(demonicDescent)) {
+                                if (getStart().before(nightmareTerritoryEndTime)) {
+                                    demonicDescent.setCooldown(5.0);
+                                }
+                                addSkillEvent(demonicDescent);
+                                demonicDescent.setCooldown(20.0);
+                            }
+                            if (cooldownCheck(metamorphosis)) {
+                                addSkillEvent(metamorphosis);
+                            }
                             if (
                                     getStart().before(demonAwakeningEndTime)
                                     && cooldownCheck(cerburus)
                             ) {
-                                addSkillEvent(cerburus);
+                                CerburusTarterian ct = new CerburusTarterian();
+                                ct.setDelay(0L);
+                                addSkillEvent(ct);
+                                applyCooldown(cerburus);
                             }
                             getStart().setTime(temp.getTime());
                         }
@@ -481,9 +517,15 @@ public class DemonSlayerDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -540,11 +582,24 @@ public class DemonSlayerDealCycle extends DealCycle {
             ) {
                 Timestamp temp = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);
+                if (cooldownCheck(demonicDescent)) {
+                    if (getStart().before(nightmareTerritoryEndTime)) {
+                        demonicDescent.setCooldown(5.0);
+                    }
+                    addSkillEvent(demonicDescent);
+                    demonicDescent.setCooldown(20.0);
+                }
+                if (cooldownCheck(metamorphosis)) {
+                    addSkillEvent(metamorphosis);
+                }
                 if (
                         getStart().before(demonAwakeningEndTime)
                         && cooldownCheck(cerburus)
                 ) {
-                    addSkillEvent(cerburus);
+                    CerburusTarterian ct = new CerburusTarterian();
+                    ct.setDelay(0L);
+                    addSkillEvent(ct);
+                    applyCooldown(cerburus);
                 }
                 getStart().setTime(temp.getTime());
             }

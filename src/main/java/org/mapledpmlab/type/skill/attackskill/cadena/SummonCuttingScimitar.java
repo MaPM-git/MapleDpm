@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SummonCuttingScimitar extends AttackSkill {
     public SummonCuttingScimitar() {
         this.setName("서먼 커팅 시미터");
-        this.setDamage(125.0 + 80 + 100 + 177);
+        this.setDamage(849.0);
         this.setAttackCount(5L);
         this.setDelay(150L + 30);
         this.setCooldown(4.0);

@@ -20,7 +20,10 @@ public class AranDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
-            add(new AdvancedFinalAttackAran());
+            add(new AMGoldenFlash());
+            add(new AMIceStorm());
+            add(new AMIceWave());
+            add(new FinalAttackAran());
             add(new AuraWeaponDot());
             add(new Beyonder1());
             add(new Beyonder2());
@@ -37,14 +40,12 @@ public class AranDealCycle extends DealCycle {
             add(new EndGameSlash());
             add(new FrozenGround());
             add(new GlacialFrozen());
-            add(new GoldenFlash());
             add(new HyperBoostEndAdrenalineSurge());
             add(new HyperBoostEndLastStand1());
             add(new HyperBoostEndLastStand2());
             add(new HyperBoostEndLastStand3());
             add(new IceBlock());
             add(new IceBlockAfterFirst());
-            add(new IceWave());
             add(new SmashSwing1());
             add(new SmashSwing2());
             add(new SmashSwing3());
@@ -71,6 +72,9 @@ public class AranDealCycle extends DealCycle {
 
     AdrenalineBoost adrenalineBoost = new AdrenalineBoost();
     AdrenalineMaximum adrenalineMaximum = new AdrenalineMaximum();
+    AMGoldenFlash AMGoldenFlash = new AMGoldenFlash();
+    AMIceStorm AMIceStorm = new AMIceStorm();
+    AMIceWave AMIceWave = new AMIceWave();
     AuraWeaponBuff auraWeapon = new AuraWeaponBuff();
     Beyonder1 beyonder = new Beyonder1();
     BeyonderMaha beyonderMaha = new BeyonderMaha();
@@ -83,13 +87,11 @@ public class AranDealCycle extends DealCycle {
     EndGameWave endGame = new EndGameWave();
     FrozenGround frozenGround = new FrozenGround();
     GlacialFrozen glacialFrozen = new GlacialFrozen();
-    GoldenFlash goldenFlash = new GoldenFlash();
     HeroesOath heroesOath = new HeroesOath();
     HyperBoostEndAdrenalineSurge hyperBoostEndAdrenalineSurge = new HyperBoostEndAdrenalineSurge();
     HyperBoostEndLastStand1 hyperBoostEndLastStand = new HyperBoostEndLastStand1();
     IceBlock iceBlock = new IceBlock();
     IceBlockAfterFirst iceBlock2 = new IceBlockAfterFirst();
-    IceWave iceWave = new IceWave();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
     RestraintRing restraintRing = new RestraintRing();
     RingSwitching ringSwitching = new RingSwitching();
@@ -103,7 +105,7 @@ public class AranDealCycle extends DealCycle {
     Timestamp blizzardTempestEndTime = new Timestamp(-1);
 
     public AranDealCycle(Job job) {
-        super(job, new AdvancedFinalAttackAran());
+        super(job, new FinalAttackAran());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
@@ -113,6 +115,25 @@ public class AranDealCycle extends DealCycle {
         ringSwitching.setCooldown(90.0);
         auraWeapon.setCooldown(180.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        auraWeapon.setDelay(70L);
+        mapleWorldGoddessBlessing.setDelay(70L);
+        bodyOfSteel.setDelay(70L);
+        blizzardTempest.setDelay(570L);
+
+        getSkillSequence1().add(auraWeapon);
+        getSkillSequence1().add(heroesOath);                // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(blizzardTempest);
+        getSkillSequence1().add(soulContract);              // 30
+        getSkillSequence1().add(restraintRing);             // 30
+        // + 아드(30ms)
+
+        getSkillSequence2().add(blizzardTempest);
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(weaponJumpRing);            // 30
+        getSkillSequence2().add(adrenalineBoost);           // 30
     }
 
     @Override
@@ -125,26 +146,15 @@ public class AranDealCycle extends DealCycle {
                     getStart().before(new Timestamp(600 * 1000))
                     && getStart().after(new Timestamp(restraintRing.getActivateTime().getTime() - 1000))
             ) {
-                addSkillEvent(auraWeapon);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(new Beyonder1());
                 }
-                while (!cooldownCheck(brandishMaha)) {
-                    addSkillEvent(beyonder);
-                }
-                addSkillEvent(blizzardTempest);
-                addSkillEvent(bodyOfSteel);
+                addDealCycle(getSkillSequence1());
                 if (!cooldownCheck(endGame)) {
                     addSkillEvent(adrenalineBoost);
-                    addSkillEvent(restraintRing);
-                    addSkillEvent(soulContract);
                     addSkillEvent(brandishMaha);
                     addSkillEvent(boostEndHuntersTargeting);
                     addSkillEvent(new Beyonder1());
@@ -152,8 +162,6 @@ public class AranDealCycle extends DealCycle {
                     addSkillEvent(hyperBoostEndAdrenalineSurge);
                     addSkillEvent(hyperBoostEndLastStand);
                 } else {
-                    addSkillEvent(restraintRing);
-                    addSkillEvent(soulContract);
                     addSkillEvent(endGame);
                     addSkillEvent(boostEndHuntersTargeting);
                     addSkillEvent(hyperBoostEndAdrenalineSurge);
@@ -164,10 +172,7 @@ public class AranDealCycle extends DealCycle {
                             && cooldownCheck(blizzardTempest)
                             && cooldownCheck(weaponJumpRing)
             ) {
-                addSkillEvent(blizzardTempest);
-                addSkillEvent(adrenalineBoost);
-                addSkillEvent(weaponJumpRing);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence2());
                 addSkillEvent(boostEndHuntersTargeting);
                 addSkillEvent(boostEndAdrenalineSurge);
             } else if (
@@ -197,6 +202,9 @@ public class AranDealCycle extends DealCycle {
             skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         } else {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+        }
+        if (skill instanceof AMIceStorm) {
+            applyCooldown(AMIceStorm);
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof AdrenalineBoost) {
@@ -249,14 +257,27 @@ public class AranDealCycle extends DealCycle {
             }
         } else {
             if (
-                    cooldownCheck(goldenFlash)
-                    && !(skill instanceof GoldenFlash)
-                    && getStart().before(adrenalineMaximumEndTime)
+                    !(skill instanceof AMGoldenFlash)
                     && !(skill instanceof IceBlockAfterFirst)
                     && !(skill instanceof IceBlock)
                     && !(skill instanceof BeyonderMaha)
+                    && !(skill instanceof AMIceStorm)
             ) {
-                addSkillEvent(goldenFlash);
+                if (
+                        cooldownCheck(AMGoldenFlash)
+                        && getStart().before(adrenalineMaximumEndTime)
+                ) {
+                    addSkillEvent(AMGoldenFlash);
+                }
+                if (
+                        cooldownCheck(AMIceStorm)
+                        && (
+                                getStart().before(adrenalineEndTime)
+                                || getStart().before(adrenalineMaximumEndTime)
+                        )
+                ) {
+                    addSkillEvent(AMIceStorm);
+                }
             }
             if (
                     cooldownCheck(iceBlock2)
@@ -264,7 +285,7 @@ public class AranDealCycle extends DealCycle {
                     && !(skill instanceof IceBlockAfterFirst)
                     && !(skill instanceof IceBlock)
                     && !(skill instanceof BeyonderMaha)
-                    && !(skill instanceof GoldenFlash)
+                    && !(skill instanceof AMGoldenFlash)
                     && ((AttackSkill) skill).isApplyFinalAttack()
                     && ((AttackSkill) skill).getMultiAttackInfo().size() == 0
             ) {
@@ -287,7 +308,7 @@ public class AranDealCycle extends DealCycle {
                     && !(skill instanceof BeyonderMaha)
                     && !(skill instanceof IceBlockAfterFirst)
                     && !(skill instanceof IceBlock)
-                    && !(skill instanceof GoldenFlash)
+                    && !(skill instanceof AMGoldenFlash)
             ) {
                 addSkillEvent(beyonderMaha);
             }
@@ -367,10 +388,19 @@ public class AranDealCycle extends DealCycle {
                 addSkillEvent(beyonderMaha);
             }
             if (
-                    cooldownCheck(goldenFlash)
+                    cooldownCheck(AMGoldenFlash)
                     && getStart().before(adrenalineMaximumEndTime)
             ) {
-                addSkillEvent(goldenFlash);
+                addSkillEvent(AMGoldenFlash);
+            }
+            if (
+                    cooldownCheck(AMIceStorm)
+                    && (
+                            getStart().before(adrenalineEndTime)
+                            || getStart().before(adrenalineMaximumEndTime)
+                    )
+            ) {
+                addSkillEvent(AMIceStorm);
             }
             getStart().setTime(tmp.getTime());
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));

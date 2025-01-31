@@ -6,7 +6,7 @@ public class ExceedExecution3 extends GaugeAttackSkill {
     public ExceedExecution3() {
         this.setName("익시드 : 엑스큐션(3단계)");
         this.setAttackCount(4L);
-        this.setDamage(980.0);
+        this.setDamage(980.0 + 295);
         this.setDelayByAttackSpeed(840L);
         this.addIgnoreDefenseList(35L);
         this.setGaugePer(-5L);

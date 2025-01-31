@@ -10,7 +10,7 @@ public class Evolve extends AttackSkill {
         this.setDamage(900.0);
         this.setCooldown(106.0);
         this.setDotDuration(40000L);
-        this.setInterval(3330L);
+        this.setInterval(3030L);
         this.setRelatedSkill(new EvolveBuff());
     }
 }

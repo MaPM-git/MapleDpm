@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SoulEclipse extends AttackSkill {
     public SoulEclipse() {
         this.setName("소울 이클립스");
-        this.setDelay(360L);
+        this.setDelayByAttackSpeed(360L);
         this.setAttackCount(7L);
         this.setDamage(990.0);
         this.setCooldown(180.0);

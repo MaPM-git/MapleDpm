@@ -66,9 +66,9 @@ public class Phantom extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-93L);
-        this.addMainStat(-13L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-90L);
+        this.addMainStat(6L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new ArtifactNormal());

@@ -72,9 +72,9 @@ public class CadenaContinuous extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-36L);
-        this.addMainStat(-15L);
-        this.addSubStat(5L);
+        this.addMainStatP(-45L);
+        this.addMainStat(10L);
+        this.addSubStat(-5L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

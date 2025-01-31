@@ -68,9 +68,9 @@ public class Ark extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-54L);
-        this.addMainStat(4L);
-        this.addSubStat(5L);
+        this.addMainStatP(-51L);
+        this.addMainStat(-3L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

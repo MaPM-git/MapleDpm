@@ -6,7 +6,7 @@ public class Annihilation extends AttackSkill {
     public Annihilation() {
         this.setName("섬멸");
         this.setAttackCount(7L * 2);
-        this.setDamage(470.0);
+        this.setDamage(470.0 + 47);
         this.setDelayByAttackSpeed(480L);
         this.setAddDamage(20L + 20);        // 섬멸-리인포스, 보스 킬러
         this.addFinalDamage(2.2);           // 코어강화

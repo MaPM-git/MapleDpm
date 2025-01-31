@@ -8,7 +8,7 @@ public class BigStretch extends AttackSkill {
         this.setDamage(2420.0);
         this.setAttackCount(5L);
         this.setCooldown(60.0);
-        this.setDelay(870L);
+        this.setDelayByAttackSpeed(870L);
         this.addFinalDamage(1.6);   // 코어강화
         this.getMultiAttackInfo().add(1980L);
         for (int i = 0; i < 27; i ++) {

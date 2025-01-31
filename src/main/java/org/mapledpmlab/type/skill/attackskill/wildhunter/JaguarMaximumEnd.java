@@ -11,7 +11,7 @@ public class JaguarMaximumEnd extends AttackSkill {
         this.addCriticalP(100.0);
         this.addIgnoreDefenseList(100L);
         this.addFinalDamage(1.6);       // 코어 강화
-        this.getMultiAttackInfo().add(360L);
+        this.getMultiAttackInfo().add(1320L);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

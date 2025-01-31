@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SpiritClawTrue extends AttackSkill {
     public SpiritClawTrue() {
         this.setName("진 귀참");
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setAttackCount(12L + 1);       // 귀참-보너스 어택
         this.setDamage(880.0);
         this.addIgnoreDefenseList(50L);

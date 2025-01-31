@@ -76,8 +76,8 @@ public class Bishop extends Job {
 
         // 환산 보정
         this.addMainStatP(-9L);
-        this.addMainStat(-6L);
-        //this.addSubStat(30L);
+        this.addMainStat(3L);
+        this.addSubStat(5L);
         //this.addMagic(-7L);
 
         this.setAbility(new BuffBossAbnormal());

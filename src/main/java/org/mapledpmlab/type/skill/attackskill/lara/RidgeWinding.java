@@ -7,7 +7,7 @@ public class RidgeWinding extends AttackSkill {
         this.setName("산등성이 굽이굽이");
         this.setDamage(1100.0);
         this.setAttackCount(4L);
-        this.setDelay(960L);
+        this.setDelayByAttackSpeed(960L);
         this.setCooldown(60.0);
         this.addFinalDamage(1.6);   // 코어강화
         this.addFinalDamage(1.08);      // 오버로드 마나

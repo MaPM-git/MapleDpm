@@ -12,7 +12,6 @@ import org.apache.poi.util.IOUtils;
 import org.apache.poi.xddf.usermodel.chart.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.mapledpmlab.type.JobContinuous.*;
-import org.mapledpmlab.type.dealcycleduo.*;
 import org.mapledpmlab.type.dealcyclesolo.*;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.DuoDealCycle;
@@ -40,9 +39,10 @@ public class DPMMain {
 
     public void init() {
         soloDealCycleList = new ArrayList<>();
-        /*
+
         soloDealCycleList.add(new AdeleMarkerDealCycle(new Adele()));
         soloDealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
+        soloDealCycleList.add(new AngelicBuster4RingDealCycle(new AngelicBuster()));
         soloDealCycleList.add(new AranDealCycle(new Aran()));
         soloDealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
         soloDealCycleList.add(new ArchMageFPContinuousDealCycle(new ArchMageFPContinuous()));
@@ -63,11 +63,11 @@ public class DPMMain {
         soloDealCycleList.add(new BowmasterContinuousDealCycle(new BowmasterContinuous()));
         soloDealCycleList.add(new CadenaDealCycle(new Cadena()));
         soloDealCycleList.add(new CadenaContinuousDealCycle(new CadenaContinuous()));
-        soloDealCycleList.add(new CannonShooter2DealCycle(new CannonShooter()));
         soloDealCycleList.add(new CannonShooter3DealCycle(new CannonShooter()));
         soloDealCycleList.add(new CaptainDealCycle(new Captain()));
         soloDealCycleList.add(new CaptainContinuousDealCycle(new CaptainContinuous()));
         soloDealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
+        soloDealCycleList.add(new DarkKnightContinuousDealCycle(new DarkKnightContinuous()));
         soloDealCycleList.add(new DemonAvenger29DealCycle(new DemonAvenger()));
         soloDealCycleList.add(new DemonAvenger30DealCycle(new DemonAvenger()));
         soloDealCycleList.add(new DemonAvenger29ContinuousDealCycle(new DemonAvengerContinuous()));
@@ -87,6 +87,7 @@ public class DPMMain {
         soloDealCycleList.add(new EvanContinuousDealCycle(new EvanContinuous()));
         soloDealCycleList.add(new Evan5ContinuousDealCycle(new Evan5Continuous()));
         soloDealCycleList.add(new FlameWizard2DealCycle(new FlameWizard()));
+        soloDealCycleList.add(new FlameWizard2ContinuousDealCycle(new FlameWizardContinuous()));
         soloDealCycleList.add(new FlameWizard3DealCycle(new FlameWizard()));
         soloDealCycleList.add(new FlameWizard3ContinuousDealCycle(new FlameWizardContinuous()));
         soloDealCycleList.add(new HeroDealCycle(new Hero()));
@@ -107,6 +108,8 @@ public class DPMMain {
         soloDealCycleList.add(new LaraContinuousDealCycle(new LaraContinuous()));
         soloDealCycleList.add(new LuminousDealCycle(new Luminous()));
         soloDealCycleList.add(new LuminousContinuousDealCycle(new LuminousContinuous()));
+        soloDealCycleList.add(new LuminousDealCycle(new Luminous5()));
+        soloDealCycleList.add(new LuminousContinuousDealCycle(new Luminous5Continuous()));
         soloDealCycleList.add(new MarksmanDealCycle(new Marksman()));
         soloDealCycleList.add(new MarksmanContinuousDealCycle(new MarksmanContinuous()));
         soloDealCycleList.add(new MechanicDealCycle(new Mechanic()));
@@ -118,15 +121,17 @@ public class DPMMain {
         soloDealCycleList.add(new NightLordDealCycle(new NightLord()));
         soloDealCycleList.add(new NightWalkerDealCycle(new NightWalker()));
         soloDealCycleList.add(new PaladinDealCycle(new Paladin()));
+        soloDealCycleList.add(new PaladinDealCycle(new Paladin5()));
         soloDealCycleList.add(new PaladinUnityDealCycle(new Paladin()));
         soloDealCycleList.add(new PathFinderDealCycle(new Pathfinder()));
         soloDealCycleList.add(new PathFinderDealCycle(new Pathfinder2()));
+        soloDealCycleList.add(new PathFinderDealCycle(new Pathfinder5()));
+        soloDealCycleList.add(new PathFinderContinuousDealCycle(new Pathfinder5Continuous()));
         soloDealCycleList.add(new PhantomDealCycle(new Phantom()));
         soloDealCycleList.add(new PhantomContinuousDealCycle(new PhantomContinuous()));
         soloDealCycleList.add(new ShadowerDealCycle(new Shadower()));
         soloDealCycleList.add(new ShadowerContinuousDealCycle(new ShadowerContinuous()));
         soloDealCycleList.add(new SoulMasterDealCycle(new SoulMaster()));
-        soloDealCycleList.add(new SoulMasterCancelDealCycle(new SoulMaster()));
         soloDealCycleList.add(new StrikerDealCycle(new Striker()));
         soloDealCycleList.add(new StrikerContinuousDealCycle(new StrikerContinuous()));
         soloDealCycleList.add(new ViperDealCycle(new Viper()));
@@ -136,12 +141,13 @@ public class DPMMain {
         soloDealCycleList.add(new WindBreakerContinuousDealCycle(new WindBreakerContinuous()));
         soloDealCycleList.add(new XenonDealCycle(new Xenon()));
         soloDealCycleList.add(new Xenon2HologramDealCycle(new Xenon()));
+        soloDealCycleList.add(new XenonDealCycle(new Xenon5()));
+        soloDealCycleList.add(new Xenon2HologramDealCycle(new Xenon5()));
         soloDealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         soloDealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
         soloDealCycleList.add(new ZeroContinuousDealCycle(new ZeroAlphaContinuous()));
         soloDealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
 
-         */
 
         /*
         duoDealCycleList = new ArrayList<>();
@@ -153,10 +159,9 @@ public class DPMMain {
         duoDealCycleList.add(new BishopBowmasterDealCycle());
          */
 
-        /*for (DealCycle dealCycle : dealCycleList) {
+        /*for (DealCycle dealCycle : soloDealCycleList) {
             if (dealCycle instanceof ZeroContinuousDealCycle) {
-                //dealCycle.getJobInfo();
-                //break;
+                dealCycle.getJobInfo();
             }
         }*/
         this.exportExcel();

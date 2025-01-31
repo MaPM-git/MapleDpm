@@ -7,7 +7,7 @@ public class ChronoTrigger3 extends AttackSkill {
         this.setName("크로노 트리거(마무리 일격)");
         this.setAttackCount(14L);
         this.setDamage(1430.0);
-        this.setDelay(2580L);
+        this.setDelay(2580L - 1050);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(540L);

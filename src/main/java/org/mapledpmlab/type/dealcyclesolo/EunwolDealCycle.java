@@ -42,6 +42,9 @@ public class EunwolDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new SpiritClaw());
             add(new SpiritClawTrue());
+            add(new SpritPunch1());
+            add(new SpritPunch2());
+            add(new SpritPunch3());
         }
     };
 
@@ -89,6 +92,7 @@ public class EunwolDealCycle extends DealCycle {
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     SpiritClaw spiritClaw = new SpiritClaw();
     SpiritClawTrue spiritClawTrue = new SpiritClawTrue();
+    SpritPunch1 spritPunch1 = new SpritPunch1();
     WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public EunwolDealCycle(Job job) {
@@ -99,6 +103,24 @@ public class EunwolDealCycle extends DealCycle {
 
         mapleWorldGoddessBlessing.setCooldown(120.0);
         ringSwitching.setCooldown(120.0);
+
+        spritPunch1.setRelatedSkill(new SpritPunch2());
+        spritPunch1.setDelayByAttackSpeed(300L);
+        spritPunch1.getRelatedSkill().setDelayByAttackSpeed(300L);
+
+        getSkillSequence1().add(heroesOath);                // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(overdrive);                 // 420
+        getSkillSequence1().add(eunwolHyper);               // 30
+        getSkillSequence1().add(soulContract);              // 30
+
+        getSkillSequence2().add(overdrive);                 // 420
+        getSkillSequence2().add(soulContract);              // 30
+
+        getSkillSequence3().add(loadedDice);
+        loadedDice.setDelay(660L);
+
+        mapleWorldGoddessBlessing.setDelay(480L);
     }
 
     @Override
@@ -119,32 +141,22 @@ public class EunwolDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(bladeImp);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (cooldownCheck(spiritClawTrue)) {
-                        addSkillEvent(spiritClawTrue);
-                    } else {
-                        addSkillEvent(spiritClaw);
-                    }
                 }
-                addSkillEvent(overdrive);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(divisionSoul);
                 addSkillEvent(lightOfTheFoxGoddess);
-                addSkillEvent(soulContract);
-                addSkillEvent(eunwolHyper);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
                 }
                 addSkillEvent(ghostDisposition);
+                addSkillEvent(spritPunch1);
                 addSkillEvent(chainBombPunch);
                 if (cooldownCheck(spiritClawTrue)) {
                     addSkillEvent(spiritClawTrue);
@@ -162,8 +174,7 @@ public class EunwolDealCycle extends DealCycle {
                             && cooldownCheck(chainBombPunch)
                             && !cooldownCheck(heroesOath)
             ) {
-                addSkillEvent(overdrive);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence2());
                 addSkillEvent(divisionSoul);
                 addSkillEvent(ghostDisposition);
                 addSkillEvent(chainBombPunch);
@@ -173,6 +184,11 @@ public class EunwolDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
+            } else if (
+                    cooldownCheck(spritPunch1)
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() - 10000))
+            ) {
+                addSkillEvent(spritPunch1);
             } else if (cooldownCheck(spiritClawTrue)) {
                 addSkillEvent(spiritClawTrue);
             } else {
@@ -248,6 +264,8 @@ public class EunwolDealCycle extends DealCycle {
                     || skill instanceof DivisionSoul
                     || skill instanceof SpiritClaw
                     || skill instanceof SpiritClawTrue
+                            || skill instanceof SpritPunch1
+                            || skill instanceof SpritPunch2
             ) {
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (getStart().before(eunwolHyperEndTime)) {
@@ -331,6 +349,7 @@ public class EunwolDealCycle extends DealCycle {
                     || skill instanceof AdventOfTheFox1
                     || skill instanceof AdventOfTheFox2
                     || skill instanceof AdventOfTheFox3
+                            || skill instanceof SpritPunch3
             ) {
                 Long ran = (long) (Math.random() * 99 + 1);
                 Timestamp tmp = new Timestamp(getStart().getTime());

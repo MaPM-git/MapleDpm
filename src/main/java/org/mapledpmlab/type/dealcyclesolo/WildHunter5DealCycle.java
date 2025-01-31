@@ -20,7 +20,7 @@ import java.util.List;
 public class WildHunter5DealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
-            add(new AdvancedFinalAttackWildHunter());
+            add(new FinalAttackWildHunter());
             add(new AnotherBite1());
             add(new AnotherBite2());
             add(new AnotherBite3());
@@ -119,7 +119,7 @@ public class WildHunter5DealCycle extends DealCycle {
     WillOfLiberty willOfLiberty = new WillOfLiberty();
 
     public WildHunter5DealCycle(Job job) {
-        super(job, new AdvancedFinalAttackWildHunter());
+        super(job, new FinalAttackWildHunter());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
@@ -132,6 +132,19 @@ public class WildHunter5DealCycle extends DealCycle {
 
         ringSwitching.setCooldown(120.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(willOfLiberty);                 // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);     // 240
+        getSkillSequence1().add(silentRampage);                 // 240
+        getSkillSequence1().add(criticalReinforce);             // 210
+        getSkillSequence1().add(jaguarStorm);                   // 210
+        getSkillSequence1().add(soulContract);                  // 30
+        // 시드링                                              // 30
+
+        mapleWorldGoddessBlessing.setDelay(240L);
+        silentRampage.setDelay(240L);
+        criticalReinforce.setDelay(210L);
+        jaguarStorm.setDelay(210L);
     }
 
     @Override
@@ -189,40 +202,30 @@ public class WildHunter5DealCycle extends DealCycle {
                 addSkillEvent(crossroad);
                 jaguarSkillDelay = new Timestamp(getStart().getTime() + crossroad.getJaguarDelay());
             }
-            if (cooldownCheck(resistanceLineInfantry)) {
-                addSkillEvent(resistanceLineInfantry);
-            }
-            if (cooldownCheck(jaguarMaximum)) {
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(willOfLiberty);
+            if (
+                    cooldownCheck(jaguarMaximum)
+                            && cooldownCheck(resistanceLineInfantry)
+            ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(wildVulcanReinforce);
                 }
                 addSkillEvent(assistantHuntingUnitDelay);
                 drillContainer.setActivateTime(new Timestamp(-1));
                 addSkillEvent(drillContainer);
-                addSkillEvent(silentRampage);
-                addSkillEvent(criticalReinforce);
-                if (resistanceLineInfantry.getActivateTime().getTime() - getStart().getTime() < 3000) {
-                    while (!cooldownCheck(resistanceLineInfantry)) {
-                        addSkillEvent(wildVulcanReinforce);
-                    }
-                    addSkillEvent(resistanceLineInfantry);
-                }
-                addSkillEvent(jaguarStorm);
-                addSkillEvent(soulContract);
+                addSkillEvent(resistanceLineInfantry);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
                 }
                 addSkillEvent(jaguarSoul);
-                addSkillEvent(rampageAsOne);
+                if (cooldownCheck(rampageAsOne)) {
+                    addSkillEvent(rampageAsOne);
+                }
                 if (cooldownCheck(naturesBeliefWave)) {
                     addSkillEvent(naturesBeliefWave);
                 }
@@ -234,7 +237,6 @@ public class WildHunter5DealCycle extends DealCycle {
                 if (cooldownCheck(rampageAsOne)) {
                     addSkillEvent(rampageAsOne);
                 }
-                addSkillEvent(wildGrenade);
                 if (cooldownCheck(rampageAsOne)) {
                     addSkillEvent(rampageAsOne);
                 }
@@ -258,6 +260,11 @@ public class WildHunter5DealCycle extends DealCycle {
                             && getStart().before(new Timestamp(willOfLiberty.getActivateTime().getTime() - 15000))
             ) {
                 addSkillEvent(wildGrenade);
+            } else if (
+                    cooldownCheck(resistanceLineInfantry)
+                            && !cooldownCheck(willOfLiberty)
+            ) {
+                addSkillEvent(resistanceLineInfantry);
             } else {
                 addSkillEvent(wildVulcanReinforce);
             }
@@ -539,9 +546,15 @@ public class WildHunter5DealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

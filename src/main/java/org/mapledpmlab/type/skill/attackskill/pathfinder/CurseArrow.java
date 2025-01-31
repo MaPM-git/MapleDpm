@@ -12,5 +12,6 @@ public class CurseArrow extends AttackSkill {
         this.setLimitAttackCount(16L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.setCooldown(20.0);
     }
 }

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class HexChakramFury extends AttackSkill implements HexSkill {
     public HexChakramFury() {
         this.setName("헥스 : 차크람 퓨리");
-        this.setDamage(556.0);
+        this.setDamage(1076.0);
         this.setAttackCount(10L);
         this.setDelay(540L);
         this.setDotDuration(120L);

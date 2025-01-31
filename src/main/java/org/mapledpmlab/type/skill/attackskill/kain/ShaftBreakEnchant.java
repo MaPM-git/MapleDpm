@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ShaftBreakEnchant extends AttackSkill {
     public ShaftBreakEnchant() {
         this.setName("[발현] 샤프트 브레이크");
-        this.setDamage(216.0 + 206);
+        this.setDamage(782.0);
         this.setAttackCount(3L);
         this.setDelayByAttackSpeed(660L);
         this.setCooldown(11.0);

@@ -12,5 +12,6 @@ public class PeacemakerFinish extends AttackSkill {
         this.addFinalDamage(1.6);       // 코어강화
         this.getMultiAttackInfo().add(1050L);
         this.addFinalDamage(1.08);          // 오버로드 마나
+        this.setApplyFinalAttack(true);
     }
 }

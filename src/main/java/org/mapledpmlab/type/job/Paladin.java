@@ -61,7 +61,7 @@ public class Paladin extends Job {
 
         // 환산 보정
         this.addMainStatP(-36L);
-        this.addMainStat(-15L);
+        this.addMainStat(3L);
         //this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());

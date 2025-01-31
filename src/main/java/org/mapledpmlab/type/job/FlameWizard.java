@@ -68,8 +68,8 @@ public class FlameWizard extends Job {
 
         // 환산 보정
         this.addMainStatP(15L);
-        this.addMainStat(-1L);
-        this.addSubStat(-5L);
+        this.addMainStat(-3L);
+        this.addSubStat(-10L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

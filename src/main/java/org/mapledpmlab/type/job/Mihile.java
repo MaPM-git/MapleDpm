@@ -74,9 +74,9 @@ public class Mihile extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-78L);
+        this.addMainStatP(-75L);
         this.addMainStat(-9L);
-        this.addSubStat(-5L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new ArtifactNormal());

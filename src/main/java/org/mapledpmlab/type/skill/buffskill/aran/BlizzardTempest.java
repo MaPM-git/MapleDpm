@@ -12,7 +12,7 @@ public class BlizzardTempest extends BuffSkill {
         this.setName("블리자드 템페스트");
         this.setDuration(30L);
         this.setCooldown(90.0);
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setRelatedSkill(new IceBlock());
     }
 }

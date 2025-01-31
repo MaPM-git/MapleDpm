@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DragonDive extends AttackSkill {
     public DragonDive() {
         this.setName("드래곤 다이브");
-        this.setDamage(130.0 + 196);
+        this.setDamage(682.0);
         this.setAttackCount(3L);
         this.setDelay(30L);
         this.setDotDuration(3500L);

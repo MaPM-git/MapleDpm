@@ -7,7 +7,7 @@ public class VoidBurstSlash extends AttackSkill implements VoidSkill {
         this.setName("보이드 버스트(참격)");
         this.setDamage(2310.0);
         this.setAttackCount(15L);
-        this.setDelay(1200L);
+        this.setDelay(2520L);
         this.addFinalDamage(1.6);   // 코어강화
         this.setAddDamage(20L);     // 보이드-리인포스
         this.getMultiAttackInfo().add(1050L);

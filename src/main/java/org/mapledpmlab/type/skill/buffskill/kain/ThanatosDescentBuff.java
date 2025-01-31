@@ -13,6 +13,6 @@ public class ThanatosDescentBuff extends BuffSkill {
         this.addBuffDamage(45L);
         this.setCooldown(180.0);
         this.setApplyServerLag(true);
-        this.setDelay(540L);
+        this.setDelayByAttackSpeed(540L);
     }
 }

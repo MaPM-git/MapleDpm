@@ -75,7 +75,7 @@ public class NightWalker extends Job {
 
         // 환산 보정
         this.addMainStatP(-21L);
-        this.addMainStat(9L);
+        this.addMainStat(14L);
         this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());

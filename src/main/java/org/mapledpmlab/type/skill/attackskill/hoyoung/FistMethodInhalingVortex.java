@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class FistMethodInhalingVortex extends AttackSkill {
     public FistMethodInhalingVortex() {
         this.setName("권술 : 흡성와류");
-        this.setDamage(260.0);
+        this.setDamage(465.0);
         this.setDelayByAttackSpeed(990L);
         this.setAttackCount(6L);
         this.setCooldown(45.0);

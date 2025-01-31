@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Machina extends AttackSkill {
     public Machina() {
         this.setName("마키나");
-        this.setDamage(250.0 + 100);
+        this.setDamage(735.0);
         this.setDelayByAttackSpeed(30L);
         this.setAttackCount(4L);
         this.setDotDuration(720000L);

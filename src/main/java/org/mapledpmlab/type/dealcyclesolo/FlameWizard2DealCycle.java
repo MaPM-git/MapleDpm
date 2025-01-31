@@ -126,6 +126,16 @@ public class FlameWizard2DealCycle extends DealCycle {
         cygnusPhalanx.addFinalDamage(1.08);             // 오버로드 마나
 
         flameCount = 150;
+
+        getSkillSequence1().add(burningRegion);         // 630
+        getSkillSequence1().add(gloryOfGuardians);      // 30
+        getSkillSequence1().add(salamanderMischief);
+        getSkillSequence1().add(soulContract);          // 30
+
+        getSkillSequence2().add(burningRegion);
+        getSkillSequence2().add(soulContract);          // 30
+        burningRegion.setDelay(630L);
+        salamanderMischief.setDelay(210L);
     }
 
     @Override
@@ -146,47 +156,17 @@ public class FlameWizard2DealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(gloryOfGuardians)
-                    && getStart().after(new Timestamp(flameDischarge.getActivateTime().getTime() - 800))
+                    && cooldownCheck(soulContract)
             ) {
-                addSkillEvent(burningRegion);
-                addSkillEvent(gloryOfGuardians);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (orbitalCount % 4 == 0) {
-                        addSkillEvent(orbitalFlameReinforce);
-                    } else {
-                        addSkillEvent(orbitalFlame);
-                    }
-                    orbitalCount++;
-                    if (infernoRizeCount != 50) {
-                        infernoRizeCount++;
-                    }
-                    if (cooldownCheck(orbitalFlameDot)) {
-                        addSkillEvent(orbitalFlameDot);
-                    }
                 }
-                while (!cooldownCheck(soulContract)) {
-                    if (orbitalCount % 4 == 0) {
-                        addSkillEvent(orbitalFlameReinforce);
-                    } else {
-                        addSkillEvent(orbitalFlame);
-                    }
-                    orbitalCount++;
-                    if (infernoRizeCount != 50) {
-                        infernoRizeCount++;
-                    }
-                    if (cooldownCheck(orbitalFlameDot)) {
-                        addSkillEvent(orbitalFlameDot);
-                    }
-                }
-                addSkillEvent(salamanderMischief);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(flameDischarge);
                 addSkillEvent(blazingExtinction);
-                addSkillEvent(soulContract);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
@@ -194,6 +174,9 @@ public class FlameWizard2DealCycle extends DealCycle {
                 }
                 if (cooldownCheck(eternity)) {
                     addSkillEvent(eternity);
+                }
+                while (!cooldownCheck(blazingOrbitalFlame)) {
+                    addPlatDeal();
                 }
                 addSkillEvent(blazingOrbitalFlame);
                 addSkillEvent(infinityFlameCircle);
@@ -203,8 +186,7 @@ public class FlameWizard2DealCycle extends DealCycle {
                     cooldownCheck(soulContract)
                             && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 50000))
             ) {
-                addSkillEvent(burningRegion);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence2());
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(100 * 1000))
@@ -390,7 +372,7 @@ public class FlameWizard2DealCycle extends DealCycle {
                         if (
                                 skill instanceof BlazingOrbitalFlame
                                         || skill instanceof InfinityFlameCircle
-                                        || skill instanceof InfinityFlameCircle5
+                                        || skill instanceof InfinityFlameCircle4
                         ) {
                             orbitalExplosionCount++;
                             if (orbitalExplosionCount % 11 == 0) {

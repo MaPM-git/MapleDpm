@@ -57,7 +57,7 @@ public class LaraContinuousDealCycle extends DealCycle {
             add(new SunRiverMountainWindWave3());
             add(new SunRiverMountainWindWave4());
             //add(new VineSkein());
-            //add(new Wakeup());
+            add(new Wakeup());
         }
     };
 
@@ -135,8 +135,6 @@ public class LaraContinuousDealCycle extends DealCycle {
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(essenceSprinkle);
                 }
                 addSkillEvent(grandisGoddessBlessingAnima);
                 addSkillEvent(armfulTree);
@@ -229,6 +227,8 @@ public class LaraContinuousDealCycle extends DealCycle {
                 }
                 eruptionCnt ++;
                 addSkillEvent(eruptionRipplingRiver);
+            } else if (cooldownCheck(wakeup)) {
+                addSkillEvent(wakeup);
             } else {
                 addSkillEvent(essenceSprinkle);
             }
@@ -366,7 +366,11 @@ public class LaraContinuousDealCycle extends DealCycle {
                     }
                 } else {
                     Long attackCount = 0L;
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof Wakeup) {
+                        i = 1200;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
@@ -429,9 +433,15 @@ public class LaraContinuousDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

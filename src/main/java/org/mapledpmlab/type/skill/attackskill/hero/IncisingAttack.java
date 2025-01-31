@@ -7,7 +7,7 @@ public class IncisingAttack extends AttackSkill {
     public IncisingAttack() {
         this.setName("인사이징");
         this.setAttackCount(4L);
-        this.setDamage(403.0);      // 쓸컴뱃 기준
+        this.setDamage(640.0);
         this.setDelayByAttackSpeed(870L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);

@@ -70,7 +70,7 @@ public class BattleMage extends Job {
 
         // 환산 보정
         this.addMainStatP(3L);
-        this.addMainStat(5L);
+        this.addMainStat(2L);
         this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());

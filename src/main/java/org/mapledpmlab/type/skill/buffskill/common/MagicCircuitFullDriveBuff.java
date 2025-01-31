@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class MagicCircuitFullDriveBuff extends BuffSkill {
     public MagicCircuitFullDriveBuff() {
         this.setName("매직 서킷 풀드라이브");
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setBuffDamage(45L);
         this.setDuration(60L);
         this.setCooldown(120.0);

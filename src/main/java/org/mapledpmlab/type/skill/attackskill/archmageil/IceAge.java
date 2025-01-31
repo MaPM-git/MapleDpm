@@ -7,7 +7,7 @@ public class IceAge extends AttackSkill {
         this.setName("아이스 에이지");
         this.setDamage(1100.0);
         this.setAttackCount(10L);
-        this.setDelay(870L);
+        this.setDelayByAttackSpeed(870L);
         this.setApplyFinalAttack(true);
         this.addFinalDamage(1.6);           // 코어강화
         this.addFinalDamage(1.08);          // 오버로드 마나

@@ -23,6 +23,7 @@ public class DarkKnightDealCycle extends DealCycle {
             add(new BeholderDominant());
             add(new BeholderImpact());
             add(new BeholderRevenge());
+            add(new BeholderPunishment());
             add(new BeholderShock());
             add(new BeholderShockDarkWarfare());
             add(new CrestOfTheSolar());
@@ -37,9 +38,7 @@ public class DarkKnightDealCycle extends DealCycle {
             add(new GungnirDescent());
             add(new PiercingCycloneFirstDelay());
             add(new PiercingCycloneKeydown());
-            add(new PiercingCycloneKeydownDelay());
             add(new PiercingCycloneFinish());
-            add(new PiercingCycloneEndDelay());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
         }
@@ -59,12 +58,15 @@ public class DarkKnightDealCycle extends DealCycle {
         }
     };
 
+    int beholderRevengeCount = 5;
+
     Timestamp beholderImpactEndTime = new Timestamp(0);
 
     AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
     BeholderDominant beholderDominant = new BeholderDominant();
     BeholderImpact beholderImpact = new BeholderImpact();
     BeholderRevenge beholderRevenge = new BeholderRevenge();
+    BeholderPunishment beholderPunishment = new BeholderPunishment();
     BeholderShock beholderShock = new BeholderShock();
     BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
@@ -99,6 +101,20 @@ public class DarkKnightDealCycle extends DealCycle {
         ringSwitching.setCooldown(180.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
         auraWeaponBuff.setCooldown(180.0);
+
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(auraWeaponBuff);
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(darkThirst);                // 660
+        getSkillSequence1().add(soulContract);              // 30
+
+        getSkillSequence2().add(darkThirst);                // 660
+        darkThirst.setDelay(660L);
+
+        bodyOfSteel.setDelay(60L);
+        auraWeaponBuff.setDelay(60L);
+        mapleWorldGoddessBlessing.setDelay(60L);
     }
 
     @Override
@@ -107,23 +123,16 @@ public class DarkKnightDealCycle extends DealCycle {
             if (
                     cooldownCheck(restraintRing)
                     && getStart().before(new Timestamp(660 * 1000))
+                    && getStart().after(new Timestamp(darkSpear.getActivateTime().getTime() - 2000))
             ) {
                 addSkillEvent(darknessAuraDot);
-                addSkillEvent(auraWeaponBuff);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(gungnirDescent);
-                    addSkillEvent(gungnirDescent);
                 }
-                addSkillEvent(bodyOfSteel);
-                addSkillEvent(darkThirst);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(restraintRing);
                 if (cooldownCheck(beholderShock)) {
                     addSkillEvent(beholderShock);
@@ -166,7 +175,7 @@ public class DarkKnightDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -214,6 +223,20 @@ public class DarkKnightDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    skill instanceof GungnirDescent
+                    || skill instanceof DarkSynthesis
+            ) {
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 60) {
+                    addSkillEvent(beholderRevenge);
+                    beholderRevengeCount += 1;
+                    if (beholderRevengeCount >= 6) {
+                        addSkillEvent(beholderPunishment);
+                        beholderRevengeCount -= 6;
+                    }
+                }
+            }
             if (skill instanceof BeholderImpact) {
                 beholderImpactEndTime = new Timestamp(getStart().getTime() + beholderImpact.getDotDuration());
             }
@@ -240,7 +263,10 @@ public class DarkKnightDealCycle extends DealCycle {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
-                        if (skill instanceof PiercingCycloneKeydown) {
+                        if (
+                                skill instanceof PiercingCycloneKeydown
+                                || skill instanceof DarkSpear
+                        ) {
                             Timestamp now = new Timestamp(getStart().getTime());
                             getStart().setTime(getStart().getTime() + i);
                             if (
@@ -248,6 +274,15 @@ public class DarkKnightDealCycle extends DealCycle {
                                     && getStart().after(beholderImpactEndTime)
                             ) {
                                 addSkillEvent(beholderShock);
+                            }
+                            Long ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= 60) {
+                                addSkillEvent(beholderRevenge);
+                                beholderRevengeCount += 1;
+                                if (beholderRevengeCount >= 6) {
+                                    addSkillEvent(beholderPunishment);
+                                    beholderRevengeCount -= 6;
+                                }
                             }
                             getStart().setTime(now.getTime());
                         }
@@ -257,34 +292,17 @@ public class DarkKnightDealCycle extends DealCycle {
             } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
                 this.multiAttackProcess(skill);
             } else {
-                if (skill instanceof PiercingCycloneEndDelay) {
-                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150), new Timestamp(getStart().getTime() + 150)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150));
-                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30), new Timestamp(getStart().getTime() + 150 + 30)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30));
-                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30));
-                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30));
-                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30));
-                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30));
-                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30));
-                    getSkillEventList().add(new SkillEvent(piercingCycloneFinish, new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30 + 30), new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30 + 30)));
-                    getEventTimeList().add(new Timestamp(getStart().getTime() + 150 + 30 + 30 + 30 + 30 + 30 + 30 + 30));
-                }
-                if (cooldownCheck(beholderRevenge)) {
-                    getSkillEventList().add(new SkillEvent(beholderRevenge, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
-                    getEventTimeList().add(new Timestamp(getStart().getTime()));
-                    applyCooldown(beholderRevenge);
-                }
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         }
         applyCooldown(skill);
+        if (
+                skill instanceof BeholderShock
+                && cooldownCheck(skill)
+        ) {
+            beholderShock.setActivateTime(new Timestamp(getStart().getTime() + 360));
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -293,6 +311,34 @@ public class DarkKnightDealCycle extends DealCycle {
         getStart().setTime(getStart().getTime() + skill.getDelay());
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
+        }
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (
+                    skill instanceof PiercingCycloneFinish
+                    || skill instanceof DeadSpaceDarkAura
+                    || skill instanceof DeadSpaceSlash
+            ) {
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 60) {
+                    addSkillEvent(beholderRevenge);
+                    beholderRevengeCount += 1;
+                    if (beholderRevengeCount >= 6) {
+                        addSkillEvent(beholderPunishment);
+                        beholderRevengeCount -= 6;
+                    }
+                }
+                getStart().setTime(now.getTime());
+            }
         }
     }
 }

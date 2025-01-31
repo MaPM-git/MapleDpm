@@ -7,7 +7,7 @@ public class DivisionSoul extends AttackSkill {
         this.setName("분혼 격참");
         this.setDelayByAttackSpeed(900L);
         this.setAttackCount(10L);
-        this.setDamage(736.0);
+        this.setDamage(736.0 + 662);
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
     }

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class GrimReaperMOD extends AttackSkill {
     public GrimReaperMOD() {
         this.setName("그림 리퍼(마스터 오브 데스)");
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setInterval(2000L);
         this.setDotDuration(30000L);
         this.setDamage(1870.0);

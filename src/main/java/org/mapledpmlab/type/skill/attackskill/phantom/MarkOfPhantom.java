@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class MarkOfPhantom extends AttackSkill {
     public MarkOfPhantom() {
         this.setName("마크 오브 팬텀(궤적)");
-        this.setDelay(900L);
+        this.setDelayByAttackSpeed(900L);
         this.setCooldown(30.0);
         this.setAttackCount(6L);
         this.setDamage(660.0);

@@ -6,7 +6,7 @@ public class SiegeBomber extends AttackSkill {
     public SiegeBomber() {
         this.setName("시즈 봄버");
         this.setAttackCount(1L);
-        this.setDamage(300.0);
+        this.setDamage(615.0);
         this.setDelay(630L);
         this.setCooldown(60.0);
         this.setDotDuration(60000L);

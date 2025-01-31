@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class HexChakramSweep extends AttackSkill implements HexSkill {
     public HexChakramSweep() {
         this.setName("헥스 : 차크람 스윕");
-        this.setDamage(300.0 + 405);
+        this.setDamage(1326.0);
         this.setAttackCount(7L);
         this.setCooldown(6.0);
         this.setDelayByAttackSpeed(780L);

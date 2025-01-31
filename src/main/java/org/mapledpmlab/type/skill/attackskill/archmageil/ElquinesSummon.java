@@ -5,10 +5,10 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ElquinesSummon extends AttackSkill {
     public ElquinesSummon() {
         this.setName("엘퀴네스");
-        this.setDamage(129.0);
+        this.setDamage(230.0);
         this.setAttackCount(3L);
         this.setCooldown(265.0);
-        this.setDelay(600L);
+        this.setDelay(960L);
         this.setInterval(3000L);
         this.setDotDuration(260000L);
         this.addFinalDamage(2.2);       // 코어강화

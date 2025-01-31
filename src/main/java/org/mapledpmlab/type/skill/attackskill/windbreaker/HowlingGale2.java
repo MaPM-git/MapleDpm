@@ -7,7 +7,7 @@ public class HowlingGale2 extends AttackSkill {
         this.setName("하울링 게일(퍼뎀 1715)");
         this.setAttackCount(3L);
         this.setDamage(1715.0);
-        this.setDelay(840L);
+        this.setDelayByAttackSpeed(840L);
         this.setCooldown(40.0);
         this.setApplyFinalAttack(true);
         this.setDotDuration(10000L);

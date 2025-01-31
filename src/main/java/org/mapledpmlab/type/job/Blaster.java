@@ -43,7 +43,6 @@ public class Blaster extends Job {
         // 2차
         this.addCriticalP(30.0);        // 건틀렛 마스터리
         this.addAtt(20L);
-        this.addFinalDamage(1.05);
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
         this.addDamage(15L);            // 차지 마스터리
@@ -52,8 +51,8 @@ public class Blaster extends Job {
         this.addAttP(15L);              // 콤비네이션 트레이닝
 
         // 4차
-        this.addCriticalDamage(16.0);   // 건틀렛 엑스퍼트
-        this.addBossDamage(16L);
+        this.addCriticalDamage(21.0);   // 건틀렛 엑스퍼트
+        this.addBossDamage(21L);
         this.addIgnoreDefenseList(38L); // 어드밴스드 차지 마스터리
         this.addAtt(42L);               // 콤비네이션 트레이닝 II
         this.addCriticalP(40.0);
@@ -63,8 +62,8 @@ public class Blaster extends Job {
 
         // 환산 보정
         this.addMainStatP(-57L);
-        this.addMainStat(2L);
-        //this.addSubStat(10L);
+        this.addMainStat(11L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

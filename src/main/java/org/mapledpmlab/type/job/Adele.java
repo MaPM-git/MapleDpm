@@ -72,9 +72,9 @@ public class Adele extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-69L);
-        this.addMainStat(-11L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-63L);
+        this.addMainStat(-2L);
+        //this.addSubStat(-5L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

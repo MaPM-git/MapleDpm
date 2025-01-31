@@ -6,7 +6,7 @@ public class Marker1 extends AttackSkill {
     public Marker1() {
         this.setName("마커");
         //this.setName("마커(1)");
-        this.setDamage(2500.0);
+        this.setDamage(3625.0);
         this.setAttackCount(6L);
         //this.setAttackCount(6L * 2);
         this.setCooldown(60.0);

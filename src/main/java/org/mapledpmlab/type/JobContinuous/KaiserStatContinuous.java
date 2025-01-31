@@ -79,8 +79,8 @@ public class KaiserStatContinuous extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-48L);
-        this.addMainStat(-5L);
+        this.addMainStatP(-75L);
+        this.addMainStat(4L);
         this.addSubStat(0L);
 
         this.setAbility(new BossBuffReuse());

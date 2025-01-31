@@ -11,7 +11,7 @@ public class BodyOfSteel extends BuffSkill {
     public BodyOfSteel(Long burningTime) {
         this.setName("바디 오브 스틸");
         this.addBuffDamage(burningTime / 1000 * 6);
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setDuration(18L);
         this.setCooldown(120.0);
         this.setApplyServerLag(true);

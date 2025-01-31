@@ -68,9 +68,9 @@ public class DualBlade extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-69L);
-        this.addMainStat(-2L);
-        //this.addSubStat(5L);
+        this.addMainStatP(-63L);
+        this.addMainStat(-12L);
+        this.addSubStat(-15L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

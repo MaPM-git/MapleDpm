@@ -32,6 +32,7 @@ public class MarksmanContinuousDealCycle extends DealCycle {
             add(new FinalAttackMarksman());
             add(new Freezer());
             add(new GuidedArrow());
+            add(new LongRangeTrueShot());
             add(new RepeatingCrossbowCartridge());
             add(new Snipe());
             add(new SpiderInMirror());
@@ -78,6 +79,7 @@ public class MarksmanContinuousDealCycle extends DealCycle {
     FinalAimWave finalAimWave = new FinalAimWave();
     Freezer freezer = new Freezer();
     GuidedArrow guidedArrow = new GuidedArrow();
+    LongRangeTrueShot longRangeTrueShot = new LongRangeTrueShot();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
     RepeatingCrossbowCartridge repeatingCrossbowCartridge = new RepeatingCrossbowCartridge();
     RepeatingCrossbowCartridgeBuff repeatingCrossbowCartridgeBuff = new RepeatingCrossbowCartridgeBuff();
@@ -110,6 +112,22 @@ public class MarksmanContinuousDealCycle extends DealCycle {
 
         addSkillEvent(snipeList.get(snipeCount % 4));
         snipeCount++;
+
+        getSkillSequence1().add(repeatingCrossbowCartridgeBuff);
+        getSkillSequence1().add(splitArrowBuff);
+        getSkillSequence1().add(epicAdventure);                     // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(evolve);
+        getSkillSequence1().add(bullsEye);
+        getSkillSequence1().add(criticalReinforce);
+        getSkillSequence1().add(soulContract);                      // 30
+
+        repeatingCrossbowCartridgeBuff.setDelay(180L);
+        splitArrowBuff.setDelay(150L);
+        mapleWorldGoddessBlessing.setDelay(150L);
+        evolve.setDelay(150L);
+        bullsEye.setDelay(150L);
+        criticalReinforce.setDelay(150L);
     }
 
     @Override
@@ -119,36 +137,27 @@ public class MarksmanContinuousDealCycle extends DealCycle {
             if (cooldownCheck(freezer)) {
                 addSkillEvent(freezer);
             }
-            if (cooldownCheck(epicAdventure)) {
+            if (cooldownCheck(criticalReinforce)) {
                 isNuke = true;
-                addSkillEvent(repeatingCrossbowCartridgeBuff);
-                addSkillEvent(splitArrowBuff);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(snipeList.get(snipeCount % 4));
-                    snipeCount++;
                 }
-                addSkillEvent(evolve);
-                addSkillEvent(bullsEye);
-                addSkillEvent(criticalReinforce);
-                addSkillEvent(soulContract);
-                if (cooldownCheck(chargedArrow)) {
-                    addSkillEvent(snipeList.get(snipeCount % 4));
-                    snipeCount++;
-                }
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(trueSnipe);
+                if (!cooldownCheck(longRangeTrueShot)) {
+                    addSkillEvent(snipeList.get(snipeCount % 4));
+                    snipeCount++;
+                }
+                addSkillEvent(longRangeTrueShot);
+                for (int i = 0; i < 8; i++) {
+                    addSkillEvent(repeatingCrossbowCartridge);
+                }
                 if (cooldownCheck(finalAimWave)) {
                     splitArrow6th = 13;
                     addSkillEvent(finalAimWave);
-                }
-                for (int i = 0; i < 8; i++) {
-                    addSkillEvent(repeatingCrossbowCartridge);
                 }
                 dealCycleOrder ++;
                 isNuke = false;
@@ -159,6 +168,11 @@ public class MarksmanContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(soulContract);
                 addSkillEvent(trueSnipe);
+            } else if (
+                    cooldownCheck(longRangeTrueShot)
+                    && !cooldownCheck(epicAdventure)
+            ) {
+                addSkillEvent(longRangeTrueShot);
             } else {
                 addSkillEvent(snipeList.get(snipeCount % 4));
                 snipeCount++;
@@ -172,7 +186,7 @@ public class MarksmanContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -309,6 +323,7 @@ public class MarksmanContinuousDealCycle extends DealCycle {
                         || skill instanceof EnhanceSnipe
                         || skill instanceof UltimateSnipe
                         || skill instanceof RepeatingCrossbowCartridge
+                        || skill instanceof LongRangeTrueShot
                 )
         ) {
             addSkillEvent(chargedArrow);
@@ -325,7 +340,10 @@ public class MarksmanContinuousDealCycle extends DealCycle {
         Long sum = 0L;
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
             sum += info;
-            if (skill instanceof RepeatingCrossbowCartridge) {
+            if (
+                    skill instanceof RepeatingCrossbowCartridge
+                    || skill instanceof LongRangeTrueShot
+            ) {
                 Timestamp now = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);
                 if (getStart().before(splitArrowEndTime)) {
@@ -347,6 +365,7 @@ public class MarksmanContinuousDealCycle extends DealCycle {
                             || skill instanceof FinalAimWave
                             || skill instanceof RepeatingCrossbowCartridge
                             || skill instanceof ChargedArrow
+                            || skill instanceof LongRangeTrueShot
             ) {
                 Timestamp now = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);
@@ -396,9 +415,15 @@ public class MarksmanContinuousDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

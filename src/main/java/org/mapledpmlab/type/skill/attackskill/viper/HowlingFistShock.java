@@ -9,7 +9,7 @@ public class HowlingFistShock extends AttackSkill {
         this.setDamage(1505.0);
         this.setCooldown(90.0);
         this.setApplyFinalAttack(true);
-        this.setDelay(2580L);
+        this.setDelayByAttackSpeed(2580L);
         this.addFinalDamage(1.6);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(720L);

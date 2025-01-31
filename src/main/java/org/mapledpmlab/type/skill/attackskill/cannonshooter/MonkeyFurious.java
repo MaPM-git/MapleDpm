@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class MonkeyFurious extends AttackSkill {
     public MonkeyFurious() {
         this.setName("몽키 퓨리어스");
-        this.setDamage(180.0);
+        this.setDamage(314.0);
         this.setAttackCount(9L);        // 벅샷
         this.setDelayByAttackSpeed(810L);
         this.setCooldown(60.0);

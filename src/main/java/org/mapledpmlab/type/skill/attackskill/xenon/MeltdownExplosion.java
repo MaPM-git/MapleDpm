@@ -6,8 +6,8 @@ import org.mapledpmlab.type.skill.buffskill.xenon.MeltdownExplosionDebuff;
 public class MeltdownExplosion extends AttackSkill {
     public MeltdownExplosion() {
         this.setName("멜트다운 익스플로젼");
-        this.setAttackCount(6L * 2);
-        this.setDamage(1500.0);
+        this.setAttackCount(7L * 2);
+        this.setDamage(2571.0);
         this.setDelayByAttackSpeed(3150L);
         this.setRelatedSkill(new MeltdownExplosionDebuff());
         this.addFinalDamage(2.2);               // 코어 강화

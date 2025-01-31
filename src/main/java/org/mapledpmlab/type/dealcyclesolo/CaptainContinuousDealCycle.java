@@ -39,6 +39,7 @@ public class CaptainContinuousDealCycle extends DealCycle {
             add(new DualPistolCrewNectar());
             add(new FinalAttackCaptain());
             add(new HeadShot());
+            add(new HeadShotReinforce());
             add(new MarksmanCrew());
             add(new MarksmanCrewNectar());
             add(new NautilusAssaultHull());
@@ -65,6 +66,8 @@ public class CaptainContinuousDealCycle extends DealCycle {
         }
     };
 
+    int headshotCount = 2;
+
     boolean isNuke = false;
     boolean isQuickDraw = false;
 
@@ -84,6 +87,7 @@ public class CaptainContinuousDealCycle extends DealCycle {
     Dreadnought dreadnought = new Dreadnought();
     EpicAdventure epicAdventure = new EpicAdventure();
     HeadShot headShot = new HeadShot();
+    HeadShotReinforce headShotReinforce = new HeadShotReinforce();
     LuckyDice luckyDice = new LuckyDice();
     LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
@@ -113,6 +117,31 @@ public class CaptainContinuousDealCycle extends DealCycle {
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
 
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(pirateFlag);                // 570
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing); // 210
+        getSkillSequence1().add(overdrive);                 // 30
+        getSkillSequence1().add(untiringNectar);            // 30
+        getSkillSequence1().add(soulContract);              // 30
+
+        getSkillSequence2().add(pirateFlag);                // 570
+        getSkillSequence2().add(overdrive);                 // 30
+        getSkillSequence2().add(untiringNectar);            // 30
+        getSkillSequence2().add(soulContract);              // 30
+
+        getSkillSequence3().add(pirateFlag);
+        pirateFlag.setDelay(570L);
+
+        getSkillSequence4().add(luckyDice);
+        luckyDice.setDelay(660L);
+
+        getSkillSequence5().add(assembleCrewDelay);
+        assembleCrewDelay.setDelay(660L);
+
+        overdrive.getRelatedSkill().setDelay(30L);
+        untiringNectar.setDelay(30L);
+        mapleWorldGoddessBlessing.setDelay(210L);
     }
 
     @Override
@@ -123,6 +152,7 @@ public class CaptainContinuousDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
                 luckyDice = new LuckyDice();
+                luckyDice.setDelay(660L);
                 addSkillEvent(luckyDice);
             }
             if (
@@ -145,20 +175,13 @@ public class CaptainContinuousDealCycle extends DealCycle {
             }
             if (cooldownCheck(nautilusAssaultHull)) {
                 isNuke = true;
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addPlatDeal();
                 }
-                addSkillEvent(pirateFlag);
-                addSkillEvent(overdrive);
-                addSkillEvent(untiringNectar);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(headShot)) {
                     addSkillEvent(headShot);
                 }
@@ -186,10 +209,7 @@ public class CaptainContinuousDealCycle extends DealCycle {
                 addSkillEvent(bulletParty);
                 isNuke = false;
             } else if (cooldownCheck(untiringNectar)) {
-                addSkillEvent(pirateFlag);
-                addSkillEvent(overdrive);
-                addSkillEvent(untiringNectar);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence2());
                 if (cooldownCheck(headShot)) {
                     addSkillEvent(headShot);
                 }
@@ -281,9 +301,15 @@ public class CaptainContinuousDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -378,7 +404,7 @@ public class CaptainContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -460,6 +486,13 @@ public class CaptainContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(continuousRing);
             }
+            if (skill instanceof HeadShot) {
+                headshotCount ++;
+                if (headshotCount == 3) {
+                    skill = headShotReinforce;
+                    headshotCount = 0;
+                }
+            }
             Long ran = (long) (Math.random() * 99 + 1);
             if (ran <= 9) {
                 isQuickDraw = true;
@@ -536,6 +569,9 @@ public class CaptainContinuousDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof HeadShotReinforce) {
+            applyCooldown(headShot);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {

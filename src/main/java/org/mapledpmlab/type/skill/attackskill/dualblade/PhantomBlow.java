@@ -6,7 +6,7 @@ public class PhantomBlow extends AttackSkill {
     public PhantomBlow() {
         this.setName("팬텀 블로우");
         this.setAttackCount(14L);    // 팬텀 블로우-보너스 어택
-        this.setDamage(530.0 + 106);
+        this.setDamage(530.0 + 106 + 42);
         this.addIgnoreDefenseList(40L);
         this.setDelay(570L);
         this.setAddDamage(20L);         // 팬텀 블로우-리인포스

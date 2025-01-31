@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ShaftBreak extends AttackSkill {
     public ShaftBreak() {
         this.setName("샤프트 브레이크");
-        this.setDamage(184.0 + 81);
+        this.setDamage(435.0);
         this.setAttackCount(3L);
         this.setDelayByAttackSpeed(660L);
         this.setCooldown(8.0);

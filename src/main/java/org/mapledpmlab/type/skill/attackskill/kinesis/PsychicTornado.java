@@ -6,7 +6,7 @@ public class PsychicTornado extends AttackSkill {
     public PsychicTornado() {
         this.setName("싸이킥 토네이도");
         this.setDamage(1650.0);
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setAttackCount(8L);
         this.setCooldown(180.0);
         this.setApplyFinalAttack(true);

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SummonScratchingClaw extends AttackSkill {
     public SummonScratchingClaw() {
         this.setName("서먼 스크래칭 클로");
-        this.setDamage(235.0 + 100 + 177);
+        this.setDamage(880.0);
         this.setAttackCount(4L);
         this.setDelay(150L + 30);
         this.setCooldown(3.0);

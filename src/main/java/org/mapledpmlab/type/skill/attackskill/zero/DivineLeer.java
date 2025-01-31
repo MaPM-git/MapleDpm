@@ -7,7 +7,7 @@ public class DivineLeer extends DotAttackSkill implements AlphaSkill {
         this.setName("디바인 리어");
         this.setAttackCount(1L);
         this.setDamage(200.0);
-        this.setDotDuration(10000L);
+        this.setDotDuration(720000L);
         this.setInterval(1000L);
     }
 }

@@ -7,6 +7,7 @@ public class ThanatosDescentFinish extends AttackSkill {
         this.setName("타나토스 디센트(죽음의 영역)");
         this.setDamage(1430.0);
         this.setAttackCount(15L);
+        this.setDelayByAttackSpeed(6510L);
         this.addFinalDamage(1.6);   // 코어강화
         this.getMultiAttackInfo().add(2670L);
         this.getMultiAttackInfo().add(180L);

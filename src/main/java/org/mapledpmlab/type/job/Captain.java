@@ -69,9 +69,9 @@ public class Captain extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-39L);
-        this.addMainStat(-2L);
-        this.addSubStat(5L);
+        this.addMainStatP(-45L);
+        this.addMainStat(9L);
+        this.addSubStat(-5L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

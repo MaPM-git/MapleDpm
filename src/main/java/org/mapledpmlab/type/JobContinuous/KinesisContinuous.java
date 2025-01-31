@@ -76,8 +76,8 @@ public class KinesisContinuous extends Job {
         this.addCriticalDamage(12.0);   // 숙달
 
         // 환산 보정
-        this.addMainStatP(33L);
-        this.addMainStat(3L);
+        this.addMainStatP(42L);
+        this.addMainStat(-2L);
         this.addSubStat(-5L);
 
         this.setAbility(new PassiveBossAbnormal());

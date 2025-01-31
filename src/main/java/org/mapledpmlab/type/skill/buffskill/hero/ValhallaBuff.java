@@ -10,9 +10,8 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class ValhallaBuff extends BuffSkill {
     public ValhallaBuff() {
         this.setName("발할라");
-        this.setRelatedSkill(new ValhallaDot());
         this.setCooldown(120.0);
-        this.setDelay(900L);
+        this.setDelay(780L);
         this.setDuration(30L);
         this.setBuffAttMagic(50L);
         this.setBuffCriticalP(30.0);

@@ -16,7 +16,7 @@ public class Kain extends Job {
     public Kain() {
         // 기본
         super();
-        this.setName("카인(리웨)");
+        this.setName("카인(리웨썸)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -68,8 +68,8 @@ public class Kain extends Job {
 
         // 환산 보정
         this.addMainStatP(-63L);
-        this.addMainStat(-1L);
-        this.addSubStat(-5L);
+        this.addMainStat(-12L);
+        //this.addSubStat(-5L);
 
         this.setAbility(new PassiveBossCritical());
         this.setArtifact(new ArtifactNormal());

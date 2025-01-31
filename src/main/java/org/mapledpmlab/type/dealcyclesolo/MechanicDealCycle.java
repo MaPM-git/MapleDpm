@@ -24,6 +24,8 @@ public class MechanicDealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DistortionField());
+            add(new DistortionFieldIntense());
+            add(new DistortionFieldIntenseBomb());
             add(new GroundZeroBombardment());
             add(new GroundZeroEarthquake());
             add(new GroundZeroExplosion());
@@ -79,6 +81,7 @@ public class MechanicDealCycle extends DealCycle {
     BomberTime bomberTime = new BomberTime();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     DistortionField distortionField = new DistortionField();
+    DistortionFieldIntenseBomb distortionFieldIntenseBomb = new DistortionFieldIntenseBomb();
     GroundZeroEarthquake groundZeroEarthquake = new GroundZeroEarthquake();
     HomingMissile homingMissile = new HomingMissile();
     LuckyDiceMechanic luckyDice = new LuckyDiceMechanic();
@@ -121,9 +124,32 @@ public class MechanicDealCycle extends DealCycle {
         luckyDice.setCooldown(180.0);
         luckyDice.setBuffAttMagic(0L);
         luckyDice.setBuffDamage(40L);
+        luckyDice.setDelay(660L);
         addSkillEvent(luckyDice);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
+
+        /*
+        시퀀스 1 ->캐리어, 리버티, 메여축 3개
+        시퀀스 2-> 옵드, 엔버, 시드링 3개
+        이런식으로 따로 둬서 해요
+
+        멀티플 -> 시퀀스 1 -> 마미컨 -> 시퀀스 2 -> 호밍누른채로 그라운드제로 -> 전탄누르고 봄버누르기
+        */
+        getSkillSequence1().add(mechaCarrierSummon);
+        getSkillSequence1().add(willOfLiberty);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+
+        getSkillSequence2().add(overdrive);                 // 420
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(restraintRing);             // 30
+
+        getSkillSequence3().add(overdrive);                 // 420
+        getSkillSequence3().add(soulContract);              // 30
+        getSkillSequence3().add(weaponJumpRing);            // 30
+
+        mechaCarrierSummon.setDelay(330L);
+        mapleWorldGoddessBlessing.setDelay(300L);
     }
 
     @Override
@@ -131,6 +157,7 @@ public class MechanicDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDiceMechanic();
+                luckyDice.setDelay(660L);
                 if (
                         luckyDice.getBuffDamage() >= 30
                                 || luckyDice.getBuffAttMagic() >= 15
@@ -150,21 +177,25 @@ public class MechanicDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(600 * 1000))
                             && getStart().after(new Timestamp(microMissileContainer.getActivateTime().getTime() - 5000))
             ) {
+                supportWaverHEXDie.setActivateTime(new Timestamp(-1));
                 addSkillEvent(supportWaverHEXDie);
                 addSkillEvent(robotLauncherRM7Die);
                 addSkillEvent(robotFactoryRM1Die);
                 addSkillEvent(magneticFieldDie);
                 addSkillEvent(multipleOptionMFLSummon);
-                addSkillEvent(mechaCarrierSummon);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(willOfLiberty);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(massiveFireIRONBHit);
+                }
+                while (!cooldownCheck(microMissileContainer)) {
+                    if (cooldownCheck(distortionField)) {
+                        addSkillEvent(distortionField);
+                    } else {
+                        addSkillEvent(massiveFireIRONBHit);
+                    }
                 }
                 addSkillEvent(microMissileContainer);
                 addSkillEvent(overdrive);
@@ -236,7 +267,7 @@ public class MechanicDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -287,6 +318,12 @@ public class MechanicDealCycle extends DealCycle {
                 }
             }
         } else {
+            if (
+                    skill instanceof DistortionField
+                    && cooldownCheck(distortionFieldIntenseBomb)
+            ) {
+                skill = distortionFieldIntenseBomb;
+            }
             if (skill instanceof MultipleOptionMFLSummon) {
                 int cnt = 0;
                 for (long i = getStart().getTime() + 3150; i < getStart().getTime() + 135000; i += 1530) {
@@ -365,6 +402,9 @@ public class MechanicDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof DistortionFieldIntenseBomb) {
+            applyCooldown(distortionField);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -413,9 +453,15 @@ public class MechanicDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

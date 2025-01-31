@@ -6,7 +6,7 @@ public class MagnumPunch180 extends AttackSkill {
     public MagnumPunch180() {
         this.setName("매그넘 펀치");
         this.setAttackCount(3L);
-        this.setDamage(985.0);
+        this.setDamage(985.0 + 85);
         this.setDelay(180L);
         this.setAddDamage(10L);         // 펀치-리인포스
         this.addIgnoreDefenseList(20L); // 펀치-이그노어 가드

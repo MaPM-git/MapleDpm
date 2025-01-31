@@ -8,7 +8,7 @@ public class RavenTempest extends GaugeAttackSkill implements AncientForce {
         this.setAttackCount(6L);
         this.setDamage(1000.0);
         this.setCooldown(120.0);
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setDotDuration(10080L);
         this.setInterval(120L);
         this.setLimitAttackCount(84L);

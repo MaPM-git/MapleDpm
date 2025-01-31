@@ -79,8 +79,8 @@ public class StrikerContinuous extends Job {
 
         // 환산 보정
         this.addMainStatP(-36L);
-        this.addMainStat(-8L);
-        this.addSubStat(-10L);
+        this.addMainStat(0L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

@@ -6,12 +6,12 @@ public class FourSeasons extends AttackSkill {
     public FourSeasons() {
         this.setName("포 시즌");
         this.setApplyFinalAttack(true);
-        this.setAttackCount(7L);
+        this.setAttackCount(7L * 2);
         this.setCooldown(14.0);
-        this.setDamage(358.0);
-        this.setDelayByAttackSpeed(960L);
+        this.setDamage(1090.0);
+        this.setDelayByAttackSpeed(840L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.addFinalDamage(1.7);       // 쉐도우 파트너
+        this.addFinalDamage(0.85);      // 쉐도우 파트너
     }
 }

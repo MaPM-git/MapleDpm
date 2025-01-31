@@ -118,6 +118,30 @@ public class ViperDealCycle extends DealCycle {
         luckyDice.setBuffDamage(40L);
         addSkillEvent(luckyDice);
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
+
+        getSkillSequence1().add(stimulate);
+        getSkillSequence1().add(lightningForm);
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(overdrive);                 // 420
+        getSkillSequence1().add(soulContract);              // 30
+        getSkillSequence1().add(restraintRing);             // 30
+
+        getSkillSequence2().add(overdrive);                 // 420
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(weaponJumpRing);            // 30
+
+        getSkillSequence3().add(luckyDice);
+
+        getSkillSequence4().add(pirateFlag);
+
+        stimulate.setDelay(160L);
+        lightningForm.setDelay(160L);
+        mapleWorldGoddessBlessing.setDelay(160L);
+
+        luckyDice.setDelay(660L);
+
+        pirateFlag.setDelay(660L);
     }
 
     @Override
@@ -135,6 +159,7 @@ public class ViperDealCycle extends DealCycle {
                 luckyDice.setCooldown(luckyDiceOneMoreChance.getCooldown());
                 luckyDice.setBuffDamage(luckyDiceOneMoreChance.getBuffDamage());
                 luckyDice.setBuffAttMagic(luckyDiceOneMoreChance.getBuffAttMagic());
+                luckyDice.setDelay(660L);
                 addSkillEvent(luckyDice);
             } else if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDice();
@@ -150,21 +175,13 @@ public class ViperDealCycle extends DealCycle {
                             || serpentStoneCount == 3
                     )
             ) {
-                addSkillEvent(stimulate);
-                addSkillEvent(lightningForm);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(fistEnrage);
                 }
-                addSkillEvent(overdrive);
-                addSkillEvent(soulContract);
-                addSkillEvent(restraintRing);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(fistEnrage);
                 if (cooldownCheck(liberateNeptunus)) {
                     addSkillEvent(liberateNeptunus);
@@ -385,7 +402,11 @@ public class ViperDealCycle extends DealCycle {
                 getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof SerpentAssaultEnrage) {
+                        i = 1080;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }

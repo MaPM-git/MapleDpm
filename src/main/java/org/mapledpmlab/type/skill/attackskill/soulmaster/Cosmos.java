@@ -7,7 +7,7 @@ public class Cosmos extends AttackSkill {
         this.setName("코스모스");
         this.setDelay(660L);
         this.setAttackCount(5L * 2);
-        this.setDamage(1100.0);
+        this.setDamage(1210.0);
         this.setCooldown(90.0);
         this.setDotDuration(15000L);
         this.setInterval(600L - 30 * (cosmicOrbCount - 1));

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DragonBreath extends AttackSkill {
     public DragonBreath() {
         this.setName("드래곤 브레스");
-        this.setDamage(241.0);
+        this.setDamage(505.0);
         this.setAttackCount(5L);
         this.setDelay(30L);
         this.setDotDuration(3120L);

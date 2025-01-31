@@ -11,7 +11,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class SpecialMonkeyEscort extends BuffSkill {
     public SpecialMonkeyEscort() {
         this.setName("스페셜 몽키 에스코트");
-        this.setDelay(780L);
+        this.setDelayByAttackSpeed(780L);
         this.setCooldown(90.0);
         this.setRelatedSkill(new MonkeyBombBasic());
         this.setDuration(35L);

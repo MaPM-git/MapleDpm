@@ -8,7 +8,7 @@ public class BladeTornado extends AttackSkill {
         this.setAttackCount(14L);
         this.setDamage(1320.0);
         this.addIgnoreDefenseList(100L);
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setCooldown(12.0);
         this.setApplyFinalAttack(true);
         this.setRelatedSkill(new BladeTornadoTyphoon());

@@ -7,7 +7,7 @@ public class DeadlyCharge extends AttackSkill {
         this.setName("데들리 차지");
         this.setApplyFinalAttack(true);
         this.setAttackCount(10L);
-        this.setDamage(825.0);
+        this.setDamage(1700.0);
         this.setCooldown(15.0);
         this.setDelayByAttackSpeed(840L);
         this.addFinalDamage(2.2);       // 코어강화

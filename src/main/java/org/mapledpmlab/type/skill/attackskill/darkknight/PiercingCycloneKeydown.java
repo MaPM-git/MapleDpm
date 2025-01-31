@@ -7,8 +7,9 @@ public class PiercingCycloneKeydown extends AttackSkill {
         this.setName("피어스 사이클론");
         this.setDamage(800.0);
         this.setAttackCount(8L);
+        this.setDelay(140L * 26);
         this.addIgnoreDefenseList(50L);
-        this.setRelatedSkill(new PiercingCycloneKeydownDelay());
+        this.setRelatedSkill(new PiercingCycloneFinish());
         this.setApplyFinalAttack(true);
         this.setInterval(140L);
         this.setDotDuration(3640L);

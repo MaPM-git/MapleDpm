@@ -6,7 +6,7 @@ public class CosmicShower extends AttackSkill {
     public CosmicShower(Long cosmicOrbCount) {
         this.setName("코스믹 샤워");
         this.setAttackCount(3L);
-        this.setDamage(740.0);
+        this.setDamage(740.0 + 70);
         this.setCooldown(45.0 + cosmicOrbCount * 3);
         this.setDotDuration(45000L + cosmicOrbCount * 3000);
         this.setInterval(1050L);

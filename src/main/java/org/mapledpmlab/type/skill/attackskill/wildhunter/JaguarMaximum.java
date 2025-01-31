@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class JaguarMaximum extends AttackSkill {
     public JaguarMaximum() {
         this.setName("재규어 맥시멈");
-        this.setDelay(2160L);
+        this.setDelay(960L);
         this.setDamage(740.0);
         this.setAttackCount(12L);
         this.setCooldown(120.0);

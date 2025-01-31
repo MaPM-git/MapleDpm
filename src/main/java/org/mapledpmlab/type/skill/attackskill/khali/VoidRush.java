@@ -8,8 +8,7 @@ public class VoidRush extends AttackSkill implements VoidSkill {
         this.setDamage(370.0);
         this.setAttackCount(4L);
         this.setCooldown(5.0);
-        this.setDelay(210L);
-        //this.setDelayByAttackSpeed(420L);
+        this.setDelay(210L + 30);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setAddDamage(20L);     // 보이드-리인포스

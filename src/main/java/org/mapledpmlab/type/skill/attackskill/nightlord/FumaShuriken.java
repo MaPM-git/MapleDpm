@@ -9,7 +9,7 @@ public class FumaShuriken extends AttackSkill {
         this.setAttackCount(7L * 2);
         this.setCooldown(25.0);
         this.setDamage(615.0);
-        this.setDelay(480L);
+        this.setDelayByAttackSpeed(480L);
         this.setDotDuration(3000L);
         this.setInterval(180L);
         this.addFinalDamage(1.6);       // 코어강화

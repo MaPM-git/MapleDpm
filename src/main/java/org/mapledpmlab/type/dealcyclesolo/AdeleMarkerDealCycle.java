@@ -50,7 +50,6 @@ public class AdeleMarkerDealCycle extends DealCycle {
             add(new Storm());
             add(new StormRestore());
             add(new Territory());
-            add(new TerritoryEnd());
             add(new Tread());
         }
     };
@@ -128,6 +127,19 @@ public class AdeleMarkerDealCycle extends DealCycle {
         auraWeaponBuff.setCooldown(180.0);
         grandisGoddessBlessingLef.setCooldown(120.0);
         etherSword = 3L;
+
+        auraWeaponBuff.setDelay(150L);
+        wrathOfGod.setDelay(150L);
+        magicCircuitFullDriveBuff.setDelay(150L);
+        bodyOfSteel.setDelay(150L);
+        grandisGoddessBlessingLef.setDelay(150L);
+        restoreBuff.setDelay(150L);
+        getSkillSequence1().add(auraWeaponBuff);
+        getSkillSequence1().add(wrathOfGod);
+        getSkillSequence1().add(magicCircuitFullDriveBuff);
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(grandisGoddessBlessingLef);
+        getSkillSequence1().add(restoreBuff);
     }
 
     @Override
@@ -143,34 +155,29 @@ public class AdeleMarkerDealCycle extends DealCycle {
             if (cooldownCheck(order3)) {
                 addSkillEvent(order3);
             }
-            if (cooldownCheck(restraintRing)) {
-                addSkillEvent(auraWeaponBuff);
+            if (
+                    cooldownCheck(restraintRing)
+                    && getStart().before(new Timestamp(600 * 1000))
+            ) {
+                if (cooldownCheck(shard)) {
+                    addSkillEvent(shard);
+                }
                 if (cooldownCheck(impale)) {
                     addSkillEvent(impale);
                 }
-                addSkillEvent(magicCircuitFullDriveBuff);
-                addSkillEvent(wrathOfGod);
+                if (cooldownCheck(shard)) {
+                    addSkillEvent(shard);
+                }
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (cooldownCheck(shard)) {
-                        addSkillEvent(shard);
-                    } else {
-                        addSkillEvent(devide);
-                    }
                 }
-                addSkillEvent(bodyOfSteel);
-                addSkillEvent(grandisGoddessBlessingLef);
                 if (cooldownCheck(shard)) {
                     addSkillEvent(shard);
                 }
-                addSkillEvent(restoreBuff);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(orderRestore);
                 if (cooldownCheck(shard)) {
                     addSkillEvent(shard);
@@ -440,7 +447,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
                     Long attackCount = 0L;
                     long i = ((AttackSkill) skill).getInterval();
                     if (skill instanceof Territory) {
-                        i = 1500;
+                        i = 1440;
                     }
                     if (skill instanceof Ruin) {
                         i = 1320;
@@ -484,7 +491,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
                 Double ran = Math.random() * 99;
                 if (ran <= getJob().getReuse()) {
                     if (skill instanceof Territory) {
-                        skill.setActivateTime(new Timestamp(getStart().getTime() + 7200));
+                        skill.setActivateTime(new Timestamp(getStart().getTime() + 10890));
                     }
                 } else  {
                     skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));

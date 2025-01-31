@@ -73,8 +73,8 @@ public class BattleMageContinuous extends Job {
 
         // 환산 보정
         this.addMainStatP(9L);
-        this.addMainStat(-13L);
-        this.addSubStat(5L);
+        this.addMainStat(-2L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

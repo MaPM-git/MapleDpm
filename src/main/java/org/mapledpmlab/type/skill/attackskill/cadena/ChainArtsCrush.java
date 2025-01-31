@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ChainArtsCrush extends AttackSkill {
     public ChainArtsCrush() {
         this.setName("체인아츠:크러시");
-        this.setDamage(510.0);
+        this.setDamage(967.0);
         this.setAttackCount(15L);
         this.setDelayByAttackSpeed(990L);
         this.setCooldown(30.0);

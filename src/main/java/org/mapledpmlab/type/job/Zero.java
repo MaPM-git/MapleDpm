@@ -47,9 +47,9 @@ public class Zero extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(6L);
-        this.addMainStat(1L);
-        this.addSubStat(10L);
+        this.addMainStatP(-6L);
+        this.addMainStat(-6L);
+        this.addSubStat(5L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

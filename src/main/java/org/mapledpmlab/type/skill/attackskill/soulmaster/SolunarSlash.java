@@ -7,7 +7,7 @@ public class SolunarSlash extends AttackSkill {
         this.setName("솔루나 슬래시");
         this.setDelay(390L);
         this.setAttackCount(6L * 2);
-        this.setDamage(243.0);
+        this.setDamage(470.0);
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

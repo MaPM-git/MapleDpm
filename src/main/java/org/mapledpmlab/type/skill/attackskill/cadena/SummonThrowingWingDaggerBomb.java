@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SummonThrowingWingDaggerBomb extends AttackSkill {
     public SummonThrowingWingDaggerBomb() {
         this.setName("서먼 스로잉 윙대거(폭발)");
-        this.setDamage(450.0 + 100 + 177);
+        this.setDamage(1293.0);
         this.setAttackCount(3L);
         this.setCooldown(10.0);
         this.setApplyReuse(true);

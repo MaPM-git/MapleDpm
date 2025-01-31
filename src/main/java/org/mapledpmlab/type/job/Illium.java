@@ -62,9 +62,9 @@ public class Illium extends Job {
         this.addMagic(65L);             // 소울 오브 크리스탈
 
         // 환산 보정
-        this.addMainStatP(51L);
-        this.addMainStat(6L);
-        this.addSubStat(-15L);
+        this.addMainStatP(63L);
+        this.addMainStat(-1L);
+        this.addSubStat(5L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

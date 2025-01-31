@@ -10,7 +10,7 @@ import org.mapledpmlab.type.skill.attackskill.illium.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
 import org.mapledpmlab.type.skill.buffskill.illium.*;
-import org.mapledpmlab.type.skill.buffskill.illium.SoulOfCrystal;
+import org.mapledpmlab.type.skill.buffskill.illium.SoulOfCrystal2;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class IlliumDealCycle extends DealCycle {
             add(new CraftJavelinSOC());
             add(new CraftJavelinCancelSOC());
             add(new CraftJavelinFragmentSOC());
-            //add(new CraftLonginus());
+            add(new CraftLonginus());
             add(new CraftOrb());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
@@ -41,9 +41,7 @@ public class IlliumDealCycle extends DealCycle {
             add(new CrystalIgnition());
             add(new CrystalIgnitionAfterDelay());
             add(new CrystalSkillDeus());
-            add(new CrystalSkillDeusSatellite1());
-            add(new CrystalSkillDeusSatellite2());
-            add(new CrystalSkillDeusSatellite3());
+            add(new CrystalSkillDeusSatellite());
             add(new CrystalSkillMortalSwing());
             add(new CurseMark());
             add(new GloryWingEnchantJavelin());
@@ -52,9 +50,7 @@ public class IlliumDealCycle extends DealCycle {
             add(new GloryWingJavelinMagicMissile());
             add(new GloryWingMortalWingBeat());
             add(new Gramholder());
-            add(new Lio1());
-            add(new Lio2());
-            add(new Lio3());
+            add(new Lio());
             add(new Machina());
             add(new MagicCircuitFullDrive());
             add(new ReactionDestruction());
@@ -62,7 +58,6 @@ public class IlliumDealCycle extends DealCycle {
             add(new ReactionDomination());
             add(new ReactionDominationSOC());
             add(new ReactionSpectrum());
-            add(new org.mapledpmlab.type.skill.attackskill.illium.SoulOfCrystal());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new UnlimitedCrystal1());
@@ -84,8 +79,10 @@ public class IlliumDealCycle extends DealCycle {
             add(new RestraintRing());
             add(new RingSwitching());
             add(new SoulContract());
-            add(new SoulOfCrystal());
-            add(new SoulOfCrystalBuff());
+            add(new SoulOfCrystal1());
+            add(new SoulOfCrystal1Buff());
+            add(new SoulOfCrystal2());
+            add(new SoulOfCrystal2Buff());
             add(new ThiefCunning());
             add(new UnlimitedCrystalBuff());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
@@ -104,7 +101,6 @@ public class IlliumDealCycle extends DealCycle {
     int crystalFragment = 0;
     int deusAttack = 0;
     int gloryCrystalFragment = 0;
-    int lioAttack = 0;
     int resonance = 0;
 
     boolean fastChargeReuse = false;
@@ -124,9 +120,7 @@ public class IlliumDealCycle extends DealCycle {
     CrystalGateBuff crystalGateBuff = new CrystalGateBuff();
     CrystalIgnitionBeforeDelay crystalIgnitionBeforeDelay = new CrystalIgnitionBeforeDelay();
     CrystalSkillDeus crystalSkillDeus = new CrystalSkillDeus();
-    CrystalSkillDeusSatellite1 crystalSkillDeusSatellite1 = new CrystalSkillDeusSatellite1();
-    CrystalSkillDeusSatellite2 crystalSkillDeusSatellite2 = new CrystalSkillDeusSatellite2();
-    CrystalSkillDeusSatellite3 crystalSkillDeusSatellite3 = new CrystalSkillDeusSatellite3();
+    CrystalSkillDeusSatellite crystalSkillDeusSatellite = new CrystalSkillDeusSatellite();
     CrystalSkillGloryWing crystalSkillGloryWing = new CrystalSkillGloryWing();
     CrystalSkillMortalSwing crystalSkillMortalSwing = new CrystalSkillMortalSwing();
     FastCharge fastCharge = new FastCharge();
@@ -135,9 +129,7 @@ public class IlliumDealCycle extends DealCycle {
     GloryWingMortalWingBeat gloryWingMortalWingBeat = new GloryWingMortalWingBeat();
     Gramholder gramholder = new Gramholder();
     GrandisGoddessBlessingLef grandisGoddessBlessingLef = new GrandisGoddessBlessingLef(600L);
-    Lio1 lio1 = new Lio1();
-    Lio2 lio2 = new Lio2();
-    Lio3 lio3 = new Lio3();
+    Lio lio = new Lio();
     Machina machina = new Machina();
     MagicCircuitFullDrive magicCircuitFullDrive = new MagicCircuitFullDrive();
     MagicCircuitFullDriveBuff magicCircuitFullDriveBuff = new MagicCircuitFullDriveBuff();
@@ -149,7 +141,8 @@ public class IlliumDealCycle extends DealCycle {
     RestraintRing restraintRing = new RestraintRing();
     RingSwitching ringSwitching = new RingSwitching();
     SoulContract soulContract = new SoulContract();
-    SoulOfCrystal soulOfCrystal = new SoulOfCrystal();
+    SoulOfCrystal1 soulOfCrystal1 = new SoulOfCrystal1();
+    SoulOfCrystal2 soulOfCrystal2 = new SoulOfCrystal2();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     UnlimitedCrystal1 unlimitedCrystal1 = new UnlimitedCrystal1();
     UnlimitedCrystalRelease unlimitedCrystalRelease = new UnlimitedCrystalRelease();
@@ -164,6 +157,7 @@ public class IlliumDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         ringSwitching.setCooldown(90.0);
+        ringSwitching.setDelay(0L);
 
         soulContract.setApplyReuse(true);
 
@@ -175,164 +169,69 @@ public class IlliumDealCycle extends DealCycle {
         crestOfTheSolar.setApplyFinalAttack(true);
 
         crystalSkillDeus.setActivateTime(new Timestamp(1000));
+        soulOfCrystal1.setActivateTime(new Timestamp(10 * 1000));
+        gramholder.setActivateTime(new Timestamp(19 * 1000));
+
+        getSkillSequence1().add(magicCircuitFullDriveBuff);
+        getSkillSequence1().add(wrathOfGod);                // 30
+        getSkillSequence1().add(crystalSkillDeus);          // 30
+
+        getSkillSequence2().add(grandisGoddessBlessingLef);
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(restraintRing);             // 30
+
+        getSkillSequence3().add(fastCharge);                // 30
+        getSkillSequence3().add(crystalSkillDeus);          // 30
+        getSkillSequence3().add(soulOfCrystal2);
     }
 
     @Override
     public void setSoloDealCycle() {
         addSkillEvent(machina);
+        addSkillEvent(lio);
         while (getStart().before(getEnd())) {
-            if (
-                    getStart().after(crystalSkillDeusEndTime)
-                            && cooldownCheck(lio1)
-                            && cooldownCheck(crystalSkillDeus)
-            ) {
-                addSkillEvent(lio1);
-            }
             if (
                     crystalCharge >= 150
                     && cooldownCheck(restraintRing)
             ) {
                 addSkillEvent(crystalGateBuff);
-                while (
-                        cooldownCheck(unlimitedCrystal1)
-                                && !cooldownCheck(soulOfCrystal)
-                ) {
-                    if (gloryCrystalFragment != 0) {
-                        gloryCrystalFragment = 0;
-                    }
-                    if (crystalFragment == 30) {
-                        addSkillEvent(craftEnchantJavelin);
-                        crystalFragment = 0;
-                        crystalCharge += 25;
-                    } else {
-                        addSkillEvent(craftJavelin);
-                        crystalFragment++;
-                    }
-                }
-                if (cooldownCheck(soulOfCrystal)) {
-                    addSkillEvent(soulOfCrystal);
-                }
-                addSkillEvent(magicCircuitFullDriveBuff);
-                addSkillEvent(wrathOfGod);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(craftJavelin);
-                    crystalFragment++;
-                    if (crystalFragment > 30) {
-                        crystalFragment = 30;
-                    }
                 }
-                addSkillEvent(grandisGoddessBlessingLef);
-                addSkillEvent(gramholder);
-                addSkillEvent(crystalSkillDeus);
+                while (!cooldownCheck(soulOfCrystal1)) {
+                    addPlatDeal();
+                }
+                addSkillEvent(soulOfCrystal1);
                 addSkillEvent(crystalSkillMortalSwing);
                 addSkillEvent(crystalSkillGloryWing);
-                addSkillEvent(soulContract);
-                addSkillEvent(restraintRing);
+                while (!cooldownCheck(gramholder)) {
+                    addPlatDeal();
+                }
+                addSkillEvent(gramholder);
+                addDealCycle(getSkillSequence2());
                 if (cooldownCheck(unlimitedCrystal1)) {
                     addSkillEvent(unlimitedCrystal1);
                 }
                 addSkillEvent(gloryWingMortalWingBeat);
                 while (!cooldownCheck(crystalIgnitionBeforeDelay)) {
-                    if (
-                            getStart().before(crystalSkillGloryWingEndTime)
-                    ) {
-                        if (crystalFragment != 0) {
-                            crystalFragment = 0;
-                        }
-                        if (gloryCrystalFragment == 10) {
-                            addSkillEvent(gloryWingEnchantJavelin);
-                            gloryCrystalFragment = 0;
-                        } else {
-                            addSkillEvent(gloryWingJavelin);
-                            gloryCrystalFragment++;
-                        }
-                    } else {
-                        if (gloryCrystalFragment != 0) {
-                            gloryCrystalFragment = 0;
-                        }
-                        if (crystalFragment == 30) {
-                            if (crystalCharge >= 150) {
-                                addSkillEvent(craftEnchantJavelin);
-                            } else {
-                                addSkillEvent(craftEnchantJavelinCancel);
-                                addSkillEvent(craftOrb);
-                            }
-                            crystalFragment = 0;
-                            crystalCharge += 25;
-                        } else {
-                            if (crystalCharge >= 150) {
-                                addSkillEvent(craftJavelin);
-                            } else {
-                                addSkillEvent(craftJavelinCancel);
-                                addSkillEvent(craftOrb);
-                            }
-                            crystalFragment++;
-                        }
-                    }
+                    addPlatDeal();
                 }
                 addSkillEvent(crystalIgnitionBeforeDelay);
-            } else if (
-                    cooldownCheck(fastCharge)
-                            && getStart().after(crystalSkillGloryWingEndTime)
-            ) {
-                boolean isSOC = false;
-                while (!cooldownCheck(crystalSkillDeus)) {
-                    if (cooldownCheck(soulOfCrystal)) {
-                        addSkillEvent(soulOfCrystal);
-                        isSOC = true;
-                    }
-                    if (gloryCrystalFragment != 0) {
-                        gloryCrystalFragment = 0;
-                    }
-                    if (crystalFragment == 30) {
-                        addSkillEvent(craftEnchantJavelin);
-                        crystalFragment = 0;
-                        crystalCharge += 25;
-                    } else {
-                        addSkillEvent(craftJavelin);
-                        crystalFragment++;
-                    }
-                }
-                addSkillEvent(crystalSkillDeus);
-                addSkillEvent(fastCharge);
                 addSkillEvent(ringSwitching);
                 while (
-                        !isSOC && (
-                                !cooldownCheck(soulOfCrystal)
-                                        || getStart().before(soulOfCrystalEndTime)
-                        )
-
+                        getStart().before(crystalSkillGloryWingEndTime)
+                        || !cooldownCheck(crystalSkillDeus)
                 ) {
-                    if (gloryCrystalFragment != 0) {
-                        gloryCrystalFragment = 0;
-                    }
-                    if (crystalFragment == 30) {
-                        if (crystalCharge >= 150) {
-                            addSkillEvent(craftEnchantJavelin);
-                        } else {
-                            addSkillEvent(craftEnchantJavelinCancel);
-                            addSkillEvent(craftOrb);
-                        }
-                        crystalFragment = 0;
-                        crystalCharge += 25;
-                    } else {
-                        if (crystalCharge >= 150) {
-                            addSkillEvent(craftJavelin);
-                        } else {
-                            addSkillEvent(craftJavelinCancel);
-                            addSkillEvent(craftOrb);
-                        }
-                        crystalFragment++;
-                    }
+                    addPlatDeal();
                 }
-                if (cooldownCheck(soulOfCrystal)) {
-                    addSkillEvent(soulOfCrystal);
+                while (!cooldownCheck(fastCharge)) {
+                    addPlatDeal();
                 }
+                addDealCycle(getSkillSequence3());
                 addSkillEvent(crystalSkillMortalSwing);
                 addSkillEvent(crystalSkillGloryWing);
                 addSkillEvent(weaponJumpRing);
@@ -358,54 +257,65 @@ public class IlliumDealCycle extends DealCycle {
                 }
                 addSkillEvent(gloryWingMortalWingBeat);
             } else if (
-                    cooldownCheck(soulOfCrystal)
+                    cooldownCheck(soulOfCrystal1)
                             && getStart().before(new Timestamp(fastCharge.getActivateTime().getTime() - 5000))
             ) {
-                addSkillEvent(soulOfCrystal);
-            } else if (
-                    getStart().before(crystalSkillGloryWingEndTime)
-            ) {
-                if (crystalFragment != 0) {
-                    crystalFragment = 0;
-                }
-                if (gloryCrystalFragment == 10) {
-                    addSkillEvent(gloryWingEnchantJavelin);
-                    gloryCrystalFragment = 0;
-                } else {
-                    addSkillEvent(gloryWingJavelin);
-                    gloryCrystalFragment++;
-                }
+                addSkillEvent(soulOfCrystal1);
             } else {
-                if (gloryCrystalFragment != 0) {
-                    gloryCrystalFragment = 0;
-                }
-                if (crystalFragment == 30) {
-                    if (
-                            crystalCharge >= 150
-                            && !cooldownCheck(reactionDomination)
-                    ) {
-                        addSkillEvent(craftEnchantJavelin);
-                    } else {
-                        addSkillEvent(craftEnchantJavelinCancel);
-                        addSkillEvent(craftOrb);
-                    }
-                    crystalFragment = 0;
-                    crystalCharge += 25;
-                } else {
-                    if (
-                            crystalCharge >= 150
-                            && !cooldownCheck(reactionDomination)
-                    ) {
-                        addSkillEvent(craftJavelin);
-                    } else {
-                        addSkillEvent(craftJavelinCancel);
-                        addSkillEvent(craftOrb);
-                    }
-                    crystalFragment++;
-                }
+                addPlatDeal();
             }
         }
         sortEventTimeList();
+    }
+
+    public void addPlatDeal() {
+        if (
+                cooldownCheck(craftLonginus)
+                        && getStart().after(crystalSkillGloryWingEndTime)
+        ) {
+            addSkillEvent(craftLonginus);
+        } else if (
+                getStart().before(crystalSkillGloryWingEndTime)
+        ) {
+            if (crystalFragment != 0) {
+                crystalFragment = 0;
+            }
+            if (gloryCrystalFragment == 10) {
+                addSkillEvent(gloryWingEnchantJavelin);
+                gloryCrystalFragment = 0;
+            } else {
+                addSkillEvent(gloryWingJavelin);
+                gloryCrystalFragment++;
+            }
+        } else {
+            if (gloryCrystalFragment != 0) {
+                gloryCrystalFragment = 0;
+            }
+            if (crystalFragment == 30) {
+                if (
+                        crystalCharge >= 150
+                                && !cooldownCheck(reactionDomination)
+                ) {
+                    addSkillEvent(craftEnchantJavelin);
+                } else {
+                    addSkillEvent(craftEnchantJavelinCancel);
+                    addSkillEvent(craftOrb);
+                }
+                crystalFragment = 0;
+                crystalCharge += 25;
+            } else {
+                if (
+                        crystalCharge >= 150
+                                && !cooldownCheck(reactionDomination)
+                ) {
+                    addSkillEvent(craftJavelin);
+                } else {
+                    addSkillEvent(craftJavelinCancel);
+                    addSkillEvent(craftOrb);
+                }
+                crystalFragment++;
+            }
+        }
     }
 
     @Override
@@ -413,7 +323,7 @@ public class IlliumDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -421,8 +331,29 @@ public class IlliumDealCycle extends DealCycle {
         } else {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
+        int soc = 0;
+        for (SkillEvent skillEvent : this.getSkillEventList()) {
+            if (
+                    skillEvent.getStart().after(getStart())
+                            && skillEvent.getSkill() instanceof SoulOfCrystal2
+            ) {
+                soc = 2;
+                break;
+            } else if (
+                    skillEvent.getStart().after(getStart())
+                            && skillEvent.getSkill() instanceof SoulOfCrystal1
+            ) {
+                soc ++;
+                if (soc == 2) {
+                    break;
+                }
+            }
+        }
         if (skill instanceof BuffSkill) {
-            if (skill instanceof SoulOfCrystal) {
+            if (
+                    skill instanceof SoulOfCrystal1
+                    || skill instanceof SoulOfCrystal2
+            ) {
                 soulOfCrystalEndTime = new Timestamp(getStart().getTime() + 33000);
             }
             if (skill instanceof CrystalGateBuff) {
@@ -436,15 +367,20 @@ public class IlliumDealCycle extends DealCycle {
             }
             if (skill instanceof FastCharge) {
                 crystalCharge = 150;
-                soulOfCrystalEndTime = new Timestamp(-1);
             }
             if (skill instanceof CrystalSkillGloryWing) {
                 crystalCharge = 0;
                 crystalSkillGloryWingEndTime = new Timestamp(getStart().getTime() + 20000);
                 if (soulOfCrystalEndTime.after(getStart())) {
-                    SoulOfCrystalBuff soulOfCrystalBuff = new SoulOfCrystalBuff();
-                    soulOfCrystalBuff.setDuration((soulOfCrystalEndTime.getTime() - getStart().getTime()) / 1000);
-                    getSkillEventList().add(new SkillEvent(soulOfCrystalBuff, new Timestamp(getStart().getTime()), new Timestamp(soulOfCrystalEndTime.getTime())));
+                    if (soc == 2) {
+                        SoulOfCrystal2Buff soulOfCrystal2Buff = new SoulOfCrystal2Buff();
+                        soulOfCrystal2Buff.setDuration((soulOfCrystalEndTime.getTime() - getStart().getTime()) / 1000);
+                        getSkillEventList().add(new SkillEvent(soulOfCrystal2Buff, new Timestamp(getStart().getTime()), new Timestamp(soulOfCrystalEndTime.getTime())));
+                    } else if (soc == 1) {
+                        SoulOfCrystal1Buff soulOfCrystal1Buff = new SoulOfCrystal1Buff();
+                        soulOfCrystal1Buff.setDuration((soulOfCrystalEndTime.getTime() - getStart().getTime()) / 1000);
+                        getSkillEventList().add(new SkillEvent(soulOfCrystal1Buff, new Timestamp(getStart().getTime()), new Timestamp(soulOfCrystalEndTime.getTime())));
+                    }
                     soulOfCrystalEndTime = new Timestamp(-1);
                 }
             }
@@ -550,7 +486,9 @@ public class IlliumDealCycle extends DealCycle {
                     getStart().before(unlimitedCrystalEndTime)
                     && (
                             skill instanceof ReactionDestruction
+                            || skill instanceof ReactionDestructionSOC
                             || skill instanceof ReactionDomination
+                            || skill instanceof ReactionDominationSOC
                             || skill instanceof ReactionSpectrum
                             || skill instanceof GloryWingJavelin
                             || skill instanceof GloryWingEnchantJavelin
@@ -606,7 +544,7 @@ public class IlliumDealCycle extends DealCycle {
             }
             if (skill instanceof CrystalSkillDeus) {
                 crystalSkillDeusEndTime = new Timestamp(getStart().getTime() + 30000);
-                lio1.setActivateTime(new Timestamp(-1));
+                lio.setActivateTime(new Timestamp(-1));
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -625,13 +563,9 @@ public class IlliumDealCycle extends DealCycle {
                         }
                     }
                     if (
-                            skill instanceof Lio1
+                            skill instanceof Lio
                             && skillEvent.getStart().after(getStart())
-                            && (
-                                    skillEvent.getSkill() instanceof Lio1
-                                    || skillEvent.getSkill() instanceof Lio2
-                                    || skillEvent.getSkill() instanceof Lio3
-                            )
+                            && skillEvent.getSkill() instanceof Lio
                     ) {
                         remove.add(skillEvent);
                     }
@@ -640,9 +574,7 @@ public class IlliumDealCycle extends DealCycle {
                             && skillEvent.getStart().after(getStart())
                             && skillEvent.getEnd().before(crystalSkillDeusEndTime)
                             && (
-                                    skillEvent.getSkill() instanceof Lio1
-                                    || skillEvent.getSkill() instanceof Lio2
-                                    || skillEvent.getSkill() instanceof Lio3
+                                    skillEvent.getSkill() instanceof Lio
                                     || skillEvent.getSkill() instanceof Machina
                             )
                     ) {
@@ -653,52 +585,8 @@ public class IlliumDealCycle extends DealCycle {
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
-                        if (
-                                skill instanceof Lio1
-                                || skill instanceof Lio2
-                                || skill instanceof Lio3
-                        ) {
-                            if (lioAttack >= 10 && lioAttack < 20) {
-                                skill = lio2;
-                            } else if (lioAttack >= 20) {
-                                skill = lio3;
-                            }
-                        }
-                        if (
-                                skill instanceof CrystalSkillDeusSatellite1
-                                || skill instanceof CrystalSkillDeusSatellite2
-                                || skill instanceof CrystalSkillDeusSatellite3
-                        ) {
-                            if (deusAttack >= 10 && deusAttack < 20) {
-                                skill = crystalSkillDeusSatellite2;
-                            } else if (deusAttack >= 20) {
-                                skill = crystalSkillDeusSatellite3;
-                            }
-                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
-                        if (
-                                skill instanceof Lio1
-                                || skill instanceof Lio2
-                                || skill instanceof Lio3
-                        ) {
-                            lioAttack ++;
-                            skill = lio1;
-                        }
-                        if (lioAttack == 40) {
-                            lioAttack = 0;
-                        }
-                        if (
-                                skill instanceof CrystalSkillDeusSatellite1
-                                || skill instanceof CrystalSkillDeusSatellite2
-                                || skill instanceof CrystalSkillDeusSatellite3
-                        ) {
-                            deusAttack ++;
-                            skill = crystalSkillDeusSatellite1;
-                        }
-                        if (deusAttack == 40) {
-                            deusAttack = 0;
-                        }
                     }
                 } else {
                     Long attackCount = 0L;
@@ -729,6 +617,11 @@ public class IlliumDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof SoulOfCrystal1) {
+            soulOfCrystal2.setActivateTime(new Timestamp(soulOfCrystal1.getActivateTime().getTime()));
+        } else if (skill instanceof SoulOfCrystal2) {
+            soulOfCrystal1.setActivateTime(new Timestamp(soulOfCrystal2.getActivateTime().getTime()));
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -777,9 +670,15 @@ public class IlliumDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -794,7 +693,7 @@ public class IlliumDealCycle extends DealCycle {
             }
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (
-                        skillEvent.getSkill() instanceof SoulOfCrystal
+                        skillEvent.getSkill() instanceof SoulOfCrystal2
                                 && !isCrystalSkillGloryWing
                 ) {
                     isSoulOfCrystal = true;

@@ -6,7 +6,7 @@ public class GustDive extends AttackSkill {
     public GustDive() {
         this.setName("거스트 다이브");
         this.setAttackCount(4L);
-        this.setDamage(280.0 + 240);
+        this.setDamage(775.0);
         this.setDelayByAttackSpeed(690L);
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);

@@ -72,8 +72,8 @@ public class NightLord extends Job {
 
         // 환산 보정
         this.addMainStatP(-30L);
-        this.addMainStat(-4L);
-        this.addSubStat(2L);
+        this.addMainStat(-10L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

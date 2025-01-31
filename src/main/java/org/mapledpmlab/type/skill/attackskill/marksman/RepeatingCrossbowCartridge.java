@@ -15,5 +15,6 @@ public class RepeatingCrossbowCartridge extends AttackSkill {
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(120L);
+        this.setApplyFinalAttack(true);
     }
 }

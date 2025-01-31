@@ -42,6 +42,9 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new SpiritClaw());
             add(new SpiritClawTrue());
+            add(new SpritPunch1());
+            add(new SpritPunch2());
+            add(new SpritPunch3());
         }
     };
 
@@ -63,9 +66,11 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
     };
 
     boolean isNuke = false;
+    boolean isNoContinuousSpiritPunch = false;
 
     Timestamp cancelRestraintRingEndTime = new Timestamp(-1);
     Timestamp eunwolHyperEndTime = new Timestamp(-1);
+    Timestamp continuousRingEndTime = new Timestamp(-1);
 
     AdventOfTheFox1 adventOfTheFox = new AdventOfTheFox1();
     BackStep backStep = new BackStep();
@@ -88,6 +93,9 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     SpiritClaw spiritClaw = new SpiritClaw();
     SpiritClawTrue spiritClawTrue = new SpiritClawTrue();
+    SpritPunch1 spritPunch1 = new SpritPunch1();
+    SpritPunch1 spritPunch1Cancel = new SpritPunch1();
+    SpritPunch2 spritPunch2 = new SpritPunch2();
 
     public EunwolContinuousCancelDealCycle(Job job) {
         super(job, null);
@@ -98,6 +106,26 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
         this.getJob().setName("은월(컨티, 캔슬)");
 
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        spritPunch2.setDelayByAttackSpeed(300L);
+
+        spritPunch1Cancel.setRelatedSkill(new SpritPunch2());
+        spritPunch1Cancel.setDelayByAttackSpeed(300L);
+        spritPunch1Cancel.getRelatedSkill().setDelayByAttackSpeed(300L);
+
+        getSkillSequence1().add(heroesOath);                // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(overdrive);                 // 420
+        getSkillSequence1().add(eunwolHyper);               // 30
+        getSkillSequence1().add(soulContract);              // 30
+
+        getSkillSequence2().add(overdrive);                 // 420
+        getSkillSequence2().add(soulContract);              // 30
+
+        getSkillSequence3().add(loadedDice);
+        loadedDice.setDelay(660L);
+
+        mapleWorldGoddessBlessing.setDelay(480L);
     }
 
     @Override
@@ -118,28 +146,18 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
                 addSkillEvent(bladeImp);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (cooldownCheck(spiritClawTrue)) {
-                        addSkillEvent(spiritClawTrue);
-                    } else {
-                        addSkillEvent(spiritClaw);
-                    }
                 }
-                addSkillEvent(overdrive);
-                addSkillEvent(soulContract);
+                isNuke = true;
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(divisionSoul);
                 addSkillEvent(lightOfTheFoxGoddess);
-                isNuke = true;
-                addSkillEvent(soulContract);
-                addSkillEvent(eunwolHyper);
                 addSkillEvent(ghostDisposition);
+                addSkillEvent(spritPunch1Cancel);
                 addSkillEvent(chainBombPunch);
                 if (cooldownCheck(spiritClawTrue)) {
                     addSkillEvent(spiritClawTrue);
@@ -158,11 +176,27 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
                             && cooldownCheck(chainBombPunch)
                             && !cooldownCheck(heroesOath)
             ) {
-                addSkillEvent(overdrive);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence2());
                 addSkillEvent(divisionSoul);
                 addSkillEvent(ghostDisposition);
                 addSkillEvent(chainBombPunch);
+            } else if (
+                    getStart().before(continuousRingEndTime)
+                            && cooldownCheck(spritPunch1Cancel)
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() - 10000))
+            ) {
+                addSkillEvent(spritPunch1Cancel);
+            } else if (
+                    cooldownCheck(spritPunch1)
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() - 10000))
+            ) {
+                addSkillEvent(spritPunch1);
+            } else if (
+                    isNoContinuousSpiritPunch
+                            && getStart().before(continuousRingEndTime)
+            ) {
+                addSkillEvent(spritPunch2);
+                isNoContinuousSpiritPunch = false;
             } else if (cooldownCheck(spiritClawTrue)) {
                 addSkillEvent(spiritClawTrue);
             } else {
@@ -186,6 +220,9 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof ContinuousRing) {
+                continuousRingEndTime = new Timestamp(getStart().getTime() + 8000);
+            }
             if (skill instanceof LightOfTheFoxGoddess) {
                 soulContract.setActivateTime(new Timestamp(-1));
             }
@@ -246,15 +283,25 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
                                     || skill instanceof CrestOfTheSolarDot
                                     || skill instanceof SpiderInMirror
                                     || skill instanceof SpiderInMirrorDot
+                                    || skill instanceof SpritPunch1
+                                    || skill instanceof SpritPunch2
                     )
             ) {
                 addSkillEvent(continuousRing);
+            }
+            if (
+                    skill instanceof SpritPunch1
+                            && skill.getRelatedSkill() == null
+            ) {
+                isNoContinuousSpiritPunch = true;
             }
             if (
                     skill instanceof BladeImp
                     || skill instanceof DivisionSoul
                     || skill instanceof SpiritClaw
                     || skill instanceof SpiritClawTrue
+                            || skill instanceof SpritPunch1
+                            || skill instanceof SpritPunch2
             ) {
                 Long ran = (long) (Math.random() * 99 + 1);
                 if (getStart().before(eunwolHyperEndTime)) {
@@ -317,6 +364,10 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof SpritPunch1) {
+            applyCooldown(spritPunch1);
+            applyCooldown(spritPunch1Cancel);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -332,9 +383,10 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
                         || skill instanceof SoulTent
                         || skill instanceof SpiritClaw
                         || skill instanceof SpiritClawTrue
-                        || skill instanceof LoadedDice
-                        || skill instanceof OverdriveDebuff
-                        || skill instanceof MapleWorldGoddessBlessing
+                        //|| skill instanceof LoadedDice
+                        //|| skill instanceof OverdriveDebuff
+                        //|| skill instanceof MapleWorldGoddessBlessing
+                        || skill instanceof SpritPunch3
                 )
                 && getStart().after(cancelRestraintRingEndTime)
         ) {
@@ -360,6 +412,7 @@ public class EunwolContinuousCancelDealCycle extends DealCycle {
                     || skill instanceof AdventOfTheFox1
                     || skill instanceof AdventOfTheFox2
                     || skill instanceof AdventOfTheFox3
+                            || skill instanceof SpritPunch3
             ) {
                 Long ran = (long) (Math.random() * 99 + 1);
                 Timestamp tmp = new Timestamp(getStart().getTime());

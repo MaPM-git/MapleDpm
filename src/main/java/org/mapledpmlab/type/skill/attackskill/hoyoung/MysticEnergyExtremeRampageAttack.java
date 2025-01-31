@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class MysticEnergyExtremeRampageAttack extends AttackSkill {
     public MysticEnergyExtremeRampageAttack() {
         this.setName("선기 : 극대 분신난무");
-        this.setDamage(60.0 + 60 + 114 + 800);
+        this.setDamage(386.0 + 800);
         this.setAttackCount(4L);
         this.setCooldown(1.5);
         this.setApplyCooldownReduction(false);

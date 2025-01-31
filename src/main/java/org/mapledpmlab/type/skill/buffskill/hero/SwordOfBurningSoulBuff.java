@@ -12,7 +12,7 @@ public class SwordOfBurningSoulBuff extends BuffSkill {
         this.setName("소드 오브 버닝 소울");
         this.setRelatedSkill(new SwordOfBurningSoulDot());
         this.setCooldown(120.0);
-        this.setDelay(1620L);           // 설치 포함
+        this.setDelay(750L);
         this.setDuration(75L);
     }
 }

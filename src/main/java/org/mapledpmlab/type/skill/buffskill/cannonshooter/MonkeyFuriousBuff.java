@@ -10,6 +10,6 @@ public class MonkeyFuriousBuff extends BuffSkill {
     public MonkeyFuriousBuff() {
         this.setName("몽키 퓨리어스");
         this.setDuration(60L);
-        this.addBuffDamage(40L);
+        this.addBuffDamage(55L);
     }
 }

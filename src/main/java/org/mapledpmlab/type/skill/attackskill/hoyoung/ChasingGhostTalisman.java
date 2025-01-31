@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ChasingGhostTalisman extends AttackSkill {
     public ChasingGhostTalisman() {
         this.setName("추적 귀화부");
-        this.setDamage(210.0 + 225);
+        this.setDamage(369.0);
         this.setAttackCount(5L);
         this.setCooldown(90.0);
         this.setDelayByAttackSpeed(630L);

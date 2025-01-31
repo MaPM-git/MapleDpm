@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SummonReleasingBomb extends AttackSkill {
     public SummonReleasingBomb() {
         this.setName("서먼 릴리싱 봄");
-        this.setDamage(415.0 + 177);
+        this.setDamage(1000.0);
         this.setAttackCount(6L);
         this.setDelay(150L + 30);
         this.setCooldown(8.0);

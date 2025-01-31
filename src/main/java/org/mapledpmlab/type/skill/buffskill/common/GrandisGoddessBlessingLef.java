@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class GrandisGoddessBlessingLef extends BuffSkill {
     public GrandisGoddessBlessingLef(Long att) {
         this.setName("그란디스 여신의 축복");
-        this.setDelay(630L);
+        this.setDelayByAttackSpeed(630L);
         this.setDuration(40L);
         this.addBuffAttMagic(100L + att);
         this.setCooldown(120.0);

@@ -27,6 +27,7 @@ public class PaladinDealCycle extends DealCycle {
             add(new CrestOfTheSolarDot());
             add(new DivineJudgement());
             add(new FallingJustice());
+            add(new RisingJustice());
             add(new FinalAttackPaladin());
             add(new GrandCrossFirstDelay());
             add(new GrandCross1());
@@ -102,6 +103,26 @@ public class PaladinDealCycle extends DealCycle {
         ringSwitching.setCooldown(90.0);
         auraWeaponBuff.setCooldown(180.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
+
+        getSkillSequence1().add(auraWeaponBuff);
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(holyUnity);                 // 450
+        // 디바인 블레싱                                      // 150
+        getSkillSequence1().add(soulContract);              // 30
+        getSkillSequence1().add(restraintRing);             // 30
+
+        getSkillSequence2().add(holyUnity);                 // 450
+        // 디바인 블레싱                                      // 150
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(weaponJumpRing);            // 30
+
+        holyUnity.setDelay(600L);
+
+        auraWeaponBuff.setDelay(100L);
+        mapleWorldGoddessBlessing.setDelay(100L);
+        bodyOfSteel.setDelay(100L);
     }
 
     @Override
@@ -111,24 +132,16 @@ public class PaladinDealCycle extends DealCycle {
                 addSkillEvent(nobleDemand);
             }
             if (cooldownCheck(restraintRing)) {
-                //addSkillEvent(nobleDemand);
-                addSkillEvent(bodyOfSteel);
-                addSkillEvent(auraWeaponBuff);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(blast);
                 }
-                addSkillEvent(holyUnity);
                 addSkillEvent(blessedHammerBuff);
-                addSkillEvent(soulContract);
-                addSkillEvent(restraintRing);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(mightyMjolnirDelay);
+                addSkillEvent(sanctuary);
                 if (cooldownCheck(sacredBastion1)) {
                     addSkillEvent(sacredBastion1);
                 }
@@ -148,23 +161,18 @@ public class PaladinDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(11 * 60 * 1000))
                             && !cooldownCheck(epicAdventure)
             ) {
-                //addSkillEvent(nobleDemand);
-                addSkillEvent(holyUnity);
                 addSkillEvent(blessedHammerBuff);
-                addSkillEvent(soulContract);
-                addSkillEvent(weaponJumpRing);
-            } /*else if (
-                    cooldownCheck(blessedHammerBuff)
-                    && cooldownCheck(soulContract)
-                    && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() + 10000))
-            ) {
-                addSkillEvent(blessedHammerBuff);
-                addSkillEvent(soulContract);
-            }*/ else if (
+                addDealCycle(getSkillSequence2());
+            } else if (
                     cooldownCheck(mightyMjolnirDelay)
                     && !cooldownCheck(soulContract)
             ) {
                 addSkillEvent(mightyMjolnirDelay);
+            } else if (
+                    cooldownCheck(sanctuary)
+                    && getStart().before(new Timestamp(holyUnity.getActivateTime().getTime() - 5000))
+            ) {
+                addSkillEvent(sanctuary);
             } else {
                 addSkillEvent(blast);
             }
@@ -355,6 +363,26 @@ public class PaladinDealCycle extends DealCycle {
             }
             if (!skill.isApplyCooldownReduction()) {
                 skill.setActivateTime(new Timestamp((int) (getStart().getTime() + skill.getCooldown() * 1000)));
+            }
+        }
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (skill instanceof Sanctuary) {
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                divineBrandCount ++;
+                if (divineBrandCount >= 5) {
+                    addSkillEvent(divineJudgement);
+                    divineBrandCount -= 5;
+                }
+                getStart().setTime(now.getTime());
             }
         }
     }

@@ -12,6 +12,7 @@ public class HolyAdvent1 extends AttackSkill {
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
         this.addFinalDamage(1.08);          // 오버로드 마나
+        this.setApplyFinalAttack(true);
         this.setRelatedSkill(new HolyAdvent2());
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(30L);

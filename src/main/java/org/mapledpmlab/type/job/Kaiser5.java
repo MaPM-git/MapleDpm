@@ -76,8 +76,8 @@ public class Kaiser5 extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-105L);
-        this.addMainStat(-2L);
+        this.addMainStatP(-99L);
+        this.addMainStat(-10L);
         this.addSubStat(0L);
 
         this.setAbility(new BossBuffReuse());

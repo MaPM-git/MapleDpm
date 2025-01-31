@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class ChargeSpellAmplification extends BuffSkill {
     public ChargeSpellAmplification() {
         this.setName("차지 스펠 앰플리피케이션");
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setCooldown(120.0);
         this.setDuration(60L);
         this.addBuffAttMagic(30L);

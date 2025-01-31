@@ -71,7 +71,7 @@ public class BowmasterContinuous extends Job {
         this.addFinalDamage(1.07);
 
         // 환산 보정
-        this.addMainStatP(-63L);
+        this.addMainStatP(-60L);
         this.addMainStat(-5L);
         this.addSubStat(5L);
 

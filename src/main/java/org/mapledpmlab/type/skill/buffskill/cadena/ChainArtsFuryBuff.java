@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class ChainArtsFuryBuff extends BuffSkill {
     public ChainArtsFuryBuff() {
         this.setName("체인아츠:퓨리(버프)");
-        this.setDelay(540L);
+        this.setDelayByAttackSpeed(540L);
         this.setDuration(80L);
         this.setCooldown(180.0);
         this.setApplyServerLag(true);

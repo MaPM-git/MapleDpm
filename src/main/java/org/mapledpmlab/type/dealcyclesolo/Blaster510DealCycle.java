@@ -34,17 +34,15 @@ public class Blaster510DealCycle extends DealCycle {
             add(new BurstPileBunker());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
-            add(new DoubleFang185());
+            add(new DoubleFang180());
             add(new DuckingCharge());
             add(new DuckingJump());
             add(new FinalAttackBlaster());
             add(new FinalDestroyer1());
             add(new FinalDestroyer2());
             add(new HammerSmashCharge());
-            add(new HammerSmashDot());
             add(new HammerSmashJump());
-            add(new MagnumPunch215());
-            add(new MagnumPunch250());
+            add(new MagnumPunch180());
             add(new ReleasePileBunker());
             add(new ReleasePileBunkerA());
             add(new ReleasePileBunkerB());
@@ -99,13 +97,13 @@ public class Blaster510DealCycle extends DealCycle {
     BunkerBuster bunkerBuster = new BunkerBuster();
     BurningBreakerDelay burningBreakerDelay = new BurningBreakerDelay();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-    DoubleFang185 doubleFang185 = new DoubleFang185();
+    DoubleFang180 doubleFang180 = new DoubleFang180();
     DuckingCharge duckingCharge = new DuckingCharge();
     DuckingJump duckingJump = new DuckingJump();
     FinalDestroyer1 finalDestroyer1 = new FinalDestroyer1();
+    HammerSmashCharge hammerSmashCharge = new HammerSmashCharge();
     HammerSmashJump hammerSmashJump = new HammerSmashJump();
-    MagnumPunch215 magnumPunch215 = new MagnumPunch215();
-    MagnumPunch250 magnumPunch250 = new MagnumPunch250();
+    MagnumPunch180 magnumPunch180 = new MagnumPunch180();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
     MaximizeCanon maximizeCanon = new MaximizeCanon();
     ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
@@ -128,25 +126,34 @@ public class Blaster510DealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         // 매그팡
-        flatDeal1.add(duckingCharge);
-        flatDeal1.add(magnumPunch215);
-        flatDeal1.add(doubleFang185);
-        flatDeal1.add(duckingJump);
+        flatDeal1.add(hammerSmashCharge);
+        flatDeal1.add(magnumPunch180);
+        flatDeal1.add(doubleFang180);
+        flatDeal1.add(hammerSmashJump);
 
         // 릴파벙해머
         flatDeal2.add(duckingCharge);
-        flatDeal2.add(releasePileBunker);
-        flatDeal2.add(hammerSmashJump);
+        flatDeal2.add(magnumPunch180);
+        flatDeal2.add(doubleFang180);
         flatDeal2.add(duckingJump);
         flatDeal2.add(duckingCharge);
-        flatDeal2.add(magnumPunch250);
-        //flatDeal2.add(doubleFang190);
+        flatDeal2.add(releasePileBunker);
         flatDeal2.add(duckingJump);
 
         ringSwitching.setCooldown(120.0);
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(afterImageShock);
+        getSkillSequence1().add(willOfLiberty);
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(soulContract);
+
+        afterImageShock.setDelay(280L);
+        mapleWorldGoddessBlessing.setDelay(280L);
+        bodyOfSteel.setDelay(280L);
     }
 
     @Override
@@ -170,37 +177,37 @@ public class Blaster510DealCycle extends DealCycle {
                 addSkillEvent(resistanceLineInfantry);
             }
             if (cooldownCheck(willOfLiberty)) {
-                addSkillEvent(bodyOfSteel);
-                addSkillEvent(afterImageShock);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(willOfLiberty);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addDealCycle(flatDeal1);
                 }
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
                 }
+                addSkillEvent(hammerSmashCharge);
                 addSkillEvent(vulcanPunch);
-                addSkillEvent(maximizeCanon);
+                addSkillEvent(hammerSmashJump);
                 addSkillEvent(burningBreakerDelay);
                 addSkillEvent(bunkerBuster);
                 if (cooldownCheck(finalDestroyer1)) {
-                    if (
-                            getStart().after(overheatTime)
-                                    && cylinder == 6
-                    ) {
-                        addDealCycle(flatDeal2);
-                    }
                     addSkillEvent(finalDestroyer1);
                 }
+                while (!cooldownCheck(maximizeCanon)) {
+                    if (getStart().after(overheatTime)) {
+                        if (cylinder < 6) {
+                            addDealCycle(flatDeal1);
+                        }
+                        addDealCycle(flatDeal2);
+                    } else {
+                        addDealCycle(flatDeal1);
+                    }
+                }
+                addSkillEvent(maximizeCanon);
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(ringSwitching)
@@ -210,11 +217,13 @@ public class Blaster510DealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (cooldownCheck(vulcanPunch)) {
                 addSkillEvent(soulContract);
+                addSkillEvent(hammerSmashCharge);
                 addSkillEvent(vulcanPunch);
-            } else if (
-                    getStart().after(overheatTime)
-                            && cylinder == 6
-            ) {
+                addSkillEvent(hammerSmashJump);
+            } else if (getStart().after(overheatTime)) {
+                if (cylinder < 6) {
+                    addDealCycle(flatDeal1);
+                }
                 addDealCycle(flatDeal2);
             } else {
                 addDealCycle(flatDeal1);
@@ -454,9 +463,15 @@ public class Blaster510DealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

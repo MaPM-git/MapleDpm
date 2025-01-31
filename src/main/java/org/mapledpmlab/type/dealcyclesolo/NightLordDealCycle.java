@@ -21,10 +21,14 @@ public class NightLordDealCycle extends DealCycle {
             add(new BleedingToxinDot());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
-            add(new DarkFlare());
+            add(new DarkFlareNightLord());
             add(new DarkLordsSecretScroll());
             add(new DarkLordsSecretScrollFinish());
+            add(new DarknessShuriken());
             add(new FatalVenom());
+            add(new FourSeasons());
+            add(new FourSeasonsRamphant());
+            add(new FourSeasonsRamphantAnnihilation());
             add(new FumaShuriken());
             add(new LifeOrDeathJavelin());
             add(new LifeOrDeathSlash());
@@ -61,15 +65,19 @@ public class NightLordDealCycle extends DealCycle {
     Long throwBlastingCount = 68L;
 
     boolean isSpreadThrow = false;
+    boolean isRamphant = true;
 
     List<Skill> throwBlastingList;
 
     BleedingToxinDot bleedingToxinDot = new BleedingToxinDot();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-    DarkFlare darkFlare = new DarkFlare();
+    DarkFlareNightLord darkFlareNightLord = new DarkFlareNightLord();
     DarkLordsSecretScroll darkLordsSecretScroll = new DarkLordsSecretScroll();
+    DarknessShuriken darknessShuriken = new DarknessShuriken();
     EpicAdventure epicAdventure = new EpicAdventure();
     FatalVenom fatalVenom = new FatalVenom();
+    FourSeasons fourSeasons = new FourSeasons();
+    FourSeasonsRamphant fourSeasonsRamphant = new FourSeasonsRamphant();
     FumaShuriken fumaShuriken = new FumaShuriken();
     LifeOrDeathSlash lifeOrDeathSlash = new LifeOrDeathSlash();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
@@ -110,36 +118,44 @@ public class NightLordDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(90.0);
         mapleWorldGoddessBlessing.setCooldown(180.0);
+
+        // 660
+        getSkillSequence1().add(purgeArea);
+        getSkillSequence1().add(throwBlasting);
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(ultimateDarkSight);
+
+        // 660
+        getSkillSequence2().add(purgeArea);
+        getSkillSequence2().add(spreadThrow);               // 300
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(readyToDie);                // 300  600
+        // 극딜 - 리레, 준극딜 - 웨폰                            // 30
+        // 레투다 준극일 땐, 600ms
+
+        purgeArea.setDelay(180L);
+        throwBlasting.setDelay(150L);
+        mapleWorldGoddessBlessing.setDelay(150L);
+        ultimateDarkSight.setDelay(150L);
+
+        spreadThrow.setDelay(120L);
     }
 
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
-            if (cooldownCheck(purgeArea)) {
-                addSkillEvent(purgeArea);
+            if (cooldownCheck(darkFlareNightLord)) {
+                addSkillEvent(darkFlareNightLord);
             }
-            if (cooldownCheck(darkFlare)) {
-                addSkillEvent(darkFlare);
-            }
-            if (cooldownCheck(spreadThrow)) {
-                addSkillEvent(throwBlasting);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
+            if (cooldownCheck(restraintRing)) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (quadrupleThrowCount == 3) {
-                        addSkillEvent(quadrupleThrowReinforce);
-                        quadrupleThrowCount = 0L;
-                    } else {
-                        addSkillEvent(quadrupleThrow);
-                        quadrupleThrowCount ++;
-                    }
                 }
-                addSkillEvent(ultimateDarkSight);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(lifeOrDeathSlash)) {
                     addSkillEvent(lifeOrDeathSlash);
                 }
@@ -149,6 +165,9 @@ public class NightLordDealCycle extends DealCycle {
                 addSkillEvent(readyToDie);
                 addSkillEvent(restraintRing);
                 addSkillEvent(fumaShuriken);
+                if (isRamphant) {
+                    addSkillEvent(fourSeasons);
+                }
                 throwBlastingCount = 68L;
                 throwBlastingList = new ArrayList<>();
                 while (throwBlastingCount != 0) {
@@ -182,10 +201,13 @@ public class NightLordDealCycle extends DealCycle {
                             && !cooldownCheck(epicAdventure)
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
+                readyToDie.setDelay(420L);
                 addSkillEvent(darkLordsSecretScroll);
+                addSkillEvent(purgeArea);
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
                 addSkillEvent(weaponJumpRing);
+                readyToDie.setDelay(300L);
             } else if (
                     cooldownCheck(throwBlastingPassive)
             ) {
@@ -193,11 +215,16 @@ public class NightLordDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(fumaShuriken)
                             && (
-                            !cooldownCheck(throwBlasting)
+                                    getStart().before(new Timestamp(throwBlasting.getActivateTime().getTime() - 3000))
                                     || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
                 addSkillEvent(fumaShuriken);
+            } else if (
+                    cooldownCheck(fourSeasons)
+                    && !cooldownCheck(throwBlasting)
+            ) {
+                addSkillEvent(fourSeasons);
             } else {
                 if (quadrupleThrowCount == 3) {
                     addSkillEvent(quadrupleThrowReinforce);
@@ -216,7 +243,7 @@ public class NightLordDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -259,6 +286,29 @@ public class NightLordDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    cooldownCheck(darknessShuriken)
+                    && (
+                            skill instanceof CrestOfTheSolar
+                            || skill instanceof SpiderInMirror
+                            || skill instanceof FourSeasons
+                            || skill instanceof FourSeasonsRamphant
+                            || skill instanceof FumaShuriken
+                            || skill instanceof LifeOrDeathSlash
+                            || skill instanceof QuadrupleThrow
+                            || skill instanceof QuadrupleThrowReinforce
+                    )
+            ) {
+                addSkillEvent(darknessShuriken);
+            }
+            if (skill instanceof FourSeasons) {
+                if (isRamphant) {
+                    skill = fourSeasonsRamphant;
+                    isRamphant = false;
+                } else {
+                    isRamphant = true;
+                }
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
@@ -288,7 +338,11 @@ public class NightLordDealCycle extends DealCycle {
                     }
                 } else {
                     Long attackCount = 0L;
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof DarknessShuriken) {
+                        i = 840;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
@@ -303,6 +357,9 @@ public class NightLordDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof FourSeasonsRamphant) {
+            applyCooldown(fourSeasons);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
@@ -350,9 +407,15 @@ public class NightLordDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

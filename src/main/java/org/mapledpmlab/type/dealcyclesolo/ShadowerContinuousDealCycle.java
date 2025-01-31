@@ -10,6 +10,7 @@ import org.mapledpmlab.type.skill.attackskill.common.*;
 import org.mapledpmlab.type.skill.attackskill.shadower.*;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.common.*;
+import org.mapledpmlab.type.skill.buffskill.shadower.CovertShadowBuff;
 import org.mapledpmlab.type.skill.buffskill.shadower.HeartbreakerDarksight;
 import org.mapledpmlab.type.skill.buffskill.shadower.SmokeBomb;
 import org.mapledpmlab.type.skill.buffskill.shadower.VeilOfShadowBuff;
@@ -23,13 +24,14 @@ public class ShadowerContinuousDealCycle extends DealCycle {
         {
             add(new Assassination());
             add(new AssassinationFinishCancle());
+            add(new CovertShadow());
+            add(new CovertShadowEdge());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
-            add(new DarkFlare());
+            add(new DarkFlareShadower());
             add(new Eviscerate());
             add(new FatalVenom());
             add(new HeartbreakerCancle());
-            add(new HeartbreakerCancleStack());
             add(new HeartbreakerFinishCancle());
             add(new MesoExplosion());
             add(new SavageAssault1());
@@ -48,6 +50,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
 
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
+            add(new CovertShadowBuff());
             add(new DarkSight());
             add(new EpicAdventure());
             add(new HeartbreakerDarksight());
@@ -60,27 +63,34 @@ public class ShadowerContinuousDealCycle extends DealCycle {
         }
     };
 
-    Long coinCount = 0L;
+    Long coinCount = 20L;
+    Long heartbreakerCount = 0L;
+    Long tlqkf = 0L;
 
     Timestamp continuousRingEndTime = new Timestamp(-1);
     Timestamp smokeBombEndTime = new Timestamp(-1);
     Timestamp ultimateDarkSightEndTime = new Timestamp(-1);
+    Timestamp veilOfShadowEndTime = new Timestamp(-1);
+    Timestamp darkSightChargeTime = new Timestamp(-1);
 
     boolean isNuke = false;
+    boolean isSmokeBombCovertShadow = true;
 
     Assassination assassination = new Assassination();
     AssassinationCancle assassinationCancle = new AssassinationCancle();
     AssassinationFinish assassinationFinish = new AssassinationFinish();
     AssassinationFinishCancle assassinationFinishCancle = new AssassinationFinishCancle();
     ContinuousRing continuousRing = new ContinuousRing();
+    CovertShadow covertShadow = new CovertShadow();
+    CovertShadowBuff covertShadowBuff = new CovertShadowBuff();
+    CovertShadowEdge covertShadowEdge = new CovertShadowEdge();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
-    DarkFlare darkFlare = new DarkFlare();
+    DarkFlareShadower darkFlareShadower = new DarkFlareShadower();
     EpicAdventure epicAdventure = new EpicAdventure();
     Eviscerate eviscerate = new Eviscerate();
     FatalVenom fatalVenom = new FatalVenom();
     Heartbreaker heartbreaker = new Heartbreaker();
     HeartbreakerCancle heartbreakerCancle = new HeartbreakerCancle();
-    HeartbreakerCancleStack heartbreakerCancleStack = new HeartbreakerCancleStack();
     HeartbreakerFinish heartbreakerFinish = new HeartbreakerFinish();
     HeartbreakerFinishCancle heartbreakerFinishCancle = new HeartbreakerFinishCancle();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
@@ -110,38 +120,56 @@ public class ShadowerContinuousDealCycle extends DealCycle {
         ultimateDarkSight.setBuffFinalDamage(1.29);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
+
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(ultimateDarkSight);
+        getSkillSequence1().add(smokeBomb);
+        getSkillSequence1().add(soulContract);              // 30
+        getSkillSequence1().add(readyToDie);                // 600
+
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(readyToDie);                // 600
+
+        mapleWorldGoddessBlessing.setDelay(100L);
+        ultimateDarkSight.setDelay(100L);
+        smokeBomb.setDelay(100L);
     }
 
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
-            if (cooldownCheck(darkFlare)) {
-                addSkillEvent(darkFlare);
+            if (
+                    getStart().after(darkSightChargeTime)
+                            && (
+                            getStart().before(ultimateDarkSightEndTime)
+                                    || getStart().before(veilOfShadowEndTime)
+                                    || getStart().before(smokeBombEndTime)
+                    )
+            ) {
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(darkSightChargeTime.getTime());
+                addSkillEvent(covertShadowBuff);
+                getStart().setTime(now.getTime());
+                darkSightChargeTime = new Timestamp(darkSightChargeTime.getTime() + 9000);
+            }
+            if (cooldownCheck(darkFlareShadower)) {
+                addSkillEvent(darkFlareShadower);
             }
             if (
                     cooldownCheck(ultimateDarkSight)
-                    && cooldownCheck(slashShadowFormation)
+                    && cooldownCheck(eviscerate)
                     && cooldownCheck(sonicBlow)
-                    && cooldownCheck(soulContract)
                     && getStart().before(new Timestamp(600 * 1000))
             ) {
                 isNuke = true;
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(assassination);
-                    addSkillEvent(assassinationFinishCancle);
-                    addSkillEvent(mesoExplosion);
                 }
-                addSkillEvent(ultimateDarkSight);
-                addSkillEvent(smokeBomb);
-                addSkillEvent(readyToDie);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(assassination);
                 addSkillEvent(slashShadowFormation);
                 addSkillEvent(assassinationFinishCancle);
@@ -152,11 +180,6 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                     addSkillEvent(savageAssault1);
                 }
                 addSkillEvent(mesoExplosion);
-                for (int i = 0; i < 5; i++) {
-                    addSkillEvent(heartbreakerCancleStack);
-                    addSkillEvent(heartbreakerFinishCancle);
-                    addSkillEvent(mesoExplosion);
-                }
                 isNuke = false;
             } else if (
                     cooldownCheck(slashShadowFormation)
@@ -165,8 +188,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                             && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(veilOfShadow);
-                addSkillEvent(readyToDie);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence2());
                 addSkillEvent(assassination);
                 addSkillEvent(slashShadowFormation);
                 addSkillEvent(assassinationFinishCancle);
@@ -179,11 +201,6 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 addSkillEvent(sonicBlow);
                 addSkillEvent(eviscerate);
                 addSkillEvent(mesoExplosion);
-                for (int i = 0; i < 2; i++) {
-                    addSkillEvent(heartbreakerCancleStack);
-                    addSkillEvent(heartbreakerFinishCancle);
-                    addSkillEvent(mesoExplosion);
-                }
             } else if (
                     getStart().after(smokeBombEndTime)
                             && cooldownCheck(veilOfShadow)
@@ -199,22 +216,25 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 addSkillEvent(sonicBlow);
                 addSkillEvent(eviscerate);
                 addSkillEvent(mesoExplosion);
-                for (int i = 0; i < 2; i++) {
-                    addSkillEvent(heartbreakerCancleStack);
-                    addSkillEvent(heartbreakerFinishCancle);
-                    addSkillEvent(mesoExplosion);
-                }
             } else if (
                     cooldownCheck(eviscerate)
-                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 5000))
+                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 8000))
             ) {
                 addSkillEvent(eviscerate);
-            } else if (cooldownCheck(heartbreakerCancle)) {
+            } else if (
+                    cooldownCheck(heartbreakerCancle)
+                    || heartbreakerCount > 0
+            ) {
+                if (heartbreakerCount > 0) {
+                    heartbreakerCancle.setActivateTime(new Timestamp(-1));
+                }
                 addSkillEvent(heartbreakerCancle);
+                addSkillEvent(mesoExplosion);
                 addSkillEvent(heartbreakerFinishCancle);
                 addSkillEvent(mesoExplosion);
             } else {
                 addSkillEvent(assassination);
+                addSkillEvent(mesoExplosion);
                 addSkillEvent(assassinationFinishCancle);
                 addSkillEvent(mesoExplosion);
             }
@@ -241,9 +261,19 @@ public class ShadowerContinuousDealCycle extends DealCycle {
             }
             if (skill instanceof SmokeBomb) {
                 smokeBombEndTime = new Timestamp(getStart().getTime() + 30000);
+                isSmokeBombCovertShadow = false;
+                heartbreakerCount += 3;
             }
             if (skill instanceof UltimateDarkSight) {
-                ultimateDarkSightEndTime = new Timestamp(getStart().getTime() + 30000);
+                ultimateDarkSightEndTime = new Timestamp(getStart().getTime() + 33000);
+                darkSightChargeTime = new Timestamp(getStart().getTime() + 9000);
+            }
+            if (skill instanceof VeilOfShadowBuff) {
+                veilOfShadowEndTime = new Timestamp(veilOfShadowEndTime.getTime() + 12000);
+                heartbreakerCount += 2;
+            }
+            if (skill instanceof DarkSight) {
+                darkSightChargeTime = new Timestamp(getStart().getTime() + 9000);
             }
             if (
                     skill instanceof SoulContract
@@ -293,12 +323,49 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                             || skill instanceof Eviscerate
                             || skill instanceof Heartbreaker
                             || skill instanceof HeartbreakerCancle
-                            || skill instanceof HeartbreakerCancleStack
                             || skill instanceof HeartbreakerFinish
                             || skill instanceof HeartbreakerFinishCancle
                     )
             ) {
                 addSkillEvent(continuousRing);
+            }
+            if (
+                    skill instanceof Assassination
+                    || skill instanceof AssassinationCancle
+                    || skill instanceof AssassinationFinish
+                    || skill instanceof AssassinationFinishCancle
+            ) {
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 20) {
+                    heartbreakerCount ++;
+                }
+            }
+            if (
+                    !isSmokeBombCovertShadow
+                            && getStart().before(smokeBombEndTime)
+                            && (
+                            skill instanceof SpiderInMirror
+                                    || skill instanceof CrestOfTheSolar
+                                    || skill instanceof Assassination
+                                    || skill instanceof AssassinationCancle
+                                    || skill instanceof AssassinationFinish
+                                    || skill instanceof AssassinationFinishCancle
+                                    || skill instanceof Eviscerate
+                                    || skill instanceof Heartbreaker
+                                    || skill instanceof HeartbreakerCancle
+                                    || skill instanceof HeartbreakerFinish
+                                    || skill instanceof HeartbreakerFinishCancle
+                                    || skill instanceof SavageAssault1
+                                    || skill instanceof SavageAssault2
+                                    || skill instanceof SavageAssault3
+                                    || skill instanceof SonicBlow
+                                    || skill instanceof SonicBlowAfterDelay
+                                    || skill instanceof SonicBlowBeforeDelay
+                    )
+            ) {
+                isSmokeBombCovertShadow = true;
+                addSkillEvent(covertShadowBuff);
+                darkSightChargeTime = new Timestamp(getStart().getTime() + 9000);
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -343,15 +410,25 @@ public class ShadowerContinuousDealCycle extends DealCycle {
             }
         }
         if (
+                heartbreakerCount > 0
+                && (
+                        skill instanceof Heartbreaker
+                        || skill instanceof HeartbreakerCancle
+                )
+        ) {
+            heartbreakerCount --;
+        } else if (
                 getStart().before(smokeBombEndTime)
                 && (
                         skill instanceof Heartbreaker
                         || skill instanceof HeartbreakerCancle
                 )
         ) {
-            skill.setCooldown(3.2);
+            skill.setCooldown(3.0);
+            skill.setApplyCooldownReduction(false);
             applyCooldown(skill);
             skill.setCooldown(10.0);
+            skill.setApplyCooldownReduction(true);
         } else {
             applyCooldown(skill);
         }
@@ -403,9 +480,15 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -414,15 +497,19 @@ public class ShadowerContinuousDealCycle extends DealCycle {
             boolean isVeilOfShadow = false;
             boolean isUltimateDarkSight = false;
             boolean isHeartbreakerDarkSight = false;
+            boolean isCovertShadow = false;
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof SmokeBomb) {
                     isSmokeBomb = true;
+                    isCovertShadow = true;
                 } else if (skillEvent.getSkill() instanceof VeilOfShadowBuff) {
                     isVeilOfShadow = true;
                 } else if (skillEvent.getSkill() instanceof UltimateDarkSight) {
                     isUltimateDarkSight = true;
                 } else if (skillEvent.getSkill() instanceof HeartbreakerDarksight) {
                     isHeartbreakerDarkSight = true;
+                } else if (skillEvent.getSkill() instanceof CovertShadowBuff) {
+                    isCovertShadow = true;
                 }
             }
             if (isUltimateDarkSight) {
@@ -458,14 +545,15 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                         && (
                                 se.getSkill() instanceof Heartbreaker
                                 || se.getSkill() instanceof HeartbreakerCancle
-                                || se.getSkill() instanceof HeartbreakerCancleStack
                                 || se.getSkill() instanceof HeartbreakerFinish
                                 || se.getSkill() instanceof HeartbreakerFinishCancle
                         )
                 ) {
                     buffSkill.addBuffFinalDamage(1.15);
                 }
-                totalDamage += getAttackDamage(se, buffSkill, start, end);
+                if (!(se.getSkill() instanceof MesoExplosion)) {
+                    totalDamage += getAttackDamage(se, buffSkill, start, end);
+                }
                 if (
                         !isSmokeBomb
                                 && !isVeilOfShadow
@@ -474,7 +562,6 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                                 && (
                                 se.getSkill() instanceof Heartbreaker
                                         || se.getSkill() instanceof HeartbreakerCancle
-                                        || se.getSkill() instanceof HeartbreakerCancleStack
                                         || se.getSkill() instanceof HeartbreakerFinish
                                         || se.getSkill() instanceof HeartbreakerFinishCancle
                         )
@@ -491,7 +578,6 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                                 || se.getSkill() instanceof Eviscerate
                                 || se.getSkill() instanceof Heartbreaker
                                 || se.getSkill() instanceof HeartbreakerCancle
-                                || se.getSkill() instanceof HeartbreakerCancleStack
                                 || se.getSkill() instanceof HeartbreakerFinish
                                 || se.getSkill() instanceof HeartbreakerFinishCancle
                                 || se.getSkill() instanceof SonicBlow
@@ -511,9 +597,44 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 }
                 if (se.getSkill() instanceof MesoExplosion) {
                     for (int j = 0; j < coinCount; j++) {
-                        totalDamage += getAttackDamage(new SkillEvent(se.getSkill(), start, end), buffSkill, start, end);
+                        totalDamage += getAttackDamage(new SkillEvent(se.getSkill(), start, start), buffSkill, start, start);
+                        if (isCovertShadow) {
+                            totalDamage += getAttackDamage(new SkillEvent(covertShadowEdge, start, start), buffSkill, start, start);
+                        } else {
+                            Long ran = (long) (Math.random() * 99 + 1);
+                            if (ran <= covertShadow.getProp()) {
+                                totalDamage += getAttackDamage(new SkillEvent(covertShadow, start, start), buffSkill, start, start);
+                            }
+                        }
                     }
                     coinCount = 0L;
+                }
+                if (
+                        se.getStart().equals(start)
+                        && (
+                                se.getSkill() instanceof SavageAssault1
+                                || se.getSkill() instanceof SavageAssault2
+                                || se.getSkill() instanceof SavageAssault3
+                                || se.getSkill() instanceof SonicBlow
+                                || se.getSkill() instanceof Assassination
+                                || se.getSkill() instanceof AssassinationCancle
+                                || se.getSkill() instanceof AssassinationFinish
+                                || se.getSkill() instanceof AssassinationFinishCancle
+                                || se.getSkill() instanceof Eviscerate
+                                || se.getSkill() instanceof Heartbreaker
+                                || se.getSkill() instanceof HeartbreakerCancle
+                                || se.getSkill() instanceof HeartbreakerFinish
+                                || se.getSkill() instanceof HeartbreakerFinishCancle
+                        )
+                ) {
+                    if (isCovertShadow) {
+                        totalDamage += getAttackDamage(new SkillEvent(covertShadowEdge, start, start), buffSkill, start, start);
+                    } else {
+                        Long ran = (long) (Math.random() * 99 + 1);
+                        if (ran <= covertShadow.getProp()) {
+                            totalDamage += getAttackDamage(new SkillEvent(covertShadow, start, start), buffSkill, start, start);
+                        }
+                    }
                 }
                 if (((AttackSkill) se.getSkill()).isApplyFinalAttack()) {
                     Long ran = (long) (Math.random() * 99 + 1);

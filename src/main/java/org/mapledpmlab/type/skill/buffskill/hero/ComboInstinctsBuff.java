@@ -13,7 +13,7 @@ public class ComboInstinctsBuff extends BuffSkill {
         this.setBuffAttMagic(4L);
         this.setBuffDamage(4L);
         this.setCooldown(120.0);
-        this.setDelay(450L);
+        this.setDelayByAttackSpeed(450L);
         this.setDuration(20L);
         this.setApplyServerLag(true);
     }

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DiveOfThunder extends AttackSkill {
     public DiveOfThunder() {
         this.setName("다이브 오브 썬더");
-        this.setDamage(135.0 + 211);
+        this.setDamage(586.0);
         this.setAttackCount(4L);
         this.setDotDuration(4000L);
         this.setInterval(700L);

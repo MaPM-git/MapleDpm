@@ -3,7 +3,7 @@ package org.mapledpmlab.type.skill.attackskill.archmageil;
 public class ThunderSpear extends ThunderAttack {
     public ThunderSpear() {
         this.setName("썬더 스피어");
-        this.setDamage(370.0);
+        this.setDamage(587.0);
         this.setAttackCount(3L);
         this.setDelayByAttackSpeed(900L);
         this.setDotDuration(120000L);

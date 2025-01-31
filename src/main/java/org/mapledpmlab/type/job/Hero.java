@@ -71,8 +71,8 @@ public class  Hero extends Job {
         //this.addMainStat(8L);
 
         // 환산 보정, 스탯뚝
-        //this.addMainStatP(12L);
-        this.addMainStat(-15L);
+        this.addMainStatP(-33L);
+        this.addMainStat(-1L);
         this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalAttack());

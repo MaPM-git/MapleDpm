@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class CannonBuster extends AttackSkill {
     public CannonBuster() {
         this.setName("캐논 버스터");
-        this.setDamage(1240.0);
+        this.setDamage(1240.0 + 120);
         this.setAttackCount(15L);       // 캐논 버스터-보너스 어택, 벅샷
         this.setDelayByAttackSpeed(810L);
         this.addIgnoreDefenseList(30L);

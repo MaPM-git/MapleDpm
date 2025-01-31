@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ChainBombPunchEnd extends AttackSkill {
     public ChainBombPunchEnd() {
         this.setName("파쇄 연권(막타)");
-        this.setDelay(1080L);
+        this.setDelayByAttackSpeed(1080L);
         this.setAttackCount(14L);
         this.setDamage(880.0);
         this.addFinalDamage(1.6);           // 코어 강화

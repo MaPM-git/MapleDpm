@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class ShadowdealerElixir extends BuffSkill {
     public ShadowdealerElixir() {
         this.setName("상인단 특제 비약");
-        this.setDelay(570L);
+        this.setDelayByAttackSpeed(570L);
         this.setDuration(60L);
         this.setCooldown(120.0);
         this.addBuffDamage(10L);

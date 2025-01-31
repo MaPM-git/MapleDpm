@@ -5,8 +5,8 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SummonBeatingNeedleBat2 extends AttackSkill {
     public SummonBeatingNeedleBat2() {
         this.setName("서먼 비팅 니들배트(2타)");
-        this.setDamage(650.0);
-        this.setAttackCount(9L);
+        this.setDamage(783.0);
+        this.setAttackCount(13L);
         this.setDelay(150L + 30);
         this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화

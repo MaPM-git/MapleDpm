@@ -8,7 +8,7 @@ public class NautilusAssaultVolleyFire extends AttackSkill {
         this.setDamage(990.0);
         this.setAttackCount(12L);
         this.addFinalDamage(1.6);       // 코어강화
-        this.getMultiAttackInfo().add(3420L - 900);
+        this.getMultiAttackInfo().add(3420L - 690);
         this.getMultiAttackInfo().add(100L);
         this.getMultiAttackInfo().add(100L);
         this.getMultiAttackInfo().add(100L);

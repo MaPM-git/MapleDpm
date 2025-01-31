@@ -6,7 +6,7 @@ public class JupiterThunder extends ThunderAttack {
         this.setDamage(880.0);
         this.setAttackCount(8L);
         this.setCooldown(120.0);
-        this.setDelay(810L);
+        this.setDelayByAttackSpeed(810L);
         this.setDotDuration(30000L);
         this.setInterval(330L);
         this.setLimitAttackCount(30L);

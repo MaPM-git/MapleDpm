@@ -76,8 +76,8 @@ public class Shadower extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-57L);
-        this.addMainStat(5L);
+        this.addMainStatP(-63L);
+        this.addMainStat(0L);
         this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalReuse());

@@ -8,6 +8,7 @@ import org.mapledpmlab.type.hyper.HyperDemonSlayer;
 import org.mapledpmlab.type.job.Job;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
+import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
 
 import java.util.stream.Collectors;
@@ -60,20 +61,20 @@ public class DemonSlayerRuinContinuous extends Job {
 
         // 4차
         this.addIgnoreDefenseList(31L);  // 다크 바인드
-        this.addDamage(36L);            // 메타모포시스
+        this.addDamage(45L);            // 메타모포시스
         this.addAtt(51L);               // 어드밴스드 웨폰 마스터리
 
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(30L);
-        this.addMainStat(-12L);
-        this.addSubStat(5L);
+        this.addMainStatP(39L);
+        this.addMainStat(8L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
-        this.getLinkList().add(new HybridLogic());
+        this.getLinkList().add(new PhantomInstinct());
         this.getLinkList().add(new Noblesse());
         this.setUnion(new StrUnion());
 

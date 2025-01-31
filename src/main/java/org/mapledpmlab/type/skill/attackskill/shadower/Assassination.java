@@ -6,7 +6,7 @@ public class Assassination extends AttackSkill {
     public Assassination() {
         this.setName("암살");
         this.setAttackCount(6L * 2);
-        this.setDamage(395.0);
+        this.setDamage(395.0 + 100);
         this.setDelayByAttackSpeed(690L);
         this.addFinalDamage(1.5);
         this.setAddDamage(20 + 20L);    // 암살-리인포스, 보스 킬러

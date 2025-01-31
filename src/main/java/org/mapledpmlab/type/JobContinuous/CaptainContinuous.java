@@ -72,9 +72,9 @@ public class CaptainContinuous extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-39L);
-        this.addMainStat(-1L);
-        this.addSubStat(7L);
+        this.addMainStatP(-42L);
+        this.addMainStat(-8L);
+        this.addSubStat(0L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

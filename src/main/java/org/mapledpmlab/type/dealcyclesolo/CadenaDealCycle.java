@@ -137,6 +137,22 @@ public class CadenaDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(90.0);
         grandisGoddessBlessingNova.setCooldown(120.0);
+
+        getSkillSequence1().add(chainArtsFuryBuff);
+        getSkillSequence1().add(shadowdealerElixir);
+        getSkillSequence1().add(grandisGoddessBlessingNova);
+        getSkillSequence1().add(readyToDie);                // 630
+        getSkillSequence1().add(soulContract);              // 30
+        getSkillSequence1().add(professionalAgent);
+
+        getSkillSequence2().add(readyToDie);                // 630
+        getSkillSequence2().add(soulContract);              // 30
+
+        readyToDie.setDelay(630L);
+        chainArtsFuryBuff.setDelay(60L);
+        shadowdealerElixir.setDelay(60L);
+        grandisGoddessBlessingNova.setDelay(60L);
+        professionalAgent.setDelay(60L);
     }
 
     @Override
@@ -146,54 +162,54 @@ public class CadenaDealCycle extends DealCycle {
         addSkillEvent(venomBurst);
         while (getStart().before(getEnd())) {
             if (cooldownCheck(professionalAgent)) {
-                while (getStart().before(new Timestamp(chainArtsTakedown.getActivateTime().getTime() - 5000))) {
+                while (getStart().before(new Timestamp(chainArtsTakedown.getActivateTime().getTime() - 2000))) {
                     addPlatDeal();
                 }
                 if (isCancel) {
                     getStart().setTime(getStart().getTime() + 500);
                 }
-                addSkillEvent(chainArtsFuryBuff);
-                addSkillEvent(shadowdealerElixir);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
-                addSkillEvent(grandisGoddessBlessingNova);
-                addSkillEvent(professionalAgent);
-                addSkillEvent(adOrdnance);
                 addSkillEvent(chainArtsStroke1);
                 addSkillEvent(chainArtsStroke2);
                 chainArtsMaelstrom.setActivateTime(new Timestamp(-1));
                 addSkillEvent(chainArtsMaelstrom);
-                addSkillEvent(soulContract);
-                addSkillEvent(readyToDie);
+                addDealCycle(getSkillSequence1());
+                addSkillEvent(adOrdnance);
                 addSkillEvent(chainArtsTakedown);
                 addSkillEvent(restraintRing);
-                addSkillEvent(chainArtsStroke1Cancle);
-                addSkillEvent(summonThrowingWingDagger);
-                addSkillEvent(chainArtsStroke1Cancle);
-                addSkillEvent(summonBeatingNeedleBat1);
+                boolean isWingDagger = false;
+                while (cooldownCheck(summonBeatingNeedleBat1)) {
+                    if (
+                            !isWingDagger
+                            && cooldownCheck(summonThrowingWingDagger)
+                    ) {
+                        addSkillEvent(chainArtsStroke1Cancle);
+                        addSkillEvent(summonThrowingWingDagger);
+                        isWingDagger = true;
+                    }
+                    addSkillEvent(chainArtsStroke1Cancle);
+                    addSkillEvent(summonBeatingNeedleBat1);
+                }
                 if (cooldownCheck(chainArtsMassacre1)) {
                     addSkillEvent(chainArtsMassacre1);
                 }
-            } else if (
-                    cooldownCheck(chainArtsTakedown)
-                            && cooldownCheck(adOrdnance)
-            ) {
+            } else if (getStart().after(new Timestamp(chainArtsTakedown.getActivateTime().getTime() - 2000))) {
                 if (isCancel) {
                     getStart().setTime(getStart().getTime() + 500);
                 }
-                addSkillEvent(soulContract);
-                addSkillEvent(readyToDie);
-                addSkillEvent(weaponJumpRing);
-                addSkillEvent(chainArtsTakedown);
-                addSkillEvent(adOrdnance);
+                addDealCycle(getSkillSequence2());
                 addSkillEvent(chainArtsStroke1);
                 addSkillEvent(chainArtsStroke2);
                 chainArtsMaelstrom.setActivateTime(new Timestamp(-1));
                 addSkillEvent(chainArtsMaelstrom);
+                addSkillEvent(adOrdnance);
+                addSkillEvent(chainArtsTakedown);
+                addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(75 * 1000))
@@ -202,15 +218,9 @@ public class CadenaDealCycle extends DealCycle {
                 getStart().setTime(getStart().getTime() + 500);
                 addSkillEvent(ringSwitching);
                 ringSwitching.setCooldown(ringSwitching.getCooldown() + 5);
-            } /*else if (
-                    cooldownCheck(soulContract)
-                            && getStart().after(soulContractEndTime)
-                            && getStart().before(soulContractLimitEndTime)
-            ) {
-                getStart().setTime(getStart().getTime() + 500);
-                addSkillEvent(soulContract);
-            }*/ else if (
+            } else if (
                     cooldownCheck(adOrdnance)
+                            && !cooldownCheck(readyToDie)
                             && getStart().before(new Timestamp(670 * 1000))
             ) {
                 if (isAir) {
@@ -243,9 +253,6 @@ public class CadenaDealCycle extends DealCycle {
         } else if (cooldownCheck(summonBeatingNeedleBat1)) {
             addSkillEvent(chainArtsStroke1Cancle);
             addSkillEvent(summonBeatingNeedleBat1);
-        } else if (cooldownCheck(chainArtsStroke2Reinforce)) {
-            addSkillEvent(chainArtsStroke1);
-            addSkillEvent(chainArtsStroke2Reinforce);
         } else if (cooldownCheck(summonShootingShotgun)) {
             addSkillEvent(chainArtsStroke1Cancle);
             addSkillEvent(summonShootingShotgun);
@@ -268,17 +275,18 @@ public class CadenaDealCycle extends DealCycle {
             addSkillEvent(chainArtsStroke1Cancle);
             addSkillEvent(summonScratchingClaw);
             isAir = false;
+        } else if (cooldownCheck(chainArtsStroke2Reinforce)) {
+            addSkillEvent(chainArtsStroke1);
+            addSkillEvent(chainArtsStroke2Reinforce);
+        } else if (cooldownCheck(summonCuttingScimitar)) {
+            addSkillEvent(chainArtsStroke1);
+            addSkillEvent(summonCuttingScimitar);
+            addSkillEvent(chainArtsChase);
         } else if (cooldownCheck(chainArtsCrush)) {
             addSkillEvent(chainArtsStroke1);
             addSkillEvent(chainArtsChase);
             addSkillEvent(chainArtsCrush);
             isCancel = false;
-        } else if (
-                cooldownCheck(summonCuttingScimitar)
-        ) {
-            addSkillEvent(chainArtsStroke1);
-            addSkillEvent(summonCuttingScimitar);
-            addSkillEvent(chainArtsChase);
         } else {
             addSkillEvent(chainArtsStroke1);
             addSkillEvent(chainArtsStroke2);
@@ -290,7 +298,7 @@ public class CadenaDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -588,9 +596,15 @@ public class CadenaDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

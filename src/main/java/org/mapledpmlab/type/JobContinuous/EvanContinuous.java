@@ -79,7 +79,7 @@ public class EvanContinuous extends Job {
 
         // 환산 보정
         this.addMainStatP(30L);
-        this.addMainStat(3L);
+        this.addMainStat(4L);
         this.addSubStat(5L);
 
         this.setAbility(new ReuseBossAbnormal());

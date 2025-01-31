@@ -28,7 +28,7 @@ public class Evan5ContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
-            add(new AdvancedDragonSpark());
+            add(new DragonSpark());
             add(new BreakComeBack());
             add(new BreathComeBack());
             add(new BreathOfEarth());
@@ -119,7 +119,7 @@ public class Evan5ContinuousDealCycle extends DealCycle {
     ZodiacRayDelay zodiacRayDelay = new ZodiacRayDelay();
 
     public Evan5ContinuousDealCycle(Job job) {
-        super(job, new AdvancedDragonSpark());
+        super(job, new DragonSpark());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
@@ -165,7 +165,7 @@ public class Evan5ContinuousDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(zodiacRayDelay)
-                            && getStart().after(new Timestamp(elementalBlast.getActivateTime().getTime() - 4000))
+                            && getStart().after(new Timestamp(elementalBlast.getActivateTime().getTime() - 3000))
                             && getStart().before(new Timestamp(600 * 1000))
             ) {
                 isNuke = true;

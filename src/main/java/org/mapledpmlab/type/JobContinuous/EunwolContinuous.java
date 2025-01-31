@@ -74,7 +74,7 @@ public class EunwolContinuous extends Job {
 
         // 환산 보정
         this.addMainStatP(-51L);
-        this.addMainStat(2L);
+        this.addMainStat(3L);
         this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());

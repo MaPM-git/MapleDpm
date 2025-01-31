@@ -11,7 +11,7 @@ public class TranscendentCygnusBlessing extends BuffSkill {
     public TranscendentCygnusBlessing(Long burningTime) {
         this.setName("초월자 시그너스의 축복");
         this.addBuffDamage(30 + burningTime / 4000 * 8);
-        this.setDelay(630L);
+        this.setDelayByAttackSpeed(630L);
         this.setDuration(45L);
         this.setCooldown(120.0);
         this.setApplyServerLag(true);

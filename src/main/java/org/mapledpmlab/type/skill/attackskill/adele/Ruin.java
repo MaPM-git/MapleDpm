@@ -6,7 +6,7 @@ public class Ruin extends AttackSkill {
     public Ruin() {
         this.setName("루인(소환)");
         this.setDamage(550.0);
-        this.setDelay(780L);
+        this.setDelayByAttackSpeed(780L);
         this.setAttackCount(6L);
         this.setDotDuration(2640L);
         this.setInterval(120L);

@@ -64,7 +64,7 @@ public class ArchMageFP extends Job {
 
         // 환산 보정
         this.addMainStatP(75L);
-        this.addMainStat(-5L);
+        this.addMainStat(-3L);
         this.addSubStat(-10L);
 
         this.setAbility(new BuffBossAbnormal());

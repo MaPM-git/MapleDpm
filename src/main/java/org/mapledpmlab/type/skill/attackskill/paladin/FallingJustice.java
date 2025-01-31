@@ -7,9 +7,10 @@ public class FallingJustice extends AttackSkill {
         this.setName("폴링 저스티스");
         this.setCooldown(30.0);
         this.setAttackCount(6L);
-        this.setDamage(1560.0);
+        this.setDamage(1491.0);
         this.setDotDuration(2520L);
         this.setInterval(120L);
         this.setLimitAttackCount(15L);
+        this.setRelatedSkill(new RisingJustice());
     }
 }

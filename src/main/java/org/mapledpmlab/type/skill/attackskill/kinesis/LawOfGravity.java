@@ -7,7 +7,7 @@ public class LawOfGravity extends AttackSkill {
         this.setName("로 오브 그라비티");
         this.setDamage(440.0);
         this.setAttackCount(6L);
-        this.setDelay(960L);
+        this.setDelayByAttackSpeed(960L);
         this.setApplyFinalAttack(true);
         this.addFinalDamage(1.6);   // 코어강화
         this.setRelatedSkill(new LawOfGravityPull1());

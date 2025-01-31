@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SummonStrikingBrick extends AttackSkill {
     public SummonStrikingBrick() {
         this.setName("서먼 스트라이킹 브릭");
-        this.setDamage(543.0);
+        this.setDamage(915.0);
         this.setAttackCount(7L);
         this.setDelay(150L + 30);
         this.setCooldown(8.0);

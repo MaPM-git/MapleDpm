@@ -67,7 +67,7 @@ public class SoulMaster extends Job {
         this.addSubStat(31L);
         this.addCriticalP(10.0);
         this.addAtt(51L);               // 소드 엑스퍼트
-        this.addCriticalDamage(15.0);
+        this.addCriticalDamage(20.0);
         this.addIgnoreDefenseList(32L);  // 언포시어블
         this.addBossDamage(21L);
         this.addFinalDamage(1.25);      // 마스터 오브 더 소드
@@ -77,9 +77,9 @@ public class SoulMaster extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-60L);
-        this.addMainStat(3L);
-        this.addSubStat(10L);
+        this.addMainStatP(-57L);
+        this.addMainStat(15L);
+        this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -101,6 +101,6 @@ public class SoulMaster extends Job {
         this.addAtt(20L);               // 엘리멘트 : 소울
         this.addAtt(15L);               // 소울 블레싱
         this.addAtt(15L);               // 소울 블레싱 II
-        this.addFinalDamage(1.1);       // 소울 블레싱 III
+        this.addFinalDamage(1.12);      // 소울 블레싱 III
     }
 }

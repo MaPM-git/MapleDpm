@@ -23,6 +23,18 @@ public class HyperDemonSlayer extends Hyper {
 
         point -= 26L;   // DF 4
 
+        if (criticalP < 100) {
+            Long reqCriticalP = (long) (100 - criticalP);
+            if (reqCriticalP <= 5) {
+                point -= reqPoint[Math.toIntExact(reqCriticalP)];
+                this.addCriticalP(Double.valueOf(reqCriticalP));
+            } else {
+                Long reqLevel = 5L;
+                point -= reqPoint[(int) (reqLevel + Math.ceil((reqCriticalP - 5) / 2.0))];
+                this.addCriticalP(5.0 + Math.ceil((reqCriticalP - 5) / 2.0) * 2);
+            }
+        }
+
         for (int i = 15; i > 0; i--) {
             if (point >= reqPoint[i]) {
                 point -= reqPoint[i];

@@ -6,7 +6,7 @@ public class GodOfTheSea extends AttackSkill {
     public GodOfTheSea() {
         this.setName("해신강림");
         this.setAttackCount(7L * 2);
-        this.setDamage(860.0);
+        this.setDamage(1380.0);
         this.setDelayByAttackSpeed(540L);
         this.setCooldown(45.0);
         this.addFinalDamage(2.2);           // 코어강화

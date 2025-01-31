@@ -36,6 +36,11 @@ public class DealCycle {
     private List<Long> dpsList = new ArrayList<>();
     private List<DealCycle> partyDealCycle = new ArrayList<>();
     private List<Timestamp> nukeTimeList = new ArrayList<>();
+    private List<Skill> skillSequence1 = new ArrayList<>();
+    private List<Skill> skillSequence2 = new ArrayList<>();
+    private List<Skill> skillSequence3 = new ArrayList<>();
+    private List<Skill> skillSequence4 = new ArrayList<>();
+    private List<Skill> skillSequence5 = new ArrayList<>();
     public Timestamp restraintRingStartTime = null;
     public Timestamp restraintRingEndTime = null;
     public Timestamp fortyEndTime = null;
@@ -333,9 +338,15 @@ public class DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

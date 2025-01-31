@@ -85,9 +85,9 @@ public class WindBreakerContinuous extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(-60L);
-        this.addMainStat(0L);
-        this.addSubStat(5L);
+        this.addMainStatP(-54L);
+        this.addMainStat(-8L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

@@ -7,7 +7,7 @@ public class ShadowFlashAlphaFinish extends AttackSkill {
         this.setName("쉐도우 플래시(알파, 재사용)");
         this.setAttackCount(15L);
         this.setDamage(1145.0);
-        this.setDelay(880L);
+        this.setDelayByAttackSpeed(880L);
         this.setDotDuration(880L);
         this.setInterval(90L);
         this.setLimitAttackCount(3L);

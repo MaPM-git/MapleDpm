@@ -6,7 +6,7 @@ public class GrimReaper extends AttackSkill {
     public GrimReaper() {
         this.setName("그림 리퍼");
         this.setInterval(4000L);
-        this.setDelay(720L);
+        this.setDelayByAttackSpeed(720L);
         this.setDotDuration(62000L);
         this.setDamage(1870.0);
         this.setAttackCount(12L);

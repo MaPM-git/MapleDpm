@@ -140,13 +140,23 @@ public class KinesisDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
+                while (!cooldownCheck(otherworldlyAfterimage)) {
+                    if (grabCnt > 0) {
+                        addSkillEvent(psychicSmashing);
+                        grabCnt --;
+                    } else {
+                        addSkillEvent(psychicGrab);
+                        grabCnt = 5;
+                    }
+                }
                 addSkillEvent(otherworldlyAfterimage);
                 addSkillEvent(otherWorldGoddessBlessing);
                 addSkillEvent(psychicOver);
                 addSkillEvent(psychicTornado);
-                addSkillEvent(ultimateMovingMatter);
                 addSkillEvent(lawOfGravity);
-                //addSkillEvent(ultimateTrain);
+                ultimateTrain.setActivateTime(new Timestamp(-1));
+                addSkillEvent(ultimateTrain);
+                addSkillEvent(ultimateMovingMatter);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
                 if (cooldownCheck(anotherRealm)) {
@@ -163,10 +173,13 @@ public class KinesisDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (cooldownCheck(ultimateMovingMatter)) {
+            } else if (
+                    cooldownCheck(ultimateMovingMatter)
+                    && !cooldownCheck(psychicOver)
+            ) {
                 addSkillEvent(otherworldlyAfterimage);
-                addSkillEvent(ultimateMovingMatter);
                 addSkillEvent(lawOfGravity);
+                addSkillEvent(ultimateMovingMatter);
                 addSkillEvent(soulContract);
                 if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
@@ -184,12 +197,30 @@ public class KinesisDealCycle extends DealCycle {
             ) {
                 addSkillEvent(psychicGround);
                 addSkillEvent(psychicDrain);
-            }/* else if (
-                    cooldownCheck(ultimateTrain)
-                    && psychicPoint >= 15
+            } else if (
+                    getStart().before(psychicOverEndTime)
+                            && cooldownCheck(ultimateTrain)
+                            && psychicPoint >= 6
             ) {
                 addSkillEvent(ultimateTrain);
-            }*/ else if (
+            } else if (
+                    cooldownCheck(ultimateTrain)
+                    && psychicPoint >= 13
+            ) {
+                while (
+                        cooldownCheck(ultimateBPMTic)
+                        && psychicPoint == 13
+                ) {
+                    if (grabCnt > 0) {
+                        addSkillEvent(psychicSmashing);
+                        grabCnt --;
+                    } else {
+                        addSkillEvent(psychicGrab);
+                        grabCnt = 5;
+                    }
+                }
+                addSkillEvent(ultimateTrain);
+            } else if (
                     getStart().before(psychicOverEndTime)
                             && psychicPoint >= 3
             ) {
@@ -197,16 +228,23 @@ public class KinesisDealCycle extends DealCycle {
             } else if (
                     psychicPoint >= 6
                             && !cooldownCheck(psychicOver)
+                            && !cooldownCheck(ultimateTrain)
+                            && !cooldownCheck(otherworldlyAfterimage)
             ){
+                while (
+                        cooldownCheck(ultimateBPMTic)
+                                && psychicPoint == 6
+                ) {
+                    if (grabCnt > 0) {
+                        addSkillEvent(psychicSmashing);
+                        grabCnt --;
+                    } else {
+                        addSkillEvent(psychicGrab);
+                        grabCnt = 5;
+                    }
+                }
                 addSkillEvent(ultimateMaterial);
-            }/* else if (
-                    psychicPoint >= 4
-                    && grabCnt > 0
-                    && !cooldownCheck(psychicOver)
-            ) {
-                addSkillEvent(ultimatePsychicShoot);
-                grabCnt = 0;
-            }*/ else if (grabCnt > 0) {
+            } else if (grabCnt > 0) {
                 addSkillEvent(psychicSmashing);
                 grabCnt --;
             } else {
@@ -222,7 +260,7 @@ public class KinesisDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -312,8 +350,7 @@ public class KinesisDealCycle extends DealCycle {
             }
         } else {
             if (
-                    skill instanceof UltimateTrain
-                    || skill instanceof UltimatePsychicShoot
+                    skill instanceof UltimatePsychicShoot
                     || skill instanceof UltimatePsychicBullet
                     || skill instanceof CrestOfTheSolar
                     || skill instanceof SpiderInMirror
@@ -360,7 +397,7 @@ public class KinesisDealCycle extends DealCycle {
                         skill instanceof UltimateTrain
                         || skill instanceof PsychicTornado
                 ) {
-                    psychicPoint -= 7;
+                    psychicPoint -= 6;
                 }
             } else {
                 if (skill instanceof UltimatePsychicBullet) {
@@ -380,7 +417,7 @@ public class KinesisDealCycle extends DealCycle {
                         skill instanceof UltimateTrain
                         || skill instanceof PsychicTornado
                 ) {
-                    psychicPoint -= 15;
+                    psychicPoint -= 13;
                 }
             }
             if (
@@ -427,7 +464,7 @@ public class KinesisDealCycle extends DealCycle {
                     Long attackCount = 0L;
                     long i = ((AttackSkill) skill).getInterval();
                     if (skill instanceof UltimateTrain) {
-                        i = 2130;
+                        i = 1110;
                     }
                     if (skill instanceof UltimateMovingMatter) {
                         i = 1890;
@@ -447,6 +484,7 @@ public class KinesisDealCycle extends DealCycle {
                                 || skill instanceof PsychicTornado
                                 || skill instanceof LawOfGravityPull5
                                 || skill instanceof EverPsychic
+                                || skill instanceof UltimateTrain
                         ) {
                             Long ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 40) {
@@ -470,6 +508,9 @@ public class KinesisDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof UltimateTrain) {
+            applyCooldown(ultimateTrain);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {

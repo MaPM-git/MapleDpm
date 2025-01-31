@@ -7,7 +7,7 @@ public class ShadowFlashBeta extends AttackSkill {
         this.setName("쉐도우 플래시(베타)");
         this.setAttackCount(5L);
         this.setDamage(1860.0);
-        this.setDelay(670L);
+        this.setDelayByAttackSpeed(670L);
         this.setCooldown(40.0);
         //this.setDotDuration(40000L);
         //this.setInterval(70L);

@@ -75,9 +75,9 @@ public class Striker extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(9L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-42L);
+        this.addMainStat(12L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

@@ -10,6 +10,7 @@ public class UltimateMaterial extends AttackSkill {
         this.setDelayByAttackSpeed(810L);
         this.setAttackCount(10L);
         this.setRelatedSkill(new UltimateMaterialBuff());
+        this.setApplyFinalAttack(true);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.08);          // 오버로드 마나

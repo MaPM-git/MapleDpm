@@ -33,5 +33,6 @@ public class ZeroBeta extends Zero {
         super.Doping();
         this.addIgnoreDefenseList(50L); // 아머 스플릿 5중첩
         this.addDamage(5L);             // 래피드 타임 5중첩
+        this.addAtt(45L * 3);           // 인피니트 레조넌스 3중첩
     }
 }

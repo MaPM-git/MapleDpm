@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SummonShootingShotgun extends AttackSkill {
     public SummonShootingShotgun() {
         this.setName("서먼 슈팅 샷건");
-        this.setDamage(390.0 + 177);
+        this.setDamage(940.0);
         this.setAttackCount(7L);
         this.setDelay(150L + 30);
         this.setCooldown(5.0);

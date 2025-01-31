@@ -8,7 +8,7 @@ public class KarmaFury extends AttackSkill {
         this.setDamage(880.0);
         this.setAttackCount(14L);
         this.setCooldown(10.0);
-        this.setDelay(990L);
+        this.setDelayByAttackSpeed(990L);
         this.setDotDuration(990L);
         this.setInterval(180L);
         this.setLimitAttackCount(5L);

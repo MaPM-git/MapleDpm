@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SummonThrowingWingDagger extends AttackSkill {
     public SummonThrowingWingDagger() {
         this.setName("서먼 스로잉 윙대거");
-        this.setDamage(205.0 + 100 + 177);
+        this.setDamage(849.0);
         this.setAttackCount(1L);
         this.setDelay(150L + 30);
         this.setDotDuration(7000L);

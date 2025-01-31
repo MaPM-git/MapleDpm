@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class StormWhimBuff extends BuffSkill {
     public StormWhimBuff() {
         this.setName("스톰 윔");
-        this.setDelay(810L);
+        this.setDelayByAttackSpeed(810L);
         this.setDuration(30L);
         this.setCooldown(120.0);
     }

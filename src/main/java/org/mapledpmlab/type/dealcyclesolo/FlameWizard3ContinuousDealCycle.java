@@ -35,7 +35,7 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
             add(new InfernoRizeFoxPrank());
             add(new InfinityFlameCirclePre());
             add(new InfinityFlameCircle());
-            add(new InfinityFlameCircle5());
+            add(new InfinityFlameCircle4());
             add(new OrbitalExplosion());
             add(new OrbitalFlame());
             add(new OrbitalFlameDot());
@@ -82,7 +82,7 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
     FlameDischarge flameDischarge = new FlameDischarge(0L);
     GloryOfGuardians gloryOfGuardians = new GloryOfGuardians();
     InfernoRize infernoRize = new InfernoRize();
-    InfinityFlameCirclePre infinityFlameCircle5 = new InfinityFlameCirclePre();
+    InfinityFlameCirclePre infinityFlameCircle4 = new InfinityFlameCirclePre();
     InfinityFlameCirclePre infinityFlameCircle = new InfinityFlameCirclePre();
     OrbitalFlame orbitalFlame = new OrbitalFlame();
     OrbitalFlameDot orbitalFlameDot = new OrbitalFlameDot();
@@ -107,8 +107,8 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         infinityFlameCircle.setRelatedSkill(new InfinityFlameCircle());
-        infinityFlameCircle5.setRelatedSkill(new InfinityFlameCircle5());
-        infinityFlameCircle5.setCooldown(60.0);
+        infinityFlameCircle4.setRelatedSkill(new InfinityFlameCircle4());
+        infinityFlameCircle4.setCooldown(48.0);
 
         transcendentCygnusBlessing.setCooldown(180.0);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
@@ -131,6 +131,15 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
         flameCount = 150;
 
         skill.setCooldown(180.0);
+
+        getSkillSequence1().add(burningRegion);         // 660
+        getSkillSequence1().add(gloryOfGuardians);      // 30
+        getSkillSequence1().add(salamanderMischief);
+        getSkillSequence1().add(soulContract);          // 30
+
+        getSkillSequence2().add(burningRegion);
+        burningRegion.setDelay(660L);
+        salamanderMischief.setDelay(180L);
     }
 
     @Override
@@ -153,47 +162,17 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
                     cooldownCheck(skill)
                     && getStart().after(new Timestamp(flameDischarge.getActivateTime().getTime() - 1500))
             ) {
-                isNuke = true;
                 burningRegion.setActivateTime(new Timestamp(-1));
-                addSkillEvent(burningRegion);
-                addSkillEvent(gloryOfGuardians);
+                isNuke = true;
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (orbitalCount % 4 == 0) {
-                        addSkillEvent(orbitalFlameReinforce);
-                    } else {
-                        addSkillEvent(orbitalFlame);
-                    }
-                    orbitalCount++;
-                    if (infernoRizeCount != 50) {
-                        infernoRizeCount++;
-                    }
-                    if (cooldownCheck(orbitalFlameDot)) {
-                        addSkillEvent(orbitalFlameDot);
-                    }
                 }
-                while (!cooldownCheck(blazingExtinction)) {
-                    if (orbitalCount % 4 == 0) {
-                        addSkillEvent(orbitalFlameReinforce);
-                    } else {
-                        addSkillEvent(orbitalFlame);
-                    }
-                    orbitalCount++;
-                    if (infernoRizeCount != 50) {
-                        infernoRizeCount++;
-                    }
-                    if (cooldownCheck(orbitalFlameDot)) {
-                        addSkillEvent(orbitalFlameDot);
-                    }
-                }
-                addSkillEvent(salamanderMischief);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(flameDischarge);
                 addSkillEvent(blazingExtinction);
-                addSkillEvent(soulContract);
                 applyCooldown(skill);
                 if (cooldownCheck(eternity)) {
                     addSkillEvent(eternity);
@@ -208,19 +187,18 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(salamanderMischief)
                     && !cooldownCheck(gloryOfGuardians)
+                    && cooldownCheck(blazingExtinction)
             ) {
                 addSkillEvent(salamanderMischief);
-                while (!cooldownCheck(blazingExtinction)) {
-                    addPlatDeal();
-                }
+                getStart().setTime(getStart().getTime() + 570);
                 addSkillEvent(blazingExtinction);
                 addSkillEvent(soulContract);
-                addSkillEvent(infinityFlameCircle5);
+                addSkillEvent(infinityFlameCircle4);
                 while (!cooldownCheck(phoenixDrive)) {
                     addPlatDeal();
                 }
                 addSkillEvent(phoenixDrive);
-                infinityFlameCircle.setActivateTime(infinityFlameCircle5.getActivateTime());
+                infinityFlameCircle.setActivateTime(infinityFlameCircle4.getActivateTime());
             } else if (
                     cooldownCheck(burningRegion)
                             && (
@@ -381,7 +359,7 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
                 }
             }
             if (skill instanceof InfinityFlameCircle) {
-                applyCooldown(infinityFlameCircle5);
+                applyCooldown(infinityFlameCircle4);
             }
             if (skill instanceof SalamanderMischief) {
                 this.getSkillEventList().add(
@@ -432,7 +410,7 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
                         if (
                                 skill instanceof BlazingOrbitalFlame
                                 || skill instanceof InfinityFlameCircle
-                                || skill instanceof InfinityFlameCircle5
+                                || skill instanceof InfinityFlameCircle4
                         ) {
                             orbitalExplosionCount++;
                             if (orbitalExplosionCount % 11 == 0) {
@@ -445,7 +423,7 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
                         }
                         if (
                                 skill instanceof InfinityFlameCircle
-                                || skill instanceof InfinityFlameCircle5
+                                || skill instanceof InfinityFlameCircle4
                         ) {
                             Timestamp now = new Timestamp(getStart().getTime());
                             getStart().setTime(getStart().getTime() + i);
@@ -586,7 +564,7 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
             }
             if (
                     skill instanceof InfinityFlameCircle
-                            || skill instanceof InfinityFlameCircle5
+                            || skill instanceof InfinityFlameCircle4
             ) {
                 Timestamp now = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);

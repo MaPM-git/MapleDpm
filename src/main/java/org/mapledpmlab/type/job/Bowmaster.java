@@ -69,8 +69,8 @@ public class Bowmaster extends Job {
 
         // 환산 보정
         this.addMainStatP(-63L);
-        this.addMainStat(-10L);
-        this.addSubStat(-10L);
+        this.addMainStat(-3L);
+        //this.addSubStat(-10L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

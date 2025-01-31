@@ -46,7 +46,6 @@ public class BlasterContinuous extends Job {
         // 2차
         this.addCriticalP(30.0);        // 건틀렛 마스터리
         this.addAtt(20L);
-        this.addFinalDamage(1.05);
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
         this.addDamage(15L);            // 차지 마스터리
@@ -65,9 +64,9 @@ public class BlasterContinuous extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-84L);
-        this.addMainStat(-5L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-51L);
+        this.addMainStat(-6L);
+        //this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

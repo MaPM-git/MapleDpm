@@ -10,5 +10,6 @@ public class BurningBreakerExplosion extends AttackSkill {
         this.addIgnoreDefenseList(100L);
         this.addFinalDamage(1.6);       // 코어 강화
         this.setApplyFinalAttack(true);
+        this.setDelayByAttackSpeed(2940L);
     }
 }

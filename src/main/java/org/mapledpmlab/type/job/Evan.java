@@ -76,7 +76,7 @@ public class Evan extends Job {
 
         // 환산 보정
         this.addMainStatP(30L);
-        this.addMainStat(-5L);
+        this.addMainStat(-12L);
         this.addSubStat(-5L);
 
         this.setAbility(new ReuseBossAbnormal());

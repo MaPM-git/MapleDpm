@@ -71,8 +71,8 @@ public class Viper extends Job {
 
         // 환산 보정
         this.addMainStatP(-30L);
-        this.addMainStat(-1L);
-        this.addSubStat(-10L);
+        this.addMainStat(11L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

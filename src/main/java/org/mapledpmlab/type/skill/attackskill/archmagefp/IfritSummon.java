@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class IfritSummon extends AttackSkill {
     public IfritSummon() {
         this.setName("이프리트(소환수)");
-        this.setDamage(152.0);
+        this.setDamage(228.0);
         this.setAttackCount(3L);
         this.setInterval(3030L);
         this.setDotDuration(260000L);

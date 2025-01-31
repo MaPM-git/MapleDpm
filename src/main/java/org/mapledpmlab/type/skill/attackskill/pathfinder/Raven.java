@@ -8,11 +8,11 @@ public class Raven extends GaugeAttackSkill {
         //this.setDelay(600L);
         //this.setCooldown(225.0);
         this.setAttackCount(1L);
-        this.setDamage(390.0);
+        this.setDamage(585.0);
         this.setDotDuration(720000L);
-        this.setInterval(1710L);
+        this.setInterval(3030L);
         this.setFinalDamage(2.8);       // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.setGaugeCharge(10.0);
+        this.setGaugeCharge(30.0);
     }
 }

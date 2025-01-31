@@ -6,7 +6,7 @@ public class SuperFistEnrage extends AttackSkill {
     public SuperFistEnrage() {
         this.setName("슈퍼 피스트 인레이지");
         this.setAttackCount(3L + 1);
-        this.setDamage(270.0);
+        this.setDamage(270.0 + 75);
         this.setDelayByAttackSpeed(780L);
         this.setApplyFinalAttack(true);
         this.setAddDamage(20 + 20L);    // 암살-리인포스, 보스 킬러

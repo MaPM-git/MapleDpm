@@ -163,41 +163,67 @@ public class HoYoungDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(90.0);
-        //ringSwitching.setApplyCooldownReduction(false);
+        ringSwitching.setCooldown(87.0);
+        ringSwitching.setApplyCooldownReduction(false);
 
         conflagrationChainHeavenReinforce.setCooldown(15.0);
 
         grandisGoddessBlessingAnima.setCooldown(120.0);
+
+        getSkillSequence1().add(grandisGoddessBlessingAnima);
+        getSkillSequence1().add(mysticEnergyIllusionOfHeavenEarthAndHuman);
+        getSkillSequence1().add(mysticEnergyExtremeCloneRampage);
+
+        getSkillSequence2().add(mysticEnergyAdventOfRebelliousPower);
+        getSkillSequence2().add(soulContract);                              // 30
+        getSkillSequence2().add(readyToDie);                                // 380
+        getSkillSequence2().add(restraintRing);                             // 30
+
+        getSkillSequence3().add(mysticEnergyIllusionOfHeavenEarthAndHuman); // 220
+        getSkillSequence3().add(soulContract);                              // 30
+        getSkillSequence3().add(readyToDie);
+        getSkillSequence3().add(weaponJumpRing);                            // 30
+
+        getSkillSequence4().add(mysticEnergyTaeulDivineMedicine);
+        getSkillSequence4().add(phantasmalCloneTalisman);
+        getSkillSequence4().add(fistMethodButterflyDreamBuff);
+
+        grandisGoddessBlessingAnima.setDelay(220L);
+        mysticEnergyIllusionOfHeavenEarthAndHuman.setDelay(220L);
+        mysticEnergyExtremeCloneRampage.setDelay(220L);
+
+        mysticEnergyAdventOfRebelliousPower.setDelay(220L);
+
+        readyToDie.setDelay(380L);
+
+        mysticEnergyTaeulDivineMedicine.setDelay(220L);
+        phantasmalCloneTalisman.setDelay(220L);
+        fistMethodButterflyDreamBuff.setDelay(220L);
     }
 
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (cooldownCheck(mysticEnergyExtremeCloneRampage)) {
-                addSkillEvent(phantasmalCloneTalisman);
-                addSkillEvent(fistMethodButterflyDreamBuff);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(flyingFanHuman);
                 }
-                addSkillEvent(grandisGoddessBlessingAnima);
-                addSkillEvent(mysticEnergyTaeulDivineMedicine);
+                addDealCycle(getSkillSequence4());
+                addSkillEvent(fistMethodInhalingVortex);
                 addSkillEvent(fistMethodMountainSpiritSummon);
                 addSkillEvent(chasingGhostTalisman);
-                addSkillEvent(fistMethodInhalingVortex);
-                addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHuman);
                 addSkillEvent(fistMethodDoomingLight);
-                addSkillEvent(mysticEnergyExtremeCloneRampage);
-                addSkillEvent(mysticEnergyAdventOfRebelliousPower);
+                addDealCycle(getSkillSequence1());
+                if (cooldownCheck(earthquakeChainEarth)) {
+                    addSkillEvent(earthquakeChainEarth);
+                } else if (cooldownCheck(earthChainEarth)) {
+                    addSkillEvent(earthChainEarth);
+                }
+                addDealCycle(getSkillSequence2());
                 addSkillEvent(mysticEnergyCloneSageTaeul);
-                addSkillEvent(readyToDie);
-                addSkillEvent(soulContract);
-                addSkillEvent(restraintRing);
                 if (cooldownCheck(mysticEnergyApotheosisKeydown1)) {
                     addSkillEvent(mysticEnergyApotheosisKeydown1);
                 }
@@ -205,15 +231,11 @@ public class HoYoungDealCycle extends DealCycle {
                     cooldownCheck(chasingGhostTalisman)
                     && getStart().before(new Timestamp(mysticEnergyExtremeCloneRampage.getActivateTime().getTime() - 5000))
             ) {
-                addSkillEvent(fistMethodButterflyDreamBuff);
-                addSkillEvent(mysticEnergyTaeulDivineMedicine);
-                addSkillEvent(chasingGhostTalisman);
+                addDealCycle(getSkillSequence4());
                 addSkillEvent(fistMethodInhalingVortex);
-                addSkillEvent(mysticEnergyIllusionOfHeavenEarthAndHuman);
+                addSkillEvent(chasingGhostTalisman);
                 addSkillEvent(fistMethodDoomingLight);
-                addSkillEvent(soulContract);
-                addSkillEvent(readyToDie);
-                addSkillEvent(weaponJumpRing);
+                addDealCycle(getSkillSequence3());
             } else if (getStart().after(finalTime)) {
                 addSkillEvent(adventOfGods);
                 finalTime = new Timestamp(720 * 1000);
@@ -242,7 +264,7 @@ public class HoYoungDealCycle extends DealCycle {
                 conflagrationChainHeaven.setActivateTime(new Timestamp(conflagrationChainHeavenReinforce.getActivateTime().getTime()));
                 flyingFanHuman.setActivateTime(new Timestamp(flyingFanHumanReinforce.getActivateTime().getTime()));
                 isReinforce = false;
-            } else if (getStart().before(illusionEndTime)) {
+            } else if (getStart().before(new Timestamp(illusionEndTime.getTime() - 500))) {
                 if (!property.get(1)) {
                     addSkillEvent(earthChainEarth);
                 }
@@ -275,7 +297,7 @@ public class HoYoungDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -745,6 +767,9 @@ public class HoYoungDealCycle extends DealCycle {
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                        if (skill instanceof ChasingGhostTalisman) {
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
+                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -866,9 +891,15 @@ public class HoYoungDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

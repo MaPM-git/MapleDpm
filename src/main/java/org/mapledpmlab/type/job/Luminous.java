@@ -1,6 +1,6 @@
 package org.mapledpmlab.type.job;
 
-import org.mapledpmlab.type.ability.BossAbnormalBuff;
+import org.mapledpmlab.type.ability.ReuseBossBuff;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
@@ -63,11 +63,11 @@ public class Luminous extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(6L);
-        this.addMainStat(-7L);
+        this.addMainStatP(3L);
+        this.addMainStat(-6L);
         this.addSubStat(0L);
 
-        this.setAbility(new BossAbnormalBuff());
+        this.setAbility(new ReuseBossBuff());
         this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new PhantomInstinct());

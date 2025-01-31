@@ -8,5 +8,6 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 @Setter
 public class Tag extends BuffSkill {
     public Tag() {
+        this.setName("태그");
     }
 }

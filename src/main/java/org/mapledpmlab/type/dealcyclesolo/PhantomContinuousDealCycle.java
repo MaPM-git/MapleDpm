@@ -32,9 +32,12 @@ public class PhantomContinuousDealCycle extends DealCycle {
             add(new Joker());
             add(new JokerAfterDelay());
             add(new Judgement());
+            add(new LaMortCarte());
+            add(new LaMortCarteJoker());
             add(new MarkOfPhantom());
             add(new MarkOfPhantomFinal());
             add(new NoireCarte());
+            add(new NoireCarteReverse());
             add(new RiftBreak());
             add(new RoseCarteFinale());
             add(new RoseCarteFinaleDot());
@@ -54,6 +57,8 @@ public class PhantomContinuousDealCycle extends DealCycle {
             add(new HeroesOath());
             add(new JokerHourglass());
             add(new JokerSword());
+            add(new LaMortCarteBuff());
+            add(new LaMortCarteJokerBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new PreparationPhantom());
             add(new ReadyToDie());
@@ -63,8 +68,12 @@ public class PhantomContinuousDealCycle extends DealCycle {
 
     Long cardStack = 0L;
     Long chk30 = 0L;
+    int laMortCarteCount = 0;
 
     boolean isNuke = false;
+
+    Timestamp laMortCarteEndTime = new Timestamp(-1);
+    Timestamp laMortCarteJokerEndTime = new Timestamp(-1);
 
     BlackJackBeforeDelay blackJackBeforeDelay = new BlackJackBeforeDelay();
     BlackJackFinal blackJackFinal = new BlackJackFinal();
@@ -76,9 +85,14 @@ public class PhantomContinuousDealCycle extends DealCycle {
     HeroesOath heroesOath = new HeroesOath();
     JokerBeforeDelay jokerBeforeDelay = new JokerBeforeDelay();
     Judgement judgement = new Judgement();
+    LaMortCarte laMortCarte = new LaMortCarte();
+    LaMortCarteJoker laMortCarteJoker = new LaMortCarteJoker();
+    LaMortCarteBuff laMortCarteBuff = new LaMortCarteBuff();
+    LaMortCarteJokerBuff laMortCarteJokerBuff = new LaMortCarteJokerBuff();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
     MarkOfPhantom markOfPhantom = new MarkOfPhantom();
     MarkOfPhantomFinal markOfPhantomFinal = new MarkOfPhantomFinal();
+    NoireCarteReverse noireCarteReverse = new NoireCarteReverse();
     PreparationPhantom preparationPhantom = new PreparationPhantom();
     ReadyToDie readyToDie = new ReadyToDie();
     RiftBreak riftBreak = new RiftBreak();
@@ -95,6 +109,22 @@ public class PhantomContinuousDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(heroesOath);                // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing); // 330
+        getSkillSequence1().add(bullsEye);                  // 300
+        getSkillSequence1().add(soulContract);              // 30
+        getSkillSequence1().add(readyToDie);                // 300
+
+        getSkillSequence2().add(preparationPhantom);        // 300
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(readyToDie);                // 300
+
+        preparationPhantom.setDelay(300L);
+        readyToDie.setDelay(300L);
+
+        bullsEye.setDelay(300L);
+        mapleWorldGoddessBlessing.setDelay(330L);
     }
 
     @Override
@@ -102,47 +132,39 @@ public class PhantomContinuousDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(bullsEye)
-                    && cooldownCheck(markOfPhantom)
-                    && getStart().before(new Timestamp(660 * 1000))
-                    && getStart().after(new Timestamp(blackJackBeforeDelay.getActivateTime().getTime() - 2670))
+                            && cooldownCheck(markOfPhantom)
+                            && getStart().before(new Timestamp(660 * 1000))
             ) {
                 isNuke = true;
                 chk30 = 2L;
                 addSkillEvent(finalCutBuff);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(ultimateDrive);
                 }
-                addSkillEvent(bullsEye);
-                addSkillEvent(soulContract);
-                addSkillEvent(readyToDie);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(blackJackBeforeDelay);
                 addSkillEvent(markOfPhantom);
+                addSkillEvent(riftBreak);
                 if (cooldownCheck(defyingFate)) {
                     addSkillEvent(defyingFate);
-                }
-                addSkillEvent(riftBreak);
-                while (!cooldownCheck(jokerBeforeDelay)) {
-                    if (cooldownCheck(blackJackBeforeDelay)) {
-                        addSkillEvent(blackJackBeforeDelay);
-                    } else if (cooldownCheck(tempestOfCardBeforeDelay)) {
-                        addSkillEvent(tempestOfCardBeforeDelay);
-                        applyCooldown(tempestOfCardBeforeDelay);
-                    } else {
+                    addSkillEvent(tempestOfCardBeforeDelay);
+                    applyCooldown(tempestOfCardBeforeDelay);
+                    while (!cooldownCheck(blackJackBeforeDelay)) {
                         addSkillEvent(ultimateDrive);
                     }
-                }
-                addSkillEvent(jokerBeforeDelay);
-                if (cooldownCheck(blackJackBeforeDelay)) {
                     addSkillEvent(blackJackBeforeDelay);
+                    addSkillEvent(jokerBeforeDelay);
+                } else {
+                    while (!cooldownCheck(jokerBeforeDelay)) {
+                        addSkillEvent(ultimateDrive);
+                    }
+                    addSkillEvent(jokerBeforeDelay);
+                    addSkillEvent(tempestOfCardBeforeDelay);
+                    applyCooldown(tempestOfCardBeforeDelay);
                 }
-                addSkillEvent(roseCarteFinale);
                 isNuke = false;
             } else if (
                     cooldownCheck(finalCutBuff)
@@ -153,9 +175,12 @@ public class PhantomContinuousDealCycle extends DealCycle {
             ) {
                 chk30 = 4L;
                 addSkillEvent(finalCutBuff);
-                addSkillEvent(preparationPhantom);
-                addSkillEvent(soulContract);
-                addSkillEvent(readyToDie);
+                addDealCycle(getSkillSequence2());
+            } else if (
+                    cooldownCheck(laMortCarteBuff)
+                            && !cooldownCheck(readyToDie)
+            ) {
+                addSkillEvent(laMortCarteBuff);
             } else if (
                     chk30 > 0
                     && cooldownCheck(markOfPhantom)
@@ -185,7 +210,10 @@ public class PhantomContinuousDealCycle extends DealCycle {
                     }
                 }
                 addSkillEvent(roseCarteFinale);
-            } else if (cooldownCheck(blackJackBeforeDelay)) {
+            } else if (
+                    cooldownCheck(blackJackBeforeDelay)
+                            && getStart().before(new Timestamp(bullsEye.getActivateTime().getTime() - 5000))
+            ) {
                 addSkillEvent(blackJackBeforeDelay);
             } else if (cooldownCheck(tempestOfCardBeforeDelay)) {
                 addSkillEvent(tempestOfCardBeforeDelay);
@@ -211,6 +239,13 @@ public class PhantomContinuousDealCycle extends DealCycle {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof LaMortCarteBuff) {
+                laMortCarteEndTime = new Timestamp(getStart().getTime() + 40000);
+                laMortCarteCount = 80;
+            } else if (skill instanceof LaMortCarteJokerBuff) {
+                laMortCarteJokerEndTime = new Timestamp(getStart().getTime() + 40000);
+                laMortCarteCount = 160;
+            }
             if (
                     skill instanceof SoulContract
                     && restraintRingStartTime == null
@@ -252,16 +287,29 @@ public class PhantomContinuousDealCycle extends DealCycle {
                     && (
                             skill instanceof BlackJack
                             || skill instanceof FinalCut
-                            || skill instanceof MarkOfPhantom
-                            || skill instanceof MarkOfPhantomFinal
-                            || skill instanceof RiftBreak
-                            || skill instanceof RoseCarteFinale
                             || skill instanceof UltimateDrive
                             || skill instanceof CrestOfTheSolar
                             || skill instanceof SpiderInMirror
                     )
             ) {
                 addSkillEvent(continuousRing);
+            }
+            if (skill instanceof UltimateDrive) {
+                if (cooldownCheck(noireCarteReverse)) {
+                    addSkillEvent(noireCarteReverse);
+                }
+                if (laMortCarteCount > 0) {
+                    if (getStart().before(laMortCarteEndTime)) {
+                        addSkillEvent(laMortCarte);
+                    } else if (getStart().before(laMortCarteJokerEndTime)) {
+                        addSkillEvent(laMortCarteJoker);
+                    }
+                    laMortCarteCount --;
+                }
+            }
+            if (skill instanceof JokerBeforeDelay) {
+                addSkillEvent(laMortCarteJokerBuff);
+                applyCooldown(laMortCarteBuff);
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -307,6 +355,22 @@ public class PhantomContinuousDealCycle extends DealCycle {
                                 )
                         ) {
                             addSkillEvent(continuousRing);
+                        }
+                        if (
+                                skill instanceof Joker
+                                        || skill instanceof TempestOfCard
+                        ) {
+                            if (cooldownCheck(noireCarteReverse)) {
+                                addSkillEvent(noireCarteReverse);
+                            }
+                            if (laMortCarteCount > 0) {
+                                if (getStart().before(laMortCarteEndTime)) {
+                                    addSkillEvent(laMortCarte);
+                                } else if (getStart().before(laMortCarteJokerEndTime)) {
+                                    addSkillEvent(laMortCarteJoker);
+                                }
+                                laMortCarteCount --;
+                            }
                         }
                         getStart().setTime(now.getTime());
                         attackCount += 1;
@@ -375,9 +439,15 @@ public class PhantomContinuousDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -397,6 +467,23 @@ public class PhantomContinuousDealCycle extends DealCycle {
                 buffSkill.addBuffOtherStat2(((BuffSkill) skillEvent.getSkill()).getBuffOtherStat2());
                 buffSkill.addBuffProperty(((BuffSkill) skillEvent.getSkill()).getBuffProperty());
                 buffSkill.addBuffSubStat(((BuffSkill) skillEvent.getSkill()).getBuffSubStat());
+            }
+            boolean isLaMortCarte = false;
+            for (SkillEvent se : useAttackSkillList) {
+                if (
+                        se.getSkill() instanceof LaMortCarte
+                        || se.getSkill() instanceof LaMortCarteJoker
+                ) {
+                    isLaMortCarte = true;
+                    break;
+                }
+            }
+            if (isLaMortCarte) {
+                for (SkillEvent se : useAttackSkillList) {
+                    if (se.getSkill() instanceof NoireCarte) {
+                        useAttackSkillList.remove(se);
+                    }
+                }
             }
             for (SkillEvent se : useAttackSkillList) {
                 totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -430,9 +517,36 @@ public class PhantomContinuousDealCycle extends DealCycle {
             getStart().setTime(getStart().getTime() + sum);
             if (
                     cooldownCheck(continuousRing)
-                    && skill instanceof DefyingFate
+                    && (
+                            skill instanceof DefyingFate
+                            || skill instanceof MarkOfPhantom
+                            || skill instanceof MarkOfPhantomFinal
+                                    || skill instanceof RiftBreak
+                                    || skill instanceof RoseCarteFinale
+                    )
             ) {
                 addSkillEvent(continuousRing);
+            }
+            if (
+                    cooldownCheck(noireCarteReverse)
+                            &&
+                            (
+                                    skill instanceof DefyingFate
+                                            || skill instanceof MarkOfPhantom
+                                            || skill instanceof MarkOfPhantomFinal
+                                            || skill instanceof RiftBreak
+                                            || skill instanceof RoseCarteFinale
+                            )
+            ) {
+                addSkillEvent(noireCarteReverse);
+            }
+            if (laMortCarteCount > 0) {
+                if (getStart().before(laMortCarteEndTime)) {
+                    addSkillEvent(laMortCarte);
+                } else if (getStart().before(laMortCarteJokerEndTime)) {
+                    addSkillEvent(laMortCarteJoker);
+                }
+                laMortCarteCount --;
             }
             getStart().setTime(now.getTime());
         }

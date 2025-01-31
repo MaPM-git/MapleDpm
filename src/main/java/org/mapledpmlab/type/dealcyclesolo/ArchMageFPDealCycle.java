@@ -172,44 +172,7 @@ public class ArchMageFPDealCycle extends DealCycle {
 
         mapleWorldGoddessBlessing.setCooldown(120.0);
 
-        if (cooldownCheck(ifrit)) {
-            addSkillEvent(ifrit);
-            addSkillEvent(teleportMastery);
-        }
-        if (cooldownCheck(poisonZone)) {
-            addSkillEvent(poisonZone);
-            addSkillEvent(teleportMastery);
-        }
-        if (cooldownCheck(mistEruption)) {
-            if (cooldownCheck(flameHaze)) {
-                addSkillEvent(flameHaze);
-                addSkillEvent(teleportMastery);
-            }
-            addSkillEvent(mistEruption);
-            addSkillEvent(teleportMastery);
-            addSkillEvent(flameHaze);
-            addSkillEvent(teleportMastery);
-        }
-        addSkillEvent(poisonNovaDot);
-        if (getStart().before(infernalVenomEndTime)) {
-            addSkillEvent(dotPunisherOriginFirst);
-            addSkillEvent(teleportMastery);
-        } else {
-            addSkillEvent(dotPunisherFirst);
-            addSkillEvent(teleportMastery);
-        }
-        addSkillEvent(poisonChainExplosion0);
-        addSkillEvent(teleportMastery);
-        if (cooldownCheck(flameHaze)) {
-            addSkillEvent(flameHaze);
-            addSkillEvent(teleportMastery);
-        }
-        addSkillEvent(mistEruption);
-        addSkillEvent(teleportMastery);
-        addSkillEvent(flameHaze);
-        addSkillEvent(teleportMastery);
-        addSkillEvent(poisonNovaExplosion);
-        addSkillEvent(teleportMastery);
+        unstableMemorize.setDelay(60L);
     }
 
     @Override
@@ -307,6 +270,7 @@ public class ArchMageFPDealCycle extends DealCycle {
                     if (cooldownCheck(flameHaze)) {
                         addSkillEvent(flameHaze);
                     }
+                    addSkillEvent(flameSweep);
                     addSkillEvent(mistEruption);
                     addSkillEvent(flameHaze);
                     addSkillEvent(infernalVenomBuff);
@@ -428,6 +392,7 @@ public class ArchMageFPDealCycle extends DealCycle {
                     addSkillEvent(flameHaze);
                     addSkillEvent(teleportMastery);
                 }
+                addSkillEvent(flameSweep);
                 addSkillEvent(mistEruption);
                 addSkillEvent(teleportMastery);
                 addSkillEvent(poisonNovaExplosion);
@@ -602,9 +567,6 @@ public class ArchMageFPDealCycle extends DealCycle {
                     ) {
                         i = 0;
                     }
-                    if (skill instanceof Ignite) {
-                        i = 2000;
-                    }
                     if (
                             skill instanceof FlameSweepDot
                             || skill instanceof TeleportMasteryDot
@@ -622,6 +584,9 @@ public class ArchMageFPDealCycle extends DealCycle {
                                     || skill instanceof FuryOfIfritOrigin
                     ) {
                         i = 1620;//480 + 960 + 180;
+                    }
+                    if (skill instanceof Ignite) {
+                        i = 2000;
                     }
                     for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -720,9 +685,15 @@ public class ArchMageFPDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

@@ -7,7 +7,7 @@ public class GhostDispositionAttack extends AttackSkill {
         this.setName("귀문진(기운)");
         this.setAttackCount(10L);
         this.setDamage(275.0);
-        this.setDelay(840L);
+        this.setDelayByAttackSpeed(840L);
         this.getMultiAttackInfo().add(420L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

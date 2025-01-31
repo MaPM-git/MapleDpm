@@ -18,12 +18,15 @@ public class HeroDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
-            add(new AdvancedFinalAttackHero());
+            add(new AuraBlade());
+            add(new AuraBladeFinal());
             add(new AuraWeaponDot());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new ComboDeathFault());
             add(new ComboInstinctsAttack());
+            add(new FinalAttackHero());
+            add(new FuriousEdge());
             add(new IncisingAttack());
             add(new IncisingDot());
             add(new RageUprising());
@@ -58,11 +61,15 @@ public class HeroDealCycle extends DealCycle {
     };
 
     int dealCycleOrder = 1;
+    int valhallaCount = 0;
+    Double furiousEdgeCount = 3.0;
 
     BuffSkill advancedComboAttack = new BuffSkill();
 
     Timestamp comboInstinctEndTime = new Timestamp(-1);
+    Timestamp valhallaEndTime = new Timestamp(-1);
 
+    AuraBlade auraBlade = new AuraBlade();
     AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
     BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
@@ -70,6 +77,7 @@ public class HeroDealCycle extends DealCycle {
     ComboInstinctsAttack comboInstinctsAttack = new ComboInstinctsAttack();
     ComboInstinctsBuff comboInstinctsBuff = new ComboInstinctsBuff();
     EpicAdventure epicAdventure = new EpicAdventure();
+    FuriousEdge furiousEdge = new FuriousEdge();
     IncisingAttack incisingAttack = new IncisingAttack();
     IncisingDot incisingDot = new IncisingDot();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
@@ -83,10 +91,11 @@ public class HeroDealCycle extends DealCycle {
     SwordIllusionBuff swordIllusionBuff = new SwordIllusionBuff();
     SwordOfBurningSoulBuff swordOfBurningSoulBuff = new SwordOfBurningSoulBuff();
     ValhallaBuff valhallaBuff = new ValhallaBuff();
+    ValhallaDot valhallaDot = new ValhallaDot();
     WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public HeroDealCycle(Job job) {
-        super(job, new AdvancedFinalAttackHero());
+        super(job, new FinalAttackHero());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
@@ -106,6 +115,27 @@ public class HeroDealCycle extends DealCycle {
         auraWeaponBuff.setCooldown(180.0);
         //auraWeaponBuff.setApplyCooldownReduction(false);
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(swordOfBurningSoulBuff);
+        bodyOfSteel.setDelay(210L);
+        mapleWorldGoddessBlessing.setDelay(210L);
+        swordOfBurningSoulBuff.setDelay(210L);
+
+        getSkillSequence2().add(valhallaBuff);
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(restraintRing);             // 30
+        getSkillSequence2().add(comboInstinctsBuff);
+
+        getSkillSequence3().add(valhallaBuff);
+        getSkillSequence3().add(soulContract);
+        getSkillSequence3().add(weaponJumpRing);
+        getSkillSequence3().add(comboInstinctsBuff);
+
+        valhallaBuff.setDelay(300L);
+        comboInstinctsBuff.setDelay(300L);
     }
 
     @Override
@@ -118,28 +148,20 @@ public class HeroDealCycle extends DealCycle {
                 addSkillEvent(auraWeaponBuff);
             }
             if (cooldownCheck(valhallaBuff)) {
-                addSkillEvent(swordOfBurningSoulBuff);
                 addSkillEvent(incisingAttack);
-                addSkillEvent(bodyOfSteel);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(ragingBlow);
                 }
-                addSkillEvent(valhallaBuff);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(swordIllusionBuff);
                 if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
+                    addDealCycle(getSkillSequence2());
                 } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
+                    addDealCycle(getSkillSequence3());
                 }
-                addSkillEvent(comboInstinctsBuff);
                 if (cooldownCheck(spiritCaliberSlash)) {
                     addSkillEvent(spiritCaliberSlash);
                 }
@@ -161,8 +183,15 @@ public class HeroDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(rageUprising)
                             && getStart().before(new Timestamp(swordIllusionBuff.getActivateTime().getTime() - 1000))
+                            && getStart().after(comboInstinctEndTime)
             ) {
                 addSkillEvent(rageUprising);
+            } else if (
+                    cooldownCheck(auraBlade)
+                            && getStart().before(new Timestamp(swordIllusionBuff.getActivateTime().getTime() - 1000))
+                            && getStart().after(comboInstinctEndTime)
+            ) {
+                addSkillEvent(auraBlade);
             } else {
                 addSkillEvent(ragingBlow);
                 if (getStart().before(comboInstinctEndTime)) {
@@ -210,9 +239,15 @@ public class HeroDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -286,6 +321,10 @@ public class HeroDealCycle extends DealCycle {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof ValhallaBuff) {
+                valhallaEndTime = new Timestamp(getStart().getTime() + 33000);
+                valhallaCount = 12;
+            }
             if (skill instanceof ComboInstinctsBuff) {
                 comboInstinctEndTime = new Timestamp(getStart().getTime() + 23000);
             }
@@ -329,12 +368,44 @@ public class HeroDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    getStart().before(valhallaEndTime)
+                    && valhallaCount > 0
+                    && cooldownCheck(valhallaDot)
+                    && (
+                            skill instanceof RagingBlow
+                            || skill instanceof IncisingAttack
+                    )
+            ) {
+                addSkillEvent(valhallaDot);
+                valhallaCount -= 1;
+            }
+            if (
+                    skill instanceof AuraBlade
+                            || skill instanceof AuraBladeFinal
+                            || skill instanceof RagingBlow
+                            || skill instanceof IncisingAttack
+            ) {
+                furiousEdgeCount += 1;
+                if (furiousEdgeCount >= 5) {
+                    addSkillEvent(furiousEdge);
+                    furiousEdgeCount -= 5;
+                }
+            }
+            if (skill instanceof ValhallaDot) {
+                furiousEdgeCount += 0.5;
+                if (furiousEdgeCount >= 5) {
+                    addSkillEvent(furiousEdge);
+                    furiousEdgeCount -= 5;
+                }
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
                             skillEvent.getStart().after(getStart())
                             && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                            && !(skillEvent.getSkill() instanceof FuriousEdge)
                     ) {
                         remove.add(skillEvent);
                     }
@@ -371,6 +442,60 @@ public class HeroDealCycle extends DealCycle {
         getStart().setTime(getStart().getTime() + skill.getDelay());
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
+        }
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (
+                    skill instanceof SpiritCaliberSlash
+                    || skill instanceof SpiritCaliberFinish
+            ) {
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                if (
+                        getStart().before(valhallaEndTime)
+                                && valhallaCount > 0
+                                && cooldownCheck(valhallaDot)
+                ) {
+                    addSkillEvent(valhallaDot);
+                    valhallaCount -= 1;
+                }
+                getStart().setTime(now.getTime());
+            }
+            if (
+                    skill instanceof SwordIllusionSlash
+                            || skill instanceof SwordIllusionExplosion
+                            || skill instanceof RageUprising
+            ) {
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                furiousEdgeCount += 1;
+                if (furiousEdgeCount >= 5) {
+                    addSkillEvent(furiousEdge);
+                    furiousEdgeCount -= 5;
+                }
+                getStart().setTime(now.getTime());
+            }
+            if (
+                    skill instanceof ComboInstinctsAttack
+                            || skill instanceof SpiritCaliberSlash
+                            || skill instanceof SpiritCaliberFinish
+            ) {
+                Timestamp now = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
+                furiousEdgeCount += 0.5;
+                if (furiousEdgeCount >= 5) {
+                    addSkillEvent(furiousEdge);
+                    furiousEdgeCount -= 5;
+                }
+                getStart().setTime(now.getTime());
+            }
         }
     }
 }

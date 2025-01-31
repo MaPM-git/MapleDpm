@@ -32,5 +32,6 @@ public class ZeroAlpha extends Zero {
     public void Doping() {
         super.Doping();
         this.addDamage(5L);             // 래피드 타임 5중첩
+        this.addAtt(45L * 3);           // 인피니트 레조넌스 3중첩
     }
 }

@@ -63,9 +63,9 @@ public class LaraContinuous extends Job {
         this.addMagic(54L);             // 유유
 
         // 환산 보정
-        this.addMainStatP(30L);
-        this.addMainStat(4L);
-        //this.addSubStat(10L);
+        this.addMainStatP(39L);
+        this.addMainStat(-6L);
+        this.addSubStat(5L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

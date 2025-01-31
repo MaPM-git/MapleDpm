@@ -29,7 +29,9 @@ public class BattleMageDealCycle extends DealCycle {
             add(new CrestOfTheSolarDot());
             add(new CrimsonPactum1());
             add(new CrimsonPactum2());
+            add(new DarkGenesisDeathWhip());
             add(new DarkLightning());
+            add(new DarkPentacle());
             add(new Death());
             add(new DeathReinforce());
             add(new FinalAttackBattleMage());
@@ -58,6 +60,8 @@ public class BattleMageDealCycle extends DealCycle {
         }
     };
 
+    int blackMarkCount = 14;
+
     private final List<Timestamp> abyssalLightningStartTimeList = new ArrayList<>();
     private final List<Timestamp> abyssalLightningEndTimeList = new ArrayList<>();
 
@@ -75,6 +79,8 @@ public class BattleMageDealCycle extends DealCycle {
     BlackMark blackMark = new BlackMark();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     CrimsonPactum1 crimsonPactum1 = new CrimsonPactum1();
+    DarkGenesisDeathWhip darkGenesisDeathWhip = new DarkGenesisDeathWhip();
+    DarkPentacle darkPentacle = new DarkPentacle();
     Death death = new Death();
     DeathReinforce deathReinforce = new DeathReinforce();
     FinishBlow finishBlow = new FinishBlow();
@@ -99,10 +105,27 @@ public class BattleMageDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(95.0);
+        ringSwitching.setCooldown(90.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
 
         resistanceLineInfantry.addFinalDamage(1.08);            // 오버로드 마나
+
+        getSkillSequence1().add(willOfLiberty);                 // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);     // 70
+        getSkillSequence1().add(unionAura);                     // 600
+        getSkillSequence1().add(abyssalLightning);              // 70
+        getSkillSequence1().add(masterOfDeath);                 // 70
+        getSkillSequence1().add(soulContract);                  // 30
+        getSkillSequence1().add(restraintRing);                 // 30
+
+        getSkillSequence2().add(unionAura);
+        getSkillSequence2().add(soulContract);
+        getSkillSequence2().add(weaponJumpRing);
+
+        mapleWorldGoddessBlessing.setDelay(70L);
+        unionAura.setDelay(600L);
+        abyssalLightning.setDelay(70L);
+        masterOfDeath.setDelay(70L);
     }
 
     @Override
@@ -113,32 +136,39 @@ public class BattleMageDealCycle extends DealCycle {
                 addSkillEvent(resistanceLineInfantry);
             }
             if (cooldownCheck(abyssalLightning)) {
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(willOfLiberty);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(finishBlow);
                 }
                 addSkillEvent(blackMagicAltar);
-                addSkillEvent(unionAura);
-                addSkillEvent(abyssalLightning);
-                addSkillEvent(masterOfDeath);
                 addSkillEvent(grimReaperMOD);
-                addSkillEvent(soulContract);
-                addSkillEvent(restraintRing);
+                addDealCycle(getSkillSequence1());
+                if (!cooldownCheck(darkGenesisDeathWhip)) {
+                    if (cooldownCheck(battleKingBar1)) {
+                        addSkillEvent(battleKingBar1);
+                    } else {
+                        if (getStart().before(unionAuraEndTime)) {
+                            addSkillEvent(reaperScythe);
+                            reaperScytheCnt++;
+                            if (reaperScytheCnt >= 3) {
+                                soulCnt++;
+                                reaperScytheCnt = 0;
+                            }
+                        } else {
+                            addSkillEvent(finishBlow);
+                        }
+                    }
+                }
+                addSkillEvent(darkGenesisDeathWhip);
                 if (cooldownCheck(crimsonPactum1)) {
                     addSkillEvent(crimsonPactum1);
                 }
             } else if (cooldownCheck(unionAura)) {
                 addSkillEvent(blackMagicAltar);
-                addSkillEvent(unionAura);
                 addSkillEvent(grimReaper);
-                addSkillEvent(soulContract);
-                addSkillEvent(weaponJumpRing);
+                addDealCycle(getSkillSequence2());
             } else if (
                     cooldownCheck(ringSwitching)
                             && getStart().after(new Timestamp(70 * 1000))
@@ -152,6 +182,11 @@ public class BattleMageDealCycle extends DealCycle {
                 addSkillEvent(blackMagicAltar);
             } else if (cooldownCheck(battleKingBar1)) {
                 addSkillEvent(battleKingBar1);
+            } else if (
+                    cooldownCheck(darkGenesisDeathWhip)
+                            && !cooldownCheck(blackMagicAltar)
+            ) {
+                addSkillEvent(darkGenesisDeathWhip);
             } else {
                 if (getStart().before(unionAuraEndTime)) {
                     addSkillEvent(reaperScythe);
@@ -178,9 +213,9 @@ public class BattleMageDealCycle extends DealCycle {
             if (
                     (
                             skill instanceof CrimsonPactum1
-                            || skill instanceof CrimsonPactum2
+                            //|| skill instanceof CrimsonPactum2
                             || skill instanceof BattleKingBar2
-                    ) && sum <= 3840
+                    ) && sum <= 4740
             ) {
                 Timestamp tmp = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);
@@ -209,11 +244,12 @@ public class BattleMageDealCycle extends DealCycle {
             attackCnt++;
             if (
                     attackCnt >= 2
-                    && cooldownCheck(death)
-                    && !(skill instanceof Death)
-                    && !(skill instanceof DeathReinforce)
-                    && !(skill instanceof BlackMark)
-                    && !(skill instanceof FinalAttackBattleMage)
+                            && cooldownCheck(death)
+                            && !(skill instanceof Death)
+                            && !(skill instanceof DeathReinforce)
+                            && !(skill instanceof BlackMark)
+                            && !(skill instanceof FinalAttackBattleMage)
+                            && !(skill instanceof DarkPentacle)
             ) {
                 if (
                         getStart().before(masterOfDeathEndTime)
@@ -243,7 +279,7 @@ public class BattleMageDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -292,6 +328,13 @@ public class BattleMageDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof BlackMark) {
+                blackMarkCount ++;
+                if (blackMarkCount == 15) {
+                    addSkillEvent(darkPentacle);
+                    blackMarkCount = 0;
+                }
+            }
             if (
                     skill instanceof DarkLightning
                     && getStart().before(abyssalLightningEndTime)
@@ -382,11 +425,12 @@ public class BattleMageDealCycle extends DealCycle {
                 attackCnt++;
                 if (
                         attackCnt >= 2
-                        && cooldownCheck(death)
-                        && !(skill instanceof Death)
-                        && !(skill instanceof DeathReinforce)
-                        && !(skill instanceof BlackMark)
-                        && !(skill instanceof FinalAttackBattleMage)
+                                && cooldownCheck(death)
+                                && !(skill instanceof Death)
+                                && !(skill instanceof DeathReinforce)
+                                && !(skill instanceof BlackMark)
+                                && !(skill instanceof FinalAttackBattleMage)
+                                && !(skill instanceof DarkPentacle)
                 ) {
                     if (
                             getStart().before(masterOfDeathEndTime)
@@ -468,9 +512,15 @@ public class BattleMageDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }

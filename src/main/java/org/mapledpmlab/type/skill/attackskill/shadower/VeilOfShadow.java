@@ -7,7 +7,7 @@ public class VeilOfShadow extends AttackSkill {
     public VeilOfShadow() {
         this.setName("베일 오브 섀도우");
         this.setAttackCount(1L);
-        this.setDamage(800.0);
+        this.setDamage(1280.0);
         this.setCooldown(60.0);
         this.setDotDuration(12000L);
         this.setInterval(900L);

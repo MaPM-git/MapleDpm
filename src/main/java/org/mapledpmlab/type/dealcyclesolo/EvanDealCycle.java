@@ -22,7 +22,7 @@ public class EvanDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
-            add(new AdvancedDragonSpark());
+            add(new DragonSpark());
             add(new BreakComeBack());
             add(new BreathComeBack());
             add(new BreathOfEarth());
@@ -114,7 +114,7 @@ public class EvanDealCycle extends DealCycle {
     ZodiacRayDelay zodiacRayDelay = new ZodiacRayDelay();
 
     public EvanDealCycle(Job job) {
-        super(job, new AdvancedDragonSpark());
+        super(job, new DragonSpark());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);

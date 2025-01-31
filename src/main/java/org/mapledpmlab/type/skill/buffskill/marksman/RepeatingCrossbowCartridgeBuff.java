@@ -10,7 +10,7 @@ public class RepeatingCrossbowCartridgeBuff extends BuffSkill {
     public RepeatingCrossbowCartridgeBuff() {
         this.setName("리피팅 크로스보우 카트리지");
         this.setCooldown(120.0);
-        this.setDelay(660L);
+        this.setDelayByAttackSpeed(660L);
         this.setDuration(60L);
         this.setApplyServerLag(true);
     }

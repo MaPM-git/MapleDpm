@@ -9,7 +9,6 @@ public class EruptionSunriseWellDot extends DotAttackSkill {
         this.setAttackCount(1L);
         this.setDotDuration(18000L);
         this.setInterval(1000L);
-        this.addIgnoreDefenseList(15L);     // 분출/흡수 - 이그노어 가드
         this.setAddDamage(10L + 15 + 21);   // 분출/흡수 - 리인포스, 보스 킬러
     }
 }

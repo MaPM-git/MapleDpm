@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DeathBlossom extends AttackSkill {
     public DeathBlossom() {
         this.setName("데스 블로섬");
-        this.setDamage(700.0);
+        this.setDamage(1321.0);
         this.setAttackCount(6L);
         this.setCooldown(90.0);
         this.setDelayByAttackSpeed(810L);

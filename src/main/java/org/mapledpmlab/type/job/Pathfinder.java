@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.job;
 
 import org.mapledpmlab.type.ability.BossCriticalReuse;
+import org.mapledpmlab.type.ability.ReuseBossCritical;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
@@ -64,11 +65,11 @@ public class Pathfinder extends Job {
         this.addMainStat(82L);          // 일루전 스탭
 
         // 환산 보정
-        this.addMainStatP(-48L);
-        this.addMainStat(-6L);
-        this.addSubStat(-2L);
+        this.addMainStatP(-24L);
+        this.addMainStat(2L);
+        this.addSubStat(-5L);
 
-        this.setAbility(new BossCriticalReuse());
+        this.setAbility(new ReuseBossCritical());
         this.setArtifact(new ArtifactNormal());
         this.getLinkList().add(new HybridLogic());
         this.getLinkList().add(new AdventurerCuriosity());

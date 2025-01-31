@@ -5,8 +5,8 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class MegidoFlameAfterSecond extends AttackSkill {
     public MegidoFlameAfterSecond() {
         this.setName("메기도 플레임(2타 이후)");
-        this.setDamage(380.0);
-        this.setAttackCount(4L);
+        this.setDamage(660.0);
+        this.setAttackCount(5L);
         this.setDotDuration(60000L);
         this.setInterval(100L);
         this.setLimitAttackCount(10L);

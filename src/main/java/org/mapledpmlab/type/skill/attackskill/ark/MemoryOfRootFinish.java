@@ -7,7 +7,7 @@ public class MemoryOfRootFinish extends AttackSkill {
         this.setName("근원의 기억(폭발)");
         this.setDamage(1815.0);
         this.setAttackCount(12L);
-        this.setDelay(1110L);
+        this.setDelayByAttackSpeed(1110L);
         this.setDotDuration(1110L);
         this.setInterval(150L);
         this.setLimitAttackCount(6L);

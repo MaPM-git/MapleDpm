@@ -11,7 +11,7 @@ public class CallMastema extends BuffSkill {
     public CallMastema() {
         this.setName("콜 마스테마");
         this.setCooldown(120.0);
-        this.setDelay(690L);
+        this.setDelay(30L);
         this.setDuration(48L);
         this.setRelatedSkill(new MastemaClaw());
     }

@@ -8,7 +8,7 @@ public class CrestOfTheSolar extends AttackSkill {
         this.setDamage(1650.0);
         this.setAttackCount(12L);
         this.setCooldown(250.0);
-        this.setDelay(870L);
+        this.setDelayByAttackSpeed(870L);
         this.setRelatedSkill(new CrestOfTheSolarDot());
     }
 }

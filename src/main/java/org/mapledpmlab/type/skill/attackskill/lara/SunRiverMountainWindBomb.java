@@ -7,7 +7,7 @@ public class SunRiverMountainWindBomb extends AttackSkill {
         this.setName("해 강 산 바람(폭발)");
         this.setDamage(3080.0);
         this.setAttackCount(15L);
-        this.setDelay(840L);
+        this.setDelayByAttackSpeed(840L);
         this.addFinalDamage(1.6);   // 코어강화
         this.addFinalDamage(1.08);      // 오버로드 마나
         this.getMultiAttackInfo().add(5850L + 30);

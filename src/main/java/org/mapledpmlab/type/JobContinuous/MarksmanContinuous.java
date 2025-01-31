@@ -72,9 +72,9 @@ public class MarksmanContinuous extends Job {
         this.addFinalDamage(1.11);      // 라스트맨 스탠딩
 
         // 환산 보정
-        this.addMainStatP(-51L);
-        this.addMainStat(-2L);
-        this.addSubStat(5L);
+        this.addMainStatP(-54L);
+        this.addMainStat(-12L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

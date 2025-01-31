@@ -98,6 +98,11 @@ public class ZeroContinuousDealCycle extends DealCycle {
         }
     };
 
+    Timestamp assistEndTime = new Timestamp(-1);
+    Timestamp assistNowTime = new Timestamp(-1);
+    Timestamp assistMoveTime = new Timestamp(-1);
+    Timestamp extraAttackTime = new Timestamp(-1);
+
     Job job2 = new ZeroBetaContinuous();
 
     AuraWeaponBuff auraWeaponBuff = new AuraWeaponBuff();
@@ -161,7 +166,6 @@ public class ZeroContinuousDealCycle extends DealCycle {
     TimePieceCrystalOfTime timePieceCrystalOfTime = new TimePieceCrystalOfTime();
     SpinCutterBlade spinCutterBlade = new SpinCutterBlade();
 
-    Timestamp devineLeerEndTime = new Timestamp(-1);
     Timestamp transcendentLightEndTime = new Timestamp(-1);
     Timestamp transcendentTimeEndTime = new Timestamp(-1);
     Timestamp blessEndTime = new Timestamp(-1);
@@ -173,7 +177,9 @@ public class ZeroContinuousDealCycle extends DealCycle {
 
     boolean isShadowFlashAlpha = false;
     boolean isShadowFlashBeta = false;
+    boolean isExtraAttack = false;
     boolean isNuke = false;
+    boolean isEgoWeapon = false;
 
     public ZeroContinuousDealCycle(Job job) {
         super(job, null);
@@ -185,12 +191,44 @@ public class ZeroContinuousDealCycle extends DealCycle {
 
         transcendentRhinneBless.setCooldown(120.0);
         auraWeaponBuff.setCooldown(180.0);
+
+        earthBreak.setAssistSkill(new StormBreak());
+        flashAssault.setAssistSkill(new FrontSlash());
+        frontSlash.setAssistSkill(new FlashAssault());
+        gigaCrash.setAssistSkill(new WindCutter());
+        jumpingCrash.setAssistSkill(new WindStrike());
+        moonStrike.setAssistSkill(new UpperSlash());
+        pierceThrust.setAssistSkill(new PowerStomp());
+        powerStomp.setAssistSkill(new PierceThrust());
+        rollingAssaulter.setAssistSkill(new TurningDrive());
+        rollingCurve.setAssistSkill(new TurningDrive());
+        shadowStrike.setAssistSkill(new UpperSlash());
+        spinCutter.setAssistSkill(new ThrowingWeapon());
+        stormBreak.setAssistSkill(new EarthBreak());
+        throwingWeapon.setAssistSkill(new SpinCutter());
+        turningDrive.setAssistSkill(new RollingCurve());
+        upperSlash.setAssistSkill(new MoonStrike());
+        windCutter.setAssistSkill(new GigaCrash());
+        windStrike.setAssistSkill(new JumpingCrash());
+        whirlWind.setAssistSkill(new RollingAssaulter());
+
+        timeDistotion.setDelay(220L);
+        bodyOfSteel.setDelay(220L);
+        transcendentRhinneBless.setDelay(220L);
+        transcendentLife.getRelatedSkill().getRelatedSkill().setDelay(210L);
+
+        getSkillSequence1().add(timeDistotion);
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(soulContract);
+        getSkillSequence1().add(transcendentRhinneBless);
+        getSkillSequence1().add(transcendentLife);
     }
 
     @Override
     public void setSoloDealCycle() {
         int dealCycleOrder = 1;
         boolean isOrigin = false;
+        addSkillEvent(divineLeer);
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(auraWeaponBuff)
@@ -200,61 +238,25 @@ public class ZeroContinuousDealCycle extends DealCycle {
             }
             if (
                     getStart().before(new Timestamp(660 * 1000))
-                            && (
-                            (
-                                    zero == 1
-                                            && (
-                                            dealCycleOrder == 1
-                                    )
-                            ) || (
-                                    zero == 0
-                                            && (
-                                            dealCycleOrder == 2
-                                                    || dealCycleOrder == 3
-                                                    || dealCycleOrder == 4
-                                                    || dealCycleOrder == 5
-                                                    || dealCycleOrder == 6
-                                    )
-                            )
-                    )
-                    && getStart().after(new Timestamp(bodyOfSteel.getActivateTime().getTime() - 3000))
+                            && zero == 1
+                            && getStart().after(new Timestamp(bodyOfSteel.getActivateTime().getTime() - 4000))
             ) {
                 isNuke = true;
-                if (zero == 1) {
-                    betaCancelCycle(shadowFlashBeta);
-                    alphaCancelCycle(shadowFlashAlpha);
-                } else {
-                    alphaCancelCycle(shadowFlashAlpha);
-                    betaCancelCycle(shadowFlashBeta);
-                    if (dealCycleOrder == 4) {
-                        alphaCycle();
-                    }
-                }
-                if (cooldownCheck(timeDistotion)) {
-                    addSkillEvent(timeDistotion);
-                }
+                betaCancelCycle(shadowFlashBeta);
+                alphaCancelCycle(shadowFlashAlpha);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
-                addSkillEvent(bodyOfSteel);
-                if (
-                        cooldownCheck(shadowRainBeta)
-                                && zero == 1
-                ) {
+                if (cooldownCheck(shadowRainBeta)) {
                     betaCancelCycle(shadowRainBeta);
+                    alphaCycle();
                 }
-                alphaCancelCycle(transcendentLife);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 isNuke = false;
-                addSkillEvent(transcendentRhinneBless);
-                if (!cooldownCheck(limitBreak)) {
-                    addSkillEvent(new UpperSlash());
-                }
                 addSkillEvent(limitBreak);
-                shadowFlashBetaFinish = new ShadowFlashBetaFinish();
                 if (cooldownCheck(chronoTrigger1)) {
                     jointAttackCancelCycle(chronoTrigger1);
                     addSkillEvent(shadowFlashBetaFinish);
@@ -264,20 +266,24 @@ public class ZeroContinuousDealCycle extends DealCycle {
                 }
                 addSkillEvent(limitBreakFinish);
                 addSkillEvent(tag);
-                shadowFlashAlphaFinish = new ShadowFlashAlphaFinish();
                 alphaCancelCycle(shadowFlashAlphaFinish);
                 if (
                         cooldownCheck(soulContract)
                                 && cooldownCheck(shadowRainBeta)
                 ) {
                     addSkillEvent(soulContract);
-                    shadowRainBeta = new ShadowRainBeta();
                     betaCancelCycle(shadowRainBeta);
                 }
                 if (cooldownCheck(timeHolding)) {
                     addSkillEvent(timeHolding);
                     alphaCycle();
                     if (isOrigin) {
+                        addSkillEvent(moonStrike);
+                        addSkillEvent(pierceThrust);
+                        addSkillEvent(shadowStrike);
+                        addSkillEvent(moonStrike);
+                        addSkillEvent(pierceThrust);
+                        addSkillEvent(shadowStrike);
                         betaCancelCycle(shadowFlashBeta);
                         alphaCancelCycle(shadowFlashAlpha);
                         betaCancelCycle(shadowFlashBetaFinish);
@@ -289,7 +295,6 @@ public class ZeroContinuousDealCycle extends DealCycle {
                         alphaCycle();
                     }
                     addSkillEvent(soulContract);
-                    shadowRainBeta = new ShadowRainBeta();
                     betaCancelCycle(shadowRainBeta);
                 }
                 isOrigin = false;
@@ -300,31 +305,15 @@ public class ZeroContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(soulContract);
             } else if (
-                    getStart().after(new Timestamp(shadowFlashAlpha.getActivateTime().getTime() - 2000))
-                            && zero == 0
-                            && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 30000))
-            ) {
-                alphaCancelCycle(shadowFlashAlpha);
-                isShadowFlashAlpha = true;
-            } else if (
                     getStart().after(new Timestamp(shadowFlashBeta.getActivateTime().getTime() - 2000))
                             && zero == 1
                             && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 30000))
             ) {
                 betaCancelCycle(shadowFlashBeta);
-                isShadowFlashBeta = true;
-            } else if (
-                    zero == 0
-                            && isShadowFlashAlpha
-            ) {
-                alphaCancelCycle(shadowFlashAlphaFinish);
-                isShadowFlashAlpha = false;
-            } else if (
-                    zero == 1
-                            && isShadowFlashBeta
-            ) {
+                alphaCancelCycle(shadowFlashAlpha);
                 betaCancelCycle(shadowFlashBetaFinish);
-                isShadowFlashBeta = false;
+                alphaCancelCycle(shadowFlashAlphaFinish);
+                isShadowFlashBeta = true;
             } else if (zero == 1) {     // 베타
                 betaCycle();
             } else {
@@ -332,6 +321,143 @@ public class ZeroContinuousDealCycle extends DealCycle {
             }
         }
         sortEventTimeList();
+    }
+
+    public void addAssistSkillEvent(Skill skill, boolean isRelated) {
+        Timestamp endTime = null;
+
+        Timestamp skillEndTime = new Timestamp(getStart().getTime() + skill.getDelay());
+        if (!isRelated) {
+            if (skill instanceof PowerStomp) {
+                skillEndTime = new Timestamp(getStart().getTime() + 570);
+            } else if (skill instanceof RollingAssaulter) {
+                skillEndTime = new Timestamp(getStart().getTime() + 960);
+            } else if (skill instanceof RollingCurve) {
+                skillEndTime = new Timestamp(getStart().getTime() + 960);
+            } else if (skill instanceof ShadowStrike) {
+                skillEndTime = new Timestamp(getStart().getTime() + 330);
+            } else if (skill instanceof SpinCutter) {
+                skillEndTime = new Timestamp(getStart().getTime() + skill.getDelay() + 90);
+            }
+            skill = ((AssistSkill) skill).getAssistSkill();
+            if (
+                    ((AssistSkill) skill).isMove()
+                    && skillEndTime.before(assistMoveTime)
+            ) {
+                return;
+            }
+            if (
+                    skillEndTime.before(assistNowTime)
+                    && assistNowTime.getTime() - skillEndTime.getTime() > 60    // 스킬 종료 시간이 어시스트 종료 시간보다 전임
+            ) {
+                assistNowTime = new Timestamp(skillEndTime.getTime());
+            } else if (assistNowTime.before(getStart())) {                      // 어시스트 종료 시간이 현재보다 전임
+                assistNowTime = new Timestamp(getStart().getTime());
+            } else if (skillEndTime.after(assistNowTime)) {                     // 스킬 종료 시간과 어시스트 종료 시간이 같음
+            } else if (getStart().before(assistNowTime)) {                      // 현재가 어시스트 종료 시간보다 전임
+                assistNowTime = new Timestamp(skillEndTime.getTime());
+            } else if (assistEndTime.getTime() - assistNowTime.getTime() < 2940) {  // 어시스트 가능 시간
+                assistNowTime = new Timestamp(getStart().getTime());
+            } else {                                                            // 이제 막 태그함
+                assistNowTime = new Timestamp(getStart().getTime() + 60);
+            }
+        }
+        if (
+                assistNowTime.after(assistEndTime)
+                && !isRelated
+        ) {
+            return;
+        }
+        if (skill instanceof SpinCutter) {
+            assistMoveTime = new Timestamp(-1);
+        }
+        if (
+                !(skill instanceof EarthBreakElectricity)
+                && !(skill instanceof RollingAssaulterBlade)
+                && !(skill instanceof RollingCurveBlade)
+                && !(skill instanceof ShadowStrikeBlade)
+                && !(skill instanceof SpinCutterBlade)
+                && !(skill instanceof StormBreakElectricity)
+                && !(skill instanceof StormBreakTornado)
+                && !(skill instanceof WindCutterTornado)
+        ) {
+            timePieceCnt ++;
+            if (timePieceCnt > 13) {
+                timePieceCnt = 13;
+            }
+        }
+        if (
+                getStart().before(blessEndTime)
+                        && isExtraAttack
+                        && !(skill instanceof ThrowingWeapon)
+        ) {
+            isExtraAttack = false;
+            addSkillEvent(extraAttack);
+            if (!skillEndTime.equals(assistNowTime)) {
+                flashAssault.setActivateTime(new Timestamp(flashAssault.getActivateTime().getTime() - 4000));
+            }
+        }
+        if (skillLog.equals("")) {
+            skillLog += getJob().getName() + "(어시스트)\t" + simpleDateFormat.format(assistNowTime) + "\t" + skill.getName();
+        } else {
+            skillLog += "\n" + getJob().getName() + "(어시스트)\t" + simpleDateFormat.format(assistNowTime) + "\t" + skill.getName();
+        }
+        if (((AttackSkill) skill).getInterval() != 0) {
+            if (((AttackSkill) skill).getLimitAttackCount() == 0) {
+                for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(assistNowTime.getTime() + i), new Timestamp(assistNowTime.getTime() + i)));
+                    getEventTimeList().add(new Timestamp(assistNowTime.getTime() + i));
+                }
+            } else {
+                Long attackCount = 0L;
+                for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                    getSkillEventList().add(new SkillEvent(skill, new Timestamp(assistNowTime.getTime() + i), new Timestamp(assistNowTime.getTime() + i)));
+                    getEventTimeList().add(new Timestamp(assistNowTime.getTime() + i));
+                    attackCount += 1;
+                }
+            }
+        } else if (((AttackSkill) skill).getMultiAttackInfo().size() != 0) {
+            this.multiAttackProcess(skill);
+        } else {
+            if (
+                    !(skill instanceof EarthBreakShockWave)
+                    && !(skill instanceof FrontSlash)
+            ) {
+                endTime = new Timestamp(assistNowTime.getTime() + ((AssistSkill) skill).getAssistDelay());
+                getSkillEventList().add(new SkillEvent(skill, new Timestamp(assistNowTime.getTime()), endTime));
+            }
+            if (skill instanceof RollingCurveBlade) {
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 50) {
+                    RollingCurveBlade tmp = new RollingCurveBlade();
+                    tmp.addFinalDamage(0.7);
+                    getSkillEventList().add(new SkillEvent(tmp, new Timestamp(assistNowTime.getTime()), endTime));
+                }
+            }
+            if (skill instanceof RollingAssaulterBlade) {
+                RollingAssaulterBlade tmp = new RollingAssaulterBlade();
+                tmp.addFinalDamage(0.7);
+                getSkillEventList().add(new SkillEvent(tmp, new Timestamp(assistNowTime.getTime()), endTime));
+            }
+        }
+        getEventTimeList().add(assistNowTime);
+        getEventTimeList().add(new Timestamp(assistNowTime.getTime() + ((AssistSkill) skill).getAssistDelay()));
+        assistNowTime = new Timestamp(assistNowTime.getTime() + ((AssistSkill) skill).getAssistDelay());
+        if (skill instanceof RollingAssaulterBlade) {
+            assistNowTime = new Timestamp(assistNowTime.getTime() - 600);
+        }
+        if (
+                !(skill instanceof RollingCurve)
+                && ((AssistSkill) skill).isMove()
+        ) {
+            assistMoveTime = new Timestamp(assistNowTime.getTime() + 600);
+        }
+        if (endTime != null) {
+            getEventTimeList().add(endTime);
+        }
+        if (skill.getRelatedSkill() != null) {
+            addAssistSkillEvent(skill.getRelatedSkill(), true);
+        }
     }
 
     @Override
@@ -351,582 +477,228 @@ public class ZeroContinuousDealCycle extends DealCycle {
     }
 
     public void alphaCycle() {
+        Timestamp cycleStartTime = new Timestamp(getStart().getTime());
+        assistEndTime = new Timestamp(getStart().getTime() + 3000);
+        if (
+                getStart().after(assistNowTime)
+                        || getStart().equals(assistNowTime)
+        ) {
+            assistNowTime = new Timestamp(getStart().getTime() + 60);
+        }
         timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
-        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
+        timePieceCnt = 0;
+        isEgoWeapon = true;
         addSkillEvent(timePieceCrystalOfTime);
-        getSkillEventList().add(new SkillEvent(alpha, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3330)));
-        frontSlash = new FrontSlash();
-        frontSlash.setDelay(570L);
-        getSkillEventList().add(new SkillEvent(frontSlash, new Timestamp(getStart().getTime() + 60), new Timestamp(getStart().getTime() + 630)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 60));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 630));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 1110), new Timestamp(getStart().getTime() + 1110)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 1410), new Timestamp(getStart().getTime() + 1410)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 1710), new Timestamp(getStart().getTime() + 1710)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 2010), new Timestamp(getStart().getTime() + 2010)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 2310), new Timestamp(getStart().getTime() + 2310)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 2610), new Timestamp(getStart().getTime() + 2610)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 2910), new Timestamp(getStart().getTime() + 2910)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3210), new Timestamp(getStart().getTime() + 3210)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3510), new Timestamp(getStart().getTime() + 3510)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4110), new Timestamp(getStart().getTime() + 4110)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4410), new Timestamp(getStart().getTime() + 4410)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1110));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1410));     // 4    3410
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1710));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2010));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2310));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2610));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2910));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3210));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3510));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4110));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4410));
-        gigaCrash = new GigaCrash();
-        gigaCrash.setDelay(450L);
-        getSkillEventList().add(new SkillEvent(gigaCrash, new Timestamp(getStart().getTime() + 1050), new Timestamp(getStart().getTime() + 1500)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1050));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1500));
-        jumpingCrash = new JumpingCrash();
-        jumpingCrash.setDelay(300L);
-        getSkillEventList().add(new SkillEvent(jumpingCrash, new Timestamp(getStart().getTime() + 1500), new Timestamp(getStart().getTime() + 1800)));
-        getSkillEventList().add(new SkillEvent(jumpingCrashShockWave, new Timestamp(getStart().getTime() + 1800), new Timestamp(getStart().getTime() + 2010)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1800));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2010));
-        earthBreak = new EarthBreak();
-        earthBreak.setDelay(90L);
-        getSkillEventList().add(new SkillEvent(earthBreak, new Timestamp(getStart().getTime() + 2010), new Timestamp(getStart().getTime() + 2100)));
-        getSkillEventList().add(new SkillEvent(earthBreakShockWave, new Timestamp(getStart().getTime() + 2100), new Timestamp(getStart().getTime() + 2490)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 3590), new Timestamp(getStart().getTime() + 3590)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 4590), new Timestamp(getStart().getTime() + 4590)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 5590), new Timestamp(getStart().getTime() + 5590)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 6590), new Timestamp(getStart().getTime() + 6590)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 7590), new Timestamp(getStart().getTime() + 7590)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2100));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3590));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4590));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5590));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6590));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 7590));
-        frontSlash = new FrontSlash();
-        frontSlash.setDelay(360L);
-        getSkillEventList().add(new SkillEvent(frontSlash, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2850)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2850));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3360), new Timestamp(getStart().getTime() + 3360)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3660), new Timestamp(getStart().getTime() + 3660)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3960), new Timestamp(getStart().getTime() + 3960)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4260), new Timestamp(getStart().getTime() + 4260)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4560), new Timestamp(getStart().getTime() + 4560)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4860), new Timestamp(getStart().getTime() + 4860)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 5160), new Timestamp(getStart().getTime() + 5160)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 5460), new Timestamp(getStart().getTime() + 5460)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 5760), new Timestamp(getStart().getTime() + 5760)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 6060), new Timestamp(getStart().getTime() + 6060)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 6360), new Timestamp(getStart().getTime() + 6360)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 6660), new Timestamp(getStart().getTime() + 6660)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3360));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3660));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3960));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4260));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4560));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4860));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5160));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5460));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5760));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6060));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6360));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6660));
-        flashAssault = new FlashAssault();
-        flashAssault.setDelay(270L);
-        addSkillEvent(flashAssault);
-        spinCutter = new SpinCutter();
-        spinCutter.setDelay(270L);
-        addSkillEvent(spinCutter);
-        windCutter = new WindCutter();
-        windCutter.setDelay(420L);
-        addSkillEvent(windCutter);
-        windStrike = new WindStrike();
-        windStrike.setDelay(480L);
-        addSkillEvent(windStrike);
-        stormBreak = new StormBreak();
-        stormBreak.setDelay(690L);
-        addSkillEvent(stormBreak);
-        addSkillEvent(flashAssault);
-        addSkillEvent(spinCutter);
-        moonStrike = new MoonStrike();
-        moonStrike.setDelay(390L);
-        addSkillEvent(moonStrike);
-        windCutter = new WindCutter();
-        windCutter.setDelay(90L);
-        addSkillEvent(windCutter);
+        if (getStart().before(blessEndTime)) {
+            spinCutter = new SpinCutter();
+            spinCutter.setDelay(180L);
+            spinCutter.setAssistSkill(new ThrowingWeapon());
+            flashAssault.setCooldown(5.0);
+            while (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
+                if (!cooldownCheck(flashAssault)) {
+                    getStart().setTime(getStart().getTime() + 180);
+                }
+                addSkillEvent(flashAssault);
+                addSkillEvent(spinCutter);
+            }
+            flashAssault.setCooldown(0.0);
+        } else {
+            addSkillEvent(flashAssault);
+            spinCutter = new SpinCutter();
+            spinCutter.setDelay(270L);
+            spinCutter.setAssistSkill(new ThrowingWeapon());
+            addSkillEvent(spinCutter);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(flashAssault);
+            addSkillEvent(spinCutter);
+            addSkillEvent(moonStrike);
+            Timestamp comboEndTime = new Timestamp(getStart().getTime());
+            addSkillEvent(windCutter);
+            Timestamp tmp = new Timestamp(assistNowTime.getTime());
+            assistNowTime = new Timestamp(getStart().getTime());
+            getStart().setTime(tmp.getTime());
+            if (comboEndTime.equals(getStart())) {
+                getStart().setTime(getStart().getTime() + 90);
+            }
+        }
         addSkillEvent(tag);
-        timePieceCnt += 7;
+        Timestamp cycleEndTime = new Timestamp(getStart().getTime());
+        getSkillEventList().add(new SkillEvent(alpha, cycleStartTime, cycleEndTime));
     }
 
     public void betaCycle() {
+        Timestamp cycleStartTime = new Timestamp(getStart().getTime());
+        assistEndTime = new Timestamp(getStart().getTime() + 3000);
+        if (
+                getStart().after(assistNowTime)
+                || getStart().equals(assistNowTime)
+        ) {
+            assistNowTime = new Timestamp(getStart().getTime() + 60);
+        }
         timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
-        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
+        timePieceCnt = 0;
+        isEgoWeapon = true;
         addSkillEvent(timePieceCrystalOfTime);
-        getSkillEventList().add(new SkillEvent(beta, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3150)));
-        rollingCurve = new RollingCurve();
-        rollingCurve.setDelay(360L);
-        getSkillEventList().add(new SkillEvent(rollingCurve, new Timestamp(getStart().getTime() + 60), new Timestamp(getStart().getTime() + 420)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 60));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 420));
-        rollingCurveBlade = new RollingCurveBlade();
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        /*rollingCurveBlade = new RollingCurveBlade();
-        rollingCurveBlade.addFinalDamage(0.3);
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));*/
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 480));
-        rollingAssaulter = new RollingAssaulter();
-        rollingAssaulter.setDelay(510L);
-        getSkillEventList().add(new SkillEvent(rollingAssaulter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 960)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 960));
-        rollingAssaulterBlade = new RollingAssaulterBlade();
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        /*rollingAssaulterBlade = new RollingAssaulterBlade();
-        rollingAssaulterBlade.addFinalDamage(0.3);
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));*/
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1020));
-        windCutter = new WindCutter();
-        windCutter.setDelay(540L);
-        getSkillEventList().add(new SkillEvent(windCutter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 990)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 990));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1490), new Timestamp(getStart().getTime() + 1490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1990), new Timestamp(getStart().getTime() + 1990)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1990));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2990));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3990));
-        windStrike = new WindStrike();
-        windStrike.setDelay(630L);
-        getSkillEventList().add(new SkillEvent(windStrike, new Timestamp(getStart().getTime() + 990), new Timestamp(getStart().getTime() + 1620)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1620));
-        stormBreak = new StormBreak();
-        stormBreak.setDelay(690L);
-        getSkillEventList().add(new SkillEvent(stormBreak, new Timestamp(getStart().getTime() + 1620), new Timestamp(getStart().getTime() + 2310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2310));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 2810), new Timestamp(getStart().getTime() + 2810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3310));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4310));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5310));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 6310), new Timestamp(getStart().getTime() + 6310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6310));
-        rollingCurve = new RollingCurve();
-        rollingCurve.setDelay(330L);
-        getSkillEventList().add(new SkillEvent(rollingCurve, new Timestamp(getStart().getTime() + 2310), new Timestamp(getStart().getTime() + 2640)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2640));
-        rollingCurveBlade = new RollingCurveBlade();
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2700), new Timestamp(getStart().getTime() + 2700)));
-        /*rollingCurveBlade = new RollingCurveBlade();
-        rollingCurveBlade.addFinalDamage(0.3);
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2700), new Timestamp(getStart().getTime() + 2700)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2700), new Timestamp(getStart().getTime() + 2700)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2760), new Timestamp(getStart().getTime() + 2760)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2760), new Timestamp(getStart().getTime() + 2760)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 2760), new Timestamp(getStart().getTime() + 2760)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2760));*/
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2700));
-        rollingAssaulter = new RollingAssaulter();
-        rollingAssaulter.setDelay(320L);
-        getSkillEventList().add(new SkillEvent(rollingAssaulter, new Timestamp(getStart().getTime() + 2670), new Timestamp(getStart().getTime() + 3090)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3120));
-        rollingAssaulterBlade = new RollingAssaulterBlade();
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3150), new Timestamp(getStart().getTime() + 3150)));
-        /*rollingAssaulterBlade = new RollingAssaulterBlade();
-        rollingAssaulterBlade.addFinalDamage(0.3);
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3150), new Timestamp(getStart().getTime() + 3150)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3150), new Timestamp(getStart().getTime() + 3150)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3210), new Timestamp(getStart().getTime() + 3210)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3210), new Timestamp(getStart().getTime() + 3210)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 3210), new Timestamp(getStart().getTime() + 3210)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3210));*/
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3150));
-        turningDrive = new TurningDrive();
-        turningDrive.setDelay(360L);
-        addSkillEvent(turningDrive);
         whirlWind = new WhirlWind();
         whirlWind.setDelay(90L);
-        addSkillEvent(whirlWind);
-        gigaCrash = new GigaCrash();
-        gigaCrash.setDelay(420L);
-        addSkillEvent(gigaCrash);
-        jumpingCrash = new JumpingCrash();
-        jumpingCrash.setDelay(240L);
-        addSkillEvent(jumpingCrash);
-        earthBreak = new EarthBreak();
-        earthBreak.setDelay(900L - 390);
-        addSkillEvent(earthBreak);
+        whirlWind.setAssistSkill(new RollingAssaulter());
+        addSkillEvent(frontSlash);
+        addSkillEvent(throwingWeapon);
         addSkillEvent(turningDrive);
         addSkillEvent(whirlWind);
-        frontSlash = new FrontSlash();
-        frontSlash.setDelay(450L);
         addSkillEvent(frontSlash);
-        throwingWeapon = new ThrowingWeapon();
-        throwingWeapon.setDelay(30L);
         addSkillEvent(throwingWeapon);
+        addSkillEvent(turningDrive);
+        addSkillEvent(whirlWind);
+        addSkillEvent(frontSlash);
+        Timestamp comboEndTime = new Timestamp(getStart().getTime());
+        addSkillEvent(throwingWeapon);
+        assistNowTime = new Timestamp(assistNowTime.getTime() + 450);
+        Timestamp tmp = new Timestamp(assistNowTime.getTime());
+        assistNowTime = new Timestamp(getStart().getTime());
+        getStart().setTime(tmp.getTime());
+        if (comboEndTime.equals(getStart())) {
+            getStart().setTime(getStart().getTime() + 30);
+        }
         addSkillEvent(tag);
-        timePieceCnt += 7;
+        Timestamp cycleEndTime = new Timestamp(getStart().getTime());
+        getSkillEventList().add(new SkillEvent(alpha, cycleStartTime, cycleEndTime));
     }
 
     public void alphaCancelCycle(Skill skill) {
-        timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
-        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
-        addSkillEvent(timePieceCrystalOfTime);
-        getSkillEventList().add(new SkillEvent(alpha, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3330)));
-        frontSlash = new FrontSlash();
-        frontSlash.setDelay(570L);
-        getSkillEventList().add(new SkillEvent(frontSlash, new Timestamp(getStart().getTime() + 60), new Timestamp(getStart().getTime() + 630)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 60));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 630));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 1110), new Timestamp(getStart().getTime() + 1110)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 1410), new Timestamp(getStart().getTime() + 1410)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 1710), new Timestamp(getStart().getTime() + 1710)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 2010), new Timestamp(getStart().getTime() + 2010)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 2310), new Timestamp(getStart().getTime() + 2310)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 2610), new Timestamp(getStart().getTime() + 2610)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 2910), new Timestamp(getStart().getTime() + 2910)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3210), new Timestamp(getStart().getTime() + 3210)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3510), new Timestamp(getStart().getTime() + 3510)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4110), new Timestamp(getStart().getTime() + 4110)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4410), new Timestamp(getStart().getTime() + 4410)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1110));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1410));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1710));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2010));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2310));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2610));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2910));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3210));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3510));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4110));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4410));
-        gigaCrash = new GigaCrash();
-        gigaCrash.setDelay(450L);
-        getSkillEventList().add(new SkillEvent(gigaCrash, new Timestamp(getStart().getTime() + 1050), new Timestamp(getStart().getTime() + 1500)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1050));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1500));
-        jumpingCrash = new JumpingCrash();
-        jumpingCrash.setDelay(300L);
-        getSkillEventList().add(new SkillEvent(jumpingCrash, new Timestamp(getStart().getTime() + 1500), new Timestamp(getStart().getTime() + 1800)));
-        getSkillEventList().add(new SkillEvent(jumpingCrashShockWave, new Timestamp(getStart().getTime() + 1800), new Timestamp(getStart().getTime() + 2010)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1800));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2010));
-        earthBreak = new EarthBreak();
-        earthBreak.setDelay(90L);
-        getSkillEventList().add(new SkillEvent(earthBreak, new Timestamp(getStart().getTime() + 2010), new Timestamp(getStart().getTime() + 2100)));
-        getSkillEventList().add(new SkillEvent(earthBreakShockWave, new Timestamp(getStart().getTime() + 2100), new Timestamp(getStart().getTime() + 2490)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 3590), new Timestamp(getStart().getTime() + 3590)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 4590), new Timestamp(getStart().getTime() + 4590)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 5590), new Timestamp(getStart().getTime() + 5590)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 6590), new Timestamp(getStart().getTime() + 6590)));
-        getSkillEventList().add(new SkillEvent(earthBreakElectricity, new Timestamp(getStart().getTime() + 7590), new Timestamp(getStart().getTime() + 7590)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2100));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3590));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4590));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5590));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6590));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 7590));
-        frontSlash = new FrontSlash();
-        frontSlash.setDelay(360L);
-        getSkillEventList().add(new SkillEvent(frontSlash, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2850)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2850));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3360), new Timestamp(getStart().getTime() + 3360)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3660), new Timestamp(getStart().getTime() + 3660)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 3960), new Timestamp(getStart().getTime() + 3960)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4260), new Timestamp(getStart().getTime() + 4260)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4560), new Timestamp(getStart().getTime() + 4560)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 4860), new Timestamp(getStart().getTime() + 4860)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 5160), new Timestamp(getStart().getTime() + 5160)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 5460), new Timestamp(getStart().getTime() + 5460)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 5760), new Timestamp(getStart().getTime() + 5760)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 6060), new Timestamp(getStart().getTime() + 6060)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 6360), new Timestamp(getStart().getTime() + 6360)));
-        getSkillEventList().add(new SkillEvent(throwingWeapon, new Timestamp(getStart().getTime() + 6660), new Timestamp(getStart().getTime() + 6660)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3360));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3660));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3960));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4260));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4560));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4860));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5160));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5460));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5760));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6060));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6360));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6660));
-        flashAssault = new FlashAssault();
-        flashAssault.setDelay(270L);
-        addSkillEvent(flashAssault);
-        spinCutter = new SpinCutter();
-        spinCutter.setDelay(270L);
-        addSkillEvent(spinCutter);
-        windCutter = new WindCutter();
-        windCutter.setDelay(420L);
-        addSkillEvent(windCutter);
-        windStrike = new WindStrike();
-        windStrike.setDelay(480L);
-        addSkillEvent(windStrike);
-        stormBreak = new StormBreak();
-        stormBreak.setDelay(690L);
-        addSkillEvent(stormBreak);
-        addSkillEvent(flashAssault);
-        addSkillEvent(spinCutter);
-        moonStrike = new MoonStrike();
-        moonStrike.setDelay(390L);
-        addSkillEvent(moonStrike);
-        if (skill instanceof TranscendentLife) {
-            skill.getRelatedSkill().getRelatedSkill().setDelay(90L);
-        } else {
-            skill.setDelay(90L);
+        Timestamp cycleStartTime = new Timestamp(getStart().getTime());
+        assistEndTime = new Timestamp(getStart().getTime() + 3000);
+        if (
+                getStart().after(assistNowTime)
+                        || getStart().equals(assistNowTime)
+        ) {
+            assistNowTime = new Timestamp(getStart().getTime() + 60);
         }
-        addSkillEvent(skill);
+        timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
+        timePieceCnt = 0;
+        isEgoWeapon = true;
+        addSkillEvent(timePieceCrystalOfTime);
+        if (getStart().before(new Timestamp(blessEndTime.getTime() - 1000))) {
+            spinCutter = new SpinCutter();
+            spinCutter.setDelay(180L);
+            spinCutter.setAssistSkill(new ThrowingWeapon());
+            flashAssault.setCooldown(5.0);
+            while (getStart().before(new Timestamp(assistEndTime.getTime() - 200))) {
+                if (!cooldownCheck(flashAssault)) {
+                    getStart().setTime(getStart().getTime() + 180);
+                }
+                addSkillEvent(flashAssault);
+                addSkillEvent(spinCutter);
+            }
+            addSkillEvent(skill);
+            Timestamp tmp = new Timestamp(assistNowTime.getTime());
+            assistNowTime = new Timestamp(getStart().getTime());
+            getStart().setTime(tmp.getTime());
+            if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
+                getStart().setTime(assistEndTime.getTime() + 120);
+            }
+            flashAssault.setCooldown(0.0);
+        } else {
+            addSkillEvent(flashAssault);
+            spinCutter = new SpinCutter();
+            spinCutter.setDelay(270L);
+            spinCutter.setAssistSkill(new ThrowingWeapon());
+            addSkillEvent(spinCutter);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(flashAssault);
+            addSkillEvent(spinCutter);
+            moonStrike = new MoonStrike();
+            moonStrike.setDelay(390L);
+            moonStrike.setAssistSkill(new UpperSlash());
+            addSkillEvent(moonStrike);
+            if (skill instanceof TranscendentLife) {
+                skill.getRelatedSkill().getRelatedSkill().setDelay(90L);
+            } else {
+                skill.setDelay(90L);
+            }
+            Timestamp comboEndTime = new Timestamp(getStart().getTime());
+            addSkillEvent(skill);
+            Timestamp tmp = new Timestamp(assistNowTime.getTime());
+            assistNowTime = new Timestamp(getStart().getTime());
+            getStart().setTime(tmp.getTime());
+            if (comboEndTime.equals(getStart())) {
+                getStart().setTime(getStart().getTime() + 90);
+            }
+        }
         addSkillEvent(tag);
-        timePieceCnt += 7;
+        Timestamp cycleEndTime = new Timestamp(getStart().getTime());
+        getSkillEventList().add(new SkillEvent(alpha, cycleStartTime, cycleEndTime));
     }
 
     public void betaCancelCycle(Skill skill) {
+        Timestamp cycleStartTime = new Timestamp(getStart().getTime());
+        assistEndTime = new Timestamp(getStart().getTime() + 3000);
+        if (
+                getStart().after(assistNowTime)
+                        || getStart().equals(assistNowTime)
+        ) {
+            assistNowTime = new Timestamp(getStart().getTime() + 60);
+        }
         timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
-        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
+        timePieceCnt = 0;
+        isEgoWeapon = true;
         addSkillEvent(timePieceCrystalOfTime);
-        getSkillEventList().add(new SkillEvent(beta, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3180)));
-        rollingCurve = new RollingCurve();
-        rollingCurve.setDelay(360L);
-        getSkillEventList().add(new SkillEvent(rollingCurve, new Timestamp(getStart().getTime() + 60), new Timestamp(getStart().getTime() + 420)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 60));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 420));
-        rollingCurveBlade = new RollingCurveBlade();
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        /*rollingCurveBlade = new RollingCurveBlade();
-        rollingCurveBlade.addFinalDamage(0.3);
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));*/
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 480));
-        rollingAssaulter = new RollingAssaulter();
-        rollingAssaulter.setDelay(510L);
-        getSkillEventList().add(new SkillEvent(rollingAssaulter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 960)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 960));
-        rollingAssaulterBlade = new RollingAssaulterBlade();
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        /*rollingAssaulterBlade = new RollingAssaulterBlade();
-        rollingAssaulterBlade.addFinalDamage(0.3);
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));*/
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1020));
-        windCutter = new WindCutter();
-        windCutter.setDelay(540L);
-        getSkillEventList().add(new SkillEvent(windCutter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 990)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 990));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1490), new Timestamp(getStart().getTime() + 1490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1990), new Timestamp(getStart().getTime() + 1990)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1990));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2990));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3990));
-        windStrike = new WindStrike();
-        windStrike.setDelay(630L);
-        getSkillEventList().add(new SkillEvent(windStrike, new Timestamp(getStart().getTime() + 990), new Timestamp(getStart().getTime() + 1620)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1620));
-        stormBreak = new StormBreak();
-        stormBreak.setDelay(690L);
-        getSkillEventList().add(new SkillEvent(stormBreak, new Timestamp(getStart().getTime() + 1620), new Timestamp(getStart().getTime() + 2310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2310));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 2810), new Timestamp(getStart().getTime() + 2810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3310));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4310));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5310));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 6310), new Timestamp(getStart().getTime() + 6310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6310));
-        flashAssault = new FlashAssault();
-        flashAssault.setDelay(480L);
-        getSkillEventList().add(new SkillEvent(flashAssault, new Timestamp(getStart().getTime() + 2310), new Timestamp(getStart().getTime() + 2790)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2790));
-        spinCutter = new SpinCutter();
-        spinCutter.setDelay(270L);
-        getSkillEventList().add(new SkillEvent(spinCutter, new Timestamp(getStart().getTime() + 2790), new Timestamp(getStart().getTime() + 3060)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3060));
-        getSkillEventList().add(new SkillEvent(spinCutterBlade, new Timestamp(getStart().getTime() + 3480), new Timestamp(getStart().getTime() + 3480)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3480));
-        turningDrive = new TurningDrive();
-        turningDrive.setDelay(360L);
-        addSkillEvent(turningDrive);
         whirlWind = new WhirlWind();
         whirlWind.setDelay(90L);
+        whirlWind.setAssistSkill(new RollingAssaulter());
+        addSkillEvent(turningDrive);
         addSkillEvent(whirlWind);
-        gigaCrash = new GigaCrash();
-        gigaCrash.setDelay(420L);
-        addSkillEvent(gigaCrash);
-        jumpingCrash = new JumpingCrash();
-        jumpingCrash.setDelay(240L);
-        addSkillEvent(jumpingCrash);
-        earthBreak = new EarthBreak();
-        earthBreak.setDelay(900L - 390);
-        addSkillEvent(earthBreak);
-        frontSlash = new FrontSlash();
-        frontSlash.setDelay(450L);
         addSkillEvent(frontSlash);
-        throwingWeapon = new ThrowingWeapon();
-        throwingWeapon.setDelay(380L);
         addSkillEvent(throwingWeapon);
-        skill.setDelay(30L);
+        addSkillEvent(turningDrive);
+        addSkillEvent(whirlWind);
+        addSkillEvent(frontSlash);
+        addSkillEvent(throwingWeapon);
+        Timestamp comboEndTime = new Timestamp(getStart().getTime());
         addSkillEvent(skill);
+        Timestamp tmp = new Timestamp(assistNowTime.getTime());
+        assistNowTime = new Timestamp(getStart().getTime());
+        getStart().setTime(tmp.getTime());
+        if (comboEndTime.equals(getStart())) {
+            getStart().setTime(getStart().getTime() + 30);
+        }
+        if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
+            getStart().setTime(assistEndTime.getTime() + 120);
+        }
         addSkillEvent(tag);
-        timePieceCnt += 7;
+        Timestamp cycleEndTime = new Timestamp(getStart().getTime());
+        getSkillEventList().add(new SkillEvent(alpha, cycleStartTime, cycleEndTime));
     }
 
     public void jointAttackCancelCycle(Skill skill) {
+        Timestamp cycleStartTime = new Timestamp(getStart().getTime());
+        assistEndTime = new Timestamp(getStart().getTime() + 3000);
+        if (
+                getStart().after(assistNowTime)
+                        || getStart().equals(assistNowTime)
+        ) {
+            assistNowTime = new Timestamp(getStart().getTime() + 60);
+        }
         timePieceCrystalOfTime.setMultiAttackByCnt(timePieceCnt);
-        timePieceCnt = timePieceCnt - timePieceCrystalOfTime.getMultiAttackInfo().size();
+        timePieceCnt = 0;
+        isEgoWeapon = true;
         addSkillEvent(timePieceCrystalOfTime);
-        getSkillEventList().add(new SkillEvent(beta, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime() + 3180)));
-        rollingCurve = new RollingCurve();
-        rollingCurve.setDelay(360L);
-        getSkillEventList().add(new SkillEvent(rollingCurve, new Timestamp(getStart().getTime() + 60), new Timestamp(getStart().getTime() + 420)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 60));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 420));
-        rollingCurveBlade = new RollingCurveBlade();
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        /*rollingCurveBlade = new RollingCurveBlade();
-        rollingCurveBlade.addFinalDamage(0.3);
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 480), new Timestamp(getStart().getTime() + 480)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getSkillEventList().add(new SkillEvent(rollingCurveBlade, new Timestamp(getStart().getTime() + 540), new Timestamp(getStart().getTime() + 540)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 540));*/
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 480));
-        rollingAssaulter = new RollingAssaulter();
-        rollingAssaulter.setDelay(510L);
-        getSkillEventList().add(new SkillEvent(rollingAssaulter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 960)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 960));
-        rollingAssaulterBlade = new RollingAssaulterBlade();
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        /*rollingAssaulterBlade = new RollingAssaulterBlade();
-        rollingAssaulterBlade.addFinalDamage(0.3);
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1020), new Timestamp(getStart().getTime() + 1020)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getSkillEventList().add(new SkillEvent(rollingAssaulterBlade, new Timestamp(getStart().getTime() + 1080), new Timestamp(getStart().getTime() + 1080)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1080));*/
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1020));
-        windCutter = new WindCutter();
-        windCutter.setDelay(540L);
-        getSkillEventList().add(new SkillEvent(windCutter, new Timestamp(getStart().getTime() + 450), new Timestamp(getStart().getTime() + 990)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 990));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1490), new Timestamp(getStart().getTime() + 1490)));
-        getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 1990), new Timestamp(getStart().getTime() + 1990)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2490), new Timestamp(getStart().getTime() + 2490)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 2990), new Timestamp(getStart().getTime() + 2990)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3490), new Timestamp(getStart().getTime() + 3490)));
-        //getSkillEventList().add(new SkillEvent(windCutterTornado, new Timestamp(getStart().getTime() + 3990), new Timestamp(getStart().getTime() + 3990)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1990));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2990));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3490));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3990));
-        windStrike = new WindStrike();
-        windStrike.setDelay(630L);
-        getSkillEventList().add(new SkillEvent(windStrike, new Timestamp(getStart().getTime() + 990), new Timestamp(getStart().getTime() + 1620)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 1620));
-        stormBreak = new StormBreak();
-        stormBreak.setDelay(690L);
-        getSkillEventList().add(new SkillEvent(stormBreak, new Timestamp(getStart().getTime() + 1620), new Timestamp(getStart().getTime() + 2310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2310));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 2810), new Timestamp(getStart().getTime() + 2810)));
-        getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 3810), new Timestamp(getStart().getTime() + 3810)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 4810), new Timestamp(getStart().getTime() + 4810)));
-        //getSkillEventList().add(new SkillEvent(stormBreakTornado, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 2810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3310));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 3810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4310));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 4810));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 5310));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 3310), new Timestamp(getStart().getTime() + 3310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 4310), new Timestamp(getStart().getTime() + 4310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 5310), new Timestamp(getStart().getTime() + 5310)));
-        getSkillEventList().add(new SkillEvent(stormBreakElectricity, new Timestamp(getStart().getTime() + 6310), new Timestamp(getStart().getTime() + 6310)));
-        getEventTimeList().add(new Timestamp(getStart().getTime() + 6310));
-        turningDrive = new TurningDrive();
-        turningDrive.setDelay(360L);
         addSkillEvent(turningDrive);
         whirlWind = new WhirlWind();
         whirlWind.setDelay(90L);
+        whirlWind.setAssistSkill(new RollingAssaulter());
         addSkillEvent(whirlWind);
-        gigaCrash = new GigaCrash();
-        gigaCrash.setDelay(420L);
         addSkillEvent(gigaCrash);
-        jumpingCrash = new JumpingCrash();
-        jumpingCrash.setDelay(240L);
         addSkillEvent(jumpingCrash);
-        earthBreak = new EarthBreak();
         addSkillEvent(earthBreak);
         addSkillEvent(jointAttack1);
         addSkillEvent(skill);
-        timePieceCnt += 5;
+        Timestamp cycleEndTime = new Timestamp(getStart().getTime());
+        getSkillEventList().add(new SkillEvent(alpha, cycleStartTime, cycleEndTime));
     }
 
     @Override
@@ -945,9 +717,9 @@ public class ZeroContinuousDealCycle extends DealCycle {
             return;
         }
         if (skillLog.equals("")) {
-            skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+            skillLog += getJob().getName() + "\t\t\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         } else {
-            skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
+            skillLog += "\n" + getJob().getName() + "\t\t\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof ContinuousRing) {
@@ -967,6 +739,7 @@ public class ZeroContinuousDealCycle extends DealCycle {
             ) {
                 soulContract.setActivateTime(new Timestamp(-1));
                 shadowRainBeta.setActivateTime(new Timestamp(-1));
+                timeDistotion.setActivateTime(new Timestamp(-1));
             }
             if (
                     skill instanceof SoulContract
@@ -1053,6 +826,9 @@ public class ZeroContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(continuousRing);
             }
+            if (skill instanceof FlashAssault) {
+                applyCooldown(skill);
+            }
             if (
                     zero == 0
                     && cooldownCheck(egoWeaponAlpha)
@@ -1063,7 +839,9 @@ public class ZeroContinuousDealCycle extends DealCycle {
                     && !(skill instanceof TimeAfterImage)
                     && !(skill instanceof LightSphere)
                     && !(skill instanceof LightSphereDot)
+                    && !(skill instanceof TimePieceCrystalOfTime)
             ) {
+                isEgoWeapon = true;
                 addSkillEvent(egoWeaponAlpha);
             }
             if (
@@ -1076,34 +854,83 @@ public class ZeroContinuousDealCycle extends DealCycle {
                     && !(skill instanceof TimeAfterImage)
                     && !(skill instanceof LightSphere)
                     && !(skill instanceof LightSphereDot)
+                    && !(skill instanceof TimePieceCrystalOfTime)
             ) {
                 addSkillEvent(egoWeaponBeta);
             }
             if (
                     getStart().before(blessEndTime)
-                    && (
+                            && isExtraAttack
+                            && (
                             skill instanceof EarthBreak
-                            || skill instanceof FlashAssault
-                            || skill instanceof FrontSlash
-                            || skill instanceof GigaCrash
-                            || skill instanceof JumpingCrash
-                            || skill instanceof MoonStrike
-                            || skill instanceof PierceThrust
-                            || skill instanceof PowerStomp
-                            || skill instanceof RollingAssaulter
-                            || skill instanceof RollingCurve
-                            || skill instanceof ShadowStrike
-                            || skill instanceof SpinCutter
-                            || skill instanceof StormBreak
-                            || skill instanceof ThrowingWeapon
-                            || skill instanceof TurningDrive
-                            || skill instanceof UpperSlash
-                            || skill instanceof WhirlWind
-                            || skill instanceof WindCutter
-                            || skill instanceof WindStrike
+                                    || skill instanceof FlashAssault
+                                    || skill instanceof FrontSlash
+                                    || skill instanceof GigaCrash
+                                    || skill instanceof JumpingCrash
+                                    || skill instanceof MoonStrike
+                                    || skill instanceof PierceThrust
+                                    || skill instanceof PowerStomp
+                                    || skill instanceof RollingAssaulter
+                                    || skill instanceof RollingCurve
+                                    || skill instanceof ShadowStrike
+                                    || skill instanceof SpinCutter
+                                    || skill instanceof StormBreak
+                                    || skill instanceof ThrowingWeapon
+                                    || skill instanceof TurningDrive
+                                    || skill instanceof UpperSlash
+                                    || skill instanceof WhirlWind
+                                    || skill instanceof WindCutter
+                                    || skill instanceof WindStrike
+                                    || skill instanceof EgoWeaponBeta
+                                    || skill instanceof EgoWeaponAlpha
+                                    || skill instanceof RollingAssaulterBlade
+                                    || skill instanceof RollingCurveBlade
+                                    || skill instanceof ShadowStrikeBlade
+                                    || skill instanceof SpinCutterBlade
+                                    || skill instanceof TimePieceCrystalOfTime
+                                    || skill instanceof LightSphere
                     )
             ) {
+                isExtraAttack = false;
+                isEgoWeapon = false;
+                extraAttackTime = new Timestamp(getStart().getTime());
                 addSkillEvent(extraAttack);
+                flashAssault.setActivateTime(new Timestamp(flashAssault.getActivateTime().getTime() - 4000));
+            }
+            if (
+                    getStart().before(blessEndTime)
+                            && !getStart().equals(extraAttackTime)
+                            && (
+                            skill instanceof EarthBreak
+                                    || skill instanceof FlashAssault
+                                    || skill instanceof FrontSlash
+                                    || skill instanceof GigaCrash
+                                    || skill instanceof JumpingCrash
+                                    || skill instanceof MoonStrike
+                                    || skill instanceof PierceThrust
+                                    || skill instanceof PowerStomp
+                                    || skill instanceof RollingAssaulter
+                                    || skill instanceof RollingCurve
+                                    || skill instanceof ShadowStrike
+                                    || skill instanceof SpinCutter
+                                    || skill instanceof StormBreak
+                                    || skill instanceof ThrowingWeapon
+                                    || skill instanceof TurningDrive
+                                    || skill instanceof UpperSlash
+                                    || skill instanceof WhirlWind
+                                    || skill instanceof WindCutter
+                                    || skill instanceof WindStrike
+                    )
+            ) {
+                isExtraAttack = true;
+            }
+            if (
+                    skill instanceof AssistSkill
+                            && getStart().before(assistEndTime)
+            ) {
+                if (((AssistSkill) skill).getAssistSkill() != null) {
+                    addAssistSkillEvent(skill, false);
+                }
             }
             if (
                     getStart().before(transcendentTimeEndTime)
@@ -1155,18 +982,13 @@ public class ZeroContinuousDealCycle extends DealCycle {
                     addSkillEvent(criticalBind);
                 }
             }
-            if (getStart().after(devineLeerEndTime)) {
-                Long ran = (long) (Math.random() * 99 + 1);
-                if (ran <= 15) {
-                    addSkillEvent(divineLeer);
-                }
-            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
                     if (
                             skillEvent.getStart().after(getStart())
                             && skillEvent.getSkill().getClass().getName().equals(skill.getClass().getName())
+                            && !(skillEvent.getSkill() instanceof AssistSkill)
                     ) {
                         remove.add(skillEvent);
                     }
@@ -1204,16 +1026,77 @@ public class ZeroContinuousDealCycle extends DealCycle {
                 this.multiAttackProcess(skill);
             } else {
                 endTime = new Timestamp(getStart().getTime() + skill.getDelay());
+                if (skill instanceof WhirlWind) {
+                    if (skill.getDelay() == 60) {
+                        ((WhirlWind) skill).setDamage(0.0);
+                    } else {
+                        ((WhirlWind) skill).setDamage(365.0);
+                    }
+                }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
+                if (skill instanceof RollingCurveBlade) {
+                    Long ran = (long) (Math.random() * 99 + 1);
+                    if (ran <= 50) {
+                        RollingCurveBlade tmp = new RollingCurveBlade();
+                        tmp.addFinalDamage(0.7);
+                        getSkillEventList().add(new SkillEvent(tmp, new Timestamp(assistNowTime.getTime()), endTime));
+                    }
+                }
+                if (skill instanceof RollingAssaulterBlade) {
+                    RollingAssaulterBlade tmp = new RollingAssaulterBlade();
+                    tmp.addFinalDamage(0.7);
+                    getSkillEventList().add(new SkillEvent(tmp, new Timestamp(assistNowTime.getTime()), endTime));
+                }
             }
         }
-        applyCooldown(skill);
+        if (!(skill instanceof FlashAssault)) {
+            applyCooldown(skill);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {
             getEventTimeList().add(endTime);
         }
         getStart().setTime(getStart().getTime() + skill.getDelay());
+        if (
+                getStart().before(blessEndTime)
+                        && isExtraAttack
+                        && isEgoWeapon
+                        && (
+                        skill instanceof EarthBreak
+                                || skill instanceof FlashAssault
+                                || skill instanceof FrontSlash
+                                || skill instanceof GigaCrash
+                                || skill instanceof JumpingCrash
+                                || skill instanceof MoonStrike
+                                || skill instanceof PierceThrust
+                                || skill instanceof PowerStomp
+                                || skill instanceof RollingAssaulter
+                                || skill instanceof RollingCurve
+                                || skill instanceof ShadowStrike
+                                || skill instanceof SpinCutter
+                                || skill instanceof StormBreak
+                                || skill instanceof ThrowingWeapon
+                                || skill instanceof TurningDrive
+                                || skill instanceof UpperSlash
+                                || skill instanceof WhirlWind
+                                || skill instanceof WindCutter
+                                || skill instanceof WindStrike
+                                || skill instanceof EgoWeaponBeta
+                                || skill instanceof EgoWeaponAlpha
+                                || skill instanceof RollingAssaulterBlade
+                                || skill instanceof RollingCurveBlade
+                                || skill instanceof ShadowStrikeBlade
+                                || skill instanceof SpinCutterBlade
+                                || skill instanceof TimePieceCrystalOfTime
+                                || skill instanceof LightSphere
+                )
+        ) {
+            isExtraAttack = false;
+            isEgoWeapon = false;
+            addSkillEvent(extraAttack);
+            flashAssault.setActivateTime(new Timestamp(flashAssault.getActivateTime().getTime() - 4000));
+        }
         if (skill.getRelatedSkill() != null) {
             addSkillEvent(skill.getRelatedSkill());
         }
@@ -1256,9 +1139,15 @@ public class ZeroContinuousDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -1391,24 +1280,8 @@ public class ZeroContinuousDealCycle extends DealCycle {
     @Override
     public void multiAttackProcess(Skill skill) {
         Long sum = 0L;
-        int cnt = 0;
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
             sum += info;
-            if (
-                    cnt != 0
-                    && (
-                            skill instanceof RollingCurveBlade
-                            || skill instanceof RollingAssaulterBlade
-                    )
-            ) {
-                if (skill instanceof RollingCurveBlade) {
-                    skill = new RollingCurveBlade();
-                    ((RollingCurveBlade) skill).addFinalDamage(0.7);
-                } else {
-                    skill = new RollingAssaulterBlade();
-                    ((RollingAssaulterBlade) skill).addFinalDamage(0.7);
-                }
-            }
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
             Timestamp now = new Timestamp(getStart().getTime());
@@ -1427,7 +1300,6 @@ public class ZeroContinuousDealCycle extends DealCycle {
                 addSkillEvent(continuousRing);
             }
             getStart().setTime(now.getTime());
-            cnt ++;
         }
     }
 

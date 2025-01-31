@@ -155,6 +155,19 @@ public class ArkDealCycle extends DealCycle {
 
         magicCircuitFullDriveBuff.setCooldown(120.0);
         grandisGoddessBlessingLef.setCooldown(120.0);
+
+        magicCircuitFullDriveBuff.setDelay(120L);
+        chargeSpellAmplification.setDelay(120L);
+        infinitySpell.setDelay(120L);
+        grandisGoddessBlessingLef.setDelay(60L);
+
+        getSkillSequence1().add(wrathOfGod);                    // 30
+        getSkillSequence1().add(magicCircuitFullDriveBuff);
+        getSkillSequence1().add(chargeSpellAmplification);
+        getSkillSequence1().add(infinitySpell);
+        getSkillSequence1().add(grandisGoddessBlessingLef);
+        getSkillSequence1().add(overdrive);                     // 420
+        getSkillSequence1().add(soulContract);                  // 30
     }
 
     @Override
@@ -165,30 +178,20 @@ public class ArkDealCycle extends DealCycle {
             if (cooldownCheck(loadedDice)) {
                 addSkillEvent(loadedDice);
             }
-            if (cooldownCheck(chargeSpellAmplification)) {
+            if (
+                    cooldownCheck(wrathOfGod)
+                    && getStart().after(new Timestamp(overdrive.getActivateTime().getTime() - 1000))
+            ) {
                 getNukeTimeList().add(new Timestamp(getStart().getTime()));
-                addSkillEvent(magicCircuitFullDriveBuff);
-                addSkillEvent(wrathOfGod);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else if (isSpecter) {
-                    addSkillEvent(endlessOminousDream);
-                } else {
-                    addSkillEvent(plainChargeDrive);
                 }
-                addSkillEvent(chargeSpellAmplification);
-                addSkillEvent(infinitySpell);
-                addSkillEvent(grandisGoddessBlessingLef);
-                while (!cooldownCheck(overdrive)) {
-                    addSkillEvent(plainChargeDrive);
-                }
-                addSkillEvent(overdrive);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(blissfulRestraintDot);
                 addSkillEvent(endlesslyStarvingBeast);
-                addSkillEvent(soulContract);
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
@@ -203,7 +206,8 @@ public class ArkDealCycle extends DealCycle {
                 }
                 dealCycleOrder ++;
             } else if (
-                    cooldownCheck(soulContract)
+                    cooldownCheck(endlessAgonyBeforeDelay)
+                    && !cooldownCheck(wrathOfGod)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
@@ -275,8 +279,8 @@ public class ArkDealCycle extends DealCycle {
                     }
                 }
                 if (
-                        getStart().before(new Timestamp(infinitySpell.getActivateTime().getTime() - 45000))
-                                && gauge > 800
+                        getStart().before(new Timestamp(infinitySpell.getActivateTime().getTime() - 18000))
+                                && gauge > 500
                 ) {
                     addSkillEvent(specterForm);
                     applyCooldown(specterGauge);
@@ -305,7 +309,7 @@ public class ArkDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -661,9 +665,15 @@ public class ArkDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -786,6 +796,8 @@ public class ArkDealCycle extends DealCycle {
                             skill instanceof BlissfulRestraintFinish
                                     || skill instanceof EndlessAgonyFinish
                                     || skill instanceof EndlesslyStarvingBeast
+                                    || skill instanceof AncientAbyss
+                                    || skill instanceof AncientAbyssDot
                     )
             ) {
                 getSkillEventList().add(new ArkSkillEvent(awakenedAbyss, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum), isSpecter));

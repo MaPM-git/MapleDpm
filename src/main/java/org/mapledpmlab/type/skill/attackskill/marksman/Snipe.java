@@ -6,7 +6,7 @@ public class Snipe extends AttackSkill {
     public Snipe() {
         this.setName("스나이핑");
         this.setAttackCount(11L);       // 어디셔널 볼트, 스나이핑-보너스 어택
-        this.setDamage(670.0 + 90);
+        this.setDamage(670.0 + 90 + 120 + 30);
         this.setDelayByAttackSpeed(780L);
         this.addIgnoreDefenseList(40L);
         this.addCriticalP(100.0);

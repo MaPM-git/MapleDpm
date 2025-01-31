@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class BahamutSummon extends AttackSkill {
     public BahamutSummon() {
         this.setName("바하뮤트");
-        this.setDamage(173.0);
+        this.setDamage(372.0);
         this.setAttackCount(3L);
         this.setDelay(600L);
         this.setInterval(3000L);

@@ -18,7 +18,7 @@ public class MihileDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
-            add(new AdvancedFinalAttackMihile());
+            add(new FinalAttackMihile());
             add(new AuraWeaponDot());
             add(new ClaimhSolais());
             add(new CrestOfTheSolar());
@@ -26,6 +26,7 @@ public class MihileDealCycle extends DealCycle {
             add(new CygnusPhalanxDelay());
             add(new CygnusPhalanx());
             add(new DeadlyCharge());
+            add(new DeadlyChargeSwordAura());
             add(new Durandal1());
             add(new Durandal2());
             add(new Durandal3());
@@ -70,6 +71,7 @@ public class MihileDealCycle extends DealCycle {
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     CygnusPhalanx cygnusPhalanx = new CygnusPhalanx();
     DeadlyCharge deadlyCharge = new DeadlyCharge();
+    DeadlyChargeSwordAura deadlyChargeSwordAura = new DeadlyChargeSwordAura();
     Durandal1 durandal1 = new Durandal1();
     GuardOfLight guardOfLight = new GuardOfLight();
     InstallShield installShield = new InstallShield();
@@ -92,7 +94,7 @@ public class MihileDealCycle extends DealCycle {
     WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
 
     public MihileDealCycle(Job job) {
-        super(job, new AdvancedFinalAttackMihile());
+        super(job, new FinalAttackMihile());
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
@@ -109,6 +111,22 @@ public class MihileDealCycle extends DealCycle {
         getStart().setTime(-10000);
         addSkillEvent(transcendentCygnusBlessing);
         getStart().setTime(0);
+
+        getSkillSequence1().add(auraWeaponBuff);
+        getSkillSequence1().add(queenOfTomorrow);   // 30
+        getSkillSequence1().add(rhoAias);
+        getSkillSequence1().add(swordOfSoulLight);
+        getSkillSequence1().add(guardOfLight);
+        getSkillSequence1().add(soulMajesty);
+        getSkillSequence1().add(bodyOfSteel);
+        getSkillSequence1().add(soulContract);      // 30
+
+        auraWeaponBuff.setDelay(180L);
+        rhoAias.setDelay(150L);
+        swordOfSoulLight.setDelay(150L);
+        guardOfLight.setDelay(150L);
+        soulMajesty.setDelay(150L);
+        bodyOfSteel.setDelay(150L);
     }
 
     @Override
@@ -122,28 +140,22 @@ public class MihileDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(transcendentCygnusBlessing)
-                            && getStart().after(new Timestamp(rhoAias.getActivateTime().getTime() - 5000))
+                            && getStart().after(new Timestamp(rhoAias.getActivateTime().getTime() - 8000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(transcendentCygnusBlessing);
             }
-            if (cooldownCheck(guardOfLight)) {
-                addSkillEvent(auraWeaponBuff);
-                addSkillEvent(queenOfTomorrow);
-                addSkillEvent(bodyOfSteel);
-                addSkillEvent(rhoAias);
+            if (
+                    cooldownCheck(guardOfLight)
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
+            ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(shiningCrossAssault);
                 }
-                addSkillEvent(guardOfLight);
-                addSkillEvent(swordOfSoulLight);
-                addSkillEvent(soulMajesty);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(restraintRing);
                 addSkillEvent(lightOfCourage);
                 addSkillEvent(deadlyCharge);
@@ -196,7 +208,7 @@ public class MihileDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -257,6 +269,12 @@ public class MihileDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (
+                    skill instanceof DeadlyCharge
+                            && cooldownCheck(deadlyChargeSwordAura)
+            ) {
+                addSkillEvent(deadlyChargeSwordAura);
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
                 for (SkillEvent skillEvent : this.getSkillEventList()) {
@@ -276,7 +294,11 @@ public class MihileDealCycle extends DealCycle {
                     }
                 } else {
                     Long attackCount = 0L;
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof DeadlyChargeSwordAura) {
+                        i = 660;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
@@ -357,6 +379,14 @@ public class MihileDealCycle extends DealCycle {
                 && !(skill instanceof RingSwitching)
                 && skill.getDelay() >= 540
                 && skill.getDelay() <= 1100
+                        && !(skill instanceof AuraWeaponBuff)
+                        && !(skill instanceof QueenOfTomorrow)
+                        && !(skill instanceof RhoAias)
+                        && !(skill instanceof SwordOfSoulLightBuff)
+                        && !(skill instanceof GuardOfLight)
+                        && !(skill instanceof SoulMajesty)
+                        && !(skill instanceof BodyOfSteel)
+                        && !(skill instanceof SoulContract)
         ) {
             addSkillEvent(royalGuard);
             if (skill instanceof ClaimhSolais) {

@@ -7,7 +7,7 @@ public class VortexSphere extends AttackSkill {
         this.setName("볼텍스 스피어");
         this.setAttackCount(6L);
         this.setCooldown(30.0);
-        this.setDelay(960L);
+        this.setDelayByAttackSpeed(960L);
         this.setDamage(960.0);
         this.setDotDuration(180L * 20);
         this.setInterval(180L);

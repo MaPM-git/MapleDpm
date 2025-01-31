@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class RemainIncense extends AttackSkill {
     public RemainIncense() {
         this.setName("리메인 인센스");
-        this.setDamage(130.0 + 121);
+        this.setDamage(420.0);
         this.setAttackCount(4L);
         this.setCooldown(0.3);
         this.addFinalDamage(2.2);   // 코어강화

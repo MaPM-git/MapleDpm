@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class MysticEnergyExtremeCloneRampage extends BuffSkill {
     public MysticEnergyExtremeCloneRampage() {
         this.setName("선기 : 극대 분신난무");
-        this.setDelay(900L);
+        this.setDelayByAttackSpeed(900L);
         this.setDuration(30L);
         this.setCooldown(180.0);
         this.setApplyServerLag(true);

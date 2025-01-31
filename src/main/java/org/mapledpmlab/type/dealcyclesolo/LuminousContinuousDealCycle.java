@@ -33,6 +33,7 @@ public class LuminousContinuousDealCycle extends DealCycle {
             add(new CrestOfTheSolarDot());
             add(new DoorOfTruth());
             add(new EndlessDarkness());
+            add(new EternalLightness());
             add(new HarmonicParadoxBeforeDelay());
             add(new HarmonicParadoxKeydown());
             add(new HarmonicParadoxPower());
@@ -45,6 +46,9 @@ public class LuminousContinuousDealCycle extends DealCycle {
             add(new PunishingResonatorSunfire());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
+            add(new TwilightNovaEclipse());
+            add(new TwilightNovaEquilibrium());
+            add(new TwilightNovaSunfire());
         }
     };
 
@@ -65,9 +69,8 @@ public class LuminousContinuousDealCycle extends DealCycle {
     Larkness larkness = Larkness.ECLIPSE;
     Larkness next = Larkness.SUNFIRE;
 
-    Long eclipseCnt = 22L;       // 아포칼립스 22회
-    Long sunFireCnt = 0L;       // 라이트리플렉션 25회
     Long liberationOrbCnt = 0L;
+    int gauge = 10000;
 
     Timestamp continuousRingEndTime = new Timestamp(-1);
     Timestamp equilibriumEndTime = new Timestamp(-1);
@@ -81,6 +84,7 @@ public class LuminousContinuousDealCycle extends DealCycle {
     DoorOfTruth doorOfTruth = new DoorOfTruth();
     EndlessDarkness endlessDarkness = new EndlessDarkness();
     Equilibrium equilibrium = new Equilibrium();
+    EternalLightness eternalLightness = new EternalLightness();
     HarmonicParadoxBeforeDelay harmonicParadox = new HarmonicParadoxBeforeDelay();
     HeroesOath heroesOath = new HeroesOath();
     LiberationOrb liberationOrb = new LiberationOrb();
@@ -95,6 +99,9 @@ public class LuminousContinuousDealCycle extends DealCycle {
     LiberationOrbPassive liberationOrbPassive = new LiberationOrbPassive();
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
+    TwilightNovaEclipse twilightNovaEclipse = new TwilightNovaEclipse();
+    TwilightNovaEquilibrium twilightNovaEquilibrium = new TwilightNovaEquilibrium();
+    TwilightNovaSunfire twilightNovaSunfire = new TwilightNovaSunfire();
 
     public LuminousContinuousDealCycle(Job job) {
         super(job, null);
@@ -103,6 +110,18 @@ public class LuminousContinuousDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         mapleWorldGoddessBlessing.setCooldown(180.0);
+
+        getSkillSequence1().add(heroesOath);                // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(liberationOrb);
+        getSkillSequence1().add(soulContract);              // 30
+
+        getSkillSequence2().add(memorize);
+
+        memorize.setDelay(660L);
+
+        mapleWorldGoddessBlessing.setDelay(300L);
+        liberationOrb.setDelay(300L);
     }
 
     @Override
@@ -117,55 +136,39 @@ public class LuminousContinuousDealCycle extends DealCycle {
             if (
                     cooldownCheck(liberationOrb)
                             && cooldownCheck(baptismOfLightAndDarkness)
-                            && (
-                            sunFireCnt >= 23
-                                    || eclipseCnt >= 19
-                    )
+                            && getStart().after(new Timestamp(punishingResonator.getActivateTime().getTime() - 2500))
+                            && gauge == 10000
             ) {
                 isNuke = true;
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(heroesOath);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    if (larkness == Larkness.ECLIPSE) {
-                        addSkillEvent(apocalypse);
-                    } else if (larkness == Larkness.SUNFIRE) {
-                        addSkillEvent(lightReflection);
-                    }
                 }
-                addSkillEvent(liberationOrb);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 addSkillEvent(baptismOfLightAndDarkness);
                 addSkillEvent(equilibrium);
                 addSkillEvent(punishingResonator);
-                addSkillEvent(absoluteKill);
                 addSkillEvent(baptismOfLightAndDarkness);
-                addSkillEvent(absoluteKill);
                 addSkillEvent(doorOfTruth);
                 if (cooldownCheck(harmonicParadox)) {
                     addSkillEvent(harmonicParadox);
                     addSkillEvent(baptismOfLightAndDarkness);
                 }
                 isNuke = false;
-            } else if (
+            } /*else if (
                     getStart().after(equilibriumEndTime)
                             && cooldownCheck(memorize)
                             && !cooldownCheck(heroesOath)
             ) {
                 addSkillEvent(memorize);
                 addSkillEvent(doorOfTruth);
-            } else if (
+            }*/ else if (
                     getStart().after(equilibriumEndTime)
+                            && gauge == 10000
                             && (
-                            sunFireCnt >= 23
-                                    || eclipseCnt >= 19
-                    )
-                            && (
-                            getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 35000))
+                            getStart().before(new Timestamp(liberationOrb.getActivateTime().getTime() - 20000))
                                     || getStart().after(new Timestamp(600 * 1000))
                     )
             ) {
@@ -187,6 +190,27 @@ public class LuminousContinuousDealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(baptismOfLightAndDarkness);
+            } else if (
+                    cooldownCheck(twilightNovaEclipse)
+                            && larkness == Larkness.ECLIPSE
+            ) {
+                applyCooldown(twilightNovaEquilibrium);
+                applyCooldown(twilightNovaSunfire);
+                addSkillEvent(twilightNovaEclipse);
+            } else if (
+                    cooldownCheck(twilightNovaSunfire)
+                            && larkness == Larkness.SUNFIRE
+            ) {
+                applyCooldown(twilightNovaEclipse);
+                applyCooldown(twilightNovaEquilibrium);
+                addSkillEvent(twilightNovaSunfire);
+            } else if (
+                    cooldownCheck(twilightNovaEquilibrium)
+                            && larkness == Larkness.EQUILIBRIUM
+            ) {
+                applyCooldown(twilightNovaEclipse);
+                applyCooldown(twilightNovaSunfire);
+                addSkillEvent(twilightNovaEquilibrium);
             } else {
                 if (larkness == Larkness.ECLIPSE) {
                     addSkillEvent(apocalypse);
@@ -205,7 +229,7 @@ public class LuminousContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -228,8 +252,7 @@ public class LuminousContinuousDealCycle extends DealCycle {
                 }
                 larkness = Larkness.EQUILIBRIUM;
                 baptismOfLightAndDarkness.setActivateTime(new Timestamp(-1));
-                sunFireCnt = 0L;
-                eclipseCnt = 0L;
+                gauge = 0;
             }
             if (skill instanceof Equilibrium) {
                 equilibriumEndTime = new Timestamp((long) (getStart().getTime() + 3000 + ((Equilibrium) skill).getDuration() * 1000 * (1 + getJob().getPlusBuffDuration() * 0.01)));
@@ -332,6 +355,15 @@ public class LuminousContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(endlessDarkness);
             }
+            if (
+                    cooldownCheck(eternalLightness)
+                            && (
+                            skill instanceof LightReflection
+                                    || skill instanceof AbsoluteKill
+                    )
+            ) {
+                addSkillEvent(eternalLightness);
+            }
             if (((AttackSkill) skill).getInterval() != 0) {
                 if (skill instanceof HarmonicParadoxKeydown) {
                     equilibriumEndTime = new Timestamp(equilibriumEndTime.getTime() + 10000);
@@ -362,6 +394,7 @@ public class LuminousContinuousDealCycle extends DealCycle {
                             setStart(new Timestamp(getStart().getTime() + i));
                             if (cooldownCheck(endlessDarkness)) {
                                 addSkillEvent(endlessDarkness);
+                                addSkillEvent(eternalLightness);
                             }
                             if (cooldownCheck(liberationOrbActive)) {
                                 addSkillEvent(liberationOrbActive);
@@ -382,9 +415,15 @@ public class LuminousContinuousDealCycle extends DealCycle {
                 this.multiAttackProcess(skill);
             } else {
                 if (skill instanceof Apocalypse) {
-                    eclipseCnt ++;
+                    gauge += 450;
+                    if (gauge > 10000) {
+                        gauge = 10000;
+                    }
                 } else if (skill instanceof LightReflection) {
-                    sunFireCnt ++;
+                    gauge += 430;
+                    if (gauge > 10000) {
+                        gauge = 10000;
+                    }
                 } else if (skill instanceof AbsoluteKill) {
                     baptismOfLightAndDarkness.setActivateTime(new Timestamp(baptismOfLightAndDarkness.getActivateTime().getTime() - 3000));
                 }
@@ -418,14 +457,12 @@ public class LuminousContinuousDealCycle extends DealCycle {
         Long sum = 0L;
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
             sum += info;
-            if (
-                    /*skill instanceof BaptismOfLightAndDarkness
-                    || */skill instanceof HarmonicParadoxPower
-            ) {
+            if (skill instanceof HarmonicParadoxPower) {
                 Timestamp tmp = new Timestamp(getStart().getTime());
                 setStart(new Timestamp(getStart().getTime() + sum));
                 if (cooldownCheck(endlessDarkness)) {
                     addSkillEvent(endlessDarkness);
+                    addSkillEvent(eternalLightness);
                 }
                 if (
                         getStart().before(liberationOrbEndTime)
@@ -438,6 +475,25 @@ public class LuminousContinuousDealCycle extends DealCycle {
                     addSkillEvent(continuousRing);
                 }
                 setStart(new Timestamp(tmp.getTime()));
+            } else if (
+                    getStart().after(equilibriumEndTime)
+                    && (
+                            skill instanceof EternalLightness
+                            || skill instanceof EndlessDarkness
+                    )
+            ) {
+                gauge += 150;
+                if (gauge > 10000) {
+                    gauge = 10000;
+                }
+            } else if (
+                    skill instanceof TwilightNovaSunfire
+                    || skill instanceof TwilightNovaEclipse
+            ) {
+                gauge += 120;
+                if (gauge > 10000) {
+                    gauge = 10000;
+                }
             }
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));

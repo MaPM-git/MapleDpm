@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DracoSlasherFF extends AttackSkill {
     public DracoSlasherFF() {
         this.setName("드라코 슬래셔(파이널 피규레이션)");
-        this.setDamage(740.0);
+        this.setDamage(740.0 + 110);
         this.setAttackCount(10L + 1 + 2);   // 기가 슬래셔-보너스 어택
         this.setDelay(570L);
         //this.setDelayByAttackSpeed(720L);

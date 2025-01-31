@@ -16,7 +16,7 @@ public class Lara extends Job {
     public Lara() {
         // 기본
         super();
-        this.setName("라라(리레)");
+        this.setName("라라(리웨썸)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
@@ -60,9 +60,9 @@ public class Lara extends Job {
         this.addMagic(54L);             // 유유
 
         // 환산 보정
-        this.addMainStatP(24L);
-        this.addMainStat(-19L);
-        this.addSubStat(5L);
+        this.addMainStatP(30L);
+        this.addMainStat(3L);
+        this.addSubStat(-10L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DevideReinforce extends AttackSkill {
     public DevideReinforce() {
         this.setName("디바이드(강화)");
-        this.setDamage(570.0);
+        this.setDamage(570.0 + 40);
         this.setDelayByAttackSpeed(780L);
         this.setAttackCount(7L);
         this.setCooldown(6.0);

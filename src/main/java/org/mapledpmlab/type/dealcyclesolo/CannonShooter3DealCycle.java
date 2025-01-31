@@ -35,6 +35,7 @@ public class CannonShooter3DealCycle extends DealCycle {
             add(new ICBMPollution());
             add(new MagneticAnchor());
             add(new MagneticAnchorFinish());
+            add(new MaxCannonRainbow());
             add(new MiniCanonBall());
             add(new MonkeyBombBasic());
             add(new MonkeyBombBomb());
@@ -83,6 +84,7 @@ public class CannonShooter3DealCycle extends DealCycle {
     LuckyDiceOneMoreChance luckyDiceOneMoreChance = new LuckyDiceOneMoreChance();
     MagneticAnchorFinish magneticAnchorFinish = new MagneticAnchorFinish();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
+    MaxCannonRainbow maxCannonRainbow = new MaxCannonRainbow();
     MiniCanonBall miniCanonBall = new MiniCanonBall();
     MonkeyFurious monkeyFurious = new MonkeyFurious();
     Overdrive overdrive = new Overdrive(348L);
@@ -121,6 +123,30 @@ public class CannonShooter3DealCycle extends DealCycle {
         addSkillEvent(barrelRoulette);
 
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(pirateFlag);                // 570
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(overdrive);                 // 30
+        getSkillSequence1().add(soulContract);              // 30
+        getSkillSequence1().add(restraintRing);             // 30
+
+        getSkillSequence2().add(pirateFlag);                // 570
+        getSkillSequence2().add(overdrive);                 // 30
+        getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(weaponJumpRing);            // 30
+
+        getSkillSequence3().add(luckyDice);
+        luckyDice.setDelay(660L);
+
+        getSkillSequence4().add(pirateFlag);
+        pirateFlag.setDelay(570L);
+
+        getSkillSequence5().add(barrelRoulette);
+        barrelRoulette.setDelay(660L);
+
+        overdrive.getRelatedSkill().setDelay(30L);
+        mapleWorldGoddessBlessing.setDelay(210L);
     }
 
     @Override
@@ -144,6 +170,7 @@ public class CannonShooter3DealCycle extends DealCycle {
                 addSkillEvent(luckyDice);
             } else if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDice();
+                luckyDice.setDelay(660L);
                 if (
                         luckyDice.getBuffDamage() >= 30
                                 || luckyDice.getBuffAttMagic() >= 15
@@ -163,6 +190,7 @@ public class CannonShooter3DealCycle extends DealCycle {
             }
             if (cooldownCheck(barrelRoulette)) {
                 barrelRoulette = new BarrelRoulette();
+                barrelRoulette.setDelay(660L);
                 addSkillEvent(barrelRoulette);
             }
             if (
@@ -175,30 +203,20 @@ public class CannonShooter3DealCycle extends DealCycle {
                             && cooldownCheck(soulContract)
                             && cooldownCheck(restraintRing)
                             && cooldownCheck(bigFuseGiganticCannonball)
-                            && cooldownCheck(rollingCannonRainbow)
+                            && cooldownCheck(maxCannonRainbow)
                             && cooldownCheck(icbm)
             ) {
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(cannonBuster);
-                    if (cooldownCheck(miniCanonBall)) {
-                        addSkillEvent(miniCanonBall);
-                    }
                 }
                 addSkillEvent(specialMonkeyEscort);
-                addSkillEvent(pirateFlag);
                 addSkillEvent(poolmakerBuff);
-                addSkillEvent(overdrive);
-                addSkillEvent(soulContract);
-                addSkillEvent(restraintRing);
+                addDealCycle(getSkillSequence1());
+                addSkillEvent(maxCannonRainbow);
                 addSkillEvent(bigFuseGiganticCannonball);
-                addSkillEvent(rollingCannonRainbow);
                 addSkillEvent(icbm);
                 if (cooldownCheck(miniCanonBall)) {
                     addSkillEvent(cannonBuster);
@@ -218,16 +236,11 @@ public class CannonShooter3DealCycle extends DealCycle {
                             && cooldownCheck(soulContract)
                             && cooldownCheck(weaponJumpRing)
                             && cooldownCheck(bigFuseGiganticCannonball)
-                            && cooldownCheck(rollingCannonRainbow)
                             && cooldownCheck(icbm)
             ) {
                 addSkillEvent(specialMonkeyEscort);
-                addSkillEvent(pirateFlag);
-                addSkillEvent(overdrive);
-                addSkillEvent(soulContract);
-                addSkillEvent(weaponJumpRing);
+                addDealCycle(getSkillSequence2());
                 addSkillEvent(bigFuseGiganticCannonball);
-                addSkillEvent(rollingCannonRainbow);
                 addSkillEvent(icbm);
             } else if (
                     cooldownCheck(poolmakerBuff)
@@ -245,6 +258,7 @@ public class CannonShooter3DealCycle extends DealCycle {
                             && !cooldownCheck(specialMonkeyEscort)
             ) {
                 addSkillEvent(pirateFlag);
+                getStart().setTime(getStart().getTime() + 90);
             } else if (
                     cooldownCheck(icbm)
                             && !cooldownCheck(specialMonkeyEscort)
@@ -296,9 +310,15 @@ public class CannonShooter3DealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
@@ -439,8 +459,9 @@ public class CannonShooter3DealCycle extends DealCycle {
                     long i = ((AttackSkill) skill).getInterval();
                     if (
                             skill instanceof RollingCannonRainbow
+                            || skill instanceof MaxCannonRainbow
                     ) {
-                        i = 960;
+                        i = 720;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
@@ -496,21 +517,6 @@ public class CannonShooter3DealCycle extends DealCycle {
             }
             return;
         }
-        /*
-        *
-        if (skill instanceof ScatteringShot) {
-            long remainTime = getStart().getTime() - skill.getActivateTime().getTime();
-            if (remainTime >= 12000) {
-                skill.setActivateTime(new Timestamp(getStart().getTime() - 6000));
-            } else if (remainTime >= 6000) {
-                skill.setActivateTime(new Timestamp(getStart().getTime()));
-            } else {
-                skill.setActivateTime(new Timestamp(getStart().getTime() + 6000 - remainTime));
-            }
-            return;
-        }
-        *
-        * */
         if (skill.getCooldown() != 0) {
             if (skill.isApplyReuse()) {
                 Double ran = Math.random() * 99;

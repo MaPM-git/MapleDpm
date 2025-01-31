@@ -8,7 +8,7 @@ public class ElementalBlast extends AttackSkill {
         this.setName("엘리멘탈 블래스트");
         this.setDamage(1705.0);
         this.setAttackCount(8L);
-        this.setDelay(780L);
+        this.setDelayByAttackSpeed(780L);
         this.setCooldown(40.0);             // 코어 강화
         this.addFinalDamage(1.6);
         this.setRelatedSkill(new ElementalBlastBuff());

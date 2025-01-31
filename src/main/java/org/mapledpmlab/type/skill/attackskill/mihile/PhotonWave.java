@@ -6,7 +6,7 @@ public class PhotonWave extends AttackSkill {
     public PhotonWave() {
         this.setName("빛의 파동");
         this.setAttackCount(6L);
-        this.setDamage(700.0);
+        this.setDamage(1585.0);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
     }

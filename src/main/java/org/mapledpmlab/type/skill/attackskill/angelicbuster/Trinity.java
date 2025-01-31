@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Trinity extends AttackSkill {
     public Trinity() {
         this.setName("트리니티");
-        this.setDamage(1020.0);
+        this.setDamage(1020.0 + 146);
         this.setDelayByAttackSpeed(780L);
         this.setAttackCount(6L + 1);
         this.addFinalDamage(2.2);   // 코어강화

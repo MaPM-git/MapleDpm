@@ -8,7 +8,7 @@ public class EnergyBurst extends AttackSkill {
         this.setDamage(880.0);
         this.setAttackCount(15L);
         this.setCooldown(120.0);
-        this.setDelay(810L);
+        this.setDelayByAttackSpeed(810L);
         this.addFinalDamage(1.6);   // 코어강화
         this.getMultiAttackInfo().add(720L);
         this.getMultiAttackInfo().add(90L);

@@ -78,9 +78,9 @@ public class Evan5Continuous extends Job {
         this.addMagic(35L);             // 스파이럴 오브 마나
 
         // 환산 보정
-        this.addMainStatP(6L);
-        this.addMainStat(-6L);
-        this.addSubStat(5L);
+        this.addMainStatP(3L);
+        this.addMainStat(5L);
+        this.addSubStat(15L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

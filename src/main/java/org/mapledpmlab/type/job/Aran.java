@@ -77,8 +77,8 @@ public class Aran extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-54L);
-        this.addMainStat(-23L);
+        this.addMainStatP(-51L);
+        this.addMainStat(-6L);
         this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());

@@ -73,8 +73,8 @@ public class MercedesContinuous extends Job {
         this.addFinalDamage(1.05);
 
         // 환산 보정
-        this.addMainStatP(-72L);
-        this.addMainStat(3L);
+        this.addMainStatP(-78L);
+        this.addMainStat(-5L);
         this.addSubStat(0L);
 
         this.setAbility(new BossCriticalAbnormal());

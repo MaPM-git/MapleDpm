@@ -9,7 +9,7 @@ public class SwordIllusionExplosion extends AttackSkill {
         this.setDamage(550.0);
         this.setFinalDamage(1.6);
         this.setApplyFinalAttack(true);
-        this.setDelay(870L);
+        this.setDelayByAttackSpeed(870L);
         this.getMultiAttackInfo().add(2790L);
         this.getMultiAttackInfo().add(30L);
         this.getMultiAttackInfo().add(60L);

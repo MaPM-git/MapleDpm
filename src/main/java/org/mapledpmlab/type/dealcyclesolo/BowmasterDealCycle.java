@@ -19,7 +19,6 @@ public class BowmasterDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
             add(new AdvancedFinalAttackBowmaster());
-            add(new AdvancedQuiver());
             add(new AfterimageShotActive());
             add(new AfterimageShotPassive());
             add(new ArrawPlatter());
@@ -32,6 +31,8 @@ public class BowmasterDealCycle extends DealCycle {
             add(new Hurricane());
             add(new HurricaneSpree());
             add(new Phoenix());
+            add(new QuiverCartridge());
+            add(new ExtraQuiverCartridge());
             add(new QuiverFullBurst());
             add(new SilhouetteMirage());
             add(new SpiderInMirror());
@@ -47,6 +48,7 @@ public class BowmasterDealCycle extends DealCycle {
             add(new CriticalReinforce(0.0));
             add(new EpicAdventure());
             add(new EvolveBuff());
+            add(new ExtraQuiverCartridgeBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new Preparation());
             add(new QuiverFullBurstBuff());
@@ -61,15 +63,19 @@ public class BowmasterDealCycle extends DealCycle {
     boolean isSpree = false;
 
     Long afterImageShotPassiveCount = 0L;
-    Long attackCount1 = 0L;
+    Long attackCount1 = 40L;
 
     Long attackCount2 = 0L;
     Long specialArrow = 74L;
 
+    Long magicArrowCount = 50L;
+    Long drainArrowCount = 50L;
+
     Timestamp warInTheShadeEndTime = new Timestamp(-1);
     Timestamp afterImageShotEndTime = new Timestamp(-1);
+    Timestamp extraQuiverCartridgeEndTime = new Timestamp(-1);
 
-    AdvancedQuiver advancedQuiver = new AdvancedQuiver();
+    QuiverCartridge quiverCartridge = new QuiverCartridge();
     AfterimageShotActive afterimageShotActive = new AfterimageShotActive();
     AfterimageShotPassive afterimageShotPassive = new AfterimageShotPassive();
     ArrawPlatter arrawPlatter = new ArrawPlatter();
@@ -78,6 +84,8 @@ public class BowmasterDealCycle extends DealCycle {
     CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
     EpicAdventure epicAdventure = new EpicAdventure();
     Evolve evolve = new Evolve();
+    ExtraQuiverCartridge extraQuiverCartridge = new ExtraQuiverCartridge();
+    ExtraQuiverCartridgeBuff extraQuiverCartridgeBuff = new ExtraQuiverCartridgeBuff();
     FlashMirage flashMirage = new FlashMirage();
     GuidedArrow guidedArrow = new GuidedArrow();
     Hurricane hurricane = new Hurricane();
@@ -129,6 +137,24 @@ public class BowmasterDealCycle extends DealCycle {
 
         ringSwitching.setCooldown(120.0);
         mapleWorldGoddessBlessing.setCooldown(120.0);
+
+        getSkillSequence1().add(arrawRain);
+        getSkillSequence1().add(epicAdventure);             // 30
+        getSkillSequence1().add(mapleWorldGoddessBlessing);
+        getSkillSequence1().add(evolve);
+        getSkillSequence1().add(quiverFullBurst);
+        getSkillSequence1().add(preparation);
+        getSkillSequence1().add(afterimageShotActive);
+        getSkillSequence1().add(criticalReinforce);
+        getSkillSequence1().add(soulContract);              // 30
+
+        arrawRain.setDelay(120L);
+        mapleWorldGoddessBlessing.setDelay(120L);
+        evolve.setDelay(120L);
+        quiverFullBurst.setDelay(120L);
+        preparation.setDelay(120L);
+        afterimageShotActive.setDelay(120L);
+        criticalReinforce.setDelay(120L);
     }
 
     @Override
@@ -142,29 +168,19 @@ public class BowmasterDealCycle extends DealCycle {
                 isSpree = true;
             }
             if (cooldownCheck(quiverFullBurst)) {
-                addSkillEvent(arrawRain);
-                addSkillEvent(mapleWorldGoddessBlessing);
-                addSkillEvent(epicAdventure);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(hurricane);
-                    specialArrow ++;
                 }
-                addSkillEvent(quiverFullBurst);
-                addSkillEvent(preparation);
-                addSkillEvent(evolve);
-                addSkillEvent(afterimageShotActive);
-                addSkillEvent(criticalReinforce);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence1());
                 if (cooldownCheck(restraintRing)) {
                     addSkillEvent(restraintRing);
                 } else if (cooldownCheck(weaponJumpRing)) {
                     addSkillEvent(weaponJumpRing);
                 }
+                addSkillEvent(extraQuiverCartridgeBuff);
                 if (cooldownCheck(warInTheShade)) {
                     addSkillEvent(warInTheShade);
                 }
@@ -180,6 +196,11 @@ public class BowmasterDealCycle extends DealCycle {
                             && !cooldownCheck(evolve)
             ) {
                 addSkillEvent(soulContract);
+            } else if (
+                    cooldownCheck(extraQuiverCartridgeBuff)
+                            && !cooldownCheck(epicAdventure)
+            ) {
+                addSkillEvent(extraQuiverCartridgeBuff);
             } else if (specialArrow == 0) {
                 addSkillEvent(hurricane);
                 specialArrow ++;
@@ -231,15 +252,22 @@ public class BowmasterDealCycle extends DealCycle {
                             bs.getClass().getName().equals(skillEvent.getSkill().getClass().getName())
                                     && start.equals(skillEvent.getStart())
                     ) {
-                        bs.setUseCount(bs.getUseCount() + 1);
-                        bs.getStartTimeList().add(skillEvent.getStart());
-                        bs.getEndTimeList().add(skillEvent.getEnd());
+                        if (bs.getStartTimeList().size() == 0) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        } else if (skillEvent.getStart().after(bs.getStartTimeList().get(bs.getStartTimeList().size() - 1))) {
+                            bs.setUseCount(bs.getUseCount() + 1);
+                            bs.getStartTimeList().add(skillEvent.getStart());
+                            bs.getEndTimeList().add(skillEvent.getEnd());
+                        }
                     }
                 }
             }
             useBuffSkillList = deduplication(useBuffSkillList, skillEvent -> skillEvent.getSkill().getName());
             boolean isEvolve = false;
             boolean isAfterimageShot = false;
+            boolean isQuiverFullBurst = false;
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof EvolveBuff) {
                     isEvolve = true;
@@ -259,9 +287,24 @@ public class BowmasterDealCycle extends DealCycle {
                     break;
                 }
             }
+            for (int j = 0; j < useBuffSkillList.size(); j++) {
+                if (useBuffSkillList.get(j).getSkill() instanceof QuiverFullBurstBuff) {
+                    isQuiverFullBurst = true;
+                    break;
+                }
+            }
             for (int j = 0; j < useAttackSkillList.size(); j++) {
                 if (useAttackSkillList.get(j).getSkill() instanceof AfterimageShotBuff) {
                     isAfterimageShot = true;
+                    break;
+                }
+            }
+            for (int j = 0; j < useBuffSkillList.size(); j++) {
+                if (
+                        useBuffSkillList.get(j).getSkill() instanceof ExtraQuiverCartridgeBuff
+                                && extraQuiverCartridgeEndTime.before(useBuffSkillList.get(j).getStart())
+                ) {
+                    extraQuiverCartridgeEndTime = new Timestamp(useBuffSkillList.get(j).getEnd().getTime());
                     break;
                 }
             }
@@ -309,8 +352,42 @@ public class BowmasterDealCycle extends DealCycle {
                             totalDamage += getAttackDamage(new SkillEvent(flashMirage, start, end), buffSkill, start, end);
                             for (int m = 0; m < 4; m ++) {
                                 Long ran = (long) (Math.random() * 99 + 1);
-                                if (ran <= advancedQuiver.getProp()) {
-                                    totalDamage += getAttackDamage(new SkillEvent(advancedQuiver, start, end), buffSkill, start, end);
+                                if (start.before(extraQuiverCartridgeEndTime)) {
+                                    if (ran <= quiverCartridge.getProp()) {
+                                        totalDamage += getAttackDamage(new SkillEvent(quiverCartridge, start, end), buffSkill, start, end);
+                                    }
+                                    if (drainArrowCount > 0) {
+                                        totalDamage += getAttackDamage(new SkillEvent(extraQuiverCartridge, start, end), buffSkill, start, end);
+                                        drainArrowCount --;
+                                    } else if (magicArrowCount > 0) {
+                                        totalDamage += getAttackDamage(new SkillEvent(extraQuiverCartridge, start, end), buffSkill, start, end);
+                                        magicArrowCount --;
+                                    } else {
+                                        extraQuiverCartridgeEndTime = new Timestamp(end.getTime());
+                                    }
+                                } else {
+                                    if (isQuiverFullBurst) {
+                                        if (ran <= quiverCartridge.getProp()) {
+                                            totalDamage += getAttackDamage(new SkillEvent(quiverCartridge, start, end), buffSkill, start, end);
+                                        }
+                                        if (drainArrowCount < 50) {
+                                            drainArrowCount++;
+                                        }
+                                        if (magicArrowCount < 50) {
+                                            magicArrowCount++;
+                                        }
+                                    } else if (drainArrowCount < 50) {
+                                        if (drainArrowCount < 50) {
+                                            drainArrowCount++;
+                                        }
+                                    } else if (magicArrowCount < 50) {
+                                        if (ran <= quiverCartridge.getProp()) {
+                                            totalDamage += getAttackDamage(new SkillEvent(quiverCartridge, start, end), buffSkill, start, end);
+                                        }
+                                        if (magicArrowCount < 50) {
+                                            magicArrowCount++;
+                                        }
+                                    }
                                 }
                             }
                             applyCooldown(flashMirage);
@@ -342,8 +419,42 @@ public class BowmasterDealCycle extends DealCycle {
                     if (se.getSkill() instanceof ArrawRain) {
                         ran = 100L;
                     }
-                    if (ran <= advancedQuiver.getProp()) {
-                        totalDamage += getAttackDamage(new SkillEvent(advancedQuiver, start, end), buffSkill, start, end);
+                    if (start.before(extraQuiverCartridgeEndTime)) {
+                        if (ran <= quiverCartridge.getProp()) {
+                            totalDamage += getAttackDamage(new SkillEvent(quiverCartridge, start, end), buffSkill, start, end);
+                        }
+                        if (drainArrowCount > 0) {
+                            totalDamage += getAttackDamage(new SkillEvent(extraQuiverCartridge, start, end), buffSkill, start, end);
+                            drainArrowCount --;
+                        } else if (magicArrowCount > 0) {
+                            totalDamage += getAttackDamage(new SkillEvent(extraQuiverCartridge, start, end), buffSkill, start, end);
+                            magicArrowCount --;
+                        } else {
+                            extraQuiverCartridgeEndTime = new Timestamp(end.getTime());
+                        }
+                    } else {
+                        if (isQuiverFullBurst) {
+                            if (ran <= quiverCartridge.getProp()) {
+                                totalDamage += getAttackDamage(new SkillEvent(quiverCartridge, start, end), buffSkill, start, end);
+                            }
+                            if (drainArrowCount < 50) {
+                                drainArrowCount++;
+                            }
+                            if (magicArrowCount < 50) {
+                                magicArrowCount++;
+                            }
+                        } else if (drainArrowCount < 50) {
+                            if (drainArrowCount < 50) {
+                                drainArrowCount++;
+                            }
+                        } else if (magicArrowCount < 50) {
+                            if (ran <= quiverCartridge.getProp()) {
+                                totalDamage += getAttackDamage(new SkillEvent(quiverCartridge, start, end), buffSkill, start, end);
+                            }
+                            if (magicArrowCount < 50) {
+                                magicArrowCount++;
+                            }
+                        }
                     }
                 }
             }

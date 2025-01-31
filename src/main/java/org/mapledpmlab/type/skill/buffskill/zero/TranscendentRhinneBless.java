@@ -12,7 +12,8 @@ public class TranscendentRhinneBless extends BuffSkill {
         this.setDuration(45L);
         this.addBuffAttMagic(100L);
         this.addBuffFinalDamage(1.08);
-        this.setDelay(630L);
+        this.setDelayByAttackSpeed(630L);
         this.setApplyServerLag(true);
+        this.setCooldown(120.0);
     }
 }
