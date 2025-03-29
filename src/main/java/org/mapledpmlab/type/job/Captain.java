@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -47,6 +48,7 @@ public class Captain extends Job {
 
         // 2차
         this.addAtt(10L);               // 인피닛 불릿
+        this.addAtt(22L);               // 자이언트 불릿
         this.addMainStat(20L);          // 건 액셀레이션
         this.addCriticalP(10.0);        // 건 마스터리
         this.addMainStat(30L);          // 피지컬 트레이닝
@@ -62,6 +64,7 @@ public class Captain extends Job {
         this.addCriticalDamage(21.0);   // 컨티뉴얼 에이밍
         this.addAttP(21L);              // 파이렛 스타일
         this.addCriticalDamage(26.0);   // 크루 커맨더십
+        this.addCriticalP(10.0);
         this.addFinalDamage(1.08);      // 캡틴 디그니티
         this.addAtt(31L);
 
@@ -69,9 +72,9 @@ public class Captain extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-45L);
-        this.addMainStat(9L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-57L);
+        this.addMainStat(-3L);
+        this.addSubStat(0L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

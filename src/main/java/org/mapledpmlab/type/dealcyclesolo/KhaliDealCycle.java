@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.common.*;
@@ -136,13 +136,15 @@ public class KhaliDealCycle extends DealCycle {
         grandisGoddessBlessingLef.setDelay(75L);
         oblivion.setDelay(75L);
         resonateUltimatum.setDelay(75L);
+
+        restraintRing.setActivateTime(new Timestamp(-555555));
     }
 
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
             if (
-                    cooldownCheck(restraintRing)
+                    getStart().after(new Timestamp(restraintRing.getActivateTime().getTime() + 500))
                     && getStart().before(new Timestamp(660 * 1000))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -152,8 +154,8 @@ public class KhaliDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 }
                 addSkillEvent(deathBlossom);
-                addSkillEvent(hexPandemonium);
                 addDealCycle(getSkillSequence1());
+                addSkillEvent(hexPandemonium);
                 if (cooldownCheck(hexSandStormBeforeDelay)) {
                     addSkillEvent(hexSandStormBeforeDelay);
                 }

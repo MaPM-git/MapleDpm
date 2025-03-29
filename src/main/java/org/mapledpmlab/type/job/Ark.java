@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -41,13 +42,16 @@ public class Ark extends Job {
         this.addAttP(9L);
         this.addAttP(21L);
 
+        // 0차
+        this.addAtt(25L);               // 매직 서킷
+
         // 1차
         this.addAtt(20L);               // 미스틱 아츠 마스터리
-        this.addCriticalP(5.0);         // 융합 개시
 
         // 2차
         this.addAtt(20L);               // 너클 마스터리
         this.addFinalDamage(1.05);
+        this.addCriticalP(5.0);         // 융합 개시
         this.addMainStat(60L);          // 피지컬 트레이닝
         this.addCriticalP(20.0);        // 스칼렛 버프
 
@@ -68,9 +72,9 @@ public class Ark extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-51L);
-        this.addMainStat(-3L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-66L);
+        this.addMainStat(-4L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

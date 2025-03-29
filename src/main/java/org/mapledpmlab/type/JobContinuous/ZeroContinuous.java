@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperZero;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.Confidence;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.StrUnion;
@@ -49,8 +49,8 @@ public class ZeroContinuous extends Job {
 
         // 환산 보정
         this.addMainStatP(-12L);
-        this.addMainStat(12L);
-        //this.addSubStat(10L);
+        this.addMainStat(-9L);
+        this.addSubStat(0L);
 
 
         this.setAbility(new ReuseBossAbnormal());

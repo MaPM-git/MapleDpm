@@ -23,9 +23,6 @@ public class ZeroBetaContinuous extends ZeroContinuous {
         this.addBossDamage(30L);
         this.addAtt(80L);
         this.addFinalDamage(1.23);
-
-        // 5차
-        this.addMainStat(30L);          // 바디 오브 스틸
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -50,7 +51,7 @@ public class Aran extends Job {
 
         // 2차
         this.addCriticalP(20.0);        // 콤보 어빌리티
-        this.addDamage(10L);            // 스노우 차지
+        this.addDamage(15L);            // 스노우 차지
         this.addFinalDamage(1.1);       // 폴암 마스터리
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
@@ -77,9 +78,9 @@ public class Aran extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-51L);
-        this.addMainStat(-6L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-66L);
+        this.addMainStat(-2L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -97,6 +98,6 @@ public class Aran extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addDamage(15L);            // 스노우 차지
+        this.addDamage(10L);            // 스노우 차지
     }
 }

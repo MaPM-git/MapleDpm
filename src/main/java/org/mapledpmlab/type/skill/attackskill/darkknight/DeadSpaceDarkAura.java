@@ -8,6 +8,7 @@ public class DeadSpaceDarkAura extends AttackSkill {
         this.setAttackCount(14L);
         this.setDamage(1035.0);
         this.setApplyFinalAttack(true);
+        this.setDelay(5820L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(360 + 1140L);

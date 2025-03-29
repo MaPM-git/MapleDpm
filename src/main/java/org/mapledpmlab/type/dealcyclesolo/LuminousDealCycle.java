@@ -2,7 +2,7 @@ package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Larkness;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -56,6 +56,12 @@ public class LuminousDealCycle extends DealCycle {
         {
             add(new Equilibrium());
             add(new EquilibriumMemorize());
+            add(new FreudBlessing1());
+            add(new FreudBlessing2());
+            add(new FreudBlessing3());
+            add(new FreudBlessing4());
+            add(new FreudBlessing5());
+            add(new FreudBlessing6());
             add(new HeroesOath());
             add(new LiberationOrb());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
@@ -66,6 +72,8 @@ public class LuminousDealCycle extends DealCycle {
             //add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
+
+    int freudStack = 0;
 
     Larkness larkness = Larkness.ECLIPSE;
     Larkness next = Larkness.SUNFIRE;
@@ -84,6 +92,12 @@ public class LuminousDealCycle extends DealCycle {
     EndlessDarkness endlessDarkness = new EndlessDarkness();
     Equilibrium equilibrium = new Equilibrium();
     EternalLightness eternalLightness = new EternalLightness();
+    FreudBlessing1 freudBlessing1 = new FreudBlessing1();
+    FreudBlessing2 freudBlessing2 = new FreudBlessing2();
+    FreudBlessing3 freudBlessing3 = new FreudBlessing3();
+    FreudBlessing4 freudBlessing4 = new FreudBlessing4();
+    FreudBlessing5 freudBlessing5 = new FreudBlessing5();
+    FreudBlessing6 freudBlessing6 = new FreudBlessing6();
     HarmonicParadoxBeforeDelay harmonicParadox = new HarmonicParadoxBeforeDelay();
     HeroesOath heroesOath = new HeroesOath();
     LiberationOrb liberationOrb = new LiberationOrb();
@@ -125,6 +139,14 @@ public class LuminousDealCycle extends DealCycle {
 
         mapleWorldGoddessBlessing.setDelay(300L);
         liberationOrb.setDelay(300L);
+
+        getStart().setTime(-25000);
+        freudBlessing4.setActivateTime(new Timestamp(-30000));
+        addSkillEvent(freudBlessing4);
+        getStart().setTime(0);
+        if (getJob().getCooldownReductionSec() == 5) {
+            freudBlessing6.setCooldown(260.0);
+        }
     }
 
     @Override
@@ -135,8 +157,44 @@ public class LuminousDealCycle extends DealCycle {
                             && larkness == Larkness.EQUILIBRIUM
             ) {
                 larkness = next;
-            }
-            if (
+            } else if (
+                    cooldownCheck(freudBlessing1)
+                            && freudStack == 6
+                            && getStart().before(new Timestamp(7 * 60 * 1000))
+            ) {
+                addSkillEvent(freudBlessing1);
+            } else if (
+                    cooldownCheck(freudBlessing2)
+                            && freudStack == 1
+            ) {
+                addSkillEvent(freudBlessing2);
+            } else if (
+                    cooldownCheck(freudBlessing3)
+                            && freudStack == 2
+            ) {
+                addSkillEvent(freudBlessing3);
+            } else if (
+                    cooldownCheck(freudBlessing4)
+                            && freudStack == 3
+            ) {
+                addSkillEvent(freudBlessing4);
+            } else if (
+                    cooldownCheck(freudBlessing6)
+                            && freudStack == 5
+                            && (
+                            (
+                                    getJob().getCooldownReductionSec() == 0
+                                            && getStart().after(new Timestamp(freudBlessing6.getActivateTime().getTime() + 5000))
+                            )
+                                    ||
+                                    (
+                                            getJob().getCooldownReductionSec() == 5
+                                                    && getStart().after(new Timestamp(freudBlessing6.getActivateTime().getTime() + 10000))
+                                    )
+                    )
+            ) {
+                addSkillEvent(freudBlessing6);
+            } else if (
                     cooldownCheck(liberationOrb)
                             && cooldownCheck(baptismOfLightAndDarkness)
                             && getStart().after(new Timestamp(punishingResonator.getActivateTime().getTime() - 2500))
@@ -148,6 +206,41 @@ public class LuminousDealCycle extends DealCycle {
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
+                }
+                if (cooldownCheck(harmonicParadox)) {
+                    while (!cooldownCheck(freudBlessing5)) {
+                        if (
+                                cooldownCheck(twilightNovaEclipse)
+                                        && larkness == Larkness.ECLIPSE
+                        ) {
+                            applyCooldown(twilightNovaEquilibrium);
+                            applyCooldown(twilightNovaSunfire);
+                            addSkillEvent(twilightNovaEclipse);
+                        } else if (
+                                cooldownCheck(twilightNovaSunfire)
+                                        && larkness == Larkness.SUNFIRE
+                        ) {
+                            applyCooldown(twilightNovaEclipse);
+                            applyCooldown(twilightNovaEquilibrium);
+                            addSkillEvent(twilightNovaSunfire);
+                        } else if (
+                                cooldownCheck(twilightNovaEquilibrium)
+                                        && larkness == Larkness.EQUILIBRIUM
+                        ) {
+                            applyCooldown(twilightNovaEclipse);
+                            applyCooldown(twilightNovaSunfire);
+                            addSkillEvent(twilightNovaEquilibrium);
+                        } else {
+                            if (larkness == Larkness.ECLIPSE) {
+                                addSkillEvent(apocalypse);
+                            } else if (larkness == Larkness.SUNFIRE) {
+                                addSkillEvent(lightReflection);
+                            } else if (larkness == Larkness.EQUILIBRIUM) {
+                                addSkillEvent(absoluteKill);
+                            }
+                        }
+                    }
+                    addSkillEvent(freudBlessing5);
                 }
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(baptismOfLightAndDarkness);
@@ -188,7 +281,7 @@ public class LuminousDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(baptismOfLightAndDarkness)
                             && (
-                            getStart().before(new Timestamp(liberationOrb.getActivateTime().getTime() - 10000))
+                            getStart().before(new Timestamp(liberationOrb.getActivateTime().getTime() - 12000))
                                     || getStart().after(new Timestamp(600 * 1000))
                     )
             ) {
@@ -241,6 +334,64 @@ public class LuminousDealCycle extends DealCycle {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof FreudBlessing1) {
+                freudStack = 1;
+            } else if (skill instanceof FreudBlessing2) {
+                freudStack = 2;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing1
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            } else if (skill instanceof FreudBlessing3) {
+                freudStack = 3;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing2
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            } else if (skill instanceof FreudBlessing4) {
+                freudStack = 4;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing3
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            } else if (skill instanceof FreudBlessing5) {
+                freudStack = 5;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing4
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            } else if (skill instanceof FreudBlessing6) {
+                freudStack = 6;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing5
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            }
             if (
                     skill instanceof Equilibrium
                     || skill instanceof EquilibriumMemorize
@@ -409,6 +560,48 @@ public class LuminousDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof FreudBlessing1) {
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing1.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing2) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing3) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing4) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing5) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing6) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {

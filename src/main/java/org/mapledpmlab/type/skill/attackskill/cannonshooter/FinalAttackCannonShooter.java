@@ -12,5 +12,6 @@ public class FinalAttackCannonShooter extends AttackSkill {
         this.addFinalDamage(0.45);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.setAddDamage(30L);     // 아티팩트
     }
 }

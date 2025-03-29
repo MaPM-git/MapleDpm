@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.job.ZeroBeta;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -1256,7 +1256,7 @@ public class ZeroDealCycle extends DealCycle {
         System.out.println("데미지 : " + job2.getDamage());
         System.out.println("최종데미지 : " + job2.getFinalDamage());
         System.out.println("보스 데미지 : " + job2.getBossDamage());
-        System.out.println("방어율 무시 : " + job2.getIgnoreDefense());
+        System.out.println("방어율 무시 : " + String.format("%.4f", getJob().getIgnoreDefense() * 100));
         System.out.println("크리티컬 확률 : " + job2.getCriticalP());
         System.out.println("장비 공격력 % : " + job2.getAttP());
         System.out.println("장비 마력 % : " + job2.getMagicP());

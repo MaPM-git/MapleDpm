@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.DexUnion;
@@ -85,9 +85,9 @@ public class WindBreakerContinuous extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(-54L);
-        this.addMainStat(-8L);
-        this.addSubStat(10L);
+        this.addMainStatP(-60L);
+        this.addMainStat(-1L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

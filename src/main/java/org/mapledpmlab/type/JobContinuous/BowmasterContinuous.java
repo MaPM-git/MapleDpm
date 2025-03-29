@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.*;
 import org.mapledpmlab.type.union.DexUnion;
 
@@ -49,6 +49,7 @@ public class BowmasterContinuous extends Job {
         // 2차
         this.addMainStat(20L);          // 보우 액셀레이션
         this.addAtt(30L);               // 소울 애로우 : 활
+        this.addAtt(9L);                // 티타늄 화살
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
 
@@ -71,9 +72,9 @@ public class BowmasterContinuous extends Job {
         this.addFinalDamage(1.07);
 
         // 환산 보정
-        this.addMainStatP(-60L);
-        this.addMainStat(-5L);
-        this.addSubStat(5L);
+        this.addMainStatP(-69L);
+        this.addMainStat(-10L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

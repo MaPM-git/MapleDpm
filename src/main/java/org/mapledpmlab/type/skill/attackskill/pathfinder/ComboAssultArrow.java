@@ -9,5 +9,6 @@ public class ComboAssultArrow extends GaugeAttackSkill {
         this.setDamage(1656.0);
         this.addFinalDamage(1.1);       // 에인션트 아처리
         this.addFinalDamage(2.2);       // 코어강화
+        this.setAddDamage(20L);         // 에인션트 포스-인챈트 인핸스
     }
 }

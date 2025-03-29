@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -60,6 +60,12 @@ public class MercedesDealCycle extends DealCycle {
         {
             add(new CriticalReinforce(0.0));
             add(new ElementalGhost());
+            add(new FreudBlessing1());
+            add(new FreudBlessing2());
+            add(new FreudBlessing3());
+            add(new FreudBlessing4());
+            add(new FreudBlessing5());
+            add(new FreudBlessing6());
             add(new HeroesOath());
             add(new LegendarySpearBuff());
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
@@ -74,6 +80,8 @@ public class MercedesDealCycle extends DealCycle {
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
+
+    int freudStack = 0;
 
     Timestamp elementalGhostEndTime = new Timestamp(-1);
     Timestamp sylphidiaEndTime = new Timestamp(-1);
@@ -93,6 +101,12 @@ public class MercedesDealCycle extends DealCycle {
     ElementalGhost elementalGhost = new ElementalGhost();
     ElementalKnightsDark elementalKnightsDark = new ElementalKnightsDark();
     FormOfEurel formOfEurel = new FormOfEurel();
+    FreudBlessing1 freudBlessing1 = new FreudBlessing1();
+    FreudBlessing2 freudBlessing2 = new FreudBlessing2();
+    FreudBlessing3 freudBlessing3 = new FreudBlessing3();
+    FreudBlessing4 freudBlessing4 = new FreudBlessing4();
+    FreudBlessing5 freudBlessing5 = new FreudBlessing5();
+    FreudBlessing6 freudBlessing6 = new FreudBlessing6();
     GuidedArrow guidedArrow = new GuidedArrow();
     GustDive gustDive = new GustDive();
     HeroesOath heroesOath = new HeroesOath();
@@ -169,6 +183,11 @@ public class MercedesDealCycle extends DealCycle {
         mapleWorldGoddessBlessing.setDelay(300L);
         elementalGhost.setDelay(300L);
         criticalReinforce.setDelay(300L);
+
+        getStart().setTime(-25000);
+        freudBlessing4.setActivateTime(new Timestamp(-30000));
+        addSkillEvent(freudBlessing4);
+        getStart().setTime(0);
     }
 
     @Override
@@ -183,6 +202,33 @@ public class MercedesDealCycle extends DealCycle {
         legendarySpearSpiritEnchant.setDelayByAttackSpeed(870L);
         while (getStart().before(getEnd())) {
             if (
+                    cooldownCheck(freudBlessing1)
+                            && freudStack == 6
+                            && getStart().before(new Timestamp(7 * 60 * 1000))
+            ) {
+                addSkillEvent(freudBlessing1);
+            } else if (
+                    cooldownCheck(freudBlessing2)
+                            && freudStack == 1
+            ) {
+                addSkillEvent(freudBlessing2);
+            } else if (
+                    cooldownCheck(freudBlessing3)
+                            && freudStack == 2
+            ) {
+                addSkillEvent(freudBlessing3);
+            } else if (
+                    cooldownCheck(freudBlessing4)
+                            && freudStack == 3
+            ) {
+                addSkillEvent(freudBlessing4);
+            } else if (
+                    cooldownCheck(freudBlessing6)
+                            && freudStack == 5
+                            && getStart().after(new Timestamp(freudBlessing6.getActivateTime().getTime() + 5000))
+            ) {
+                addSkillEvent(freudBlessing6);
+            } else if (
                     cooldownCheck(elementalGhost)
                             && cooldownCheck(sylphidia)
                             && cooldownCheck(heroesOath)
@@ -200,8 +246,12 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else {
-                    addSkillEvent(ringOfIshtar);
+                }
+                if (cooldownCheck(unfadingGloryWave)) {
+                    while (!cooldownCheck(freudBlessing5)) {
+                        addSkillEvent(ringOfIshtar);
+                    }
+                    addSkillEvent(freudBlessing5);
                 }
                 addSkillEvent(sylphidia);
                 addSkillEvent(royalKnights);
@@ -271,6 +321,64 @@ public class MercedesDealCycle extends DealCycle {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof FreudBlessing1) {
+                freudStack = 1;
+            } else if (skill instanceof FreudBlessing2) {
+                freudStack = 2;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing1
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            } else if (skill instanceof FreudBlessing3) {
+                freudStack = 3;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing2
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            } else if (skill instanceof FreudBlessing4) {
+                freudStack = 4;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing3
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            } else if (skill instanceof FreudBlessing5) {
+                freudStack = 5;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing4
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            } else if (skill instanceof FreudBlessing6) {
+                freudStack = 6;
+                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
+                    if (
+                            getSkillEventList().get(i).getSkill() instanceof FreudBlessing5
+                                    && getSkillEventList().get(i).getEnd().after(getStart())
+                    ) {
+                        getSkillEventList().get(i).getEnd().setTime(getStart().getTime());
+                        getEventTimeList().add(getSkillEventList().get(i).getEnd());
+                    }
+                }
+            }
             if (skill instanceof UnicornSpikeBuff) {
                 unicornSpikeEndTime = new Timestamp(getStart().getTime() + 60000);
             }
@@ -895,6 +1003,48 @@ public class MercedesDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof FreudBlessing1) {
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing1.getActivateTime().getTime()));
+            freudBlessing1.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing2) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing2.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing3) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing3.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing4) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing4.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing5) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing6.setActivateTime(new Timestamp(freudBlessing5.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(getStart().getTime() + 240000));
+        } else if (skill instanceof FreudBlessing6) {
+            freudBlessing1.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+            freudBlessing2.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+            freudBlessing3.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+            freudBlessing4.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+            freudBlessing5.setActivateTime(new Timestamp(freudBlessing6.getActivateTime().getTime()));
+        }
         if (skill instanceof WrathOfEnlilSpiritEnchant) {
             applyCooldown(wrathOfEnlil);
         }

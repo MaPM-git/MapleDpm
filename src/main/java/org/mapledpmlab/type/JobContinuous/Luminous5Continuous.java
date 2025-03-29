@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.LuminousUnion;
@@ -66,9 +66,9 @@ public class Luminous5Continuous extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(-18L);
-        this.addMainStat(0L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-24L);
+        this.addMainStat(1L);
+        this.addSubStat(-10L);
 
         this.setAbility(new ReuseBossBuff());
         this.setArtifact(new ArtifactNormal());

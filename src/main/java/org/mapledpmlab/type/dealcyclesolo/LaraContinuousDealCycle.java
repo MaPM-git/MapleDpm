@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -141,7 +141,7 @@ public class LaraContinuousDealCycle extends DealCycle {
                 addSkillEvent(dragonVeinTrace);
                 addSkillEvent(eruptionWhirlwind);
                 addSkillEvent(dragonVeinJump);
-                addSkillEvent(dragonVeinSwitch);
+                //addSkillEvent(dragonVeinSwitch);
                 addSkillEvent(eruptionRipplingRiver);
                 addSkillEvent(dragonVeinFree);
                 addSkillEvent(eruptionSunriseWell);
@@ -157,7 +157,7 @@ public class LaraContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(soulContract)
-                            && !cooldownCheck(armfulTree)
+                            && getStart().before(new Timestamp(armfulTree.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(soulContract);
             } else if (
@@ -168,7 +168,7 @@ public class LaraContinuousDealCycle extends DealCycle {
                 addSkillEvent(bigStretch);
             } else if (
                     cooldownCheck(ridgeWinding)
-                            && !cooldownCheck(armfulTree)
+                            && getStart().before(new Timestamp(armfulTree.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(ridgeWinding);
             } else if (
@@ -183,11 +183,25 @@ public class LaraContinuousDealCycle extends DealCycle {
                                     || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {
+                addSkillEvent(dragonVeinTrace);
+                addSkillEvent(eruptionWhirlwind);
+                addSkillEvent(dragonVeinJump);
+                //addSkillEvent(dragonVeinSwitch);
+                addSkillEvent(eruptionRipplingRiver);
+                addSkillEvent(dragonVeinFree);
+                addSkillEvent(eruptionSunriseWell);
+            }/* else if (
+                    cooldownCheck(eruptionSunriseWell)
+                            && (
+                            !cooldownCheck(armfulTree)
+                                    || getStart().after(new Timestamp(660 * 1000))
+                    )
+            ) {
                 if (eruptionCnt % 3 == 0) {
                     addSkillEvent(dragonVeinTrace);
                 } else if (eruptionCnt % 3 == 1) {
                     addSkillEvent(dragonVeinJump);
-                    addSkillEvent(dragonVeinSwitch);
+                    //addSkillEvent(dragonVeinSwitch);
                 } else if (eruptionCnt % 3 == 2) {
                     addSkillEvent(dragonVeinFree);
                 }
@@ -204,7 +218,7 @@ public class LaraContinuousDealCycle extends DealCycle {
                     addSkillEvent(dragonVeinTrace);
                 } else if (eruptionCnt % 3 == 1) {
                     addSkillEvent(dragonVeinJump);
-                    addSkillEvent(dragonVeinSwitch);
+                    //addSkillEvent(dragonVeinSwitch);
                 } else if (eruptionCnt % 3 == 2) {
                     addSkillEvent(dragonVeinFree);
                 }
@@ -221,13 +235,13 @@ public class LaraContinuousDealCycle extends DealCycle {
                     addSkillEvent(dragonVeinTrace);
                 } else if (eruptionCnt % 3 == 1) {
                     addSkillEvent(dragonVeinJump);
-                    addSkillEvent(dragonVeinSwitch);
+                    //addSkillEvent(dragonVeinSwitch);
                 } else if (eruptionCnt % 3 == 2) {
                     addSkillEvent(dragonVeinFree);
                 }
                 eruptionCnt ++;
                 addSkillEvent(eruptionRipplingRiver);
-            } else if (cooldownCheck(wakeup)) {
+            }*/ else if (cooldownCheck(wakeup)) {
                 addSkillEvent(wakeup);
             } else {
                 addSkillEvent(essenceSprinkle);
@@ -241,7 +255,7 @@ public class LaraContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {

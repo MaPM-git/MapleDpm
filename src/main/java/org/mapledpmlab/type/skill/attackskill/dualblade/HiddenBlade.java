@@ -12,5 +12,6 @@ public class HiddenBlade extends AttackSkill {
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(0.85);           // 미러 이미징
+        this.setAddDamage(30L);     // 아티팩트
     }
 }

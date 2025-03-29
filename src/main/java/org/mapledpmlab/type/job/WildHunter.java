@@ -1,9 +1,9 @@
 package org.mapledpmlab.type.job;
 
-import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.ability.ReuseBossCritical;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.CygnusBlessing;
@@ -83,7 +83,7 @@ public class WildHunter extends Job {
         this.addAtt(65L);               // 재규어 스톰
 
         // 환산 보정
-        this.addMainStatP(-66L);
+        this.addMainStatP(-72L);
         this.addMainStat(-5L);
         this.addSubStat(-5L);
 

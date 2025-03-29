@@ -1,4 +1,4 @@
-package org.mapledpmlab.type.job;
+package org.mapledpmlab.type.etc;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -186,12 +186,12 @@ public class Job extends Common {
         }
         Object[] result = new Object[]{
                 this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
-                this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
-                this.getFinalSubstat(), "X", this.getStatDamage(), this.getDamage(),
-                this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
-                this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
-                this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
-                this.getFinalDamage()
+                this.getMainStat(), this.getMainStatP() + this.getAllStatP(), this.getPerXMainStat(),
+                this.getSubStat(), this.getAllStatP(), this.getPerXSubStat(), "X", "X", "X", this.getStatDamage(),
+                this.getDamage(), String.format("%.2f", this.getFinalDamage() * 100 - 100), this.getBossDamage(),
+                String.format("%.4f", this.getIgnoreDefense() * 100), attMagicP, this.getCriticalP(), this.getCriticalDamage(),
+                this.getCooldownReductionSec() + "초 / " + this.getCooldownReductionP() + "%", this.getPlusBuffDuration(), this.getReuse(),
+                this.getProperty(), "14", "30", "1350", "660", this.getWeaponAttMagic()
         };
         return result;
     }

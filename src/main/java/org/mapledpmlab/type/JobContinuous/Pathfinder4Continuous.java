@@ -1,25 +1,25 @@
-package org.mapledpmlab.type.job;
+package org.mapledpmlab.type.JobContinuous;
 
-import org.mapledpmlab.type.ability.BossCriticalReuse;
 import org.mapledpmlab.type.ability.ReuseBossCritical;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.*;
 import org.mapledpmlab.type.union.DexUnion;
 
 import java.util.stream.Collectors;
 
-public class Pathfinder extends Job {
+public class Pathfinder4Continuous extends Job {
 
-    public Pathfinder() {
+    public Pathfinder4Continuous() {
         // 기본
         super();
-        this.setName("패스파인더(리웨)");
+        this.setName("패스파인더(컨티, 4초, 4.5블디콤레)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
-        this.setJobType(JobType.ETC);
+        this.setJobType(JobType.COOLDOWN_REDUCTION4);
 
         // 무기
         this.addMainStat((long) (150 + 32 + 145));
@@ -37,8 +37,10 @@ public class Pathfinder extends Job {
         this.addMainStat(10L);
         this.addSubStat(10L);
         this.addAtt(3L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
+        //this.addBossDamage(70L);
+        //this.addAttP(9L);
+        this.addBossDamage(30L);
+        this.addAttP(21L);
         this.addAttP(21L);
 
         // 1차
@@ -65,9 +67,9 @@ public class Pathfinder extends Job {
         this.addMainStat(82L);          // 일루전 스탭
 
         // 환산 보정
-        this.addMainStatP(-24L);
-        this.addMainStat(2L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-90L);
+        this.addMainStat(-11L);
+        this.addSubStat(0L);
 
         this.setAbility(new ReuseBossCritical());
         this.setArtifact(new ArtifactNormal());

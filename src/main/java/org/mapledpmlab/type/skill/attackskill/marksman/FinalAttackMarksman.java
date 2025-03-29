@@ -11,5 +11,6 @@ public class FinalAttackMarksman extends AttackSkill {
         this.setFinalAttack(true);
         this.addFinalDamage(3.4);
         this.addIgnoreDefenseList(20L);
+        this.setAddDamage(30L);     // 아티팩트
     }
 }

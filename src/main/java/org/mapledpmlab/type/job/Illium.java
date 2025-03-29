@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.FlowOfBattle;
@@ -60,11 +61,13 @@ public class Illium extends Job {
 
         // 5차
         this.addMagic(65L);             // 소울 오브 크리스탈
+        this.addMainStat(90L);          // 소드 오브 크리스탈 강화
+        this.addSubStat(90L);
 
         // 환산 보정
-        this.addMainStatP(63L);
-        this.addMainStat(-1L);
-        this.addSubStat(5L);
+        this.addMainStatP(42L);
+        this.addMainStat(-2L);
+        this.addSubStat(10L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -86,8 +89,6 @@ public class Illium extends Job {
         super.Doping();
         this.addIgnoreDefenseList(20L);     // 커스 마크
         this.addAtt(46L);                   // 블레스 마크
-        this.addMainStat(90L);              // 소드 오브 크리스탈 강화
-        this.addSubStat(90L);
     }
 
     public Long getStatDamage() {

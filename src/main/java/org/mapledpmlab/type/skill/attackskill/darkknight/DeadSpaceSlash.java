@@ -8,6 +8,7 @@ public class DeadSpaceSlash extends AttackSkill {
         this.setAttackCount(6L);
         this.setCooldown(360.0);
         this.setDamage(1200.0);
+        this.setDelay(360L);
         this.setRelatedSkill(new DeadSpaceDarkAura());
         this.setApplyFinalAttack(true);
         this.setAddDamage(50L);

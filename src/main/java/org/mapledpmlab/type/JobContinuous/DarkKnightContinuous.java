@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.StrUnion;
 
@@ -45,6 +45,7 @@ public class DarkKnightContinuous extends Job {
 
         // 2차
         this.addDamage(5L);             // 웨폰 마스터리
+        this.addMainStat(20L);          // 웨폰 액셀레이션
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
 
@@ -71,9 +72,9 @@ public class DarkKnightContinuous extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-69L);
-        this.addMainStat(1L);
-        this.addSubStat(5L);
+        this.addMainStatP(-75L);
+        this.addMainStat(-14L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalReuse());
         this.setArtifact(new ArtifactNormal());

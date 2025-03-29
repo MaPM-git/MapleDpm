@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.PassiveBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.Confidence;
@@ -74,8 +75,8 @@ public class HoYoung extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-51L);
-        this.addMainStat(-10L);
+        this.addMainStatP(-60L);
+        this.addMainStat(-8L);
         this.addSubStat(-10L);
 
         this.setAbility(new PassiveBossAbnormal());

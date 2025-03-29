@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.CygnusBlessing;
@@ -70,9 +71,9 @@ public class Mercedes extends Job {
         this.addFinalDamage(1.05);
 
         // 환산 보정
-        this.addMainStatP(-84L);
-        this.addMainStat(3L);
-        this.addSubStat(20L);
+        this.addMainStatP(-90L);
+        this.addMainStat(4L);
+        this.addSubStat(15L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

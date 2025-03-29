@@ -2,7 +2,7 @@ package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.JobContinuous.DemonSlayerNormalContinuous;
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
@@ -116,7 +116,7 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
         super(job, null);
 
         if (getJob() instanceof DemonSlayerNormalContinuous) {
-            getJob().setName("데몬슬레이어(컨티, 극포실, 환산 84502)");
+            getJob().setName("데몬슬레이어(컨티, 극포실, 환산 84246)");
         }
 
         this.setAttackSkillList(attackSkillList);

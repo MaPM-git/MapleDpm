@@ -5,8 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperDemonSlayer;
-import org.mapledpmlab.type.job.Job;
-import org.mapledpmlab.type.link.HybridLogic;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
@@ -61,14 +60,16 @@ public class DemonSlayerNormalContinuous extends Job {
         this.addIgnoreDefenseList(31L);  // 다크 바인드
         this.addDamage(45L);            // 메타모포시스
         this.addAtt(51L);               // 어드밴스드 웨폰 마스터리
+        this.addCriticalDamage(15.0);
 
         // 5차
         this.addMainStat(30L);          // 바디 오브 스틸
+        this.addCriticalDamage(15.0);
 
         // 환산 보정
-        this.addMainStatP(39L);
-        this.addMainStat(8L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-45L);
+        this.addMainStat(10L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

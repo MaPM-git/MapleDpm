@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -17,7 +18,7 @@ public class Xenon extends Job {
     public Xenon() {
         // 기본
         super();
-        this.setName("제논(리웨)");
+        this.setName("제논(리웨, 2초)");
         this.setConstant(1.3125);          // 무기상수
         this.setMainStat(               // 기본 스탯(275 기준)
                 this.getLevel() * 5 + 18 - 326 - 326
@@ -65,8 +66,8 @@ public class Xenon extends Job {
         this.addOtherStat1(70L);
 
         // 1차
-        this.addAtt(30L);               // 인클라인 파워
-        //this.addAllStatP(20L);          // 서플라이 20
+        //this.addAtt(30L);               // 인클라인 파워
+        this.addAllStatP(20L);          // 서플라이 20
         this.addDamage(5L);             // 멀티래터럴 II
 
         // 2차
@@ -74,6 +75,7 @@ public class Xenon extends Job {
         this.addMainStat(25L);          // 마이너리티 서포트
         this.addSubStat(25L);
         this.addOtherStat1(25L);
+        this.addOtherStat2(25L);
         this.addAtt(20L);               // 제논 마스터리
         this.addDamage(7L);             // 멀티래터럴 III
 
@@ -81,6 +83,7 @@ public class Xenon extends Job {
         this.addMainStat(10L);          // 듀얼브리드 디펜시브
         this.addSubStat(10L);
         this.addOtherStat1(10L);
+        this.addOtherStat2(10L);
         this.addDamage(10L);            // 멀티래터럴 IV
 
         // 4차
@@ -103,11 +106,11 @@ public class Xenon extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addAllStatP(-3L);
-        this.addMainStat(2L);
-        this.addSubStat(1L);
-        //this.addOtherStat1(-4L);
-        this.addAtt(-3L);
+        this.addAllStatP(-27L);
+        this.addMainStat(5L);
+        this.addSubStat(5L);
+        this.addOtherStat1(5L);
+        this.addAtt(0L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -124,6 +127,13 @@ public class Xenon extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+        this.addAllStatP(-20L);          // 서플라이 20
+        this.addAtt(30L);               // 인클라인 파워
     }
 
     public Long getFinalSubStat2() {
@@ -160,12 +170,12 @@ public class Xenon extends Job {
         }
         Object[] result = new Object[]{
                 this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
-                this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
-                this.getFinalSubstat(), this.getFinalSubStat2(), this.getStatDamage(), this.getDamage(),
-                this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
-                this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
-                this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
-                this.getFinalDamage()
+                this.getMainStat(), this.getMainStatP() + this.getAllStatP(), this.getPerXMainStat(),
+                this.getSubStat(), this.getAllStatP(), this.getPerXSubStat(), this.getOtherStat1(), this.getAllStatP(), this.getPerXOtherStat(), this.getStatDamage(),
+                this.getDamage(), String.format("%.2f", this.getFinalDamage() * 100 - 100), this.getBossDamage(),
+                String.format("%.4f", this.getIgnoreDefense() * 100), attMagicP, this.getCriticalP(), this.getCriticalDamage(),
+                this.getCooldownReductionSec() + "초 / " + this.getCooldownReductionP() + "%", this.getPlusBuffDuration(), this.getReuse(),
+                this.getProperty(), "14", "30", "1350", "660", this.getWeaponAttMagic()
         };
         return result;
     }

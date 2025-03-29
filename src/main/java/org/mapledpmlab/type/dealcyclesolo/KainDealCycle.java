@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -193,7 +193,7 @@ public class KainDealCycle extends DealCycle {
         addSkillEvent(possession);
         addSkillEvent(shaftBreakEnchant);
         while (getStart().before(getEnd())) {
-            if (cooldownCheck(thanatosDescentBuff)) {
+            if (cooldownCheck(restraintRing)) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -219,6 +219,7 @@ public class KainDealCycle extends DealCycle {
                 addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(gripOfAgony)
+                    && cooldownCheck(ringOfSum)
                     && !cooldownCheck(criticalReinforce)
             ) {
                 addSkillEvent(gripOfAgony);

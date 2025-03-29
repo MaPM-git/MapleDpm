@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
@@ -57,6 +57,7 @@ public class ArchMageFPContinuous extends Job {
         this.addFinalDamage(1.4);
         this.addCriticalP(30.0);        // 매직 크리티컬
         this.addCriticalDamage(13.0);
+        this.addDamage(50L);            // 앨리먼트 앰플리케이션
 
         // 4차
         this.addIgnoreDefenseList(21L); // 아케인 에임
@@ -67,9 +68,9 @@ public class ArchMageFPContinuous extends Job {
         this.addMainStat(30L);          // 언스태이블 메모라이즈
 
         // 환산 보정
-        this.addMainStatP(75L);
-        this.addMainStat(-2L);
-        this.addSubStat(5L);
+        this.addMainStatP(3L);
+        this.addMainStat(6L);
+        this.addSubStat(10L);
 
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -88,9 +89,8 @@ public class ArchMageFPContinuous extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        addDamage(50L);                 // 앨리먼트 앰플리케이션
-        addFinalDamage(1.2);            // 익스트림 매직
-        addDamage(40L);                 // 아케인 에임
+        this.addFinalDamage(1.2);            // 익스트림 매직
+        this.addDamage(40L);                 // 아케인 에임
     }
 
     public Long getStatDamage() {

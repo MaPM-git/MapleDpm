@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.job.Xenon;
 import org.mapledpmlab.type.job.Xenon5;
 import org.mapledpmlab.type.skill.Skill;
@@ -892,7 +892,7 @@ public class XenonDealCycle extends DealCycle {
         System.out.println("데미지 : " + getJob().getDamage());
         System.out.println("최종데미지 : " + getJob().getFinalDamage());
         System.out.println("보스 데미지 : " + getJob().getBossDamage());
-        System.out.println("방어율 무시 : " + getJob().getIgnoreDefense());
+        System.out.println("방어율 무시 : " + String.format("%.4f", getJob().getIgnoreDefense() * 100));
         System.out.println("크리티컬 확률 : " + getJob().getCriticalP());
         System.out.println("장비 공격력 % : " + getJob().getAttP());
         System.out.println("장비 마력 % : " + getJob().getMagicP());

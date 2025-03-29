@@ -9,6 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class CovertShadowBuff extends BuffSkill {
     public CovertShadowBuff() {
         this.setName("커버트 쉐도우(버프)");
-        this.setDuration(4L);
+        this.setDuration(3L);
+        this.setApplyServerLag(true);
     }
 }

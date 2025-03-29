@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.PhantomInstinct;
@@ -71,9 +72,9 @@ public class  Hero extends Job {
         //this.addMainStat(8L);
 
         // 환산 보정, 스탯뚝
-        this.addMainStatP(-33L);
-        this.addMainStat(-1L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-42L);
+        this.addMainStat(9L);
+        this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

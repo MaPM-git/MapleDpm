@@ -4,6 +4,7 @@ import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.equipment.MechanicWeapon;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -42,9 +43,6 @@ public class Mechanic extends Job {
         // 0차
         this.addDamage(10L);            // 히든 피스
 
-        // 1차
-        this.addAtt(40L);               // 메탈아머 : 휴먼
-
         // 2차
         this.addAtt(20L);               // 메카닉 마스터리
         this.addCriticalP(15.0);
@@ -66,9 +64,9 @@ public class Mechanic extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-75L);
-        this.addMainStat(-2L);
-        this.addSubStat(15L);
+        this.addMainStatP(-69L);
+        this.addMainStat(16L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

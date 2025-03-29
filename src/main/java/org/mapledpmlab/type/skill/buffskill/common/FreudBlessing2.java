@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class FreudBlessing2 extends BuffSkill {
     public FreudBlessing2() {
         this.setName("프리드의 가호(2중첩)");
-        this.setCooldown(240.0 + 25 * 2);
+        this.setCooldown(25.0);
         this.setDuration(30L);
         this.setDelay(790L);
     }

@@ -3,10 +3,10 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.Confidence;
-import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.LukUnion;
 
@@ -68,9 +68,9 @@ public class DualBlade extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(-12L);
-        this.addSubStat(-15L);
+        this.addMainStatP(-75L);
+        this.addMainStat(-4L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -123,12 +123,12 @@ public class DualBlade extends Job {
         }
         Object[] result = new Object[]{
                 this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
-                this.getFinalMainStat(), this.getFinalMainStatMinusMapleWarrior(), this.getAp(),
-                this.getFinalSubstat(), this.getFinalSubStat2(), this.getStatDamage(), this.getDamage(),
-                this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
-                this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
-                this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
-                this.getFinalDamage()
+                this.getMainStat(), this.getMainStatP() + this.getAllStatP(), this.getPerXMainStat(),
+                this.getSubStat(), this.getAllStatP(), this.getPerXSubStat(), this.getOtherStat1(), this.getAllStatP(), this.getPerXOtherStat(), this.getStatDamage(),
+                this.getDamage(), String.format("%.2f", this.getFinalDamage() * 100 - 100), this.getBossDamage(),
+                String.format("%.4f", this.getIgnoreDefense() * 100), attMagicP, this.getCriticalP(), this.getCriticalDamage(),
+                this.getCooldownReductionSec() + "초 / " + this.getCooldownReductionP() + "%", this.getPlusBuffDuration(), this.getReuse(),
+                this.getProperty(), "14", "30", "1350", "660", this.getWeaponAttMagic()
         };
         return result;
     }

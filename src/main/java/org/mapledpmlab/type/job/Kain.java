@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.PassiveBossCritical;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -67,9 +68,9 @@ public class Kain extends Job {
         this.addBossDamage(10L);
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(-12L);
-        //this.addSubStat(-5L);
+        this.addMainStatP(-72L);
+        this.addMainStat(-7L);
+        this.addSubStat(-10L);
 
         this.setAbility(new PassiveBossCritical());
         this.setArtifact(new ArtifactNormal());

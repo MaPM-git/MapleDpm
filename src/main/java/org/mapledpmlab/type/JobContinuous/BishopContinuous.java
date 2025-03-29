@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.union.IntUnion;
@@ -76,11 +76,6 @@ public class BishopContinuous extends Job {
 
         // 6차
         this.addMainStat(90L);          // 프레이 강화
-
-        // 환산 보정
-        //this.addMainStatP(75L);
-        this.addMainStat(2L);
-        this.addSubStat(5L);
 
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new ArtifactNormal());

@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.captain.*;
@@ -142,6 +142,8 @@ public class CaptainContinuousDealCycle extends DealCycle {
         overdrive.getRelatedSkill().setDelay(30L);
         untiringNectar.setDelay(30L);
         mapleWorldGoddessBlessing.setDelay(210L);
+
+        nautilusAssaultHull.setActivateTime(new Timestamp(-55555555));
     }
 
     @Override
@@ -173,7 +175,7 @@ public class CaptainContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(siegeBomber);
             }
-            if (cooldownCheck(nautilusAssaultHull)) {
+            if (getStart().after(new Timestamp(nautilusAssaultHull.getActivateTime().getTime() + 500))) {
                 isNuke = true;
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -208,7 +210,10 @@ public class CaptainContinuousDealCycle extends DealCycle {
                 }
                 addSkillEvent(bulletParty);
                 isNuke = false;
-            } else if (cooldownCheck(untiringNectar)) {
+            } else if (
+                    cooldownCheck(untiringNectar)
+                    && !cooldownCheck(epicAdventure)
+            ) {
                 addDealCycle(getSkillSequence2());
                 if (cooldownCheck(headShot)) {
                     addSkillEvent(headShot);

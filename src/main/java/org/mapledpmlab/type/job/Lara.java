@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.PassiveBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.NatureFriend;
@@ -60,9 +61,9 @@ public class Lara extends Job {
         this.addMagic(54L);             // 유유
 
         // 환산 보정
-        this.addMainStatP(30L);
-        this.addMainStat(3L);
-        this.addSubStat(-10L);
+        this.addMainStatP(21L);
+        this.addMainStat(-11L);
+        this.addSubStat(5L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

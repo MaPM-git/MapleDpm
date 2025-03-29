@@ -2,7 +2,7 @@ package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.JobContinuous.ShadowerContinuous;
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -269,7 +269,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 darkSightChargeTime = new Timestamp(getStart().getTime() + 9000);
             }
             if (skill instanceof VeilOfShadowBuff) {
-                veilOfShadowEndTime = new Timestamp(veilOfShadowEndTime.getTime() + 12000);
+                veilOfShadowEndTime = new Timestamp(getStart().getTime() + 12000);
                 heartbreakerCount += 2;
             }
             if (skill instanceof DarkSight) {
@@ -501,7 +501,6 @@ public class ShadowerContinuousDealCycle extends DealCycle {
             for (SkillEvent skillEvent : useBuffSkillList) {
                 if (skillEvent.getSkill() instanceof SmokeBomb) {
                     isSmokeBomb = true;
-                    isCovertShadow = true;
                 } else if (skillEvent.getSkill() instanceof VeilOfShadowBuff) {
                     isVeilOfShadow = true;
                 } else if (skillEvent.getSkill() instanceof UltimateDarkSight) {
@@ -598,11 +597,14 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 if (se.getSkill() instanceof MesoExplosion) {
                     for (int j = 0; j < coinCount; j++) {
                         totalDamage += getAttackDamage(new SkillEvent(se.getSkill(), start, start), buffSkill, start, start);
-                        if (isCovertShadow) {
+                        Long ran = (long) (Math.random() * 99 + 1);
+                        if (
+                                isCovertShadow
+                                && ran <= 60
+                        ) {
                             totalDamage += getAttackDamage(new SkillEvent(covertShadowEdge, start, start), buffSkill, start, start);
                         } else {
-                            Long ran = (long) (Math.random() * 99 + 1);
-                            if (ran <= covertShadow.getProp()) {
+                            if (ran <= 36) {
                                 totalDamage += getAttackDamage(new SkillEvent(covertShadow, start, start), buffSkill, start, start);
                             }
                         }
@@ -769,7 +771,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
         System.out.println("데미지 : " + getJob().getDamage());
         System.out.println("최종데미지 : " + getJob().getFinalDamage());
         System.out.println("보스 데미지 : " + getJob().getBossDamage());
-        System.out.println("방어율 무시 : " + getJob().getIgnoreDefense());
+        System.out.println("방어율 무시 : " + String.format("%.4f", getJob().getIgnoreDefense() * 100));
         System.out.println("크리티컬 확률 : " + getJob().getCriticalP());
         System.out.println("장비 공격력 % : " + getJob().getAttP());
         System.out.println("장비 마력 % : " + getJob().getMagicP());

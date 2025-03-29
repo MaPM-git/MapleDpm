@@ -174,4 +174,30 @@ public class Item extends Common {
             }
         }
     }
+
+    public Object[] getObject() {
+        String region = getClass().getSimpleName();
+        if (this.getJobType() == JobType.DEMON_AVENGER) {
+            region = region + "\n데몬어벤져";
+        } else if (this.getJobType() == JobType.XENON) {
+            region = region + "\n제논";
+        } else if (this.getJobType() == JobType.COOLDOWN_REDUCTION1) {
+            region = region + "\n1초";
+        } else if (this.getJobType() == JobType.COOLDOWN_REDUCTION2) {
+            region = region + "\n2초";
+        } else if (this.getJobType() == JobType.COOLDOWN_REDUCTION3) {
+            region = region + "\n3초";
+        } else if (this.getJobType() == JobType.COOLDOWN_REDUCTION4) {
+            region = region + "\n4초";
+        } else if (this.getJobType() == JobType.COOLDOWN_REDUCTION_MAX) {
+            region = region + "\n5초";
+        }
+        String str = this.toString();
+        str = str.substring(2);
+        Object[] result = new Object[]{
+                region,
+                str
+        };
+        return result;
+    }
 }

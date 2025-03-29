@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.ReuseBossCritical;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.*;
@@ -15,7 +16,7 @@ public class Pathfinder5 extends Job {
     public Pathfinder5() {
         // 기본
         super();
-        this.setName("패스파인더(리웨, 5초)");
+        this.setName("패스파인더(리웨, 5초, 4블디레)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
@@ -64,9 +65,9 @@ public class Pathfinder5 extends Job {
         this.addMainStat(82L);          // 일루전 스탭
 
         // 환산 보정
-        this.addMainStatP(-87L);
-        this.addMainStat(-11L);
-        //this.addSubStat(-5L);
+        this.addMainStatP(-93L);
+        this.addMainStat(-6L);
+        this.addSubStat(-10L);
 
         this.setAbility(new ReuseBossCritical());
         this.setArtifact(new ArtifactNormal());

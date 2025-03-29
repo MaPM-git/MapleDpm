@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -194,7 +194,7 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                 }
                 while (!cooldownCheck(maximizeCanon)) {
                     if (getStart().after(overheatTime)) {
-                        if (cylinder < 6) {
+                        while (cylinder < 4) {
                             addDealCycle(flatDeal1);
                         }
                         addDealCycle(flatDeal2);
@@ -211,7 +211,7 @@ public class Blaster510ContinuousDealCycle extends DealCycle {
                 addSkillEvent(vulcanPunch);
                 addSkillEvent(hammerSmashJump);
             } else if (getStart().after(overheatTime)) {
-                if (cylinder < 6) {
+                while (cylinder < 4) {
                     addDealCycle(flatDeal1);
                 }
                 addDealCycle(flatDeal2);

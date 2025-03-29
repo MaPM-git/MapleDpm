@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.Noblesse;
@@ -72,9 +73,9 @@ public class Adele extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(-2L);
-        //this.addSubStat(-5L);
+        this.addMainStatP(-72L);
+        this.addMainStat(9L);
+        this.addSubStat(-10L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

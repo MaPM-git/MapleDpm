@@ -12,5 +12,6 @@ public class FinalAttackCaptain extends AttackSkill {
         this.addFinalDamage(1.3);       // 전함 노틸러스
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
+        this.setAddDamage(30L);     // 아티팩트
     }
 }

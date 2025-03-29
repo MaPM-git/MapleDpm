@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.PassiveBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.Noblesse;
@@ -67,9 +68,9 @@ public class FlameWizard extends Job {
         this.addMagicP(3L);             // 엘리멘트 : 플레임 IV
 
         // 환산 보정
-        this.addMainStatP(15L);
-        this.addMainStat(-3L);
-        this.addSubStat(-10L);
+        this.addMainStatP(6L);
+        this.addMainStat(2L);
+        this.addSubStat(0L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -89,7 +90,7 @@ public class FlameWizard extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addMagic(41L);             // 엘리멘트 : 플레임 IV
+        this.addMagic(42L);             // 엘리멘트 : 플레임 IV
     }
 
     public Long getStatDamage() {

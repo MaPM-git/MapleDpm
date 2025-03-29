@@ -23,14 +23,12 @@ public class ZeroAlphaContinuous extends ZeroContinuous {
         this.addIgnoreDefenseList(30L);
         this.addCriticalP(30.0);        // 리인포스 바디
         this.addCriticalDamage(50.0);   // 디바인 리어
-
-        // 5차
-        this.addMainStat(30L);          // 바디 오브 스틸
     }
 
     @Override
     public void Doping() {
         super.Doping();
+        this.addIgnoreDefenseList(50L); // 아머 스플릿 5중첩
         this.addDamage(5L);             // 래피드 타임 5중첩
         this.addAtt(45L * 3);           // 인피니트 레조넌스 3중첩
     }

@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -127,7 +127,10 @@ public class LaraDealCycle extends DealCycle {
             if (cooldownCheck(manifestationSunlightFilledGround)) {
                 addSkillEvent(manifestationSunlightFilledGround);
             }
-            if (cooldownCheck(sunRiverMountainWindWave1)) {
+            if (
+                    cooldownCheck(sunRiverMountainWindWave1)
+                    && cooldownCheck(soaringSpirit)
+            ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -139,7 +142,7 @@ public class LaraDealCycle extends DealCycle {
                 addSkillEvent(dragonVeinTrace);
                 addSkillEvent(eruptionWhirlwind);
                 addSkillEvent(dragonVeinJump);
-                addSkillEvent(dragonVeinSwitch);
+                //addSkillEvent(dragonVeinSwitch);
                 addSkillEvent(eruptionRipplingRiver);
                 addSkillEvent(dragonVeinFree);
                 addSkillEvent(eruptionSunriseWell);
@@ -165,7 +168,7 @@ public class LaraDealCycle extends DealCycle {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(ridgeWinding)
-                            && cooldownCheck(soaringSpirit)
+                            && cooldownCheck(bigStretch)
                             && !cooldownCheck(armfulTree)
             ) {
                 addSkillEvent(soulContract);
@@ -175,7 +178,7 @@ public class LaraDealCycle extends DealCycle {
                     addSkillEvent(ringOfSum);
                 }
                 addSkillEvent(ridgeWinding);
-                addSkillEvent(soaringSpirit);
+                //addSkillEvent(soaringSpirit);
                 addSkillEvent(dragonVeinFree);
                 addSkillEvent(bigStretch);
             } else if (
@@ -193,7 +196,7 @@ public class LaraDealCycle extends DealCycle {
                 addSkillEvent(dragonVeinTrace);
                 addSkillEvent(eruptionWhirlwind);
                 addSkillEvent(dragonVeinJump);
-                addSkillEvent(dragonVeinSwitch);
+                //addSkillEvent(dragonVeinSwitch);
                 addSkillEvent(eruptionRipplingRiver);
                 addSkillEvent(dragonVeinFree);
                 addSkillEvent(eruptionSunriseWell);

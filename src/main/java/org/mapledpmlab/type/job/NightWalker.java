@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.Noblesse;
@@ -61,6 +62,7 @@ public class NightWalker extends Job {
         // 3차
         this.addFinalDamage(1.2);       // 쉐도우 모멘텀
         this.addAtt(10L);               // 스피릿 스로잉
+        this.addAtt(29L);               // 플레임 표창
         this.addCriticalDamage(10.0);   // 아드레날린
 
         // 4차
@@ -74,8 +76,8 @@ public class NightWalker extends Job {
         this.addAtt(30L);               // 레디 투 다이
 
         // 환산 보정
-        this.addMainStatP(-21L);
-        this.addMainStat(14L);
+        this.addMainStatP(-33L);
+        this.addMainStat(-10L);
         this.addSubStat(5L);
 
         this.setAbility(new BossAbnormalAttack());

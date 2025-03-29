@@ -4,9 +4,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
 public class CraftLonginus extends AttackSkill {
     public CraftLonginus() {
-        this.setName("크래프트:롱기누스");
+        this.setName("크래프트:롱기누스(캔슬)");
         this.setDamage(1790.0);
-        this.setDelayByAttackSpeed(780L);
+        this.setDelayByAttackSpeed(540L);
         this.setAttackCount(12L);
         this.setAddDamage(20L);
         this.setCooldown(15.0);

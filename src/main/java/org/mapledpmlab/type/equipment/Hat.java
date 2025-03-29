@@ -42,6 +42,20 @@ public class Hat extends Item {
             if (this.getLevel() == 250) {
                 this.addMainStatP(-1L);
             }
+        } else if (jobType == JobType.COOLDOWN_REDUCTION3) {
+            this.addCooldownReductionSec(3L);
+            this.addMainStat((long) (12 * 10));
+            this.addMainStatP(-20L);
+            if (this.getLevel() == 250) {
+                this.addMainStatP(-2L);
+            }
+        } else if (jobType == JobType.COOLDOWN_REDUCTION4) {
+            this.addCooldownReductionSec(4L);
+            this.addMainStat((long) (12 * 10));
+            this.addMainStatP(-24L);
+            if (this.getLevel() == 250) {
+                this.addMainStatP(-2L);
+            }
         } else if (jobType == JobType.COOLDOWN_REDUCTION_MAX) {
             this.addCooldownReductionSec(5L);
             this.addMainStat((long) (12 * 10));

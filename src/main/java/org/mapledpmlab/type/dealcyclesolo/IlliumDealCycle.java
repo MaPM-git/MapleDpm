@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -156,7 +156,6 @@ public class IlliumDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(90.0);
         ringSwitching.setDelay(0L);
 
         soulContract.setApplyReuse(true);
@@ -221,6 +220,7 @@ public class IlliumDealCycle extends DealCycle {
                     addPlatDeal();
                 }
                 addSkillEvent(crystalIgnitionBeforeDelay);
+                ringSwitching.setActivateTime(new Timestamp(-1));
                 addSkillEvent(ringSwitching);
                 while (
                         getStart().before(crystalSkillGloryWingEndTime)
@@ -242,6 +242,15 @@ public class IlliumDealCycle extends DealCycle {
                     addSkillEvent(crystalSkillGloryWing);
                     addSkillEvent(gloryWingMortalWingBeat);
                 }
+            } else if (
+                    getStart().after(new Timestamp(restraintRing.getActivateTime().getTime() - 20000))
+                    && getStart().after(crystalSkillGloryWingEndTime)
+                    && cooldownCheck(ringSwitching)
+            ) {
+                ringSwitching.setCooldown(100.0);
+                ringSwitching.setDelay(5000L);
+                addSkillEvent(ringSwitching);
+                ringSwitching.setDelay(0L);
             } else if (
                     getStart().after(crystalSkillGloryWingEndTime)
                             && crystalCharge >= 150
@@ -269,11 +278,10 @@ public class IlliumDealCycle extends DealCycle {
     }
 
     public void addPlatDeal() {
-        if (
-                cooldownCheck(craftLonginus)
-                        && getStart().after(crystalSkillGloryWingEndTime)
-        ) {
+        if (cooldownCheck(craftLonginus)) {
             addSkillEvent(craftLonginus);
+            crystalFragment += 2;
+            gloryCrystalFragment += 3;
         } else if (
                 getStart().before(crystalSkillGloryWingEndTime)
         ) {

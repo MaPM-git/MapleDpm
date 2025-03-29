@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperKinesis;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
@@ -76,9 +76,9 @@ public class KinesisContinuous extends Job {
         this.addCriticalDamage(12.0);   // 숙달
 
         // 환산 보정
-        this.addMainStatP(42L);
+        this.addMainStatP(33L);
         this.addMainStat(-2L);
-        this.addSubStat(-5L);
+        this.addSubStat(5L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

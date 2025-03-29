@@ -14,5 +14,6 @@ public class ComboAssultBow extends GaugeAttackSkill {
         this.setGaugeCharge(-50.0);
         this.setRelatedSkill(new ComboAssultArrow());
         this.setApplyReuse(true);
+        this.setAddDamage(20L);         // 에인션트 포스-인챈트 인핸스
     }
 }

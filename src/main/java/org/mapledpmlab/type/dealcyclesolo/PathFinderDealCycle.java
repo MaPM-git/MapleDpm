@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -70,6 +70,9 @@ public class PathFinderDealCycle extends DealCycle {
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
         }
     };
+
+    Skill beforeSkill = null;
+
     boolean isCriticalReinforce = false;
     boolean isRelicEvolution = false;
     boolean isRelicLiberation = false;
@@ -189,8 +192,18 @@ public class PathFinderDealCycle extends DealCycle {
                 } else {
                     for (int i = 0; i < 8; i++) {
                         addSkillEvent(cardinalBlast);
+                        if (
+                                cooldownCheck(comboAssultBow)
+                                        && getJob().getCooldownReductionSec() != 5
+                        ) {
+                            addSkillEvent(comboAssultBow);
+                            i += 2;
+                        }
                         addSkillEvent(cardinalDischarge);
-                        if (cooldownCheck(comboAssultBow)) {
+                        if (
+                                cooldownCheck(comboAssultBow)
+                                        && getJob().getCooldownReductionSec() != 5
+                        ) {
                             addSkillEvent(comboAssultBow);
                             i += 2;
                         }
@@ -223,8 +236,17 @@ public class PathFinderDealCycle extends DealCycle {
                 addSkillEvent(tripleImpact);
             } else {
                 addSkillEvent(cardinalBlast);
+                if (
+                        cooldownCheck(comboAssultBow)
+                                && getJob().getCooldownReductionSec() != 5
+                ) {
+                    addSkillEvent(comboAssultBow);
+                }
                 addSkillEvent(cardinalDischarge);
-                if (cooldownCheck(comboAssultBow)) {
+                if (
+                        cooldownCheck(comboAssultBow)
+                                && getJob().getCooldownReductionSec() != 5
+                ) {
                     addSkillEvent(comboAssultBow);
                 }
             }
@@ -368,9 +390,11 @@ public class PathFinderDealCycle extends DealCycle {
                 } else if (ran <= additionalDischargeFirst.getProp()) {
                     addSkillEvent(additionalDischargeFirst);
                 }
-                edgeOfResonance.setActivateTime(new Timestamp(edgeOfResonance.getActivateTime().getTime() - 1000));
-                comboAssultBow.setActivateTime(new Timestamp(edgeOfResonance.getActivateTime().getTime() - 1000));
-                ancientWrath.setActivateTime(new Timestamp(ancientWrath.getActivateTime().getTime() - 1000));
+                if (beforeSkill instanceof CardinalDischarge) {
+                    edgeOfResonance.setActivateTime(new Timestamp(edgeOfResonance.getActivateTime().getTime() - 1000));
+                    comboAssultBow.setActivateTime(new Timestamp(comboAssultBow.getActivateTime().getTime() - 1000));
+                    ancientWrath.setActivateTime(new Timestamp(ancientWrath.getActivateTime().getTime() - 1000));
+                }
             }
             if (skill instanceof CardinalDischarge) {
                 Long ran = 0L;
@@ -383,9 +407,11 @@ public class PathFinderDealCycle extends DealCycle {
                 } else if (ran <= additionalBlastFirst.getProp()) {
                     addSkillEvent(additionalBlastFirst);
                 }
-                edgeOfResonance.setActivateTime(new Timestamp(edgeOfResonance.getActivateTime().getTime() - 1000));
-                comboAssultBow.setActivateTime(new Timestamp(edgeOfResonance.getActivateTime().getTime() - 1000));
-                ancientWrath.setActivateTime(new Timestamp(ancientWrath.getActivateTime().getTime() - 1000));
+                if (beforeSkill instanceof CardinalBlast) {
+                    edgeOfResonance.setActivateTime(new Timestamp(edgeOfResonance.getActivateTime().getTime() - 1000));
+                    comboAssultBow.setActivateTime(new Timestamp(comboAssultBow.getActivateTime().getTime() - 1000));
+                    ancientWrath.setActivateTime(new Timestamp(ancientWrath.getActivateTime().getTime() - 1000));
+                }
             }
             if (skill instanceof RavenTempest) {
                 Timestamp timestamp = new Timestamp(getStart().getTime() + 10080);
@@ -440,6 +466,34 @@ public class PathFinderDealCycle extends DealCycle {
         applyCooldown(skill);
         if (skill instanceof AncientImpact) {
             applyCooldown(edgeOfResonance);
+        }
+        if (
+                skill instanceof ComboAssultArrow
+                        || skill instanceof ComboAssultBow
+                        || skill instanceof ForsakenRelicExplosion
+                        || skill instanceof ForsakenRelicWave
+                        || skill instanceof ObsidianBarrier
+                        || skill instanceof Raven
+                        || skill instanceof RavenTempest
+                        || skill instanceof RelicUnbound
+                        || skill instanceof UltimateBlast
+                        || skill instanceof CardinalBlast
+                        || skill instanceof CardinalDischarge
+                        || skill instanceof CrestOfTheSolar
+                        || skill instanceof SpiderInMirror
+                        || skill instanceof MapleWorldGoddessBlessing
+                        || skill instanceof Evolve
+                        || skill instanceof CriticalReinforce
+                        || skill instanceof EpicAdventure
+                        || skill instanceof SoulContract
+                        || skill instanceof RestraintRing
+                        || skill instanceof WeaponJumpRing
+                        || skill instanceof RelicEvolution
+                        || skill instanceof EvolveBuff
+                        || skill instanceof CrestOfTheSolarDot
+                        || skill instanceof SpiderInMirrorDot
+        ) {
+            beforeSkill = skill;
         }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));

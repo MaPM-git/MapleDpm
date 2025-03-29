@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BuffBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -75,9 +76,9 @@ public class Bishop extends Job {
         this.addMainStat(90L);          // 프레이 강화
 
         // 환산 보정
-        this.addMainStatP(-9L);
-        this.addMainStat(3L);
-        this.addSubStat(5L);
+        this.addMainStatP(-12L);
+        this.addMainStat(0L);
+        this.addSubStat(-5L);
         //this.addMagic(-7L);
 
         this.setAbility(new BuffBossAbnormal());

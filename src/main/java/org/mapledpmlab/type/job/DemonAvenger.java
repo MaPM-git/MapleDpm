@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperDemonAvenger;
 import org.mapledpmlab.type.link.IronWill;
@@ -90,9 +91,9 @@ public class DemonAvenger extends Job {
         this.addHp(475L);               // 쓸만한 어드밴스드 블레스
 
         // 환산 보정
-        this.addMainStatP(33L);
-        //this.addAtt(1L);
-        this.addMainStat(-20L);
+        this.addMainStatP(27L);
+        this.addAtt(3L);
+        this.addMainStat(80L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -168,12 +169,12 @@ public class DemonAvenger extends Job {
         }
         Object[] result = new Object[]{
                 this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
-                this.getFinalHp(), this.getFinalHpHyperBodyX(), this.getAp(),
-                this.getStr(), "X", this.getStatDamage(), this.getDamage(),
-                this.getBossDamage(), this.getIgnoreDefense(), this.getCriticalDamage(),
-                this.getCriticalP(), attMagicP, this.getWeaponAttMagic(), this.getPerXMainStat(),
-                this.getPlusBuffDuration(), this.getReuse(), this.getCooldownReductionSec(),
-                this.getFinalDamage()
+                this.getHp(), this.getMainStatP() + this.getAllStatP(), this.getPerXMainStat(),
+                this.getSubStat(), this.getAllStatP(), this.getPerXSubStat(), "X", "X", "X", this.getStatDamage(),
+                this.getDamage(), String.format("%.2f", this.getFinalDamage() * 100 - 100), this.getBossDamage(),
+                String.format("%.4f", this.getIgnoreDefense() * 100), attMagicP, this.getCriticalP(), this.getCriticalDamage(),
+                this.getCooldownReductionSec() + "초 / " + this.getCooldownReductionP() + "%", this.getPlusBuffDuration(), this.getReuse(),
+                this.getProperty(), "14", "30", "1350", "660", this.getWeaponAttMagic()
         };
         return result;
     }

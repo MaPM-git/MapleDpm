@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossCriticalAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperArcher;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -57,6 +58,7 @@ public class WindBreaker extends Job {
         // 2차
         this.addAtt(20L);               // 실프스 에이드
         this.addCriticalP(10.0);
+        this.addAtt(9L);                // 티타늄 화살
         this.addMainStat(20L);          // 보우 액셀레이션
         this.addFinalDamage(1.1);       // 보우 마스터리
         this.addMainStat(30L);          // 피지컬 트레이닝
@@ -82,9 +84,9 @@ public class WindBreaker extends Job {
         this.addCriticalP(15.0);
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(14L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-69L);
+        this.addMainStat(-6L);
+        this.addSubStat(-7L);
 
         this.setAbility(new BossCriticalAbnormal());
         this.setArtifact(new ArtifactNormal());

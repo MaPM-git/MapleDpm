@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.StrUnion;
 
@@ -73,9 +73,9 @@ public class EunwolContinuous extends Job {
         this.addAtt(40L);               // 로디드 다이스
 
         // 환산 보정
-        this.addMainStatP(-51L);
-        this.addMainStat(3L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-54L);
+        this.addMainStat(-5L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

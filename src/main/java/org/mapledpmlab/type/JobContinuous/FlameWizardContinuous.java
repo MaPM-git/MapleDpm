@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.Noblesse;
 import org.mapledpmlab.type.link.PhantomInstinct;
 import org.mapledpmlab.type.union.IntUnion;
@@ -70,9 +70,9 @@ public class FlameWizardContinuous extends Job {
         this.addMagicP(3L);             // 엘리멘트 : 플레임 IV
 
         // 환산 보정
-        this.addMainStatP(24L);
-        this.addMainStat(-6L);
-        //this.addSubStat(15L);
+        this.addMainStatP(15L);
+        this.addMainStat(5L);
+        this.addSubStat(8L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());

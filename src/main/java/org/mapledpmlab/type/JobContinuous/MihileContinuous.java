@@ -5,7 +5,7 @@ import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.link.HybridLogic;
 import org.mapledpmlab.type.union.MihileUnion;
 
@@ -57,6 +57,7 @@ public class MihileContinuous extends Job {
         this.addFinalDamage(1.2);
         this.addMainStat(30L);          // 피지컬 트레이닝
         this.addSubStat(30L);
+        this.addDamage(5L);             // 소울 링크
 
         // 3차
         this.addMainStat(60L);          // 로얄 오쓰
@@ -77,8 +78,8 @@ public class MihileContinuous extends Job {
         this.addMainStat(30L);          // 바디 오브 스틸
 
         // 환산 보정
-        this.addMainStatP(-72L);
-        this.addMainStat(-5L);
+        this.addMainStatP(-84L);
+        this.addMainStat(-10L);
         this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalReuse());
@@ -98,7 +99,6 @@ public class MihileContinuous extends Job {
     public void Doping() {
         super.Doping();
         this.addAtt(100L);              // 로얄 가드
-        this.addDamage(5L);             // 소울 링크
         this.addFinalDamage(1.25);      // 어드밴스드 소울 어택
         this.addDamage(10L);            // 데들리 차지
     }

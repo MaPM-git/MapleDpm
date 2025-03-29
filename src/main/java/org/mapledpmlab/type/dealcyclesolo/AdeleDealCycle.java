@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.adele.*;
@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdeleMarkerDealCycle extends DealCycle {
+public class AdeleDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -113,7 +113,7 @@ public class AdeleMarkerDealCycle extends DealCycle {
     Timestamp magicCircuitFullDriveEndTime = new Timestamp(-1);
     Timestamp restoreEndTime = new Timestamp(-1);
 
-    public AdeleMarkerDealCycle(Job job) {
+    public AdeleDealCycle(Job job) {
         super(job, null);
 
         this.setAttackSkillList(attackSkillList);

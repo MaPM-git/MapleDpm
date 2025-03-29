@@ -4,6 +4,7 @@ import org.mapledpmlab.type.ability.ReuseBossAbnormal;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.equipment.DragonWeapon;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.PhantomInstinct;
@@ -75,9 +76,9 @@ public class Evan extends Job {
         this.addMagic(35L);             // 스파이럴 오브 마나
 
         // 환산 보정
-        this.addMainStatP(30L);
-        this.addMainStat(-12L);
-        this.addSubStat(-5L);
+        this.addMainStatP(21L);
+        this.addMainStat(3L);
+        this.addSubStat(0L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

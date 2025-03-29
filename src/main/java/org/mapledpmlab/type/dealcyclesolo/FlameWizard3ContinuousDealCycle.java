@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.Job;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 import org.mapledpmlab.type.skill.attackskill.DotAttackSkill;
@@ -552,6 +552,7 @@ public class FlameWizard3ContinuousDealCycle extends DealCycle {
                     skill instanceof PhoenixDriveFirst
                     || skill instanceof PhoenixDriveAfterSecond
                     || skill instanceof OrbitalFlameDot
+                            || skill instanceof Eternity
             ) {
                 orbitalExplosionCount++;
                 if (orbitalExplosionCount % 11 == 0) {

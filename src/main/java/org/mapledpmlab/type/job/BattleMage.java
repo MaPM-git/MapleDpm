@@ -3,6 +3,7 @@ package org.mapledpmlab.type.job;
 import org.mapledpmlab.type.ability.BossAbnormalAttack;
 import org.mapledpmlab.type.artifact.ArtifactNormal;
 import org.mapledpmlab.type.etc.Common;
+import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.hyper.HyperCommon;
 import org.mapledpmlab.type.link.HybridLogic;
@@ -69,9 +70,9 @@ public class BattleMage extends Job {
         this.addIgnoreDefenseList(31L);
 
         // 환산 보정
-        this.addMainStatP(3L);
-        this.addMainStat(2L);
-        this.addSubStat(5L);
+        this.addMainStatP(-3L);
+        this.addMainStat(-15L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());

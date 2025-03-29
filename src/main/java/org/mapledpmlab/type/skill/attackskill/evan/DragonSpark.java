@@ -12,5 +12,6 @@ public class DragonSpark extends AttackSkill {
         this.setAddDamage(30L);
         this.addFinalDamage(2.8);                   // 코어 강화
         this.addIgnoreDefenseList(20L);
+        this.setAddDamage(30L);     // 아티팩트
     }
 }
