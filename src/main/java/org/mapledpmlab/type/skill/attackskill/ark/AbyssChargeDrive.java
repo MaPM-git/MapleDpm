@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class AbyssChargeDrive extends AttackSkill implements LefSkill {
     public AbyssChargeDrive() {
         this.setName("어비스 차지드라이브");
-        this.setDamage(550.0);
+        this.setDamage(742.0);
         this.setAttackCount(4L);
         this.setDelayByAttackSpeed(810L);
         this.addFinalDamage(2.2);   // 코어강화

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class KhaliDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -68,9 +70,8 @@ public class KhaliDealCycle extends DealCycle {
 
     int chakriCnt = 0;
     int rushCnt = 0;
-    int resonateCnt = 14;
 
-    boolean afterBlitz = false;
+    int resonateCnt = 14;
 
     Timestamp deathBlossomEndTime = new Timestamp(-1);
     Timestamp deathBlossomInterval = new Timestamp(-1);
@@ -79,6 +80,7 @@ public class KhaliDealCycle extends DealCycle {
     Timestamp resonateUltimatumEndTime = new Timestamp(-1);
     Timestamp restraintRingTime = new Timestamp(-1);
     Timestamp soulContractEndTime = new Timestamp(-1);
+    Timestamp artsCrescentumTime = new Timestamp(-1);
 
     ArtsAstra artsAstra = new ArtsAstra();
     ArtsCrescentum artsCrescentum = new ArtsCrescentum();
@@ -115,11 +117,7 @@ public class KhaliDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(90.0);
-        magicCircuitFullDriveBuff.setCooldown(120.0);
         soulContract.setApplyReuse(true);
-
-        grandisGoddessBlessingLef.setCooldown(120.0);
 
         addSkillEvent(artsFlurry);
 
@@ -145,7 +143,7 @@ public class KhaliDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     getStart().after(new Timestamp(restraintRing.getActivateTime().getTime() + 500))
-                    && getStart().before(new Timestamp(660 * 1000))
+                    && getStart().before(new Timestamp(630 * 1000))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -168,17 +166,13 @@ public class KhaliDealCycle extends DealCycle {
                 }
                 addSkillEvent(voidBurstCombo);
             } else if (
-                    cooldownCheck(deathBlossom)
-                            && !cooldownCheck(wrathOfGod)
+                    cooldownCheck(readyToDie)
+                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 30000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
                 addSkillEvent(deathBlossom);
-                addSkillEvent(readyToDie);
-            } else if (
-                    cooldownCheck(soulContract)
-                            && getStart().after(soulContractEndTime)
-                            && getStart().before(new Timestamp(wrathOfGod.getActivateTime().getTime() + 10000))
-            ) {
                 addSkillEvent(soulContract);
+                addSkillEvent(readyToDie);
             } else {
                 addPlatDealCycle();
             }
@@ -187,26 +181,107 @@ public class KhaliDealCycle extends DealCycle {
     }
 
     public void addPlatDealCycle() {
-        if (cooldownCheck(artsCrescentum)) {
-            addSkillEvent(artsCrescentum);
-        } else if (
+        if (
                 cooldownCheck(hexPandemonium)
-                && (
+                        && (
                         getStart().before(new Timestamp(oblivion.getActivateTime().getTime() - 15000))
-                        || getStart().after(new Timestamp(11 * 60 * 1000))
+                                || getStart().after(new Timestamp(11 * 60 * 1000))
                 )
         ) {
-            addSkillEvent(hexPandemonium);
+            hexPandemonium = new HexPandemonium();
+            if (
+                    cooldownCheck(voidBlitz)
+                            || cooldownCheck(voidRush)
+                            || rushCnt > 0
+            ) {
+                hexPandemonium.setDelay(180L);
+                addSkillEvent(hexPandemonium);
+                if (cooldownCheck(voidBlitz)) {
+                    addSkillEvent(voidBlitz);
+                } else {
+                    addSkillEvent(voidRush);
+                }
+            } else {
+                addSkillEvent(hexPandemonium);
+            }
         } else if (cooldownCheck(hexChakramSplit)) {
-            addSkillEvent(hexChakramSplit);
+            hexChakramSplit = new HexChakramSplit();
+            if (
+                    cooldownCheck(voidBlitz)
+                            || cooldownCheck(voidRush)
+                            || rushCnt > 0
+            ) {
+                hexChakramSplit.setDelay(180L);
+                addSkillEvent(hexChakramSplit);
+                if (cooldownCheck(voidBlitz)) {
+                    addSkillEvent(voidBlitz);
+                } else {
+                    addSkillEvent(voidRush);
+                }
+            } else {
+                addSkillEvent(hexChakramSplit);
+            }
         } else if (cooldownCheck(hexChakramFuryBeforeDelay)) {
-            addSkillEvent(hexChakramFuryBeforeDelay);
+            hexChakramFuryBeforeDelay = new HexChakramFuryBeforeDelay();
+            if (
+                    cooldownCheck(voidBlitz)
+                            || cooldownCheck(voidRush)
+                            || rushCnt > 0
+            ) {
+                hexChakramFuryBeforeDelay.getRelatedSkill().setDelay(180L);
+                addSkillEvent(hexChakramFuryBeforeDelay);
+                if (cooldownCheck(voidBlitz)) {
+                    addSkillEvent(voidBlitz);
+                } else {
+                    addSkillEvent(voidRush);
+                }
+            } else {
+                addSkillEvent(hexChakramFuryBeforeDelay);
+            }
         } else if (cooldownCheck(hexChakramSweep)) {
-            addSkillEvent(hexChakramSweep);
-        } else if (cooldownCheck(artsCrescentum)) {
+            hexChakramSweep = new HexChakramSweep();
+            if (
+                    cooldownCheck(voidBlitz)
+                            || cooldownCheck(voidRush)
+                            || rushCnt > 0
+            ) {
+                hexChakramSweep.setDelay(120L);
+                addSkillEvent(hexChakramSweep);
+                if (cooldownCheck(voidBlitz)) {
+                    addSkillEvent(voidBlitz);
+                } else {
+                    addSkillEvent(voidRush);
+                }
+            } else {
+                addSkillEvent(hexChakramSweep);
+            }
+        } else if (
+                cooldownCheck(artsCrescentum)
+                        && getStart().before(artsCrescentumTime)
+        ) {
+            if (cooldownCheck(voidBlitz)) {
+                addSkillEvent(voidBlitz);
+            }
+            artsCrescentum = new ArtsCrescentum();
+            artsCrescentum.setDelay(180L);
             addSkillEvent(artsCrescentum);
+            addSkillEvent(voidBlitz);
         } else {
-            addSkillEvent(artsFlurry);
+            artsFlurry = new ArtsFlurry();
+            if (
+                    cooldownCheck(voidBlitz)
+                            || cooldownCheck(voidRush)
+            ) {
+                artsFlurry.setDelay(180L);
+                addSkillEvent(artsFlurry);
+                if (cooldownCheck(voidBlitz)) {
+                    addSkillEvent(voidBlitz);
+                } else {
+                    addSkillEvent(voidRush);
+                }
+            } else {
+                addSkillEvent(artsFlurry);
+            }
         }
     }
 
@@ -217,10 +292,8 @@ public class KhaliDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             if (
                     skill instanceof VoidRush
-                    && rushCnt > 0
-            ) {
-                rushCnt--;
-            } else {
+                            && rushCnt > 0
+            ) {} else {
                 System.out.println(getStart() + "\t" + skill.getName() + "\t" + skill.getActivateTime() + "\t" + getJob().getName());
                 return;
             }
@@ -232,28 +305,23 @@ public class KhaliDealCycle extends DealCycle {
         }
         if (
                 rushCnt > 0
-                && skill instanceof VoidRush
-        ) {
-            rushCnt --;
-        }
-        if (cooldownCheck(voidRush)) {
-            rushCnt = 0;
-        }
-        if (
-                skill instanceof BuffSkill
-                || (
-                        !(skill instanceof ArtsCrescentum)
-                        && !(skill instanceof HexSkill)
-                        && !(skill instanceof MagicCircuitFullDrive)
-                        && !(skill instanceof ArtsAstra)
-                        && !(skill instanceof ArtsAstraFinish)
-                        && !(skill instanceof DeceivingBlade)
-                        && !(skill instanceof Resonate)
-                        && !(skill instanceof ResonateAwakening)
+                        && (
+                        skill instanceof ArtsCrescentum
+                                || skill instanceof ArtsFlurry
+                                || skill instanceof DeathBlossom
+                                || skill instanceof HexSandStormBeforeDelay
+                                || skill instanceof VoidBlitz
+                                || skill instanceof VoidBurstCombo
+                                || skill instanceof CrestOfTheSolar
+                                || skill instanceof SpiderInMirror
+                                || skill instanceof GrandisGoddessBlessingLef
+                                || skill instanceof MagicCircuitFullDriveBuff
+                                || skill instanceof Oblivion
+                                || skill instanceof ReadyToDie
+                                || skill instanceof ResonateUltimatum
+                                || skill instanceof SoulContract
+                                || skill instanceof WrathOfGod
                 )
-                || skill instanceof HexSandStormBeforeDelay
-                || skill instanceof VoidBurstCombo
-                || skill instanceof HexPandemonium
         ) {
             rushCnt = 0;
         }
@@ -388,6 +456,7 @@ public class KhaliDealCycle extends DealCycle {
                     skill instanceof VoidRush
                     || skill instanceof VoidBlitz
             ) {
+                artsCrescentumTime = new Timestamp(getStart().getTime() + 2500);
                 int i = 0;
                 if (skill instanceof VoidRush) {
                     i = 1;
@@ -411,110 +480,6 @@ public class KhaliDealCycle extends DealCycle {
                         }
                     }
                 }
-            }
-            if (
-                    skill instanceof ArtsCrescentum
-                            || skill instanceof ArtsFlurry
-                            || skill instanceof HexChakramFuryBeforeDelay
-                            || skill instanceof HexChakramSplit
-                            || skill instanceof HexChakramSweep
-                            || skill instanceof HexPandemonium
-            ) {
-                Timestamp tmp = new Timestamp(getStart().getTime());
-                if (skill instanceof HexChakramSweep) {
-                    getStart().setTime(getStart().getTime() + 90 + 30);
-                } else {
-                    getStart().setTime(getStart().getTime() + 150 + 30);
-                }
-                if (cooldownCheck(voidBlitz)) {
-                    if (skill instanceof HexChakramFuryBeforeDelay) {
-                        hexChakramFuryBeforeDelay = new HexChakramFuryBeforeDelay();
-                        skill = hexChakramFuryBeforeDelay;
-                        skill.getRelatedSkill().setDelay(120L + 30);
-                        skill.getRelatedSkill().setRelatedSkill(voidBlitz);
-                    } else if (skill instanceof HexPandemonium) {
-                        hexPandemonium = new HexPandemonium();
-                        skill = hexPandemonium;
-                        skill.setDelay(150L + 30);
-                        skill.getRelatedSkill().setRelatedSkill(voidBlitz);
-                    } else {
-                        if (skill instanceof ArtsCrescentum) {
-                            artsCrescentum = new ArtsCrescentum();
-                            skill = artsCrescentum;
-                        } else if (skill instanceof ArtsFlurry) {
-                            artsFlurry = new ArtsFlurry();
-                            skill = artsFlurry;
-                        } else if (skill instanceof HexChakramSplit) {
-                            hexChakramSplit = new HexChakramSplit();
-                            skill = hexChakramSplit;
-                        } else {
-                            hexChakramSweep = new HexChakramSweep();
-                            skill = hexChakramSweep;
-                        }
-                        if (skill instanceof HexChakramSweep) {
-                            skill.setDelay(90L + 30);
-                        } else {
-                            skill.setDelay(150L + 30);
-                        }
-                        skill.setRelatedSkill(voidBlitz);
-                    }
-                } else if (
-                        rushCnt > 0
-                        || cooldownCheck(voidRush)
-                ) {
-                    if (skill instanceof HexChakramFuryBeforeDelay) {
-                        hexChakramFuryBeforeDelay = new HexChakramFuryBeforeDelay();
-                        skill = hexChakramFuryBeforeDelay;
-                        skill.getRelatedSkill().setDelay(120L + 30);
-                        skill.getRelatedSkill().setRelatedSkill(voidRush);
-                    } else if (skill instanceof HexPandemonium) {
-                        hexPandemonium = new HexPandemonium();
-                        skill = hexPandemonium;
-                        skill.setDelay(150L + 30);
-                        skill.getRelatedSkill().setRelatedSkill(voidRush);
-                    } else {
-                        if (skill instanceof ArtsCrescentum) {
-                            artsCrescentum = new ArtsCrescentum();
-                            skill = artsCrescentum;
-                        } else if (skill instanceof ArtsFlurry) {
-                            artsFlurry = new ArtsFlurry();
-                            skill = artsFlurry;
-                        } else if (skill instanceof HexChakramSplit) {
-                            hexChakramSplit = new HexChakramSplit();
-                            skill = hexChakramSplit;
-                        } else {
-                            hexChakramSweep = new HexChakramSweep();
-                            skill = hexChakramSweep;
-                        }
-                        if (skill instanceof HexChakramSweep) {
-                            skill.setDelay(90L + 30);
-                        } else {
-                            skill.setDelay(150L + 30);
-                        }
-                        skill.setRelatedSkill(voidRush);
-                    }
-                } else {
-                    if (skill instanceof ArtsCrescentum) {
-                        artsCrescentum = new ArtsCrescentum();
-                        skill = artsCrescentum;
-                    } else if (skill instanceof ArtsFlurry) {
-                        artsFlurry = new ArtsFlurry();
-                        skill = artsFlurry;
-                    } else if (skill instanceof HexChakramSplit) {
-                        hexChakramSplit = new HexChakramSplit();
-                        skill = hexChakramSplit;
-                    } else if (skill instanceof HexChakramSweep) {
-                        hexChakramSweep = new HexChakramSweep();
-                        skill = hexChakramSweep;
-                    } else if (skill instanceof HexChakramFuryBeforeDelay) {
-                        hexChakramFuryBeforeDelay = new HexChakramFuryBeforeDelay();
-                        skill = hexChakramFuryBeforeDelay;
-                    } else {
-                        hexPandemonium = new HexPandemonium();
-                        skill = hexPandemonium;
-                    }
-                }
-                getStart().setTime(tmp.getTime());
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -541,7 +506,11 @@ public class KhaliDealCycle extends DealCycle {
                     }
                 } else {
                     Long attackCount = 0L;
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof DeathBlossom) {
+                        i = 630;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
                         if (skill instanceof VoidBurstCombo) {
                             Long ran = (long) (Math.random() * 99 + 1);
                             if (ran <= 77) {
@@ -589,11 +558,13 @@ public class KhaliDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         }
-        if (
-                skill instanceof VoidRush
-                && !cooldownCheck(voidRush)
-        ) {
-            rushCnt = 2;
+        if (skill instanceof VoidRush) {
+            if (!cooldownCheck(skill)) {
+                rushCnt --;
+            } else {
+                applyCooldown(skill);
+                rushCnt = 2;
+            }
         } else {
             applyCooldown(skill);
         }

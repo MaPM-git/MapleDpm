@@ -17,55 +17,86 @@ public class Illium extends Job {
     public Illium() {
         // 기본
         super();
-        this.setName("일리움(리웨)");
+        this.setName("일리움(0초, 리웨)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.90 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addMagic((long) (992));
-        this.setWeaponAttMagic((long) (992));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addMagicP(9L);
-        this.addMagicP(21L);
-        this.addMagicP(3L);
+        this.setAscentDamage(2933775.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addMagic(3L);
-        this.addBossDamage(70L);
-        this.addMagicP(9L);
-        this.addMagicP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addMagic((long) (992));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addMagicP(9L);
+        passive.addMagicP(21L);
+        passive.addMagicP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (992));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addMagic(3L);
+        passive.addBossDamage(70L);
+        passive.addMagicP(9L);
+        passive.addMagicP(21L);
+        getPassiveList().add(passive);
         
         // 1차
-        this.addCriticalP(20.0);        // 매직 건틀렛 마스터리
-        this.addDamage(10L);            // 블레스 마크
+        passive = new Common();
+        passive.setDescription("매직 건틀렛 마스터리");
+        passive.addCriticalP(20.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("블레스 마크");
+        passive.addDamage(10L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addDamage(15L);            // 레프 마스터리
-        this.addMainStat(40L);          // 운명 개척
-        this.addMagicP(10L);
-        this.addMagic(50L);             // 끊임없는 연구
-        this.addCriticalDamage(30.0);
-        this.addCriticalP(20.0);
+        passive = new Common();
+        passive.setDescription("레프 마스터리");
+        passive.addDamage(15L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("운명 개척");
+        passive.addMainStat(40L);
+        passive.addMagicP(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("끊임없는 연구");
+        passive.addMagic(50L);
+        passive.addCriticalDamage(30.0);
+        passive.addCriticalP(20.0);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addBossDamage(30L);        // 크리스탈의 비밀
-        this.addIgnoreDefenseList(25L);
-        this.addFinalDamage(1.47);
+        passive = new Common();
+        passive.setDescription("크리스탈의 비밀");
+        passive.addBossDamage(30L);
+        passive.addIgnoreDefenseList(25L);
+        passive.addFinalDamage(1.47);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addMagic(65L);             // 소울 오브 크리스탈
-        this.addMainStat(90L);          // 소드 오브 크리스탈 강화
-        this.addSubStat(90L);
+        passive = new Common();
+        passive.setDescription("소드 오브 크리스탈 강화");
+        passive.addMainStat(90L);
+        passive.addSubStat(90L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(42L);
+        this.addMainStatP(27L);
         this.addMainStat(-2L);
         this.addSubStat(10L);
 
@@ -87,8 +118,19 @@ public class Illium extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addIgnoreDefenseList(20L);     // 커스 마크
-        this.addAtt(46L);                   // 블레스 마크
+
+        Common doping = new Common();
+        doping.setDescription("커스 마크");
+        doping.addIgnoreDefenseList(20L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("블레스 마크");
+        doping.addAtt(46L);
+        doping.addMagic(46L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 
     public Long getStatDamage() {

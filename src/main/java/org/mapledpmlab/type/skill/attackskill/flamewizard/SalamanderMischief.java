@@ -8,8 +8,8 @@ public class SalamanderMischief extends AttackSkill {
         this.setDamage(360.0);
         this.setDelay(750L);
         this.setAttackCount(7L);
-        this.setCooldown(90.0);
-        this.setDotDuration(60000L);
+        this.setCooldown(60.0);
+        this.setDotDuration(40000L);
         this.setInterval(625L);
         this.setLimitAttackCount(96L);
         if (embers < 45) {

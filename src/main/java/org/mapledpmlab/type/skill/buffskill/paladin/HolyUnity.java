@@ -9,9 +9,9 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class HolyUnity extends BuffSkill {
     public HolyUnity() {
         this.setName("홀리 유니티");
-        this.setCooldown(90.0);
+        this.setCooldown(60.0);
         this.setDelay(600L);
-        this.setDuration(45L);
+        this.setDuration(30L);
         this.setBuffFinalDamage(1.75 + 0.15);   // 코어 강화
         this.setApplyServerLag(true);
     }

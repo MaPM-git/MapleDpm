@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class PaladinDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -100,9 +102,7 @@ public class PaladinDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         mightyMjolnirDelay.setActivateTime(new Timestamp(-24000));
-        ringSwitching.setCooldown(90.0);
-        auraWeaponBuff.setCooldown(180.0);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        ringSwitching.setCooldown(60.0);
 
         getSkillSequence1().add(auraWeaponBuff);
         getSkillSequence1().add(epicAdventure);             // 30
@@ -131,7 +131,12 @@ public class PaladinDealCycle extends DealCycle {
             if (getStart().after(nobleDemandEndTime)) {
                 addSkillEvent(nobleDemand);
             }
-            if (cooldownCheck(restraintRing)) {
+            if (
+                    cooldownCheck(restraintRing)
+                            && cooldownCheck(mightyMjolnirDelay)
+                            && cooldownCheck(sanctuary)
+                            && getStart().before(new Timestamp(630 * 1000))
+            ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -151,21 +156,21 @@ public class PaladinDealCycle extends DealCycle {
                 addSkillEvent(grandCrossFirstDelay);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 7000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(holyUnity)
                             && cooldownCheck(weaponJumpRing)
                             && getStart().before(new Timestamp(11 * 60 * 1000))
-                            && !cooldownCheck(epicAdventure)
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(blessedHammerBuff);
                 addDealCycle(getSkillSequence2());
             } else if (
                     cooldownCheck(mightyMjolnirDelay)
-                    && !cooldownCheck(soulContract)
+                    && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(mightyMjolnirDelay);
             } else if (
@@ -309,7 +314,6 @@ public class PaladinDealCycle extends DealCycle {
                         && cooldownCheck(sacredBastionLight)
                         && (
                                 skill instanceof Blast
-                                || skill instanceof Sanctuary
                                 || skill instanceof Smite
                                 || skill instanceof MightyMjolnirDelay
                         )
@@ -377,6 +381,17 @@ public class PaladinDealCycle extends DealCycle {
             if (skill instanceof Sanctuary) {
                 Timestamp now = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);
+                if (
+                        getStart().before(sacredBastionEndTime)
+                                && cooldownCheck(sacredBastionLight)
+                ) {
+                    addSkillEvent(sacredBastionLight);
+                    divineBrandCount ++;
+                    if (divineBrandCount >= 5) {
+                        addSkillEvent(divineJudgement);
+                        divineBrandCount -= 5;
+                    }
+                }
                 divineBrandCount ++;
                 if (divineBrandCount >= 5) {
                     addSkillEvent(divineJudgement);

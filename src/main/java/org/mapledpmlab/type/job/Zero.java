@@ -20,37 +20,59 @@ public class Zero extends Job {
         this.setName("제로");
         this.setMastery(1.90 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION2);
-        this.addMainStat(               // 메이플 용사
+
+        this.setAscentDamage(2619216.0);
+
+        Common passive = new Common();
+        passive.setDescription("메이플 용사");
+        passive.addMainStat(
                 (long) Math.floor(
                         (this.getLevel() + 2) * 5 * 0.16 * -1
                 )
         );
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("무기 잠재");
+        passive.addBossDamage(70L * 2);
+        passive.addAttP(9L * 2);
+        passive.addAttP(21L * 2);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
 
         // 공용
-        this.addMainStat(               // 륀느의 가호
+        passive = new Common();
+        passive.setDescription("륀느의 가호");
+        passive.addMainStat(
                 (long) Math.floor(
                         (this.getLevel() + 2) * 5 * 0.15
                 )
         );
-        this.addAtt(20L);               // 디바인 오라
-        this.addMagic(20L);
-        this.addFinalDamage(1.25);      // 리졸브 타임
-        this.addCriticalP(20.0);
-        this.addMainStat(50L);
+        getPassiveList().add(passive);
 
-        // 무기 잠재
-        this.addBossDamage(70L * 2);
-        this.addAttP(9L * 2);
-        this.addAttP(21L * 2);
-        this.addAttP(3L);
+        passive = new Common();
+        passive.setDescription("디바인 오라");
+        passive.addAtt(20L);
+        passive.addMagic(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("리졸브 타임");
+        passive.addFinalDamage(1.17);
+        passive.addCriticalP(20.0);
+        passive.addMainStat(50L);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addMainStat(30L);          // 바디 오브 스틸
+        passive = new Common();
+        passive.setDescription("바디 오브 스틸");
+        passive.addMainStat(30L);
+        getPassiveList().add(passive);
 
         // 환산 보정
-        this.addMainStatP(-12L);
-        this.addMainStat(-3L);
-        this.addSubStat(0L);
+        this.addMainStatP(-15L);
+        this.addMainStat(-5L);
+        this.addSubStat(10L);
 
         this.setAbility(new ReuseBossAbnormal());
         this.setArtifact(new ArtifactNormal());

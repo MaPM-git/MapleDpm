@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class BattleMageContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -60,13 +62,12 @@ public class BattleMageContinuousDealCycle extends DealCycle {
 
     int blackMarkCount = 14;
 
-    private final List<Timestamp> abyssalLightningStartTimeList = new ArrayList<>();
-    private final List<Timestamp> abyssalLightningEndTimeList = new ArrayList<>();
-
     Timestamp abyssalLightningEndTime = new Timestamp(-1);
     Timestamp continuousRingEndTime = new Timestamp(-1);
     Timestamp masterOfDeathEndTime = new Timestamp(-1);
     Timestamp unionAuraEndTime = new Timestamp(-1);
+
+    List<Timestamp> altarTime = new ArrayList<>();
 
     int attackCnt = 0;
     int reaperScytheCnt = 0;
@@ -104,8 +105,6 @@ public class BattleMageContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        mapleWorldGoddessBlessing.setCooldown(120.0);
-
         resistanceLineInfantry.addFinalDamage(1.08);            // 오버로드 마나
 
         getSkillSequence1().add(willOfLiberty);                 // 30
@@ -133,6 +132,7 @@ public class BattleMageContinuousDealCycle extends DealCycle {
             }
             if (cooldownCheck(abyssalLightning)) {
                 isNuke = true;
+                blackMagicAltar.setActivateTime(new Timestamp(-1));
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -164,7 +164,6 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                 }
                 isNuke = false;
             } else if (cooldownCheck(unionAura)) {
-                addSkillEvent(blackMagicAltar);
                 addSkillEvent(grimReaper);
                 addDealCycle(getSkillSequence2());
             } else if (
@@ -276,6 +275,30 @@ public class BattleMageContinuousDealCycle extends DealCycle {
         }
     }
 
+    public void altarProcess() {
+        int index = -1; // 초기값 -1로 설정
+        for (int i = 0; i < altarTime.size(); i++) {
+            if (
+                    altarTime.get(i).after(netherworldLightning.getActivateTime())
+                    || altarTime.get(i).equals(netherworldLightning.getActivateTime())
+            ) {
+                Timestamp tmp = new Timestamp(getStart().getTime());
+                setStart(altarTime.get(i));
+                if (cooldownCheck(netherworldLightning)) {
+                    addSkillEvent(netherworldLightning);
+                }
+                getStart().setTime(tmp.getTime());
+                index = i;
+                break;
+            }
+        }
+
+        // 조건에 맞는 항목이 있을 경우에만 삭제
+        if (index != -1 && altarTime.size() != 0) {
+            altarTime.subList(0, index + 1).clear();
+        }
+    }
+
     @Override
     public void addSkillEvent(Skill skill) {
         Timestamp endTime = null;
@@ -289,15 +312,21 @@ public class BattleMageContinuousDealCycle extends DealCycle {
         } else {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
+        /*if (
+                getStart().before(abyssalLightningEndTime)
+                && !(skill instanceof NetherworldLightning)
+        ) {
+            altarProcess();
+        }*/
         if (skill instanceof BuffSkill) {
             if (skill instanceof MasterOfDeath) {
-                masterOfDeathEndTime = new Timestamp(getStart().getTime() + 33000);
+                masterOfDeathEndTime = new Timestamp(getStart().getTime() + 3000 + masterOfDeath.getDuration() * 1000);
             }
             if (skill instanceof ContinuousRing) {
                 continuousRingEndTime = new Timestamp(getStart().getTime() + 8000);
             }
             if (skill instanceof UnionAura) {
-                unionAuraEndTime = new Timestamp(getStart().getTime() + 43000);
+                unionAuraEndTime = new Timestamp(getStart().getTime() + 3000 + unionAura.getDuration() * 1000);
             }
             if (
                     skill instanceof SoulContract
@@ -389,9 +418,7 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                 }
             }
             if (skill instanceof AbyssalLightning) {
-                this.abyssalLightningStartTimeList.add(new Timestamp(getStart().getTime()));
-                this.abyssalLightningEndTimeList.add(new Timestamp(getStart().getTime() + 43000));
-                abyssalLightningEndTime = new Timestamp(getStart().getTime() + 43000);
+                abyssalLightningEndTime = new Timestamp(getStart().getTime() + 33000);
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -425,6 +452,7 @@ public class BattleMageContinuousDealCycle extends DealCycle {
                             getStart().setTime(getStart().getTime() + i);
                             addSkillEvent(this.getFinalAttack());
                             addSkillEvent(blackMark);
+                            altarTime.add(new Timestamp(getStart().getTime()));
                             getStart().setTime(now.getTime());
                         }
                     }

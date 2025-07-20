@@ -9,7 +9,7 @@ public class Dominion extends AttackSkill implements DarkAttack {
         this.setAttackCount(10L);
         this.setDamage(2000.0);
         this.setRelatedSkill(new DominionBuff());
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
     }

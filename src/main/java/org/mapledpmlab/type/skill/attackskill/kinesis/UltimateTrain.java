@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class UltimateTrain extends AttackSkill {
     public UltimateTrain() {
         this.setName("얼티메이트-트레인");
-        this.setDamage(370.0);
+        this.setDamage(350.0);
         this.setDelayByAttackSpeed(810L);
         this.setAttackCount(6L);
         this.setCooldown(8.63);

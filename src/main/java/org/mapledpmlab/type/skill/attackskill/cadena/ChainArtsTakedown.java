@@ -8,7 +8,7 @@ public class ChainArtsTakedown extends AttackSkill {
         this.setDamage(508.0);
         this.setAttackCount(2L);
         this.setDelayByAttackSpeed(540L);
-        this.setCooldown(120.0 * 0.8);      // 체인아츠:테이크다운-쿨타임 리듀스
+        this.setCooldown(120.0 * 0.5);      // 체인아츠:테이크다운-쿨타임 리듀스
         //this.addFinalDamage(1.3);           // 연계
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);

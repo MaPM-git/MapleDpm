@@ -7,7 +7,7 @@ public class GuidedArrow extends AttackSkill {
         this.setName("가이디드 에로우");
         this.setAttackCount(1L);
         this.setDamage(800.0);
-        this.setInterval(360L);
+        this.setInterval(300L);
         this.setDotDuration(720L * 1000);
     }
 }

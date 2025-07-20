@@ -7,7 +7,7 @@ public class FourSeasonsRamphantAnnihilation extends AttackSkill {
         this.setName("포 시즌 : 램펀트(섬멸)");
         this.setApplyFinalAttack(true);
         this.setAttackCount(7L * 2);
-        this.setDamage(790.0);
+        this.setDamage(709.0);
         this.setDelayByAttackSpeed(840L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

@@ -13,8 +13,8 @@ public class PoolmakerBuff extends BuffSkill {
         this.setDelayByAttackSpeed(960L);
         this.setCooldown(60.0);
         this.setApplyServerLag(true);
-        this.setDuration(30L);
-        this.addBuffDamage(30L);
+        this.setDuration(60L);
+        this.addBuffDamage(60L);
         this.setRelatedSkill(new Poolmaker());
     }
 }

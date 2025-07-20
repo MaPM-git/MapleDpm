@@ -10,8 +10,8 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class BlizzardTempest extends BuffSkill {
     public BlizzardTempest() {
         this.setName("블리자드 템페스트");
-        this.setDuration(30L);
-        this.setCooldown(90.0);
+        this.setDuration(20L);
+        this.setCooldown(60.0);
         this.setDelayByAttackSpeed(720L);
         this.setRelatedSkill(new IceBlock());
     }

@@ -12,6 +12,5 @@ public class HowlingGale3 extends AttackSkill {
         this.setInterval(150L);
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new HowlingGale2());
-        this.setApplyCooldownReduction(false);
     }
 }

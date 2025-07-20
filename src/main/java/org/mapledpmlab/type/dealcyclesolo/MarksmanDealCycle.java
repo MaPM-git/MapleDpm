@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class MarksmanDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -107,7 +109,6 @@ public class MarksmanDealCycle extends DealCycle {
         }
 
         ringSwitching.setCooldown(120.0);
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         snipeList.add(snipe);
         snipeList.add(enhanceSnipe);
@@ -149,11 +150,7 @@ public class MarksmanDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 }
                 addDealCycle(getSkillSequence1());
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(trueSnipe);
                 addSkillEvent(longRangeTrueShot);
                 for (int i = 0; i < 8; i++) {
@@ -164,12 +161,6 @@ public class MarksmanDealCycle extends DealCycle {
                     addSkillEvent(finalAimWave);
                 }
                 dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(100 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000)))
-            {
-                addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(trueSnipe)
                             && cooldownCheck(soulContract)

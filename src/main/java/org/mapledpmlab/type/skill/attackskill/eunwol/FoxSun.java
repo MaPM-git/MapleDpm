@@ -11,5 +11,6 @@ public class FoxSun extends AttackSkill {
         this.setInterval(180L);
         this.setLimitAttackCount(60L);
         this.addFinalDamage(1.6);           // 코어 강화
+        this.setRelatedSkill(new LightOfTheFoxGoddessAlterEgo());
     }
 }

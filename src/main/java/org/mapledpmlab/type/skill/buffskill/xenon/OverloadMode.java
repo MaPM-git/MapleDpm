@@ -11,8 +11,9 @@ public class OverloadMode extends BuffSkill {
     public OverloadMode() {
         this.setName("오버로드 모드");
         this.setDelay(720L);
-        this.setDuration(70L);
+        this.setDuration(45L);
         this.setRelatedSkill(new OverloadModePlasmaCurrent());
-        this.setCooldown(180.0);
+        this.setApplyServerLag(true);
+        this.setCooldown(120.0);
     }
 }

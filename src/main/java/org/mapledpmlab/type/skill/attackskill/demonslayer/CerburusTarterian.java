@@ -8,7 +8,7 @@ public class CerburusTarterian extends GaugeAttackSkill {
         this.setAttackCount(7L);
         this.addFinalDamage(0.95);          // 블루 블러드
         this.setAttackCount(this.getAttackCount() * 2);
-        this.setDamage(410.0);
+        this.setDamage(520.0);
         this.addIgnoreDefenseList(50L);
         this.setAddDamage(50L);
         this.setCooldown(15.0);

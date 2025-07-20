@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class ArkDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -151,10 +153,7 @@ public class ArkDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(120.0);
-
-        magicCircuitFullDriveBuff.setCooldown(120.0);
-        grandisGoddessBlessingLef.setCooldown(120.0);
+        ringSwitching.setCooldown(60.0);
 
         magicCircuitFullDriveBuff.setDelay(120L);
         chargeSpellAmplification.setDelay(120L);
@@ -192,11 +191,7 @@ public class ArkDealCycle extends DealCycle {
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(blissfulRestraintDot);
                 addSkillEvent(endlesslyStarvingBeast);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(crawlingFearBeforeDelay);
                 addSkillEvent(endlessAgonyBeforeDelay);
                 addSkillEvent(memoryOfRootBeforeDelay);
@@ -215,13 +210,6 @@ public class ArkDealCycle extends DealCycle {
                     addSkillEvent(crawlingFearBeforeDelay);
                 }
                 addSkillEvent(endlessAgonyBeforeDelay);
-            } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(100 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-                            && !isSpecter
-            ) {
-                addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(returningHatred)
                             && hatredCnt > 0

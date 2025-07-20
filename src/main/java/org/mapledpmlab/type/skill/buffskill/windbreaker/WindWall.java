@@ -10,8 +10,8 @@ public class WindWall extends BuffSkill {
     public WindWall() {
         this.setName("윈드 월");
         this.setDelayByAttackSpeed(720L);
-        this.setDuration(60L);
-        this.setCooldown(90.0);
+        this.setDuration(40L);
+        this.setCooldown(60.0);
         this.setApplyServerLag(true);
     }
 }

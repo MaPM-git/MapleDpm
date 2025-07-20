@@ -10,8 +10,8 @@ public class ProfessionalAgent extends BuffSkill {
     public ProfessionalAgent() {
         this.setName("프로페셔널 에이전트");
         this.setDelayByAttackSpeed(720L);
-        this.setDuration(30L);
-        this.setCooldown(180.0);
+        this.setDuration(20L);
+        this.setCooldown(120.0);
         this.setApplyServerLag(true);
     }
 }

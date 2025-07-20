@@ -255,6 +255,57 @@ public class Common {
         this.addSubStat(c.getSubStat());
     }
 
+    public void minusObject(Common c) {
+        this.addAtt(-c.getAtt());
+        this.addAttP(-c.getAttP());
+        this.addAllStatP(-c.getAllStatP());
+        this.addBossDamage(-c.getBossDamage());
+        this.addCooldownReductionP(-c.getCooldownReductionP());
+        this.addCooldownReductionSec(-c.getCooldownReductionSec());
+        this.addCriticalDamage(-c.getCriticalDamage());
+        this.addCriticalP(-c.getCriticalP());
+        this.addDamage(-c.getDamage());
+        this.minusFinalDamage(c.getFinalDamage());
+        this.addHp(-c.getHp());
+        if (
+                c.getIgnoreDefenseList().size() > 0
+                && getIgnoreDefenseList().size() > 0
+        ) {
+            for (int i = 0; i < getIgnoreDefenseList().size(); i++) {
+                if (getIgnoreDefenseList().get(i) == c.getIgnoreDefenseList().get(0)) {
+                    getIgnoreDefenseList().remove(i);
+                    break;
+                }
+            }
+        }
+        this.addMagic(-c.getMagic());
+        this.addMagicP(-c.getMagicP());
+        this.addMainStat(-c.getMainStat());
+        this.addMainStatP(-c.getMainStatP());
+        this.addOtherStat1(-c.getOtherStat1());
+        this.addOtherStat2(-c.getOtherStat2());
+        this.addPerXAtt(-c.getPerXAtt());
+        this.addPerXMainStat(-c.getPerXMainStat());
+        this.addPerXOtherStat(-c.getPerXOtherStat());
+        this.addPerXSubStat(-c.getPerXSubStat());
+        this.addPlusBuffDuration(-c.getPlusBuffDuration());
+        this.addProperty(-c.getProperty());
+        this.addReuse(-c.getReuse());
+        this.addStatXDamage(-c.getStatXDamage());
+        if (
+                c.getStatXIgnoreDefenseList().size() > 0
+                && getStatXIgnoreDefenseList().size() > 0
+        ) {
+            for (int i = 0; i < getStatXIgnoreDefenseList().size(); i++) {
+                if (getStatXIgnoreDefenseList().get(i) == c.getStatXIgnoreDefenseList().get(0)) {
+                    getStatXIgnoreDefenseList().remove(i);
+                    break;
+                }
+            }
+        }
+        this.addSubStat(-c.getSubStat());
+    }
+
     @Override
     public String toString() {
         String str = "\n";

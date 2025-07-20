@@ -6,7 +6,7 @@ public class GrandCross1 extends AttackSkill {
     public GrandCross1() {
         this.setName("그랜드 크로스(작은 십자가)");
         this.setAttackCount(12L);   // 작은 십자가 7
-        this.setDamage(770.0);
+        this.setDamage(515.0);
         this.setDotDuration(150L * 7);
         this.setLimitAttackCount(7L);
         this.setInterval(150L);

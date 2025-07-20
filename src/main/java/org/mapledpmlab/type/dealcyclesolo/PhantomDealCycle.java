@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class PhantomDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -121,8 +123,7 @@ public class PhantomDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(90.0);
-        mapleWorldGoddessBlessing.setCooldown(120.0);
+        ringSwitching.setCooldown(60.0);
 
         getSkillSequence1().add(heroesOath);                // 30
         getSkillSequence1().add(mapleWorldGoddessBlessing); // 330
@@ -147,6 +148,8 @@ public class PhantomDealCycle extends DealCycle {
         getStart().setTime(0);
 
         freudBlessing6.setCooldown(260.0);
+
+        finalCutBuff.setCooldown(0.0);
     }
 
     @Override
@@ -180,11 +183,11 @@ public class PhantomDealCycle extends DealCycle {
             ) {
                 addSkillEvent(freudBlessing6);
             } else if (
-                    cooldownCheck(bullsEye)
+                    getStart().after(new Timestamp(bullsEye.getActivateTime().getTime() + 2000))
                             && cooldownCheck(markOfPhantom)
-                            && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
-                chk30 = 2L;
+                chk30 = 1L;
                 addSkillEvent(finalCutBuff);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -221,24 +224,23 @@ public class PhantomDealCycle extends DealCycle {
                     applyCooldown(tempestOfCardBeforeDelay);
                 }
             } else if (
-                    cooldownCheck(finalCutBuff)
-                            && cooldownCheck(preparationPhantom)
+                    cooldownCheck(preparationPhantom)
                             && cooldownCheck(soulContract)
                             && cooldownCheck(readyToDie)
                             && !cooldownCheck(heroesOath)
             ) {
-                chk30 = 4L;
+                chk30 = 2L;
                 addSkillEvent(finalCutBuff);
                 addDealCycle(getSkillSequence2());
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(70 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(50 * 1000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
-                if (ringSwitching.getCooldown() == 90) {
-                    ringSwitching.setCooldown(100.0);
+                if (getStart().after(new Timestamp(2 * 60 * 1000))) {
+                    ringSwitching.setCooldown(64.0);
                 } else {
-                    ringSwitching.setCooldown(90.0);
+                    ringSwitching.setCooldown(60.0);
                 }
                 addSkillEvent(ringSwitching);
             } else if (
@@ -247,7 +249,10 @@ public class PhantomDealCycle extends DealCycle {
             ) {
                 addSkillEvent(laMortCarteBuff);
             } else if (
-                    chk30 > 0
+                    (
+                            chk30 > 0
+                            || getStart().after(new Timestamp(630 * 1000))
+                    )
                             && cooldownCheck(markOfPhantom)
                             && getStart().before(new Timestamp(670 * 1000))
             ) {
@@ -280,7 +285,11 @@ public class PhantomDealCycle extends DealCycle {
                     && getStart().before(new Timestamp(bullsEye.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(blackJackBeforeDelay);
-            } else if (cooldownCheck(tempestOfCardBeforeDelay)) {
+            } else if (
+                    cooldownCheck(tempestOfCardBeforeDelay)
+                            && (markOfPhantom.getActivateTime().getTime() - getStart().getTime()) > 3000
+                            && (blackJackBeforeDelay.getActivateTime().getTime() - getStart().getTime()) > 3000
+            ) {
                 addSkillEvent(tempestOfCardBeforeDelay);
                 applyCooldown(tempestOfCardBeforeDelay);
             } else {

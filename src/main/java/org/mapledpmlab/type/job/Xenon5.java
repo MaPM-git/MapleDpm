@@ -18,100 +18,177 @@ public class Xenon5 extends Job {
     public Xenon5() {
         // 기본
         super();
-        this.setName("제논(리웨, 5초)");
+        this.setName("제논(5초, 리레단일)");
         this.setConstant(1.3125);          // 무기상수
-        this.setMainStat(               // 기본 스탯(275 기준)
-                this.getLevel() * 5 + 18 - 326 - 326
-        );
-        this.setSubStat(330L);          // STR
-        this.setOtherStat1(330L);       // DEX
-        this.addMainStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
-        this.addSubStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
-        this.addOtherStat1((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
         this.setMastery(1.91 / 2);      // 숙련도
-        this.addMainStat(30L);          // 향상된 10단계 물약
         this.setJobType(JobType.XENON);
 
-        this.addPerXMainStat(-28200L);
-        this.addPerXMainStat(7200L + 6336);
-        this.addPerXSubStat(7200L + 6336);
-        this.addPerXOtherStat(7200L + 6336);
-        //this.addPerXMainStat((long) (144 * 4 + 96 * 20));
+        this.setAscentDamage(2867620.0);
 
         // 모자
         this.addCooldownReductionSec(3L);
         this.addAllStatP(-15L);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (255 + 157 + 72 + 223));
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (255 + 157 + 72 + 223));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
         this.setWeaponAttMagic((long) (255 + 157 + 72 + 223));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
 
-        // 보조
-        this.addMainStat(2L);
-        this.addSubStat(2L);
-        this.addOtherStat1(2L);
-        this.addOtherStat2(2L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(2L);
+        passive.addSubStat(2L);
+        passive.addOtherStat1(2L);
+        passive.addOtherStat2(2L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("기본 스탯(285 기준)");
+        passive.setMainStat(
+                this.getLevel() * 5 + 18 - 326 - 326
+        );
+        passive.setSubStat(330L);
+        passive.setOtherStat1(330L);
+        passive.addMainStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
+        passive.addSubStat((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
+        passive.addOtherStat1((long) (4 + 5 + 30 + 6 + 6 + 6 + 6));
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("심볼");
+        passive.addPerXMainStat(-28200L);
+        passive.addPerXMainStat(7200L + 6336);
+        passive.addPerXSubStat(7200L + 6336);
+        passive.addPerXOtherStat(7200L + 6336);
+        //passive.addPerXMainStat((long) (144 * 4 + 96 * 20));
+        getPassiveList().add(passive);
+
         // 0차
-        this.addDamage(3L);             // 멀티래터럴 I
-        this.addMainStat(70L);          // 컨버전 스타포스
-        this.addSubStat(70L);
-        this.addOtherStat1(70L);
+        passive = new Common();
+        passive.setDescription("멀티래터럴 I");
+        passive.addDamage(3L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("컨버전 스타포스");
+        passive.addMainStat(70L);
+        passive.addSubStat(70L);
+        passive.addOtherStat1(70L);
+        getPassiveList().add(passive);
 
         // 1차
-        this.addAtt(30L);               // 인클라인 파워
-        //this.addAllStatP(20L);          // 서플라이 20
-        this.addDamage(5L);             // 멀티래터럴 II
+        passive = new Common();
+        passive.setDescription("서플라이 20");
+        passive.addAllStatP(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("멀티래터럴 II");
+        passive.addDamage(5L);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addCriticalP(40.0);        // 리니어 퍼스펙티브
-        this.addMainStat(25L);          // 마이너리티 서포트
-        this.addSubStat(25L);
-        this.addOtherStat1(25L);
-        this.addAtt(20L);               // 제논 마스터리
-        this.addDamage(7L);             // 멀티래터럴 III
+        passive = new Common();
+        passive.setDescription("리니어 퍼스펙티브");
+        passive.addCriticalP(40.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("마이너리티 서포트");
+        passive.addMainStat(25L);
+        passive.addSubStat(25L);
+        passive.addOtherStat1(25L);
+        passive.addOtherStat2(25L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("제논 마스터리");
+        passive.addAtt(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("멀티래터럴 III");
+        passive.addDamage(7L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addMainStat(10L);          // 듀얼브리드 디펜시브
-        this.addSubStat(10L);
-        this.addOtherStat1(10L);
-        this.addDamage(10L);            // 멀티래터럴 IV
+        passive = new Common();
+        passive.setDescription("듀얼브리드 디펜시브");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addOtherStat1(10L);
+        passive.addOtherStat2(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("멀티래터럴 IV");
+        passive.addDamage(10L);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addMainStat(               // 메이플 용사
+        passive = new Common();
+        passive.setDescription("메이플 용사");
+        passive.addMainStat(
                 (long) Math.floor(
                         ((this.getLevel() + 2) * 5 - 326 - 326) * 0.16
                 )
         );
-        this.addSubStat((long) Math.floor(326 * 0.16));
-        this.addOtherStat1((long) Math.floor(326 * 0.16));
-        this.addAtt(31L);               // 제논 엑스퍼트
-        this.addCriticalDamage(8.0);
-        this.addIgnoreDefenseList(31L);  // 오펜시브 매트릭스
-        this.addDamage(10L);            // 멀티래터럴 V
-        this.addDamage(5L);             // 멀티래터럴 VI
-        this.addFinalDamage(1.15);
+        passive.addSubStat((long) Math.floor(326 * 0.16));
+        passive.addOtherStat1((long) Math.floor(326 * 0.16));
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("제논 엑스퍼트");
+        passive.addAtt(31L);
+        passive.addCriticalDamage(8.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("오펜시브 매트릭스");
+        passive.addIgnoreDefenseList(31L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("멀티래터럴 V");
+        passive.addDamage(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("멀티래터럴 VI");
+        passive.addDamage(5L);
+        passive.addFinalDamage(1.15);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addAtt(40L);               // 로디드 다이스
-        this.addAtt(30L);               // 레디 투 다이
+        passive = new Common();
+        passive.setDescription("로디드 다이스");
+        passive.addAtt(40L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("레디 투 다이");
+        passive.addAtt(30L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addAllStatP(-30L);
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addOtherStat1(10L);
+        this.addAllStatP(-123L);
+        this.addMainStat(13L);
+        this.addSubStat(13L);
+        this.addOtherStat1(13L);
         this.addAtt(-1L);
 
         this.setAbility(new BossAbnormalAttack());
@@ -129,6 +206,28 @@ public class Xenon5 extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+
+        Common doping = new Common();
+        doping.setDescription("서플라이 20");
+        doping.addAllStatP(-20L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("인클라인 파워");
+        doping.addAtt(30L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("제논 엑스퍼트(콜렉터의 영약)");
+        doping.addAtt(1L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 
     public Long getFinalSubStat2() {
@@ -154,23 +253,32 @@ public class Xenon5 extends Job {
 
     @Override
     public Object[] getOpject() {
-        Long attMagic;
+        Long attMagicBase;
         Long attMagicP;
+        Long attMagicAbs;
+        Long statusAdditionalDmg;
         if (this.getAtt() > this.getMagic()) {
-            attMagic = this.getAtt();
+            attMagicBase = this.getAtt();
             attMagicP = this.getAttP();
+            attMagicAbs = this.getPerXAtt();
         } else {
-            attMagic = this.getMagic();
+            attMagicBase = this.getMagic();
             attMagicP = this.getMagicP();
+            attMagicAbs = this.getPerXAtt();
+        }
+        if (this.getAbilityDescription().contains("상태")) {
+            statusAdditionalDmg = 14L;
+        } else {
+            statusAdditionalDmg = 6L;
         }
         Object[] result = new Object[]{
                 this.getName(), this.getConstant(), this.getMastery() * 2 - 1, this.getLevel(),
                 this.getMainStat(), this.getMainStatP() + this.getAllStatP(), this.getPerXMainStat(),
                 this.getSubStat(), this.getAllStatP(), this.getPerXSubStat(), this.getOtherStat1(), this.getAllStatP(), this.getPerXOtherStat(), this.getStatDamage(),
                 this.getDamage(), String.format("%.2f", this.getFinalDamage() * 100 - 100), this.getBossDamage(),
-                String.format("%.4f", this.getIgnoreDefense() * 100), attMagicP, this.getCriticalP(), this.getCriticalDamage(),
+                String.format("%.4f", this.getIgnoreDefense() * 100), attMagicBase, attMagicP, attMagicAbs, this.getCriticalP(), this.getCriticalDamage(),
                 this.getCooldownReductionSec() + "초 / " + this.getCooldownReductionP() + "%", this.getPlusBuffDuration(), this.getReuse(),
-                this.getProperty(), "14", "30", "1350", "660", this.getWeaponAttMagic()
+                this.getProperty(), statusAdditionalDmg, "30", "1350", "660", this.getWeaponAttMagic()
         };
         return result;
     }

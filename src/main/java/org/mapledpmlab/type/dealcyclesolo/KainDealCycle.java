@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class KainDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -28,6 +30,9 @@ public class KainDealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DeathBlessing());
+            add(new DeathBlessingAnnihilation());
+            add(new DeathBlessingAnnihilationIncarnation());
+            add(new DeathBlessingIncarnation());
             add(new DragonBurstBeforeDelay());
             add(new DragonBurstLoop());
             add(new DragonBurstAfterDelay());
@@ -88,10 +93,8 @@ public class KainDealCycle extends DealCycle {
         }
     };
 
-    boolean isAnnihilation = false;
     boolean isCriticalReinforce = false;
     boolean isDeathBlessingContribution = false;
-    boolean isIncarnation = false;
 
     int deathBlessingCnt = 15;
     int malice = 500;
@@ -101,6 +104,7 @@ public class KainDealCycle extends DealCycle {
     Timestamp annihilationBuffEndTime = new Timestamp(-1);
     Timestamp deathBlessingContributionBuffEndTime = new Timestamp(-1);
     Timestamp grandisGoddessBlessingEndTime = new Timestamp(-1);
+    Timestamp incarnationEndTime = new Timestamp(-1);
     Timestamp thanatosDescentEndTime = new Timestamp(-1);
     Timestamp thanatosDescentFinishTime = new Timestamp(-1);
 
@@ -114,6 +118,9 @@ public class KainDealCycle extends DealCycle {
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     CriticalReinforce criticalReinforce = new CriticalReinforce(0.0);
     DeathBlessing deathBlessing = new DeathBlessing();
+    DeathBlessingAnnihilation deathBlessingAnnihilation = new DeathBlessingAnnihilation();
+    DeathBlessingAnnihilationIncarnation deathBlessingAnnihilationIncarnation = new DeathBlessingAnnihilationIncarnation();
+    DeathBlessingIncarnation deathBlessingIncarnation = new DeathBlessingIncarnation();
     DragonBurstBeforeDelay dragonBurstBeforeDelay = new DragonBurstBeforeDelay();
     DragonFang dragonFang1 = new DragonFang();
     DragonFang dragonFang2 = new DragonFang();
@@ -157,7 +164,7 @@ public class KainDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(90.0);
+        ringSwitching.setCooldown(60.0);
 
         strikeArrowList.add(strikeArrow1);
         strikeArrowList.add(strikeArrow2);
@@ -193,7 +200,10 @@ public class KainDealCycle extends DealCycle {
         addSkillEvent(possession);
         addSkillEvent(shaftBreakEnchant);
         while (getStart().before(getEnd())) {
-            if (cooldownCheck(restraintRing)) {
+            if (
+                    cooldownCheck(restraintRing)
+                    && getStart().before(new Timestamp(630 * 1000))
+            ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -209,40 +219,29 @@ public class KainDealCycle extends DealCycle {
                     addSkillEvent(annihilation);
                 }
                 addSkillEvent(fatalBlitzBeforeDelay);
-                addSkillEvent(possession);
-                addSkillEvent(sneakySnipingEnchantBeforeDelay);
-                addSkillEvent(sneakySnipingBeforeDelay);
-                while (getStart().before(new Timestamp(thanatosDescentFinishTime.getTime() - 5000))) {
+                while (getStart().before(new Timestamp(thanatosDescentFinishTime.getTime()))) {
                     kainPlatDealCycle();
                 }
                 addSkillEvent(thanatosDescentFinish);
                 addSkillEvent(weaponJumpRing);
             } else if (
-                    cooldownCheck(gripOfAgony)
+                    cooldownCheck(soulContract)
                     && cooldownCheck(ringOfSum)
-                    && !cooldownCheck(criticalReinforce)
+                    && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(gripOfAgony);
                 addSkillEvent(soulContract);
-                addSkillEvent(ringOfSum);
+                //addSkillEvent(ringOfSum);
                 addSkillEvent(dragonBurstBeforeDelay);
                 addSkillEvent(fatalBlitzBeforeDelay);
-                addSkillEvent(possession);
-                addSkillEvent(sneakySnipingEnchantBeforeDelay);
-                if (cooldownCheck(sneakySnipingBeforeDelay)) {
-                    addSkillEvent(sneakySnipingBeforeDelay);
-                }
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            //&& getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 7000))
+                            && getStart().after(new Timestamp(restraintRing.getActivateTime().getTime() - 7000))
+                            && getStart().after(new Timestamp(50 * 1000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(sneakySnipingBeforeDelay)
-                            && !cooldownCheck(soulContract)
-            ) {
-                addSkillEvent(sneakySnipingBeforeDelay);
             } else {
                 kainPlatDealCycle();
             }
@@ -251,7 +250,12 @@ public class KainDealCycle extends DealCycle {
     }
 
     public void kainPlatDealCycle() {
-        if (
+         if (cooldownCheck(sneakySnipingEnchantBeforeDelay)) {
+            addSkillEvent(possession);
+            addSkillEvent(sneakySnipingEnchantBeforeDelay);
+        } else if (cooldownCheck(sneakySnipingBeforeDelay)) {
+            addSkillEvent(sneakySnipingBeforeDelay);
+        } else if (
                 cooldownCheck(poisonNeedle)
                 && deathBlessingCnt > 0
         ) {
@@ -294,6 +298,7 @@ public class KainDealCycle extends DealCycle {
         } else if (
                 cooldownCheck(strikeArrowEnchant)
                         && malice >= 100
+                        && deathBlessingCnt <= 3
         ) {
             addSkillEvent(possession);
             addSkillEvent(strikeArrowEnchant);
@@ -309,9 +314,9 @@ public class KainDealCycle extends DealCycle {
             addSkillEvent(tearingKnife);
         } else if (cooldownCheck(shaftBreak)) {
             addSkillEvent(shaftBreak);
-        } else if (cooldownCheck(phantomBlade)) {
+        } /*else if (cooldownCheck(phantomBlade)) {
             addSkillEvent(phantomBlade);
-        } else {
+        }*/ else {
             addSkillEvent(strikeArrowList.get(i % 3));
             i++;
         }
@@ -370,18 +375,6 @@ public class KainDealCycle extends DealCycle {
             for (int j = 0; j < useBuffSkillList.size(); j++) {
                 if (useBuffSkillList.get(j).getSkill() instanceof CriticalReinforce) {
                     isCriticalReinforce = true;
-                    break;
-                }
-            }
-            for (int j = 0; j < useBuffSkillList.size(); j++) {
-                if (useBuffSkillList.get(j).getSkill() instanceof Incarnation) {
-                    isIncarnation = true;
-                    break;
-                }
-            }
-            for (int j = 0; j < useBuffSkillList.size(); j++) {
-                if (useBuffSkillList.get(j).getSkill() instanceof AnnihilationBuff) {
-                    isAnnihilation = true;
                     break;
                 }
             }
@@ -449,8 +442,6 @@ public class KainDealCycle extends DealCycle {
                 }
             }
             isCriticalReinforce = false;
-            isIncarnation = false;
-            isAnnihilation = false;
             isDeathBlessingContribution = false;
             setRingOfSum(false);
         }
@@ -468,26 +459,6 @@ public class KainDealCycle extends DealCycle {
         if (isCriticalReinforce) {
             CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
             buffSkill.addBuffCriticalDamage(criticalReinforce.getBuffCriticalDamage());
-        }
-        if (
-                isAnnihilation
-                && skillEvent.getSkill() instanceof DeathBlessing
-        ) {
-            attackSkill = new DeathBlessing();
-            attackSkill.setDamage(725.0 + 250);
-        }
-        if (
-                isIncarnation
-                && skillEvent.getSkill() instanceof DeathBlessing
-        ) {
-            if (!isAnnihilation) {
-                attackSkill = new DeathBlessing();
-            }
-            attackSkill.setAttackCount(13L);
-            if (isAnnihilation) {
-                attackSkill.setAttackCount(15L);
-                attackSkill.setDamage(755.0 + 250);
-            }
         }
         for (AttackSkill as : getAttackSkillList()) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
@@ -538,12 +509,6 @@ public class KainDealCycle extends DealCycle {
                 as.setCumulativeDamage(as.getCumulativeDamage() + attackDamage);
                 break;
             }
-        }
-        if (skillEvent.getSkill() instanceof DeathBlessing) {
-            attackSkill.setAttackCount(10L);
-            attackSkill.setDamage(308.0);
-            ((DeathBlessing) skillEvent.getSkill()).setAttackCount(10L);
-            ((DeathBlessing) skillEvent.getSkill()).setDamage(308.0);
         }
         if (isCriticalReinforce) {
             CriticalReinforce criticalReinforce = new CriticalReinforce(getJob().getCriticalP() + buffSkill.getBuffCriticalP());
@@ -609,6 +574,9 @@ public class KainDealCycle extends DealCycle {
             if (skill instanceof AnnihilationBuff) {
                 annihilationBuffEndTime = new Timestamp(getStart().getTime() + 33000);
             }
+            if (skill instanceof Incarnation) {
+                incarnationEndTime = new Timestamp(getStart().getTime() + incarnation.getDuration() * 1000 + 3000);
+            }
             if (skill instanceof DeathBlessingContributionBuff) {
                 deathBlessingContributionBuffEndTime = new Timestamp(getStart().getTime() + 8000);
             }
@@ -654,6 +622,7 @@ public class KainDealCycle extends DealCycle {
                     || skill instanceof ScatteringShotEnchant
                     || skill instanceof ShaftBreakEnchant
                     || skill instanceof FallingDustEnchant
+                    || skill instanceof FallingDustEnchantMalice
             ) {
                 if (getStart().before(annihilationBuffEndTime)) {
                     if (deathBlessingCnt < 20) {
@@ -677,7 +646,18 @@ public class KainDealCycle extends DealCycle {
                     )
             ) {
                 deathBlessingCnt--;
-                addSkillEvent(deathBlessing);
+                if (
+                        getStart().before(annihilationBuffEndTime)
+                        && getStart().before(incarnationEndTime)
+                ) {
+                    addSkillEvent(deathBlessingAnnihilationIncarnation);
+                } else if (getStart().before(annihilationBuffEndTime)) {
+                    addSkillEvent(deathBlessingAnnihilation);
+                } else if (getStart().before(incarnationEndTime)) {
+                    addSkillEvent(deathBlessingIncarnation);
+                } else {
+                    addSkillEvent(deathBlessing);
+                }
                 if (
                         getStart().before(annihilationBuffEndTime)
                                 && cooldownCheck(annihilationDragonBreath)
@@ -749,35 +729,21 @@ public class KainDealCycle extends DealCycle {
                 }
             }
             if (
-                    skill instanceof Annihilation
-                    || skill instanceof AnnihilationFinish
-                    || skill instanceof ChainSickle
+                    skill instanceof ChainSickle
                     || skill instanceof ChainSickleFinish
                     || skill instanceof ChasingShot
-                    || skill instanceof DragonBurstAfterDelay
-                    || skill instanceof DragonBurstBeforeDelay
-                    || skill instanceof DragonBurstLoop
                     || skill instanceof FallingDust
                     || skill instanceof FallingDustEnchant
                     || skill instanceof FallingDustEnchantMalice
-                    || skill instanceof FatalBlitzAfterDelay
-                    || skill instanceof FatalBlitzBeforeDelay
-                    || skill instanceof FatalBlitzLoop
                     || skill instanceof PhantomBlade
                     || skill instanceof PoisonNeedle
                     || skill instanceof PoisonNeedleFinish
-                    || skill instanceof PoisonNeedleLoop
                     || skill instanceof ScatteringShot
                     || skill instanceof ScatteringShotEnchant
                     || skill instanceof ShaftBreak
                     || skill instanceof ShaftBreakBomb
                     || skill instanceof ShaftBreakEnchant
                     || skill instanceof ShaftBreakEnchantBomb
-                    || skill instanceof ShaftBreakEnchantTornado
-                    || skill instanceof SneakySniping
-                    || skill instanceof SneakySnipingBeforeDelay
-                    || skill instanceof SneakySnipingEnchant
-                    || skill instanceof SneakySnipingEnchantBeforeDelay
                     || skill instanceof StrikeArrow1
                     || skill instanceof StrikeArrow2
                     || skill instanceof StrikeArrow3
@@ -839,6 +805,8 @@ public class KainDealCycle extends DealCycle {
                         i = 1500;
                     }
                     for (; i <= ((AttackSkill) skill).getDotDuration() && attackCount < ((AttackSkill) skill).getLimitAttackCount(); i += ((AttackSkill) skill).getInterval()) {
+                        Timestamp now = new Timestamp(getStart().getTime());
+                        getStart().setTime(getStart().getTime() + i);
                         if (skill instanceof DragonBurstLoop) {
                             if (getStart().before(annihilationBuffEndTime)) {
                                 if (deathBlessingCnt < 20) {
@@ -857,17 +825,37 @@ public class KainDealCycle extends DealCycle {
                                 ) && deathBlessingCnt > 0
                         ) {
                             deathBlessingCnt--;
-                            Timestamp now = new Timestamp(getStart().getTime());
-                            getStart().setTime(getStart().getTime() + i);
-                            addSkillEvent(deathBlessing);
+                            if (
+                                    getStart().before(annihilationBuffEndTime)
+                                            && getStart().before(incarnationEndTime)
+                            ) {
+                                addSkillEvent(deathBlessingAnnihilationIncarnation);
+                            } else if (getStart().before(annihilationBuffEndTime)) {
+                                addSkillEvent(deathBlessingAnnihilation);
+                            } else if (getStart().before(incarnationEndTime)) {
+                                addSkillEvent(deathBlessingIncarnation);
+                            } else {
+                                addSkillEvent(deathBlessing);
+                            }
                             if (
                                     getStart().before(annihilationBuffEndTime)
                                     && cooldownCheck(annihilationDragonBreath)
                             ) {
                                 addSkillEvent(annihilationDragonBreath);
                             }
-                            getStart().setTime(now.getTime());
                         }
+                        if (
+                                getStart().before(thanatosDescentEndTime)
+                                        && cooldownCheck(thanatosDescentDeathArrow)
+                                        && (
+                                        skill instanceof DragonBurstLoop
+                                                || skill instanceof FatalBlitzLoop
+                                                || skill instanceof PoisonNeedleLoop
+                                )
+                        ) {
+                            addSkillEvent(thanatosDescentDeathArrow);
+                        }
+                        getStart().setTime(now.getTime());
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
@@ -907,7 +895,10 @@ public class KainDealCycle extends DealCycle {
     public void multiAttackProcess(Skill skill) {
         Long sum = 0L;
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
-            if (skill instanceof ThanatosDescentFinish) {
+            if (
+                    skill instanceof ThanatosDescentFinish
+                    || skill instanceof SneakySnipingEnchant
+            ) {
                 if (getStart().before(annihilationBuffEndTime)) {
                     if (deathBlessingCnt < 20) {
                         deathBlessingCnt++;
@@ -922,13 +913,36 @@ public class KainDealCycle extends DealCycle {
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
             if (
+                    getStart().before(thanatosDescentEndTime)
+                            && cooldownCheck(thanatosDescentDeathArrow)
+                            && (
+                            skill instanceof Annihilation
+                                    || skill instanceof AnnihilationFinish
+                                    || skill instanceof SneakySniping
+                                    || skill instanceof SneakySnipingEnchant
+                    )
+            ) {
+                addSkillEvent(thanatosDescentDeathArrow);
+            }
+            if (
                     skill instanceof SneakySnipingEnchant
                             && deathBlessingCnt > 0
             ) {
                 deathBlessingCnt--;
                 Timestamp now = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);
-                addSkillEvent(deathBlessing);
+                if (
+                        getStart().before(annihilationBuffEndTime)
+                                && getStart().before(incarnationEndTime)
+                ) {
+                    addSkillEvent(deathBlessingAnnihilationIncarnation);
+                } else if (getStart().before(annihilationBuffEndTime)) {
+                    addSkillEvent(deathBlessingAnnihilation);
+                } else if (getStart().before(incarnationEndTime)) {
+                    addSkillEvent(deathBlessingIncarnation);
+                } else {
+                    addSkillEvent(deathBlessing);
+                }
                 if (
                         getStart().before(annihilationBuffEndTime)
                         && cooldownCheck(annihilationDragonBreath)
@@ -986,9 +1000,11 @@ public class KainDealCycle extends DealCycle {
                     skill.isApplyReuse()
                             && getStart().before(grandisGoddessBlessingEndTime)
                             && reuseCnt > 0
+                            && !cooldownCheck(skill)
             ) {
                 Double ran = Math.random() * 99;
-                if (ran <= getJob().getReuse()) {
+                if (ran <= 55) {
+                    reuseCnt--;
                     return;
                 } else {
                     skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));

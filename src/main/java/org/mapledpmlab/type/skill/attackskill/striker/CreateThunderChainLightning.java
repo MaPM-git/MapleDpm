@@ -13,7 +13,7 @@ public class CreateThunderChainLightning extends AttackSkill {
         this.getMultiAttackInfo().add(0L);
         this.getMultiAttackInfo().add(0L);
         this.addFinalDamage(1.6);       // 코어강화
-        this.addFinalDamage(0.855);         // 축뢰
+        this.addFinalDamage(0.86);          // 축뢰
         this.addFinalDamage(1.18);          // 연쇄
     }
 }

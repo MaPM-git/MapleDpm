@@ -1,0 +1,74 @@
+package org.mapledpmlab.type.skill.attackskill.len;
+
+import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+
+public class AzureDragonSkybreakerSwordAscension1 extends AttackSkill {
+    public AzureDragonSkybreakerSwordAscension1() {
+        this.setName("창룡파천검 : 승천(파동)");
+        this.setDelay(5700L);
+        this.setAttackCount(12L);
+        this.setDamage(1500.0);
+        this.setAddDamage(50L);
+        this.addIgnoreDefenseList(50L);
+        this.setRelatedSkill(new AzureDragonSkybreakerSwordAscension2());
+        this.setCooldown(360.0);
+        this.getMultiAttackInfo().add(540L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(300L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(780L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(720L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(180L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+    }
+}

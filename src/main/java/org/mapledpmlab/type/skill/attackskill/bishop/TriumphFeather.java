@@ -18,5 +18,6 @@ public class TriumphFeather extends AttackSkill {
         this.getMultiAttackInfo().add(0L);
         this.getMultiAttackInfo().add(0L);
         this.getMultiAttackInfo().add(0L);
+        this.setApplyFinalAttack(true);
     }
 }

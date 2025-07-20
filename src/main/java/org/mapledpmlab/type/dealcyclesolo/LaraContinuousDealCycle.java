@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class LaraContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -114,8 +116,6 @@ public class LaraContinuousDealCycle extends DealCycle {
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        grandisGoddessBlessingAnima.setCooldown(120.0);
     }
 
     @Override
@@ -125,7 +125,11 @@ public class LaraContinuousDealCycle extends DealCycle {
             if (cooldownCheck(manifestationSunlightFilledGround)) {
                 addSkillEvent(manifestationSunlightFilledGround);
             }
-            if (cooldownCheck(sunRiverMountainWindWave1)) {
+            if (
+                    cooldownCheck(armfulTree)
+                            && cooldownCheck(soulContract)
+                            && getStart().before(new Timestamp(630 * 1000))
+            ) {
                 eruptionSunriseWell.setActivateTime(new Timestamp(-1));
                 eruptionRipplingRiver.setActivateTime(new Timestamp(-1));
                 eruptionWhirlwind.setActivateTime(new Timestamp(-1));
@@ -139,6 +143,9 @@ public class LaraContinuousDealCycle extends DealCycle {
                 addSkillEvent(grandisGoddessBlessingAnima);
                 addSkillEvent(armfulTree);
                 addSkillEvent(dragonVeinTrace);
+                eruptionWhirlwind.setActivateTime(new Timestamp(-1));
+                eruptionRipplingRiver.setActivateTime(new Timestamp(-1));
+                eruptionSunriseWell.setActivateTime(new Timestamp(-1));
                 addSkillEvent(eruptionWhirlwind);
                 addSkillEvent(dragonVeinJump);
                 //addSkillEvent(dragonVeinSwitch);
@@ -173,7 +180,7 @@ public class LaraContinuousDealCycle extends DealCycle {
                 addSkillEvent(ridgeWinding);
             } else if (
                     cooldownCheck(soaringSpirit)
-                            && !cooldownCheck(armfulTree)
+                            && getStart().before(new Timestamp(armfulTree.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(soaringSpirit);
             } else if (

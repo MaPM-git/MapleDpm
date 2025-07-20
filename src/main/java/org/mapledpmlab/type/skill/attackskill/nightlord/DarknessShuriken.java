@@ -5,9 +5,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DarknessShuriken extends AttackSkill {
     public DarknessShuriken() {
         this.setName("다크니스 슈리켄");
-        this.setAttackCount(5L);
+        this.setAttackCount(6L);
         this.setCooldown(60.0);
-        this.setDamage(1700.0);
+        this.setDamage(1420.0);
         this.setDotDuration(60000L);
         this.setInterval(480L);
         this.setLimitAttackCount(30L);

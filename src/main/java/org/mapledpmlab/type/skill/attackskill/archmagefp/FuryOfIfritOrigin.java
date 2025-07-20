@@ -11,7 +11,7 @@ public class FuryOfIfritOrigin extends AttackSkill {
         this.setInterval(180L);
         this.setLimitAttackCount(42L);
         this.setDelayByAttackSpeed(480L);
-        this.setCooldown(75.0);
+        this.setCooldown(60.0);
         this.addFinalDamage(1.6);       // 코어강화
         this.addFinalDamage(1.08);      // 오버로드 마나
     }

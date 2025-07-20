@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class PsychicTornadoThrow extends AttackSkill {
     public PsychicTornadoThrow() {
         this.setName("싸이킥 토네이도(이동)");
-        this.setDamage(433.0);
+        this.setDamage(280.0);
         this.setDelay(720L);
         this.setAttackCount(4L);
         this.addFinalDamage(3.0);

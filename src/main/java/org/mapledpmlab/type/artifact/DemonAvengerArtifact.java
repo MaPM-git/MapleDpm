@@ -27,6 +27,6 @@ public class DemonAvengerArtifact extends Artifact {
         this.addReuse(7.5);
         this.addCriticalP(20.0);
         this.addCriticalDamage(4.0);
-        this.addDamage(15L);
+        this.addBossDamage(15L);
     }
 }

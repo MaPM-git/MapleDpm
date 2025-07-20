@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class AdeleDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -62,7 +64,6 @@ public class AdeleDealCycle extends DealCycle {
             add(new MagicCircuitFullDriveBuff());
             add(new RestoreBuff());
             add(new RestraintRing());
-            add(new RingOfSum());
             add(new RingSwitching());
             add(new SoulContract());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
@@ -93,7 +94,6 @@ public class AdeleDealCycle extends DealCycle {
     OrderRestore orderRestore = new OrderRestore();
     RestoreBuff restoreBuff = new RestoreBuff();
     RestraintRing restraintRing = new RestraintRing();
-    RingOfSum ringOfSum = new RingOfSum();
     RingSwitching ringSwitching = new RingSwitching();
     Ruin ruin = new Ruin();
     Shard shard = new Shard();
@@ -119,16 +119,12 @@ public class AdeleDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(57.0);
-        ringSwitching.setApplyCooldownReduction(false);
+        ringSwitching.setCooldown(60.0);
 
         impale.setCooldown(58.0);       // 스택 유지만
 
-        auraWeaponBuff.setCooldown(180.0);
-        grandisGoddessBlessingLef.setCooldown(120.0);
         etherSword = 3L;
 
-        auraWeaponBuff.setDelay(150L);
         wrathOfGod.setDelay(150L);
         magicCircuitFullDriveBuff.setDelay(150L);
         bodyOfSteel.setDelay(150L);
@@ -157,11 +153,10 @@ public class AdeleDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(restraintRing)
-                    && getStart().before(new Timestamp(600 * 1000))
+                            && cooldownCheck(ruin)
+                            && cooldownCheck(marker1)
+                            && getStart().before(new Timestamp(600 * 1000))
             ) {
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
                 if (cooldownCheck(impale)) {
                     addSkillEvent(impale);
                 }
@@ -177,75 +172,47 @@ public class AdeleDealCycle extends DealCycle {
                 if (cooldownCheck(shard)) {
                     addSkillEvent(shard);
                 }
-                addDealCycle(getSkillSequence1());
-                addSkillEvent(orderRestore);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
-                addSkillEvent(infinite);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
-                addSkillEvent(squall);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
-                addSkillEvent(soulContract);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
                 if (cooldownCheck(territory)) {
                     addSkillEvent(territory);
                 }
-                addSkillEvent(restraintRing);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
+                while (getStart().before(new Timestamp(gathering.getActivateTime().getTime() - 2000))) {
+                    if (cooldownCheck(territory)) {
+                        addSkillEvent(territory);
+                    } else if (cooldownCheck(shard)) {
+                        addSkillEvent(shard);
+                    } else {
+                        addSkillEvent(devide);
+                    }
                 }
-                addSkillEvent(gathering);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
+                addDealCycle(getSkillSequence1());
+                addSkillEvent(infinite);
+                addSkillEvent(orderRestore);
                 addSkillEvent(stormRestore);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
+                addSkillEvent(soulContract);
+                addSkillEvent(restraintRing);
+                addSkillEvent(gathering);
                 addSkillEvent(ruin);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
                 addSkillEvent(marker1);
-                if (cooldownCheck(shard)) {
-                    addSkillEvent(shard);
-                }
                 if (cooldownCheck(maestro)) {
                     addSkillEvent(maestro);
                 }
                 storm.setActivateTime(new Timestamp(stormRestore.getActivateTime().getTime()));
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(50 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 6000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(storm)
-                            && !cooldownCheck(wrathOfGod)
-                            && getStart().before(new Timestamp(660 * 1000))
-            ) {
-                addSkillEvent(storm);
-                stormRestore.setActivateTime(new Timestamp(storm.getActivateTime().getTime()));
             } else if (
                     cooldownCheck(soulContract)
                             && cooldownCheck(ruin)
                             && cooldownCheck(marker1)
                             && getStart().before(new Timestamp(auraWeaponBuff.getActivateTime().getTime() - 10000))
             ) {
+                addSkillEvent(storm);
+                stormRestore.setActivateTime(new Timestamp(storm.getActivateTime().getTime()));
                 addSkillEvent(soulContract);
-                if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                } else {
-                    addSkillEvent(ringOfSum);
-                }
+                addSkillEvent(weaponJumpRing);
                 addSkillEvent(ruin);
                 addSkillEvent(marker1);
             } else if (cooldownCheck(territory)) {
@@ -304,7 +271,7 @@ public class AdeleDealCycle extends DealCycle {
         }
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -317,7 +284,7 @@ public class AdeleDealCycle extends DealCycle {
                 magicCircuitFullDriveEndTime = new Timestamp(getStart().getTime() + 63000);
             }
             if (skill instanceof RestoreBuff) {
-                restoreEndTime = new Timestamp(getStart().getTime() + 33000);
+                restoreEndTime = new Timestamp(getStart().getTime() + restoreBuff.getDuration() * 1000 + 3000);
             }
             if (
                     skill instanceof RestraintRing

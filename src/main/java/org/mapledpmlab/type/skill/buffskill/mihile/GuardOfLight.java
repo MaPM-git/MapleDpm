@@ -10,9 +10,9 @@ public class GuardOfLight extends BuffSkill {
     public GuardOfLight() {
         this.setName("빛의 수호");
         this.setBuffDamage(20L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setDelay(900L);
-        this.setDuration(30L);
+        this.setDuration(20L);
         this.setApplyPlusBuffDuration(true);
         this.setApplyServerLag(true);
     }

@@ -16,55 +16,89 @@ public class Blaster extends Job {
     public Blaster() {
         // 기본
         super();
-        this.setName("블래스터(리웨)");
+        this.setName("블래스터(0초, 리레단일)");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (255 + 157 + 72 + 223));
-        this.setWeaponAttMagic((long) (255 + 157 + 72 + 223));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
+        this.setAscentDamage(3381840.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addAtt(3L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (255 + 157 + 72 + 223));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (255 + 157 + 72 + 223));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addAtt(3L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addCriticalP(30.0);        // 건틀렛 마스터리
-        this.addAtt(20L);
-        this.addMainStat(30L);          // 피지컬 트레이닝
-        this.addSubStat(30L);
-        this.addDamage(15L);            // 차지 마스터리
+        passive = new Common();
+        passive.setDescription("건틀렛 마스터리");
+        passive.addCriticalP(30.0);
+        passive.addAtt(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("피지컬 트레이닝");
+        passive.addMainStat(30L);
+        passive.addSubStat(30L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("차지 마스터리");
+        passive.addDamage(15L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addAttP(15L);              // 콤비네이션 트레이닝
+        passive = new Common();
+        passive.setDescription("콤비네이션 트레이닝");
+        passive.addAttP(15L);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addCriticalDamage(21.0);   // 건틀렛 엑스퍼트
-        this.addBossDamage(21L);
-        this.addIgnoreDefenseList(38L); // 어드밴스드 차지 마스터리
-        this.addAtt(42L);               // 콤비네이션 트레이닝 II
-        this.addCriticalP(40.0);
+        passive = new Common();
+        passive.setDescription("건틀렛 엑스퍼트");
+        passive.addCriticalDamage(15.0);
+        passive.addBossDamage(11L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("어드밴스드 차지 마스터리");
+        passive.addIgnoreDefenseList(38L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("콤비네이션 트레이닝 II");
+        passive.addAtt(42L);
+        passive.addCriticalP(40.0);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addMainStat(30L);          // 바디 오브 스틸
+        passive = new Common();
+        passive.setDescription("바디 오브 스틸");
+        passive.addMainStat(30L);
+        getPassiveList().add(passive);
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(3L);
-        this.addSubStat(10L);
+        this.addMainStatP(-69L);
+        this.addMainStat(-13L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -77,12 +111,29 @@ public class Blaster extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+
+        this.addObject(getPassiveList());
     }
 
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.7);       // 콤비네이션 트레이닝
-        this.addFinalDamage(1.1);       // 해머 스매시
+
+        Common doping = new Common();
+        doping.setDescription("콤비네이션 트레이닝");
+        doping.addFinalDamage(1.7);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("해머 스매시");
+        doping.addFinalDamage(1.1);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("콤비네이션 트레이닝 II(콜렉터의 영약)");
+        doping.addAtt(2L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

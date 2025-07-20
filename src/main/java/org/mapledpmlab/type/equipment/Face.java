@@ -16,7 +16,11 @@ public class Face extends Item {
         this.addOtherStat2(10L);
         this.addAtt(10L);
         this.addMagic(10L);
-        if (jobType == JobType.DEMON_AVENGER) {
+        this.addAtt(4L * 5);
+        this.addAtt(5L);
+        this.addMagic(4L * 5);
+        this.addMagic(5L);
+        /*if (jobType == JobType.DEMON_AVENGER) {
             this.addHp((long) (250 * 6) / 2);
         } else if (jobType == JobType.XENON) {
             this.addMainStat((long) (3 * 6));
@@ -25,7 +29,7 @@ public class Face extends Item {
             this.addOtherStat2((long) (3 * 6));
         } else  {
             this.addMainStat((long) (5 * 6));
-        }
+        }*/
         this.addAtt(1L);
         this.addMagic(1L);
     }

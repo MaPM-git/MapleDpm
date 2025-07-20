@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class PathFinderDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -144,7 +146,6 @@ public class PathFinderDealCycle extends DealCycle {
         }
 
         ringSwitching.setCooldown(120.0);
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         soulContract.setApplyReuse(true);
 
@@ -178,11 +179,7 @@ public class PathFinderDealCycle extends DealCycle {
                 }
                 addSkillEvent(obsidianBarrier);
                 addDealCycle(getSkillSequence1());
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(ravenTempest);
                 while (cooldownCheck(edgeOfResonance)) {
                     addSkillEvent(edgeOfResonance);
@@ -195,6 +192,7 @@ public class PathFinderDealCycle extends DealCycle {
                         if (
                                 cooldownCheck(comboAssultBow)
                                         && getJob().getCooldownReductionSec() != 5
+                                        && getStart().after(relicLiberationEndTime)
                         ) {
                             addSkillEvent(comboAssultBow);
                             i += 2;
@@ -203,6 +201,7 @@ public class PathFinderDealCycle extends DealCycle {
                         if (
                                 cooldownCheck(comboAssultBow)
                                         && getJob().getCooldownReductionSec() != 5
+                                        && getStart().after(relicLiberationEndTime)
                         ) {
                             addSkillEvent(comboAssultBow);
                             i += 2;
@@ -216,14 +215,6 @@ public class PathFinderDealCycle extends DealCycle {
                 dealCycleOrder ++;
                 tripleImpact.setActivateTime(new Timestamp(getStart().getTime() + 10000));
             } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(100 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000)))
-            {
-                getStart().setTime(getStart().getTime() + 150);
-                addSkillEvent(ringSwitching);
-                tripleImpact.setActivateTime(new Timestamp(getStart().getTime() + 8000));
-            } else if (
                     cooldownCheck(soulContract)
                             && getStart().after(soulContractEndTime)
                             && getStart().before(new Timestamp(evolve.getActivateTime().getTime() - 35000))
@@ -231,14 +222,15 @@ public class PathFinderDealCycle extends DealCycle {
                 getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(soulContract);
                 applyCooldown(tripleImpact);
-            } else if (cooldownCheck(tripleImpact)) {
+            } /*else if (cooldownCheck(tripleImpact)) {
                 getStart().setTime(getStart().getTime() + 150);
                 addSkillEvent(tripleImpact);
-            } else {
+            }*/ else {
                 addSkillEvent(cardinalBlast);
                 if (
                         cooldownCheck(comboAssultBow)
                                 && getJob().getCooldownReductionSec() != 5
+                                && getStart().after(relicLiberationEndTime)
                 ) {
                     addSkillEvent(comboAssultBow);
                 }
@@ -246,6 +238,7 @@ public class PathFinderDealCycle extends DealCycle {
                 if (
                         cooldownCheck(comboAssultBow)
                                 && getJob().getCooldownReductionSec() != 5
+                                && getStart().after(relicLiberationEndTime)
                 ) {
                     addSkillEvent(comboAssultBow);
                 }

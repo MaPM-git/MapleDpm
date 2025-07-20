@@ -12,6 +12,7 @@ public class ReaperScythe extends AttackSkill {
         this.addFinalDamage(2.2);           // 코어 강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.6);
+        this.setRelatedSkill(new DarkLightning());
         this.setApplyFinalAttack(true);
         this.addFinalDamage(1.08);          // 오버로드 마나
     }

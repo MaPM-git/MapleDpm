@@ -7,7 +7,7 @@ public class FourSeasonsRamphant extends AttackSkill {
         this.setName("포 시즌 : 램펀트");
         this.setApplyFinalAttack(true);
         this.setAttackCount(7L * 2);
-        this.setDamage(160.0);
+        this.setDamage(838.0);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(0.85);      // 쉐도우 파트너

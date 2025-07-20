@@ -9,7 +9,7 @@ public class CreateThunderChainFinal extends AttackSkill {
         this.setDamage(1990.0);
         this.setDelay(600L);
         this.addFinalDamage(1.6);       // 코어강화
-        this.addFinalDamage(0.855);         // 축뢰
+        this.addFinalDamage(0.86);          // 축뢰
         this.addFinalDamage(1.18);          // 연쇄
         this.setRelatedSkill(new CreateThunderChainHugeLightning());
     }

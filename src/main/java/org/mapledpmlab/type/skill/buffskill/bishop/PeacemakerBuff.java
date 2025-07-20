@@ -9,8 +9,8 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class PeacemakerBuff extends BuffSkill {
     public PeacemakerBuff() {
         this.setName("피스메이커(신성한 빛)");
-        this.setBuffDamage(11L);
-        this.setDuration(8L);
+        this.setBuffDamage(23L);
+        this.setDuration(12L);
         this.setApplyServerLag(true);
     }
 }

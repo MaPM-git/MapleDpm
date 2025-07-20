@@ -10,10 +10,10 @@ public class Incarnation extends BuffSkill {
     public Incarnation() {
         this.setName("인카네이션");
         this.setDelayByAttackSpeed(780L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.addBuffDamage(15L);
         this.addBuffAttMagicPer(15L);
-        this.setDuration(40L);
+        this.setDuration(35L);
         this.setApplyServerLag(true);
     }
 }

@@ -17,69 +17,116 @@ public class SoulMaster extends Job {
     public SoulMaster() {
         // 기본
         super();
-        this.setName("소울마스터(리웨)");
+        this.setName("소울마스터(0초, 리레단일)");
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (340 + 210 + 72 + 253));
-        this.setWeaponAttMagic((long) (340 + 210 + 72 + 253));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
+        this.setAscentDamage(3969000.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addOtherStat1(10L);
-        this.addOtherStat2(10L);
-        this.addAtt(3L);
-        this.addMagic(3L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (340 + 210 + 72 + 253));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (340 + 210 + 72 + 253));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addOtherStat1(10L);
+        passive.addOtherStat2(10L);
+        passive.addAtt(3L);
+        passive.addMagic(3L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
 
         // 0차
-        this.addAttP(10L);              // 엘리멘탈 엑스퍼트
-        this.addMagicP(10L);
-        this.addMainStat(               // 엘리멘탈 하모니
+        passive = new Common();
+        passive.setDescription("엘리멘탈 엑스퍼트");
+        passive.addAttP(10L);
+        passive.addMagicP(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("엘리멘탈 하모니");
+        passive.addMainStat(
                 (this.getLevel() - 1) / 2
         );
+        getPassiveList().add(passive);
 
         // 2차
-        this.addIgnoreDefenseList(10L);  // 엘리멘트 : 소울
-        this.addAtt(20L);               // 이너 트러스트
-        this.addMainStat(40L);          // 피지컬 트레이닝
-        this.addSubStat(20L);
+        passive = new Common();
+        passive.setDescription("엘리멘트 : 소울");
+        passive.addIgnoreDefenseList(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("이너 트러스트");
+        passive.addAtt(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("피지컬 트레이닝");
+        passive.addMainStat(40L);
+        passive.addSubStat(20L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addAtt(30L);               // 이너 샤우트
-        this.addMainStat(40L);
+        passive = new Common();
+        passive.setDescription("이너 샤우트");
+        passive.addAtt(30L);
+        passive.addMainStat(40L);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addMainStat(31L);          // 소울 플레지
-        this.addSubStat(31L);
-        this.addCriticalP(10.0);
-        this.addAtt(51L);               // 소드 엑스퍼트
-        this.addCriticalDamage(20.0);
-        this.addIgnoreDefenseList(32L);  // 언포시어블
-        this.addBossDamage(21L);
-        this.addFinalDamage(1.25);      // 마스터 오브 더 소드
-        this.addCriticalP(35.0);
+        passive = new Common();
+        passive.setDescription("소울 플레지");
+        passive.addMainStat(31L);
+        passive.addSubStat(31L);
+        passive.addCriticalP(10.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("소드 엑스퍼트");
+        passive.addAtt(51L);
+        passive.addCriticalDamage(23.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("언포시어블");
+        passive.addIgnoreDefenseList(32L);
+        passive.addBossDamage(21L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("마스터 오브 더 소드");
+        passive.addFinalDamage(1.25);
+        passive.addCriticalP(35.0);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addMainStat(30L);          // 바디 오브 스틸
+        passive = new Common();
+        passive.setDescription("바디 오브 스틸");
+        passive.addMainStat(30L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(-63L);
-        this.addMainStat(5L);
-        this.addSubStat(5L);
+        this.addMainStatP(-66L);
+        this.addMainStat(0L);
+        this.addSubStat(10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -98,9 +145,44 @@ public class SoulMaster extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addAtt(20L);               // 엘리멘트 : 소울
-        this.addAtt(15L);               // 소울 블레싱
-        this.addAtt(15L);               // 소울 블레싱 II
-        this.addFinalDamage(1.12);      // 소울 블레싱 III
+
+        Common doping = new Common();
+        doping.setDescription("엘리멘트 : 소울");
+        doping.addAtt(20L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("소울 블레싱");
+        doping.addAtt(15L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("소울 블레싱 II");
+        doping.addAtt(15L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("소울 블레싱 III");
+        doping.addFinalDamage(1.16);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("소울 플레지(콜렉터의 영약)");
+        doping.addMainStat(1L);
+        doping.addSubStat(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("소드 엑스퍼트(콜렉터의 영약)");
+        doping.addAtt(1L);
+        doping.addCriticalDamage(1.0);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("언포시어블(콜렉터의 영약)");
+        doping.addBossDamage(1L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

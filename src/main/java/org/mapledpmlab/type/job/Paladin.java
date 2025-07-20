@@ -16,55 +16,87 @@ public class Paladin extends Job {
     public Paladin() {
         // 기본
         super();
-        this.setName("팔라딘(리웨)");
+        this.setName("팔라딘(0초, 리웨)");
         this.setConstant(1.34);         // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (340 + 210 + 72 + 253));
-        this.setWeaponAttMagic((long) (340 + 210 + 72 + 253));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
+        this.setAscentDamage(3086880.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addAtt(3L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (340 + 210 + 72 + 253));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (340 + 210 + 72 + 253));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addAtt(3L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addMainStat(20L);          // 웨폰 액셀레이션
-        this.addMainStat(30L);          // 피지컬 트레이닝
-        this.addSubStat(30L);
+        passive = new Common();
+        passive.setDescription("웨폰 액셀레이션");
+        passive.addMainStat(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("피지컬 트레이닝");
+        passive.addMainStat(30L);
+        passive.addSubStat(30L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addAtt(20L);               // 파라쇼크 가드
-        this.addAtt(10L);               // 실드 마스터리
+        passive = new Common();
+        passive.setDescription("파라쇼크 가드");
+        passive.addAtt(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("실드 마스터리");
+        passive.addAtt(20L);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addFinalDamage(1.21);      // 디바인 블레싱
-        this.addCriticalP(42.0);        // 팔라딘 엑스퍼트
-        this.addCriticalDamage(20.0);
-        this.addIgnoreDefenseList(31L);
-        this.addFinalDamage(1.42);
-        this.addCriticalDamage(5.0);
+        passive = new Common();
+        passive.setDescription("디바인 블레싱");
+        passive.addFinalDamage(1.21);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("팔라딘 엑스퍼트");
+        passive.addCriticalP(42.0);
+        passive.addCriticalDamage(20.0);
+        passive.addIgnoreDefenseList(31L);
+        passive.addFinalDamage(1.42);
+        passive.addCriticalDamage(5.0);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addMainStat(30L);          // 바디 오브 스틸
+        passive = new Common();
+        passive.setDescription("바디 오브 스틸");
+        passive.addMainStat(30L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(-66L);
-        this.addMainStat(5L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-75L);
+        this.addMainStat(14L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -84,9 +116,22 @@ public class Paladin extends Job {
     public void Doping() {
         super.Doping();
 
-        this.addAtt(60L);               // 어드밴스드 홀리 차지
-        this.addDamage(25L);
-        this.addAtt(20L);               // 블레싱 아머
-        this.addIgnoreDefenseList(20L); // 디바인 저지먼트
+        Common doping = new Common();
+        doping.setDescription("어드밴스드 홀리 차지");
+        doping.addAtt(60L);
+        doping.addDamage(25L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("블레싱 아머");
+        doping.addAtt(20L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("디바인 저지먼트");
+        doping.addIgnoreDefenseList(20L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

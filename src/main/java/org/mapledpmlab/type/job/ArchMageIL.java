@@ -17,58 +17,102 @@ public class ArchMageIL extends Job {
     public ArchMageIL() {
         // 기본
         super();
-        this.setName("아크메이지(썬,콜)(리웨)");
+        this.setName("아크메이지(썬,콜)(0초, 리레단일)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addMagic((long) (406 + 250 + 72 + 276));
-        this.setWeaponAttMagic((long) (406 + 250 + 72 + 276));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addMagicP(9L);
-        this.addMagicP(21L);
-        this.addMagicP(3L);
+        this.setAscentDamage(3234000.0);
 
-        // 보조
-        this.addMainStat((long) (10 + 80 + 75));
-        this.addSubStat(75L);
-        this.addAtt(45L);
-        this.addMagic((long) (1 + 45));
-        this.addBossDamage(70L);
-        this.addMagicP(9L);
-        this.addMagicP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addMagic((long) (406 + 250 + 72 + 276));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addMagicP(9L);
+        passive.addMagicP(21L);
+        passive.addMagicP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (406 + 250 + 72 + 276));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat((long) (10 + 80 + 75));
+        passive.addSubStat(75L);
+        passive.addAtt(45L);
+        passive.addMagic((long) (1 + 45));
+        passive.addBossDamage(70L);
+        passive.addMagicP(9L);
+        passive.addMagicP(21L);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addMagic(30L);             // 메디테이션
-        this.addMainStat(20L);          // 매직 액셀레이션
-        this.addMagic(10L);             // 스펠 마스터리
-        this.addCriticalP(5.0);
-        this.addMainStat(40L);          // 하이 위즈덤
+        passive = new Common();
+        passive.setDescription("메디테이션");
+        passive.addMagic(30L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("매직 액셀레이션");
+        passive.addMainStat(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("스펠 마스터리");
+        passive.addMagic(10L);
+        passive.addCriticalP(5.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("하이 위즈덤");
+        passive.addMainStat(40L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addProperty(10L);          // 엘리멘탈 리셋
-        this.addFinalDamage(1.4);
-        this.addCriticalP(30.0);        // 매직 크리티컬
-        this.addCriticalDamage(13.0);
-        this.addDamage(50L);            // 앨리먼트 앰플리케이션
+        passive = new Common();
+        passive.setDescription("엘리멘탈 리셋");
+        passive.addProperty(10L);
+        passive.addFinalDamage(1.4);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("매직 크리티컬");
+        passive.addCriticalP(30.0);
+        passive.addCriticalDamage(13.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("앨리먼트 앰플리케이션");
+        passive.addDamage(50L);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addIgnoreDefenseList(21L);  // 아케인 에임
-        this.addMagic(33L);             // 마스터 매직
-        this.addPlusBuffDuration(55L);
+        passive = new Common();
+        passive.setDescription("아케인 에임");
+        passive.addIgnoreDefenseList(21L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("마스터 매직");
+        passive.addMagic(33L);
+        passive.addPlusBuffDuration(55L);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addMainStat(30L);          // 언스태이블 메모라이즈
+        passive = new Common();
+        passive.setDescription("언스태이블 메모라이즈");
+        passive.addMainStat(30L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(21L);
-        this.addMainStat(16L);
-        this.addSubStat(0L);
+        this.addMainStatP(24L);
+        this.addMainStat(-12L);
+        this.addSubStat(5L);
 
         this.setAbility(new BuffBossAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -88,8 +132,29 @@ public class ArchMageIL extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.2);            // 익스트림 매직
-        this.addDamage(40L);                 // 아케인 에임
+
+        Common doping = new Common();
+        doping.setDescription("익스트림 매직");
+        doping.addFinalDamage(1.2);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("아케인 에임");
+        doping.addDamage(40L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("마스터 매직(콜렉터의 영약)");
+        doping.addMagic(3L);
+        doping.addPlusBuffDuration(5L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("메디테이션(콜렉터의 영약)");
+        doping.addMagic(-30L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 
     public Long getStatDamage() {

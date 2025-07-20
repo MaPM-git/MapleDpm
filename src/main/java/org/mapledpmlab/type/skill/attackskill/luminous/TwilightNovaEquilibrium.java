@@ -9,7 +9,6 @@ public class TwilightNovaEquilibrium extends AttackSkill {
         this.setDelayByAttackSpeed(780L);
         this.setAttackCount(7L * 2);
         this.setCooldown(15.0);
-        this.addFinalDamage(0.75);
         this.setApplyReuse(true);
         //this.addFinalDamage(1.05);  // 어둠 마법 강화
         this.addFinalDamage(2.2);   // 코어강화

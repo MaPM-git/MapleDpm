@@ -1,7 +1,7 @@
 package org.mapledpmlab.type.dealcycleduo;
 
-import org.mapledpmlab.type.JobContinuous.BishopContinuous;
-import org.mapledpmlab.type.JobContinuous.BowmasterContinuous;
+import org.mapledpmlab.type.job.BishopContinuous;
+import org.mapledpmlab.type.job.BowmasterContinuous;
 import org.mapledpmlab.type.dealcyclesolo.Bishop2ContinuousDealCycle;
 import org.mapledpmlab.type.dealcyclesolo.BowmasterContinuousDealCycle;
 import org.mapledpmlab.type.dealcyclesolo.SkillEvent;

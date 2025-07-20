@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class KinesisContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -598,7 +600,7 @@ public class KinesisContinuousDealCycle extends DealCycle {
                         || attackSkill instanceof UltimatePsychicShoot
                         || attackSkill instanceof UltimateTrain
                 ) {
-                    buffSkill.addBuffCriticalDamage(22.0);
+                    buffSkill.addBuffCriticalDamage(23.0);
                 }
                 this.getJob().addMainStat(buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
@@ -655,7 +657,7 @@ public class KinesisContinuousDealCycle extends DealCycle {
                         || attackSkill instanceof UltimatePsychicShoot
                         || attackSkill instanceof UltimateTrain
                 ) {
-                    buffSkill.addBuffCriticalDamage(-22.0);
+                    buffSkill.addBuffCriticalDamage(-23.0);
                 }
                 break;
             }

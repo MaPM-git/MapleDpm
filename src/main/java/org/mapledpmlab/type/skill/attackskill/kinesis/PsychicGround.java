@@ -8,7 +8,7 @@ public class PsychicGround extends AttackSkill {
         this.setName("싸이킥 그라운드");
         this.setDamage(1015.0);
         this.setDelayByAttackSpeed(360L);
-        this.setAttackCount(4L);
+        this.setAttackCount(2L);
         this.setCooldown(30.0);
         this.setApplyFinalAttack(true);
         this.setRelatedSkill(new PsychicGroundBuff());

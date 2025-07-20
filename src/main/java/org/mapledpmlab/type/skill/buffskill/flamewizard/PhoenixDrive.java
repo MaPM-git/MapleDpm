@@ -10,8 +10,8 @@ public class PhoenixDrive extends BuffSkill {
     public PhoenixDrive() {
         this.setName("피닉스 드라이브");
         this.setDelay(480L);
-        this.setDuration(15L);
-        this.setCooldown(90.0);
+        this.setDuration(20L);
+        this.setCooldown(60.0);
         this.setApplyServerLag(true);
     }
 }

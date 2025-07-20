@@ -2,7 +2,6 @@ package org.mapledpmlab.type.skill.buffskill.hero;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mapledpmlab.type.skill.attackskill.hero.ComboInstinctsAttack;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 
 @Getter

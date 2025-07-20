@@ -10,9 +10,9 @@ public class OopartsCode extends BuffSkill {
     public OopartsCode() {
         this.setName("오파츠 코드");
         this.setDelay(600L);
-        this.setDuration(60L);
-        this.addBuffFinalDamage(1.3);
-        this.addBuffDamage(31L);
+        this.setDuration(61L);
+        this.addBuffFinalDamage(1.31);
+        this.addBuffDamage(32L);
         this.setApplyPlusBuffDuration(true);
         this.setApplyServerLag(true);
     }

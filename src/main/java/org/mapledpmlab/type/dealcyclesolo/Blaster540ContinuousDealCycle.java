@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,12 +18,16 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class Blaster540ContinuousDealCycle extends DealCycle {
-    // 매그팡
+    // 해매팡
     private final List<Skill> flatDeal1 = new ArrayList<>();
 
     // 릴파벙해머
     private final List<Skill> flatDeal2 = new ArrayList<>();
+
+    // 매그팡
+    private final List<Skill> flatDeal3 = new ArrayList<>();
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -104,7 +109,7 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
     FinalDestroyer1 finalDestroyer1 = new FinalDestroyer1();
     HammerSmashCharge hammerSmashCharge = new HammerSmashCharge();
     HammerSmashJump hammerSmashJump = new HammerSmashJump();
-    MagnumPunch180 magnumPunch180 = new MagnumPunch180();
+    MagnumPunch180 magnumPunch = new MagnumPunch180();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
     MaximizeCanon maximizeCanon = new MaximizeCanon();
     ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
@@ -118,29 +123,39 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
     public Blaster540ContinuousDealCycle(Job job) {
         super(job, new FinalAttackBlaster());
 
-        this.getJob().setName("블래스터(540, 컨티)");
+        this.getJob().setName("블래스터(매그팡 540, 해매팡 630, 0초, 컨티)");
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        // 매그팡
+        // 해매팡
         flatDeal1.add(hammerSmashCharge);
-        flatDeal1.add(magnumPunch180);
+        flatDeal1.add(magnumPunch);
         flatDeal1.add(doubleFang);
         flatDeal1.add(hammerSmashJump);
 
         // 릴파벙해머
         flatDeal2.add(duckingCharge);
-        flatDeal2.add(magnumPunch180);
+        flatDeal2.add(hammerSmashCharge);
+        flatDeal2.add(magnumPunch);
+        flatDeal2.add(doubleFang);
+        flatDeal2.add(hammerSmashJump);
+        flatDeal2.add(hammerSmashCharge);
+        flatDeal2.add(magnumPunch);
         flatDeal2.add(doubleFang);
         flatDeal2.add(duckingJump);
         flatDeal2.add(duckingCharge);
         flatDeal2.add(releasePileBunker);
+        flatDeal2.add(hammerSmashJump);
         flatDeal2.add(duckingJump);
 
-        auraWeaponBuff.setCooldown(180.0);
-        auraWeaponBuff.setApplyCooldownReduction(false);
-        mapleWorldGoddessBlessing.setCooldown(120.0);
+        // 매그팡
+        flatDeal3.add(duckingCharge);
+        flatDeal3.add(magnumPunch);
+        flatDeal3.add(doubleFang);
+        flatDeal3.add(duckingJump);
+
+        auraWeaponBuff.setCooldown(120.0);
 
         getSkillSequence1().add(afterImageShock);
         getSkillSequence1().add(willOfLiberty);
@@ -174,7 +189,10 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
             if (cooldownCheck(resistanceLineInfantry)) {
                 addSkillEvent(resistanceLineInfantry);
             }
-            if (cooldownCheck(willOfLiberty)) {
+            if (
+                    cooldownCheck(bodyOfSteel)
+                            && cooldownCheck(soulContract)
+            ) {
                 isNuke = true;
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -192,14 +210,7 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
                     addSkillEvent(finalDestroyer1);
                 }
                 while (!cooldownCheck(maximizeCanon)) {
-                    if (getStart().after(overheatTime)) {
-                        while (cylinder < 4) {
-                            addDealCycle(flatDeal1);
-                        }
-                        addDealCycle(flatDeal2);
-                    } else {
-                        addDealCycle(flatDeal1);
-                    }
+                    addDealCycle(flatDeal2);
                 }
                 addSkillEvent(maximizeCanon);
                 dealCycleOrder ++;
@@ -209,13 +220,15 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
                 addSkillEvent(hammerSmashCharge);
                 addSkillEvent(vulcanPunch);
                 addSkillEvent(hammerSmashJump);
+            } else if (getStart().before(bunkerBusterEndTime)) {
+                addDealCycle(flatDeal2);
             } else if (getStart().after(overheatTime)) {
                 while (cylinder < 4) {
-                    addDealCycle(flatDeal1);
+                    addDealCycle(flatDeal3);
                 }
                 addDealCycle(flatDeal2);
             } else {
-                addDealCycle(flatDeal1);
+                addDealCycle(flatDeal3);
             }
         }
         sortEventTimeList();
@@ -225,7 +238,7 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -307,7 +320,7 @@ public class Blaster540ContinuousDealCycle extends DealCycle {
                             || skill instanceof BurningBreakerExplosion
                             || skill instanceof BurningBreakerRush
                             || skill instanceof BurstPileBunker
-                            || skill instanceof DoubleFang150
+                            || skill instanceof DoubleFang240
                             || skill instanceof DoubleFang180
                             || skill instanceof DoubleFang210
                             || skill instanceof HammerSmashJump

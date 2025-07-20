@@ -3,7 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.18</version> <!-- 2025년 기준 최신 2.7.x 버전 -->
+        <relativePath/> <!-- 루트 프로젝트면 필수 -->
+    </parent>
     <groupId>org.mapledpmlab</groupId>
     <artifactId>mapledpm</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -63,5 +68,93 @@
             <artifactId>batik-dom</artifactId>
             <version>1.14</version>
         </dependency>
+        <!-- 스프링 부트 핵심 기능 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <!-- REST API를 만들 계획이라면 Web 추가 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>3.14.5</version>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- 1. frontend-maven-plugin: React 빌드 -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.12.0</version>
+
+                <configuration>
+                    <workingDirectory>frontend</workingDirectory>
+                </configuration>
+
+                <executions>
+                    <!-- Node/NPM 설치 -->
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals><goal>install-node-and-npm</goal></goals>
+                        <configuration>
+                            <nodeVersion>v18.17.0</nodeVersion>
+                            <npmVersion>9.8.1</npmVersion>
+                        </configuration>
+                    </execution>
+
+                    <!-- npm install -->
+                    <execution>
+                        <id>npm install</id>
+                        <goals><goal>npm</goal></goals>
+                        <configuration><arguments>install</arguments></configuration>
+                    </execution>
+
+                    <!-- npm run build -->
+                    <execution>
+                        <id>npm run build</id>
+                        <goals><goal>npm</goal></goals>
+                        <phase>generate-resources</phase>
+                        <configuration><arguments>run build</arguments></configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 2. 빌드된 React 결과물을 static 폴더로 복사 -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-react</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>frontend/build</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class UncontrollableChaos extends AttackSkill implements SpecterSkill {
     public UncontrollableChaos() {
         this.setName("걷잡을 수 없는 혼돈");
-        this.setDamage(880.0);
+        this.setDamage(1185.0);
         this.setAttackCount(12L);
         this.setCooldown(9.0);
         this.setDelayByAttackSpeed(1080L);

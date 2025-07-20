@@ -1,8 +1,9 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
-import org.mapledpmlab.type.JobContinuous.DemonAvengerContinuous;
+import lombok.NoArgsConstructor;
+import org.mapledpmlab.type.job.DemonAvenger2Continuous;
 import org.mapledpmlab.type.etc.DealCycle;
-import org.mapledpmlab.type.job.DemonAvenger;
+import org.mapledpmlab.type.job.DemonAvenger2;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class DemonAvenger30DealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -84,6 +86,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
     Timestamp absorbLifeExceptionEndTime = new Timestamp(-1);
     Timestamp releaseOverloadTime = new Timestamp(-1);
     Timestamp revenantEndTime = new Timestamp(-1);
+    Timestamp soulContractEndTime = new Timestamp(-1);
 
     List<Timestamp> hpTime = new ArrayList<>();
 
@@ -119,22 +122,37 @@ public class DemonAvenger30DealCycle extends DealCycle {
     public DemonAvenger30DealCycle(Job job) {
         super(job, new FinalAttackDemonAvenger());
 
-        getJob().setName("데몬 어벤져(30, 리웨)");
+        getJob().setName("데몬어벤져(30, 2초, 리레단일)");
         //demonFrenzy30.setCooldown(0.21);
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(120.0);
-
+        getStart().setTime(-3000);
+        releaseOverload.setActivateTime(new Timestamp(-555555));
+        exceedExecution3.setActivateTime(new Timestamp(-555555));
+        exceedExecution4.setActivateTime(new Timestamp(-555555));
+        exceedExecution5.setActivateTime(new Timestamp(-555555));
         addSkillEvent(releaseOverload);
         addSkillEvent(exceedExecution3);
         addSkillEvent(exceedExecution4);
         exceed = 11;
-
-        auraWeaponBuff.setCooldown(180.0);
-        auraWeaponBuff.setApplyCooldownReduction(false);
-        otherWorldGoddessBlessing.setCooldown(120.0);
+        while (exceed < 18) {
+            if (cooldownCheck(shieldChasing)) {
+                addSkillEvent(shieldChasing);
+            } else {
+                if (exceed == 9) {
+                    addSkillEvent(exceedExecution3);
+                } else if (exceed == 10) {
+                    addSkillEvent(exceedExecution4);
+                } else {
+                    addSkillEvent(exceedExecution5);
+                }
+                if (exceed < 18) {
+                    exceed++;
+                }
+            }
+        }
 
         getSkillSequence1().add(demonicFortitudeDA);        // 30
         getSkillSequence1().add(callMastema);
@@ -143,6 +161,9 @@ public class DemonAvenger30DealCycle extends DealCycle {
         getSkillSequence1().add(otherWorldGoddessBlessing);
         getSkillSequence1().add(revenant);
         getSkillSequence1().add(soulContract);              // 30
+
+        getSkillSequence2().add(forbiddenContract);
+        getSkillSequence2().add(soulContract);
 
         callMastema.setDelay(180L);
         bodyOfSteel.setDelay(180L);
@@ -212,7 +233,6 @@ public class DemonAvenger30DealCycle extends DealCycle {
                     cooldownCheck(callMastema)
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
-                armorBreak.setActivateTime(new Timestamp(-1));
                 addSkillEvent(armorBreak);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -221,11 +241,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 }
                 addDealCycle(getSkillSequence1());
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 if (cooldownCheck(requiem)) {
                     addSkillEvent(requiem);
                     roarOfDemonSwordTime = new Timestamp(getStart().getTime() + 8000);
@@ -256,21 +272,16 @@ public class DemonAvenger30DealCycle extends DealCycle {
                 addSkillEvent(roarOfDemonSword);
                 roarOfDemonSwordChk = 0;
             } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(100 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
-                addSkillEvent(releaseOverload);
-                exceed = 9;
-            } else if (
                     cooldownCheck(soulContract)
                             && getStart().before(new Timestamp(demonicFortitudeDA.getActivateTime().getTime() - 50000))
             ) {
                 addSkillEvent(armorBreak);
-                addSkillEvent(soulContract);
+                addDealCycle(getSkillSequence2());
+                releaseOverloadTime = new Timestamp(-1);
+                soulContractEndTime = new Timestamp(getStart().getTime() + 25000);
             } else if (
                     getStart().after(releaseOverloadTime)
+                            && getStart().after(soulContractEndTime)
             ) {
                 addSkillEvent(releaseOverload);
                 exceed = 9;
@@ -555,7 +566,7 @@ public class DemonAvenger30DealCycle extends DealCycle {
                     if (cooldownCheck(overmaximizingExceed)) {
                         if (hp < 50000) {
                             overmaximizingExceed.setCooldown(2.0);
-                        } else if (hp < 305000) {
+                        } else if (hp < 375000) {
                             overmaximizingExceed.setCooldown(5.7);
                         }
                         addSkillEvent(overmaximizingExceed);
@@ -666,8 +677,8 @@ public class DemonAvenger30DealCycle extends DealCycle {
     @Override
     public Long getDotDamage(AttackSkill attackSkill, BuffSkill buffSkill) {
         Long attackDamage;
-        attackDamage = (long) Math.floor(((((DemonAvengerContinuous) getJob()).getFinalHp())// * 4
-                + ((DemonAvengerContinuous) getJob()).getStr()) * 0.01
+        attackDamage = (long) Math.floor(((((DemonAvenger2Continuous) getJob()).getFinalHp())// * 4
+                + ((DemonAvenger2Continuous) getJob()).getStr()) * 0.01
                 * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                 * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                 + getJob().getPerXAtt())
@@ -694,8 +705,8 @@ public class DemonAvenger30DealCycle extends DealCycle {
                 if (attackSkill instanceof DotAttackSkill) {
                     attackDamage = getDotDamage(attackSkill, buffSkill);
                 } else {
-                    attackDamage = (long) Math.floor(((((DemonAvenger) getJob()).getFinalHp()) //* 4
-                            + ((DemonAvenger) getJob()).getStr()) * 0.01
+                    attackDamage = (long) Math.floor(((((DemonAvenger2) getJob()).getFinalHp()) //* 4
+                            + ((DemonAvenger2) getJob()).getStr()) * 0.01
                             * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                             * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                             + getJob().getPerXAtt())

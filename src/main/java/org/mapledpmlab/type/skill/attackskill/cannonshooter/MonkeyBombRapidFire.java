@@ -13,7 +13,6 @@ public class MonkeyBombRapidFire extends AttackSkill {
         this.addFinalDamage(1.6);       // 코어강화
         this.setRelatedSkill(new MonkeyCannonBasic());
         this.getMultiAttackInfo().add(2400L);
-        this.getMultiAttackInfo().add(30000L);
-        //this.getMultiAttackInfo().add(31320L);
+        this.getMultiAttackInfo().add(20000L);
     }
 }

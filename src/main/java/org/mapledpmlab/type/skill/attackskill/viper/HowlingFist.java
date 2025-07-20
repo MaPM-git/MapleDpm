@@ -6,8 +6,7 @@ public class HowlingFist extends AttackSkill {
     public HowlingFist() {
         this.setName("하울링 피스트");
         this.setAttackCount(6L);
-        this.setDamage(935.0);
-        this.setCooldown(90.0);
+        this.setDamage(625.0);
         this.setApplyFinalAttack(true);
         this.setDelay(1920L);
         this.setDotDuration(2100L);

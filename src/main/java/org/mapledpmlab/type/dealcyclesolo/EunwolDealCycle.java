@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class EunwolDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -115,8 +117,7 @@ public class EunwolDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        mapleWorldGoddessBlessing.setCooldown(120.0);
-        ringSwitching.setCooldown(120.0);
+        ringSwitching.setCooldown(60.0);
 
         spritPunch1.setRelatedSkill(new SpritPunch2());
         spritPunch1.setDelayByAttackSpeed(300L);
@@ -125,16 +126,19 @@ public class EunwolDealCycle extends DealCycle {
         getSkillSequence1().add(heroesOath);                // 30
         getSkillSequence1().add(mapleWorldGoddessBlessing);
         getSkillSequence1().add(overdrive);                 // 420
+        getSkillSequence1().add(lightOfTheFoxGoddess);
         getSkillSequence1().add(eunwolHyper);               // 30
         getSkillSequence1().add(soulContract);              // 30
 
         getSkillSequence2().add(overdrive);                 // 420
         getSkillSequence2().add(soulContract);              // 30
+        getSkillSequence2().add(weaponJumpRing);
 
         getSkillSequence3().add(loadedDice);
         loadedDice.setDelay(660L);
 
-        mapleWorldGoddessBlessing.setDelay(480L);
+        mapleWorldGoddessBlessing.setDelay(240L);
+        lightOfTheFoxGoddess.setDelay(240L);
 
         getStart().setTime(-25000);
         freudBlessing4.setActivateTime(new Timestamp(-30000));
@@ -203,12 +207,7 @@ public class EunwolDealCycle extends DealCycle {
                 }
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(divisionSoul);
-                addSkillEvent(lightOfTheFoxGoddess);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(ghostDisposition);
                 addSkillEvent(spritPunch1);
                 addSkillEvent(chainBombPunch);
@@ -234,8 +233,8 @@ public class EunwolDealCycle extends DealCycle {
                 addSkillEvent(chainBombPunch);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(110 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 6000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
@@ -496,8 +495,7 @@ public class EunwolDealCycle extends DealCycle {
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
             sum += info;
             if (
-                    skill instanceof LightOfTheFoxGoddessAlterEgo
-                    || skill instanceof GhostDispositionAttack
+                    skill instanceof GhostDispositionAttack
                     || skill instanceof GhostDispositionDarkness
                     || skill instanceof ChainBombPunchEnd
                     || skill instanceof AdventOfTheFox1

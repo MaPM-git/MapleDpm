@@ -1,5 +1,7 @@
 package org.mapledpmlab.type.etc;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapledpmlab.type.dealcyclesolo.SkillEvent;
@@ -23,36 +25,52 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class DealCycle {
+    @JsonIgnore
     private AttackSkill finalAttack = null;
     private Job job = null;
+    @JsonIgnore
     private Timestamp start = new Timestamp(0);
+    @JsonIgnore
     private Timestamp end = new Timestamp(680 * 1000);
     private List<AttackSkill> attackSkillList;
-    private List<AttackSkill> delaySkillList;
     private List<BuffSkill> buffSkillList;
+    @JsonIgnore
     private List<SkillEvent> skillEventList = new ArrayList<>();
+    @JsonIgnore
     private List<Timestamp> eventTimeList = new ArrayList<>();
+    @JsonIgnore
     private List<Long> dpsList = new ArrayList<>();
+    @JsonIgnore
     private List<DealCycle> partyDealCycle = new ArrayList<>();
+    @JsonIgnore
     private List<Timestamp> nukeTimeList = new ArrayList<>();
     private List<Skill> skillSequence1 = new ArrayList<>();
     private List<Skill> skillSequence2 = new ArrayList<>();
     private List<Skill> skillSequence3 = new ArrayList<>();
     private List<Skill> skillSequence4 = new ArrayList<>();
     private List<Skill> skillSequence5 = new ArrayList<>();
+    @JsonIgnore
     public Timestamp restraintRingStartTime = null;
+    @JsonIgnore
     public Timestamp restraintRingEndTime = null;
+    @JsonIgnore
     public Timestamp fortyEndTime = null;
+    @JsonIgnore
     public Timestamp originXRestraintRingStartTime = null;
+    @JsonIgnore
     public Timestamp originXRestraintRingEndTime = null;
     Long totalDamage;
     Long DPM;
     Long restraintRingDeal;
     Long fortyDeal;
     Long originXRestraintRingDeal;
+    @JsonIgnore
     public int i=0;
+    @JsonIgnore
     boolean isRingOfSum = false;
+    @JsonIgnore
     public String skillLog = "";
+    @JsonIgnore
     public SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss.SSS");
 
     public DealCycle() {}
@@ -277,17 +295,66 @@ public class DealCycle {
         System.out.println("40초 : " + calcFortyDeal());
     }
 
+    @JsonIgnore
     public Object[] getObject() {
+        String jobName = "";
+        String jobCondition = "";
+        int lastOpen = getJob().getName().lastIndexOf('(');
+        int lastClose = getJob().getName().lastIndexOf(')');
+        if (lastOpen != -1 && lastClose != -1 && lastClose > lastOpen) {
+            jobName = getJob().getName().substring(0, lastOpen);
+            jobCondition = getJob().getName().substring(lastOpen + 1, lastClose);
+        }
         Object[] result = new Object[]{
-                this.getJob().getName(), String.valueOf(this.getDPM()),
-                "=TEXT(" + getDPM() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(B2:B100),0)),\"0.0%\")", String.valueOf(this.getRestraintRingDeal()),
-                "=TEXT(" + getRestraintRingDeal() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(D2:D100),0)),\"0.0%\")", String.valueOf(this.getFortyDeal()),
-                "=TEXT(" + getFortyDeal() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(F2:F100),0)),\"0.0%\")", String.valueOf(this.getOriginXRestraintRingDeal()),
-                "=TEXT(" + getOriginXRestraintRingDeal() + "/SUM(IF(A2:A100=\"비숍(2분, 컨티)\", VALUE(H2:H100),0)),\"0.0%\")"
+                jobName, jobCondition, String.valueOf(this.getJob().getAscentDamage()), String.valueOf(this.getJob().getCalculatedAscentDamage()),
+                "=TEXT(" + getJob().getCalculatedAscentDamage() + "/SUM(IF((A2:A200=\"비숍\")*(B2:B200=\"0초, 컨티\"), VALUE(D2:D200),0)),\"0.0%\")",
+                String.valueOf(this.getDPM()), "=TEXT(" + getDPM() + "/SUM(IF((A2:A200=\"비숍\")*(B2:B200=\"0초, 컨티\"), VALUE(F2:F200),0)),\"0.0%\")",
+                String.valueOf(this.getRestraintRingDeal()), "=TEXT(" + getRestraintRingDeal() + "/SUM(IF((A2:A200=\"비숍\")*(B2:B200=\"0초, 컨티\"), VALUE(H2:H200),0)),\"0.0%\")",
+                String.valueOf(this.getFortyDeal()), "=TEXT(" + getFortyDeal() + "/SUM(IF((A2:A200=\"비숍\")*(B2:B200=\"0초, 컨티\"), VALUE(J2:J200),0)),\"0.0%\")",
+                String.valueOf(this.getOriginXRestraintRingDeal()), "=TEXT(" + getOriginXRestraintRingDeal() + "/SUM(IF((A2:A200=\"비숍\")*(B2:B200=\"0초, 컨티\"), VALUE(L2:L200),0)),\"0.0%\")"
         };
         return result;
     }
 
+    @JsonIgnore
+    public Object[] getPassiveObject() {
+        List<Common> passiveList = this.getJob().getPassiveList();
+
+        List<String> resultList = new ArrayList<>();
+        for (Common p : passiveList) {
+            String desc = p.getDescription() + p;
+            resultList.add(desc);
+        }
+
+        Object[] result = new Object[resultList.size() + 1];
+        result[0] = this.getJob().getName();
+        for (int i = 0; i < resultList.size(); i++) {
+            result[i + 1] = resultList.get(i);
+        }
+
+        return result;
+    }
+
+    @JsonIgnore
+    public Object[] getDopingObject() {
+        List<Common> dopingList = this.getJob().getDopingList();
+
+        List<String> resultList = new ArrayList<>();
+        for (Common p : dopingList) {
+            String desc = p.getDescription() + p;
+            resultList.add(desc);
+        }
+
+        Object[] result = new Object[resultList.size() + 1];
+        result[0] = this.getJob().getName();
+        for (int i = 0; i < resultList.size(); i++) {
+            result[i + 1] = resultList.get(i);
+        }
+
+        return result;
+    }
+
+    @JsonIgnore
     public List<SkillEvent> getOverlappingSkillEvents(Timestamp start, Timestamp end) {
         List<SkillEvent> overlappingSkillEvents = new ArrayList<>();
         for (SkillEvent skillEvent : getSkillEventList()) {
@@ -389,6 +456,7 @@ public class DealCycle {
         return totalDamage;
     }
 
+    @JsonIgnore
     public Long getDotDamage(AttackSkill attackSkill, BuffSkill buffSkill) {
         Long attackDamage;
         if (
@@ -431,6 +499,7 @@ public class DealCycle {
         return attackDamage;
     }
 
+    @JsonIgnore
     public Long getRingOfSumStat() {
         return (long) Math.floor(
                 (
@@ -438,10 +507,11 @@ public class DealCycle {
                         + this.getJob().getFinalSubstat()
                         + this.getJob().getFinalOtherStat1()
                         + this.getJob().getFinalOtherStat2()
-                ) * 0.02
+                ) * 0.016
         );
     }
 
+    @JsonIgnore
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         Long ringOfSumStat = 0L;
@@ -617,6 +687,7 @@ public class DealCycle {
         return predicate -> set.add(key.apply(predicate));
    }
 
+    @JsonIgnore
     public void getJobInfo() {
         System.out.println("-------------------");
         System.out.println("직업 : " + getJob().getName());

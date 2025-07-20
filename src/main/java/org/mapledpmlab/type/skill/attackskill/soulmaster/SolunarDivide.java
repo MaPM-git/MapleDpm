@@ -7,7 +7,7 @@ public class SolunarDivide extends AttackSkill {
         this.setName("솔루나 디바이드");
         //this.setDelay(750L);
         this.setAttackCount(15L);
-        this.setDamage(2750.0);
+        this.setDamage(1980.0);
         this.setDotDuration(750L);
         this.setInterval(150L);
         this.setLimitAttackCount(5L);

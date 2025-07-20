@@ -10,7 +10,7 @@ public class ResonateUltimatum extends BuffSkill {
     public ResonateUltimatum() {
         this.setName("레조네이트 : 얼티메이텀");
         this.setDelayByAttackSpeed(810L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setDuration(30L);
         this.setApplyServerLag(true);
     }

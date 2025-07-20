@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class WindBreakerContinuousDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -151,16 +153,6 @@ public class WindBreakerContinuousDealCycle extends DealCycle {
                 addSkillEvent(pinpointPierce);
                 if (
                         dealCycleOrder == 1
-                                || dealCycleOrder == 2
-                                || dealCycleOrder == 5
-                ) {
-                    while (!cooldownCheck(stoneWind)) {
-                        addSkillEvent(songOfHeaven);
-                    }
-                    addSkillEvent(stoneWind);
-                }
-                if (
-                        dealCycleOrder == 1
                                 || dealCycleOrder == 3
                                 || dealCycleOrder == 5
                 ) {
@@ -187,6 +179,7 @@ public class WindBreakerContinuousDealCycle extends DealCycle {
                 addDealCycle(getSkillSequence2());
                 addSkillEvent(cygnusPhalanx);
                 addSkillEvent(howlingGale3);
+                addSkillEvent(stoneWind);
                 addSkillEvent(soulContract);
                 addSkillEvent(anemoiDot);
                 dealCycleOrder ++;
@@ -199,29 +192,10 @@ public class WindBreakerContinuousDealCycle extends DealCycle {
                 addSkillEvent(emeraldFlower);
                 addSkillEvent(pinpointPierce);
                 addSkillEvent(cygnusPhalanx);
-                addSkillEvent(howlingGale1);
+                addSkillEvent(howlingGale3);
+                addSkillEvent(stoneWind);
                 addSkillEvent(soulContract);
                 addSkillEvent(anemoiDot);
-            } else if (
-                    cooldownCheck(stoneWind)
-                            && (
-                            dealCycleOrder == 3
-                                    || (
-                                    dealCycleOrder == 4
-                                            && getStart().after(new Timestamp(290 * 1000))
-                            )
-                                    || (
-                                    dealCycleOrder == 5
-                                            && getStart().after(new Timestamp(380 * 1000))
-                                            && getStart().before(new Timestamp(400 * 1000))
-                            )
-                                    || (
-                                    getStart().after(new Timestamp(600 * 1000))
-                                            && getStart().before(new Timestamp(660 * 1000))
-                            )
-                    )
-            ) {
-                addSkillEvent(stoneWind);
             } else if (
                     cooldownCheck(cygnusPhalanx)
                             && getStart().after(blessBurnTime)
@@ -235,7 +209,8 @@ public class WindBreakerContinuousDealCycle extends DealCycle {
                 addSkillEvent(vortexSphere);
             } else if (
                     cooldownCheck(howlingGale1)
-                            && getStart().before(criticalReinforceEndTime)
+                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
+                            && getStart().before(new Timestamp(stormWhimBuff.getActivateTime().getTime() - 60000))
             ) {
                 addSkillEvent(howlingGale1);
             } else if (cooldownCheck(idleWhimFirst)) {
@@ -262,7 +237,7 @@ public class WindBreakerContinuousDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof CriticalReinforce) {
-                criticalReinforceEndTime = new Timestamp(getStart().getTime() + 30000);
+                criticalReinforceEndTime = new Timestamp(getStart().getTime() + 30000 - 5000);
             }
             if (
                     skill instanceof SoulContract
@@ -580,6 +555,29 @@ public class WindBreakerContinuousDealCycle extends DealCycle {
             }
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+        }
+    }
+
+    @Override
+    public void applyCooldown(Skill skill) {
+        if (skill.getCooldown() != 0) {
+            if (skill.isApplyReuse()) {
+                Double ran = Math.random() * 99;
+                if (ran <= getJob().getReuse()) {
+                } else  {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
+                }
+            } else {
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
+                if (skill instanceof HowlingGale2) {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(howlingGale1) * 1000 * 2)));
+                } else if (skill instanceof HowlingGale3) {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(howlingGale1) * 1000 * 3)));
+                }
+            }
+            if (!skill.isApplyCooldownReduction()) {
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + skill.getCooldown() * 1000)));
+            }
         }
     }
 }

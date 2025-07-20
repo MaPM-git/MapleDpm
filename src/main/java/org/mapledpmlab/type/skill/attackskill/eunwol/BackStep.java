@@ -4,7 +4,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 
 public class BackStep extends AttackSkill {
     public BackStep() {
-        this.setName("후방 이동");
+        this.setName("후방 이동(2회당 1번 캔슬)");
         this.setCooldown(1.0);
         this.setDelay(450L);
     }

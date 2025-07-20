@@ -11,7 +11,7 @@ public class DemonAwakening extends GaugeBuffSkill {
         this.setName("데몬 어웨이크닝");
         this.setCooldown(120.0);
         this.setDelay(870L);
-        this.setDuration(65L);
+        this.setDuration(60L);
         this.setGaugeCharge(-100.0);
         this.setApplyServerLag(true);
     }

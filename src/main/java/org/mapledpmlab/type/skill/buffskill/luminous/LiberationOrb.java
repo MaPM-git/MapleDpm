@@ -10,8 +10,8 @@ public class LiberationOrb extends BuffSkill {
     public LiberationOrb() {
         this.setName("리버레이션 오브");
         this.setDelayByAttackSpeed(660L);
-        this.setCooldown(180.0);
-        this.setDuration(45L);
+        this.setCooldown(120.0);
+        this.setDuration(40L);
         this.setApplyServerLag(true);
     }
 }

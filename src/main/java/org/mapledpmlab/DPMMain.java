@@ -11,13 +11,13 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xddf.usermodel.chart.*;
 import org.apache.poi.xssf.usermodel.*;
-import org.mapledpmlab.type.JobContinuous.*;
 import org.mapledpmlab.type.dealcyclesolo.*;
 import org.mapledpmlab.type.equipment.*;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.DuoDealCycle;
 import org.mapledpmlab.type.etc.JobType;
 import org.mapledpmlab.type.job.*;
+import org.mapledpmlab.util.CalcScouter;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
@@ -40,72 +40,77 @@ public class DPMMain {
     }
 
     public void init() {
-        soloDealCycleList = new ArrayList<>();
+        CalcScouter calcScouter = new CalcScouter();
 
-        soloDealCycleList.add(new AdeleDealCycle(new Adele()));
-        soloDealCycleList.add(new AdeleContinuousDealCycle(new AdeleContinuous()));
-        soloDealCycleList.add(new Adele2MinContinuousDealCycle(new AdeleContinuous()));
-        soloDealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster()));
-        soloDealCycleList.add(new AngelicBuster4RingDealCycle(new AngelicBuster()));
+        soloDealCycleList = new ArrayList<>();
+        soloDealCycleList.add(new LenDealCycle(new Len()));
+        soloDealCycleList.add(new LenDealCycle(new Len2()));
+        soloDealCycleList.add(new LenDealCycle(new Len5()));
+        soloDealCycleList.add(new LenContinuousDealCycle(new LenContinuous()));
+        soloDealCycleList.add(new LenContinuousDealCycle(new Len2Continuous()));
+        soloDealCycleList.add(new LenContinuousDealCycle(new Len5Continuous()));
+        soloDealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
+
+        /*soloDealCycleList.add(new AdeleDealCycle(new Adele5()));
+        soloDealCycleList.add(new AdeleContinuousDealCycle(new Adele5Continuous()));
+        soloDealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster2()));
+        soloDealCycleList.add(new AngelicBusterDealCycle(new AngelicBuster5()));
+        soloDealCycleList.add(new AngelicBusterContinuousDealCycle(new AngelicBuster2Continuous()));
+        soloDealCycleList.add(new AngelicBusterContinuousDealCycle(new AngelicBuster5Continuous()));
         soloDealCycleList.add(new AranDealCycle(new Aran()));
-        soloDealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP()));
-        soloDealCycleList.add(new ArchMageFPContinuousDealCycle(new ArchMageFPContinuous()));
+        soloDealCycleList.add(new ArchMageFPDealCycle(new ArchMageFP5()));
+        soloDealCycleList.add(new ArchMageFPContinuousDealCycle(new ArchMageFP5Continuous()));
         soloDealCycleList.add(new ArchMageILDealCycle(new ArchMageIL()));
         soloDealCycleList.add(new ArchMageILContinuousDealCycle(new ArchMageILContinuous()));
-        soloDealCycleList.add(new ArkDealCycle(new Ark()));
+        soloDealCycleList.add(new ArkDealCycle(new Ark2()));
         soloDealCycleList.add(new BattleMageDealCycle(new BattleMage()));
         soloDealCycleList.add(new BattleMageContinuousDealCycle(new BattleMageContinuous()));
         soloDealCycleList.add(new Bishop2DealCycle(new Bishop()));
-        soloDealCycleList.add(new Bishop3DealCycle(new Bishop()));
         soloDealCycleList.add(new Bishop2ContinuousDealCycle(new BishopContinuous()));
-        soloDealCycleList.add(new Blaster480DealCycle(new Blaster()));
         soloDealCycleList.add(new Blaster510DealCycle(new Blaster()));
         soloDealCycleList.add(new Blaster540DealCycle(new Blaster()));
-        soloDealCycleList.add(new Blaster480ContinuousDealCycle(new BlasterContinuous()));
+        soloDealCycleList.add(new Blaster570DealCycle(new Blaster()));
         soloDealCycleList.add(new Blaster510ContinuousDealCycle(new BlasterContinuous()));
         soloDealCycleList.add(new Blaster540ContinuousDealCycle(new BlasterContinuous()));
+        soloDealCycleList.add(new Blaster570ContinuousDealCycle(new BlasterContinuous()));
         soloDealCycleList.add(new BowmasterDealCycle(new Bowmaster()));
         soloDealCycleList.add(new BowmasterContinuousDealCycle(new BowmasterContinuous()));
-        soloDealCycleList.add(new CadenaDealCycle(new Cadena()));
-        soloDealCycleList.add(new CadenaContinuousDealCycle(new CadenaContinuous()));
-        soloDealCycleList.add(new CannonShooter3DealCycle(new CannonShooter()));
+        soloDealCycleList.add(new CadenaDealCycle(new Cadena5()));
+        soloDealCycleList.add(new CadenaContinuousDealCycle(new Cadena5Continuous()));
+        soloDealCycleList.add(new CannonShooterDealCycle(new CannonShooter()));
+        soloDealCycleList.add(new CannonShooterDealCycle(new CannonShooter5()));
         soloDealCycleList.add(new CaptainDealCycle(new Captain()));
         soloDealCycleList.add(new CaptainContinuousDealCycle(new CaptainContinuous()));
-        soloDealCycleList.add(new DarkKnightDealCycle(new DarkKnight()));
-        soloDealCycleList.add(new DarkKnightContinuousDealCycle(new DarkKnightContinuous()));
-        soloDealCycleList.add(new DarkKnight2MinContinuousDealCycle(new DarkKnightContinuous()));
-        soloDealCycleList.add(new DemonAvenger29DealCycle(new DemonAvenger()));
-        soloDealCycleList.add(new DemonAvenger30DealCycle(new DemonAvenger()));
-        soloDealCycleList.add(new DemonAvenger29ContinuousDealCycle(new DemonAvengerContinuous()));
-        soloDealCycleList.add(new DemonAvenger30ContinuousDealCycle(new DemonAvengerContinuous()));
+        soloDealCycleList.add(new DarkKnightDealCycle(new DarkKnight5()));
+        soloDealCycleList.add(new DarkKnightContinuousDealCycle(new DarkKnight5Continuous()));
+        soloDealCycleList.add(new DemonAvenger29DealCycle(new DemonAvenger2()));
+        soloDealCycleList.add(new DemonAvenger30DealCycle(new DemonAvenger2()));
+        soloDealCycleList.add(new DemonAvenger29ContinuousDealCycle(new DemonAvenger2Continuous()));
+        soloDealCycleList.add(new DemonAvenger30ContinuousDealCycle(new DemonAvenger2Continuous()));
         soloDealCycleList.add(new DemonSlayerDealCycle(new DemonSlayerRuin()));
         soloDealCycleList.add(new DemonSlayerDealCycle(new DemonSlayerNormal()));
         soloDealCycleList.add(new DemonSlayerContinuousDealCycle(new DemonSlayerRuinContinuous()));
         soloDealCycleList.add(new DemonSlayerContinuousDealCycle(new DemonSlayerNormalContinuous()));
-        soloDealCycleList.add(new DualBladeDealCycle(new DualBlade()));
-        soloDealCycleList.add(new EunwolCancelDealCycle(new Eunwol()));
-        soloDealCycleList.add(new EunwolDealCycle(new Eunwol()));
-        soloDealCycleList.add(new Eunwol4RingCancelDealCycle(new Eunwol()));
-        soloDealCycleList.add(new Eunwol4RingDealCycle(new Eunwol()));
-        soloDealCycleList.add(new EunwolContinuousCancelDealCycle(new EunwolContinuous()));
-        soloDealCycleList.add(new EunwolContinuousDealCycle(new EunwolContinuous()));
-        soloDealCycleList.add(new EvanDealCycle(new Evan()));
-        soloDealCycleList.add(new EvanDealCycle(new Evan5()));
-        soloDealCycleList.add(new EvanContinuousDealCycle(new EvanContinuous()));
-        soloDealCycleList.add(new Evan5ContinuousDealCycle(new Evan5Continuous()));
-        soloDealCycleList.add(new Evan5Cool2MinContinuousDealCycle(new Evan5Continuous()));
-        soloDealCycleList.add(new FlameWizard2DealCycle(new FlameWizard()));
-        soloDealCycleList.add(new FlameWizard2ContinuousDealCycle(new FlameWizardContinuous()));
-        soloDealCycleList.add(new FlameWizard3DealCycle(new FlameWizard()));
-        soloDealCycleList.add(new FlameWizard3ContinuousDealCycle(new FlameWizardContinuous()));
-        soloDealCycleList.add(new HeroDealCycle(new Hero()));
-        soloDealCycleList.add(new Hero5DealCycle(new Hero5()));
+        soloDealCycleList.add(new DualBladeDealCycle(new DualBlade5()));
+        soloDealCycleList.add(new DualBladeContinuousDealCycle(new DualBlade5Continuous()));
+        soloDealCycleList.add(new EunwolDealCycle(new Eunwol2()));
+        soloDealCycleList.add(new EunwolContinuousDealCycle(new Eunwol2Continuous()));
+        soloDealCycleList.add(new EunwolCancelDealCycle(new Eunwol2()));
+        soloDealCycleList.add(new EunwolContinuousCancelDealCycle(new Eunwol2Continuous()));
+        soloDealCycleList.add(new EunwolCancel2DealCycle(new Eunwol2()));
+        soloDealCycleList.add(new EunwolContinuousCancel2DealCycle(new Eunwol2Continuous()));
+        soloDealCycleList.add(new EvanDealCycle(new Evan2()));
+        soloDealCycleList.add(new EvanCancelDealCycle(new Evan2()));
+        soloDealCycleList.add(new EvanContinuousDealCycle(new Evan2Continuous()));
+        soloDealCycleList.add(new EvanCancelContinuousDealCycle(new Evan2Continuous()));
+        soloDealCycleList.add(new FlameWizardDealCycle(new FlameWizard5()));
+        soloDealCycleList.add(new FlameWizardContinuousDealCycle(new FlameWizard5Continuous()));
+        soloDealCycleList.add(new HeroDealCycle(new Hero3()));
         soloDealCycleList.add(new HoYoungDealCycle(new HoYoung()));
         soloDealCycleList.add(new IlliumDealCycle(new Illium()));
-        soloDealCycleList.add(new Illium2MinDealCycle(new Illium()));
         soloDealCycleList.add(new IlliumContinuousDealCycle(new IlliumContinuous()));
-        soloDealCycleList.add(new Illium2MinContinuousDealCycle(new IlliumContinuous()));
         soloDealCycleList.add(new KainDealCycle(new Kain()));
+        soloDealCycleList.add(new KainDealCycle(new Kain2()));
         soloDealCycleList.add(new KainDealCycle(new Kain5()));
         soloDealCycleList.add(new KaiserDealCycle(new KaiserStat()));
         soloDealCycleList.add(new KaiserDealCycle(new Kaiser2()));
@@ -113,63 +118,78 @@ public class DPMMain {
         soloDealCycleList.add(new KaiserContinuousDealCycle(new KaiserStatContinuous()));
         soloDealCycleList.add(new KaiserContinuousDealCycle(new Kaiser2Continuous()));
         soloDealCycleList.add(new KaiserContinuousDealCycle(new Kaiser5Continuous()));
-        soloDealCycleList.add(new KhaliDealCycle(new Khali()));
-        soloDealCycleList.add(new KhaliContinuousDealCycle(new KhaliContinuous()));
+        soloDealCycleList.add(new KhaliDealCycle(new Khali5()));
+        soloDealCycleList.add(new KhaliContinuousDealCycle(new Khali5Continuous()));
         soloDealCycleList.add(new KinesisDealCycle(new Kinesis()));
         soloDealCycleList.add(new KinesisContinuousDealCycle(new KinesisContinuous()));
         soloDealCycleList.add(new LaraDealCycle(new Lara()));
         soloDealCycleList.add(new LaraDealCycle(new Lara2()));
         soloDealCycleList.add(new LaraContinuousDealCycle(new LaraContinuous()));
         soloDealCycleList.add(new LaraContinuousDealCycle(new Lara2Continuous()));
+        soloDealCycleList.add(new LenDealCycle(new Len()));
+        soloDealCycleList.add(new LenDealCycle(new Len2()));
+        soloDealCycleList.add(new LenDealCycle(new Len5()));
+        soloDealCycleList.add(new LenContinuousDealCycle(new LenContinuous()));
+        soloDealCycleList.add(new LenContinuousDealCycle(new Len2Continuous()));
+        soloDealCycleList.add(new LenContinuousDealCycle(new Len5Continuous()));
         soloDealCycleList.add(new LuminousDealCycle(new Luminous()));
-        soloDealCycleList.add(new LuminousContinuousDealCycle(new LuminousContinuous()));
         soloDealCycleList.add(new LuminousDealCycle(new Luminous5()));
+        soloDealCycleList.add(new LuminousContinuousDealCycle(new LuminousContinuous()));
         soloDealCycleList.add(new LuminousContinuousDealCycle(new Luminous5Continuous()));
-        soloDealCycleList.add(new Luminous2MinContinuousDealCycle(new Luminous5Continuous()));
         soloDealCycleList.add(new MarksmanDealCycle(new Marksman()));
         soloDealCycleList.add(new MarksmanContinuousDealCycle(new MarksmanContinuous()));
-        soloDealCycleList.add(new MechanicDealCycle(new Mechanic()));
-        soloDealCycleList.add(new MercedesDealCycle(new Mercedes()));
-        soloDealCycleList.add(new MercedesContinuousDealCycle(new MercedesContinuous()));
-        soloDealCycleList.add(new MercedesContinuousSylphidiaDealCycle(new MercedesContinuous()));
-        soloDealCycleList.add(new MihileDealCycle(new Mihile()));
-        soloDealCycleList.add(new MihileContinuousDealCycle(new MihileContinuous()));
+        soloDealCycleList.add(new MechanicDealCycle(new Mechanic5()));
+        soloDealCycleList.add(new MechanicContinuousDealCycle(new Mechanic5Continuous()));
+        soloDealCycleList.add(new MercedesDealCycle(new Mercedes1()));
+        soloDealCycleList.add(new MercedesDealCycle(new Mercedes4()));
+        soloDealCycleList.add(new MercedesContinuousDealCycle(new Mercedes1Continuous()));
+        soloDealCycleList.add(new MercedesContinuousDealCycle(new Mercedes4Continuous()));
+        soloDealCycleList.add(new MihileDealCycle(new Mihile2()));
+        soloDealCycleList.add(new MihileContinuousDealCycle(new Mihile2Continuous()));
         soloDealCycleList.add(new NightLordDealCycle(new NightLord()));
+        soloDealCycleList.add(new NightLordDealCycle(new NightLord2()));
         soloDealCycleList.add(new NightLordContinuousDealCycle(new NightLordContinuous()));
-        soloDealCycleList.add(new NightLordContinuousDealCycle(new NightLordContinuous1()));
         soloDealCycleList.add(new NightLordContinuousDealCycle(new NightLordContinuous2()));
         soloDealCycleList.add(new NightWalkerDealCycle(new NightWalker()));
+        soloDealCycleList.add(new NightWalkerContinuousDealCycle(new NightWalkerContinuous()));
         soloDealCycleList.add(new PaladinDealCycle(new Paladin()));
         soloDealCycleList.add(new PaladinDealCycle(new Paladin5()));
         soloDealCycleList.add(new PaladinUnityDealCycle(new Paladin()));
+        soloDealCycleList.add(new PaladinUnityDealCycle(new Paladin5()));
         soloDealCycleList.add(new PathFinderDealCycle(new Pathfinder3()));
         soloDealCycleList.add(new PathFinderDealCycle(new Pathfinder4()));
         soloDealCycleList.add(new PathFinderDealCycle(new Pathfinder5()));
         soloDealCycleList.add(new PathFinderContinuousDealCycle(new Pathfinder3Continuous()));
         soloDealCycleList.add(new PathFinderContinuousDealCycle(new Pathfinder4Continuous()));
         soloDealCycleList.add(new PathFinderContinuousDealCycle(new Pathfinder5Continuous()));
-        soloDealCycleList.add(new PhantomDealCycle(new Phantom()));
-        soloDealCycleList.add(new PhantomContinuousDealCycle(new PhantomContinuous()));
-        soloDealCycleList.add(new ShadowerDealCycle(new Shadower()));
-        soloDealCycleList.add(new ShadowerContinuousDealCycle(new ShadowerContinuous()));
+        soloDealCycleList.add(new PhantomDealCycle(new Phantom5()));
+        soloDealCycleList.add(new PhantomContinuousDealCycle(new Phantom5Continuous()));
+        soloDealCycleList.add(new ShadowerDealCycle(new Shadower5()));
+        soloDealCycleList.add(new ShadowerContinuousDealCycle(new Shadower5Continuous()));
         soloDealCycleList.add(new SoulMasterDealCycle(new SoulMaster()));
-        soloDealCycleList.add(new StrikerDealCycle(new Striker()));
-        soloDealCycleList.add(new StrikerContinuousDealCycle(new StrikerContinuous()));
+        soloDealCycleList.add(new SoulMasterContinuousDealCycle(new SoulMaster2Continuous()));
+        soloDealCycleList.add(new StrikerDealCycle(new Striker2()));
+        soloDealCycleList.add(new StrikerContinuousDealCycle(new Striker2Continuous()));
         soloDealCycleList.add(new ViperDealCycle(new Viper()));
         soloDealCycleList.add(new ViperContinuousDealCycle(new ViperContinuous()));
         soloDealCycleList.add(new WildHunterDealCycle(new WildHunter()));
-        soloDealCycleList.add(new WildHunter5DealCycle(new WildHunter5()));
-        soloDealCycleList.add(new WindBreakerDealCycle(new WindBreaker()));
-        soloDealCycleList.add(new WindBreakerContinuousDealCycle(new WindBreakerContinuous()));
-        soloDealCycleList.add(new XenonDealCycle(new Xenon()));
-        soloDealCycleList.add(new Xenon2HologramDealCycle(new Xenon()));
+        soloDealCycleList.add(new WildHunterDealCycle(new WildHunter5()));
+        soloDealCycleList.add(new WildHunterContinuousDealCycle(new WildHunterContinuous()));
+        soloDealCycleList.add(new WildHunterContinuousDealCycle(new WildHunter5Continuous()));
+        soloDealCycleList.add(new WindBreakerDealCycle(new WindBreaker5()));
+        soloDealCycleList.add(new WindBreakerContinuousDealCycle(new WindBreaker5Continuous()));
+        soloDealCycleList.add(new XenonDealCycle(new Xenon2()));
         soloDealCycleList.add(new XenonDealCycle(new Xenon5()));
+        soloDealCycleList.add(new Xenon2HologramDealCycle(new Xenon2()));
         soloDealCycleList.add(new Xenon2HologramDealCycle(new Xenon5()));
+        soloDealCycleList.add(new XenonContinuousDealCycle(new Xenon2Continuous()));
+        soloDealCycleList.add(new XenonContinuousDealCycle(new Xenon5Continuous()));
+        soloDealCycleList.add(new Xenon2HologramContinuousDealCycle(new Xenon2Continuous()));
+        soloDealCycleList.add(new Xenon2HologramContinuousDealCycle(new Xenon5Continuous()));
         soloDealCycleList.add(new ZeroDealCycle(new ZeroAlpha()));
         soloDealCycleList.add(new ZeroDealCycle(new ZeroBeta()));
         soloDealCycleList.add(new ZeroContinuousDealCycle(new ZeroAlphaContinuous()));
-        soloDealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));
-
+        soloDealCycleList.add(new ZeroContinuousDealCycle(new ZeroBetaContinuous()));*/
 
         /*
         duoDealCycleList = new ArrayList<>();
@@ -182,13 +202,28 @@ public class DPMMain {
          */
 
         /*for (DealCycle dealCycle : soloDealCycleList) {
-            if (dealCycle.getJob() instanceof Kain5) {
-                dealCycle.getJobInfo();
-                System.out.println(dealCycle.getJob().getFinalOtherStat1());
-                System.out.println(dealCycle.getJob().getFinalOtherStat2());
-                break;
+            if (
+                    dealCycle.getJob().getName().contains("540")
+                            || dealCycle.getJob().getName().contains("570")
+                            || dealCycle.getJob().getName().contains("져(30")
+                            || dealCycle.getJob().getName().contains(", 캔슬")
+                            || dealCycle.getJob().getName().contains("비마나캔슬")
+                            || dealCycle.getJob().getName().contains("결속")
+                            || dealCycle.getJob().getName().contains("홀로그램")
+                            || dealCycle.getJob().getName().contains("알파")
+                            || dealCycle.getJob().getName().contains("회당")
+            ) {
+                continue;
             }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            calcScouter.calc(dealCycle.getJob());
         }*/
+
         this.exportExcel();
     }
 
@@ -279,7 +314,7 @@ public class DPMMain {
         data.put("1", new Object[]{
                 "직업", "무기상수", "숙련도", "레벨", "주스탯 기본 수치", "주스탯 % 수치", "주스탯 % 미적용 수치",
                 "부스탯1 기본 수치", "부스탯1 % 수치", "부스탯1 % 미적용 수치", "부스탯2 기본 수치", "부스탯2 % 수치", "부스탯2 % 미적용 수치", "기본 스공",
-                "데미지", "최종 데미지", "보스 데미지", "방어율 무시", "공마 %",
+                "데미지", "최종 데미지", "보스 데미지", "방어율 무시", "공마 기본 수치", "공마 %", "공마 % 미적용 수치",
                 "크리티컬 확률", "크리티컬 데미지", "재사용 감소", "버프 지속 시간", "재사용 미적용", "속성 내성 무시",
                 "상추뎀", "소환수 지속", "아케인 포스", "어센틱 포스", "무기 공마"
         });
@@ -309,27 +344,28 @@ public class DPMMain {
 
         for (DealCycle dealCycle : soloDealCycleList) {
             if (
-                    dealCycle.getJob().getName().equals("제로 - 알파")
-                    || dealCycle.getJob().getName().equals("제로 - 알파(컨티)")
+                    dealCycle.getJob().getName().equals("제로 - 알파(2초, 리레단일)")
+                    || dealCycle.getJob().getName().equals("제로 - 알파(2초, 컨티)")
             ) {
                 continue;
             }
-            if (dealCycle.getJob().getName().equals("제로 - 베타")) {
-                dealCycle.getJob().setName("제로(리웨)");
+            if (dealCycle.getJob().getName().equals("제로 - 베타(2초, 리레단일)")) {
+                dealCycle.getJob().setName("제로(2초, 리레단일)");
             }
-            if (dealCycle.getJob().getName().equals("제로 - 베타(컨티)")) {
-                dealCycle.getJob().setName("제로(컨티)");
+            if (dealCycle.getJob().getName().equals("제로 - 베타(2초, 컨티)")) {
+                dealCycle.getJob().setName("제로(2초, 컨티)");
             }
             xssfSheet = xssfWorkbook.createSheet(dealCycle.getJob().getName());
             xssfSheet.setDefaultColumnWidth(50);
+            dealCycle.getJob().calculateAscentDamage();
             dealCycle.setSoloDealCycle();
             dealCycle.applyDoping();
 
             data = new TreeMap<>();
-            data.put("01", new Object[]{
+            data.put("001", new Object[]{
                     "유니온", "링크", "하이퍼스탯", "아티팩트", "어빌리티"
             });
-            data.put("02", new Object[]{
+            data.put("002", new Object[]{
                     dealCycle.getJob().getUnion().getDescription() + dealCycle.getJob().getUnion(),
                     dealCycle.getJob().getLinkListStr(),
                     dealCycle.getJob().getHyper().getDescription() + dealCycle.getJob().getHyper(),
@@ -338,38 +374,70 @@ public class DPMMain {
             });
 
             int colNum = 3;
-            data.put("03", new Object[]{});
+            data.put("003", new Object[]{});
             colNum = colNum + 1;
 
-            data.put("04", new Object[]{
+            data.put("004", new Object[]{
                     "공격스킬이름", "사용횟수", "타수", "점유율", "기타정보"
             });
             colNum = 5;
             for (int i = colNum; i < dealCycle.getAttackSkillList().size() + colNum; i++) {
                 String tmp = String.valueOf(i);
                 if (tmp.length() == 1) {
+                    tmp = "00" + tmp;
+                } else if (tmp.length() == 2) {
                     tmp = "0" + tmp;
                 }
                 data.put(tmp, dealCycle.getAttackSkillList().get(i - colNum).getOpject());
             }
 
             colNum = colNum + dealCycle.getAttackSkillList().size();
-            data.put(String.valueOf(colNum), new Object[]{});
+            String tmp = String.valueOf(colNum);
+            if (tmp.length() == 1) {
+                tmp = "00" + tmp;
+            } else if (tmp.length() == 2) {
+                tmp = "0" + tmp;
+            }
+            data.put(tmp, new Object[]{});
             colNum = colNum + 1;
 
-            data.put(String.valueOf(colNum), new Object[]{
+            tmp = String.valueOf(colNum);
+            if (tmp.length() == 1) {
+                tmp = "00" + tmp;
+            } else if (tmp.length() == 2) {
+                tmp = "0" + tmp;
+            }
+            data.put(tmp, new Object[]{
                     "버프스킬이름", "사용횟수", "시작 시간", "종료 시간", "기타정보"
             });
             colNum = colNum + 1;
             for (int i = colNum; i < dealCycle.getBuffSkillList().size() + colNum; i++) {
-                data.put(String.valueOf(i), dealCycle.getBuffSkillList().get(i - colNum).getObject());
+                tmp = String.valueOf(i);
+                if (tmp.length() == 1) {
+                    tmp = "00" + tmp;
+                } else if (tmp.length() == 2) {
+                    tmp = "0" + tmp;
+                }
+                data.put(tmp, dealCycle.getBuffSkillList().get(i - colNum).getObject());
             }
 
             colNum = colNum + dealCycle.getBuffSkillList().size();
-            data.put(String.valueOf(colNum), new Object[]{});
+            tmp = String.valueOf(colNum);
+            if (tmp.length() == 1) {
+                tmp = "00" + tmp;
+            } else if (tmp.length() == 2) {
+                tmp = "0" + tmp;
+            }
+            data.put(tmp, new Object[]{});
             colNum = colNum + 1;
 
-            data.put(String.valueOf(colNum), new Object[]{
+            tmp = String.valueOf(colNum);
+            if (tmp.length() == 1) {
+                tmp = "00" + tmp;
+            } else if (tmp.length() == 2) {
+                tmp = "0" + tmp;
+            }
+            data.put(tmp, new Object[]{
                     "스킬 로그"
             });
             colNum = colNum + 1;
@@ -393,13 +461,23 @@ public class DPMMain {
             }
 
             for (int i = colNum; i < mergedList.length + colNum; i++) {
-                data.put(String.valueOf(i), new Object[]{
-                        mergedList[i - colNum]
-                });
+                tmp = String.valueOf(i);
+                if (tmp.length() == 1) {
+                    tmp = "00" + tmp;
+                } else if (tmp.length() == 2) {
+                    tmp = "0" + tmp;
+                }
+                data.put(tmp, new Object[]{mergedList[i - colNum]});
             }
 
             colNum = colNum + dealCycle.getBuffSkillList().size();
-            data.put(String.valueOf(colNum), new Object[]{});
+            tmp = String.valueOf(colNum);
+            if (tmp.length() == 1) {
+                tmp = "00" + tmp;
+            } else if (tmp.length() == 2) {
+                tmp = "0" + tmp;
+            }
+            data.put(tmp, new Object[]{});
 
             keyset = data.keySet();
             rownum = 0;
@@ -434,6 +512,8 @@ public class DPMMain {
                     damageLine[i + 1] = new Object[]{i + 1, dealCycle.getDpsList().get(i)};
                 }
             }
+
+            rownum ++;
 
             for (Object[] damage : damageLine) {
                 Row row = xssfSheet.createRow(rownum++);
@@ -646,20 +726,20 @@ public class DPMMain {
 
         data = new TreeMap<>();
         data.put("1", new Object[]{
-                "직업이름", "DPM", "DPM 배율", "15초딜", "15초딜 배율", "40초 딜", "40초딜 배율", "오리진X 15초딜", "오리진X 15초딜 배율"
+                "직업이름", "조건", "어센트 퍼뎀", "어센트 데미지", "어센트 배율", "DPM", "DPM 배율", "15초딜", "15초딜 배율", "40초 딜", "40초딜 배율", "오리진X 15초딜", "오리진X 15초딜 배율"
         });
         for (int i = 0; i < soloDealCycleList.size(); i++) {
             if (
-                    soloDealCycleList.get(i).getJob().getName().equals("제로 - 알파")
-                    || soloDealCycleList.get(i).getJob().getName().equals("제로 - 알파(컨티)")
+                    soloDealCycleList.get(i).getJob().getName().equals("제로 - 알파(2초, 리레단일)")
+                    || soloDealCycleList.get(i).getJob().getName().equals("제로 - 알파(2초, 컨티)")
             ) {
                 continue;
             }
-            if (soloDealCycleList.get(i).getJob().getName().equals("제로 - 베타")) {
-                soloDealCycleList.get(i).getJob().setName("제로(리웨)");
+            if (soloDealCycleList.get(i).getJob().getName().equals("제로 - 베타(2초, 리레단일)")) {
+                soloDealCycleList.get(i).getJob().setName("제로(2초, 리레단일)");
             }
-            if (soloDealCycleList.get(i).getJob().getName().equals("제로 - 베타(컨티)")) {
-                soloDealCycleList.get(i).getJob().setName("제로(컨티)");
+            if (soloDealCycleList.get(i).getJob().getName().equals("제로 - 베타(2초, 컨티)")) {
+                soloDealCycleList.get(i).getJob().setName("제로(2초, 컨티)");
             }
             data.put(String.valueOf(i + 2), soloDealCycleList.get(i).getObject());
         }
@@ -692,14 +772,16 @@ public class DPMMain {
 
         Row row = xssfSheet.createRow(rownum);
         row.setHeightInPoints(100.0f);
-        xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 8));
+        xssfSheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 12));
         Cell cell = row.createCell(0);
-        cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 한줄 이탈 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성, 주흔작 / 펫장비 프펫공, 프펫마 / " +
-                "\n예티X핑크빈 칭호 / 유니온 9000 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / 헥사 풀강 / 동일 환산(87721) / " +
+        cell.setCellValue("1제네4카5앜9칠흑2여명2칠요 / 쌍레 한줄 이탈 5줄 / 무기추옵 1추+보공 / 방어구 및 장신구 22성 / 방어구 주흔작 / 장신구 프악공마 / 펫장비 프펫공마 / " +
+                "\n예티X핑크빈 칭호 / 유니온 9000 및 주요 캐릭터(은월, 메르세데스 등) 250레벨, 그 외 200레벨 / 헥사 풀강 / 동일 환산(90740) / " +
                 "\n캐릭터레벨 285 / 아케인포스 1350, 어센틱포스 660 / 유니온 아티팩트 54렙 / 길드스킬 60포인트 / 대형몹 / " +
                 "\n영메, 반빨별, 장비 명장, 익스트림 레드 및 블루, 길축, 우뿌, 유힘, 슈퍼파워, 붕뿌, 향산된 10단계 물약, VIP 버프, 세이람의 영약 / 어빌 레유유 최대옵션 / " +
                 "\n리레 4렙, 웨퍼 4렙(스위칭) 혹은 컨티 4렙 / 15초딜은 6차 포함하여 측정 / 히어로, 팔라딘 - 두손검 착용 / 마법사 및 섀도어 20성 방패 착용 / " +
-                "\n듀얼블레이드 22성 아케인 블레이드 착용 / 하이퍼 스킬은 사냥기를 제외하고 선택 / 몬스터 방어율 380% / 렙뻥, 포뻥 미적용");
+                "\n듀얼블레이드 22성 아케인 블레이드 착용 / 하이퍼 스킬은 사냥기를 제외하고 선택 / 몬스터 방어율 380% / 렙뻥, 포뻥 미적용" +
+                "\n어센트 스킬의 데미지는 동일 직업이어도 모자 옵션 차이, 동일 환산을 맞추기 위한 보정 스탯으로 인해 차이가 날 수 있음"
+        );
         cell.setCellStyle(cellStyle);
         cell = row.createCell(1);
         cell.setCellStyle(cellStyle);
@@ -716,6 +798,14 @@ public class DPMMain {
         cell = row.createCell(7);
         cell.setCellStyle(cellStyle);
         cell = row.createCell(8);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(9);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(10);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(11);
+        cell.setCellStyle(cellStyle);
+        cell = row.createCell(12);
         cell.setCellStyle(cellStyle);
 
         if (duoDealCycleList != null) {
@@ -866,6 +956,86 @@ public class DPMMain {
             }
         }
 
+        xssfSheet = xssfWorkbook.createSheet("직업별 패시브");
+        xssfSheet.setDefaultColumnWidth(50);
+
+        colNum = 1;
+
+        data = new TreeMap<>();
+        for (int i = colNum; i < soloDealCycleList.size() + colNum; i++) {
+            String tmp = String.valueOf(i);
+            if (tmp.length() == 1) {
+                tmp = "0" + tmp;
+            }
+            data.put(tmp, soloDealCycleList.get(i - colNum).getPassiveObject());
+        }
+
+        keyset = data.keySet();
+        rownum = 0;
+
+        for (String key : keyset) {
+            Row row1 = xssfSheet.createRow(rownum++);
+            Object[] objArr = data.get(key);
+            int cellnum = 0;
+            for (Object o : objArr) {
+                Cell cell1 = row1.createCell(cellnum++);
+                cell1.setCellStyle(cellStyle);
+                if (o instanceof String) {
+                    if (((String) o).charAt(0) == '=') {
+                        String formula = (String) o;
+                        formula = formula.substring(1);
+                        cell1.setCellFormula(formula);
+                    } else {
+                        cell1.setCellValue((String) o);
+                    }
+                } else if (o instanceof Long) {
+                    cell1.setCellValue((Long) o);
+                } else if (o instanceof Double) {
+                    cell1.setCellValue((Double) o);
+                }
+            }
+        }
+
+        xssfSheet = xssfWorkbook.createSheet("직업별 도핑");
+        xssfSheet.setDefaultColumnWidth(50);
+
+        colNum = 1;
+
+        data = new TreeMap<>();
+        for (int i = colNum; i < soloDealCycleList.size() + colNum; i++) {
+            String tmp = String.valueOf(i);
+            if (tmp.length() == 1) {
+                tmp = "0" + tmp;
+            }
+            data.put(tmp, soloDealCycleList.get(i - colNum).getDopingObject());
+        }
+
+        keyset = data.keySet();
+        rownum = 0;
+
+        for (String key : keyset) {
+            Row row1 = xssfSheet.createRow(rownum++);
+            Object[] objArr = data.get(key);
+            int cellnum = 0;
+            for (Object o : objArr) {
+                Cell cell1 = row1.createCell(cellnum++);
+                cell1.setCellStyle(cellStyle);
+                if (o instanceof String) {
+                    if (((String) o).charAt(0) == '=') {
+                        String formula = (String) o;
+                        formula = formula.substring(1);
+                        cell1.setCellFormula(formula);
+                    } else {
+                        cell1.setCellValue((String) o);
+                    }
+                } else if (o instanceof Long) {
+                    cell1.setCellValue((Long) o);
+                } else if (o instanceof Double) {
+                    cell1.setCellValue((Double) o);
+                }
+            }
+        }
+
         try {
             FileOutputStream out = new FileOutputStream(new File(filePath, fileNm));
             xssfWorkbook.write(out);
@@ -875,11 +1045,11 @@ public class DPMMain {
     }
 
     public void insertImg(XSSFWorkbook xssfWorkbook, XSSFSheet xssfSheet, int colNum, int rowNum, DealCycle dealCycle) {
-        if (dealCycle.getJob().getName().equals("데몬슬레이어\n(극포실, 환산 84352)")) {
-            dealCycle.getJob().setName("데몬슬레이어 (극포실, 환산 84352)");
+        if (dealCycle.getJob().getName().equals("데몬슬레이어\n(0초, 리웨, 극포실, 환산 84352)")) {
+            dealCycle.getJob().setName("데몬슬레이어 (0초, 리웨, 극포실, 환산 84352)");
         }
-        if (dealCycle.getJob().getName().equals("데몬슬레이어\n(극포실, 환산 84318, 컨티)")) {
-            dealCycle.getJob().setName("데몬슬레이어 (극포실, 환산 84318, 컨티)");
+        if (dealCycle.getJob().getName().equals("데몬슬레이어\n(0초, 컨티, 극포실, 환산 84318)")) {
+            dealCycle.getJob().setName("데몬슬레이어 (0초, 컨티, 극포실, 환산 84318)");
         }
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
         String svgNamespaceURI = "http://www.w3.org/2000/svg";

@@ -9,6 +9,6 @@ public class Lightning extends AttackSkill {
         this.setDamage(880.0);
         this.setCooldown(3.0);
         this.addFinalDamage(1.6);       // 코어강화
-        this.addFinalDamage(0.855);         // 축뢰
+        this.addFinalDamage(0.86);          // 축뢰
     }
 }

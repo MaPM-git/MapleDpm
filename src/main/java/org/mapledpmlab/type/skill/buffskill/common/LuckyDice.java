@@ -15,7 +15,7 @@ public class LuckyDice extends BuffSkill {
         this.setDuration(180L);
         this.setApplyServerLag(true);
         Long ran = (long) (Math.random() * 99 + 1);
-        if (ran <= 50) {                            // 더블 럭키 다이스
+        if (ran <= 70) {                            // 더블 럭키 다이스
             ran = (long) (Math.random() * 989 + 1);
             if (ran <= 115) {                       // 1번
                 this.setCooldown(90.0);

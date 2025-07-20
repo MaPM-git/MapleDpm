@@ -8,7 +8,7 @@ public class FuriousEdge extends AttackSkill {
         this.setAttackCount(3L);
         this.setDamage(277.0);
         this.setDotDuration(2000L);
-        this.setInterval(210L);
+        this.setInterval(170L);
         this.setLimitAttackCount(4L);
     }
 }

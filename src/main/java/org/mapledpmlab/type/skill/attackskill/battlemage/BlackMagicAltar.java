@@ -6,10 +6,10 @@ public class BlackMagicAltar extends AttackSkill {
     public BlackMagicAltar() {
         this.setName("블랙 매직 알터");
         this.setDelay(690L);
-        this.setInterval(1140L);
+        this.setInterval(660L);
         this.setDotDuration(40000L);
-        this.setDamage(1675.0);
-        this.setAttackCount(4L);
+        this.setDamage(1120.0);
+        this.setAttackCount(6L);
         this.setCooldown(40.0);
         this.addFinalDamage(1.6);       // 코어 강화
         this.setApplyCooldownReduction(false);

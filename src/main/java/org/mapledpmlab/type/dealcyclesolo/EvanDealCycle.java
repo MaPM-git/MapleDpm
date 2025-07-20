@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class EvanDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -27,12 +29,15 @@ public class EvanDealCycle extends DealCycle {
             add(new BreathComeBack());
             add(new BreathOfEarth());
             add(new BreathOfWind());
-            add(new CircleOfEarth());
             add(new CircleOfMana1());
             add(new CircleOfMana2());
             add(new CircleOfMana2Cancel());
+            add(new CircleOfEarth());
             add(new CircleOfThunder());
             add(new CircleOfWind());
+            add(new CircleOfEarthCancel());
+            add(new CircleOfThunderCancel());
+            add(new CircleOfWindCancel());
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new DarkFog());
@@ -90,10 +95,14 @@ public class EvanDealCycle extends DealCycle {
     BreathOfEarth breathOfEarth = new BreathOfEarth();
     BreathOfWind breathOfWind = new BreathOfWind();
     CircleOfEarth circleOfEarth = new CircleOfEarth();
+    CircleOfEarthCancel circleOfEarthCancel = new CircleOfEarthCancel();
     CircleOfMana1 circleOfMana = new CircleOfMana1();
     CircleOfMana1 circleOfManaCancel = new CircleOfMana1();
+    CircleOfMana2Cancel circleOfMana2Cancel = new CircleOfMana2Cancel();
     CircleOfThunder circleOfThunder = new CircleOfThunder();
+    CircleOfThunderCancel circleOfThunderCancel = new CircleOfThunderCancel();
     CircleOfWind circleOfWind = new CircleOfWind();
+    CircleOfWindCancel circleOfWindCancel = new CircleOfWindCancel();
     ComeBack comeBack = new ComeBack();
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     DarkFog darkFog = new DarkFog();
@@ -116,7 +125,7 @@ public class EvanDealCycle extends DealCycle {
     RingSwitching ringSwitching = new RingSwitching();
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
-    SpiralOfMana spiralOfMana = new SpiralOfMana();
+    CircleOfMana1 spiralOfMana = new CircleOfMana1();
     SummonOnyxDragon summonOnyxDragon = new SummonOnyxDragon();
     SwiftComeBack swiftComeBack = new SwiftComeBack();
     SwiftOfThunder swiftOfThunder = new SwiftOfThunder();
@@ -133,42 +142,17 @@ public class EvanDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(95.0);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        this.getJob().setName(this.getJob().getName().substring(0, this.getJob().getName().length() -1) + ", 비마나캔슬)");
 
-        circleOfManaCancel.setRelatedSkill(new CircleOfMana2Cancel());
-
-        List<Skill> swiftOfThunderCycle = new ArrayList<>();
-        List<Skill> diveOfEarthCycle = new ArrayList<>();
-        List<Skill> breathOfEarthCycle = new ArrayList<>();
-
-        swiftOfThunderCycle.add(dragonSwift);
-        swiftOfThunderCycle.add(circleOfThunder);
-        swiftOfThunderCycle.add(swiftOfThunder);
-        swiftOfThunderCycle.add(circleOfMana);
-        swiftOfThunderCycle.add(circleOfMana);
-        swiftOfThunderCycle.add(swiftComeBack);
-
-        diveOfEarthCycle.add(dragonDive);
-        diveOfEarthCycle.add(circleOfEarth);
-        diveOfEarthCycle.add(diveOfEarth);
-        diveOfEarthCycle.add(circleOfMana);
-        diveOfEarthCycle.add(circleOfMana);
-        diveOfEarthCycle.add(circleOfMana);
-        diveOfEarthCycle.add(circleOfMana);
-        diveOfEarthCycle.add(comeBack);
-
-        breathOfEarthCycle.add(dragonBreath);
-        breathOfEarthCycle.add(circleOfEarth);
-        breathOfEarthCycle.add(breathOfEarth);
-        breathOfEarthCycle.add(circleOfMana);
-        breathOfEarthCycle.add(circleOfMana);
-        breathOfEarthCycle.add(breathComeBack);
+        ringSwitching.setCooldown(60.0);
 
         getStart().setTime(-25000);
         freudBlessing4.setActivateTime(new Timestamp(-30000));
         addSkillEvent(freudBlessing4);
         getStart().setTime(0);
+
+        spiralOfMana.setRelatedSkill(new SpiralOfMana());
+        circleOfManaCancel.setRelatedSkill(circleOfMana2Cancel);
 
         addSkillEvent(spiralOfMana);
     }
@@ -205,23 +189,15 @@ public class EvanDealCycle extends DealCycle {
             ) {
                 addSkillEvent(freudBlessing6);
             } else if (
-                    cooldownCheck(heroesOath)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
+                    cooldownCheck(zodiacRayDelay)
                             && cooldownCheck(summonOnyxDragon)
-                            && cooldownCheck(zodiacRayDelay)
-                            && cooldownCheck(dragonBreath)
-                            && cooldownCheck(dragonSwift)
-                            && cooldownCheck(dragonDive)
-                            && cooldownCheck(dragonBreak)
-                            && cooldownCheck(elementalBlast)
-                            && cooldownCheck(imperialBreath)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
+                            && getStart().after(new Timestamp(dragonBreak.getActivateTime().getTime() - 3000))
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 3000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 if (cooldownCheck(zodiacBurst)) {
                     while (!cooldownCheck(freudBlessing5)) {
-                        if (cooldownCheck(spiralOfMana)) {
+                        if (cooldownCheck(spiralOfMana.getRelatedSkill())) {
                             addSkillEvent(spiralOfMana);
                         } else {
                             addSkillEvent(circleOfMana);
@@ -236,173 +212,143 @@ public class EvanDealCycle extends DealCycle {
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
-                } else if (cooldownCheck(spiralOfMana)) {
+                } else if (cooldownCheck(spiralOfMana.getRelatedSkill())) {
                     addSkillEvent(spiralOfMana);
                 } else {
                     addSkillEvent(circleOfMana);
                 }
                 addSkillEvent(summonOnyxDragon);
                 addSkillEvent(zodiacRayDelay);
-                addSkillEvent(circleOfManaCancel);
-                addSkillEvent(dragonBreath);
-                addSkillEvent(circleOfWind);
-                addSkillEvent(breathOfWind);
-                addSkillEvent(breathComeBack);
-                addSkillEvent(circleOfManaCancel);
-                addSkillEvent(dragonSwift);
-                addSkillEvent(circleOfWind);
-                addSkillEvent(swiftOfWind);
-                addSkillEvent(swiftComeBack);
-                addSkillEvent(circleOfManaCancel);
-                addSkillEvent(dragonDive);
-                addSkillEvent(circleOfEarth);
-                addSkillEvent(diveOfEarth);
-                addSkillEvent(darkFog);
-                addSkillEvent(comeBack);
+                if (!cooldownCheck(zodiacBurst)) {
+                    boolean bow = false;
+                    boolean doe = false;
+                    boolean sot = false;
+                    while (!bow && !doe && !sot) {
+                        if (cooldownCheck(dragonBreath)) {
+                            addSkillEvent(dragonBreath);
+                            addSkillEvent(breathOfWind);
+                            addSkillEvent(circleOfWind);
+                            addSkillEvent(breathComeBack);
+                            bow = true;
+                        }
+                        if (cooldownCheck(dragonDive)) {
+                            addSkillEvent(dragonDive);
+                            addSkillEvent(diveOfEarth);
+                            addSkillEvent(circleOfEarth);
+                            addSkillEvent(comeBack);
+                            doe = true;
+                        }
+                        if (cooldownCheck(dragonSwift)) {
+                            addSkillEvent(dragonSwift);
+                            addSkillEvent(swiftOfThunder);
+                            addSkillEvent(circleOfThunder);
+                            addSkillEvent(swiftComeBack);
+                            sot = true;
+                        }
+                    }
+                }
                 addSkillEvent(dragonBreak);
                 addSkillEvent(elementalBlast);
+                if (!cooldownCheck(elementalBlast)) {
+                    addSkillEvent(circleOfMana);
+                }
                 addSkillEvent(imperialBreath);
                 addSkillEvent(soulContract);
                 addSkillEvent(restraintRing);
                 addSkillEvent(zodiacRay);
-                if (cooldownCheck(spiralOfMana)) {
-                    addSkillEvent(spiralOfMana);
-                }
+                spiralOfMana.getRelatedSkill().setActivateTime(new Timestamp(-1));
+                addSkillEvent(spiralOfMana);
                 if (cooldownCheck(zodiacBurst)) {
                     addSkillEvent(zodiacBurst);
-                    if (cooldownCheck(spiralOfMana)) {
+                    if (cooldownCheck(spiralOfMana.getRelatedSkill())) {
                         addSkillEvent(spiralOfMana);
                         addSkillEvent(breakComeBack);
                     } else {
                         addSkillEvent(circleOfMana);
-                        addSkillEvent(circleOfMana);
-                        addSkillEvent(circleOfMana);
                         addSkillEvent(breakComeBack);
                     }
                 } else {
-                    int delay = 4650;
-                    for (int i = 0; i < 8; i++) {
-                        if (cooldownCheck(spiralOfMana)) {
+                    int delay = 3720;
+                    for (int i = 0; i < 7; i++) {
+                        if (cooldownCheck(spiralOfMana.getRelatedSkill())) {
                             addSkillEvent(spiralOfMana);
-                            addSkillEvent(circleOfMana);
                         } else {
                             addSkillEvent(circleOfMana);
                         }
                     }
                     addSkillEvent(breakComeBack);
                 }
-            } else if (cooldownCheck(spiralOfMana)) {
+            } else if (cooldownCheck(spiralOfMana.getRelatedSkill())) {
                 addSkillEvent(spiralOfMana);
             } else if (
                     cooldownCheck(summonOnyxDragon)
-                            && !cooldownCheck(heroesOath)
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(summonOnyxDragon);
             } else if (
                     cooldownCheck(soulContract)
-                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 10000))
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(dragonBreak)
-                            && cooldownCheck(elementalBlast)
-                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 30000))
+                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 7000))
             ) {
                 addSkillEvent(dragonBreak);
-                boolean som = false;
-                for (int i = 0; i < 3; i++) {
-                    if (cooldownCheck(spiralOfMana)) {
-                        addSkillEvent(spiralOfMana);
-                        som = true;
-                    } else {
-                        addSkillEvent(circleOfMana);
-                    }
-                }
-                if (som) {
-                    addSkillEvent(circleOfMana);
-                }
+                addSkillEvent(circleOfMana);
+                addSkillEvent(circleOfMana);
+                addSkillEvent(circleOfMana);
+                addSkillEvent(breakComeBack);
+            } else if (
+                    cooldownCheck(elementalBlast)
+                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 20000))
+            ) {
                 addSkillEvent(elementalBlast);
                 addSkillEvent(imperialBreath);
-                for (int i = 0; i < 8; i++) {
-                    if (cooldownCheck(spiralOfMana)) {
-                        addSkillEvent(spiralOfMana);
-                        addSkillEvent(circleOfMana);
-                    } else {
-                        addSkillEvent(circleOfMana);
-                    }
-                }
+                spiralOfMana.getRelatedSkill().setActivateTime(new Timestamp(-1));
+                addSkillEvent(spiralOfMana);
+                addSkillEvent(circleOfMana);
+                addSkillEvent(circleOfMana);
+                addSkillEvent(circleOfMana);
+                addSkillEvent(circleOfMana);
+                addSkillEvent(circleOfMana);
                 addSkillEvent(breakComeBack);
-            } else if (
-                    cooldownCheck(dragonBreak)
-                            && getStart().before(new Timestamp(elementalBlast.getActivateTime().getTime() - 5000))
-            ) {
-                addSkillEvent(dragonBreak);
-                boolean som = false;
-                for (int i = 0; i < 3; i++) {
-                    if (cooldownCheck(spiralOfMana)) {
-                        addSkillEvent(spiralOfMana);
-                        som = true;
-                    } else {
-                        addSkillEvent(circleOfMana);
-                    }
-                }
-                if (som) {
-                    addSkillEvent(circleOfMana);
-                }
-                addSkillEvent(breakComeBack);
-            } else if (
-                    cooldownCheck(dragonSwift)
-                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
-            ) {
-                addSkillEvent(dragonSwift);
-                addSkillEvent(circleOfThunder);
-                addSkillEvent(swiftOfThunder);
-                if (cooldownCheck(spiralOfMana)) {
+            } else {
+                if (
+                        !cooldownCheck(dragonBreak)
+                                && cooldownCheck(dragonDive)
+                ) {
+                    addSkillEvent(dragonDive);
+                    addSkillEvent(diveOfEarth);
+                    addSkillEvent(circleOfEarth);
+                    spiralOfMana.getRelatedSkill().setActivateTime(new Timestamp(-1));
                     addSkillEvent(spiralOfMana);
                     addSkillEvent(circleOfMana);
+                    addSkillEvent(circleOfManaCancel);
+                    addSkillEvent(comeBack);
+                } else if (
+                        !cooldownCheck(dragonBreak)
+                                && cooldownCheck(dragonSwift)
+                ) {
+                    addSkillEvent(dragonSwift);
+                    addSkillEvent(swiftOfThunder);
+                    addSkillEvent(circleOfThunder);
+                    addSkillEvent(circleOfManaCancel);
+                    addSkillEvent(swiftComeBack);
+                } else if (
+                        !cooldownCheck(dragonBreak)
+                                && cooldownCheck(dragonBreath)
+                ) {
+                    addSkillEvent(dragonBreath);
+                    addSkillEvent(breathOfWind);
+                    addSkillEvent(circleOfWind);
+                    addSkillEvent(circleOfMana);
+                    addSkillEvent(circleOfMana);
+                    addSkillEvent(circleOfManaCancel);
+                    addSkillEvent(breathComeBack);
                 } else {
                     addSkillEvent(circleOfMana);
                 }
-                if (!cooldownCheck(dragonSwift)) {
-                    addSkillEvent(circleOfMana);
-                }
-                addSkillEvent(circleOfManaCancel);
-                addSkillEvent(swiftComeBack);
-            } else if (
-                    cooldownCheck(dragonDive)
-                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
-            ) {
-                addSkillEvent(dragonDive);
-                addSkillEvent(circleOfEarth);
-                addSkillEvent(diveOfEarth);
-                addSkillEvent(circleOfMana);
-                addSkillEvent(circleOfManaCancel);
-                addSkillEvent(comeBack);
-            } else if (
-                    cooldownCheck(dragonBreath)
-                            && getStart().before(new Timestamp(restraintRing.getActivateTime().getTime() - 6000))
-            ) {
-                addSkillEvent(dragonBreath);
-                addSkillEvent(circleOfWind);
-                addSkillEvent(breathOfWind);
-                for (int i = 0; i < 3; i++) {
-                    if (cooldownCheck(spiralOfMana)) {
-                        addSkillEvent(spiralOfMana);
-                        addSkillEvent(circleOfMana);
-                    } else if (
-                            cooldownCheck(dragonSwift)
-                                    || cooldownCheck(dragonDive)
-                                    || cooldownCheck(dragonBreak)
-                    ) {
-                        break;
-                    } else {
-                        addSkillEvent(circleOfMana);
-                    }
-                }
-                addSkillEvent(circleOfManaCancel);
-                addSkillEvent(breathComeBack);
-            } else {
-                addSkillEvent(circleOfMana);
             }
         }
         sortEventTimeList();

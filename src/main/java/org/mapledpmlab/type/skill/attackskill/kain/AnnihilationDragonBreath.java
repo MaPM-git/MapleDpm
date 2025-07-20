@@ -7,8 +7,8 @@ public class AnnihilationDragonBreath extends AttackSkill {
     public AnnihilationDragonBreath() {
         this.setName("어나일레이션(마룡의 숨결)");
         this.setAttackCount(15L);
-        this.setDamage(1320.0);
-        this.setCooldown(0.25);
+        this.setDamage(1140.0);
+        this.setCooldown(0.2);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);
         this.getMultiAttackInfo().add(0L);

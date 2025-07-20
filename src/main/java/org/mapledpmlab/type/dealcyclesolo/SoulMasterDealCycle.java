@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class SoulMasterDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -67,7 +69,7 @@ public class SoulMasterDealCycle extends DealCycle {
     int mainAttackChk = 0;
     int shatterCount = 0;
 
-    Timestamp cosmicForgeEndTime = null;
+    Timestamp cosmicForgeEndTime = new Timestamp(-1);
     Timestamp elysionEndTime = new Timestamp(-1);
     Timestamp restraintRingEndTimestamp = new Timestamp(-1);
     Timestamp soulEclipseEndTime = null;
@@ -119,25 +121,29 @@ public class SoulMasterDealCycle extends DealCycle {
         ((AttackSkill) auraWeaponBuff.getRelatedSkill()).addFinalDamage(0.9);
         ((AttackSkill) auraWeaponBuff.getRelatedSkill()).setAttackCount(((AttackSkill) auraWeaponBuff.getRelatedSkill()).getAttackCount() * 2);
 
-        ringSwitching.setCooldown(90.0);
-        auraWeaponBuff.setCooldown(180.0);
-        transcendentCygnusBlessing.setCooldown(180.0);
+        ringSwitching.setCooldown(60.0);
+        transcendentCygnusBlessing.setCooldown(120.0);
+        transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
+
+        getStart().setTime(-10000);
+        addSkillEvent(transcendentCygnusBlessing);
+        getStart().setTime(0);
 
         getSkillSequence1().add(transcendentCygnusBlessing);
-        getSkillSequence1().add(auraWeaponBuff);
-        getSkillSequence1().add(gloryOfGuardians);              // 30
-        getSkillSequence1().add(cosmicForge);
-        getSkillSequence1().add(elysion);
-        getSkillSequence1().add(trueSight);                     // 600
 
+        getSkillSequence2().add(auraWeaponBuff);
+        getSkillSequence2().add(gloryOfGuardians);              // 30
+        getSkillSequence2().add(cosmicForge);
+        getSkillSequence2().add(elysion);
+        getSkillSequence2().add(trueSight);                     // 600
         getSkillSequence2().add(bodyOfSteel);
-        getSkillSequence2().add(soulContract);
-        getSkillSequence2().add(restraintRing);
+        getSkillSequence2().add(soulContract);                  // 30
+        getSkillSequence2().add(restraintRing);                 // 30
 
-        transcendentCygnusBlessing.setDelay(90L);
         auraWeaponBuff.setDelay(90L);
         cosmicForge.setDelay(90L);
         elysion.setDelay(90L);
+        bodyOfSteel.setDelay(30L);
     }
 
     @Override
@@ -157,25 +163,27 @@ public class SoulMasterDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(transcendentCygnusBlessing)
+                            && getStart().after(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 20000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                blessBurnTime = new Timestamp(getStart().getTime() + 21000);
+                addSkillEvent(transcendentCygnusBlessing);
+            }
+            if (
+                    getStart().after(blessBurnTime)
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 500))
+                            && getStart().before(new Timestamp(630 * 1000))
+            ) {
+                blessBurnTime = new Timestamp(transcendentCygnusBlessing.getActivateTime().getTime());
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
-                cosmicShower10.setActivateTime(new Timestamp(-1));
-                addSkillEvent(cosmicShower10);
-                blessBurnTime = new Timestamp(getStart().getTime() + 21000);
-                addDealCycle(getSkillSequence1());
+                cosmicShower5.setActivateTime(new Timestamp(-1));
+                addSkillEvent(cosmicShower5);
                 addSkillEvent(soulEclipse);
-            }
-            if (
-                    getStart().after(blessBurnTime)
-                            && getStart().before(new Timestamp(600 * 1000))
-            ) {
-                blessBurnTime = new Timestamp(transcendentCygnusBlessing.getActivateTime().getTime());
                 addDealCycle(getSkillSequence2());
                 addSkillEvent(cosmos10);
                 addSkillEvent(crossTheStyx);
@@ -190,27 +198,27 @@ public class SoulMasterDealCycle extends DealCycle {
                     }
                 }
                 addSkillEvent(solunarDivide);
-                cosmicShower5.setActivateTime(cosmicShower10.getActivateTime());
+                cosmicShower10.setActivateTime(cosmicShower5.getActivateTime());
                 cosmos5.setActivateTime(cosmos10.getActivateTime());
             } else if (
                     cooldownCheck(cosmos5)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(weaponJumpRing)
                             && cosmicOrbCount >= 5
                             && getStart().after(new Timestamp(60 * 1000))
                             && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 10000))
             ) {
                 addSkillEvent(cosmos5);
                 addSkillEvent(soulContract);
-                addSkillEvent(weaponJumpRing);
+                //addSkillEvent(weaponJumpRing);
                 cosmos10.setActivateTime(cosmos5.getActivateTime());
-            } else if (
+            } /*else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(70 * 1000))
+                            && getStart().after(new Timestamp(50 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println(getStart() + "\t시드링");
                 addSkillEvent(ringSwitching);
-            } else if (
+            }*/ else if (
                     cooldownCheck(cosmicShower5)
                             && cosmicOrbCount == 5
                             && !cooldownCheck(cosmicForge)
@@ -254,10 +262,10 @@ public class SoulMasterDealCycle extends DealCycle {
                 trueSightEndTime = new Timestamp(getStart().getTime() + 50000);
             }
             if (skill instanceof CosmicForge) {
-                cosmicForgeEndTime = new Timestamp(getStart().getTime() + 60000);
+                cosmicForgeEndTime = new Timestamp(getStart().getTime() + 40000);
             }
             if (skill instanceof Elysion) {
-                elysionEndTime = new Timestamp(getStart().getTime() + 3000 + 40000);
+                elysionEndTime = new Timestamp(getStart().getTime() + 3000 + 30000);
             }
             if (skill instanceof RestraintRing) {
                 restraintRingEndTimestamp = new Timestamp(getStart().getTime() + 15000);
@@ -337,7 +345,7 @@ public class SoulMasterDealCycle extends DealCycle {
                     && skill instanceof CrossTheStyx
             ) {
                 shatterCount ++;
-                if (shatterCount == 6) {
+                if (shatterCount == 4) {
                     addSkillEvent(shatter);
                     shatterCount = 0;
                 }
@@ -368,7 +376,7 @@ public class SoulMasterDealCycle extends DealCycle {
                 }
             }
             if (skill instanceof SoulEclipse) {
-                soulEclipseEndTime = new Timestamp(getStart().getTime() + 24000);
+                soulEclipseEndTime = new Timestamp(getStart().getTime() + 20000);
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();

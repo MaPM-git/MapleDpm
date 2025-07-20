@@ -18,5 +18,6 @@ public class DarkGenesisDeathWhip extends AttackSkill {
         this.getMultiAttackInfo().add(90L);
         this.getMultiAttackInfo().add(90L);
         this.getMultiAttackInfo().add(90L);
+        this.setRelatedSkill(new DarkLightning());
     }
 }

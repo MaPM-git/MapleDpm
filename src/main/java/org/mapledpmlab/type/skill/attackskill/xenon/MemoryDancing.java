@@ -6,6 +6,7 @@ public class MemoryDancing extends AttackSkill {
     public MemoryDancing() {
         this.setName("메모리 댄싱");
         this.setAttackCount(7L * 2);
+        this.addFinalDamage(0.85);          // 버추얼 프로텍션
         this.setDamage(210.0);
         this.setCooldown(10.0);
         this.setAddDamage(20L);                 // 블레이드 댄싱-리인포스
@@ -13,6 +14,9 @@ public class MemoryDancing extends AttackSkill {
         this.addIgnoreDefenseList(20L);
         this.getMultiAttackInfo().add(240L);
         this.getMultiAttackInfo().add(240L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
+        this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);

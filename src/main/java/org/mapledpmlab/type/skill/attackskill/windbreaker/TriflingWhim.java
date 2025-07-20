@@ -6,7 +6,7 @@ public class TriflingWhim extends AttackSkill {
     public TriflingWhim() {
         this.setName("트라이플링 윔");
         this.setAttackCount(1L);        // 트라이플링 윔-더블 찬스
-        this.setDamage(525.0);
+        this.setDamage(430.0);
         this.setProp(50L + 10);         // 트라이플링 윔-인핸스
         this.setFinalAttack(true);
         this.setAddDamage(20L);         // 트라이플링 윔-리인포스

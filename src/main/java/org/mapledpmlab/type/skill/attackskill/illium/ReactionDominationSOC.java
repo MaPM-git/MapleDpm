@@ -11,7 +11,8 @@ public class ReactionDominationSOC extends AttackSkill {
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.getMultiAttackInfo().add(120L);
-        this.getMultiAttackInfo().add(120L);
+        //this.getMultiAttackInfo().add(120L);
         this.addFinalDamage(1.08);  // 오버로드 마나
+        this.setApplyCooldownReduction(false);
     }
 }

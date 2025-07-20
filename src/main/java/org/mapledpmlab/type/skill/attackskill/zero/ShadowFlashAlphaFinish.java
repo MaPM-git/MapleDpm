@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.zero;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 
-public class ShadowFlashAlphaFinish extends AttackSkill {
+public class ShadowFlashAlphaFinish extends GaugeAttackSkill {
     public ShadowFlashAlphaFinish() {
         this.setName("쉐도우 플래시(알파, 재사용)");
         this.setAttackCount(15L);
@@ -12,5 +12,6 @@ public class ShadowFlashAlphaFinish extends AttackSkill {
         this.setInterval(90L);
         this.setLimitAttackCount(3L);
         this.addFinalDamage(1.6);       // 코어 강화
+        this.setGaugeCharge(-25.0);
     }
 }

@@ -8,7 +8,7 @@ public class MechaCarrier extends AttackSkill {
         this.setAttackCount(4L);
         this.setDamage(550.0);
         this.setInterval(30L);
-        this.setDotDuration(70000L);
+        this.setDotDuration(50000L);
         this.addFinalDamage(2.11);          // 로봇 마스터리
         this.addFinalDamage(1.6);           // 코어 강화
     }

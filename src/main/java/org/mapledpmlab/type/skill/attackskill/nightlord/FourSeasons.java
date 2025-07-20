@@ -8,7 +8,7 @@ public class FourSeasons extends AttackSkill {
         this.setApplyFinalAttack(true);
         this.setAttackCount(7L * 2);
         this.setCooldown(14.0);
-        this.setDamage(1090.0);
+        this.setDamage(940.0);
         this.setDelayByAttackSpeed(840L);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);

@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class AmaranceGenerator extends BuffSkill {
     public AmaranceGenerator() {
         this.setName("아마란스 제네레이터");
-        this.setCooldown(90.0);
+        this.setCooldown(60.0);
         this.setDelayByAttackSpeed(780L);
     }
 }

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class VoidBurstSlash extends AttackSkill implements VoidSkill {
     public VoidBurstSlash() {
         this.setName("보이드 버스트(참격)");
-        this.setDamage(2310.0);
+        this.setDamage(2200.0);
         this.setAttackCount(15L);
         this.setDelay(2520L);
         this.addFinalDamage(1.6);   // 코어강화

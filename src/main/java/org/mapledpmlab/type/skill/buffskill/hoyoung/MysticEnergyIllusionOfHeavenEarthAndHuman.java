@@ -10,8 +10,8 @@ public class MysticEnergyIllusionOfHeavenEarthAndHuman extends BuffSkill {
     public MysticEnergyIllusionOfHeavenEarthAndHuman() {
         this.setName("선기 : 천지인 환영");
         this.setDelay(720L);
-        this.setDuration(30L);
-        this.setCooldown(90.0);
+        this.setDuration(20L);
+        this.setCooldown(60.0);
         this.setApplyServerLag(true);
     }
 }

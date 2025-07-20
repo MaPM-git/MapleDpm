@@ -6,7 +6,7 @@ import org.mapledpmlab.type.skill.buffskill.kinesis.UltimateMaterialBuff;
 public class PsychicSmashing extends AttackSkill {
     public PsychicSmashing() {
         this.setName("싸이킥 스매싱");
-        this.setDamage(1034.0);
+        this.setDamage(1000.0);
         //this.setDelay(600L);
         this.setDelayByAttackSpeed(600L);
         this.setAttackCount(5L);

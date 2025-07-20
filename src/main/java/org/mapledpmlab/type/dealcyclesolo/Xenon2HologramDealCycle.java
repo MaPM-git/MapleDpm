@@ -1,8 +1,9 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
-import org.mapledpmlab.type.job.Xenon;
+import org.mapledpmlab.type.job.Xenon2;
 import org.mapledpmlab.type.job.Xenon5;
 import org.mapledpmlab.type.skill.Skill;
 import org.mapledpmlab.type.skill.attackskill.AttackSkill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class Xenon2HologramDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -120,16 +122,14 @@ public class Xenon2HologramDealCycle extends DealCycle {
         super(job, null);
 
         if (getJob().getCooldownReductionSec() == 5) {
-            this.getJob().setName("제논(리웨, 5초, 2홀로그램)");
+            this.getJob().setName("제논(5초, 리웨, 2홀로그램)");
         } else {
-            this.getJob().setName("제논(리웨, 2홀로그램)");
+            this.getJob().setName("제논(2초, 리웨, 2홀로그램)");
         }
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(90.0);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
         inclinePower.setApplyCooldownReduction(false);
         applyCooldown(inclinePower);
 
@@ -144,13 +144,11 @@ public class Xenon2HologramDealCycle extends DealCycle {
         getStart().setTime(0);
         energyCnt = 50;
 
-        getSkillSequence1().add(loadedDice);
         getSkillSequence1().add(mapleWorldGoddessBlessing);
         getSkillSequence1().add(oopartsCode);
 
-        loadedDice.setDelay(220L);
-        mapleWorldGoddessBlessing.setDelay(220L);
-        oopartsCode.setDelay(220L);
+        mapleWorldGoddessBlessing.setDelay(330L);
+        oopartsCode.setDelay(330L);
 
         getSkillSequence2().add(overdrive);             // 420
         getSkillSequence2().add(soulContract);          // 30
@@ -163,6 +161,9 @@ public class Xenon2HologramDealCycle extends DealCycle {
     @Override
     public void setSoloDealCycle() {
         while (getStart().before(getEnd())) {
+            if (cooldownCheck(loadedDice)) {
+                addSkillEvent(loadedDice);
+            }
             if (
                     cooldownCheck(overloadMode)
                             && cooldownCheck(megaSmasherBeforeDelay)
@@ -173,7 +174,7 @@ public class Xenon2HologramDealCycle extends DealCycle {
                 addSkillEvent(megaSmasherBeforeDelay);
             }
             if (
-                    cooldownCheck(loadedDice)
+                    cooldownCheck(mapleWorldGoddessBlessing)
                             && cooldownCheck(photonRayBeforeDelay)
                             && energyCnt >= 20
                             && getStart().after(chargeTime)
@@ -224,53 +225,30 @@ public class Xenon2HologramDealCycle extends DealCycle {
                 }
                 addSkillEvent(photonRay);
             } else if (
-                    cooldownCheck(photonRayBeforeDelay)
-                            && cooldownCheck(oopartsCode)
-                            && cooldownCheck(amaranceGenerator)
-                            && cooldownCheck(hologramGraffitiFusion)
-                            && cooldownCheck(overdrive)
-                            && cooldownCheck(meltdownExplosion)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(readyToDie)
-                            && getStart().before(new Timestamp(660 * 1000))
+                    getStart().after(new Timestamp(hologramGraffitiFusion.getActivateTime().getTime() - 2500))
+                            && getStart().before(new Timestamp(630 * 1000))
                             && energyCnt == 20
             ) {
                 addSkillEvent(photonRayBeforeDelay);
                 addSkillEvent(amaranceGenerator);
                 oopartsCode.setDelay(600L);
                 addSkillEvent(oopartsCode);
-                oopartsCode.setDelay(220L);
+                oopartsCode.setDelay(330L);
                 addSkillEvent(meltdownExplosion);
                 addSkillEvent(hologramGraffitiFusion);
-                while (!cooldownCheck(resistanceLineInfantry)) {
-                    if (cooldownCheck(fuzzyRobMasqueradeExecution)) {
-                        addSkillEvent(fuzzyRobMasqueradeExecution);
-                    } else {
-                        addSkillEvent(fuzzyRobMasqueradeSnipe);
-                    }
-                }
-                addSkillEvent(resistanceLineInfantry);
                 addDealCycle(getSkillSequence2());
-                addSkillEvent(weaponJumpRing);
                 addSkillEvent(photonRay);
             } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(65 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
-            } else if (
                     cooldownCheck(hologramGraffitiForceField)
-                            && !cooldownCheck(loadedDice)
+                            && !cooldownCheck(mapleWorldGoddessBlessing)
             ) {
                 addSkillEvent(hologramGraffitiForceField);
             } else if (
                     cooldownCheck(photonRayBeforeDelay)
                             && (
-                            (
-                                    !cooldownCheck(readyToDie)
-                                            && getStart().before(new Timestamp(loadedDice.getActivateTime().getTime() - 20000))
-                            ) || getStart().after(new Timestamp(660 * 1000))
+                            getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 20000))
+                                    || getStart().after(new Timestamp(660 * 1000)
+                            )
                     )
             ) {
                 addSkillEvent(photonRayBeforeDelay);
@@ -311,25 +289,27 @@ public class Xenon2HologramDealCycle extends DealCycle {
                     || skill instanceof ArtificialEvolution
                     || skill instanceof ArtificialEvolutionAirFrame
             ) {
+                Timestamp timestamp = new Timestamp(getStart().getTime());
+                getStart().setTime(getStart().getTime() + sum);
                 Long ran = (long) (Math.random() * 9 + 1);
                 if (ran <= 3) {
-                    Timestamp timestamp = new Timestamp(getStart().getTime());
-                    getStart().setTime(getStart().getTime() + sum);
                     addSkillEvent(triangleFormation);
                     airFrameCnt++;
-                    if (airFrameCnt >= 3) {
+                    if (
+                            airFrameCnt >= 3
+                            && cooldownCheck(triangleFormationPlasma)
+                    ) {
                         addSkillEvent(triangleFormationPlasma);
                         airFrameCnt -= 3;
                     }
-                    if (cooldownCheck(memoryDancing)) {
-                        addSkillEvent(memoryDancing);
-                        memoryDancing.setActivateTime(new Timestamp(-1));
-                        addSkillEvent(memoryDancing);
-                        memoryDancing.setActivateTime(new Timestamp(-1));
-                        addSkillEvent(memoryDancing);
-                    }
-                    getStart().setTime(timestamp.getTime());
                 }
+                if (
+                        cooldownCheck(memoryDancing)
+                                && !(skill instanceof ArtificialEvolutionAirFrame)
+                ) {
+                    addSkillEvent(memoryDancing);
+                }
+                getStart().setTime(timestamp.getTime());
             }
             getSkillEventList().add(new XenonSkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum), (long) this.energyCnt));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
@@ -382,7 +362,7 @@ public class Xenon2HologramDealCycle extends DealCycle {
                 evolutionEndTime = new Timestamp(getStart().getTime() + 30000);
             }
             if (skill instanceof OverloadMode) {
-                overloadModeEndTime = new Timestamp(getStart().getTime() + 70000);
+                overloadModeEndTime = new Timestamp(getStart().getTime() + overloadMode.getDuration() * 1000 + 3000);
             }
             if (
                     skill instanceof OopartsCode
@@ -434,23 +414,22 @@ public class Xenon2HologramDealCycle extends DealCycle {
             }
         } else {
             if (
-                    skill instanceof FuzzyRobMasqueradeExecution
+                    skill instanceof FuzzyRobMasqueradeSnipe
                     || skill instanceof MeltdownExplosion
             ) {
                 Long ran = (long) (Math.random() * 9 + 1);
                 if (ran <= 3) {
                     addSkillEvent(triangleFormation);
                     airFrameCnt++;
-                    if (airFrameCnt >= 3) {
+                    if (
+                            airFrameCnt >= 3
+                            && cooldownCheck(triangleFormationPlasma)
+                    ) {
                         addSkillEvent(triangleFormationPlasma);
                         airFrameCnt -= 3;
                     }
                 }
                 if (cooldownCheck(memoryDancing)) {
-                    addSkillEvent(memoryDancing);
-                    memoryDancing.setActivateTime(new Timestamp(-1));
-                    addSkillEvent(memoryDancing);
-                    memoryDancing.setActivateTime(new Timestamp(-1));
                     addSkillEvent(memoryDancing);
                 }
             }
@@ -468,7 +447,7 @@ public class Xenon2HologramDealCycle extends DealCycle {
             }
             if (skill instanceof HologramGraffitiFusion) {
                 hologramGraffitiFusionStartTimeList.add(new Timestamp(getStart().getTime()));
-                hologramGraffitiFusionEndTimeList.add(new Timestamp(getStart().getTime() + 40000));
+                hologramGraffitiFusionEndTimeList.add(new Timestamp(getStart().getTime() + 30000));
             }
             if (((AttackSkill) skill).getInterval() != 0) {
                 List<SkillEvent> remove = new ArrayList<>();
@@ -500,25 +479,30 @@ public class Xenon2HologramDealCycle extends DealCycle {
                                 || skill instanceof OverloadModePlasmaCurrent
                                 || skill instanceof PhotonRay
                         ) {
+                            Timestamp timestamp = new Timestamp(getStart().getTime());
+                            getStart().setTime(getStart().getTime() + i);
                             Long ran = (long) (Math.random() * 9 + 1);
                             if (ran <= 3) {
-                                Timestamp timestamp = new Timestamp(getStart().getTime());
-                                getStart().setTime(getStart().getTime() + i);
                                 addSkillEvent(triangleFormation);
                                 airFrameCnt++;
-                                if (airFrameCnt >= 3) {
+                                if (
+                                        airFrameCnt >= 3
+                                        && cooldownCheck(triangleFormationPlasma)
+                                ) {
                                     addSkillEvent(triangleFormationPlasma);
                                     airFrameCnt -= 3;
                                 }
-                                if (cooldownCheck(memoryDancing)) {
-                                    addSkillEvent(memoryDancing);
-                                    memoryDancing.setActivateTime(new Timestamp(-1));
-                                    addSkillEvent(memoryDancing);
-                                    memoryDancing.setActivateTime(new Timestamp(-1));
-                                    addSkillEvent(memoryDancing);
-                                }
-                                getStart().setTime(timestamp.getTime());
                             }
+                            if (
+                                    cooldownCheck(memoryDancing)
+                                            && (
+                                            !(skill instanceof OverloadModePlasmaCurrent)
+                                                    && !(skill instanceof PhotonRay)
+                                    )
+                            ) {
+                                addSkillEvent(memoryDancing);
+                            }
+                            getStart().setTime(timestamp.getTime());
                         }
                         getSkillEventList().add(new XenonSkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i), (long) this.energyCnt));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
@@ -678,6 +662,9 @@ public class Xenon2HologramDealCycle extends DealCycle {
                             rocketSystemCount = 0;
                         } else {
                             totalDamage += getAttackDamage(new XenonSkillEvent(rocketSystem, start, end, ((XenonSkillEvent) se).getCurrentEnergyCnt()), buffSkill, start, end);
+                            totalDamage += getAttackDamage(new XenonSkillEvent(rocketSystem, start, end, ((XenonSkillEvent) se).getCurrentEnergyCnt()), buffSkill, start, end);
+                            totalDamage += getAttackDamage(new XenonSkillEvent(rocketSystem, start, end, ((XenonSkillEvent) se).getCurrentEnergyCnt()), buffSkill, start, end);
+                            totalDamage += getAttackDamage(new XenonSkillEvent(rocketSystem, start, end, ((XenonSkillEvent) se).getCurrentEnergyCnt()), buffSkill, start, end);
                             rocketSystemCount ++;
                         }
                         rocketSystemCooltime = new Timestamp(rocketSystemCooltime.getTime() + 1880);
@@ -730,8 +717,8 @@ public class Xenon2HologramDealCycle extends DealCycle {
     @Override
     public Long getDotDamage(AttackSkill attackSkill, BuffSkill buffSkill) {
         Long attackDamage = 0L;
-        if (getJob() instanceof Xenon) {
-            attackDamage = (long) Math.floor((getJob().getFinalMainStat() + getJob().getFinalSubstat() + ((Xenon) getJob()).getFinalSubStat2()) * 4 * 0.01
+        if (getJob() instanceof Xenon2) {
+            attackDamage = (long) Math.floor((getJob().getFinalMainStat() + getJob().getFinalSubstat() + ((Xenon2) getJob()).getFinalSubStat2()) * 4 * 0.01
                     * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                     * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                     + getJob().getPerXAtt())
@@ -767,12 +754,12 @@ public class Xenon2HologramDealCycle extends DealCycle {
                 if (attackSkill instanceof DotAttackSkill) {
                     attackDamage = getDotDamage(attackSkill, buffSkill);
                 } else {
-                    if (getJob() instanceof Xenon) {
+                    if (getJob() instanceof Xenon2) {
                         attackDamage = (long) Math.floor(
                                 (
                                         getJob().getFinalMainStat()
                                                 + getJob().getFinalSubstat()
-                                                + ((Xenon) getJob()).getFinalSubStat2()
+                                                + ((Xenon2) getJob()).getFinalSubStat2()
                                 ) * 4 * 0.01
                                         * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                                         * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))

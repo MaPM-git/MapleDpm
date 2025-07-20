@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class AbyssSpell extends AttackSkill {
     public AbyssSpell() {
         this.setName("어비스 스펠");
-        this.setDamage(115.0);
+        this.setDamage(151.0);
         this.setAttackCount(2L);
         this.setDotDuration(3000L);
         this.setInterval(300L);

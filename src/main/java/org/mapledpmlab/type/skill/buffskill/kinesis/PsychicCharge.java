@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class PsychicCharge extends BuffSkill {
     public PsychicCharge() {
         this.setName("싸이킥 차징");
-        this.setCooldown(44.0);
+        this.setCooldown(43.0);
         this.setDelay(30L);
     }
 }

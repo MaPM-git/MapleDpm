@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class StrikerContinuousDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -109,7 +111,6 @@ public class StrikerContinuousDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         transcendentCygnusBlessing.setCooldown(120.0);
-        transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
         getStart().setTime(-10000);
@@ -189,7 +190,7 @@ public class StrikerContinuousDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(overdrive)
                             && cooldownCheck(soulContract)
-                            && !cooldownCheck(gloryOfGuardians)
+                            && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);

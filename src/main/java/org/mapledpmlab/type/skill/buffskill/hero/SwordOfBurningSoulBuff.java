@@ -13,6 +13,6 @@ public class SwordOfBurningSoulBuff extends BuffSkill {
         this.setRelatedSkill(new SwordOfBurningSoulDot());
         this.setCooldown(120.0);
         this.setDelay(750L);
-        this.setDuration(75L);
+        this.setDuration(20L);
     }
 }

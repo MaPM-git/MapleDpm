@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ResonateAwakening extends AttackSkill {
     public ResonateAwakening() {
         this.setName("각성 레조네이트");
-        this.setDamage(315.0 + 203);
+        this.setDamage(260.0);// + 158);
         this.setAttackCount(3L);
         this.setDotDuration(660L * 8);
         this.setInterval(660L);

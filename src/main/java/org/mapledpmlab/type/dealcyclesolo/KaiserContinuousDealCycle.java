@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class KaiserContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -121,8 +123,6 @@ public class KaiserContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        dragonBlaze.setDotDuration(dragonBlaze.getDotDuration() + 3000);
-
         auraWeaponBuff.setCooldown(180.0);
         auraWeaponBuff.setApplyCooldownReduction(false);
         grandisGoddessBlessingNova.setCooldown(120.0);
@@ -167,21 +167,6 @@ public class KaiserContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(finalTrance);
             }
-            /*if (
-                    getStart().after(finalFigurationEndTime)
-                            && cooldownCheck(majestyOfKaiser)
-                            && gauge <= 300
-            ) {
-                if (cooldownCheck(wallOfSword)) {
-                    addSkillEvent(wallOfSword);
-                }
-                if (cooldownCheck(infernoBreath)) {
-                    addSkillEvent(infernoBreath);
-                }
-                addSkillEvent(majestyOfKaiser);
-                addSkillEvent(wallOfSword);
-                addSkillEvent(infernoBreath);
-            }*/
             if (cooldownCheck(wallOfSword)) {
                 addSkillEvent(wallOfSword);
             }
@@ -296,10 +281,7 @@ public class KaiserContinuousDealCycle extends DealCycle {
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
-            } else if (
-                    cooldownCheck(infernoBreath)
-                            && !cooldownCheck(bodyOfSteel)
-            ) {
+            } else if (cooldownCheck(infernoBreath)) {
                 addSkillEvent(infernoBreath);
             } else if (cooldownCheck(dragonSlash)) {
                 addSkillEvent(dragonSlash);
@@ -498,7 +480,7 @@ public class KaiserContinuousDealCycle extends DealCycle {
             if (
                     skill instanceof DragonBlaze
             ) {
-                dragonBlazeEndTime = new Timestamp(getStart().getTime() + 23000);
+                dragonBlazeEndTime = new Timestamp(getStart().getTime() + 20000);
             }
             if (
                     skill instanceof WallOfSword
@@ -609,7 +591,6 @@ public class KaiserContinuousDealCycle extends DealCycle {
                     if (skill instanceof WallOfSword) {
                         skill.setActivateTime(new Timestamp(getStart().getTime() + 3000));
                     }
-                    reuseCnt--;
                     return;
                 } else  {
                     skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
@@ -619,11 +600,14 @@ public class KaiserContinuousDealCycle extends DealCycle {
                     skill.isApplyReuse()
                     && getStart().before(grandisGoddessBlessingEndTime)
                     && reuseCnt > 0
+                    && !cooldownCheck(skill)
             ) {
                 Double ran = Math.random() * 99;
                 if (ran <= 55) {
                     if (skill instanceof WallOfSword) {
                         skill.setActivateTime(new Timestamp(getStart().getTime() + 3000));
+                    } else {
+                        skill.setActivateTime(new Timestamp(-1));
                     }
                     reuseCnt--;
                 } else  {

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class EunwolContinuousDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -117,8 +119,6 @@ public class EunwolContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        mapleWorldGoddessBlessing.setCooldown(120.0);
-
         spritPunch2.setDelayByAttackSpeed(300L);
 
         spritPunch1Cancel.setRelatedSkill(new SpritPunch2());
@@ -128,6 +128,7 @@ public class EunwolContinuousDealCycle extends DealCycle {
         getSkillSequence1().add(heroesOath);                // 30
         getSkillSequence1().add(mapleWorldGoddessBlessing);
         getSkillSequence1().add(overdrive);                 // 420
+        getSkillSequence1().add(lightOfTheFoxGoddess);
         getSkillSequence1().add(eunwolHyper);               // 30
         getSkillSequence1().add(soulContract);              // 30
 
@@ -137,7 +138,8 @@ public class EunwolContinuousDealCycle extends DealCycle {
         getSkillSequence3().add(loadedDice);
         loadedDice.setDelay(660L);
 
-        mapleWorldGoddessBlessing.setDelay(480L);
+        mapleWorldGoddessBlessing.setDelay(240L);
+        lightOfTheFoxGoddess.setDelay(240L);
 
         getStart().setTime(-25000);
         freudBlessing4.setActivateTime(new Timestamp(-30000));
@@ -207,7 +209,6 @@ public class EunwolContinuousDealCycle extends DealCycle {
                 isNuke = true;
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(divisionSoul);
-                addSkillEvent(lightOfTheFoxGoddess);
                 addSkillEvent(ghostDisposition);
                 addSkillEvent(spritPunch1Cancel);
                 addSkillEvent(chainBombPunch);
@@ -537,8 +538,7 @@ public class EunwolContinuousDealCycle extends DealCycle {
         for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
             sum += info;
             if (
-                    skill instanceof LightOfTheFoxGoddessAlterEgo
-                    || skill instanceof GhostDispositionAttack
+                    skill instanceof GhostDispositionAttack
                     || skill instanceof GhostDispositionDarkness
                     || skill instanceof ChainBombPunchEnd
                     || skill instanceof AdventOfTheFox1

@@ -17,62 +17,101 @@ public class Viper extends Job {
     public Viper() {
         // 기본
         super();
-        this.setName("바이퍼(리웨)");
+        this.setName("바이퍼(0초, 리웨)");
         this.setConstant(1.7);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (255 + 157 + 72 + 223));
-        this.setWeaponAttMagic((long) (255 + 157 + 72 + 223));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
+        this.setAscentDamage(2820825.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addOtherStat1(10L);
-        this.addOtherStat2(10L);
-        this.addAtt(3L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (255 + 157 + 72 + 223));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (255 + 157 + 72 + 223));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addOtherStat1(10L);
+        passive.addOtherStat2(10L);
+        passive.addAtt(3L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
 
         // 1차
-        this.addCriticalP(20.0);        // 크리티컬 로어
-        this.addCriticalDamage(5.0);
+        passive = new Common();
+        passive.setDescription("크리티컬 로어");
+        passive.addCriticalP(20.0);
+        passive.addCriticalDamage(5.0);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addMainStat(20L);          // 너클 액셀레이션
-        this.addAtt(30L);               // 멘탈 클리어리티
-        this.addMainStat(30L);          // 피지컬 트레이닝
-        this.addSubStat(30L);
+        passive = new Common();
+        passive.setDescription("너클 액셀레이션");
+        passive.addMainStat(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("멘탈 클리어리티");
+        passive.addAtt(30L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("피지컬 트레이닝");
+        passive.addMainStat(30L);
+        passive.addSubStat(30L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addAtt(30L);               // 크리티컬 레이지
-        this.addCriticalP(15.0);
-        this.addCriticalDamage(10.0);
-        this.addCriticalP(60.0);        // 그로기 마스터리
+        passive = new Common();
+        passive.setDescription("크리티컬 레이지");
+        passive.addAtt(30L);
+        passive.addCriticalP(15.0);
+        passive.addCriticalDamage(10.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("그로기 마스터리");
+        passive.addCriticalP(60.0);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addAttP(15L);              // 바이퍼지션
-        this.addFinalDamage(1.13);
-        this.addIgnoreDefenseList(44L); // 가드 크러쉬
-        this.addFinalDamage(1.1);
-        this.addAtt(32L);
+        passive = new Common();
+        passive.setDescription("바이퍼지션");
+        passive.addAttP(15L);
+        passive.addFinalDamage(1.13);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("가드 크러쉬");
+        passive.addIgnoreDefenseList(44L);
+        passive.addFinalDamage(1.1);
+        passive.addAtt(32L);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addAtt(40L);               // 로디드 다이스
+        passive = new Common();
+        passive.setDescription("로디드 다이스");
+        passive.addAtt(40L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(-36L);
-        this.addMainStat(7L);
+        this.addMainStatP(-39L);
+        this.addMainStat(-7L);
         this.addSubStat(-5L);
 
         this.setAbility(new BossAbnormalAttack());
@@ -93,8 +132,32 @@ public class Viper extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addCriticalDamage(15.0);   // 그로기 마스터리
-        this.addDamage(27L);            // 오펜스 폼
-        this.addCriticalDamage(15.0);   // 서펜트 스피릿
+
+        Common doping = new Common();
+        doping.setDescription("그로기 마스터리");
+        doping.addCriticalDamage(15.0);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("오펜스 폼");
+        doping.addDamage(29L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("서펜트 스피릿");
+        doping.addCriticalDamage(15.0);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("바이퍼지션(콜렉터의 영약)");
+        doping.addAttP(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("가드 크러쉬(콜렉터의 영약)");
+        doping.addAtt(2L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

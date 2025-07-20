@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class StrikerDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -112,7 +114,6 @@ public class StrikerDealCycle extends DealCycle {
         ringSwitching.setCooldown(120.0);
 
         transcendentCygnusBlessing.setCooldown(120.0);
-        transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
         getStart().setTime(-10000);
@@ -166,11 +167,7 @@ public class StrikerDealCycle extends DealCycle {
                     addSkillEvent(spiderInMirror);
                 }
                 addDealCycle(getSkillSequence1());
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(sharkWave);
                 addSkillEvent(waterWave);
                 addSkillEvent(createThunderChain);
@@ -193,15 +190,9 @@ public class StrikerDealCycle extends DealCycle {
                 addSkillEvent(creationOfTheWorld);
                 dealCycleOrder ++;
             } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(110 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
-            } else if (
                     cooldownCheck(overdrive)
                             && cooldownCheck(soulContract)
-                            && !cooldownCheck(gloryOfGuardians)
+                            && getStart().before(new Timestamp(gloryOfGuardians.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);

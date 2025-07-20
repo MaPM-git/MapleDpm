@@ -8,9 +8,9 @@ public class DarknessOmen extends AttackSkill implements DarkAttack {
         this.setAttackCount(6L);
         this.setDamage(820.0);
         this.setDelayByAttackSpeed(240L);
-        this.setDotDuration(7000L);
+        this.setDotDuration((long) (7000L * 1.3));
         this.setInterval(300L);
-        this.setLimitAttackCount(24L);
+        //this.setLimitAttackCount(24L);
         this.setCooldown(60.0 / 2);     // 다크니스 오멘-쿨타임 리듀스
         this.setAddDamage(20L);         // 다크니스 오멘-리인포스
         this.addFinalDamage(2.2);       // 코어강화

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class DarkKnightDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -98,10 +100,6 @@ public class DarkKnightDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(180.0);
-        mapleWorldGoddessBlessing.setCooldown(120.0);
-        auraWeaponBuff.setCooldown(180.0);
-
         getSkillSequence1().add(bodyOfSteel);
         getSkillSequence1().add(auraWeaponBuff);
         getSkillSequence1().add(epicAdventure);             // 30
@@ -122,8 +120,10 @@ public class DarkKnightDealCycle extends DealCycle {
         while (getStart().before(getEnd())) {
             if (
                     cooldownCheck(restraintRing)
-                    && getStart().before(new Timestamp(660 * 1000))
-                    && getStart().after(new Timestamp(darkSpear.getActivateTime().getTime() - 2000))
+                            && getStart().before(new Timestamp(630 * 1000))
+                            && getStart().after(new Timestamp(darkSpear.getActivateTime().getTime() - 2000))
+                            && getStart().after(new Timestamp(beholderImpact.getActivateTime().getTime() - 2000))
+                            && getStart().after(new Timestamp(piercingCycloneFirstDelay.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(darknessAuraDot);
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -146,12 +146,12 @@ public class DarkKnightDealCycle extends DealCycle {
                 addSkillEvent(darknessAuraFinish);
             } else if (
                     cooldownCheck(darkThirst)
-                            && !cooldownCheck(epicAdventure)
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(darkThirst);
             } else if (
                     cooldownCheck(soulContract)
-                            && !cooldownCheck(epicAdventure)
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(soulContract);
             } else if (

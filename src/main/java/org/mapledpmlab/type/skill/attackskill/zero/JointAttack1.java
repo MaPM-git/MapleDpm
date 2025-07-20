@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.zero;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 
-public class JointAttack1 extends AttackSkill {
+public class JointAttack1 extends GaugeAttackSkill {
     public JointAttack1() {
         this.setName("조인트 어택(1타)");
         this.setAttackCount(8L);
@@ -13,5 +13,6 @@ public class JointAttack1 extends AttackSkill {
         this.setRelatedSkill(new JointAttackFinish());
         this.getMultiAttackInfo().add(0L);
         //this.getMultiAttackInfo().add(540L);
+        this.setGaugeCharge(-50.0);
     }
 }

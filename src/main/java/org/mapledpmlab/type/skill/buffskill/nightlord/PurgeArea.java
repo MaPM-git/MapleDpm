@@ -11,8 +11,8 @@ public class PurgeArea extends BuffSkill {
         this.setName("퍼지 에어리어");
         this.setCooldown(40.0);
         this.setApplyCooldownReduction(false);
-        this.addBuffIgnoreDefense(41L);
-        this.setDuration(40L);
+        this.addBuffIgnoreDefense(42L);
+        this.setDuration(42L);
         this.setDelay(600L);
     }
 }

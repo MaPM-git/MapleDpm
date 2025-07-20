@@ -17,66 +17,121 @@ public class NightLord extends Job {
     public NightLord() {
         // 기본
         super();
-        this.setName("나이트로드(리웨)");
+        this.setName("나이트로드(0초, 리웨)");
         this.setConstant(1.75);         // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (172 + 106 + 72 + 195));
-        this.setWeaponAttMagic((long) (172 + 106 + 72 + 195));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
+        this.setAscentDamage(2333800.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addAtt(3L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (172 + 106 + 72 + 195));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (172 + 106 + 72 + 195));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addAtt(3L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
 
         // 1차
-        this.addMainStat(20L);          // 님블 바디
+        passive = new Common();
+        passive.setDescription("님블 바디");
+        passive.addMainStat(20L);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addMainStat(20L);          // 자벨린 액셀레이션
-        this.addCriticalP(50.0);        // 크리티컬 스로우
-        this.addCriticalDamage(5.0);
-        this.addMainStat(30L);          // 피지컬 트레이닝
-        this.addSubStat(30L);
+        passive = new Common();
+        passive.setDescription("자벨린 액셀레이션");
+        passive.addMainStat(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("크리티컬 스로우");
+        passive.addCriticalP(50.0);
+        passive.addCriticalDamage(5.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("피지컬 트레이닝");
+        passive.addMainStat(30L);
+        passive.addSubStat(30L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addAtt(10L);               // 스피릿 자벨린
-        this.addAtt(29L);               // 플레임 표창
-        this.addFinalDamage(1.25);      // 숙련된 표창술
-        this.addCriticalP(20.0);
-        this.addCriticalDamage(10.0);   // 아드레날린
+        passive = new Common();
+        passive.setDescription("스피릿 자벨린");
+        passive.addAtt(30L);
+        passive.addBossDamage(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("플레임 표창");
+        passive.addAtt(29L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("숙련된 표창술");
+        passive.addFinalDamage(1.29);
+        passive.addCriticalP(20.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("아드레날린");
+        passive.addCriticalDamage(10.0);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addBossDamage(11L);        // 퍼지 에어리어
-        this.addFinalDamage(1.14);      // 다크 세레니티
-        this.addIgnoreDefenseList(31L);
-        this.addAtt(20L);
-        this.addAtt(31L);               // 자벨린 엑스퍼트
-        this.addCriticalDamage(10.0);
+        passive = new Common();
+        passive.setDescription("퍼지 에어리어");
+        passive.addBossDamage(21L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("다크 세레니티");
+        passive.addFinalDamage(1.14);
+        passive.addIgnoreDefenseList(31L);
+        passive.addAtt(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("자벨린 엑스퍼트");
+        passive.addAtt(31L);
+        passive.addCriticalDamage(10.0);
+        getPassiveList().add(passive);
 
         // 하이퍼
-        this.addAtt(50L);               // 블리딩 톡신
+        passive = new Common();
+        passive.setDescription("블리딩 톡신");
+        passive.addAtt(50L);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addAtt(30L);               // 레디 투 다이
+        passive = new Common();
+        passive.setDescription("레디 투 다이");
+        passive.addAtt(30L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(-57L);
-        this.addMainStat(5L);
-        this.addSubStat(-5L);
+        this.addMainStatP(-60L);
+        this.addMainStat(-12L);
+        this.addSubStat(-10L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -90,5 +145,22 @@ public class NightLord extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperCommon(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+
+        Common doping = new Common();
+        doping.setDescription("다크 세레니티(콜렉터의 영약)");
+        doping.addAtt(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("자벨린 엑스퍼트(콜렉터의 영약)");
+        doping.addAtt(1L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

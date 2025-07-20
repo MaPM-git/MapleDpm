@@ -6,10 +6,10 @@ public class SonicBlow extends AttackSkill {
     public SonicBlow() {
         this.setName("소닉 블로우");
         this.setAttackCount(7L * 2);
-        this.setDamage(1100.0);
-        this.setDelay(1800L);
-        this.setDotDuration(1800L);
-        this.setInterval(120L);
+        this.setDamage(1470.0);
+        this.setDelay(1350L);
+        this.setDotDuration(1350L);
+        this.setInterval(90L);
         this.setLimitAttackCount(15L);
         this.addIgnoreDefenseList(100L);
         this.setFinalDamage(1.6);       // 코어강화

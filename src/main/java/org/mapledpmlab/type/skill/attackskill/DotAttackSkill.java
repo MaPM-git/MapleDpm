@@ -1,11 +1,13 @@
 package org.mapledpmlab.type.skill.attackskill;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class DotAttackSkill extends AttackSkill {
+    @JsonIgnore
     public String getInfo() {
         String str;
         str = super.getInfo();

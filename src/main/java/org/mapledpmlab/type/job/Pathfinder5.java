@@ -16,58 +16,102 @@ public class Pathfinder5 extends Job {
     public Pathfinder5() {
         // 기본
         super();
-        this.setName("패스파인더(리웨, 5초, 4블디레)");
+        this.setName("패스파인더(5초, 리레단일)");
         this.setConstant(1.3);          // 무기상수
         this.setMastery(1.86 / 2);      // 숙련도
         this.setJobType(JobType.COOLDOWN_REDUCTION_MAX);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (318 + 196 + 72 + 246));
-        this.setWeaponAttMagic((long) (318 + 196 + 72 + 246));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
+        this.setAscentDamage(3666750.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addAtt(3L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (318 + 196 + 72 + 246));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (318 + 196 + 72 + 246));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addAtt(3L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
 
         // 1차
-        this.addCriticalP(40.0);        // 크리티컬 샷
+        passive = new Common();
+        passive.setDescription("크리티컬 샷");
+        passive.addCriticalP(40.0);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addMainStat(20L);          // 에이션트 보우 액셀레이션
-        this.addAtt(30L);               // 에이션트 보우 마스터리
-        this.addMainStat(30L);          // 피지컬 트레이닝
-        this.addSubStat(30L);
+        passive = new Common();
+        passive.setDescription("에이션트 보우 액셀레이션");
+        passive.addMainStat(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("에이션트 보우 마스터리");
+        passive.addAtt(30L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("피지컬 트레이닝");
+        passive.addMainStat(30L);
+        passive.addSubStat(30L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addFinalDamage(1.2);       // 에이션트 가이던스
-        this.addCriticalP(10.0);        // 에센스 오브 아처
-        this.addDamage(10L);
-        this.addIgnoreDefenseList(30L);
+        passive = new Common();
+        passive.setDescription("에이션트 가이던스");
+        passive.addFinalDamage(1.2);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("에센스 오브 아처");
+        passive.addCriticalP(10.0);
+        passive.addDamage(10L);
+        passive.addIgnoreDefenseList(30L);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addCriticalP(21.0 - 10);   // 샤프 아이즈
-        this.addCriticalDamage(16.0 - 8);
-        this.addAttP(21L);              // 에디셔널 트랜지션
-        this.addAtt(62L);               // 에이션트 보우 엑스퍼트
-        this.addFinalDamage(1.1);
-        this.addMainStat(82L);          // 일루전 스탭
+        passive = new Common();
+        passive.setDescription("샤프 아이즈");
+        passive.addCriticalP(21.0 - 10);
+        passive.addCriticalDamage(16.0 - 8);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("에디셔널 트랜지션");
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("에이션트 보우 엑스퍼트");
+        passive.addAtt(62L);
+        passive.addFinalDamage(1.1);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("일루전 스탭");
+        passive.addMainStat(82L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(-93L);
-        this.addMainStat(-6L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-84L);
+        this.addMainStat(0L);
+        this.addSubStat(0L);
 
         this.setAbility(new ReuseBossCritical());
         this.setArtifact(new ArtifactNormal());
@@ -94,9 +138,38 @@ public class Pathfinder5 extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addCriticalDamage(10.0);   // 고대의 저주 디버프 5중첩
-        this.addFinalDamage(1.08);      // 에인션트 가이던스
-        this.addCriticalP(-20.0);       // 세이람의 영약
-        this.addCriticalDamage(-16.0);
+
+        Common doping = new Common();
+        doping.setDescription("고대의 저주 디버프 5중첩");
+        doping.addCriticalDamage(10.0);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("에인션트 가이던스");
+        doping.addFinalDamage(1.08);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("세이람의 영약");
+        doping.addCriticalP(-20.0);
+        doping.addCriticalDamage(-16.0);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("에디셔널 트랜지션(콜렉터의 영약)");
+        doping.addAttP(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("에이션트 보우 엑스퍼트(콜렉터의 영약)");
+        doping.addAtt(2L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("일루전 스탭(콜렉터의 영약)");
+        doping.addMainStat(2L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

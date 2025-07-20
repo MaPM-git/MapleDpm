@@ -4,7 +4,7 @@ public class StormBreakTornado extends AssistSkill {
     public StormBreakTornado() {
         this.setName("스톰 브레이크(소용돌이)");
         this.setAttackCount(4L);
-        this.setDamage(535.0 + 60);
+        this.setDamage(475.0 + 60);
         this.setDotDuration(1000L);
         this.setInterval(500L);
         this.setLimitAttackCount(2L);

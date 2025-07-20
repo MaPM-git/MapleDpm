@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class MechanicDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -30,9 +32,6 @@ public class MechanicDealCycle extends DealCycle {
             add(new GroundZeroEarthquake());
             add(new GroundZeroExplosion());
             add(new HomingMissile());
-            add(new MagneticFieldSummon());
-            add(new MagneticField());
-            add(new MagneticFieldDie());
             add(new MassiveFireIRONBExplosion());
             add(new MassiveFireIRONBHit());
             add(new MechaCarrierSummon());
@@ -45,12 +44,7 @@ public class MechanicDealCycle extends DealCycle {
             add(new MultipleOptionMFLMissile());
             add(new ResistanceLineInfantryDelay());
             add(new ResistanceLineInfantry());
-            add(new RobotFactoryRM1Summon());
-            add(new RobotFactoryRM1());
-            add(new RobotFactoryRM1Die());
-            add(new RobotLauncherRM7Summon());
-            add(new RobotLauncherRM7());
-            add(new RobotLauncherRM7Die());
+            add(new RobotTransitionCBP1());
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new SupportWaverHEXDie());
@@ -85,7 +79,6 @@ public class MechanicDealCycle extends DealCycle {
     GroundZeroEarthquake groundZeroEarthquake = new GroundZeroEarthquake();
     HomingMissile homingMissile = new HomingMissile();
     LuckyDiceMechanic luckyDice = new LuckyDiceMechanic();
-    MagneticFieldDie magneticFieldDie = new MagneticFieldDie();
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
     MassiveFireIRONBHit massiveFireIRONBHit = new MassiveFireIRONBHit();
     MechaCarrierSummon mechaCarrierSummon = new MechaCarrierSummon();
@@ -98,8 +91,7 @@ public class MechanicDealCycle extends DealCycle {
     ResistanceLineInfantry resistanceLineInfantry = new ResistanceLineInfantry();
     RestraintRing restraintRing = new RestraintRing();
     RingSwitching ringSwitching = new RingSwitching();
-    RobotFactoryRM1Die robotFactoryRM1Die = new RobotFactoryRM1Die();
-    RobotLauncherRM7Die robotLauncherRM7Die = new RobotLauncherRM7Die();
+    RobotTransitionCBP1 robotTransitionCBP1 = new RobotTransitionCBP1();
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     SupportWaverHEXDie supportWaverHEXDie = new SupportWaverHEXDie();
@@ -119,15 +111,13 @@ public class MechanicDealCycle extends DealCycle {
 
         ((AttackSkill) groundZeroEarthquake.getRelatedSkill().getRelatedSkill()).setDotDuration(((AttackSkill) groundZeroEarthquake.getRelatedSkill().getRelatedSkill()).getDotDuration() + 3000);
 
-        ringSwitching.setCooldown(95.0);
+        ringSwitching.setCooldown(60.0);
 
         luckyDice.setCooldown(180.0);
         luckyDice.setBuffAttMagic(0L);
         luckyDice.setBuffDamage(40L);
         luckyDice.setDelay(660L);
         addSkillEvent(luckyDice);
-
-        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         /*
         시퀀스 1 ->캐리어, 리버티, 메여축 3개
@@ -154,6 +144,7 @@ public class MechanicDealCycle extends DealCycle {
 
     @Override
     public void setSoloDealCycle() {
+        addSkillEvent(robotTransitionCBP1);
         while (getStart().before(getEnd())) {
             if (cooldownCheck(luckyDice)) {
                 luckyDice = new LuckyDiceMechanic();
@@ -166,12 +157,6 @@ public class MechanicDealCycle extends DealCycle {
                 }
                 addSkillEvent(luckyDice);
             }
-            if (cooldownCheck(distortionField)) {
-                addSkillEvent(distortionField);
-            }
-            if (cooldownCheck(resistanceLineInfantry)) {
-                addSkillEvent(resistanceLineInfantry);
-            }
             if (
                     cooldownCheck(multipleOptionMFLSummon)
                             && getStart().before(new Timestamp(600 * 1000))
@@ -179,9 +164,6 @@ public class MechanicDealCycle extends DealCycle {
             ) {
                 supportWaverHEXDie.setActivateTime(new Timestamp(-1));
                 addSkillEvent(supportWaverHEXDie);
-                addSkillEvent(robotLauncherRM7Die);
-                addSkillEvent(robotFactoryRM1Die);
-                addSkillEvent(magneticFieldDie);
                 addSkillEvent(multipleOptionMFLSummon);
                 addDealCycle(getSkillSequence1());
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -190,13 +172,11 @@ public class MechanicDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
-                while (!cooldownCheck(microMissileContainer)) {
-                    if (cooldownCheck(distortionField)) {
-                        addSkillEvent(distortionField);
-                    } else {
-                        addSkillEvent(massiveFireIRONBHit);
-                    }
+                while (!cooldownCheck(resistanceLineInfantry)) {
+                    addSkillEvent(massiveFireIRONBHit);
                 }
+                addSkillEvent(resistanceLineInfantry);
+                addSkillEvent(distortionField);
                 addSkillEvent(microMissileContainer);
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
@@ -214,47 +194,40 @@ public class MechanicDealCycle extends DealCycle {
                 }
                 addSkillEvent(metalArmorFullBurstBeforeDelay);
             } else if (
-                    cooldownCheck(supportWaverHEXDie)
-                            && cooldownCheck(robotLauncherRM7Die)
-                            && cooldownCheck(robotFactoryRM1Die)
-                            && cooldownCheck(magneticFieldDie)
-                            && cooldownCheck(overdrive)
+                    cooldownCheck(overdrive)
                             && cooldownCheck(soulContract)
                             && cooldownCheck(weaponJumpRing)
                             && cooldownCheck(bomberTime)
                             && getStart().after(new Timestamp(60 * 1000))
+                            && getStart().before(new Timestamp(willOfLiberty.getActivateTime().getTime() - 30000))
             ) {
-                addSkillEvent(supportWaverHEXDie);
-                addSkillEvent(robotLauncherRM7Die);
-                addSkillEvent(robotFactoryRM1Die);
-                addSkillEvent(magneticFieldDie);
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
-                addSkillEvent(weaponJumpRing);
+                //addSkillEvent(weaponJumpRing);
                 addSkillEvent(bomberTime);
-            } else if (
+            } /*else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().after(new Timestamp(50 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
+                System.out.println(getStart() + "\t시드링");
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(supportWaverHEXDie)
-                            && getStart().after(new Timestamp(660 * 1000))
-            ) {
-                addSkillEvent(supportWaverHEXDie);
-                addSkillEvent(robotLauncherRM7Die);
-                addSkillEvent(robotFactoryRM1Die);
-                addSkillEvent(magneticFieldDie);
-            } else if (
-                    cooldownCheck(microMissileContainer)
+            }*/ else if (
+                    cooldownCheck(resistanceLineInfantry)
                             && (
-                            !cooldownCheck(mapleWorldGoddessBlessing)
+                            !cooldownCheck(overdrive)
                                     || getStart().after(new Timestamp(660 * 1000))
                                     || getStart().before(new Timestamp(1000))
                     )
             ) {
+                addSkillEvent(resistanceLineInfantry);
+                addSkillEvent(distortionField);
                 addSkillEvent(microMissileContainer);
+            } else if (
+                    cooldownCheck(distortionField)
+                    && getStart().before(new Timestamp(distortionFieldIntenseBomb.getActivateTime().getTime() - 3000))
+            ) {
+                addSkillEvent(distortionField);
             } else {
                 addSkillEvent(massiveFireIRONBHit);
             }
@@ -326,7 +299,7 @@ public class MechanicDealCycle extends DealCycle {
             }
             if (skill instanceof MultipleOptionMFLSummon) {
                 int cnt = 0;
-                for (long i = getStart().getTime() + 3150; i < getStart().getTime() + 135000; i += 1530) {
+                for (long i = getStart().getTime() + 3150; i < getStart().getTime() + 100000; i += 1530) {
                     if (cnt % 8 == 0 || cnt % 8 == 1 || cnt % 8 == 2) {
                         getSkillEventList().add(new SkillEvent(multipleOptionMFLMissile, new Timestamp(i), new Timestamp(i)));
                         getEventTimeList().add(new Timestamp(i));
@@ -353,9 +326,9 @@ public class MechanicDealCycle extends DealCycle {
                 this.getSkillEventList().removeAll(remove);
             }
             if (skill instanceof MechaCarrier) {
-                long j = 9;
-                for (long i = getStart().getTime() + 2430; i <= getStart().getTime() + ((AttackSkill) skill).getDotDuration(); i += 3600) {
-                    for (long k = 0; k <= j; k++) {
+                long j = 11;
+                for (long i = getStart().getTime() + 2430; i <= getStart().getTime() + ((AttackSkill) skill).getDotDuration(); i += 3990) {
+                    for (long k = 0; k < j; k++) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(i + k * 30), new Timestamp(i + k * 30)));
                         getEventTimeList().add(new Timestamp(i + k * 30));
                     }

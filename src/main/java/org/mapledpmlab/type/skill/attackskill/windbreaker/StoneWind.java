@@ -10,11 +10,11 @@ public class StoneWind extends AttackSkill {
         this.setDamage(1210.0);
         this.addFinalDamage(0.5);
         this.addFinalDamage(1.6);       // 코어강화
-        this.setDotDuration(60000L);
+        this.setDotDuration(40000L);
         //this.setLimitAttackCount(90L);
         this.setInterval(666L);
         this.setRelatedSkill(new WindWall());
         this.setApplyServerLag(true);
-        this.setCooldown(90.0);
+        this.setCooldown(60.0);
     }
 }

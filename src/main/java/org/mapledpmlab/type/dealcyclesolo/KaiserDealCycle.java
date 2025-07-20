@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class KaiserDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -124,13 +126,6 @@ public class KaiserDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(123.0);
-        auraWeaponBuff.setCooldown(180.0);
-        auraWeaponBuff.setApplyCooldownReduction(false);
-        grandisGoddessBlessingNova.setCooldown(120.0);
-
-        dragonBlaze.setDotDuration(dragonBlaze.getDotDuration() + 3000);
-
         soulContract.setApplyReuse(true);
         for (Skill skill : buffSkillList) {
             if (skill instanceof SoulContract) {
@@ -211,11 +206,7 @@ public class KaiserDealCycle extends DealCycle {
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(guardianOfNova);
                 addSkillEvent(dragonBlaze);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 if (cooldownCheck(dracoSlasher)) {
                     addSkillEvent(dracoSlasher);
                 }
@@ -248,12 +239,6 @@ public class KaiserDealCycle extends DealCycle {
                 }
                 dealCycleOrder ++;
             } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(105 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
-            } else if (
                     cooldownCheck(soulContract)
                             && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 50000))
                             && getStart().after(soulContractEndTime)
@@ -268,7 +253,7 @@ public class KaiserDealCycle extends DealCycle {
                     cooldownCheck(prominence)
                             && cooldownCheck(wallOfSwordStrike)
                             && getStart().before(new Timestamp(guardianOfNova.getActivateTime().getTime() - 30000))
-                            && !getJob().getName().equals("카이저(5초, 리웨)")
+                            && !getJob().getName().equals("카이저(5초, 리레단일)")
             ) {
                 if (cooldownCheck(dracoSlasher)) {
                     addSkillEvent(dracoSlasher);
@@ -291,7 +276,7 @@ public class KaiserDealCycle extends DealCycle {
                             )
                             ||
                             (
-                                    getJob().getName().equals("카이저(5초, 리웨)")
+                                    getJob().getName().equals("카이저(5초, 리레단일)")
                                     && getStart().before(new Timestamp(bodyOfSteel.getActivateTime().getTime() - 5000))
                             )
                     )
@@ -304,10 +289,7 @@ public class KaiserDealCycle extends DealCycle {
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
                 addSkillEvent(dracoSlasher);
-            } else if (
-                    cooldownCheck(infernoBreath)
-                    && !cooldownCheck(bodyOfSteel)
-            ) {
+            } else if (cooldownCheck(infernoBreath)) {
                 addSkillEvent(infernoBreath);
             } else if (cooldownCheck(dragonSlash)) {
                 addSkillEvent(dragonSlash);
@@ -603,11 +585,14 @@ public class KaiserDealCycle extends DealCycle {
                     skill.isApplyReuse()
                             && getStart().before(grandisGoddessBlessingEndTime)
                             && reuseCnt > 0
+                            && !cooldownCheck(skill)
             ) {
                 Double ran = Math.random() * 99;
                 if (ran <= 55) {
                     if (skill instanceof WallOfSword) {
                         skill.setActivateTime(new Timestamp(getStart().getTime() + 3000));
+                    } else {
+                        skill.setActivateTime(new Timestamp(-1));
                     }
                     reuseCnt--;
                 } else  {
@@ -616,9 +601,9 @@ public class KaiserDealCycle extends DealCycle {
             } else {
                 if (
                         strikeCnt > 0
-                        && (
+                                && (
                                 skill instanceof DracoSlasher
-                                || skill instanceof DracoSlasherFF
+                                        || skill instanceof DracoSlasherFF
                         )
                 ) {
                     strikeCnt--;

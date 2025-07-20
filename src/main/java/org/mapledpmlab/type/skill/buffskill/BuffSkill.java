@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.skill.buffskill;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapledpmlab.type.skill.Skill;
@@ -30,6 +31,7 @@ public class BuffSkill extends Skill {
     private Long buffSubStat;
     private boolean isApplyPlusBuffDuration = false;
     private boolean isPartyBuff = false;
+    @JsonIgnore
     private Long colNum = 0L;
     private Long useCount = 0L;
     private List<Timestamp> startTimeList = new ArrayList<>();
@@ -52,6 +54,8 @@ public class BuffSkill extends Skill {
         this.buffProperty = 0L;
         this.buffSubStat = 0L;
     }
+
+    @JsonIgnore
     public String getInfo() {
         String str = "";
         str = str + "딜레이 : " + getDelay() + "ms";
@@ -148,6 +152,7 @@ public class BuffSkill extends Skill {
         return str;
     }
 
+    @JsonIgnore
     public Object[] getObject() {
         String start = "";
         String end = "";

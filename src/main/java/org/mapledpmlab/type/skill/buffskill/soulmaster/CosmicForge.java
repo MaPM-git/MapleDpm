@@ -10,8 +10,8 @@ public class CosmicForge extends BuffSkill {
     public CosmicForge() {
         this.setName("코스믹 포지");
         this.setDelay(810L);
-        this.setDuration(60L);
+        this.setDuration(40L);
         this.addBuffDamage(10L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
     }
 }

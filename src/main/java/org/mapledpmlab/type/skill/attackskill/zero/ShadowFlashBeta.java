@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.zero;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 
-public class ShadowFlashBeta extends AttackSkill {
+public class ShadowFlashBeta extends GaugeAttackSkill {
     public ShadowFlashBeta() {
         this.setName("쉐도우 플래시(베타)");
         this.setAttackCount(5L);
@@ -12,5 +12,6 @@ public class ShadowFlashBeta extends AttackSkill {
         //this.setDotDuration(40000L);
         //this.setInterval(70L);
         this.addFinalDamage(1.6);       // 코어 강화
+        this.setGaugeCharge(-10.0);
     }
 }

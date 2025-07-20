@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class ArtsAstra extends AttackSkill implements ArtsSkill {
     public ArtsAstra() {
         this.setName("아츠 : 아스트라");
-        this.setDamage(660.0);
+        this.setDamage(880.0);
         this.setAttackCount(6L + 1);
         this.setCooldown(14.0);
         this.setDotDuration(840L * 3);

@@ -6,7 +6,7 @@ public class DragonSpark extends AttackSkill {
     public DragonSpark() {
         this.setName("드래곤 스파킹");
         this.setAttackCount(1L);
-        this.setDamage(555.0);
+        this.setDamage(615.0);
         this.setProp(100L);
         this.setFinalAttack(true);
         this.setAddDamage(30L);

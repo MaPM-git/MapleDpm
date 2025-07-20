@@ -7,7 +7,7 @@ public class MaxCannonRainbow extends AttackSkill {
         this.setName("맥스 캐논 레인보우");
         this.setDamage(2000.0);
         this.setAttackCount(5L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setDelayByAttackSpeed(480L);
         this.setDotDuration(10000L);
         this.setInterval(240L);

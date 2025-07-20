@@ -14,7 +14,7 @@ public class HyperZero extends Hyper {
             point = 1518 + 18 * (level % 10);
         }
 
-        point -= 60;        // TF 7레벨
+        point -= 150;        // TF 10레벨
 
         criticalP = 95.0;
         if (criticalP <= 70) {
@@ -79,7 +79,7 @@ public class HyperZero extends Hyper {
                 "\n6.공격력/마력 : " + this.getAtt() +
                 "\n7.주스탯(%미적용) : " + this.getPerXMainStat() +
                 "\n8.부스탯(%미적용) : " + this.getPerXSubStat() +
-                "\n9.TF : 70"
+                "\n9.TF : 100"
         );
     }
 }

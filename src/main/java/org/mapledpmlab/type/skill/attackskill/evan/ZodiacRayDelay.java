@@ -6,6 +6,6 @@ public class ZodiacRayDelay extends AttackSkill {
     public ZodiacRayDelay() {
         this.setName("조디악 레이");
         this.setDelayByAttackSpeed(780L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
     }
 }

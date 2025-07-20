@@ -17,66 +17,137 @@ public class Kinesis extends Job {
     public Kinesis() {
         // 기본
         super();
-        this.setName("키네시스(리웨썸)");
+        this.setName("키네시스(0초, 리웨)");
         this.setConstant(1.2);          // 무기상수
-        this.setMastery(1.94 / 2);      // 숙련도
+        this.setMastery(1.96 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addMagic((long) (992));
-        this.setWeaponAttMagic((long) (992));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addMagicP(9L);
-        this.addMagicP(21L);
-        this.addMagicP(3L);
+        this.setAscentDamage(2081250.0);
 
-        // 보조
-        this.addMainStat(8L);
-        this.addSubStat(8L);
-        this.addMagic(5L);
-        this.addBossDamage(70L);
-        this.addMagicP(9L);
-        this.addMagicP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addMagic((long) (992));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addMagicP(9L);
+        passive.addMagicP(21L);
+        passive.addMagicP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (992));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(8L);
+        passive.addSubStat(8L);
+        passive.addMagic(5L);
+        passive.addBossDamage(70L);
+        passive.addMagicP(9L);
+        passive.addMagicP(21L);
+        getPassiveList().add(passive);
         
         // 0차
-        this.addCriticalP(10.0);        // 초감각
+        passive = new Common();
+        passive.setDescription("초감각");
+        passive.addCriticalP(10.0);
+        getPassiveList().add(passive);
         
         // 1차
-        this.addMagic(10L);             // 싸이킥 포스
-        this.addMagic(10L);             // 내재1
+        passive = new Common();
+        passive.setDescription("싸이킥 포스");
+        passive.addMagic(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("내재1");
+        passive.addMagic(10L);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addMagic(10L);             // 싸이킥 포스2
-        this.addDamage(20L);            // 순수한 힘
-        this.addMagic(10L);             // 내재2
-        this.addCriticalP(10.0);        // ESP 마스터리
-        this.addMainStat(40L);
+        passive = new Common();
+        passive.setDescription("싸이킥 포스2");
+        passive.addMagic(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("순수한 힘");
+        passive.addDamage(20L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("내재2");
+        passive.addMagic(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("ESP 마스터리");
+        passive.addCriticalP(10.0);
+        passive.addMainStat(40L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addMagic(10L);             // 싸이킥 포스3
-        this.addMagicP(10L);            // 정신강화
-        this.addCriticalP(20.0);        // 정교
-        this.addCriticalDamage(20.0);
+        passive = new Common();
+        passive.setDescription("싸이킥 포스3");
+        passive.addMagic(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("정신강화");
+        passive.addMagicP(10L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("정교");
+        passive.addCriticalP(20.0);
+        passive.addCriticalDamage(20.0);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addBossDamage(31L);        // 싸이킥 차징
-        this.addFinalDamage(1.4);       // 싸이코 브레이크
-        this.addMagic(54L);             // ESP 배틀 오더
-        this.addDamage(22L);
-        this.addFinalDamage(1.22);
-        this.addFinalDamage(1.16);      // 각성
-        this.addPlusBuffDuration(22L);  // 정신집중-유지
-        this.addIgnoreDefenseList(27L);  // 전달
-        this.addCriticalDamage(12.0);   // 숙달
+        passive = new Common();
+        passive.setDescription("싸이킥 차징");
+        passive.addBossDamage(32L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("싸이코 브레이크");
+        passive.addFinalDamage(1.4);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("ESP 배틀 오더");
+        passive.addMagic(54L);
+        passive.addDamage(22L);
+        passive.addFinalDamage(1.22);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("각성");
+        passive.addFinalDamage(1.16);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("정신집중-유지");
+        passive.addPlusBuffDuration(22L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("전달");
+        passive.addIgnoreDefenseList(27L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("숙달");
+        passive.addCriticalDamage(12.0);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(27L);
-        this.addMainStat(1L);
-        this.addSubStat(-5L);
+        this.addMainStatP(12L);
+        this.addMainStat(-1L);
+        this.addSubStat(0L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -91,6 +162,36 @@ public class Kinesis extends Job {
         this.addObject(this.getUnion());
         this.setHyper(new HyperKinesis(this.getLevel(), this.getCriticalP()));
         this.addObject(this.getHyper());
+    }
+
+    @Override
+    public void Doping() {
+        super.Doping();
+
+        Common doping = new Common();
+        doping.setDescription("싸이킥 차징(콜렉터의 영약)");
+        doping.addBossDamage(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("ESP 배틀 오더(콜렉터의 영약)");
+        doping.addMagic(2L);
+        doping.addDamage(1L);
+        doping.minusFinalDamage(1.22);
+        doping.addFinalDamage(1.23);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("정신집중-유지(콜렉터의 영약)");
+        doping.addPlusBuffDuration(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("숙달(콜렉터의 영약)");
+        doping.addCriticalDamage(1.0);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 
     public Long getStatDamage() {

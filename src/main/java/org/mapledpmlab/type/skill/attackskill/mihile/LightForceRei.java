@@ -7,7 +7,7 @@ public class LightForceRei extends AttackSkill {
         this.setName("라이트 포스레이");
         this.setApplyFinalAttack(true);
         this.setAttackCount(15L);
-        this.setDamage(2055.0);
+        this.setDamage(1370.0);
         this.setDelayByAttackSpeed(930L);
         this.addFinalDamage(1.6);       // 코어강화
         this.getMultiAttackInfo().add(450L);

@@ -1,0 +1,18 @@
+<configuration>
+
+    <!-- 1. 먼저 Appender 정의 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 2. 로그 레벨 개별 설정 -->
+    <logger name="org.apache.poi" level="INFO" />
+
+    <!-- 3. 루트 로거 설정 (Appender를 여기서 참조) -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

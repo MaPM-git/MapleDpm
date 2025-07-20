@@ -5,9 +5,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SunRiverMountainWindWave1 extends AttackSkill {
     public SunRiverMountainWindWave1() {
         this.setName("해 강 산 바람(충격1)");
-        this.setDamage(2310.0);
+        this.setDamage(1540.0);
         this.setAttackCount(10L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setRelatedSkill(new SunRiverMountainWindWave2());
         this.addFinalDamage(1.6);   // 코어강화
         this.addFinalDamage(1.08);      // 오버로드 마나

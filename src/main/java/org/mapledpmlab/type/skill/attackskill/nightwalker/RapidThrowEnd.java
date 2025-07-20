@@ -7,7 +7,7 @@ public class RapidThrowEnd extends AttackSkill implements DarkAttack {
         this.setName("래피드 스로우(막타)");
         this.setAttackCount(13L);
         this.setDelay(630L);
-        this.setDamage(1870.0);
+        this.setDamage(1650.0);
         this.setDotDuration(630L);
         this.setInterval(315L);
         this.setLimitAttackCount(2L);

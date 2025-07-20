@@ -7,7 +7,7 @@ public class ShadowSpear extends AttackSkill {
     public ShadowSpear() {
         this.setName("쉐도우 스피어");
         this.setAttackCount(2L);
-        this.setDamage(415.0);
+        this.setDamage(330.0);
         this.addFinalDamage(1.6);       // 코어강화
     }
 }

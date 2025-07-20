@@ -9,9 +9,9 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class DarkThirst extends BuffSkill {
     public DarkThirst() {
         this.setName("다크 서스트");
-        this.setCooldown(90.0);
+        this.setCooldown(60.0);
         this.setDelay(900L);
-        this.setDuration(25L);
+        this.setDuration(20L);
         this.addBuffAttMagic(50L);
         this.setApplyServerLag(true);
     }

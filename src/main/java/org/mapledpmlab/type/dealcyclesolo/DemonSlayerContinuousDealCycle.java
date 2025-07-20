@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
-import org.mapledpmlab.type.JobContinuous.DemonSlayerNormalContinuous;
+import lombok.NoArgsConstructor;
+import org.mapledpmlab.type.job.DemonSlayerNormalContinuous;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class DemonSlayerContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -75,6 +77,7 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
     };
 
     int demonForce = 150;
+    int demonAwakeningCnt = 0;
 
     Timestamp continuousRingEndTime = new Timestamp(-1);
     Timestamp demonAwakeningEndTime = new Timestamp(-1);
@@ -116,15 +119,11 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
         super(job, null);
 
         if (getJob() instanceof DemonSlayerNormalContinuous) {
-            getJob().setName("데몬슬레이어(컨티, 극포실, 환산 84246)");
+            getJob().setName("데몬슬레이어(0초, 컨티, 극포실, 환산 87437)");
         }
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
-
-        auraWeaponBuff.setCooldown(180.0);
-        auraWeaponBuff.setApplyCooldownReduction(false);
-        otherWorldGoddessBlessing.setCooldown(120.0);
 
         getSkillSequence1().add(infinityForce);
         getSkillSequence1().add(demonicFortitude);          // 30
@@ -191,7 +190,11 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(demonicFortitude.getActivateTime().getTime() - 45000))
             ) {
                 addSkillEvent(soulContract);
-            } else if (getStart().before(demonAwakeningEndTime)) {
+            } else if (
+                    getStart().before(demonAwakeningEndTime)
+                    && getStart().before(continuousRingEndTime)
+                    && demonAwakeningCnt > 0
+            ) {
                 addSkillEvent(demonSlashReinforce1);
             } else if (cooldownCheck(cerburusTarterian)) {
                 addSkillEvent(cerburusTarterian);
@@ -280,7 +283,8 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
                 originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
             if (skill instanceof DemonAwakening) {
-                demonAwakeningEndTime = new Timestamp(getStart().getTime() + 68000);
+                demonAwakeningCnt = 25;
+                demonAwakeningEndTime = new Timestamp(getStart().getTime() + 3000 + demonAwakening.getDuration() * 1000);
             }
             if (skill instanceof InfinityForce) {
                 infinityForceEndTime = new Timestamp(getStart().getTime() + 64250);
@@ -330,6 +334,9 @@ public class DemonSlayerContinuousDealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(continuousRing);
+            }
+            if (skill instanceof DemonSlashReinforce4) {
+                demonAwakeningCnt --;
             }
             if (
                     skill instanceof DemonBane1

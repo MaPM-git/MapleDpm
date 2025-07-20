@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class AranDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -126,10 +128,6 @@ public class AranDealCycle extends DealCycle {
 
         ((AttackSkill) adrenalineBoost.getRelatedSkill()).setDotDuration(((AttackSkill) adrenalineBoost.getRelatedSkill()).getDotDuration() + 3000);
 
-        ringSwitching.setCooldown(90.0);
-        auraWeapon.setCooldown(180.0);
-        mapleWorldGoddessBlessing.setCooldown(120.0);
-
         auraWeapon.setDelay(70L);
         mapleWorldGoddessBlessing.setDelay(70L);
         bodyOfSteel.setDelay(70L);
@@ -189,7 +187,7 @@ public class AranDealCycle extends DealCycle {
                 addSkillEvent(freudBlessing6);
             } else if (
                     getStart().before(new Timestamp(600 * 1000))
-                    && getStart().after(new Timestamp(restraintRing.getActivateTime().getTime() - 1000))
+                    && getStart().after(new Timestamp(restraintRing.getActivateTime().getTime() + 500))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -206,6 +204,9 @@ public class AranDealCycle extends DealCycle {
                         }
                     }
                     addSkillEvent(freudBlessing5);
+                    if (getStart().after(new Timestamp(5 * 60 * 1000))) {
+                        ringSwitching.setActivateTime(new Timestamp(ringSwitching.getActivateTime().getTime() + 15000));
+                    }
                 }
                 addDealCycle(getSkillSequence1());
                 if (!cooldownCheck(endGame)) {
@@ -235,10 +236,11 @@ public class AranDealCycle extends DealCycle {
                 addSkillEvent(boostEndAdrenalineSurge);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 6000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
+                ringSwitching.setActivateTime(soulContract.getActivateTime());
             } else if (cooldownCheck(brandishMaha)) {
                 addSkillEvent(brandishMaha);
             } else {
@@ -255,6 +257,14 @@ public class AranDealCycle extends DealCycle {
         if (getStart().before(skill.getActivateTime())) {
             System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
+        }
+        if (
+                cooldownCheck(AMGoldenFlash)
+                        && getStart().before(adrenalineMaximumEndTime)
+                        && adrenalineEndTime.getTime() != -1
+                        && !(skill instanceof AMGoldenFlash)
+        ) {
+            addSkillEvent(AMGoldenFlash);
         }
         if (skillLog.equals("")) {
             skillLog += getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
@@ -326,8 +336,9 @@ public class AranDealCycle extends DealCycle {
                 adrenalineEndTime = new Timestamp(getStart().getTime() + 23000);
             } else if (skill instanceof AdrenalineMaximum) {
                 adrenalineMaximumEndTime = new Timestamp(getStart().getTime() + 10000);
+                applyCooldown(AMGoldenFlash);
             } else if (skill instanceof BlizzardTempest) {
-                blizzardTempestEndTime = new Timestamp(getStart().getTime() + 30000);
+                blizzardTempestEndTime = new Timestamp(getStart().getTime() + 20000);
             } else if (
                     skill instanceof RestraintRing
                             && restraintRingStartTime == null
@@ -376,16 +387,10 @@ public class AranDealCycle extends DealCycle {
                     && !(skill instanceof AMIceStorm)
             ) {
                 if (
-                        cooldownCheck(AMGoldenFlash)
-                        && getStart().before(adrenalineMaximumEndTime)
-                ) {
-                    addSkillEvent(AMGoldenFlash);
-                }
-                if (
                         cooldownCheck(AMIceStorm)
                         && (
-                                getStart().before(adrenalineEndTime)
-                                || getStart().before(adrenalineMaximumEndTime)
+                                getStart().after(adrenalineEndTime)
+                                && getStart().after(adrenalineMaximumEndTime)
                         )
                 ) {
                     addSkillEvent(AMIceStorm);
@@ -437,7 +442,11 @@ public class AranDealCycle extends DealCycle {
                 getSkillEventList().removeAll(remove);
                 Timestamp tmp = getStart();
                 if (((AttackSkill) skill).getLimitAttackCount() == 0) {
-                    for (long i = ((AttackSkill) skill).getInterval(); i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
+                    long i = ((AttackSkill) skill).getInterval();
+                    if (skill instanceof AMIceWave) {
+                        i = 0;
+                    }
+                    for (; i <= ((AttackSkill) skill).getDotDuration(); i += ((AttackSkill) skill).getInterval()) {
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                     }
@@ -542,16 +551,10 @@ public class AranDealCycle extends DealCycle {
                 addSkillEvent(beyonderMaha);
             }
             if (
-                    cooldownCheck(AMGoldenFlash)
-                    && getStart().before(adrenalineMaximumEndTime)
-            ) {
-                addSkillEvent(AMGoldenFlash);
-            }
-            if (
                     cooldownCheck(AMIceStorm)
                     && (
-                            getStart().before(adrenalineEndTime)
-                            || getStart().before(adrenalineMaximumEndTime)
+                            getStart().after(adrenalineEndTime)
+                            && getStart().after(adrenalineMaximumEndTime)
                     )
             ) {
                 addSkillEvent(AMIceStorm);

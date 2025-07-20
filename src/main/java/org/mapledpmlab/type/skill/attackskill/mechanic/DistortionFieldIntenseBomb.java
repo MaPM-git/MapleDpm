@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class DistortionFieldIntenseBomb extends AttackSkill {
     public DistortionFieldIntenseBomb() {
         this.setName("인텐스 디스토션 필드(폭발)");
-        this.setCooldown(30.0);
+        this.setCooldown(25.0);
         this.setAttackCount(15L);
         this.setDamage(1990.0);
         this.addFinalDamage(2.2);               // 코어 강화

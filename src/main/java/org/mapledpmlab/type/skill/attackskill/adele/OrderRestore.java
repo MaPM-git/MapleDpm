@@ -8,7 +8,7 @@ public class OrderRestore extends AttackSkill {
         this.setDamage(800.0);
         this.setAttackCount(2L);
         this.setCooldown(0.5);
-        this.setDotDuration(30000L);
+        this.setDotDuration(20000L);
         this.setInterval(510L);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);

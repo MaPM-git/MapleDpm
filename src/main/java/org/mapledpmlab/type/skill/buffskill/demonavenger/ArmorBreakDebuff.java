@@ -10,6 +10,6 @@ public class ArmorBreakDebuff extends BuffSkill {
     public ArmorBreakDebuff() {
         this.setName("아머 브레이크 디버프");
         this.setDuration(60L);
-        this.addBuffIgnoreDefense(31L);
+        this.addBuffIgnoreDefense(32L);
     }
 }

@@ -9,7 +9,7 @@ public class CraftJavelinFragmentSOC extends AttackSkill {
         this.setAttackCount(1L);
         this.setDotDuration(1500L);
         this.setInterval(100L);
-        this.setLimitAttackCount(6L);
+        this.setLimitAttackCount(4L);
         this.setAddDamage(20L + 20);    // 자벨린-리인포스, 보스 킬러
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);

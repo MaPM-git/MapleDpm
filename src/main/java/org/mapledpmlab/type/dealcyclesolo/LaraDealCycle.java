@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class LaraDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -117,7 +119,6 @@ public class LaraDealCycle extends DealCycle {
         this.setBuffSkillList(buffSkillList);
 
         ringSwitching.setCooldown(60.0);
-        grandisGoddessBlessingAnima.setCooldown(120.0);
     }
 
     @Override
@@ -128,8 +129,8 @@ public class LaraDealCycle extends DealCycle {
                 addSkillEvent(manifestationSunlightFilledGround);
             }
             if (
-                    cooldownCheck(sunRiverMountainWindWave1)
-                    && cooldownCheck(soaringSpirit)
+                    cooldownCheck(grandisGoddessBlessingAnima)
+                    && getStart().before(new Timestamp(630 * 1000))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -140,6 +141,9 @@ public class LaraDealCycle extends DealCycle {
                 addSkillEvent(grandisGoddessBlessingAnima);
                 addSkillEvent(armfulTree);
                 addSkillEvent(dragonVeinTrace);
+                eruptionWhirlwind.setActivateTime(new Timestamp(-1));
+                eruptionRipplingRiver.setActivateTime(new Timestamp(-1));
+                eruptionSunriseWell.setActivateTime(new Timestamp(-1));
                 addSkillEvent(eruptionWhirlwind);
                 addSkillEvent(dragonVeinJump);
                 //addSkillEvent(dragonVeinSwitch);
@@ -158,12 +162,12 @@ public class LaraDealCycle extends DealCycle {
                 }
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(50 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-                            && (
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 8000))
+                            && getStart().before(new Timestamp(630 * 1000))
+                            /*&& (
                                     eruptionWhirlwind.getActivateTime().getTime() - getStart().getTime() >= 5000
                             || cooldownCheck(armfulTree)
-                    )
+                    )*/
             ) {
                 addSkillEvent(ringSwitching);
             } else if (

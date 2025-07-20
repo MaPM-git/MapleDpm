@@ -13,6 +13,5 @@ public class HowlingGale2 extends AttackSkill {
         this.setDotDuration(10000L);
         this.setInterval(150L);
         this.addFinalDamage(1.6);       // 코어강화
-        this.setApplyCooldownReduction(false);
     }
 }

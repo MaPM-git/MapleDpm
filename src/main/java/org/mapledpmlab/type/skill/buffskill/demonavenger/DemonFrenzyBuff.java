@@ -9,15 +9,18 @@ import org.mapledpmlab.type.skill.buffskill.GaugeBuffSkill;
 public class DemonFrenzyBuff extends GaugeBuffSkill {
     public DemonFrenzyBuff() {
         this.setName("데몬 프렌지");
-        this.setBuffFinalDamage(1.2);
+        this.setBuffFinalDamage(1.13);
     }
 
     public void setFinalDamageByHp(Long hp) {
         int tmp = (int) (hp / 10000);
         if (tmp <= 30) {
-            this.setBuffFinalDamage(1.2);
+            this.setBuffFinalDamage(1.13);
         } else {
-            this.setBuffFinalDamage(1.2 - 0.01 * (tmp - 30));
+            if (tmp > 43) {
+                tmp = 43;
+            }
+            this.setBuffFinalDamage(1.13 - 0.01 * (tmp - 30));
         }
     }
 }

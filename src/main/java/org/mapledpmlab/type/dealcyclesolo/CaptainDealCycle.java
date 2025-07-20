@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class CaptainDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -109,18 +111,13 @@ public class CaptainDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        bulletParty.getRelatedSkill().setDelay(bulletParty.getDelay() + 2000);
-        ((AttackSkill) bulletParty.getRelatedSkill()).setDotDuration(((AttackSkill) bulletParty.getRelatedSkill()).getDotDuration() + 2000);
-
-        ringSwitching.setCooldown(90.0);
+        ringSwitching.setCooldown(60.0);
 
         luckyDice.setCooldown(180.0);
         luckyDice.setBuffAttMagic(0L);
         luckyDice.setBuffDamage(40L);
         addSkillEvent(luckyDice);
         luckyDiceOneMoreChance.setActivateTime(luckyDice.getActivateTime());
-
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         getSkillSequence1().add(pirateFlag);                // 570
         getSkillSequence1().add(epicAdventure);             // 30
@@ -203,8 +200,8 @@ public class CaptainDealCycle extends DealCycle {
                     addPlatDeal();
                 }
                 addSkillEvent(deathTriggerStart);
-                if (cooldownCheck(headShot)) {
-                    addSkillEvent(headShot);
+                while (!cooldownCheck(deadEye)) {
+                    addPlatDeal();
                 }
                 addSkillEvent(deadEye);
                 if (cooldownCheck(headShot)) {
@@ -224,6 +221,9 @@ public class CaptainDealCycle extends DealCycle {
                     addPlatDeal();
                 }
                 addSkillEvent(deathTriggerStart);
+                while (!cooldownCheck(deadEye)) {
+                    addPlatDeal();
+                }
                 addSkillEvent(deadEye);
                 while (!cooldownCheck(bulletParty)) {
                     addPlatDeal();
@@ -231,13 +231,13 @@ public class CaptainDealCycle extends DealCycle {
                 addSkillEvent(bulletParty);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
-                            && getStart().before(new Timestamp(630 * 1000))
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 6000))
+                            && getStart().before(new Timestamp(650 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(pirateFlag)
-                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime()))
+                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(pirateFlag);
                 getStart().setTime(getStart().getTime() + 90);
@@ -248,7 +248,7 @@ public class CaptainDealCycle extends DealCycle {
                 addSkillEvent(deathTriggerStart);
             } else if (
                     cooldownCheck(deadEye)
-                            && getStart().before(new Timestamp(untiringNectar.getActivateTime().getTime() - 25000))
+                            && getStart().before(new Timestamp(untiringNectar.getActivateTime().getTime() - 20000))
             ) {
                 addSkillEvent(deadEye);
             } else {
@@ -498,11 +498,11 @@ public class CaptainDealCycle extends DealCycle {
                 )*/
                 if (skill instanceof HeadShot) {
                     skill = new HeadShot();
-                    ((AttackSkill) skill).addFinalDamage(1.26);
+                    ((AttackSkill) skill).addFinalDamage(1.27);
                     applyCooldown(headShot);
                 } else if (skill instanceof DeadEye) {
                     skill = new DeadEye();
-                    ((AttackSkill) skill).addFinalDamage(1.26);
+                    ((AttackSkill) skill).addFinalDamage(1.27);
                     applyCooldown(deadEye);
                 }
             }

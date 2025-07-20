@@ -7,6 +7,6 @@ public class MechaCarrierSummon extends AttackSkill {
         this.setName("메카 캐리어");
         this.setDelay(720L);
         this.setRelatedSkill(new MechaCarrier());
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
     }
 }

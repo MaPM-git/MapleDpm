@@ -8,7 +8,7 @@ public class CygnusPhalanx extends AttackSkill {
         this.setAttackCount(1L);
         this.setDamage(990.0);
         this.setCooldown(30.0);
-        this.setDotDuration(30000L);
+        this.setDotDuration(22500L);
         this.setInterval(240L);
         this.setLimitAttackCount(70L);
         this.setRelatedSkill(new CygnusPhalanxDelay());

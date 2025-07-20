@@ -1,11 +1,11 @@
 package org.mapledpmlab.type.dealcycleduo;
 
-import org.mapledpmlab.type.JobContinuous.BishopContinuous;
+import org.mapledpmlab.type.job.BishopContinuous;
 import org.mapledpmlab.type.dealcyclesolo.ArkDealCycle;
 import org.mapledpmlab.type.dealcyclesolo.Bishop2ContinuousDealCycle;
 import org.mapledpmlab.type.dealcyclesolo.SkillEvent;
 import org.mapledpmlab.type.etc.DuoDealCycle;
-import org.mapledpmlab.type.job.Ark;
+import org.mapledpmlab.type.job.Ark2;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.ark.ChargeSpellAmplification;
 import org.mapledpmlab.type.skill.buffskill.bishop.AngelOfLibraCharity;
@@ -20,7 +20,7 @@ public class BishopArkDealCycle extends DuoDealCycle {
         setDescription("비숍(컨티) + 아크(리웨)");
 
         setDealCycle1(new Bishop2ContinuousDealCycle(new BishopContinuous()));
-        setDealCycle2(new ArkDealCycle(new Ark()));
+        setDealCycle2(new ArkDealCycle(new Ark2()));
 
         getDealCycle2().getBuffSkillList().add(new Pray2Party2(0L));
         getDealCycle2().getBuffSkillList().add(new AngelOfLibraCharityParty(0L));

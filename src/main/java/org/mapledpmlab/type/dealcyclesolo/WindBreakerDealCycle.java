@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class WindBreakerDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -128,7 +130,7 @@ public class WindBreakerDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(63.0);
+        ringSwitching.setCooldown(64.0);
 
         transcendentCygnusBlessing.setCooldown(120.0);
 
@@ -158,16 +160,6 @@ public class WindBreakerDealCycle extends DealCycle {
                 addSkillEvent(pinpointPierce);
                 if (
                         dealCycleOrder == 1
-                                || dealCycleOrder == 2
-                                || dealCycleOrder == 5
-                ) {
-                    while (!cooldownCheck(stoneWind)) {
-                        addSkillEvent(songOfHeaven);
-                    }
-                    addSkillEvent(stoneWind);
-                }
-                if (
-                        dealCycleOrder == 1
                                 || dealCycleOrder == 3
                                 || dealCycleOrder == 5
                 ) {
@@ -192,14 +184,9 @@ public class WindBreakerDealCycle extends DealCycle {
                 }
                 addDealCycle(getSkillSequence2());
                 addSkillEvent(cygnusPhalanx);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(riskTakerRing)) {
-                    addSkillEvent(riskTakerRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(howlingGale3);
+                addSkillEvent(stoneWind);
                 addSkillEvent(soulContract);
                 addSkillEvent(anemoiDot);
                 dealCycleOrder ++;
@@ -211,14 +198,9 @@ public class WindBreakerDealCycle extends DealCycle {
                 addSkillEvent(emeraldFlower);
                 addSkillEvent(pinpointPierce);
                 addSkillEvent(cygnusPhalanx);
-                if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                } else if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(riskTakerRing)) {
-                    addSkillEvent(riskTakerRing);
-                }
-                addSkillEvent(howlingGale1);
+                addSkillEvent(riskTakerRing);
+                addSkillEvent(howlingGale3);
+                addSkillEvent(stoneWind);
                 addSkillEvent(soulContract);
                 addSkillEvent(anemoiDot);
             } else if (
@@ -227,26 +209,6 @@ public class WindBreakerDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
-                    cooldownCheck(stoneWind)
-                            && (
-                            dealCycleOrder == 3
-                                    || (
-                                    dealCycleOrder == 4
-                                            && getStart().after(new Timestamp(290 * 1000))
-                            )
-                                    || (
-                                    dealCycleOrder == 5
-                                            && getStart().after(new Timestamp(380 * 1000))
-                                            && getStart().before(new Timestamp(400 * 1000))
-                            )
-                                    || (
-                                    getStart().after(new Timestamp(600 * 1000))
-                                            && getStart().before(new Timestamp(660 * 1000))
-                            )
-                    )
-            ) {
-                addSkillEvent(stoneWind);
             } else if (
                     cooldownCheck(cygnusPhalanx)
                     && getStart().after(blessBurnTime)
@@ -260,7 +222,8 @@ public class WindBreakerDealCycle extends DealCycle {
                 addSkillEvent(vortexSphere);
             } else if (
                     cooldownCheck(howlingGale1)
-                            && getStart().before(criticalReinforceEndTime)
+                            && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() - 10000))
+                            && getStart().before(new Timestamp(stormWhimBuff.getActivateTime().getTime() - 60000))
             ) {
                 addSkillEvent(howlingGale1);
             } else if (cooldownCheck(idleWhimFirst)) {
@@ -287,7 +250,7 @@ public class WindBreakerDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof CriticalReinforce) {
-                criticalReinforceEndTime = new Timestamp(getStart().getTime() + 30000);
+                criticalReinforceEndTime = new Timestamp(getStart().getTime() + 30000 - 5000);
             }
             if (
                     skill instanceof RestraintRing
@@ -565,5 +528,28 @@ public class WindBreakerDealCycle extends DealCycle {
             buffSkill.addBuffCriticalDamage(-criticalReinforce.getBuffCriticalDamage());
         }
         return attackDamage;
+    }
+
+    @Override
+    public void applyCooldown(Skill skill) {
+        if (skill.getCooldown() != 0) {
+            if (skill.isApplyReuse()) {
+                Double ran = Math.random() * 99;
+                if (ran <= getJob().getReuse()) {
+                } else  {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
+                }
+            } else {
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(skill) * 1000)));
+                if (skill instanceof HowlingGale2) {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(howlingGale1) * 1000 * 2)));
+                } else if (skill instanceof HowlingGale3) {
+                    skill.setActivateTime(new Timestamp((int) (getStart().getTime() + applyCooldownReduction(howlingGale1) * 1000 * 3)));
+                }
+            }
+            if (!skill.isApplyCooldownReduction()) {
+                skill.setActivateTime(new Timestamp((int) (getStart().getTime() + skill.getCooldown() * 1000)));
+            }
+        }
     }
 }

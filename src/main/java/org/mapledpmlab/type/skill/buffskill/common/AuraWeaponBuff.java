@@ -15,12 +15,11 @@ public class AuraWeaponBuff extends BuffSkill {
 
     public AuraWeaponBuff() {
         this.setName("오라 웨폰");
-        this.setCooldown(0.0);  // 스택형이라 딜사이클에서 따로 처리
-        this.setDelay(720L);
-        this.setDuration(140L);
+        this.setCooldown(120.0);
+        this.setDuration(94L);
         this.setBuffFinalDamage(1.06);
         this.setBuffIgnoreDefense(16L);
-        this.setRelatedSkill(new AuraWeaponDot());
         this.setApplyServerLag(true);
+        this.setRelatedSkill(new AuraWeaponDot());
     }
 }

@@ -10,7 +10,7 @@ import org.mapledpmlab.type.skill.buffskill.common.DarkSight;
 public class SmokeBomb extends BuffSkill {
     public SmokeBomb() {
         this.setName("연막탄");
-        this.setCooldown(150.0);
+        this.setCooldown(120.0);
         this.setDuration(30L);
         this.setDelay(810L);
         this.addBuffCriticalDamage(22.0);

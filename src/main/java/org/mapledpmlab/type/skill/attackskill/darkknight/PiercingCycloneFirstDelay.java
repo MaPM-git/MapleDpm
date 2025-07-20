@@ -5,7 +5,8 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class PiercingCycloneFirstDelay extends AttackSkill {
     public PiercingCycloneFirstDelay() {
         this.setName("피어스 사이클론(선딜)");
-        this.setDelay(90L);
+        this.setDelay(150L);
+        this.setCooldown(120.0);
         this.setRelatedSkill(new PiercingCycloneKeydown());
     }
 }

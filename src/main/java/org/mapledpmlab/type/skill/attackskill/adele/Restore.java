@@ -7,8 +7,8 @@ public class Restore extends AttackSkill {
         this.setName("리스토어");
         this.setDamage(1980.0);
         this.setAttackCount(3L);
-        this.setDotDuration(30000L);
-        this.setInterval(3000L);
+        this.setDotDuration(20000L + 3000);
+        this.setInterval(2000L);
         this.addFinalDamage(1.6);   // 코어 강화
     }
 }

@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Impale extends AttackSkill {
     public Impale() {
         this.setName("임페일");
-        this.setDamage(748.0);
+        this.setDamage(600.0);
         this.setAttackCount(6L);
         this.setCooldown(7.0);
         this.setDelay(390L);

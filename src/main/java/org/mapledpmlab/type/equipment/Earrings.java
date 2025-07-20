@@ -17,7 +17,11 @@ public class Earrings extends Item {
         this.addAtt(5L);
         this.addMagic(5L);
         this.addHp(500L / 2);
-        if (jobType == JobType.DEMON_AVENGER) {
+        this.addAtt(4L * 6);
+        this.addAtt(5L);
+        this.addMagic(4L * 6);
+        this.addMagic(5L);
+        /*if (jobType == JobType.DEMON_AVENGER) {
             this.addHp((long) (250 * 7) / 2);
         } else if (jobType == JobType.XENON) {
             this.addMainStat((long) (3 * 7));
@@ -26,7 +30,7 @@ public class Earrings extends Item {
             this.addOtherStat2((long) (3 * 7));
         } else  {
             this.addMainStat((long) (5 * 7));
-        }
+        }*/
         this.addAtt(1L);
         this.addMagic(1L);
     }

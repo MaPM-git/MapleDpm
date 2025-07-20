@@ -1,17 +1,11 @@
 package org.mapledpmlab.type.dealcycleduo;
 
-import org.mapledpmlab.type.JobContinuous.BishopContinuous;
+import org.mapledpmlab.type.job.BishopContinuous;
 import org.mapledpmlab.type.dealcyclesolo.Bishop2ContinuousDealCycle;
-import org.mapledpmlab.type.dealcyclesolo.Bishop2DealCycle;
 import org.mapledpmlab.type.dealcyclesolo.SkillEvent;
 import org.mapledpmlab.type.etc.DuoDealCycle;
-import org.mapledpmlab.type.job.Bishop;
-import org.mapledpmlab.type.skill.attackskill.bishop.DivinePunishment2;
-import org.mapledpmlab.type.skill.attackskill.bishop.DivinePunishment3;
 import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 import org.mapledpmlab.type.skill.buffskill.bishop.*;
-
-import java.sql.Timestamp;
 
 public class TwoBishopDealCycle extends DuoDealCycle {
 

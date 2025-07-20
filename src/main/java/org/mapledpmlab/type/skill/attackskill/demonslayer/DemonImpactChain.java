@@ -8,7 +8,7 @@ public class DemonImpactChain extends GaugeAttackSkill {
         this.setAttackCount(6L + 1);    // 데몬 임팩트-보너스 어택
         this.addFinalDamage(0.95);          // 블루 블러드
         this.setAttackCount(this.getAttackCount() * 2);
-        this.setDamage(900.0 + 90 + 550);
+        this.setDamage(1328.0 + 90 + 550);
         this.setDelayByAttackSpeed(780L);
         this.addIgnoreDefenseList(40L);
         this.setAddDamage(45L + 20);    // 데몬 임팩트-리인포스

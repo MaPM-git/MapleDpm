@@ -8,11 +8,10 @@ public class LightOfTheFoxGoddessAlterEgo extends AttackSkill {
         this.setAttackCount(7L);
         this.setDamage(330.0);
         this.setDelayByAttackSpeed(900L);
-        this.getMultiAttackInfo().add(540L);
+        this.getMultiAttackInfo().add(10800 + 540L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.getMultiAttackInfo().add(60L);
         this.addFinalDamage(1.6);           // 코어 강화
-        this.setRelatedSkill(new FoxSun());
     }
 }

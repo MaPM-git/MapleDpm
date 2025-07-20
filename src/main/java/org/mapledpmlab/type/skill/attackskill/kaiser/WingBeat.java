@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class WingBeat extends AttackSkill {
     public WingBeat() {
         this.setName("윙 비트");
-        this.setDamage(200.0);
+        this.setDamage(394.0);
         this.setAttackCount(1L);
         this.setDelayByAttackSpeed(360L);
         this.setDotDuration(15000L);

@@ -11,6 +11,6 @@ public class MysticEnergyTaeulDivineMedicine extends BuffSkill {
         this.setName("선기 : 영약 태을선단");
         this.setDelayByAttackSpeed(540L);
         this.setDuration(12L);
-        this.setCooldown(90.0);
+        this.setCooldown(60.0);
     }
 }

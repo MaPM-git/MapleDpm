@@ -8,7 +8,7 @@ public class ArrawRain extends AttackSkill {
         this.setName("애로우 레인");
         this.setAttackCount(7L);
         this.setCooldown(120.0);
-        this.setDamage(1540.0);
+        this.setDamage(1650.0);
         this.setDotDuration(70000L);
         this.setInterval(1320L);
         this.setFinalDamage(1.6);       // 코어강화

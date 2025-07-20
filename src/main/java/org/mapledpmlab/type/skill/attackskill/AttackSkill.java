@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.skill.attackskill;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapledpmlab.type.skill.Skill;
@@ -12,7 +13,9 @@ import java.util.List;
 public class AttackSkill extends Skill {
     private Long addDamage = 0L;
     private Long attackCount = 0L;
+    @JsonIgnore
     private Double criticalP = 0.0;
+    @JsonIgnore
     private Long cumulativeDamage = 0L;
     private Double damage = 0.0;
     private Long dotDuration = 0L;
@@ -26,12 +29,17 @@ public class AttackSkill extends Skill {
     private Long prop = 0L;
     private Long useCount = 0L;
     private Double share = 0.0;
+    @JsonIgnore
     private Long colNum = 0L;
     private Long cumulativeAttackCount = 0L;
+    @JsonIgnore
     private String useCountStr = "";
+    @JsonIgnore
     private String cumulativeAttackCountStr = "";
+    @JsonIgnore
     private String shareStr = "";
 
+    @JsonIgnore
     public String getInfo() {
         String str = "";
         if (getDamage() != 0) {
@@ -100,6 +108,7 @@ public class AttackSkill extends Skill {
         System.out.println("점유율 : " + share + "\n");
     }
 
+    @JsonIgnore
     public Object[] getOpject() {
         Object[] result = new Object[]{
                 //this.getName(), this.getUseCount(), this.getCumulativeAttackCount(), this.getShare(), this.getInfo()

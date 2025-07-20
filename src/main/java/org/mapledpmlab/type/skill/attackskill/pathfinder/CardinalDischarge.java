@@ -6,7 +6,7 @@ public class CardinalDischarge extends GaugeAttackSkill implements CardinalForce
     public CardinalDischarge() {
         this.setName("카디널 디스차지");
         this.setAttackCount(6L * 2);    // 카디널 포스-보너스 어택
-        this.setDamage(475.0);
+        this.setDamage(417.0);
         this.setDelay(210L + 30);
         // this.setDelayByAttackSpeed(480L);
         this.setAddDamage(20L);         // 카디널 포스-리인포스

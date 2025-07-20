@@ -1,8 +1,8 @@
 package org.mapledpmlab.type.skill.attackskill.zero;
 
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 
-public class ChronoTrigger1 extends AttackSkill {
+public class ChronoTrigger1 extends GaugeAttackSkill {
     public ChronoTrigger1() {
         this.setName("크로노 트리거(참격)");
         this.setAttackCount(6L);
@@ -29,5 +29,6 @@ public class ChronoTrigger1 extends AttackSkill {
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(120L);
         this.getMultiAttackInfo().add(120L);
+        this.setGaugeCharge(-40.0);
     }
 }

@@ -6,7 +6,7 @@ public class JokerBeforeDelay extends AttackSkill {
     public JokerBeforeDelay() {
         this.setName("조커(선딜)");
         this.setDelay(540L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setRelatedSkill(new Joker());
     }
 }

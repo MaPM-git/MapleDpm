@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class UnstoppableInstinct extends AttackSkill implements SpecterSkill {
     public UnstoppableInstinct() {
         this.setName("멈출 수 없는 본능");
-        this.setDamage(135.0 + 150 + 178 + 250);
+        this.setDamage(135.0 + 150 + 178 + 490);
         this.setAttackCount(6L);
         //this.setCooldown(6.0);
         this.setDelayByAttackSpeed(720L);

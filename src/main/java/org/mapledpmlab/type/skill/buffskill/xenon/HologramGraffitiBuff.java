@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class HologramGraffitiBuff extends BuffSkill {
     public HologramGraffitiBuff() {
         this.setName("홀로그램 그래피티");
-        this.setDuration(40L);
+        this.setDuration(30L);
         this.addBuffDamage(20L);
     }
 }

@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Bishop2ContinuousDealCycle extends DealCycle {
 
     /*
@@ -45,10 +47,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
         60% 129.2초  2%
         65% 113.05초 1%
      */
-
-    private boolean isPray = false;
-
-    private boolean isAngelOfLibraCharity = false;
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -83,7 +81,7 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
     private final List<BuffSkill> buffSkillList = new ArrayList<>(){
         {
             add(new AngelOfLibra2());
-            add(new AngelOfLibraCharity(0L));
+            add(new AngelOfLibraCharity());
             add(new ContinuousRing());
             add(new EpicAdventure());
             add(new HolyAdventBuff());
@@ -91,7 +89,7 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
             add(new Infinity(0L));
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new PeacemakerBuff());
-            add(new Pray2(0L));
+            add(new Pray2());
             add(new SoulContract());
             add(new UnstableMemorize());
         }
@@ -125,7 +123,7 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
     Infinity infinity = new Infinity(0L);
     MapleWorldGoddessBlessing mapleWorldGoddessBlessing = new MapleWorldGoddessBlessing(getJob().getLevel());
     Peacemaker peacemaker = new Peacemaker();
-    Pray2 pray = new Pray2(0L);
+    Pray2 pray = new Pray2();
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     TriumphFeather triumphFeather = new TriumphFeather();
@@ -159,8 +157,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
         infinity.setActivateTime(new Timestamp(-80000));
         addSkillEvent(infinity);
         getStart().setTime(0);
-
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         divinePunishment2.setRelatedSkill(new DivinePunishment2());
         divinePunishment2.setCooldown(22.0);
@@ -274,8 +270,10 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(soulContract);
-                while (!cooldownCheck(divinePunishment2)) {
-                    if (cooldownCheck(genesis)) {
+                while (!cooldownCheck(divinePunishment3)) {
+                    if (cooldownCheck(heavensDoor)) {
+                        addSkillEvent(heavensDoor);
+                    } else if (cooldownCheck(genesis)) {
                         addSkillEvent(genesis);
                     } else if (cooldownCheck(peacemaker)) {
                         addSkillEvent(peacemaker);
@@ -284,7 +282,7 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                     }
                 }
                 applyCooldown(divinePunishment);
-                addSkillEvent(divinePunishment2);
+                addSkillEvent(divinePunishment3);
             } else if (
                     cooldownCheck(genesis)
                     && !cooldownCheck(mapleWorldGoddessBlessing)
@@ -829,18 +827,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                     break;
                 }
             }
-            for (int j = 0; j < useBuffSkillList.size(); j++) {
-                if (useBuffSkillList.get(j).getSkill() instanceof AngelOfLibraCharity) {
-                    isAngelOfLibraCharity = true;
-                    break;
-                }
-            }
-            for (int j = 0; j < useBuffSkillList.size(); j++) {
-                if (useBuffSkillList.get(j).getSkill() instanceof Pray2) {
-                    isPray = true;
-                    break;
-                }
-            }
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
                 buffSkill.addBuffAttMagicPer(((BuffSkill) skillEvent.getSkill()).getBuffAttMagicPer());
@@ -886,8 +872,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                     }
                 }
             }
-            isAngelOfLibraCharity = false;
-            isPray = false;
         }
         for (AttackSkill as : attackSkillList) {
             as.setShare(as.getCumulativeDamage().doubleValue() / totalDamage * 100);
@@ -899,17 +883,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
     public Long getAttackDamage(SkillEvent skillEvent, BuffSkill buffSkill, Timestamp start, Timestamp end) {
         Long attackDamage = 0L;
         AttackSkill attackSkill = (AttackSkill) skillEvent.getSkill();
-        Long mainStat;
-        if (isAngelOfLibraCharity) {
-            mainStat = this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat();
-            AngelOfLibraCharity angelOfLibraCharity = new AngelOfLibraCharity(mainStat);
-            buffSkill.addBuffDamage(angelOfLibraCharity.getBuffDamage());
-        }
-        if (isPray) {
-            this.getJob().addMainStat(buffSkill.getBuffMainStat());
-            Pray2 pray = new Pray2(this.getJob().getFinalMainStat());
-            buffSkill.addBuffFinalDamage(pray.getBuffFinalDamage());
-        }
         for (AttackSkill as : attackSkillList) {
             if (as.getClass().getName().equals(skillEvent.getSkill().getClass().getName())) {
                 this.getJob().addMainStat(buffSkill.getBuffMainStat());
@@ -953,16 +926,6 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
                 break;
             }
         }
-        if (isAngelOfLibraCharity) {
-            mainStat = this.getJob().getFinalMainStat() + buffSkill.getBuffMainStat();
-            AngelOfLibraCharity angelOfLibraCharity = new AngelOfLibraCharity(mainStat);
-            buffSkill.addBuffDamage(-angelOfLibraCharity.getBuffDamage());
-        }
-        if (isPray) {
-            Pray pray = new Pray(this.getJob().getFinalMainStat());
-            this.getJob().addMainStat(-buffSkill.getBuffMainStat());
-            buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / pray.getBuffFinalDamage());
-        }
         return attackDamage;
     }
 
@@ -981,7 +944,7 @@ public class Bishop2ContinuousDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof AngelOfLibra2) {
-                AngelOfLibraCharity angelOfLibraCharity = new AngelOfLibraCharity(0L);
+                AngelOfLibraCharity angelOfLibraCharity = new AngelOfLibraCharity();
                 for (long i = getStart().getTime(); i < getStart().getTime() + 32000; i += angelOfLibraCharity.getCooldown() * 1000) {
                     getSkillEventList().add(new SkillEvent(angelOfLibraCharity, new Timestamp(i), new Timestamp(i + 7000)));
                     getEventTimeList().add(new Timestamp(i));

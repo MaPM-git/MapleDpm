@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class ArchMageILDealCycle extends DealCycle {
 
     private final List<Timestamp> jupiterThunderStartList = new ArrayList<>();
@@ -121,8 +123,6 @@ public class ArchMageILDealCycle extends DealCycle {
         addSkillEvent(thunderSpear);
         getStart().setTime(0);
 
-        mapleWorldGoddessBlessing.setCooldown(120.0);
-
         for (int i = 0; i < 720 * 1000; i += iceAura.getInterval()) {
             getSkillEventList().add(new SkillEvent(iceAura, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
@@ -144,9 +144,6 @@ public class ArchMageILDealCycle extends DealCycle {
             ) {
                 addSkillEvent(thunderSpear);
                 addSkillEvent(infinity);
-                if (getStart().before(new Timestamp(10 * 60 * 1000))) {
-                    addSkillEvent(ringSwitching);
-                }
             }
             if (
                     cooldownCheck(unstableMemorize)
@@ -187,9 +184,6 @@ public class ArchMageILDealCycle extends DealCycle {
                 }
                 addSkillEvent(thunderSpear);
                 addSkillEvent(unstableMemorize);
-                if (getStart().before(new Timestamp(10 * 60 * 1000))) {
-                    addSkillEvent(ringSwitching);
-                }
             }
             if (
                     cooldownCheck(jupiterThunder)
@@ -213,11 +207,7 @@ public class ArchMageILDealCycle extends DealCycle {
                 addSkillEvent(spiritOfSnow);
                 addSkillEvent(soulContract);
                 addSkillEvent(freezingBreathBuff);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(iceAgeDot);
                 addSkillEvent(jupiterThunder);
                 if (cooldownCheck(frozenLightning1)) {
@@ -294,11 +284,11 @@ public class ArchMageILDealCycle extends DealCycle {
                 cryoShockCount ++;
             }
             if (
-                    cryoShockCount >= 13
+                    cryoShockCount >= 10
                             && !(skillEvent.getSkill() instanceof CryoShock)
             ) {
                 getAttackDamage(new SkillEvent(cryoShock, start, end), buffSkill, start, end);
-                cryoShockCount -= 13;
+                cryoShockCount -= 10;
             }
             buffSkill.addBuffDamage(12L * frostEffect);
         }

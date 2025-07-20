@@ -5,8 +5,8 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SerpentAssaultEnrage extends AttackSkill {
     public SerpentAssaultEnrage() {
         this.setName("서펜트 어썰트 인레이지");
-        this.setAttackCount(6L);
-        this.setDamage(905.0);
+        this.setAttackCount(7L);
+        this.setDamage(853.0);
         this.setDotDuration(5000L);
         this.setInterval(150L);
         this.setLimitAttackCount(10L);

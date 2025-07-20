@@ -6,9 +6,9 @@ public class SoulLightSlash extends AttackSkill {
     public SoulLightSlash() {
         this.setName("소울 라이트 슬래시");
         this.setApplyFinalAttack(true);
-        this.setAttackCount(12L);
-        this.setDamage(1265.0);
-        this.setDelayByAttackSpeed(810L);
+        this.setAttackCount(9L);
+        this.setDamage(1210.0);
+        this.setDelayByAttackSpeed(780L);
         this.addFinalDamage(1.6);       // 코어강화
     }
 }

@@ -9,9 +9,9 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class RestraintRing extends BuffSkill {
     public RestraintRing() {
         this.setName("리스트레인트 링(4레벨)");
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setDuration(15L);
         this.setDelay(30L);
-        this.setBuffAttMagicPer(100L);
+        this.setBuffAttMagicPer(80L);
     }
 }

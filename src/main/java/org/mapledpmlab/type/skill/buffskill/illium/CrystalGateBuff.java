@@ -11,5 +11,7 @@ public class CrystalGateBuff extends BuffSkill {
         this.setName("크리스탈 게이트");
         this.setDelayByAttackSpeed(540L);
         this.addBuffAttMagic(95L);
+        this.setDuration(130L);
+        this.setCooldown(120.0);
     }
 }

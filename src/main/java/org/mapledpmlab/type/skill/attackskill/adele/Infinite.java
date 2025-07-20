@@ -8,8 +8,8 @@ public class Infinite extends AttackSkill {
         this.setDamage(770.0);
         this.setAttackCount(2L);
         this.setDelay(540L);
-        this.setCooldown(180.0);
-        this.setDotDuration(30000L);
+        this.setCooldown(120.0);
+        this.setDotDuration(20000L);
         this.setInterval(57L);
         this.setLimitAttackCount(526L);
         this.addFinalDamage(1.6);   // 코어강화

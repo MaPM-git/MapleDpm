@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class UnstoppableImpulse extends AttackSkill implements LefSkill {
     public UnstoppableImpulse() {
         this.setName("멈출 수 없는 충동");
-        this.setDamage(110.0 + 150 + 178 + 250);
+        this.setDamage(110.0 + 150 + 178 + 490);
         this.setAttackCount(5L);
         this.setCooldown(6.0);
         this.setDelayByAttackSpeed(720L);

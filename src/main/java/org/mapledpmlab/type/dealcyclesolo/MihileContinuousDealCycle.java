@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class MihileContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -97,10 +99,7 @@ public class MihileContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-
-        auraWeaponBuff.setCooldown(180.0);
         transcendentCygnusBlessing.setCooldown(120.0);
-        transcendentCygnusBlessing.setApplyCooldownReduction(false);
         transcendentCygnusBlessing.setActivateTime(new Timestamp(-5555555));
 
         getStart().setTime(-10000);
@@ -136,13 +135,14 @@ public class MihileContinuousDealCycle extends DealCycle {
             if (
                     cooldownCheck(transcendentCygnusBlessing)
                             && getStart().after(new Timestamp(rhoAias.getActivateTime().getTime() - 8000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
                 addSkillEvent(transcendentCygnusBlessing);
             }
             if (
-                    cooldownCheck(guardOfLight)
-                    && getStart().before(new Timestamp(10 * 60 * 1000))
+                    cooldownCheck(bodyOfSteel)
+                            && getStart().after(new Timestamp(deadlyCharge.getActivateTime().getTime() - 2000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 isNuke = true;
                 if (cooldownCheck(crestOfTheSolar)) {
@@ -162,7 +162,7 @@ public class MihileContinuousDealCycle extends DealCycle {
                 isNuke = false;
             } else if (
                     cooldownCheck(lightOfCourage)
-                            && !cooldownCheck(queenOfTomorrow)
+                            && getStart().before(new Timestamp(queenOfTomorrow.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(lightOfCourage);
                 addSkillEvent(soulContract);
@@ -209,10 +209,10 @@ public class MihileContinuousDealCycle extends DealCycle {
                 continuousRingEndTime = new Timestamp(getStart().getTime() + 8000);
             }
             if (skill instanceof SwordOfSoulLightBuff) {
-                swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 38000);
+                swordOfSoulLightEndTime = new Timestamp(getStart().getTime() + 20000);
             }
             if (skill instanceof SoulMajesty) {
-                soulMajestyEndTime = new Timestamp(getStart().getTime() + 25000);
+                soulMajestyEndTime = new Timestamp(getStart().getTime() + 20000);
             }
             if (
                     skill instanceof SoulContract
@@ -338,14 +338,10 @@ public class MihileContinuousDealCycle extends DealCycle {
                 ) {
                     if (
                             skill instanceof ShiningCrossAssault
-                            || skill instanceof DeadlyCharge
-                            || skill instanceof ClaimhSolais
-                            || skill instanceof SoulLightSlash
-                            || skill instanceof LightForceRei
-                            || skill instanceof Durandal1
-                            || skill instanceof Durandal2
-                            || skill instanceof Durandal3
-                            || skill instanceof InstallShield
+                                    || skill instanceof DeadlyCharge
+                                    || skill instanceof DeadlyChargeSwordAura
+                                    || skill instanceof ClaimhSolais
+                                    || skill instanceof SoulLightSlash
                     ) {
                         photonShockwave.setCooldown(2.0);
                         addSkillEvent(photonShockwave);
@@ -357,13 +353,10 @@ public class MihileContinuousDealCycle extends DealCycle {
                 ) {
                     if (
                             skill instanceof ShiningCrossAssault
-                            || skill instanceof DeadlyCharge
-                            || skill instanceof ClaimhSolais
-                            || skill instanceof SoulLightSlash
-                            || skill instanceof LightForceRei
-                            || skill instanceof Durandal1
-                            || skill instanceof Durandal2
-                            || skill instanceof Durandal3
+                                    || skill instanceof DeadlyCharge
+                                    || skill instanceof DeadlyChargeSwordAura
+                                    || skill instanceof ClaimhSolais
+                                    || skill instanceof SoulLightSlash
                     ) {
                         addSkillEvent(photonShockwave);
                     }
@@ -432,6 +425,33 @@ public class MihileContinuousDealCycle extends DealCycle {
                     )
             ) {
                 addSkillEvent(continuousRing);
+            }
+            if (
+                    getStart().before(soulMajestyEndTime)
+                            && cooldownCheck(photonShockwave)
+            ) {
+                if (
+                        skill instanceof Durandal1
+                                || skill instanceof Durandal2
+                                || skill instanceof Durandal3
+                                || skill instanceof LightForceRei
+                ) {
+                    photonShockwave.setCooldown(2.0);
+                    addSkillEvent(photonShockwave);
+                    photonShockwave.setCooldown(10.0);
+                    addSkillEvent(new PhotonWave());
+                }
+            } else if (
+                    cooldownCheck(photonShockwave)
+            ) {
+                if (
+                        skill instanceof Durandal1
+                                || skill instanceof Durandal2
+                                || skill instanceof Durandal3
+                                || skill instanceof LightForceRei
+                ) {
+                    addSkillEvent(photonShockwave);
+                }
             }
             getStart().setTime(now.getTime());
         }

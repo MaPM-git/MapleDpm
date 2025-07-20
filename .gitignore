@@ -36,3 +36,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Web Object ###
+src/main/java/**/controller/**
+src/main/java/**/factory/**
+src/main/java/**/service/**
+src/main/java/**/util/**
+frontend/**

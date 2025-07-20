@@ -7,7 +7,7 @@ public class RollingCannonRainbow extends AttackSkill {
         this.setName("롤링 캐논 레인보우");
         this.setDamage(1800.0);
         this.setAttackCount(5L);
-        this.setCooldown(90.0);
+        this.setCooldown(60.0);
         this.setDelayByAttackSpeed(480L);
         this.setDotDuration(10000L);
         this.setInterval(480L);

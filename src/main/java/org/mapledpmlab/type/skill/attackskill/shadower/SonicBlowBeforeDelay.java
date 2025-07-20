@@ -5,8 +5,8 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class SonicBlowBeforeDelay extends AttackSkill {
     public SonicBlowBeforeDelay() {
         this.setName("소닉 블로우(선딜)");
-        this.setDelay(390L);
-        this.setCooldown(45.0);
+        this.setDelay(240L);
+        this.setCooldown(60.0);
         this.setRelatedSkill(new SonicBlow());
     }
 }

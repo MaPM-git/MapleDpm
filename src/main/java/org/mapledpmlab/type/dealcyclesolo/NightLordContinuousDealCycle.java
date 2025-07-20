@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class NightLordContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -117,8 +119,6 @@ public class NightLordContinuousDealCycle extends DealCycle {
 
         ((AttackSkill) lifeOrDeathSlash.getRelatedSkill()).setDotDuration(((AttackSkill) lifeOrDeathSlash.getRelatedSkill()).getDotDuration() + 3000);
 
-        mapleWorldGoddessBlessing.setCooldown(180.0);
-
         // 660
         getSkillSequence1().add(purgeArea);
         getSkillSequence1().add(throwBlasting);
@@ -131,8 +131,6 @@ public class NightLordContinuousDealCycle extends DealCycle {
         getSkillSequence2().add(spreadThrow);               // 300
         getSkillSequence2().add(soulContract);              // 30
         getSkillSequence2().add(readyToDie);                // 300  600
-        // 극딜 - 리레, 준극딜 - 웨폰                            // 30
-        // 레투다 준극일 땐, 600ms
 
         purgeArea.setDelay(180L);
         throwBlasting.setDelay(150L);
@@ -148,7 +146,10 @@ public class NightLordContinuousDealCycle extends DealCycle {
             if (cooldownCheck(darkFlareNightLord)) {
                 addSkillEvent(darkFlareNightLord);
             }
-            if (cooldownCheck(spreadThrow)) {
+            if (
+                    cooldownCheck(ultimateDarkSight)
+                            && cooldownCheck(darkLordsSecretScroll)
+            ) {
                 isNuke = true;
                 while (getStart().before(new Timestamp(fourSeasons.getActivateTime().getTime() - 1830))) {
                     if (quadrupleThrowCount == 3) {
@@ -173,11 +174,20 @@ public class NightLordContinuousDealCycle extends DealCycle {
                 addSkillEvent(spreadThrow);
                 addSkillEvent(soulContract);
                 addSkillEvent(readyToDie);
+                while (!cooldownCheck(fumaShuriken)) {
+                    if (quadrupleThrowCount == 3) {
+                        addSkillEvent(quadrupleThrowReinforce);
+                        quadrupleThrowCount = 0L;
+                    } else {
+                        addSkillEvent(quadrupleThrow);
+                        quadrupleThrowCount ++;
+                    }
+                }
                 addSkillEvent(fumaShuriken);
                 if (isRamphant) {
                     addSkillEvent(fourSeasons);
                 }
-                throwBlastingCount = 68L;
+                throwBlastingCount = 46L;
                 throwBlastingList = new ArrayList<>();
                 while (throwBlastingCount != 0) {
                     long ran = (long) (Math.random() * 3 + 2);
@@ -202,7 +212,7 @@ public class NightLordContinuousDealCycle extends DealCycle {
                     cooldownCheck(soulContract)
                             && cooldownCheck(readyToDie)
                             && cooldownCheck(darkLordsSecretScroll)
-                            && !cooldownCheck(epicAdventure)
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 5000))
                             && getStart().before(new Timestamp(660 * 1000))
             ) {
                 readyToDie.setDelay(420L);
@@ -218,7 +228,7 @@ public class NightLordContinuousDealCycle extends DealCycle {
             } else if (
                     cooldownCheck(fumaShuriken)
                             && (
-                                    getStart().before(new Timestamp(throwBlasting.getActivateTime().getTime() - 12000))
+                            getStart().before(new Timestamp(throwBlasting.getActivateTime().getTime() - 17000))
                                     || getStart().after(new Timestamp(660 * 1000))
                     )
             ) {

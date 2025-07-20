@@ -5,10 +5,10 @@ public class MoonStrike extends AssistSkill implements AlphaSkill {
         this.setName("문 스트라이크");
         this.setAttackCount(6L);
         this.setDamage(191.0);
-        //this.setDelayByAttackSpeed(510L);
         this.setDelay(330L);
+        this.setAssistDelay(330L);
         this.addFinalDamage(2.8);               // 코어 강화
         this.addIgnoreDefenseList(20L);
-        this.setAssistDelay(390L);
+        this.setGaugeCharge(-3.0);
     }
 }

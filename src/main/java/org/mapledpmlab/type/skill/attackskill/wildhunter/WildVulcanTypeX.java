@@ -9,7 +9,7 @@ public class WildVulcanTypeX extends AttackSkill {
         this.setDotDuration(4560L);
         this.setInterval(120L);
         this.setLimitAttackCount(38L);
-        this.setDamage(1205.0);
+        this.setDamage(1485.0);
         this.setAttackCount(7L);
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.6);       // 코어 강화

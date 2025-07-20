@@ -17,7 +17,11 @@ public class Belt extends Item {
         this.addAtt(6L);
         this.addMagic(6L);
         this.addHp(150L / 2);
-        if (jobType == JobType.DEMON_AVENGER) {
+        this.addAtt(4L * 3);
+        this.addAtt(5L);
+        this.addMagic(4L * 3);
+        this.addMagic(5L);
+        /*if (jobType == JobType.DEMON_AVENGER) {
             this.addHp((long) (250 * 4) / 2);
         } else if (jobType == JobType.XENON) {
             this.addMainStat((long) (3 * 4));
@@ -26,7 +30,7 @@ public class Belt extends Item {
             this.addOtherStat2((long) (3 * 4));
         } else  {
             this.addMainStat((long) (5 * 4));
-        }
+        }*/
         this.addAtt(1L);
         this.addMagic(1L);
     }

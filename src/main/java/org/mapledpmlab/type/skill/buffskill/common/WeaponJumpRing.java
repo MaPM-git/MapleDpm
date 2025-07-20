@@ -9,10 +9,10 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class WeaponJumpRing extends BuffSkill {
     public WeaponJumpRing(Long weaponAttMagic) {
         this.setName("웨폰퍼프 링(4레벨)");
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setDuration(15L);
         this.setDelay(30L);
-        this.setBuffMainStat(weaponAttMagic * 4);
+        this.setBuffMainStat((long) (weaponAttMagic * 3.2));
         this.setApplyServerLag(true);
     }
 }

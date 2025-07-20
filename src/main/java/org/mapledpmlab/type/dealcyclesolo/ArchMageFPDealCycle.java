@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class ArchMageFPDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -49,6 +51,7 @@ public class ArchMageFPDealCycle extends DealCycle {
             add(new InfernalVenomExplosion2());
             add(new MegidoFlame());
             add(new MegidoFlameAfterSecond());
+            add(new MegidoFlameBombMode());
             add(new MegidoFlameDot());
             add(new MistEruption());
             add(new PoisonMist());
@@ -63,7 +66,6 @@ public class ArchMageFPDealCycle extends DealCycle {
             add(new PoisonNova());
             add(new PoisonNovaDot());
             add(new PoisonNovaExplosion());
-            add(new PoisonNovaExplosionAfterThird());
             add(new PoisonZone());
             add(new PoisonZoneExplosion());
             add(new PoisonZoneExplosionSecond());
@@ -163,14 +165,12 @@ public class ArchMageFPDealCycle extends DealCycle {
         addSkillEvent(infinity);
         getStart().setTime(0);
 
-        ringSwitching.setCooldown(95.0);
+        ringSwitching.setCooldown(60.0);
 
         fervantDrain.setBuffFinalDamage(1.25);
         fervantDrain.setDuration(720L);
         fervantDrain.setName("퍼번트 드레인");
         addSkillEvent(fervantDrain);
-
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         unstableMemorize.setDelay(60L);
     }
@@ -235,6 +235,7 @@ public class ArchMageFPDealCycle extends DealCycle {
             if (
                     cooldownCheck(restraintRing)
                     && cooldownCheck(poisonNovaDot)
+                    && getStart().before(new Timestamp(630 * 1000))
             ) {
                 addSkillEvent(mapleWorldGoddessBlessing);
                 addSkillEvent(teleportMastery);
@@ -260,6 +261,10 @@ public class ArchMageFPDealCycle extends DealCycle {
                     addSkillEvent(flameSweep);
                     addSkillEvent(teleportMastery);
                 }
+                if (!cooldownCheck(soulContract)) {
+                    addSkillEvent(flameSweep);
+                    addSkillEvent(teleportMastery);
+                }
                 addSkillEvent(soulContract);
                 if (cooldownCheck(megidoFlame)) {
                     addSkillEvent(megidoFlame);
@@ -271,8 +276,10 @@ public class ArchMageFPDealCycle extends DealCycle {
                         addSkillEvent(flameHaze);
                     }
                     addSkillEvent(flameSweep);
-                    addSkillEvent(mistEruption);
-                    addSkillEvent(flameHaze);
+                    if (cooldownCheck(mistEruption)) {
+                        addSkillEvent(mistEruption);
+                        addSkillEvent(flameHaze);
+                    }
                     addSkillEvent(infernalVenomBuff);
                 }
                 if (getStart().before(infernalVenomEndTime)) {
@@ -294,18 +301,9 @@ public class ArchMageFPDealCycle extends DealCycle {
                 addSkillEvent(poisonNovaExplosion);
                 addSkillEvent(flameHaze);
             } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(70 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-                            && getStart().before(new Timestamp(poisonNovaDot.getActivateTime().getTime() - 5000))
-            ) {
-                addSkillEvent(ringSwitching);
-            } else if (
                     cooldownCheck(soulContract)
-                            && cooldownCheck(weaponJumpRing)
                             && cooldownCheck(furyOfIfrit)
-                            && cooldownCheck(poisonNovaDot)
-                            && getStart().after(new Timestamp(60 * 1000))
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 5000))
             ) {
                 if (cooldownCheck(flameHaze)) {
                     addSkillEvent(flameHaze);
@@ -322,24 +320,7 @@ public class ArchMageFPDealCycle extends DealCycle {
                     addSkillEvent(megidoFlame);
                     addSkillEvent(teleportMastery);
                 }
-                addSkillEvent(weaponJumpRing);
                 addSkillEvent(furyOfIfrit);
-                addSkillEvent(teleportMastery);
-                addSkillEvent(poisonNovaDot);
-                addSkillEvent(teleportMastery);
-                addSkillEvent(dotPunisherFirst);
-                addSkillEvent(teleportMastery);
-                addSkillEvent(poisonChainExplosion0);
-                addSkillEvent(teleportMastery);
-                if (cooldownCheck(flameHaze)) {
-                    addSkillEvent(flameHaze);
-                    addSkillEvent(teleportMastery);
-                }
-                addSkillEvent(mistEruption);
-                addSkillEvent(teleportMastery);
-                addSkillEvent(poisonNovaExplosion);
-                addSkillEvent(flameHaze);
-                addSkillEvent(teleportMastery);
             } else if (
                     cooldownCheck(megidoFlame)
                             && (
@@ -799,10 +780,22 @@ public class ArchMageFPDealCycle extends DealCycle {
             getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
             getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
             Timestamp now = new Timestamp(getStart().getTime());
-            getStart().setTime(getStart().getTime() + sum);
+
             if (
                     skill instanceof InfernalVenomExplosion1
                             || skill instanceof InfernalVenomExplosion2
+                            || skill instanceof InfernalVenomExplosion3
+                            || skill instanceof MegidoFlameBombMode
+            ) {
+                Long ran = (long) (Math.random() * 99 + 1);
+                if (ran <= 50) {
+                    addSkillEvent(new Ignite());
+                }
+            }
+            if (
+                    skill instanceof InfernalVenomExplosion1
+                            || skill instanceof InfernalVenomExplosion2
+                            || skill instanceof MegidoFlameBombMode
             ) {
                 if (
                         cooldownCheck(poisonZoneExplosion)

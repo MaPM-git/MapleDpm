@@ -6,7 +6,7 @@ public class CardinalBlast extends GaugeAttackSkill implements CardinalForce {
     public CardinalBlast() {
         this.setName("카디널 블래스트");
         this.setAttackCount(5 + 1L);    // 카디널 포스-보너스 어택
-        this.setDamage(990.0);
+        this.setDamage(870.0);
         this.setDelay(210L);
         // this.setDelayByAttackSpeed(480L);
         this.setAddDamage(20L);         // 카디널 포스-리인포스

@@ -14,11 +14,11 @@ public class Infinity extends BuffSkill {
             this.setBuffFinalDamage(2.15);
         } else {
             double burn = (double) burningTime / 5000 * 3 / 100;
-            this.setBuffFinalDamage(1.71 + burn);
+            this.setBuffFinalDamage(1.72 + burn);
         }
         this.setCooldown(180.0);
         this.setDelay(600L);
-        this.setDuration(41L);
+        this.setDuration(42L);
         this.setApplyPlusBuffDuration(true);
         this.setApplyReuse(true);
         this.setApplyServerLag(true);

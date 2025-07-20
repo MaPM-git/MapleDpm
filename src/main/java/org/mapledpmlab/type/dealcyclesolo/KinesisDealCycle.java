@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class KinesisDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -63,7 +65,6 @@ public class KinesisDealCycle extends DealCycle {
             add(new PsychicGroundBuff());
             add(new PsychicOver());
             add(new RestraintRing());
-            add(new RingOfSum());
             add(new RingSwitching());
             add(new SoulContract());
             add(new UltimateMaterialBuff());
@@ -96,7 +97,6 @@ public class KinesisDealCycle extends DealCycle {
     PsychicTornado psychicTornado = new PsychicTornado();
     PsychicTornadoThrow psychicTornadoThrow = new PsychicTornadoThrow();
     RestraintRing restraintRing = new RestraintRing();
-    RingOfSum ringOfSum = new RingOfSum();
     RingSwitching ringSwitching = new RingSwitching();
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
@@ -117,7 +117,6 @@ public class KinesisDealCycle extends DealCycle {
 
         ultimateBPMTic.setActivateTime(new Timestamp(600));
 
-        otherWorldGoddessBlessing.setCooldown(120.0);
         ringSwitching.setCooldown(60.0);
     }
 
@@ -169,7 +168,7 @@ public class KinesisDealCycle extends DealCycle {
                 addSkillEvent(everPsychic);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(55 * 1000))
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 8000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
@@ -181,11 +180,7 @@ public class KinesisDealCycle extends DealCycle {
                 addSkillEvent(lawOfGravity);
                 addSkillEvent(ultimateMovingMatter);
                 addSkillEvent(soulContract);
-                if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                } else if (cooldownCheck(ringOfSum)) {
-                    addSkillEvent(ringOfSum);
-                }
+                addSkillEvent(weaponJumpRing);
             } else if (
                     cooldownCheck(psychicCharge)
                             && psychicPoint <= 20
@@ -569,7 +564,7 @@ public class KinesisDealCycle extends DealCycle {
                         || attackSkill instanceof UltimatePsychicShoot
                         || attackSkill instanceof UltimateTrain
                 ) {
-                    buffSkill.addBuffCriticalDamage(22.0);
+                    buffSkill.addBuffCriticalDamage(23.0);
                 }
                 this.getJob().addMainStat(buffSkill.getBuffMainStat());
                 this.getJob().addSubStat(buffSkill.getBuffSubStat());
@@ -626,7 +621,7 @@ public class KinesisDealCycle extends DealCycle {
                         || attackSkill instanceof UltimatePsychicShoot
                         || attackSkill instanceof UltimateTrain
                 ) {
-                    buffSkill.addBuffCriticalDamage(-22.0);
+                    buffSkill.addBuffCriticalDamage(-23.0);
                 }
                 break;
             }

@@ -7,12 +7,10 @@ public class CrystalSkillDeus extends AttackSkill {
         this.setName("크리스탈 스킬:데우스");
         this.setDamage(1460.0);
         this.setDelayByAttackSpeed(30L);
-        this.setAttackCount(5L + 1);
-        this.setCooldown(30.0);
+        this.setAttackCount(10L + 1);
         this.setApplyCooldownReduction(false);
-        this.setDotDuration((long) (30000L * 1.32));
+        this.setDotDuration((long) (15000L * 1.32));
         this.setInterval(3030L);
-        this.setAddDamage(20L);     // 데우스-리인포스
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setRelatedSkill(new CrystalSkillDeusSatellite());

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.job.ZeroBeta;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class ZeroDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -174,9 +176,13 @@ public class ZeroDealCycle extends DealCycle {
     Timestamp transcendentLightEndTime = new Timestamp(-1);
     Timestamp transcendentTimeEndTime = new Timestamp(-1);
     Timestamp blessEndTime = new Timestamp(-1);
+    Timestamp timeHoldingEndTime = new Timestamp(-1);
+    Timestamp soulContractEndTime = new Timestamp(-1);
+    Timestamp timePieceCreationTime = new Timestamp(-1);
 
     int zero = 1;   // 0 - 알파, 1 - 베타
     int lightSphereCnt = 0;
+    int assistCnt = 0;
     int timePieceCnt = 0;
 
     boolean isShadowFlashAlpha = false;
@@ -192,10 +198,6 @@ public class ZeroDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(120.0);
-        transcendentRhinneBless.setCooldown(120.0);
-        auraWeaponBuff.setCooldown(180.0);
-
         earthBreak.setAssistSkill(new StormBreak());
         flashAssault.setAssistSkill(new FrontSlash());
         frontSlash.setAssistSkill(new FlashAssault());
@@ -208,6 +210,7 @@ public class ZeroDealCycle extends DealCycle {
         rollingCurve.setAssistSkill(new TurningDrive());
         shadowStrike.setAssistSkill(new UpperSlash());
         spinCutter.setAssistSkill(new ThrowingWeapon());
+        spinCutter.getAssistSkill().addFinalDamage(0.75);
         stormBreak.setAssistSkill(new EarthBreak());
         throwingWeapon.setAssistSkill(new SpinCutter());
         turningDrive.setAssistSkill(new RollingCurve());
@@ -230,8 +233,6 @@ public class ZeroDealCycle extends DealCycle {
 
     @Override
     public void setSoloDealCycle() {
-        int dealCycleOrder = 1;
-        boolean isOrigin = false;
         addSkillEvent(divineLeer);
         while (getStart().before(getEnd())) {
             if (
@@ -243,7 +244,7 @@ public class ZeroDealCycle extends DealCycle {
             if (
                     getStart().before(new Timestamp(660 * 1000))
                             && zero == 1
-                            && getStart().after(new Timestamp(bodyOfSteel.getActivateTime().getTime() - 6000))
+                            && getStart().after(new Timestamp(bodyOfSteel.getActivateTime().getTime() - 11000))
             ) {
                 betaCancelCycle(shadowFlashBeta);
                 alphaCancelCycle(shadowFlashAlpha);
@@ -259,20 +260,12 @@ public class ZeroDealCycle extends DealCycle {
                 }
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(limitBreak);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 if (cooldownCheck(chronoTrigger1)) {
                     jointAttackCancelCycle(chronoTrigger1);
-                    addSkillEvent(shadowFlashBetaFinish);
-                    isOrigin = true;
                 } else {
                     jointAttackCancelCycle(shadowFlashBetaFinish);
                 }
-                addSkillEvent(limitBreakFinish);
-                addSkillEvent(tag);
                 alphaCancelCycle(shadowFlashAlphaFinish);
                 if (
                         cooldownCheck(soulContract)
@@ -281,37 +274,8 @@ public class ZeroDealCycle extends DealCycle {
                     addSkillEvent(soulContract);
                     betaCancelCycle(shadowRainBeta);
                 }
-                if (cooldownCheck(timeHolding)) {
-                    addSkillEvent(timeHolding);
-                    alphaCycle();
-                    if (isOrigin) {
-                        addSkillEvent(moonStrike);
-                        addSkillEvent(pierceThrust);
-                        addSkillEvent(shadowStrike);
-                        addSkillEvent(moonStrike);
-                        addSkillEvent(pierceThrust);
-                        addSkillEvent(shadowStrike);
-                        betaCancelCycle(shadowFlashBeta);
-                        alphaCancelCycle(shadowFlashAlpha);
-                        betaCancelCycle(shadowFlashBetaFinish);
-                        alphaCancelCycle(shadowFlashAlphaFinish);
-                    } else {
-                        betaCycle();
-                        alphaCycle();
-                        betaCycle();
-                        alphaCycle();
-                    }
-                    addSkillEvent(soulContract);
-                    betaCancelCycle(shadowRainBeta);
-                }
-                isOrigin = false;
-                dealCycleOrder ++;
-            } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(100 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
+            } else if (cooldownCheck(timeHolding)) {
+                addSkillEvent(timeHolding);
             } else if (
                     cooldownCheck(soulContract)
                             && getStart().before(new Timestamp(transcendentLife.getActivateTime().getTime() - 50000))
@@ -375,7 +339,7 @@ public class ZeroDealCycle extends DealCycle {
             }
         }
         if (
-                assistNowTime.after(assistEndTime)
+                !assistNowTime.before(assistEndTime)
                         && !isRelated
         ) {
             return;
@@ -393,9 +357,17 @@ public class ZeroDealCycle extends DealCycle {
                         && !(skill instanceof StormBreakTornado)
                         && !(skill instanceof WindCutterTornado)
         ) {
-            timePieceCnt ++;
-            if (timePieceCnt > 13) {
-                timePieceCnt = 13;
+            assistCnt ++;
+            if (
+                    assistCnt >= 4
+                    && getStart().after(timePieceCreationTime)
+            ) {
+                timePieceCreationTime.setTime(getStart().getTime() + 2000);
+                timePieceCnt += 4;
+                assistCnt = 0;
+                if (timePieceCnt > 13) {
+                    timePieceCnt = 13;
+                }
             }
         }
         if (
@@ -432,24 +404,11 @@ public class ZeroDealCycle extends DealCycle {
             this.multiAttackProcess(skill);
         } else {
             if (
-                    !(skill instanceof EarthBreakShockWave)
-                            && !(skill instanceof FrontSlash)
+                    //!(skill instanceof EarthBreakShockWave)
+                            /*&&*/ !(skill instanceof FrontSlash)
             ) {
                 endTime = new Timestamp(assistNowTime.getTime() + ((AssistSkill) skill).getAssistDelay());
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(assistNowTime.getTime()), endTime));
-            }
-            if (skill instanceof RollingCurveBlade) {
-                Long ran = (long) (Math.random() * 99 + 1);
-                if (ran <= 50) {
-                    RollingCurveBlade tmp = new RollingCurveBlade();
-                    tmp.addFinalDamage(0.7);
-                    getSkillEventList().add(new SkillEvent(tmp, new Timestamp(assistNowTime.getTime()), endTime));
-                }
-            }
-            if (skill instanceof RollingAssaulterBlade) {
-                RollingAssaulterBlade tmp = new RollingAssaulterBlade();
-                tmp.addFinalDamage(0.7);
-                getSkillEventList().add(new SkillEvent(tmp, new Timestamp(assistNowTime.getTime()), endTime));
             }
         }
         getEventTimeList().add(assistNowTime);
@@ -501,38 +460,42 @@ public class ZeroDealCycle extends DealCycle {
         timePieceCnt = 0;
         isEgoWeapon = true;
         addSkillEvent(timePieceCrystalOfTime);
-        if (getStart().before(blessEndTime)) {
-            spinCutter = new SpinCutter();
-            spinCutter.setDelay(180L);
-            spinCutter.setAssistSkill(new ThrowingWeapon());
-            flashAssault.setCooldown(5.0);
-            while (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
-                if (!cooldownCheck(flashAssault)) {
-                    getStart().setTime(getStart().getTime() + 180);
-                }
-                addSkillEvent(flashAssault);
-                addSkillEvent(spinCutter);
-            }
-            flashAssault.setCooldown(0.0);
-        } else {
-            addSkillEvent(flashAssault);
-            spinCutter = new SpinCutter();
-            spinCutter.setDelay(270L);
-            spinCutter.setAssistSkill(new ThrowingWeapon());
-            addSkillEvent(spinCutter);
+        if (getStart().before(timeHoldingEndTime)) {
             addSkillEvent(windCutter);
             addSkillEvent(windStrike);
             addSkillEvent(stormBreak);
-            addSkillEvent(flashAssault);
-            addSkillEvent(spinCutter);
-            addSkillEvent(moonStrike);
-            Timestamp comboEndTime = new Timestamp(getStart().getTime());
             addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(rollingCurve);
             Timestamp tmp = new Timestamp(assistNowTime.getTime());
             assistNowTime = new Timestamp(getStart().getTime());
             getStart().setTime(tmp.getTime());
-            if (comboEndTime.equals(getStart())) {
-                getStart().setTime(getStart().getTime() + 90);
+            if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
+                getStart().setTime(assistEndTime.getTime() + 120);
+            }
+        } else {
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(moonStrike);
+            addSkillEvent(pierceThrust);
+            addSkillEvent(shadowStrike);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(rollingCurve);
+            Timestamp tmp = new Timestamp(assistNowTime.getTime());
+            assistNowTime = new Timestamp(getStart().getTime());
+            getStart().setTime(tmp.getTime());
+            if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
+                getStart().setTime(assistEndTime.getTime() + 120);
             }
         }
         addSkillEvent(tag);
@@ -556,24 +519,47 @@ public class ZeroDealCycle extends DealCycle {
         whirlWind = new WhirlWind();
         whirlWind.setDelay(90L);
         whirlWind.setAssistSkill(new RollingAssaulter());
-        addSkillEvent(frontSlash);
-        addSkillEvent(throwingWeapon);
-        addSkillEvent(turningDrive);
-        addSkillEvent(whirlWind);
-        addSkillEvent(frontSlash);
-        addSkillEvent(throwingWeapon);
-        addSkillEvent(turningDrive);
-        addSkillEvent(whirlWind);
-        addSkillEvent(frontSlash);
-        Timestamp comboEndTime = new Timestamp(getStart().getTime());
-        addSkillEvent(throwingWeapon);
-        assistNowTime = new Timestamp(assistNowTime.getTime() + 450);
-        Timestamp tmp = new Timestamp(assistNowTime.getTime());
-        assistNowTime = new Timestamp(getStart().getTime());
-        getStart().setTime(tmp.getTime());
-        if (comboEndTime.equals(getStart())) {
-            getStart().setTime(getStart().getTime() + 30);
+        if (getStart().before(timeHoldingEndTime)) {
+            addSkillEvent(turningDrive);
+            addSkillEvent(whirlWind);
+            addSkillEvent(gigaCrash);
+            addSkillEvent(jumpingCrash);
+            addSkillEvent(earthBreak);
+            addSkillEvent(turningDrive);
+            addSkillEvent(whirlWind);
+            addSkillEvent(gigaCrash);
+            addSkillEvent(jumpingCrash);
+            addSkillEvent(earthBreak);
+            addSkillEvent(gigaCrash);
+            addSkillEvent(jumpingCrash);
+            addSkillEvent(earthBreak);
+            Timestamp tmp = new Timestamp(assistNowTime.getTime());
+            assistNowTime = new Timestamp(getStart().getTime());
+            getStart().setTime(tmp.getTime());
+            if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
+                getStart().setTime(assistEndTime.getTime() + 120);
+            }
+        } else {
+            addSkillEvent(turningDrive);
+            addSkillEvent(whirlWind);
+            addSkillEvent(gigaCrash);
+            addSkillEvent(jumpingCrash);
+            addSkillEvent(earthBreak);
+            addSkillEvent(turningDrive);
+            addSkillEvent(whirlWind);
+            addSkillEvent(upperSlash);
+            addSkillEvent(powerStomp);
+            addSkillEvent(upperSlash);
+            addSkillEvent(powerStomp);
+            Timestamp tmp = new Timestamp(assistNowTime.getTime());
+            assistNowTime = new Timestamp(getStart().getTime());
+            getStart().setTime(tmp.getTime());
+            if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
+                getStart().setTime(assistEndTime.getTime() + 120);
+            }
         }
+        whirlWind = new WhirlWind();
+        whirlWind.setAssistSkill(new RollingAssaulter());
         addSkillEvent(tag);
         Timestamp cycleEndTime = new Timestamp(getStart().getTime());
         getSkillEventList().add(new SkillEvent(alpha, cycleStartTime, cycleEndTime));
@@ -592,18 +578,19 @@ public class ZeroDealCycle extends DealCycle {
         timePieceCnt = 0;
         isEgoWeapon = true;
         addSkillEvent(timePieceCrystalOfTime);
-        if (getStart().before(new Timestamp(blessEndTime.getTime() - 1000))) {
-            spinCutter = new SpinCutter();
-            spinCutter.setDelay(180L);
-            spinCutter.setAssistSkill(new ThrowingWeapon());
-            flashAssault.setCooldown(5.0);
-            while (getStart().before(new Timestamp(assistEndTime.getTime() - 200))) {
-                if (!cooldownCheck(flashAssault)) {
-                    getStart().setTime(getStart().getTime() + 180);
-                }
-                addSkillEvent(flashAssault);
-                addSkillEvent(spinCutter);
-            }
+        if (getStart().before(timeHoldingEndTime)) {
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
             addSkillEvent(skill);
             Timestamp tmp = new Timestamp(assistNowTime.getTime());
             assistNowTime = new Timestamp(getStart().getTime());
@@ -611,34 +598,22 @@ public class ZeroDealCycle extends DealCycle {
             if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
                 getStart().setTime(assistEndTime.getTime() + 120);
             }
-            flashAssault.setCooldown(0.0);
         } else {
-            addSkillEvent(flashAssault);
-            spinCutter = new SpinCutter();
-            spinCutter.setDelay(270L);
-            spinCutter.setAssistSkill(new ThrowingWeapon());
-            addSkillEvent(spinCutter);
             addSkillEvent(windCutter);
             addSkillEvent(windStrike);
             addSkillEvent(stormBreak);
-            addSkillEvent(flashAssault);
-            addSkillEvent(spinCutter);
-            moonStrike = new MoonStrike();
-            moonStrike.setDelay(390L);
-            moonStrike.setAssistSkill(new UpperSlash());
             addSkillEvent(moonStrike);
-            if (skill instanceof TranscendentLife) {
-                skill.getRelatedSkill().getRelatedSkill().setDelay(90L);
-            } else {
-                skill.setDelay(90L);
-            }
-            Timestamp comboEndTime = new Timestamp(getStart().getTime());
+            addSkillEvent(pierceThrust);
+            addSkillEvent(shadowStrike);
+            addSkillEvent(windCutter);
+            addSkillEvent(windStrike);
+            addSkillEvent(stormBreak);
             addSkillEvent(skill);
             Timestamp tmp = new Timestamp(assistNowTime.getTime());
             assistNowTime = new Timestamp(getStart().getTime());
             getStart().setTime(tmp.getTime());
-            if (comboEndTime.equals(getStart())) {
-                getStart().setTime(getStart().getTime() + 90);
+            if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
+                getStart().setTime(assistEndTime.getTime() + 120);
             }
         }
         addSkillEvent(tag);
@@ -664,23 +639,23 @@ public class ZeroDealCycle extends DealCycle {
         whirlWind.setAssistSkill(new RollingAssaulter());
         addSkillEvent(turningDrive);
         addSkillEvent(whirlWind);
-        addSkillEvent(frontSlash);
-        addSkillEvent(throwingWeapon);
+        addSkillEvent(gigaCrash);
+        addSkillEvent(jumpingCrash);
+        addSkillEvent(earthBreak);
         addSkillEvent(turningDrive);
         addSkillEvent(whirlWind);
-        addSkillEvent(frontSlash);
-        addSkillEvent(throwingWeapon);
-        Timestamp comboEndTime = new Timestamp(getStart().getTime());
+        addSkillEvent(upperSlash);
+        addSkillEvent(powerStomp);
+        addSkillEvent(gigaCrash);
         addSkillEvent(skill);
         Timestamp tmp = new Timestamp(assistNowTime.getTime());
         assistNowTime = new Timestamp(getStart().getTime());
         getStart().setTime(tmp.getTime());
-        if (comboEndTime.equals(getStart())) {
-            getStart().setTime(getStart().getTime() + 30);
-        }
         if (getStart().before(new Timestamp(assistEndTime.getTime() + 120))) {
             getStart().setTime(assistEndTime.getTime() + 120);
         }
+        whirlWind = new WhirlWind();
+        whirlWind.setAssistSkill(new RollingAssaulter());
         addSkillEvent(tag);
         Timestamp cycleEndTime = new Timestamp(getStart().getTime());
         getSkillEventList().add(new SkillEvent(alpha, cycleStartTime, cycleEndTime));
@@ -699,18 +674,25 @@ public class ZeroDealCycle extends DealCycle {
         timePieceCnt = 0;
         isEgoWeapon = true;
         addSkillEvent(timePieceCrystalOfTime);
-        addSkillEvent(turningDrive);
         whirlWind = new WhirlWind();
         whirlWind.setDelay(90L);
         whirlWind.setAssistSkill(new RollingAssaulter());
+        addSkillEvent(turningDrive);
         addSkillEvent(whirlWind);
         addSkillEvent(gigaCrash);
         addSkillEvent(jumpingCrash);
         addSkillEvent(earthBreak);
+        addSkillEvent(turningDrive);
+        addSkillEvent(whirlWind);
         addSkillEvent(jointAttack1);
         addSkillEvent(skill);
         Timestamp cycleEndTime = new Timestamp(getStart().getTime());
-        getSkillEventList().add(new SkillEvent(alpha, cycleStartTime, cycleEndTime));
+        getSkillEventList().add(new SkillEvent(beta, cycleStartTime, cycleEndTime));
+        if (skill instanceof ChronoTrigger1) {
+            addSkillEvent(shadowFlashBetaFinish);
+        }
+        addSkillEvent(limitBreakFinish);
+        addSkillEvent(tag);
     }
 
     @Override
@@ -734,6 +716,12 @@ public class ZeroDealCycle extends DealCycle {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof SoulContract) {
+                soulContractEndTime = new Timestamp(getStart().getTime() + 23000);
+            }
+            if (skill instanceof TimeHolding) {
+                timeHoldingEndTime = new Timestamp(getStart().getTime() + timeHolding.getDuration() * 1000 + 3000);
+            }
             if (skill instanceof TranscendentRhinneBless) {
                 blessEndTime = new Timestamp(getStart().getTime() + 3000 + 45000);
             }
@@ -989,19 +977,6 @@ public class ZeroDealCycle extends DealCycle {
                     }
                 }
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
-                if (skill instanceof RollingCurveBlade) {
-                    Long ran = (long) (Math.random() * 99 + 1);
-                    if (ran <= 50) {
-                        RollingCurveBlade tmp = new RollingCurveBlade();
-                        tmp.addFinalDamage(0.7);
-                        getSkillEventList().add(new SkillEvent(tmp, new Timestamp(assistNowTime.getTime()), endTime));
-                    }
-                }
-                if (skill instanceof RollingAssaulterBlade) {
-                    RollingAssaulterBlade tmp = new RollingAssaulterBlade();
-                    tmp.addFinalDamage(0.7);
-                    getSkillEventList().add(new SkillEvent(tmp, new Timestamp(assistNowTime.getTime()), endTime));
-                }
             }
         }
         if (!(skill instanceof FlashAssault)) {

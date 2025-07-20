@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class Memorize extends BuffSkill {
     public Memorize() {
         this.setName("메모라이즈");
-        this.setCooldown(150.0);
+        this.setCooldown(120.0);
         this.setDelay(900L);
         this.setRelatedSkill(new EquilibriumMemorize());
     }

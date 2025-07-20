@@ -7,9 +7,9 @@ public class CraftLonginus extends AttackSkill {
         this.setName("크래프트:롱기누스(캔슬)");
         this.setDamage(1790.0);
         this.setDelayByAttackSpeed(540L);
-        this.setAttackCount(12L);
+        this.setAttackCount(14L);
         this.setAddDamage(20L);
-        this.setCooldown(15.0);
+        this.setCooldown(13.0 * 0.8);
         this.addFinalDamage(2.2);   // 코어강화
         this.addIgnoreDefenseList(20L);
         this.setApplyFinalAttack(true);

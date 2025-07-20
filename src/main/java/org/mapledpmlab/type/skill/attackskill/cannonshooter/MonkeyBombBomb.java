@@ -17,6 +17,5 @@ public class MonkeyBombBomb extends AttackSkill {
         this.getMultiAttackInfo().add(5520L);
         this.getMultiAttackInfo().add(5520L);
         this.getMultiAttackInfo().add(5520L);
-        this.getMultiAttackInfo().add(5520L);
     }
 }

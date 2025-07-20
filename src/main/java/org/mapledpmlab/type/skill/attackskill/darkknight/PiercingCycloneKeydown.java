@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class PiercingCycloneKeydown extends AttackSkill {
     public PiercingCycloneKeydown() {
         this.setName("피어스 사이클론");
-        this.setDamage(800.0);
+        this.setDamage(530.0);
         this.setAttackCount(8L);
         this.setDelay(140L * 26);
         this.addIgnoreDefenseList(50L);

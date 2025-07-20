@@ -10,7 +10,7 @@ public class BurningRegion extends BuffSkill {
     public BurningRegion() {
         this.setName("버닝 리젼");
         this.setDelay(860L);
-        this.setBuffDamage(61L);
+        this.setBuffDamage(62L);
         this.setDuration(30L);
         this.setCooldown(45.0);
         this.setApplyPlusBuffDuration(true);

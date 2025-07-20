@@ -7,6 +7,6 @@ public class MetalArmorFullBurstBeforeDelay extends AttackSkill {
         this.setName("메탈아머 전탄발사");
         this.setDelay(1020L);
         this.setRelatedSkill(new MetalArmorFullBurst());
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
     }
 }

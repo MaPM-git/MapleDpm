@@ -8,10 +8,10 @@ public class Asura extends AttackSkill {
         this.setDamage(1110.0);
         this.setAttackCount(12L);
         this.setCooldown(60.0);
-        this.setDelay(2340L);
-        this.setDotDuration(2340L);
+        this.setDelay(180L * 11);
+        this.setDotDuration(180L * 11);
         this.setInterval(180L);
-        this.setLimitAttackCount(13L);
+        this.setLimitAttackCount(11L);
         this.addIgnoreDefenseList(100L);
         this.addFinalDamage(2.2);           // 코어강화
         this.setRelatedSkill(new AsuraAfterDelay());

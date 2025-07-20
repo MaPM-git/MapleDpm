@@ -5,9 +5,9 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class CrystalIgnition extends AttackSkill {
     public CrystalIgnition() {
         this.setName("크리스탈 이그니션");
-        this.setDamage(2566.0);
+        this.setDamage(1715.0);
         this.setDelay(4200L);
-        this.setAttackCount(5L);
+        this.setAttackCount(6L);
         this.setDotDuration(4200L);
         this.setInterval(120L);
         this.setLimitAttackCount(35L);

@@ -1,6 +1,7 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
-import org.mapledpmlab.type.JobContinuous.ShadowerContinuous;
+import lombok.NoArgsConstructor;
+import org.mapledpmlab.type.job.Shadower5Continuous;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class ShadowerContinuousDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -119,8 +121,6 @@ public class ShadowerContinuousDealCycle extends DealCycle {
 
         ultimateDarkSight.setBuffFinalDamage(1.29);
 
-        mapleWorldGoddessBlessing.setCooldown(180.0);
-
         getSkillSequence1().add(epicAdventure);             // 30
         getSkillSequence1().add(mapleWorldGoddessBlessing);
         getSkillSequence1().add(ultimateDarkSight);
@@ -169,6 +169,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
+                addSkillEvent(veilOfShadow);
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(assassination);
                 addSkillEvent(slashShadowFormation);
@@ -182,18 +183,13 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 addSkillEvent(mesoExplosion);
                 isNuke = false;
             } else if (
-                    cooldownCheck(slashShadowFormation)
-                            && cooldownCheck(sonicBlow)
+                    cooldownCheck(sonicBlow)
                             && cooldownCheck(veilOfShadow)
-                            && !cooldownCheck(epicAdventure)
+                            && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(veilOfShadow);
                 addDealCycle(getSkillSequence2());
-                addSkillEvent(assassination);
-                addSkillEvent(slashShadowFormation);
-                addSkillEvent(assassinationFinishCancle);
-                addSkillEvent(mesoExplosion);
-                while (getStart().before(new Timestamp(eviscerate.getActivateTime().getTime() - 1800))) {
+                while (getStart().before(new Timestamp(eviscerate.getActivateTime().getTime() - 1500))) {
                     addSkillEvent(assassination);
                     addSkillEvent(assassinationFinishCancle);
                     addSkillEvent(mesoExplosion);
@@ -202,23 +198,8 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                 addSkillEvent(eviscerate);
                 addSkillEvent(mesoExplosion);
             } else if (
-                    getStart().after(smokeBombEndTime)
-                            && cooldownCheck(veilOfShadow)
-                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 5000))
-            ) {
-                addSkillEvent(veilOfShadow);
-            } else if (
-                    cooldownCheck(sonicBlow)
-                            && cooldownCheck(eviscerate)
-                            && !cooldownCheck(readyToDie)
-                            && getStart().before(new Timestamp(700 * 1000))
-            ) {
-                addSkillEvent(sonicBlow);
-                addSkillEvent(eviscerate);
-                addSkillEvent(mesoExplosion);
-            } else if (
                     cooldownCheck(eviscerate)
-                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 8000))
+                            && getStart().before(new Timestamp(sonicBlow.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(eviscerate);
             } else if (
@@ -270,6 +251,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
             }
             if (skill instanceof VeilOfShadowBuff) {
                 veilOfShadowEndTime = new Timestamp(getStart().getTime() + 12000);
+                isSmokeBombCovertShadow = false;
                 heartbreakerCount += 2;
             }
             if (skill instanceof DarkSight) {
@@ -342,7 +324,10 @@ public class ShadowerContinuousDealCycle extends DealCycle {
             }
             if (
                     !isSmokeBombCovertShadow
-                            && getStart().before(smokeBombEndTime)
+                            && (
+                            getStart().before(smokeBombEndTime)
+                                    || getStart().before(veilOfShadowEndTime)
+                    )
                             && (
                             skill instanceof SpiderInMirror
                                     || skill instanceof CrestOfTheSolar
@@ -517,7 +502,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                     || isVeilOfShadow
                     || isHeartbreakerDarkSight
             ) {
-                buffSkill.addBuffFinalDamage(1.15);
+                buffSkill.addBuffFinalDamage(1.12);
             }
             for (SkillEvent skillEvent : useBuffSkillList) {
                 buffSkill.addBuffAttMagic(((BuffSkill) skillEvent.getSkill()).getBuffAttMagic());
@@ -548,7 +533,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                                 || se.getSkill() instanceof HeartbreakerFinishCancle
                         )
                 ) {
-                    buffSkill.addBuffFinalDamage(1.15);
+                    buffSkill.addBuffFinalDamage(1.12);
                 }
                 if (!(se.getSkill() instanceof MesoExplosion)) {
                     totalDamage += getAttackDamage(se, buffSkill, start, end);
@@ -565,7 +550,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                                         || se.getSkill() instanceof HeartbreakerFinishCancle
                         )
                 ) {
-                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.15);
+                    buffSkill.setBuffFinalDamage(buffSkill.getBuffFinalDamage() / 1.12);
                 }
                 if (
                         se.getStart().equals(start)
@@ -598,13 +583,10 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                     for (int j = 0; j < coinCount; j++) {
                         totalDamage += getAttackDamage(new SkillEvent(se.getSkill(), start, start), buffSkill, start, start);
                         Long ran = (long) (Math.random() * 99 + 1);
-                        if (
-                                isCovertShadow
-                                && ran <= 60
-                        ) {
+                        if (isCovertShadow) {
                             totalDamage += getAttackDamage(new SkillEvent(covertShadowEdge, start, start), buffSkill, start, start);
                         } else {
-                            if (ran <= 36) {
+                            if (ran <= covertShadow.getProp()) {
                                 totalDamage += getAttackDamage(new SkillEvent(covertShadow, start, start), buffSkill, start, start);
                             }
                         }
@@ -657,7 +639,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
         Long attackDamage;
         if (buffSkill.getBuffDamage() >= 140) {
             attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                    + getJob().getFinalSubstat() + ((ShadowerContinuous) getJob()).getFinalSubStat2()) * 0.01
+                    + getJob().getFinalSubstat() + ((Shadower5Continuous) getJob()).getFinalSubStat2()) * 0.01
                     * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                     * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                     + getJob().getPerXAtt())
@@ -668,7 +650,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
             );
         } else {
             attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                    + getJob().getFinalSubstat() + ((ShadowerContinuous) getJob()).getFinalSubStat2()) * 0.01
+                    + getJob().getFinalSubstat() + ((Shadower5Continuous) getJob()).getFinalSubStat2()) * 0.01
                     * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                     * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                     + getJob().getPerXAtt())
@@ -695,7 +677,7 @@ public class ShadowerContinuousDealCycle extends DealCycle {
                     attackDamage = getDotDamage(attackSkill, buffSkill);
                 } else {
                     attackDamage = (long) Math.floor(((getJob().getFinalMainStat()) * 4
-                            + getJob().getFinalSubstat() + ((ShadowerContinuous) getJob()).getFinalSubStat2()) * 0.01
+                            + getJob().getFinalSubstat() + ((Shadower5Continuous) getJob()).getFinalSubStat2()) * 0.01
                             * (Math.floor((getJob().getAtt() + buffSkill.getBuffAttMagic())
                             * (1 + (getJob().getAttP() + buffSkill.getBuffAttMagicPer()) * 0.01))
                             + getJob().getPerXAtt())

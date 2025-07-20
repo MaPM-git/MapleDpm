@@ -8,7 +8,7 @@ public class Cosmos extends AttackSkill {
         this.setDelay(660L);
         this.setAttackCount(5L * 2);
         this.setDamage(1210.0);
-        this.setCooldown(90.0);
+        this.setCooldown(60.0);
         this.setDotDuration(15000L);
         this.setInterval(600L - 30 * (cosmicOrbCount - 1));
         this.addFinalDamage(0.9);       // 마스터 오브 더 소드

@@ -2,11 +2,11 @@ package org.mapledpmlab.type.skill.attackskill.zero;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mapledpmlab.type.skill.attackskill.AttackSkill;
+import org.mapledpmlab.type.skill.attackskill.GaugeAttackSkill;
 
 @Setter
 @Getter
-public class AssistSkill extends AttackSkill {
+public class AssistSkill extends GaugeAttackSkill {
     private Long assistDelay = 0L;
     private AssistSkill assistSkill = null;
     private boolean isMove = false;

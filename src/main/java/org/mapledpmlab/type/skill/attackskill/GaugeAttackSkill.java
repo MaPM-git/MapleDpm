@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.skill.attackskill;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ public class GaugeAttackSkill extends AttackSkill {
     private Double gaugeCharge = 0.0;
     private Long gaugePer = 0L;
 
+    @JsonIgnore
     public String getInfo() {
         String str;
         str = super.getInfo();

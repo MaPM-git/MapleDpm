@@ -9,7 +9,7 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class AdventOfGodsBuff extends BuffSkill {
     public AdventOfGodsBuff() {
         this.setName("신들의 강림");
-        this.setDuration(30L);
+        this.setDuration(20L);
         this.setApplyServerLag(true);
     }
 }

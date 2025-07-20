@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class Ruin extends AttackSkill {
     public Ruin() {
         this.setName("루인(소환)");
-        this.setDamage(550.0);
+        this.setDamage(1012.0);
         this.setDelayByAttackSpeed(780L);
         this.setAttackCount(6L);
         this.setDotDuration(2640L);

@@ -1,35 +1,58 @@
 package org.mapledpmlab.type.job;
 
+import org.mapledpmlab.type.etc.Common;
+
 public class ZeroBeta extends Zero {
 
     public ZeroBeta() {
         // 기본
         super();
-        this.setName("제로 - 베타");
+        this.setName("제로 - 베타(2초, 리레단일)");
         this.setConstant(1.49);         // 무기상수(베타)
         this.setMastery(1.90 / 2);      // 숙련도
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (342 + 151 + 72 + 255));
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (342 + 151 + 72 + 255));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        getPassiveList().add(passive);
         this.setWeaponAttMagic((long) (342 + 151 + 72 + 255));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
 
         // 베타
-        this.addCriticalP(30.0);        // 대검 마스터리
-        this.addDamage(50L);
-        this.addBossDamage(30L);
-        this.addAtt(80L);
-        this.addFinalDamage(1.23);
+        passive = new Common();
+        passive.setDescription("대검 마스터리");
+        passive.addCriticalP(30.0);
+        passive.addDamage(50L);
+        passive.addBossDamage(30L);
+        passive.addAtt(80L);
+        passive.addFinalDamage(1.23);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
     }
 
     @Override
     public void Doping() {
         super.Doping();
-        this.addIgnoreDefenseList(50L); // 아머 스플릿 5중첩
-        this.addDamage(5L);             // 래피드 타임 5중첩
-        this.addAtt(45L * 3);           // 인피니트 레조넌스 3중첩
+
+        Common doping = new Common();
+        doping.setDescription("아머 스플릿 5중첩");
+        doping.addIgnoreDefenseList(50L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("래피드 타임 5중첩");
+        doping.addDamage(5L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("인피니트 레조넌스");
+        doping.addAtt(50L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

@@ -8,9 +8,9 @@ public class SummonOnyxDragon extends AttackSkill {
         this.setDamage(550.0);
         this.setAttackCount(2L);
         this.setDelayByAttackSpeed(900L);
-        this.setDotDuration(40000L);
+        this.setDotDuration(30000L);
         this.setInterval(3030L);
-        this.setCooldown(80.0);
+        this.setCooldown(60.0);
         this.addFinalDamage(2.2);                   // 코어 강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.08);          // 오버로드 마나

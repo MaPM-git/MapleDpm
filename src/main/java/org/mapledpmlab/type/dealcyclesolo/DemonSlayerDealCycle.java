@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.job.DemonSlayerNormal;
 import org.mapledpmlab.type.etc.Job;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class DemonSlayerDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -77,6 +79,9 @@ public class DemonSlayerDealCycle extends DealCycle {
     };
 
     int demonForce = 150;
+    int demonAwakeningCnt = 0;
+
+    Timestamp restraintEndTime = new Timestamp(-1);
     Timestamp demonAwakeningEndTime = new Timestamp(-1);
     Timestamp infinityForceEndTime = new Timestamp(-1);
     Timestamp nightmareTerritoryEndTime = new Timestamp(-1);
@@ -116,18 +121,13 @@ public class DemonSlayerDealCycle extends DealCycle {
         super(job, null);
 
         if (getJob() instanceof DemonSlayerNormal) {
-            getJob().setName("데몬슬레이어(리웨, 극포실, 환산 84288)");
+            getJob().setName("데몬슬레이어(0초, 리웨, 극포실, 환산 87328)");
         }
 
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
         ringSwitching.setCooldown(120.0);
-        //ringSwitching.setApplyCooldownReduction(false);
-
-        auraWeaponBuff.setCooldown(180.0);
-        auraWeaponBuff.setApplyCooldownReduction(false);
-        otherWorldGoddessBlessing.setCooldown(120.0);
 
         getSkillSequence1().add(infinityForce);
         getSkillSequence1().add(demonicFortitude);          // 30
@@ -160,6 +160,7 @@ public class DemonSlayerDealCycle extends DealCycle {
             }
             if (
                     cooldownCheck(otherWorldGoddessBlessing)
+                            && cooldownCheck(soulContract)
                             && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 2000))
                             && demonForce >= 100
             ) {
@@ -176,11 +177,7 @@ public class DemonSlayerDealCycle extends DealCycle {
                 }
                 addSkillEvent(jormungand);
                 addSkillEvent(soulContract);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(demonSlashReinforce1);
                 addSkillEvent(demonSlashReinforce1);
                 addSkillEvent(demonSlashReinforce1);
@@ -191,6 +188,13 @@ public class DemonSlayerDealCycle extends DealCycle {
                     addSkillEvent(nightmareJudgement);
                     isOrigin = false;
                 }
+                while (getStart().before(restraintEndTime)) {
+                    addSkillEvent(demonSlashReinforce1);
+                }
+                ringSwitching.setActivateTime(new Timestamp(-1));
+                addSkillEvent(ringSwitching);
+                ringSwitching.setActivateTime(new Timestamp(restraintRing.getActivateTime().getTime() - 10000));
+                addSkillEvent(weaponJumpRing);
                 dealCycleOrder ++;
             } else if (
                     cooldownCheck(soulContract)
@@ -203,7 +207,10 @@ public class DemonSlayerDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (getStart().before(demonAwakeningEndTime)) {
+            } else if (
+                    getStart().before(demonAwakeningEndTime)
+                    && demonAwakeningCnt > 0
+            ) {
                 addSkillEvent(demonSlashReinforce1);
             } else if (cooldownCheck(cerburusTarterian)) {
                 addSkillEvent(cerburusTarterian);
@@ -285,8 +292,12 @@ public class DemonSlayerDealCycle extends DealCycle {
                 originXRestraintRingStartTime = new Timestamp(getStart().getTime());
                 originXRestraintRingEndTime = new Timestamp(getStart().getTime() + 15000);
             }
+            if (skill instanceof RestraintRing) {
+                restraintEndTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (skill instanceof DemonAwakening) {
-                demonAwakeningEndTime = new Timestamp(getStart().getTime() + 68000);
+                demonAwakeningCnt = 25;
+                demonAwakeningEndTime = new Timestamp(getStart().getTime() + 3000 + demonAwakening.getDuration() * 1000);
             }
             if (skill instanceof InfinityForce) {
                 infinityForceEndTime = new Timestamp(getStart().getTime() + 64250);
@@ -315,6 +326,9 @@ public class DemonSlayerDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
             }
         } else {
+            if (skill instanceof DemonSlashReinforce4) {
+                demonAwakeningCnt --;
+            }
             if (
                     skill instanceof DemonBane1
                     || skill instanceof DemonBane2

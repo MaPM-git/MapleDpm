@@ -9,10 +9,10 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class ReadyToDie extends BuffSkill {
     public ReadyToDie() {
         this.setName("레디 투 다이");
-        this.setCooldown(75.0);
+        this.setCooldown(60.0);
         this.setDelayByAttackSpeed(780L);
         this.setDuration(15L);
-        this.addBuffFinalDamage(1.3);
+        this.addBuffFinalDamage(1.24);
         this.setApplyServerLag(true);
     }
 }

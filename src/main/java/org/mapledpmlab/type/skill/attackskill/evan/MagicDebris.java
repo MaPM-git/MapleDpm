@@ -13,13 +13,13 @@ public class MagicDebris extends AttackSkill {
 
     public void setByCnt(Long cnt) {
         if (cnt == 15) {
-            this.setDamage(427.0 + 353 * 3);
+            this.setDamage(555.0 + 458 * 3);
         } else if (cnt >= 10) {
-            this.setDamage(427.0 + 353 * 2);
+            this.setDamage(555.0 + 458 * 2);
         } else if (cnt >= 5) {
-            this.setDamage(427.0 + 353);
+            this.setDamage(555.0 + 458);
         } else {
-            this.setDamage(427.0);
+            this.setDamage(555.0);
         }
         this.setAttackCount(cnt);
     }

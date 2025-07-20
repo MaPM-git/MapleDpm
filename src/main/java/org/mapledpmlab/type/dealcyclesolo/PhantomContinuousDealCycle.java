@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class PhantomContinuousDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -122,8 +124,6 @@ public class PhantomContinuousDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        mapleWorldGoddessBlessing.setCooldown(120.0);
-
         getSkillSequence1().add(heroesOath);                // 30
         getSkillSequence1().add(mapleWorldGoddessBlessing); // 330
         getSkillSequence1().add(bullsEye);                  // 300
@@ -146,6 +146,8 @@ public class PhantomContinuousDealCycle extends DealCycle {
         getStart().setTime(0);
 
         freudBlessing6.setCooldown(260.0);
+
+        finalCutBuff.setCooldown(0.0);
     }
 
     @Override
@@ -179,12 +181,12 @@ public class PhantomContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(freudBlessing6);
             } else if (
-                    cooldownCheck(bullsEye)
+                    getStart().after(new Timestamp(bullsEye.getActivateTime().getTime() + 2000))
                             && cooldownCheck(markOfPhantom)
-                            && getStart().before(new Timestamp(660 * 1000))
+                            && getStart().before(new Timestamp(630 * 1000))
             ) {
                 isNuke = true;
-                chk30 = 2L;
+                chk30 = 1L;
                 addSkillEvent(finalCutBuff);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -221,13 +223,12 @@ public class PhantomContinuousDealCycle extends DealCycle {
                 }
                 isNuke = false;
             } else if (
-                    cooldownCheck(finalCutBuff)
-                            && cooldownCheck(preparationPhantom)
+                    cooldownCheck(preparationPhantom)
                             && cooldownCheck(soulContract)
                             && cooldownCheck(readyToDie)
                             && !cooldownCheck(heroesOath)
             ) {
-                chk30 = 4L;
+                chk30 = 2L;
                 addSkillEvent(finalCutBuff);
                 addDealCycle(getSkillSequence2());
             } else if (
@@ -236,7 +237,10 @@ public class PhantomContinuousDealCycle extends DealCycle {
             ) {
                 addSkillEvent(laMortCarteBuff);
             } else if (
-                    chk30 > 0
+                    (
+                            chk30 > 0
+                                    || getStart().after(new Timestamp(630 * 1000))
+                    )
                     && cooldownCheck(markOfPhantom)
                     && getStart().before(new Timestamp(670 * 1000))
             ) {
@@ -269,7 +273,11 @@ public class PhantomContinuousDealCycle extends DealCycle {
                             && getStart().before(new Timestamp(bullsEye.getActivateTime().getTime() - 5000))
             ) {
                 addSkillEvent(blackJackBeforeDelay);
-            } else if (cooldownCheck(tempestOfCardBeforeDelay)) {
+            } else if (
+                    cooldownCheck(tempestOfCardBeforeDelay)
+                            && (markOfPhantom.getActivateTime().getTime() - getStart().getTime()) > 3000
+                            && (blackJackBeforeDelay.getActivateTime().getTime() - getStart().getTime()) > 3000
+            ) {
                 addSkillEvent(tempestOfCardBeforeDelay);
                 applyCooldown(tempestOfCardBeforeDelay);
             } else {
@@ -284,7 +292,7 @@ public class PhantomContinuousDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class AngelicBusterDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -86,13 +88,7 @@ public class AngelicBusterDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(120.0);
-        grandisGoddessBlessingNova.setCooldown(120.0);
-
-        //trinityFusion.setActivateTime(new Timestamp(2000));
-        loadedDice.setActivateTime(new Timestamp(-55555));
-        getStart().setTime(-990L);
-        addSkillEvent(loadedDice);
+        ringSwitching.setCooldown(60.0);
 
         // 다카포 페투치아
         crestOfTheSolar.setApplyFinalAttack(true);
@@ -106,9 +102,9 @@ public class AngelicBusterDealCycle extends DealCycle {
         trinity.setApplyFinalAttack(true);
         trinityFusion.setApplyFinalAttack(true);
 
-        overdrive.getRelatedSkill().setDelay(220L);
-        soulContractAB.setDelay(220L);
-        soulExaltation.setDelay(220L);
+        overdrive.getRelatedSkill().setDelay(180L);
+        soulContractAB.setDelay(180L);
+        soulExaltation.setDelay(180L);
         grandisGoddessBlessingNova.setDelay(120L);
         finalContract.setDelay(120L);
 
@@ -139,11 +135,7 @@ public class AngelicBusterDealCycle extends DealCycle {
                 addSkillEvent(spotlight);
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(superNova);
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(trinity);
                 addSkillEvent(trinityFusion);
                 if (cooldownCheck(grandFinale)) {
@@ -153,10 +145,11 @@ public class AngelicBusterDealCycle extends DealCycle {
                 addSkillEvent(mascotFamiliarBeforeDelay);
             } else if (
                     cooldownCheck(overdrive)
-                    && getStart().before(new Timestamp(finalContract.getActivateTime().getTime() - 10000))
+                    && getStart().before(new Timestamp(finalContract.getActivateTime().getTime() - 30000))
             ) {
                 addDealCycle(getSkillSequence2());
                 addSkillEvent(superNova);
+                addSkillEvent(weaponJumpRing);
                 while (!cooldownCheck(mascotFamiliarBeforeDelay)) {
                     addSkillEvent(trinity);
                     if (cooldownCheck(trinityFusion)) {
@@ -166,7 +159,7 @@ public class AngelicBusterDealCycle extends DealCycle {
                 addSkillEvent(mascotFamiliarBeforeDelay);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(100 * 1000))
+                            && getStart().after(new Timestamp(soulContractAB.getActivateTime().getTime() - 6000))
                             && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);

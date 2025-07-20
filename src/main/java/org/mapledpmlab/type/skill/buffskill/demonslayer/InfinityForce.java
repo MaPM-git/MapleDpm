@@ -9,9 +9,9 @@ import org.mapledpmlab.type.skill.buffskill.GaugeBuffSkill;
 public class InfinityForce extends GaugeBuffSkill {
     public InfinityForce() {
         this.setName("인피니티 포스");
-        this.setCooldown(120.0);
+        this.setCooldown(118.0);
         this.setDelay(990L);
-        this.setDuration(35L);
+        this.setDuration(36L);
         this.setApplyPlusBuffDuration(true);
         this.setGaugeCharge(-100.0);
         this.setApplyServerLag(true);

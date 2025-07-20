@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class ArchMageILContinuousDealCycle extends DealCycle {
 
     private final List<Timestamp> jupiterThunderStartList = new ArrayList<>();
@@ -117,8 +119,6 @@ public class ArchMageILContinuousDealCycle extends DealCycle {
         addSkillEvent(infinity);
         addSkillEvent(thunderSpear);
         getStart().setTime(0);
-
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         for (int i = 0; i < 720 * 1000; i += iceAura.getInterval()) {
             getSkillEventList().add(new SkillEvent(iceAura, new Timestamp(i), new Timestamp(i)));
@@ -282,11 +282,11 @@ public class ArchMageILContinuousDealCycle extends DealCycle {
                 cryoShockCount ++;
             }
             if (
-                    cryoShockCount >= 13
+                    cryoShockCount >= 10
                             && !(skillEvent.getSkill() instanceof CryoShock)
             ) {
                 getAttackDamage(new SkillEvent(cryoShock, start, end), buffSkill, start, end);
-                cryoShockCount -= 13;
+                cryoShockCount -= 10;
             }
             buffSkill.addBuffDamage(12L * frostEffect);
         }
@@ -443,7 +443,6 @@ public class ArchMageILContinuousDealCycle extends DealCycle {
                             || skill instanceof FrozenOrb
                             || skill instanceof IceAge
                             || skill instanceof JupiterThunder
-                            || skill instanceof LightningSphereFinish
                             || skill instanceof ThunderBreak
                     )
             ) {
@@ -552,6 +551,7 @@ public class ArchMageILContinuousDealCycle extends DealCycle {
             if (
                     skill instanceof FrozenLightning1
                     || skill instanceof FrozenLightning2
+                    || skill instanceof LightningSphereFinish
             ) {
                 Timestamp now = new Timestamp(getStart().getTime());
                 getStart().setTime(getStart().getTime() + sum);

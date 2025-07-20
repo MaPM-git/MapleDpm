@@ -11,7 +11,7 @@ public class Annihilation extends AttackSkill {
         this.setAddDamage(20L + 20);        // 섬멸-리인포스, 보스 킬러
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.addFinalDamage(0.855);         // 축뢰
+        this.addFinalDamage(0.86);          // 축뢰
         this.addFinalDamage(1.18);          // 연쇄
     }
 }

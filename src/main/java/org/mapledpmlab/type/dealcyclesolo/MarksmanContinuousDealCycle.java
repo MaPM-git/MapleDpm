@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class MarksmanContinuousDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -102,8 +104,6 @@ public class MarksmanContinuousDealCycle extends DealCycle {
             getSkillEventList().add(new SkillEvent(guidedArrow, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
-
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         snipeList.add(snipe);
         snipeList.add(enhanceSnipe);

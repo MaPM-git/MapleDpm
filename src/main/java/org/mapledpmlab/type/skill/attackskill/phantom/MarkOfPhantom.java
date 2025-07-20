@@ -8,7 +8,7 @@ public class MarkOfPhantom extends AttackSkill {
         this.setDelayByAttackSpeed(900L);
         this.setCooldown(30.0);
         this.setAttackCount(6L);
-        this.setDamage(660.0);
+        this.setDamage(935.0);
         this.addFinalDamage(1.6);           // 코어 강화
         this.setApplyFinalAttack(true);
         this.setRelatedSkill(new MarkOfPhantomFinal());

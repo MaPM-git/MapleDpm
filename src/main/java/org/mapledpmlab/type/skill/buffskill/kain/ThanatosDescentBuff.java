@@ -11,7 +11,7 @@ public class ThanatosDescentBuff extends BuffSkill {
         this.setName("타나토스 디센트(버프)");
         this.setDuration(35L);
         this.addBuffDamage(45L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setApplyServerLag(true);
         this.setDelayByAttackSpeed(540L);
     }

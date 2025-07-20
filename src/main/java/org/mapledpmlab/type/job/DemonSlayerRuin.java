@@ -17,58 +17,101 @@ public class DemonSlayerRuin extends Job {
     public DemonSlayerRuin() {
         // 기본
         super();
-        this.setName("데몬슬레이어(리웨, 루포실)");
+        this.setName("데몬슬레이어(0초, 리웨, 루포실)");
         this.setConstant(1.2);          // 무기상수
         this.setMastery(1.91 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (326 + 201 + 72 + 249));
-        this.setWeaponAttMagic((long) (326 + 201 + 72 + 249));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
+        this.setAscentDamage(3319680.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addFinalDamage(1.1);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (326 + 201 + 72 + 249));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (326 + 201 + 72 + 249));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addFinalDamage(1.1);
+        getPassiveList().add(passive);
 
         // 1차
-        this.addMainStat(20L);          // 데몬 액셀레이션
+        passive = new Common();
+        passive.setDescription("데몬 액셀레이션");
+        passive.addMainStat(20L);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addFinalDamage(1.1);       // 웨폰 마스터리
-        this.addMainStat(30L);          // 피지컬 트레이닝
-        this.addSubStat(30L);
-        this.addAtt(50L);               // 아웃레이지
-        this.addCriticalP(20.0);
+        passive = new Common();
+        passive.setDescription("웨폰 마스터리");
+        passive.addFinalDamage(1.1);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("피지컬 트레이닝");
+        passive.addMainStat(30L);
+        passive.addSubStat(30L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("아웃레이지");
+        passive.addAtt(20L);
+        passive.addCriticalP(20.0);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addFinalDamage(1.3);       // 컨센트레이션
-        this.addCriticalP(15.0);        // 이블 토쳐
+        passive = new Common();
+        passive.setDescription("컨센트레이션");
+        passive.addFinalDamage(1.3);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("이블 토쳐");
+        passive.addCriticalP(15.0);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addIgnoreDefenseList(31L);  // 다크 바인드
-        this.addDamage(45L);            // 메타모포시스
-        this.addAtt(51L);               // 어드밴스드 웨폰 마스터리
-        this.addCriticalDamage(15.0);
+        passive = new Common();
+        passive.setDescription("다크 바인드");
+        passive.addIgnoreDefenseList(31L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("메타모포시스");
+        passive.addDamage(45L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("어드밴스드 웨폰 마스터리");
+        passive.addAtt(31L);
+        passive.addCriticalDamage(13.0);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addMainStat(30L);          // 바디 오브 스틸
+        passive = new Common();
+        passive.setDescription("바디 오브 스틸");
+        passive.addMainStat(30L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(-48L);
-        this.addMainStat(-4L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-63L);
+        this.addMainStat(-10L);
+        this.addSubStat(0L);
 
         this.setAbility(new BossAbnormalAttack());
         this.setArtifact(new ArtifactNormal());
@@ -87,7 +130,22 @@ public class DemonSlayerRuin extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.15);      // 이블 토쳐
-        this.addIgnoreDefenseList(15L); // 데몬 임팩트 : 데몬 체인
+
+        Common doping = new Common();
+        doping.setDescription("이블 토쳐");
+        doping.addFinalDamage(1.15);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("데몬 임팩트 : 데몬 체인");
+        doping.addIgnoreDefenseList(15L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("어드밴스드 웨폰 마스터리(콜렉터의 영약)");
+        doping.addAtt(1L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

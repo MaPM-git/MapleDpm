@@ -15,9 +15,8 @@ public class AuraWeaponBuffDA extends GaugeBuffSkill {
 
     public AuraWeaponBuffDA() {
         this.setName("오라 웨폰");
-        this.setCooldown(0.0);  // 스택형이라 딜사이클에서 따로 처리
-        this.setDelay(720L);
-        this.setDuration(140L);
+        this.setCooldown(120.0);
+        this.setDuration(94L);
         this.setBuffFinalDamage(1.06);
         this.setBuffIgnoreDefense(16L);
         this.setGaugePer(-10L);

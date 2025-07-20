@@ -7,7 +7,7 @@ public class AnnihilationFinish extends AttackSkill {
     public AnnihilationFinish() {
         this.setName("어나일레이션(참격)");
         this.setAttackCount(14L);
-        this.setDamage(1100.0);
+        this.setDamage(720.0);
         this.setDelay(1680L);
         this.setAddDamage(50L);
         this.addIgnoreDefenseList(50L);

@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class WildHunterDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -49,7 +51,8 @@ public class WildHunterDealCycle extends DealCycle {
             add(new SpiderInMirror());
             add(new SpiderInMirrorDot());
             add(new SummonJaguar());
-            add(new WildGrenade());
+            add(new WildGrenade1());
+            add(new WildGrenade4());
             add(new WildVulcan());
             add(new WildVulcanReinforce());
             add(new WildVulcanTypeXBeforeDelay());
@@ -112,7 +115,8 @@ public class WildHunterDealCycle extends DealCycle {
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     SummonJaguar summonJaguar = new SummonJaguar();
     WeaponJumpRing weaponJumpRing = new WeaponJumpRing(getJob().getWeaponAttMagic());
-    WildGrenade wildGrenade = new WildGrenade();
+    WildGrenade1 wildGrenade1 = new WildGrenade1();
+    WildGrenade4 wildGrenade4 = new WildGrenade4();
     WildVulcan wildVulcan = new WildVulcan();
     WildVulcanReinforce wildVulcanReinforce = new WildVulcanReinforce();
     WildVulcanTypeXBeforeDelay wildVulcanTypeXBeforeDelay = new WildVulcanTypeXBeforeDelay();
@@ -129,10 +133,6 @@ public class WildHunterDealCycle extends DealCycle {
             getSkillEventList().add(new SkillEvent(guidedArrow, new Timestamp(i), new Timestamp(i)));
             getEventTimeList().add(new Timestamp(i));
         }
-
-        ringSwitching.setCooldown(120.0);
-        ringSwitching.setApplyCooldownReduction(false);
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         getSkillSequence1().add(willOfLiberty);                 // 30
         getSkillSequence1().add(mapleWorldGoddessBlessing);     // 240
@@ -206,6 +206,7 @@ public class WildHunterDealCycle extends DealCycle {
             if (
                     cooldownCheck(jaguarMaximum)
                     && cooldownCheck(resistanceLineInfantry)
+                    && getStart().before(new Timestamp(630 * 1000))
             ) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -218,11 +219,7 @@ public class WildHunterDealCycle extends DealCycle {
                 addSkillEvent(drillContainer);
                 addSkillEvent(resistanceLineInfantry);
                 addDealCycle(getSkillSequence1());
-                if (cooldownCheck(restraintRing)) {
-                    addSkillEvent(restraintRing);
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addSkillEvent(weaponJumpRing);
-                }
+                addSkillEvent(restraintRing);
                 addSkillEvent(jaguarSoul);
                 if (cooldownCheck(rampageAsOne)) {
                     addSkillEvent(rampageAsOne);
@@ -238,30 +235,24 @@ public class WildHunterDealCycle extends DealCycle {
                 if (cooldownCheck(rampageAsOne)) {
                     addSkillEvent(rampageAsOne);
                 }
-                addSkillEvent(wildGrenade);
+                addSkillEvent(wildGrenade4);
                 if (cooldownCheck(rampageAsOne)) {
                     addSkillEvent(rampageAsOne);
                 }
                 addSkillEvent(wildVulcanTypeXBeforeDelay);
                 dealCycleOrder++;
             } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(110 * 1000))
-                            && getStart().before(new Timestamp(10 * 60 * 1000))
-            ) {
-                addSkillEvent(ringSwitching);
-            } else if (
                     cooldownCheck(soulContract)
-                            && !cooldownCheck(willOfLiberty)
+                            && getStart().before(new Timestamp(willOfLiberty.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(assistantHuntingUnitDelay);
                 addSkillEvent(drillContainer);
                 addSkillEvent(soulContract);
             } else if (
-                    cooldownCheck(wildGrenade)
-                            && getStart().before(new Timestamp(willOfLiberty.getActivateTime().getTime() - 10000))
+                    cooldownCheck(wildGrenade1)
+                            && getStart().before(new Timestamp(willOfLiberty.getActivateTime().getTime() - 30000))
             ) {
-                addSkillEvent(wildGrenade);
+                addSkillEvent(wildGrenade1);
             } else if (
                     cooldownCheck(resistanceLineInfantry)
                     && !cooldownCheck(willOfLiberty)
@@ -469,6 +460,19 @@ public class WildHunterDealCycle extends DealCycle {
                             }
                             getStart().setTime(now.getTime());
                         }
+                        if (
+                                skill instanceof WildGrenade1
+                                || skill instanceof WildGrenade4
+                        ) {
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i + 30), new Timestamp(getStart().getTime() + i + 30)));
+                            getEventTimeList().add(new Timestamp(getStart().getTime() + i + 30));
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i + 60), new Timestamp(getStart().getTime() + i + 60)));
+                            getEventTimeList().add(new Timestamp(getStart().getTime() + i + 60));
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i + 90), new Timestamp(getStart().getTime() + i + 90)));
+                            getEventTimeList().add(new Timestamp(getStart().getTime() + i + 90));
+                            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i + 120), new Timestamp(getStart().getTime() + i + 120)));
+                            getEventTimeList().add(new Timestamp(getStart().getTime() + i + 120));
+                        }
                         getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + i), new Timestamp(getStart().getTime() + i)));
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         attackCount += 1;
@@ -501,6 +505,11 @@ public class WildHunterDealCycle extends DealCycle {
             }
         }
         applyCooldown(skill);
+        if (skill instanceof WildGrenade1) {
+            applyCooldown(wildGrenade4);
+        } else if (skill instanceof WildGrenade4) {
+            applyCooldown(wildGrenade1);
+        }
         getEventTimeList().add(getStart());
         getEventTimeList().add(new Timestamp(getStart().getTime() + skill.getDelay()));
         if (endTime != null) {

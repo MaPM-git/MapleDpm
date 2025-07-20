@@ -17,67 +17,106 @@ public class HoYoung extends Job {
     public HoYoung() {
         // 기본
         super();
-        this.setName("호영(리웨)");
+        this.setName("호영(0초, 리웨)");
         this.setConstant(1.3);          // 무기상수
-        this.setMastery(1.91 / 2);      // 숙련도
+        this.setMastery(1.92 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addAtt((long) (318 + 196 + 72 + 246));
-        this.setWeaponAttMagic((long) (318 + 196 + 72 + 246));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
-        this.addAttP(3L);
+        this.setAscentDamage(2146165.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addAtt(3L);
-        this.addBossDamage(70L);
-        this.addAttP(9L);
-        this.addAttP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addAtt((long) (318 + 196 + 72 + 246));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        passive.addAttP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (318 + 196 + 72 + 246));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addAtt(3L);
+        passive.addBossDamage(70L);
+        passive.addAttP(9L);
+        passive.addAttP(21L);
+        getPassiveList().add(passive);
 
         // 0차
-        this.addAttP(10L);              // 괴이봉인
-        this.addFinalDamage(1.1);
+        passive = new Common();
+        passive.setDescription("괴이봉인");
+        passive.addAttP(10L);
+        passive.addFinalDamage(1.1);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addAtt(25L);               // 부채 숙련
-        this.addCriticalP(30.0);        // 심안
-        this.addCriticalDamage(10.0);
-        this.addMainStat(60L);          // 신체 단련
-        this.addFinalDamage(1.05);
+        passive = new Common();
+        passive.setDescription("부채 숙련");
+        passive.addAtt(25L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("심안");
+        passive.addCriticalP(30.0);
+        passive.addCriticalDamage(10.0);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("신체 단련");
+        passive.addMainStat(60L);
+        passive.addFinalDamage(1.05);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addAtt(50L);               // 수라
-        this.addCriticalP(10.0);
-        this.addCriticalDamage(20.0);
-        this.addBossDamage(20L);
-        this.addIgnoreDefenseList(10L);
-        this.addFinalDamage(1.09);
+        passive = new Common();
+        passive.setDescription("수라");
+        passive.addAtt(50L);
+        passive.addCriticalP(10.0);
+        passive.addCriticalDamage(20.0);
+        passive.addBossDamage(20L);
+        passive.addIgnoreDefenseList(10L);
+        passive.addFinalDamage(1.09);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addAtt(42L);               // 고급 부채 숙련
-        this.addFinalDamage(1.3);
-        this.addDamage(11L);            // 득도
-        this.addAtt(12L);               // 점정
-        this.addFinalDamage(1.12);
-        this.addCriticalP(12.0);
-        this.addCriticalDamage(12.0);
-        this.addIgnoreDefenseList(12L);
+        passive = new Common();
+        passive.setDescription("고급 부채 숙련");
+        passive.addAtt(42L);
+        passive.addFinalDamage(1.32);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("득도");
+        passive.addDamage(11L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("점정");
+        passive.addAtt(12L);
+        passive.addFinalDamage(1.12);
+        passive.addCriticalP(12.0);
+        passive.addCriticalDamage(12.0);
+        passive.addIgnoreDefenseList(12L);
+        getPassiveList().add(passive);
 
         // 5차
-        this.addAtt(30L);               // 레디 투 다이
+        passive = new Common();
+        passive.setDescription("레디 투 다이");
+        passive.addAtt(30L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(-60L);
-        this.addMainStat(-8L);
-        this.addSubStat(-10L);
+        this.addMainStatP(-66L);
+        this.addMainStat(4L);
+        this.addSubStat(0L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -97,6 +136,30 @@ public class HoYoung extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.1);       // 천지만물
+
+        Common doping = new Common();
+        doping.setDescription("천지만물");
+        doping.addFinalDamage(1.1);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("고급 부채 숙련(콜렉터의 영약)");
+        doping.addAtt(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("득도(콜렉터의 영약)");
+        doping.addDamage(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("점정(콜렉터의 영약)");
+        doping.addAtt(1L);
+        doping.minusFinalDamage(1.12);
+        doping.addFinalDamage(1.13);
+        doping.addCriticalDamage(1.0);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 }

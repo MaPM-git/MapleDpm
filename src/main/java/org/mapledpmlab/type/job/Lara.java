@@ -17,53 +17,82 @@ public class Lara extends Job {
     public Lara() {
         // 기본
         super();
-        this.setName("라라(리웨썸)");
+        this.setName("라라(0초, 리웨)");
         this.setConstant(1.2);          // 무기상수
-        this.setMastery(1.96 / 2);      // 숙련도
+        this.setMastery(1.97 / 2);      // 숙련도
         this.setJobType(JobType.ETC);
 
-        // 무기
-        this.addMainStat((long) (150 + 32 + 145));
-        this.addSubStat((long) (150 + 145));
-        this.addMagic((long) (400 + 246 + 72 + 274));
-        this.setWeaponAttMagic((long) (400 + 246 + 72 + 274));
-        this.addBossDamage((long) (30 + 10));
-        this.addIgnoreDefenseList(20L);
-        this.addBossDamage(70L);
-        this.addMagicP(9L);
-        this.addMagicP(21L);
-        this.addMagicP(3L);
+        this.setAscentDamage(2356410.0);
 
-        // 보조
-        this.addMainStat(10L);
-        this.addSubStat(10L);
-        this.addMagic(3L);
-        this.addBossDamage(70L);
-        this.addMagicP(9L);
-        this.addMagicP(21L);
+        Common passive = new Common();
+        passive.setDescription("무기");
+        passive.addMainStat((long) (150 + 32 + 145));
+        passive.addSubStat((long) (150 + 145));
+        passive.addMagic((long) (400 + 246 + 72 + 274));
+        passive.addBossDamage((long) (30 + 10));
+        passive.addIgnoreDefenseList(20L);
+        passive.addBossDamage(70L);
+        passive.addMagicP(9L);
+        passive.addMagicP(21L);
+        passive.addMagicP(3L);
+        getPassiveList().add(passive);
+        this.setWeaponAttMagic((long) (400 + 246 + 72 + 274));
+
+        passive = new Common();
+        passive.setDescription("보조무기");
+        passive.addMainStat(10L);
+        passive.addSubStat(10L);
+        passive.addMagic(3L);
+        passive.addBossDamage(70L);
+        passive.addMagicP(9L);
+        passive.addMagicP(21L);
+        getPassiveList().add(passive);
 
         // 2차
-        this.addMagic(35L);             // 지팡이 숙련
-        this.addMainStat(40L);          // 신체 단련
+        passive = new Common();
+        passive.setDescription("지팡이 숙련");
+        passive.addMagic(35L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("신체 단련");
+        passive.addMainStat(40L);
+        getPassiveList().add(passive);
 
         // 3차
-        this.addDamage(20L);            // 무구
-        this.addBossDamage(10L);
-        this.addCriticalP(20.0);
+        passive = new Common();
+        passive.setDescription("무구");
+        passive.addDamage(20L);
+        passive.addBossDamage(10L);
+        passive.addCriticalP(20.0);
+        getPassiveList().add(passive);
 
         // 4차
-        this.addFinalDamage(1.31);      // 고급 지팡이 숙련
-        this.addMagic(52L);
-        this.addCriticalP(22.0);        // 혜안
-        this.addCriticalDamage(22.0);
-        this.addFinalDamage(1.47);
-        this.addIgnoreDefenseList(42L);
-        this.addMagic(54L);             // 유유
+        passive = new Common();
+        passive.setDescription("고급 지팡이 숙련");
+        passive.addFinalDamage(1.31);
+        passive.addMagic(52L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("혜안");
+        passive.addCriticalP(22.0);
+        passive.addCriticalDamage(22.0);
+        passive.addFinalDamage(1.47);
+        passive.addIgnoreDefenseList(42L);
+        getPassiveList().add(passive);
+
+        passive = new Common();
+        passive.setDescription("유유");
+        passive.addMagic(54L);
+        getPassiveList().add(passive);
+
+        this.addObject(getPassiveList());
 
         // 환산 보정
-        this.addMainStatP(21L);
-        this.addMainStat(-11L);
-        this.addSubStat(5L);
+        this.addMainStatP(15L);
+        this.addMainStat(-7L);
+        this.addSubStat(-10L);
 
         this.setAbility(new PassiveBossAbnormal());
         this.setArtifact(new ArtifactNormal());
@@ -83,7 +112,30 @@ public class Lara extends Job {
     @Override
     public void Doping() {
         super.Doping();
-        this.addFinalDamage(1.05);      // 용맥의 메아리
+
+        Common doping = new Common();
+        doping.setDescription("용맥의 메아리");
+        doping.addFinalDamage(1.05);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("고급 지팡이 숙련(콜렉터의 영약)");
+        doping.addMagic(1L);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("혜안(콜렉터의 영약)");
+        doping.addCriticalDamage(1.0);
+        doping.minusFinalDamage(1.47);
+        doping.addFinalDamage(1.48);
+        getDopingList().add(doping);
+
+        doping = new Common();
+        doping.setDescription("유유(콜렉터의 영약)");
+        doping.addMagic(2L);
+        getDopingList().add(doping);
+
+        this.addObject(getDopingList());
     }
 
     public Long getStatDamage() {

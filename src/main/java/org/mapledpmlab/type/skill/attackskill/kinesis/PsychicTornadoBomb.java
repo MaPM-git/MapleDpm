@@ -5,7 +5,7 @@ import org.mapledpmlab.type.skill.attackskill.AttackSkill;
 public class PsychicTornadoBomb extends AttackSkill {
     public PsychicTornadoBomb() {
         this.setName("싸이킥 토네이도(폭발)");
-        this.setDamage(975.0);
+        this.setDamage(650.0);
         this.setAttackCount(10L);
         this.addFinalDamage(3.0);
         this.addFinalDamage(1.6);   // 코어강화

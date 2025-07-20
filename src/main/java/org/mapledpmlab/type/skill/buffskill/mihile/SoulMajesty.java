@@ -10,8 +10,8 @@ public class SoulMajesty extends BuffSkill {
     public SoulMajesty() {
         this.setName("소울 마제스티");
         this.setBuffDamage(15L);
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setDelay(630L);
-        this.setDuration(25L);
+        this.setDuration(20L);
     }
 }

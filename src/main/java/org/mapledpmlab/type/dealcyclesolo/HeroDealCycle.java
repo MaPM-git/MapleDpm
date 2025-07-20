@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class HeroDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -24,7 +26,8 @@ public class HeroDealCycle extends DealCycle {
             add(new CrestOfTheSolar());
             add(new CrestOfTheSolarDot());
             add(new ComboDeathFault());
-            add(new ComboInstinctsAttack());
+            add(new ComboInstinctsSoulTrace());
+            add(new ComboInstinctsSpaceScar());
             add(new FinalAttackHero());
             add(new FuriousEdge());
             add(new IncisingAttack());
@@ -74,7 +77,8 @@ public class HeroDealCycle extends DealCycle {
     BodyOfSteel bodyOfSteel = new BodyOfSteel(0L);
     CrestOfTheSolar crestOfTheSolar = new CrestOfTheSolar();
     ComboDeathFault comboDeathFault = new ComboDeathFault();
-    ComboInstinctsAttack comboInstinctsAttack = new ComboInstinctsAttack();
+    ComboInstinctsSoulTrace comboInstinctsSoulTrace = new ComboInstinctsSoulTrace();
+    ComboInstinctsSpaceScar comboInstinctsSpaceScar = new ComboInstinctsSpaceScar();
     ComboInstinctsBuff comboInstinctsBuff = new ComboInstinctsBuff();
     EpicAdventure epicAdventure = new EpicAdventure();
     FuriousEdge furiousEdge = new FuriousEdge();
@@ -105,16 +109,10 @@ public class HeroDealCycle extends DealCycle {
             getEventTimeList().add(new Timestamp(i));
         }
 
-        ringSwitching.setCooldown(130.0);
-
         advancedComboAttack.setBuffFinalDamage(2.3);
         advancedComboAttack.setDuration(720L);
         advancedComboAttack.setName("어드밴스드 콤보");
         addSkillEvent(advancedComboAttack);
-
-        auraWeaponBuff.setCooldown(180.0);
-        //auraWeaponBuff.setApplyCooldownReduction(false);
-        mapleWorldGoddessBlessing.setCooldown(120.0);
 
         getSkillSequence1().add(bodyOfSteel);
         getSkillSequence1().add(epicAdventure);             // 30
@@ -129,11 +127,6 @@ public class HeroDealCycle extends DealCycle {
         getSkillSequence2().add(restraintRing);             // 30
         getSkillSequence2().add(comboInstinctsBuff);
 
-        getSkillSequence3().add(valhallaBuff);
-        getSkillSequence3().add(soulContract);
-        getSkillSequence3().add(weaponJumpRing);
-        getSkillSequence3().add(comboInstinctsBuff);
-
         valhallaBuff.setDelay(300L);
         comboInstinctsBuff.setDelay(300L);
     }
@@ -147,7 +140,10 @@ public class HeroDealCycle extends DealCycle {
             ) {
                 addSkillEvent(auraWeaponBuff);
             }
-            if (cooldownCheck(valhallaBuff)) {
+            if (
+                    cooldownCheck(valhallaBuff)
+                            && getStart().before(new Timestamp(630 * 1000))
+            ) {
                 addSkillEvent(incisingAttack);
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
@@ -157,23 +153,22 @@ public class HeroDealCycle extends DealCycle {
                 }
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(swordIllusionBuff);
-                if (cooldownCheck(restraintRing)) {
-                    addDealCycle(getSkillSequence2());
-                } else if (cooldownCheck(weaponJumpRing)) {
-                    addDealCycle(getSkillSequence3());
-                }
+                addDealCycle(getSkillSequence2());
                 if (cooldownCheck(spiritCaliberSlash)) {
                     addSkillEvent(spiritCaliberSlash);
                 }
                 dealCycleOrder ++;
-            } else if (cooldownCheck(swordIllusionBuff)) {
-                addSkillEvent(swordIllusionBuff);
             } else if (
-                    cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(100 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                    cooldownCheck(swordIllusionBuff)
+                            && (
+                            getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 15000))
+                                    || (
+                                    getStart().after(new Timestamp(600 * 1000))
+                                            && getStart().before(new Timestamp(660 * 1000))
+                            )
+                    )
             ) {
-                addSkillEvent(ringSwitching);
+                addSkillEvent(swordIllusionBuff);
             } else if (
                     cooldownCheck(soulContract)
                             && getStart().before(new Timestamp(epicAdventure.getActivateTime().getTime() - 50000))
@@ -182,20 +177,18 @@ public class HeroDealCycle extends DealCycle {
                 addSkillEvent(soulContract);
             } else if (
                     cooldownCheck(rageUprising)
-                            && getStart().before(new Timestamp(swordIllusionBuff.getActivateTime().getTime() - 1000))
                             && getStart().after(comboInstinctEndTime)
             ) {
                 addSkillEvent(rageUprising);
             } else if (
                     cooldownCheck(auraBlade)
-                            && getStart().before(new Timestamp(swordIllusionBuff.getActivateTime().getTime() - 1000))
                             && getStart().after(comboInstinctEndTime)
             ) {
                 addSkillEvent(auraBlade);
             } else {
                 addSkillEvent(ragingBlow);
                 if (getStart().before(comboInstinctEndTime)) {
-                    addSkillEvent(comboInstinctsAttack);
+                    addSkillEvent(comboInstinctsSpaceScar);
                 }
             }
         }
@@ -466,6 +459,9 @@ public class HeroDealCycle extends DealCycle {
                     addSkillEvent(valhallaDot);
                     valhallaCount -= 1;
                 }
+                if (getStart().before(comboInstinctEndTime)) {
+                    addSkillEvent(comboInstinctsSoulTrace);
+                }
                 getStart().setTime(now.getTime());
             }
             if (
@@ -483,7 +479,7 @@ public class HeroDealCycle extends DealCycle {
                 getStart().setTime(now.getTime());
             }
             if (
-                    skill instanceof ComboInstinctsAttack
+                    skill instanceof ComboInstinctsSpaceScar
                             || skill instanceof SpiritCaliberSlash
                             || skill instanceof SpiritCaliberFinish
             ) {

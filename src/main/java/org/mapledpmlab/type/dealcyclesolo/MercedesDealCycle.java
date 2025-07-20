@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class MercedesDealCycle extends DealCycle {
 
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
@@ -45,7 +47,8 @@ public class MercedesDealCycle extends DealCycle {
             add(new SpiderInMirrorDot());
             add(new StigmaOfIshtar());
             add(new StigmaOfIshtarComplete());
-            add(new SylphidiaRush());
+            add(new Sylphidia());
+            add(new SylphidiaAfterImage());
             add(new UnfadingGloryImpact());
             add(new UnfadingGlorySpiritKingAttack());
             add(new UnfadingGlorySpiritKingAttackReinforce());
@@ -71,10 +74,9 @@ public class MercedesDealCycle extends DealCycle {
             add(new MapleWorldGoddessBlessing(getJob().getLevel()));
             add(new RestraintRing());
             add(new RingSwitching());
+            add(new RiskTakerRing());
             add(new RoyalKnights());
             add(new SoulContract());
-            add(new Sylphidia());
-            add(new SylphidiaEnd());
             add(new UnfadingGlorySpiritKing());
             add(new UnicornSpikeBuff());
             add(new WeaponJumpRing(getJob().getWeaponAttMagic()));
@@ -84,9 +86,9 @@ public class MercedesDealCycle extends DealCycle {
     int freudStack = 0;
 
     Timestamp elementalGhostEndTime = new Timestamp(-1);
-    Timestamp sylphidiaEndTime = new Timestamp(-1);
     Timestamp unfadingGloryEndTime = new Timestamp(-1);
     Timestamp unicornSpikeEndTime = new Timestamp(-1);
+    Timestamp restraintRingTime = new Timestamp(-1);
 
     Long accumulateCnt = 0L;
     Long stigmaCnt = 0L;
@@ -124,13 +126,12 @@ public class MercedesDealCycle extends DealCycle {
     RingSwitching ringSwitching = new RingSwitching();
     RoyalKnights royalKnights = new RoyalKnights();
     RollingMoonsault rollingMoonsault = new RollingMoonsault();
+    RiskTakerRing riskTakerRing = new RiskTakerRing();
     SoulContract soulContract = new SoulContract();
     SpiderInMirror spiderInMirror = new SpiderInMirror();
     StigmaOfIshtar stigmaOfIshtar = new StigmaOfIshtar();
     StigmaOfIshtarComplete stigmaOfIshtarComplete = new StigmaOfIshtarComplete();
     Sylphidia sylphidia = new Sylphidia();
-    SylphidiaEnd sylphidiaEnd = new SylphidiaEnd();
-    SylphidiaRush sylphidiaRush = new SylphidiaRush();
     UnfadingGlorySpiritKingAttack unfadingGlorySpiritKingAttack = new UnfadingGlorySpiritKingAttack();
     UnfadingGlorySpiritKingAttackReinforce unfadingGlorySpiritKingAttackReinforce = new UnfadingGlorySpiritKingAttackReinforce();
     UnfadingGloryWave unfadingGloryWave = new UnfadingGloryWave();
@@ -142,21 +143,10 @@ public class MercedesDealCycle extends DealCycle {
     public MercedesDealCycle(Job job) {
         super(job, new FinalAttackMercedes());
 
-        for (BuffSkill buffSkill : buffSkillList) {
-            if (
-                    buffSkill instanceof CriticalReinforce
-                    || buffSkill instanceof MapleWorldGoddessBlessing
-                    || buffSkill instanceof RoyalKnights
-                    || buffSkill instanceof ElementalGhost
-            ) {
-                buffSkill.setDelay(buffSkill.getDelay() / 2);
-            }
-        }
-
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(180.0);
+        ringSwitching.setCooldown(120.0);
         ringSwitching0.setDelay(0L);
 
         mapleWorldGoddessBlessing.setDelay(mapleWorldGoddessBlessing.getDelay() / 2);
@@ -165,8 +155,6 @@ public class MercedesDealCycle extends DealCycle {
         elementalGhost.setDelay(elementalGhost.getDelay() / 2);
 
         ((AttackSkill) royalKnights.getRelatedSkill()).setDotDuration(((AttackSkill) royalKnights.getRelatedSkill()).getDotDuration() + 3000);
-
-        mapleWorldGoddessBlessing.setCooldown(180.0);
 
         wrathOfEnlil.setDelayByAttackSpeed(270L);
         wrathOfEnlilSpiritEnchant.setDelayByAttackSpeed(270L);
@@ -180,9 +168,9 @@ public class MercedesDealCycle extends DealCycle {
         getSkillSequence1().add(criticalReinforce);
         getSkillSequence1().add(soulContract);              // 30
 
-        mapleWorldGoddessBlessing.setDelay(300L);
-        elementalGhost.setDelay(300L);
-        criticalReinforce.setDelay(300L);
+        mapleWorldGoddessBlessing.setDelay(200L);
+        elementalGhost.setDelay(200L);
+        criticalReinforce.setDelay(200L);
 
         getStart().setTime(-25000);
         freudBlessing4.setActivateTime(new Timestamp(-30000));
@@ -228,60 +216,72 @@ public class MercedesDealCycle extends DealCycle {
                             && getStart().after(new Timestamp(freudBlessing6.getActivateTime().getTime() + 5000))
             ) {
                 addSkillEvent(freudBlessing6);
+                //addSkillEvent(riskTakerRing);
             } else if (
-                    cooldownCheck(elementalGhost)
-                            && cooldownCheck(sylphidia)
-                            && cooldownCheck(heroesOath)
-                            && cooldownCheck(criticalReinforce)
-                            && cooldownCheck(mapleWorldGoddessBlessing)
-                            && cooldownCheck(royalKnights)
-                            && cooldownCheck(soulContract)
-                            && cooldownCheck(restraintRing)
-                            && cooldownCheck(irkallaBreathBeforeDelay)
+                    cooldownCheck(criticalReinforce)
                             && getStart().before(new Timestamp(600 * 1000))
             ) {
-                boolean isOrigin = false;
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
                 if (cooldownCheck(spiderInMirror)) {
                     addSkillEvent(spiderInMirror);
                 }
-                if (cooldownCheck(unfadingGloryWave)) {
+                if (freudStack == 4) {
                     while (!cooldownCheck(freudBlessing5)) {
                         addSkillEvent(ringOfIshtar);
                     }
                     addSkillEvent(freudBlessing5);
                 }
-                addSkillEvent(sylphidia);
                 addSkillEvent(royalKnights);
                 addDealCycle(getSkillSequence1());
                 addSkillEvent(restraintRing);
+                addSkillEvent(sylphidia);
                 if (cooldownCheck(unfadingGloryWave)) {
-                    isOrigin = true;
                     addSkillEvent(unfadingGloryWave);
                 }
-                addSkillEvent(irkallaBreathBeforeDelay);
-                if (isOrigin) {
-                    addSkillEvent(ringSwitching0);
-                    addSkillEvent(sylphidiaEnd);
-                    addSkillEvent(weaponJumpRing);
-                } else {
-                    addSkillEvent(sylphidiaEnd);
+                while (
+                        getStart().before(new Timestamp(restraintRingTime.getTime() - 6000))
+                        && !cooldownCheck(irkallaBreathBeforeDelay)
+                ) {
+                    addPlatDeal();
                 }
+                addSkillEvent(irkallaBreathBeforeDelay);
+                addSkillEvent(ringSwitching0);
+                addSkillEvent(weaponJumpRing);
+                /*if (freudStack == 0) {
+                    addSkillEvent(weaponJumpRing);
+                }*/
             } else if (
                     cooldownCheck(ringSwitching)
+                            && getStart().after(new Timestamp(soulContract.getActivateTime().getTime() - 8000))
                             && getStart().after(elementalGhostEndTime)
-                            && getStart().before(new Timestamp(unfadingGloryWave.getActivateTime().getTime() - 4 * 60 * 1000))
-                            && getStart().before(new Timestamp(11 * 60 * 1000))
+                            && getStart().before(new Timestamp(10 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
             } else if (
                     cooldownCheck(soulContract)
-                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() + 30000))
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() - 30000))
             ) {
                 addSkillEvent(soulContract);
-            } else if (getStart().before(elementalGhostEndTime)) {
+            } else if (
+                    cooldownCheck(sylphidia)
+                            && getStart().before(new Timestamp(heroesOath.getActivateTime().getTime() - 30000))
+            ) {
+                addSkillEvent(sylphidia);
+            } else {
+                addPlatDeal();
+            }
+        }
+        sortEventTimeList();
+    }
+
+    public void addPlatDeal() {
+        if (
+                getStart().before(elementalGhostEndTime)
+                && cooldownCheck(wrathOfEnlil)
+        ) {
+            if (getJob().getCooldownReductionSec() == 1) {
                 // 엔릴 스듀샷 유니콘 레전 리프
                 strikeDualShot = new StrikeDualShot();
                 strikeDualShot.setDelayByAttackSpeed(450L);
@@ -291,20 +291,28 @@ public class MercedesDealCycle extends DealCycle {
                 addSkillEvent(strikeDualShot);
                 addSkillEvent(legendarySpear);
                 addSkillEvent(leafTornado);
-            } else if (getStart().after(unicornSpikeEndTime)) {
-                addSkillEvent(unicornSpike);
-                legendarySpear = new LegendarySpear();
-                addSkillEvent(legendarySpear);
-            } else if (cooldownCheck(wrathOfEnlil)) {
+            } else if (getJob().getCooldownReductionSec() == 4) {
+                // 엔릴 스듀샷 유니콘 스피어 리프
                 strikeDualShot = new StrikeDualShot();
-                strikeDualShot.setDelayByAttackSpeed(630L);
+                strikeDualShot.setDelayByAttackSpeed(450L);
                 addSkillEvent(wrathOfEnlil);
                 addSkillEvent(strikeDualShot);
-            } else {
-                addSkillEvent(ringOfIshtar);
+                addSkillEvent(unicornSpike);
+                addSkillEvent(legendarySpear);
+                addSkillEvent(leafTornado);
             }
+        } else if (getStart().after(unicornSpikeEndTime)) {
+            addSkillEvent(unicornSpike);
+            legendarySpear = new LegendarySpear();
+            addSkillEvent(legendarySpear);
+        } else if (cooldownCheck(wrathOfEnlil)) {
+            strikeDualShot = new StrikeDualShot();
+            strikeDualShot.setDelayByAttackSpeed(630L);
+            addSkillEvent(wrathOfEnlil);
+            addSkillEvent(strikeDualShot);
+        } else {
+            addSkillEvent(ringOfIshtar);
         }
-        sortEventTimeList();
     }
 
     @Override
@@ -312,7 +320,7 @@ public class MercedesDealCycle extends DealCycle {
         Timestamp endTime = null;
 
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -321,6 +329,9 @@ public class MercedesDealCycle extends DealCycle {
             skillLog += "\n" + getJob().getName() + "\t" + simpleDateFormat.format(getStart()) + "\t" + skill.getName();
         }
         if (skill instanceof BuffSkill) {
+            if (skill instanceof RestraintRing) {
+                restraintRingTime = new Timestamp(getStart().getTime() + 15000);
+            }
             if (skill instanceof FreudBlessing1) {
                 freudStack = 1;
             } else if (skill instanceof FreudBlessing2) {
@@ -382,19 +393,8 @@ public class MercedesDealCycle extends DealCycle {
             if (skill instanceof UnicornSpikeBuff) {
                 unicornSpikeEndTime = new Timestamp(getStart().getTime() + 60000);
             }
-            if (skill instanceof SylphidiaEnd) {
-                for (int i = getSkillEventList().size() - 1; i >= 0; i--) {
-                    if (getSkillEventList().get(i).getSkill() instanceof Sylphidia) {
-                        getSkillEventList().get(i).setEnd(new Timestamp(getStart().getTime()));
-                        sylphidiaEndTime = new Timestamp(getStart().getTime());
-                        break;
-                    }
-                }
-            }
             if (skill instanceof ElementalGhost) {
-                elementalGhostEndTime = new Timestamp(getStart().getTime() + 93 * 1000);
-            } else if (skill instanceof Sylphidia) {
-                sylphidiaEndTime = new Timestamp(getStart().getTime() + 28 * 1000);
+                elementalGhostEndTime = new Timestamp(getStart().getTime() + 3 * 1000 + elementalGhost.getDuration() * 1000);
             } else if (skill instanceof UnfadingGlorySpiritKing) {
                 unfadingGloryEndTime = new Timestamp(getStart().getTime() + 60 * 1000);
             }
@@ -521,11 +521,11 @@ public class MercedesDealCycle extends DealCycle {
                     getEventTimeList().add(new Timestamp(getStart().getTime()));
                     isUnfadingGlory = true;
                     accumulateCnt = 0L;
-                    stigmaCnt = 0L;
+                    stigmaCnt -= 12L;
                 } else {
                     getSkillEventList().add(new SkillEvent(stigmaOfIshtar, new Timestamp(getStart().getTime()), new Timestamp(getStart().getTime())));
                     getEventTimeList().add(new Timestamp(getStart().getTime()));
-                    stigmaCnt = 0L;
+                    stigmaCnt -= 12L;
                 }
             }
             if (((AttackSkill) skill).getInterval() != 0) {
@@ -561,12 +561,12 @@ public class MercedesDealCycle extends DealCycle {
                         getEventTimeList().add(new Timestamp(getStart().getTime() + i));
                         if (
                                 getStart().before(elementalGhostEndTime)
-                                && getStart().after(sylphidiaEndTime)
                                 && skill instanceof IrkallaBreath
                         ) {
                             Long ran = (long) (Math.random() * 99 + 1);
                             IrkallaBreath temp = new IrkallaBreath();
                             temp.addFinalDamage(0.75);
+                            stigmaCnt ++;
                             if (ran <= 45) {
                                 getSkillEventList().add(new SkillEvent(temp, new Timestamp(getStart().getTime() + temp.getInterval()), new Timestamp(getStart().getTime() + temp.getInterval() * 2)));
                                 getEventTimeList().add(new Timestamp(getStart().getTime() + temp.getInterval()));
@@ -597,7 +597,6 @@ public class MercedesDealCycle extends DealCycle {
                 getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime()), endTime));
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof StrikeDualShot
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -624,7 +623,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof ChargeDrive1
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -651,7 +649,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof ChargeDrive2
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -678,7 +675,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof GustDive
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -705,7 +701,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof HighkickDemolition
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -732,7 +727,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof LeafTornado
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -759,7 +753,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof LeafTornadoSpiritEnchant
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -786,7 +779,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof LegendarySpear
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -813,7 +805,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof LegendarySpearSpiritEnchant
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -840,7 +831,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof LightningEdge
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -867,7 +857,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof RollingMoonsault
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -894,7 +883,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof UnicornSpike
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -921,7 +909,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof WrathOfEnlil
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -948,7 +935,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof WrathOfEnlilSpiritEnchant
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -975,7 +961,6 @@ public class MercedesDealCycle extends DealCycle {
                 }
                 if (
                         getStart().before(elementalGhostEndTime)
-                        && getStart().after(sylphidiaEndTime)
                         && skill instanceof RingOfIshtar
                 ) {
                     Long ran = (long) (Math.random() * 99 + 1);
@@ -1224,5 +1209,21 @@ public class MercedesDealCycle extends DealCycle {
             buffSkill.addBuffCriticalDamage(-criticalReinforce.getBuffCriticalDamage());
         }
         return attackDamage;
+    }
+
+    @Override
+    public void multiAttackProcess(Skill skill) {
+        Long sum = 0L;
+        for (Long info : ((AttackSkill) skill).getMultiAttackInfo()) {
+            sum += info;
+            getSkillEventList().add(new SkillEvent(skill, new Timestamp(getStart().getTime() + sum), new Timestamp(getStart().getTime() + sum)));
+            getEventTimeList().add(new Timestamp(getStart().getTime() + sum));
+            if (
+                    skill instanceof Sylphidia
+                            || skill instanceof SylphidiaAfterImage
+            ) {
+                stigmaCnt += 2;
+            }
+        }
     }
 }

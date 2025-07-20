@@ -10,8 +10,8 @@ public class ArmfulTree extends BuffSkill {
     public ArmfulTree() {
         this.setName("아름드리 나무");
         this.setDelayByAttackSpeed(660L);
-        this.setCooldown(180.0);
-        this.setDuration(30L);
+        this.setCooldown(120.0);
+        this.setDuration(20L);
         this.addBuffIgnoreDefense(15L);
         this.addBuffDamage(30L);
         this.addBuffCriticalDamage(10.0);

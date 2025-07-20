@@ -12,7 +12,7 @@ public class Typhoon extends AttackSkill {
         this.setCooldown(12.0);
         this.addFinalDamage(2.2);           // 코어강화
         this.addIgnoreDefenseList(20L);
-        this.addFinalDamage(0.855);         // 축뢰
+        this.addFinalDamage(0.86);          // 축뢰
         this.addFinalDamage(1.18);          // 연쇄
     }
 }

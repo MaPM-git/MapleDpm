@@ -1,5 +1,6 @@
 package org.mapledpmlab.type.dealcyclesolo;
 
+import lombok.NoArgsConstructor;
 import org.mapledpmlab.type.etc.DealCycle;
 import org.mapledpmlab.type.etc.Job;
 import org.mapledpmlab.type.skill.Skill;
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class ViperDealCycle extends DealCycle {
     private final List<AttackSkill> attackSkillList = new ArrayList<>(){
         {
@@ -72,6 +74,7 @@ public class ViperDealCycle extends DealCycle {
     };
 
     Long serpentStoneCount = 3L;
+    Long neptunusEnrageCount = 0L;
 
     Timestamp liberateNeptunusEndTime = new Timestamp(-1);
     Timestamp stimulateEndTime = new Timestamp(0);
@@ -83,7 +86,7 @@ public class ViperDealCycle extends DealCycle {
     FistEnrage fistEnrage = new FistEnrage();
     FuriosCharge furiosCharge = new FuriosCharge();
     FuriosCharge4 furiosCharge4 = new FuriosCharge4();
-    HowlingFist howlingFist = new HowlingFist();
+    HowlingFistBeforeDelay howlingFist = new HowlingFistBeforeDelay();
     LiberateNeptunus liberateNeptunus = new LiberateNeptunus();
     LiberateNeptunusEnrage1 liberateNeptunusEnrage1 = new LiberateNeptunusEnrage1();
     LightningForm lightningForm = new LightningForm();
@@ -110,8 +113,7 @@ public class ViperDealCycle extends DealCycle {
         this.setAttackSkillList(attackSkillList);
         this.setBuffSkillList(buffSkillList);
 
-        ringSwitching.setCooldown(90.0);
-        mapleWorldGoddessBlessing.setCooldown(180.0);
+        ringSwitching.setCooldown(60.0);
 
         luckyDice.setCooldown(180.0);
         luckyDice.setBuffAttMagic(0L);
@@ -168,13 +170,7 @@ public class ViperDealCycle extends DealCycle {
             if (cooldownCheck(pirateFlag)) {
                 addSkillEvent(pirateFlag);
             }
-            if (
-                    cooldownCheck(restraintRing)
-                    && (
-                            serpentStoneCount == 2
-                            || serpentStoneCount == 3
-                    )
-            ) {
+            if (cooldownCheck(restraintRing)) {
                 if (cooldownCheck(crestOfTheSolar)) {
                     addSkillEvent(crestOfTheSolar);
                 }
@@ -197,28 +193,30 @@ public class ViperDealCycle extends DealCycle {
                 addSkillEvent(howlingFist);
                 addSkillEvent(furiosCharge);
             } else if (
-                    cooldownCheck(howlingFist)
+                    cooldownCheck(overdrive)
                     && !cooldownCheck(epicAdventure)
             ) {
                 addSkillEvent(overdrive);
                 addSkillEvent(soulContract);
                 addSkillEvent(weaponJumpRing);
-                addSkillEvent(fistEnrage);
+                while (!cooldownCheck(howlingFist)) {
+                    addSkillEvent(fistEnrage);
+                }
                 addSkillEvent(howlingFist);
                 addSkillEvent(fistEnrage);
                 addSkillEvent(furiosCharge);
             } else if (
                     cooldownCheck(ringSwitching)
-                            && getStart().after(new Timestamp(80 * 1000))
+                            && getStart().after(new Timestamp(50 * 1000))
                             && getStart().before(new Timestamp(11 * 60 * 1000))
             ) {
                 addSkillEvent(ringSwitching);
-            } else if (
+            } /*else if (
                     cooldownCheck(furiosCharge4)
                             && getStart().before(new Timestamp(soulContract.getActivateTime().getTime() + 10000))
             ) {
                 addSkillEvent(furiosCharge4);
-            } else {
+            }*/ else {
                 addSkillEvent(fistEnrage);
             }
         }
@@ -310,11 +308,13 @@ public class ViperDealCycle extends DealCycle {
                         || skill instanceof LiberateNeptunusEnrage4
                         || skill instanceof LiberateNeptunusEnrage5
                 )
+                && neptunusEnrageCount > 0
         ) {
             addSkillEvent(liberateNeptunusEnrage1);
+            neptunusEnrageCount --;
         }
         if (getStart().before(skill.getActivateTime())) {
-            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName());
+            System.out.println(getStart() + "\t" + skill.getName() + "\t" + getJob().getName() + "\t" + skill.getActivateTime());
             return;
         }
         if (skillLog.equals("")) {
@@ -324,10 +324,11 @@ public class ViperDealCycle extends DealCycle {
         }
         if (skill instanceof BuffSkill) {
             if (skill instanceof Stimulate) {
-                stimulateEndTime = new Timestamp(getStart().getTime() + 3000 + 90000);
+                stimulateEndTime = new Timestamp(getStart().getTime() + 3000 + 60000);
             }
             if (skill instanceof LiberateNeptunusBuff) {
                 liberateNeptunusEndTime = new Timestamp(getStart().getTime() + 30000);
+                neptunusEnrageCount = 8L;
             }
             if (
                     skill instanceof RestraintRing

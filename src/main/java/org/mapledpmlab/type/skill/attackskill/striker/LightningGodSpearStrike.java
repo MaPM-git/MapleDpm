@@ -10,7 +10,7 @@ public class LightningGodSpearStrike extends AttackSkill {
         this.setCooldown(7.0);
         this.setRelatedSkill(new LightningGodSpearStrikeDot());
         this.addFinalDamage(1.6);       // 코어강화
-        this.addFinalDamage(0.855);         // 축뢰
+        this.addFinalDamage(0.86);          // 축뢰
         this.addFinalDamage(1.18);          // 연쇄
     }
 }

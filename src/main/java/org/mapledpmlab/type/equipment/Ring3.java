@@ -17,7 +17,9 @@ public class Ring3 extends Item {
         this.addAtt(1L);
         this.addMagic(1L);
         this.addHp(200L / 2);
-        if (jobType == JobType.DEMON_AVENGER) {
+        this.addAtt(4L * 2);
+        this.addMagic(4L * 2);
+        /*if (jobType == JobType.DEMON_AVENGER) {
             this.addHp((long) (250 * 2) / 2);
         } else if (jobType == JobType.XENON) {
             this.addMainStat((long) (3 * 2));
@@ -26,6 +28,6 @@ public class Ring3 extends Item {
             this.addOtherStat2((long) (3 * 2));
         } else  {
             this.addMainStat((long) (5 * 2));
-        }
+        }*/
     }
 }

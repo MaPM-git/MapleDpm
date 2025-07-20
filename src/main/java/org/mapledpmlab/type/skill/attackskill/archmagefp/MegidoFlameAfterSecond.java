@@ -9,11 +9,12 @@ public class MegidoFlameAfterSecond extends AttackSkill {
         this.setAttackCount(5L);
         this.setDotDuration(60000L);
         this.setInterval(100L);
-        this.setLimitAttackCount(10L);
+        this.setLimitAttackCount(2L);
         this.addFinalDamage(0.45);
         this.setApplyFinalAttack(true);
         this.addFinalDamage(2.2);       // 코어강화
         this.addIgnoreDefenseList(20L);
         this.addFinalDamage(1.08);      // 오버로드 마나
+        this.setRelatedSkill(new MegidoFlameBombMode());
     }
 }

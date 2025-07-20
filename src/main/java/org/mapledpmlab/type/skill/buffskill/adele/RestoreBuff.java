@@ -10,9 +10,9 @@ import org.mapledpmlab.type.skill.buffskill.BuffSkill;
 public class RestoreBuff extends BuffSkill {
     public RestoreBuff() {
         this.setName("리스토어");
-        this.setCooldown(180.0);
+        this.setCooldown(120.0);
         this.setDelay(720L);
-        this.setDuration(30L);
+        this.setDuration(20L);
         this.setBuffDamage(45L);
         this.setBuffFinalDamage(1.1);
         this.setRelatedSkill(new Restore());
